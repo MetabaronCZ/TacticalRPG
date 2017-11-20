@@ -1,2 +1,2 @@
 # TacticalRPG
-Turn-based tactical RPG
+[Work in Progress] Turn-based tactical RPG
