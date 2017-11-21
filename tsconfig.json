@@ -1,0 +1,17 @@
+{
+	"compilerOptions": {
+		"strict": true,
+		"allowJs": true,
+		//"checkJs": true,
+		"target": "es6",
+		"module": "es6",
+		"moduleResolution": "node",
+		"allowSyntheticDefaultImports": true,
+		"baseUrl": "./src/js",
+		"sourceMap": true,
+		"jsx": "react"
+	},
+	"compileOnSave": false,
+	"files": ["./src/js/app.tsx"],
+	"exclude": ["node_modules"]
+}

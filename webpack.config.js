@@ -43,23 +43,20 @@ module.exports = env => {
 		module: {
 			rules: [
 				{
-					test: /\.jsx?$/,
-					exclude: /node_modules/,
-					loader: 'babel-loader',
-					options: {
-						presets: ['env', 'react'],
-						plugins: ['transform-object-rest-spread']
-					}
-				}, {
-					test: /\.jsx?$/,
-					exclude: /node_modules/,
-					loader: 'eslint-loader'
+					test: /\.[jt]sx?$/,
+					loaders: ['babel-loader','ts-loader'],
+					include: path.resolve('./src/js')
+				},
+				{
+					test: /\.tsx?$/,
+					enforce: 'pre',
+					loader: 'tslint-loader'
 				}
 			]
 		},
 		plugins: plugins,
 		resolve: {
-			extensions: ['.js', '.jsx'],
+			extensions: ['.ts', '.tsx', '.js', '.jsx'],
 			modules: [
 				path.resolve('./src/js'),
 				path.resolve('./node_modules')
