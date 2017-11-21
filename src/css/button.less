@@ -1,0 +1,69 @@
+.Button {
+	@border-size: 2px;
+
+	.mx-color-variation(@color) {
+		background: @color;
+		color: @color-grey-dark;
+		border: @border-size solid @color;
+
+		&:hover {
+			color: @color;
+			background-color: @color-grey-dark;
+		}
+
+		&:active {
+			color: @color-white;
+			border-color: @color-white;
+		}
+	}
+
+	.u-text-default;
+	.u-weight-bold;
+
+	width: 100%;
+	padding: (@vu - @border-size) (@vu*2 - @border-size);
+	text-transform: uppercase;
+	text-align: center;
+	cursor: pointer;
+	border-radius: @border-radius-default;
+	box-shadow: @box-shadow-default;
+	transition: all linear @anim-default;
+
+	&-ico {
+		margin-right: @vu*2;
+	}
+
+	&:hover {
+		transition: all linear @anim-fast;
+	}
+
+	&:active {
+		box-shadow: none;
+	}
+
+	// size variation
+	&&--sizeLarge {
+		.u-text-larger;
+
+		padding-top: (@vu*2 - @border-size);
+		padding-bottom: (@vu*2 - @border-size);
+	}
+
+	// color variations
+	&,
+	&&--colorYellow {
+		.mx-color-variation(@color-yellow);
+	}
+
+	&&--colorRed {
+		.mx-color-variation(@color-red);
+	}
+
+	&&--colorGreen {
+		.mx-color-variation(@color-green);
+	}
+
+	&&--colorBlue {
+		.mx-color-variation(@color-blue);
+	}
+}

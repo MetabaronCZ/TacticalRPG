@@ -1,0 +1,43 @@
+{
+  "name": "game-react",
+  "version": "1.0.0",
+  "author": "Milan K.",
+  "description": "",
+  "scripts": {
+    "build": "gulp build",
+    "watch": "gulp dev"
+  },
+  "devDependencies": {
+    "autoprefixer": "^7.1.5",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-react": "^6.24.1",
+    "cssnano": "^3.10.0",
+    "eslint": "^4.8.0",
+    "eslint-loader": "^1.9.0",
+    "eslint-plugin-react": "^7.4.0",
+    "gulp": "^3.9.1",
+    "gulp-clean": "^0.3.2",
+    "gulp-less": "^3.3.2",
+    "gulp-postcss": "^7.0.0",
+    "gulp-stylelint": "^5.0.0",
+    "gulp-util": "^3.0.8",
+    "run-sequence": "^2.1.0",
+    "stylelint": "^8.2.0",
+    "stylelint-config-standard": "^17.0.0",
+    "uglifyjs-webpack-plugin": "^1.0.0-beta.2",
+    "webpack-stream": "^4.0.0"
+  },
+  "dependencies": {
+    "normalize.less": "^1.0.0",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
+    "react-redux": "^5.0.6",
+    "react-router": "^4.2.0",
+    "react-router-dom": "^4.2.2",
+    "redux": "^3.7.2",
+    "uuid": "^3.1.0"
+  }
+}

@@ -1,0 +1,46 @@
+.Order {
+	width: 100%;
+	margin-bottom: @vu;
+
+	&-item {
+		@skew: -10deg;
+
+		color: @color-yellow;
+		padding: 0 @vu*2;
+		margin-bottom: @vu;
+		border: 2px solid @color-grey;
+		border-radius: @border-radius-default;
+		cursor: pointer;
+		transform: skew(@skew);
+		transition: border-color linear @anim-default;
+
+		&-inner {
+			@shadow-color: @color-black;
+
+			.u-text-default;
+			.u-weight-bold;
+
+			color: @color-white;
+			text-shadow: 1px 1px 0 @shadow-color, -1px 1px 0 @shadow-color, 1px -1px 0 @shadow-color, -1px -1px 0 @shadow-color, 0 0 3px @shadow-color;
+			transform: skew(-@skew);
+		}
+
+		&&--ally {
+			background: linear-gradient(to right, @color-blue, transparent);
+
+			&:hover {
+				border-color: @color-white;
+				background: linear-gradient(to right, @color-blue, @color-green);
+			}
+		}
+
+		&&--enemy {
+			background: linear-gradient(to right, @color-red, transparent);
+
+			&:hover {
+				border-color: @color-white;
+				background: linear-gradient(to right, @color-red, @color-yellow);
+			}
+		}
+	}
+}
