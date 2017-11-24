@@ -1,5 +1,6 @@
 import React from 'react';
 
+import Link from 'ui/components/Link';
 import Form from 'ui/components/Form';
 import FormField from 'ui/components/FormField';
 import FormSelect from 'ui/components/FormSelect';
@@ -15,7 +16,7 @@ class BattleSetup extends React.Component {
 	constructor(props){
 		super(props);
 
-		let defaultParty = this.props.parties[0].id;
+		let defaultParty = ((this.props.parties && this.props.parties.length) ? this.props.parties[0].id : null);
 
 		this.state = {
 			fields: {
@@ -44,34 +45,61 @@ class BattleSetup extends React.Component {
 		this.props.onStart && this.props.onStart(this.state.fields);
 	}
 
+	renderNoParty(){
+		return (
+			<p className="Paragraph">
+				You must <Link href="/party-create">form a party</Link> to start a battle.
+			</p>
+		);
+	}
+
 	render(){
 		let fields = this.state.fields;
 		let characters = this.props.characters;
 		let parties = this.props.parties;
-		let party = parties.filter(p => p.id === fields.party)[0];
+		let party;
+		let chars;
 
-		let chars = party.characters.map(char => {
-			return getCharacterById(char, characters);
-		});
+		if ( parties && parties.length ){
+			party = parties.filter(p => p.id === fields.party)[0];
+
+			chars = party.characters.map(char => {
+				return getCharacterById(char, characters);
+			});
+		}
 
 		return (
 			<Form onSubmit={this.onSubmit}>
-				<FormField fieldId="f-party" label="Select party">
-					<FormSelect id="f-party" name="party" value={fields.party} onChange={this.onChange}>
-						{parties.map((party, i) => (
-							<FormSelectItem value={party.id} key={i}>
-								{party.name}
-							</FormSelectItem>
-						))}
-					</FormSelect>
-				</FormField>
+				{/* party selection */}
+				{
+					parties && parties.length
+					? (
+						<FormField fieldId="f-party" label="Select party">
+							<FormSelect id="f-party" name="party" value={fields.party} onChange={this.onChange}>
+								{parties.map((party, i) => (
+									<FormSelectItem value={party.id} key={i}>
+										{party.name}
+									</FormSelectItem>
+								))}
+							</FormSelect>
+						</FormField>
+					)
+					: this.renderNoParty()
+				}
 
-				<CharacterList characters={chars} />
+				{/* selected party characters */}
+				{chars && <CharacterList characters={chars} />}
+				
 				<Separator />
 
 				<ButtonRow>
 					<Button ico="back" text="Back" onClick={this.props.onBack} />
-					<Button ico="fight" text="Start" color="green" type="submit" />
+
+					{
+						parties && parties.length
+						? <Button ico="fight" text="Start" color="green" type="submit" />
+						: ''
+					}
 				</ButtonRow>
 			</Form>
 		);
