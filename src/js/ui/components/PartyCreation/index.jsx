@@ -1,5 +1,6 @@
 import React from 'react';
 
+import Link from 'ui/components/Link';
 import Form from 'ui/components/Form';
 import FormField from 'ui/components/FormField';
 import FormInput from 'ui/components/FormInput';
@@ -13,7 +14,7 @@ import { validateField, validateForm } from 'utils/validation';
 import { characterCount, getCharacterById, getDefaultParty, maxNameLength } from 'utils/party';
 
 import sex from 'data/sex';
-import characterClass from 'data/class';
+import Jobs from 'data/jobs';
 import weapon from 'data/weapon';
 import armor from 'data/armor';
 
@@ -92,15 +93,15 @@ class PartyCreation extends React.Component {
 			return (char.id === character.id) || !selected.includes(char.id);
 		});
 
-		// get selected character classes
-		let selectedClassess = selected.map(id => {
+		// get selected jobs
+		let selectedJobs = selected.map(id => {
 			let char = getCharacterById(id, characters);
-			return char ? char.class : null;
+			return char ? char.job : null;
 		});
 
-		// filter characters with class not in selection (keep character itself and unused characters with same class)
+		// filter characters with job not in selection (keep character itself and unused characters with same job)
 		filtered = filtered.filter(char => {
-			return (char.id === character.id) || (char.class === character.class) || !selectedClassess.includes(char.class);
+			return (char.id === character.id) || (char.job === character.job) || !selectedJobs.includes(char.job);
 		});
 
 		return filtered;
@@ -116,7 +117,7 @@ class PartyCreation extends React.Component {
 			let main = weapon[selected.main];
 			let off = weapon[selected.off];
 			let arm = armor[selected.armor];
-			let cls = characterClass[selected.class];
+			let cls = Jobs[selected.job];
 
 			info = `${sex[selected.sex]} ${cls.title} | ${main.title} + ${off.title} | ${arm.title}`;
 		}
@@ -138,32 +139,51 @@ class PartyCreation extends React.Component {
 		);
 	}
 
+	renderNoCharacter(){
+		return (
+			<p className="Paragraph">
+				You must <Link href="/character-create">create a character</Link> to form a party.
+			</p>
+		);
+	}
+
 	render(){
-		let fields = this.state.fields;
-		let errors = this.state.errors;
+		const fields = this.state.fields;
+		const errors = this.state.errors;
+		const partyExists = (this.props.characters && this.props.characters.length);
 
 		return (
 			<Form onSubmit={this.onSubmit}>
-				<FormField fieldId="f-name" label="Name" error={errors.name}>
-					<FormInput
-						id="f-name"
-						type="text"
-						value={fields.name}
-						placeholder="Type party name ..."
-						name="name"
-						maxLength={maxNameLength}
-						isInvalid={errors.name}
-						onChange={this.onChange}
-					/>
-				</FormField>
-
-				{Array(characterCount).fill('').map((x, i) => this.renderPartyItem(i))}
-
+				{partyExists
+					? (
+						<div>
+							<FormField fieldId="f-name" label="Name" error={errors.name}>
+								<FormInput
+									id="f-name"
+									type="text"
+									value={fields.name}
+									placeholder="Type party name ..."
+									name="name"
+									maxLength={maxNameLength}
+									isInvalid={errors.name}
+									onChange={this.onChange}
+								/>
+							</FormField>
+		
+							{Array(characterCount).fill('').map((x, i) => this.renderPartyItem(i))}
+						</div>
+					)
+					: this.renderNoCharacter()
+				}
 				<Separator />
 
 				<ButtonRow>
 					<Button ico="back" text="Back" onClick={this.props.onBack} />
-					<Button type="submit" ico="success" color="green" text="Save" />
+
+					{partyExists
+						? <Button type="submit" ico="success" color="green" text="Save" />
+						: ''
+					}
 				</ButtonRow>
 			</Form>
 		);

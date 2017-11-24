@@ -1,11 +1,11 @@
-import { filter as filterClass } from 'utils/character/class';
+import { filter as filterJobs } from 'utils/character/jobs';
 import { filter as filterWeapon } from 'utils/character/weapon';
 import { filter as filterArmor } from 'utils/character/armor';
 import { getRandomArrayItem } from 'utils/array';
 
 import * as Wield from 'data/wield';
 import sex from 'data/sex';
-import characterClass from 'data/class';
+import Jobs from 'data/jobs';
 import archetype from 'data/archetype';
 import weapon from 'data/weapon';
 import armor from 'data/armor';
@@ -25,7 +25,7 @@ export const getDefaultCharacter = () => {
 
 	character.primary = Object.keys(archetype)[0];
 	character.secondary = Object.keys(archetype)[0];
-	character.class = filterClass(character)[0];
+	character.job = filterJobs(character)[0];
 
 	return character;
 };
@@ -34,10 +34,10 @@ export const getDefaultCharacter = () => {
 export const getRandomCharacter = (name, cls) => {
 	let character = getDefaultCharacter();
 	let charSex = getRandomArrayItem(Object.keys(sex));
-	let arch = getRandomArrayItem(characterClass[cls].archetype);
+	let arch = getRandomArrayItem(Jobs[cls].archetype);
 
 	character.name = name;
-	character.class = cls;
+	character.job = cls;
 	character.sex = charSex;
 	character.primary = arch[0];
 	character.secondary = arch[1];

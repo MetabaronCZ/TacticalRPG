@@ -71,8 +71,7 @@ class BattleSetup extends React.Component {
 		return (
 			<Form onSubmit={this.onSubmit}>
 				{/* party selection */}
-				{
-					parties && parties.length
+				{parties && parties.length
 					? (
 						<FormField fieldId="f-party" label="Select party">
 							<FormSelect id="f-party" name="party" value={fields.party} onChange={this.onChange}>
@@ -95,8 +94,7 @@ class BattleSetup extends React.Component {
 				<ButtonRow>
 					<Button ico="back" text="Back" onClick={this.props.onBack} />
 
-					{
-						parties && parties.length
+					{parties && parties.length
 						? <Button ico="fight" text="Start" color="green" type="submit" />
 						: ''
 					}

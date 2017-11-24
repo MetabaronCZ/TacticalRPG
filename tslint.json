@@ -8,6 +8,7 @@
         "ordered-imports": false,
         "quotemark": [true, "single"],
         "indent": [true, "tabs", 4],
-        "trailing-comma": [true, { "esSpecCompliant": true }]
+        "trailing-comma": [true, { "esSpecCompliant": true }],
+        "jsx-no-multiline-js": false
     }
 }

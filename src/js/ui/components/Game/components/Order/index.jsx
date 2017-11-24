@@ -7,7 +7,7 @@ const Order = ({ characters }) => (
 		{characters.map((char, i) => (
 			<div className={`Order-item Order-item--${char.getPlayer().isEnemy() ? 'enemy' : 'ally'}`} key={i}>
 				<div className="Order-item-inner">
-					{char.class} {char.name}
+					{char.job} {char.name}
 				</div>
 			</div>
 		))}

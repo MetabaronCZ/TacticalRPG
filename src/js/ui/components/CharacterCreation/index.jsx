@@ -11,7 +11,7 @@ import Step3 from 'ui/components/CharacterCreation/components/Step3';
 
 import { validateField, validateForm } from 'utils/validation';
 
-import { filter as filterClass } from 'utils/character/class';
+import { filter as filterJobs } from 'utils/character/jobs';
 import { filter as filterWeapon } from 'utils/character/weapon';
 import { filter as filterArmor } from 'utils/character/armor';
 import { getDefaultCharacter } from 'utils/character';
@@ -49,20 +49,20 @@ class CharacterCreation extends React.Component {
 		let curr = this.state.fields;
 		let next = nextState.fields;
 
-		// reset character class on archetype change
+		// reset jobs on archetype change
 		if ( next.primary !== curr.primary || next.secondary !== curr.secondary ){
-			let classes = filterClass(next);
+			let jobs = filterJobs(next);
 
 			this.setState({
 				fields: {
 					...next,
-					class: classes[0]
+					job: jobs[0]
 				}
 			});
 		}
 
-		// reset character Main hand weapon and armor on class change
-		if ( next.class !== curr.class ){
+		// reset character Main hand weapon and armor on job change
+		if ( next.job !== curr.job ){
 			let newArmor = (filterArmor(next).includes(curr.armor) ? curr.armor : defaultCharacter.armor);
 			let newMain = (filterWeapon(next, Wield.MAIN).includes(curr.main) ? curr.main : defaultCharacter.main);
 

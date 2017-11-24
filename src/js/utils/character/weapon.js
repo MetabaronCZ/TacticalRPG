@@ -55,8 +55,8 @@ const check = (wpn, char, slot) => {
 				return false;
 			}
 
-			// Barbarian class exception for weapons in Off hand
-			if ( 'BAR' === char.class && weapons.SPEAR !== wpn ){
+			// Barbarian job exception for weapons in Off hand
+			if ( 'BAR' === char.job && weapons.SPEAR !== wpn ){
 				return true;
 			}
 

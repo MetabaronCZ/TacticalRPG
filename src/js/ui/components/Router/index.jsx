@@ -6,10 +6,10 @@ const Router = () => (
 	<MemoryRouter>
 		<Switch>
 			{routes.map((route, key) => (
-				<Route exact path={route.path} component={route.component} key={key} />
+				<Route exact={true} path={route.path} component={route.component} key={key} />
 			))}
 		</Switch>
-	</MemoryRouter>	
+	</MemoryRouter>
 );
 
 export default Router;

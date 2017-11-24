@@ -9,7 +9,13 @@
 		"allowSyntheticDefaultImports": true,
 		"baseUrl": "./src/js",
 		"sourceMap": true,
-		"jsx": "react"
+		"jsx": "react",
+		"lib": ["es6", "dom"],
+
+		"noImplicitReturns": true,
+		"noImplicitThis": true,
+		"noImplicitAny": true,
+		"strictNullChecks": true
 	},
 	"compileOnSave": false,
 	"files": ["./src/js/app.tsx"],

@@ -5,18 +5,18 @@ import FormField from 'ui/components/FormField';
 import FormSelect from 'ui/components/FormSelect';
 import FormSelectItem from 'ui/components/FormSelectItem';
 
-import characterClass from 'data/class';
-import { filter as filterClass } from 'utils/character/class';
+import Jobs from 'data/jobs';
+import { filter as filterJobs } from 'utils/character/jobs';
 
 const Step2 = ({ fields, onChange }) => (
 	<div>
 		<ArchetypeSelection primary={fields.primary} secondary={fields.secondary} onChange={onChange} />
 
-		<FormField fieldId="f-class" label="Character class" info={fields.class ? characterClass[fields.class].description : null}>
-			<FormSelect id="f-class" name="class" value={fields.class} onChange={onChange}>
-				{filterClass(fields).map((cls, i) => (
+		<FormField fieldId="f-job" label="Character Job" info={fields.job ? Jobs[fields.job].description : null}>
+			<FormSelect id="f-job" name="job" value={fields.job} onChange={onChange}>
+				{filterJobs(fields).map((cls, i) => (
 					<FormSelectItem value={cls} key={i}>
-						{characterClass[cls].title}
+						{Jobs[cls].title}
 					</FormSelectItem>
 				))}
 			</FormSelect>

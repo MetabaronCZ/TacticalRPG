@@ -5,7 +5,7 @@ import LinkIco from 'ui/components/LinkIco';
 import LinkButton from 'ui/components/LinkButton';
 
 import icos from 'utils/icos';
-import characterClass from 'data/class';
+import Jobs from 'data/jobs';
 
 import * as Wield from 'data/wield';
 import weapon from 'data/weapon';
@@ -44,7 +44,7 @@ const getColumns = (editable, onMoveDown, onMoveUp, onDelete) => {
 	};
 
 	let offValue = char => {
-		if ( main && ('BAR' !== char.class) && main.wield.includes(Wield.BOTH) ){
+		if ( main && ('BAR' !== char.job) && main.wield.includes(Wield.BOTH) ){
 			return renderOffHandBothWield(main.title);
 		} else {
 			return weapon[char.off].title;
@@ -56,7 +56,7 @@ const getColumns = (editable, onMoveDown, onMoveUp, onDelete) => {
 		{ title: '', name: 'archetype', value: renderArchetype },
 		{ title: '', name: 'sex', value: char => icos[char.sex] },
 		{ title: 'Name', name: 'name', value: char => char.name },
-		{ title: 'Class', name: 'class', value: char => characterClass[char.class].title },
+		{ title: 'Job', name: 'job', value: char => Jobs[char.job].title },
 		{ title: 'Main hand', name: 'mainHand', value: mainValue },
 		{ title: 'Off hand', name: 'offHand', value: offValue },
 		{ title: 'Armor', name: 'armor', value: char => armor[char.armor].title },

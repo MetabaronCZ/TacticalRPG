@@ -2,7 +2,7 @@ import getRandomNames from 'utils/random-name/generator';
 import { getRandomArrayItems } from 'utils/array';
 
 import { getRandomCharacter } from 'utils/character';
-import characterClasses from 'data/class';
+import Jobs from 'data/jobs';
 
 // maximum character count in one party
 export const characterCount = 8;
@@ -24,11 +24,11 @@ export const getDefaultParty = () => ({
 // returns random character party
 export const getRandomParty = count => {
 	let characters = getRandomNames(count, maxNameLength);
-	let classes = getRandomArrayItems(Object.keys(characterClasses), count);
+	let jobs = getRandomArrayItems(Object.keys(Jobs), count);
 
 	let party = {
 		name: 'Enemy Party',
-		characters: characters.map((char, i) => getRandomCharacter(char, classes[i]))
+		characters: characters.map((char, i) => getRandomCharacter(char, jobs[i]))
 	};
 
 	return party;
