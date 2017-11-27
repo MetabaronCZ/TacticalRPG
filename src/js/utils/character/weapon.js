@@ -1,4 +1,4 @@
-import { EWieldTypes } from 'models/wield-types';
+import { WieldID } from 'models/wield';
 import Weapons from 'data/weapons';
 import { EWeaponTypes } from 'models/weapon-types';
 
@@ -44,10 +44,10 @@ const check = (wpn, char, slot) => {
 
 	// check weapon slot
 	switch ( slot ){
-		case EWieldTypes.MAIN:
-			return ( wield.includes(EWieldTypes.MAIN) || wield.includes(EWieldTypes.BOTH) );
+		case WieldID.MAIN:
+			return ( wield.includes(WieldID.MAIN) || wield.includes(WieldID.BOTH) );
 
-		case EWieldTypes.OFF: {
+		case WieldID.OFF: {
 			let main = Weapons[char.main];
 			let mainWield = main.wield;
 
@@ -62,7 +62,7 @@ const check = (wpn, char, slot) => {
 			}
 
 			// cannot equip any other weapon while wielding 2H weapon in Main hand
-			if ( mainWield.includes(EWieldTypes.BOTH) ){
+			if ( mainWield.includes(WieldID.BOTH) ){
 				return false;
 			}
 
@@ -76,7 +76,7 @@ const check = (wpn, char, slot) => {
 				return false;
 			}
 
-			return wield.includes(EWieldTypes.OFF);
+			return wield.includes(WieldID.OFF);
 		}
 
 		default:

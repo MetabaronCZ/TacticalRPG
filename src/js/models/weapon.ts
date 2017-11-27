@@ -1,9 +1,9 @@
 import { EWeaponTypes } from 'models/weapon-types';
-import { EWieldTypes } from 'models/wield-types';
+import { WieldID } from 'models/wield';
 
 export default interface IWeapon {
 	title: string;
 	description: string;
 	type: EWeaponTypes;
-	wield: EWieldTypes[];
+	wield: WieldID[];
 }

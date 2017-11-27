@@ -7,9 +7,9 @@ import LinkButton from 'ui/components/LinkButton';
 import icos from 'utils/icos';
 import Jobs from 'data/jobs';
 
-import { EWieldTypes } from 'models/wield-types';
+import { WieldID } from 'models/wield';
 import Weapons from 'data/weapons';
-import Armors from 'data/armors';
+import Armors from 'data/armor';
 
 const renderArchetype = char => (
 	<ArchetypeIco primary={char.primary} secondary={char.secondary} />
@@ -44,7 +44,7 @@ const getColumns = (editable, onMoveDown, onMoveUp, onDelete) => {
 	};
 
 	let offValue = char => {
-		if ( main && ('BAR' !== char.job) && main.wield.includes(EWieldTypes.BOTH) ){
+		if ( main && ('BAR' !== char.job) && main.wield.includes(WieldID.BOTH) ){
 			return renderOffHandBothWield(main.title);
 		} else {
 			return Weapons[char.off].title;
@@ -54,12 +54,12 @@ const getColumns = (editable, onMoveDown, onMoveUp, onDelete) => {
 	let columns = [
 		{ title: '', name: 'order', value: (char, i) => i + 1 },
 		{ title: '', name: 'archetype', value: renderArchetype },
-		{ title: '', name: 'sex', value: char => icos[char.sex] },
+		{ title: '', name: 'sex', value: char => icos[char.sex.toLowerCase()] },
 		{ title: 'Name', name: 'name', value: char => char.name },
 		{ title: 'Job', name: 'job', value: char => Jobs[char.job].title },
 		{ title: 'Main hand', name: 'mainHand', value: mainValue },
 		{ title: 'Off hand', name: 'offHand', value: offValue },
-		{ title: 'Armor', name: 'armor', value: char => Armors[char.armor].title },
+		{ title: 'Armor', name: 'armor', value: char => Armors.get(char.armor).title },
 		{ title: '', name: 'moveDown', editable: true, value: char => renderMoveDown(char, onMoveDown) },
 		{ title: '', name: 'moveUp', editable: true, value: char => renderMoveUp(char, onMoveUp) },
 		{ title: '', name: 'edit', editable: true, value: renderEdit },

@@ -3,12 +3,12 @@ import { filter as filterWeapon } from 'utils/character/weapon';
 import { filter as filterArmor } from 'utils/character/armor';
 import { getRandomArrayItem } from 'utils/array';
 
-import { EWieldTypes } from 'models/wield-types';
-import Sexes from 'data/sexes';
+import { WieldID } from 'models/wield';
+import { SexID } from 'models/sex';
 import Jobs from 'data/jobs';
 import Archetypes from 'data/archetypes';
 import Weapons from 'data/weapons';
-import Armors from 'data/armors';
+import { ArmorID } from 'models/armor';
 
 // character name maximum length
 export const maxNameLength = 16;
@@ -17,10 +17,10 @@ export const maxNameLength = 16;
 export const getDefaultCharacter = () => {
 	let character = {
 		name: '',
-		sex: Object.keys(Sexes)[0],
+		sex: SexID.MALE,
 		main: Object.keys(Weapons)[0],
 		off: Object.keys(Weapons)[0],
-		armor: Object.keys(Armors)[0]
+		armor: ArmorID.NONE
 	};
 
 	character.primary = Object.keys(Archetypes)[0];
@@ -33,7 +33,7 @@ export const getDefaultCharacter = () => {
 // returns random character properties
 export const getRandomCharacter = (name, cls) => {
 	let character = getDefaultCharacter();
-	let charsex = getRandomArrayItem(Object.keys(Sexes));
+	let charsex = getRandomArrayItem(Object.keys(SexID));
 	let arch = getRandomArrayItem(Jobs[cls].archetype);
 
 	character.name = name;
@@ -42,7 +42,7 @@ export const getRandomCharacter = (name, cls) => {
 	character.primary = arch[0];
 	character.secondary = arch[1];
 
-	let main = filterWeapon(character, EWieldTypes.MAIN);
+	let main = filterWeapon(character, WieldID.MAIN);
 
 	if ( main.length > 1 ){
 		main = main.filter(x => 'NONE' !== x);
@@ -51,7 +51,7 @@ export const getRandomCharacter = (name, cls) => {
 		character.main = main[0];
 	}
 
-	let off = filterWeapon(character, EWieldTypes.OFF);
+	let off = filterWeapon(character, WieldID.OFF);
 
 	if ( off.length > 1 ){
 		off = off.filter(x => 'NONE' !== x);

@@ -1,21 +1,20 @@
-import { EWieldTypes } from 'models/wield-types';
-import IWieldType from 'models/wield-type';
+import { WieldID, IWield } from 'models/wield';
 
 interface IWieldTypes {
-	[wieldType: string]: IWieldType;
+	[wieldType: string]: IWield;
 }
 
 const WieldTypes: IWieldTypes = {
-	[EWieldTypes.MAIN]: {
+	[WieldID.MAIN]: {
 		title: 'Main hand'
 	},
-	[EWieldTypes.OFF]: {
+	[WieldID.OFF]: {
 		title: 'Off hand'
 	},
-	[EWieldTypes.BOTH]: {
+	[WieldID.BOTH]: {
 		title: 'Both hands'
 	},
-	[EWieldTypes.DUAL]: {
+	[WieldID.DUAL]: {
 		title: 'Dual wield'
 	}
 };

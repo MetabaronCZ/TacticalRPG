@@ -16,7 +16,7 @@ const Party = ({ characters }) => (
 
 			return (
 				<div className="Party-item" key={i}>
-					{char.name} <ArchetypeIco primary={char.primary} secondary={char.secondary} /> {icos[char.sex]} {Jobs[char.job].title}
+					{char.name} <ArchetypeIco primary={char.primary} secondary={char.secondary} /> {icos[char.sex.toLowerCase()]} {Jobs[char.job].title}
 
 					<Bar
 						hp={attrs.current.HP}

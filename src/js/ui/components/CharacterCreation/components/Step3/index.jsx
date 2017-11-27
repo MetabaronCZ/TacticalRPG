@@ -4,16 +4,16 @@ import FormField from 'ui/components/FormField';
 import FormSelect from 'ui/components/FormSelect';
 import FormSelectItem from 'ui/components/FormSelectItem';
 
-import { EWieldTypes } from 'models/wield-types';
+import { WieldID } from 'models/wield';
 import Weapons from 'data/weapons';
-import Armors from 'data/armors';
+import Armors from 'data/armor';
 
 import { filter as filterArmor } from 'utils/character/armor';
 import { filter as filterWeapon } from 'utils/character/weapon';
 
 const Step3 = ({ fields, onChange }) => {
-	let mainWeapons = filterWeapon(fields, EWieldTypes.MAIN);
-	let offWeapons = filterWeapon(fields, EWieldTypes.OFF);
+	let mainWeapons = filterWeapon(fields, WieldID.MAIN);
+	let offWeapons = filterWeapon(fields, WieldID.OFF);
 	let armors = filterArmor(fields);
 	let isBothWielding = (offWeapons.length < 2);
 
@@ -49,11 +49,11 @@ const Step3 = ({ fields, onChange }) => {
 				}
 			</FormField>
 	
-			<FormField fieldId="f-armor" label="Armor" info={fields.armor ? Armors[fields.armor].description : null}>
+			<FormField fieldId="f-armor" label="Armor" info={fields.armor ? Armors.get(fields.armor).description : null}>
 				<FormSelect id="f-armor" name="armor" value={fields.armor} onChange={onChange}>
 					{armors.map((arm, i) => (
 						<FormSelectItem value={arm} key={i}>
-							{Armors[arm].title}
+							{Armors.get(arm).title}
 						</FormSelectItem>
 					))}
 				</FormSelect>

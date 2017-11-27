@@ -1,17 +1,17 @@
-import { ESex } from 'models/sex';
-import { EPrimaryArchetype } from 'models/primary-archetype';
-import { ESecondaryArchetype } from 'models/secondary-archetype';
+import { SexID } from 'models/sex';
+import { EPrimary } from 'models/primary';
+import { ESecondary } from 'models/secondary';
 import { EJobs } from 'models/jobs';
 import { EWeapons } from 'models/weapons';
-import { EArmors } from 'models/armors';
+import { ArmorID } from 'models/armor';
 
 export default interface ICharacter {
 	name: string;
-	sex: ESex;
-	primary: EPrimaryArchetype;
-	secondary: ESecondaryArchetype;
+	sex: SexID;
+	primary: EPrimary;
+	secondary: ESecondary;
 	job: EJobs;
 	main: EWeapons;
 	off: EWeapons;
-	armor: EArmors;
+	armor: ArmorID;
 }
