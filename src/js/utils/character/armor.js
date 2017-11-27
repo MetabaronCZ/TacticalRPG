@@ -1,10 +1,10 @@
-import armors from 'data/armor';
+import Armors from 'data/armors';
 
 export const filter = char => {
-	return Object.keys(armors).filter(arm => {
+	return Object.keys(Armors).filter(arm => {
 		return (
-			!armors[arm].archetype ||
-			armors[arm].archetype.includes(char.primary + char.secondary)
+			!Armors[arm].archetype ||
+			Armors[arm].archetype.includes(char.primary + char.secondary)
 		);
 	});
 };

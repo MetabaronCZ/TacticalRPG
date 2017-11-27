@@ -16,7 +16,7 @@ import { filter as filterWeapon } from 'utils/character/weapon';
 import { filter as filterArmor } from 'utils/character/armor';
 import { getDefaultCharacter } from 'utils/character';
 
-import * as Wield from 'data/wield';
+import { EWieldTypes } from 'models/wield-types';
 
 const steps = [
 	{ title: 'Character Identity', component: Step1 },
@@ -64,12 +64,12 @@ class CharacterCreation extends React.Component {
 		// reset character Main hand weapon and armor on job change
 		if ( next.job !== curr.job ){
 			let newArmor = (filterArmor(next).includes(curr.armor) ? curr.armor : defaultCharacter.armor);
-			let newMain = (filterWeapon(next, Wield.MAIN).includes(curr.main) ? curr.main : defaultCharacter.main);
+			let newMain = (filterWeapon(next, EWieldTypes.MAIN).includes(curr.main) ? curr.main : defaultCharacter.main);
 
 			let tmpNext = { ...next };
 			tmpNext.main = newMain;
 
-			let newOff = (filterWeapon(tmpNext, Wield.OFF).includes(curr.off) ? curr.off : defaultCharacter.off);
+			let newOff = (filterWeapon(tmpNext, EWieldTypes.OFF).includes(curr.off) ? curr.off : defaultCharacter.off);
 
 			this.setState({
 				fields: {
@@ -83,7 +83,7 @@ class CharacterCreation extends React.Component {
 
 		// reset character Off hand weapon if 2H weapon equiped in Main hand
 		if ( next.main !== curr.main ){
-			let newOff = ( filterWeapon(next, Wield.OFF).includes(curr.off) ? curr.off : defaultCharacter.off );
+			let newOff = ( filterWeapon(next, EWieldTypes.OFF).includes(curr.off) ? curr.off : defaultCharacter.off );
 
 			this.setState({
 				fields: {

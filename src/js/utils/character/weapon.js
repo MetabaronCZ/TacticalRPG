@@ -1,5 +1,6 @@
-import * as Wield from 'data/wield';
-import weapons, { Types } from 'data/weapon';
+import { EWieldTypes } from 'models/wield-types';
+import Weapons from 'data/weapons';
+import { EWeaponTypes } from 'models/weapon-types';
 
 const check = (wpn, char, slot) => {
 	let primary = char.primary;
@@ -8,32 +9,32 @@ const check = (wpn, char, slot) => {
 
 	// check weapon type according to character archetype
 	switch ( wpn.type ){
-		case Types.NONE:
+		case EWeaponTypes.NONE:
 			return true;
 
-		case Types.DUAL:
-		case Types.ONE_HANDED:
+		case EWeaponTypes.DUAL:
+		case EWeaponTypes.ONE_HANDED:
 			// only P-type or S-type characters can wield small melee weapons
 			if ( ('P' !== primary && 'P' !== secondary) && 'S' !== primary && 'S' !== secondary ){
 				return false;
 			}
 			break;
 
-		case Types.TWO_HANDED:
+		case EWeaponTypes.TWO_HANDED:
 			// only P-type characters can wield 2H weapons
 			if ( 'P' !== primary && 'P' !== secondary ){
 				return false;
 			}
 			break;
 
-		case Types.MAGICAL:
+		case EWeaponTypes.MAGICAL:
 			// only M-type characters can wield magical weapons
 			if ( 'M' !== primary && 'M' !== secondary ){
 				return false;
 			}
 			break;
 
-		case Types.RANGED:
+		case EWeaponTypes.RANGED:
 			// only S-type characters can wield ranged weapons
 			if ( 'S' !== primary && 'S' !== secondary ){
 				return false;
@@ -43,39 +44,39 @@ const check = (wpn, char, slot) => {
 
 	// check weapon slot
 	switch ( slot ){
-		case Wield.MAIN:
-			return ( wield.includes(Wield.MAIN) || wield.includes(Wield.BOTH) );
+		case EWieldTypes.MAIN:
+			return ( wield.includes(EWieldTypes.MAIN) || wield.includes(EWieldTypes.BOTH) );
 
-		case Wield.OFF: {
-			let main = weapons[char.main];
+		case EWieldTypes.OFF: {
+			let main = Weapons[char.main];
 			let mainWield = main.wield;
 
 			// cannot equip a dual weapon in Off hand
-			if ( Types.DUAL === main.type || Types.DUAL === wpn.type ){
+			if ( EWeaponTypes.DUAL === main.type || EWeaponTypes.DUAL === wpn.type ){
 				return false;
 			}
 
 			// Barbarian job exception for weapons in Off hand
-			if ( 'BAR' === char.job && weapons.SPEAR !== wpn ){
+			if ( 'BAR' === char.job && Weapons.SPEAR !== wpn ){
 				return true;
 			}
 
 			// cannot equip any other weapon while wielding 2H weapon in Main hand
-			if ( mainWield.includes(Wield.BOTH) ){
+			if ( mainWield.includes(EWieldTypes.BOTH) ){
 				return false;
 			}
 
 			// only P-type and S-type  archetypes can wield non-shield weapon in Off hand
-			if ( Types.SHIELD !== wpn.type && 'P' !== primary && 'P' !== secondary && 'S' !== primary && 'S' !== secondary ){
+			if ( EWeaponTypes.SHIELD !== wpn.type && 'P' !== primary && 'P' !== secondary && 'S' !== primary && 'S' !== secondary ){
 				return false;
 			}
 
 			// only P-type characters can wield Large Shield
-			if ( weapons.SHIELD_LARGE === wpn && 'P' !== primary && 'P' !== secondary ){
+			if ( Weapons.SHIELD_LARGE === wpn && 'P' !== primary && 'P' !== secondary ){
 				return false;
 			}
 
-			return wield.includes(Wield.OFF);
+			return wield.includes(EWieldTypes.OFF);
 		}
 
 		default:
@@ -84,7 +85,7 @@ const check = (wpn, char, slot) => {
 };
 
 export const filter = (char, slot) => {
-	return Object.keys(weapons).filter(wpn => {
-		return check(weapons[wpn], char, slot);
+	return Object.keys(Weapons).filter(wpn => {
+		return check(Weapons[wpn], char, slot);
 	});
 };

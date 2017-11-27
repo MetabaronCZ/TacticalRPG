@@ -1,148 +1,156 @@
-import * as Skills from 'data/skills';
+import IJob from 'models/job';
+import { EJobs } from 'models/jobs';
+import { ESkillSet } from 'models/skill-set';
 
-export default {
-	BAR: {
+interface IJobs {
+	[job: string]: IJob;
+}
+
+const Jobs = {
+	[EJobs.BAR]: {
 		title: 'Barbarian',
 		description: 'A warrior with extreme strength',
 		archetype: ['PP'],
-		skills: [Skills.BERSERKING]
+		skills: [ESkillSet.BERSERKING]
 	},
-	KNG: {
+	[EJobs.KNG]: {
 		title: 'Knight',
 		description: 'A warrior with high endurance',
 		archetype: ['PP'],
-		skills: [Skills.NONE]
+		skills: [ESkillSet.NONE]
 	},
-	DRG: {
+	[EJobs.DRG]: {
 		title: 'Dragonkin',
 		description: '???',
 		archetype: ['PP'],
-		skills: [Skills.NONE]
+		skills: [ESkillSet.NONE]
 	},
-	CYB: {
+	[EJobs.CYB]: {
 		title: 'Cyborg',
 		description: '???',
 		archetype: ['PP'],
-		skills: [Skills.PROGRAM]
+		skills: [ESkillSet.PROGRAM]
 	},
-	WAR: {
+	[EJobs.WAR]: {
 		title: 'Warrior',
 		description: 'A master of weapons',
 		archetype: ['PS', 'SP'],
-		skills: [Skills.NONE]
+		skills: [ESkillSet.NONE]
 	},
-	BRW: {
+	[EJobs.BRW]: {
 		title: 'Brawler',
 		description: '???',
 		archetype: ['PS', 'SP'],
-		skills: [Skills.NONE]
+		skills: [ESkillSet.NONE]
 	},
-	HUN: {
+	[EJobs.HUN]: {
 		title: 'Hunter',
 		description: '???',
 		archetype: ['PS', 'SP'],
-		skills: [Skills.NONE]
+		skills: [ESkillSet.NONE]
 	},
-	WER: {
+	[EJobs.WER]: {
 		title: 'Werewolf',
 		description: 'A feral warrior',
 		archetype: ['PS', 'SP'],
-		skills: [Skills.LYCANTROPHY]
+		skills: [ESkillSet.LYCANTROPHY]
 	},
-	BLD: {
+	[EJobs.BLD]: {
 		title: 'Blademaster',
 		description: '???',
 		archetype: ['PM', 'MP'],
-		skills: [Skills.NONE]
+		skills: [ESkillSet.NONE]
 	},
-	PAL: {
+	[EJobs.PAL]: {
 		title: 'Paladin',
 		description: 'A holy guardian',
 		archetype: ['PM', 'MP'],
-		skills: [Skills.NONE]
+		skills: [ESkillSet.NONE]
 	},
-	DRK: {
+	[EJobs.DRK]: {
 		title: 'Dark Knight',
 		description: 'A knight of darkness',
 		archetype: ['PM', 'MP'],
-		skills: [Skills.NONE]
+		skills: [ESkillSet.NONE]
 	},
-	SPL: {
+	[EJobs.SPL]: {
 		title: 'Spellblade',
 		description: '???',
 		archetype: ['PM', 'MP'],
-		skills: [Skills.NONE]
+		skills: [ESkillSet.NONE]
 	},
-	ROG: {
+	[EJobs.ROG]: {
 		title: 'Rogue',
 		description: '???',
 		archetype: ['SS'],
-		skills: [Skills.NONE]
+		skills: [ESkillSet.NONE]
 	},
-	RAN: {
+	[EJobs.RAN]: {
 		title: 'Ranger',
 		description: 'A ranged weapon specialist',
 		archetype: ['SS'],
-		skills: [Skills.NONE]
+		skills: [ESkillSet.NONE]
 	},
-	ENT: {
+	[EJobs.ENT]: {
 		title: 'Entertainer',
 		description: '???',
 		archetype: ['SS'],
-		skills: [Skills.DANCING, Skills.SINGING]
+		skills: [ESkillSet.DANCING, ESkillSet.SINGING]
 	},
-	VMP: {
+	[EJobs.VMP]: {
 		title: 'Vampire',
 		description: '???',
 		archetype: ['SS'],
-		skills: [Skills.NONE]
+		skills: [ESkillSet.NONE]
 	},
-	TRI: {
+	[EJobs.TRI]: {
 		title: 'Trickster',
 		description: '???',
 		archetype: ['SM', 'MS'],
-		skills: [Skills.NONE]
+		skills: [ESkillSet.NONE]
 	},
-	MNK: {
+	[EJobs.MNK]: {
 		title: 'Monk',
 		description: '???',
 		archetype: ['SM', 'MS'],
-		skills: [Skills.NONE]
+		skills: [ESkillSet.NONE]
 	},
-	ASA: {
+	[EJobs.ASA]: {
 		title: 'Assassin',
 		description: 'A fighter of shadows',
 		archetype: ['SM', 'MS'],
-		skills: [Skills.NONE]
+		skills: [ESkillSet.NONE]
 	},
-	ALC: {
+	[EJobs.ALC]: {
 		title: 'Alchemist',
 		description: '???',
 		archetype: ['SM', 'MS'],
-		skills: [Skills.NONE]
+		skills: [ESkillSet.NONE]
 	},
-	PSY: {
+	[EJobs.PSY]: {
 		title: 'Psyker',
 		description: 'A fighter with strong mental abilites',
 		archetype: ['MM'],
-		skills: [Skills.MAGIC_KINETIC]
+		skills: [ESkillSet.MAGIC_KINETIC]
 	},
-	PRI: {
+	[EJobs.PRI]: {
 		title: 'Priest',
 		description: 'A holy magician',
 		archetype: ['MM'],
-		skills: [Skills.MAGIC_HOLY]
+		skills: [ESkillSet.MAGIC_HOLY]
 	},
-	SOR: {
+	[EJobs.SOR]: {
 		title: 'Sorcerer',
 		description: 'A dark magician',
 		archetype: ['MM'],
-		skills: [Skills.MAGIC_DARK]
+		skills: [ESkillSet.MAGIC_DARK]
 	},
-	ELM: {
+	[EJobs.ELM]: {
 		title: 'Elemental Mage',
 		description: 'A master of elemental magic',
 		archetype: ['MM'],
-		skills: [Skills.MAGIC_FIRE, Skills.MAGIC_WATER, Skills.MAGIC_AIR, Skills.MAGIC_EARTH]
+		skills: [ESkillSet.MAGIC_FIRE, ESkillSet.MAGIC_WATER, ESkillSet.MAGIC_AIR, ESkillSet.MAGIC_EARTH]
 	}
 };
+
+export default Jobs;

@@ -4,56 +4,56 @@ import FormField from 'ui/components/FormField';
 import FormSelect from 'ui/components/FormSelect';
 import FormSelectItem from 'ui/components/FormSelectItem';
 
-import * as Wield from 'data/wield';
-import weapon from 'data/weapon';
-import armor from 'data/armor';
+import { EWieldTypes } from 'models/wield-types';
+import Weapons from 'data/weapons';
+import Armors from 'data/armors';
 
 import { filter as filterArmor } from 'utils/character/armor';
 import { filter as filterWeapon } from 'utils/character/weapon';
 
 const Step3 = ({ fields, onChange }) => {
-	let mainWeapons = filterWeapon(fields, Wield.MAIN);
-	let offWeapons = filterWeapon(fields, Wield.OFF);
+	let mainWeapons = filterWeapon(fields, EWieldTypes.MAIN);
+	let offWeapons = filterWeapon(fields, EWieldTypes.OFF);
 	let armors = filterArmor(fields);
 	let isBothWielding = (offWeapons.length < 2);
 
 	return (
 		<div>
-			<FormField fieldId="f-main" label="Main hand" info={fields.main ? weapon[fields.main].description : null}>
+			<FormField fieldId="f-main" label="Main hand" info={fields.main ? Weapons[fields.main].description : null}>
 				<FormSelect id="f-main" name="main" value={fields.main} onChange={onChange}>
 					{mainWeapons.map((wpn, i) => (
 						<FormSelectItem value={wpn} key={i}>
-							{weapon[wpn].title}
+							{Weapons[wpn].title}
 						</FormSelectItem>
 					))}
 				</FormSelect>
 			</FormField>
 	
-			<FormField fieldId="f-off" label="Off hand" info={!isBothWielding ? weapon[fields.off].description : null}>
+			<FormField fieldId="f-off" label="Off hand" info={!isBothWielding ? Weapons[fields.off].description : null}>
 				{
 					!isBothWielding
 						? (
 							<FormSelect id="f-off" name="off" value={fields.off} onChange={onChange}>
 								{offWeapons.map((wpn, i) => (
 									<FormSelectItem value={wpn} key={i}>
-										{weapon[wpn].title}
+										{Weapons[wpn].title}
 									</FormSelectItem>
 								))}
 							</FormSelect>
 						)
 						: (
 							<FormSelect disabled>
-								<FormSelectItem>{weapon[fields.main].title}</FormSelectItem>
+								<FormSelectItem>{Weapons[fields.main].title}</FormSelectItem>
 							</FormSelect>
 						)
 				}
 			</FormField>
 	
-			<FormField fieldId="f-armor" label="Armor" info={fields.armor ? armor[fields.armor].description : null}>
+			<FormField fieldId="f-armor" label="Armor" info={fields.armor ? Armors[fields.armor].description : null}>
 				<FormSelect id="f-armor" name="armor" value={fields.armor} onChange={onChange}>
 					{armors.map((arm, i) => (
 						<FormSelectItem value={arm} key={i}>
-							{armor[arm].title}
+							{Armors[arm].title}
 						</FormSelectItem>
 					))}
 				</FormSelect>
