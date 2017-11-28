@@ -6,5 +6,5 @@ export enum WieldID {
 }
 
 export interface IWield {
-	title: string;
+	readonly title: string;
 }

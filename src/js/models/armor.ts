@@ -1,4 +1,4 @@
-import { EArchetypes } from 'models/archetypes';
+import { ArchetypeID } from 'models/archetype';
 
 export enum ArmorID {
 	NONE = 'NONE',
@@ -8,7 +8,7 @@ export enum ArmorID {
 }
 
 export interface IArmor {
-	title: string;
-	description: string;
-	archetype: EArchetypes[];
+	readonly title: string;
+	readonly description: string;
+	readonly archetype: ArchetypeID[];
 }

@@ -7,7 +7,7 @@ import FormRadio from 'ui/components/FormRadio';
 import { maxNameLength } from 'utils/character';
 import icos from 'utils/icos';
 
-import Sex from 'data/sex';
+import Sexes from 'data/sex';
 
 const Step1 = ({ fields, errors, onChange }) => (
 	<div>
@@ -25,8 +25,8 @@ const Step1 = ({ fields, errors, onChange }) => (
 		</FormField>
 
 		<FormField fieldId="f-sex" label="Sex" error={errors.sex}>
-			{Array.from(Sex.keys()).map((s, i) => (
-				<FormRadio id={`f-sex-${s}`} label={`${icos[s.toLocaleLowerCase()]} ${Sex.get(s).title}`} name="sex" value={s} isChecked={s === fields.sex} key={i} onChange={onChange} />
+			{Object.keys(Sexes).map((s, i) => (
+				<FormRadio id={`f-sex-${s}`} label={`${icos[s.toLocaleLowerCase()]} ${Sexes[s].title}`} name="sex" value={s} isChecked={s === fields.sex} key={i} onChange={onChange} />
 			))}
 		</FormField>
 	</div>

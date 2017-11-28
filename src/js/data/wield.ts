@@ -1,7 +1,7 @@
 import { WieldID, IWield } from 'models/wield';
 
 interface IWieldTypes {
-	[wieldType: string]: IWield;
+	readonly [id: string]: IWield;
 }
 
 const WieldTypes: IWieldTypes = {

@@ -1,17 +1,22 @@
-import ICharacter from 'models/character';
-import { EArchetypes } from 'models/archetypes';
+import { ICharacter } from 'models/character';
+import { ArchetypeID } from 'models/archetype';
 import { ArmorID, IArmor } from 'models/armor';
 import Armors from 'data/armor';
 
 export const filter = (char: ICharacter): ArmorID[] => {
-	const arch = (EArchetypes as any)[char.primary + char.secondary];
+	const arch = (ArchetypeID as any)[char.primary + char.secondary];
 	const filtered: ArmorID[] = [];
 
-	Armors.forEach((arm: IArmor, id: ArmorID) => {
-		if (!arm.archetype || !arm.archetype.length || -1 !== arm.archetype.indexOf(arch)) {
-			filtered.push(id);
+	for (const id in Armors) {
+		if (!Armors[id]) {
+			continue;
 		}
-	});
+		const arm = Armors[id];
+
+		if (!arm.archetype || !arm.archetype.length || -1 !== arm.archetype.indexOf(arch)) {
+			filtered.push(id as ArmorID);
+		}
+	}
 
 	return filtered;
 };

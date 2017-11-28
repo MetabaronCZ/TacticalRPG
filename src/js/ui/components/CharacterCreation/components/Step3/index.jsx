@@ -5,7 +5,7 @@ import FormSelect from 'ui/components/FormSelect';
 import FormSelectItem from 'ui/components/FormSelectItem';
 
 import { WieldID } from 'models/wield';
-import Weapons from 'data/weapons';
+import Weapons from 'data/weapon';
 import Armors from 'data/armor';
 
 import { filter as filterArmor } from 'utils/character/armor';
@@ -49,11 +49,11 @@ const Step3 = ({ fields, onChange }) => {
 				}
 			</FormField>
 	
-			<FormField fieldId="f-armor" label="Armor" info={fields.armor ? Armors.get(fields.armor).description : null}>
+			<FormField fieldId="f-armor" label="Armor" info={fields.armor ? Armors[fields.armor].description : null}>
 				<FormSelect id="f-armor" name="armor" value={fields.armor} onChange={onChange}>
 					{armors.map((arm, i) => (
 						<FormSelectItem value={arm} key={i}>
-							{Armors.get(arm).title}
+							{Armors[arm].title}
 						</FormSelectItem>
 					))}
 				</FormSelect>

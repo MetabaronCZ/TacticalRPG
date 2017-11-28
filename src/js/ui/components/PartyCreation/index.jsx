@@ -13,9 +13,9 @@ import Separator from 'ui/components/Separator';
 import { validateField, validateForm } from 'utils/validation';
 import { characterCount, getCharacterById, getDefaultParty, maxNameLength } from 'utils/party';
 
-import Sex from 'data/sex';
+import Sexes from 'data/sex';
 import Jobs from 'data/jobs';
-import Weapons from 'data/weapons';
+import Weapons from 'data/weapon';
 import Armors from 'data/armor';
 
 class PartyCreation extends React.Component {
@@ -116,10 +116,10 @@ class PartyCreation extends React.Component {
 		if ( selected ){
 			let main = Weapons[selected.main];
 			let off = Weapons[selected.off];
-			let arm = Armors.get(selected.armor);
+			let arm = Armors[selected.armor];
 			let cls = Jobs[selected.job];
 
-			info = `${Sex.get(selected.sex).title} ${cls.title} | ${main.title} + ${off.title} | ${arm.title}`;
+			info = `${Sexes[selected.sex].title} ${cls.title} | ${main.title} + ${off.title} | ${arm.title}`;
 		}
 
 		return (

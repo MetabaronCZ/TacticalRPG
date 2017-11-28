@@ -1,155 +1,161 @@
-import IJob from 'models/job';
-import { EJobs } from 'models/jobs';
-import { ESkillSet } from 'models/skill-set';
+import { ArchetypeID as ArchID } from 'models/archetype';
+import { JobID, IJob } from 'models/job';
+import { SkillSetID } from 'models/skill-set';
 
 interface IJobs {
-	[job: string]: IJob;
+	readonly [id: string]: IJob;
 }
 
-const Jobs = {
-	[EJobs.BAR]: {
+const Jobs: IJobs = {
+	[JobID.NONE]: {
+		title: 'none',
+		description: 'No job selected',
+		archetype: [],
+		skills: []
+	},
+	[JobID.BAR]: {
 		title: 'Barbarian',
 		description: 'A warrior with extreme strength',
-		archetype: ['PP'],
-		skills: [ESkillSet.BERSERKING]
+		archetype: [ArchID.PP],
+		skills: [SkillSetID.BERSERKING]
 	},
-	[EJobs.KNG]: {
+	[JobID.KNG]: {
 		title: 'Knight',
 		description: 'A warrior with high endurance',
-		archetype: ['PP'],
-		skills: [ESkillSet.NONE]
+		archetype: [ArchID.PP],
+		skills: [SkillSetID.NONE]
 	},
-	[EJobs.DRG]: {
+	[JobID.DRG]: {
 		title: 'Dragonkin',
 		description: '???',
-		archetype: ['PP'],
-		skills: [ESkillSet.NONE]
+		archetype: [ArchID.PP],
+		skills: [SkillSetID.NONE]
 	},
-	[EJobs.CYB]: {
+	[JobID.CYB]: {
 		title: 'Cyborg',
 		description: '???',
-		archetype: ['PP'],
-		skills: [ESkillSet.PROGRAM]
+		archetype: [ArchID.PP],
+		skills: [SkillSetID.PROGRAM]
 	},
-	[EJobs.WAR]: {
+	[JobID.WAR]: {
 		title: 'Warrior',
 		description: 'A master of weapons',
-		archetype: ['PS', 'SP'],
-		skills: [ESkillSet.NONE]
+		archetype: [ArchID.PS, ArchID.SP],
+		skills: [SkillSetID.NONE]
 	},
-	[EJobs.BRW]: {
+	[JobID.BRW]: {
 		title: 'Brawler',
 		description: '???',
-		archetype: ['PS', 'SP'],
-		skills: [ESkillSet.NONE]
+		archetype: [ArchID.PS, ArchID.SP],
+		skills: [SkillSetID.NONE]
 	},
-	[EJobs.HUN]: {
+	[JobID.HUN]: {
 		title: 'Hunter',
 		description: '???',
-		archetype: ['PS', 'SP'],
-		skills: [ESkillSet.NONE]
+		archetype: [ArchID.PS, ArchID.SP],
+		skills: [SkillSetID.NONE]
 	},
-	[EJobs.WER]: {
+	[JobID.WER]: {
 		title: 'Werewolf',
 		description: 'A feral warrior',
-		archetype: ['PS', 'SP'],
-		skills: [ESkillSet.LYCANTROPHY]
+		archetype: [ArchID.PS, ArchID.SP],
+		skills: [SkillSetID.LYCANTROPHY]
 	},
-	[EJobs.BLD]: {
+	[JobID.BLD]: {
 		title: 'Blademaster',
 		description: '???',
-		archetype: ['PM', 'MP'],
-		skills: [ESkillSet.NONE]
+		archetype: [ArchID.PM, ArchID.MP],
+		skills: [SkillSetID.NONE]
 	},
-	[EJobs.PAL]: {
+	[JobID.PAL]: {
 		title: 'Paladin',
 		description: 'A holy guardian',
-		archetype: ['PM', 'MP'],
-		skills: [ESkillSet.NONE]
+		archetype: [ArchID.PM, ArchID.MP],
+		skills: [SkillSetID.NONE]
 	},
-	[EJobs.DRK]: {
+	[JobID.DRK]: {
 		title: 'Dark Knight',
 		description: 'A knight of darkness',
-		archetype: ['PM', 'MP'],
-		skills: [ESkillSet.NONE]
+		archetype: [ArchID.PM, ArchID.MP],
+		skills: [SkillSetID.NONE]
 	},
-	[EJobs.SPL]: {
+	[JobID.SPL]: {
 		title: 'Spellblade',
 		description: '???',
-		archetype: ['PM', 'MP'],
-		skills: [ESkillSet.NONE]
+		archetype: [ArchID.PM, ArchID.MP],
+		skills: [SkillSetID.NONE]
 	},
-	[EJobs.ROG]: {
+	[JobID.ROG]: {
 		title: 'Rogue',
 		description: '???',
-		archetype: ['SS'],
-		skills: [ESkillSet.NONE]
+		archetype: [ArchID.SS],
+		skills: [SkillSetID.NONE]
 	},
-	[EJobs.RAN]: {
+	[JobID.RAN]: {
 		title: 'Ranger',
 		description: 'A ranged weapon specialist',
-		archetype: ['SS'],
-		skills: [ESkillSet.NONE]
+		archetype: [ArchID.SS],
+		skills: [SkillSetID.NONE]
 	},
-	[EJobs.ENT]: {
+	[JobID.ENT]: {
 		title: 'Entertainer',
 		description: '???',
-		archetype: ['SS'],
-		skills: [ESkillSet.DANCING, ESkillSet.SINGING]
+		archetype: [ArchID.SS],
+		skills: [SkillSetID.DANCING, SkillSetID.SINGING]
 	},
-	[EJobs.VMP]: {
+	[JobID.VMP]: {
 		title: 'Vampire',
 		description: '???',
-		archetype: ['SS'],
-		skills: [ESkillSet.NONE]
+		archetype: [ArchID.SS],
+		skills: [SkillSetID.NONE]
 	},
-	[EJobs.TRI]: {
+	[JobID.TRI]: {
 		title: 'Trickster',
 		description: '???',
-		archetype: ['SM', 'MS'],
-		skills: [ESkillSet.NONE]
+		archetype: [ArchID.SM, ArchID.MS],
+		skills: [SkillSetID.NONE]
 	},
-	[EJobs.MNK]: {
+	[JobID.MNK]: {
 		title: 'Monk',
 		description: '???',
-		archetype: ['SM', 'MS'],
-		skills: [ESkillSet.NONE]
+		archetype: [ArchID.SM, ArchID.MS],
+		skills: [SkillSetID.NONE]
 	},
-	[EJobs.ASA]: {
+	[JobID.ASA]: {
 		title: 'Assassin',
 		description: 'A fighter of shadows',
-		archetype: ['SM', 'MS'],
-		skills: [ESkillSet.NONE]
+		archetype: [ArchID.SM, ArchID.MS],
+		skills: [SkillSetID.NONE]
 	},
-	[EJobs.ALC]: {
+	[JobID.ALC]: {
 		title: 'Alchemist',
 		description: '???',
-		archetype: ['SM', 'MS'],
-		skills: [ESkillSet.NONE]
+		archetype: [ArchID.SM, ArchID.MS],
+		skills: [SkillSetID.NONE]
 	},
-	[EJobs.PSY]: {
+	[JobID.PSY]: {
 		title: 'Psyker',
 		description: 'A fighter with strong mental abilites',
-		archetype: ['MM'],
-		skills: [ESkillSet.MAGIC_KINETIC]
+		archetype: [ArchID.MM],
+		skills: [SkillSetID.MAGIC_KINETIC]
 	},
-	[EJobs.PRI]: {
+	[JobID.PRI]: {
 		title: 'Priest',
 		description: 'A holy magician',
-		archetype: ['MM'],
-		skills: [ESkillSet.MAGIC_HOLY]
+		archetype: [ArchID.MM],
+		skills: [SkillSetID.MAGIC_HOLY]
 	},
-	[EJobs.SOR]: {
+	[JobID.SOR]: {
 		title: 'Sorcerer',
 		description: 'A dark magician',
-		archetype: ['MM'],
-		skills: [ESkillSet.MAGIC_DARK]
+		archetype: [ArchID.MM],
+		skills: [SkillSetID.MAGIC_DARK]
 	},
-	[EJobs.ELM]: {
+	[JobID.ELM]: {
 		title: 'Elemental Mage',
 		description: 'A master of elemental magic',
-		archetype: ['MM'],
-		skills: [ESkillSet.MAGIC_FIRE, ESkillSet.MAGIC_WATER, ESkillSet.MAGIC_AIR, ESkillSet.MAGIC_EARTH]
+		archetype: [ArchID.MM],
+		skills: [SkillSetID.MAGIC_FIRE, SkillSetID.MAGIC_WATER, SkillSetID.MAGIC_AIR, SkillSetID.MAGIC_EARTH]
 	}
 };
 

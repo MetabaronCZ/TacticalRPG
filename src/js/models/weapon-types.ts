@@ -1,4 +1,4 @@
-export enum EWeaponTypes {
+export enum WeaponTypeID {
 	NONE = 'NONE',
 	DUAL = 'DUAL',
 	ONE_HANDED = 'ONE_HANDED',

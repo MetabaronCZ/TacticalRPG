@@ -8,7 +8,7 @@ import icos from 'utils/icos';
 import Jobs from 'data/jobs';
 
 import { WieldID } from 'models/wield';
-import Weapons from 'data/weapons';
+import Weapons from 'data/weapon';
 import Armors from 'data/armor';
 
 const renderArchetype = char => (
@@ -40,7 +40,7 @@ const getColumns = (editable, onMoveDown, onMoveUp, onDelete) => {
 
 	let mainValue = char => {
 		main = Weapons[char.main];
-		return Weapons[char.main].title;
+		return main.title;
 	};
 
 	let offValue = char => {
@@ -59,7 +59,7 @@ const getColumns = (editable, onMoveDown, onMoveUp, onDelete) => {
 		{ title: 'Job', name: 'job', value: char => Jobs[char.job].title },
 		{ title: 'Main hand', name: 'mainHand', value: mainValue },
 		{ title: 'Off hand', name: 'offHand', value: offValue },
-		{ title: 'Armor', name: 'armor', value: char => Armors.get(char.armor).title },
+		{ title: 'Armor', name: 'armor', value: char => Armors[char.armor].title },
 		{ title: '', name: 'moveDown', editable: true, value: char => renderMoveDown(char, onMoveDown) },
 		{ title: '', name: 'moveUp', editable: true, value: char => renderMoveUp(char, onMoveUp) },
 		{ title: '', name: 'edit', editable: true, value: renderEdit },

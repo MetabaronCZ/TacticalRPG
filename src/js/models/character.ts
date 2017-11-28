@@ -1,17 +1,18 @@
 import { SexID } from 'models/sex';
-import { EPrimary } from 'models/primary';
-import { ESecondary } from 'models/secondary';
-import { EJobs } from 'models/jobs';
-import { EWeapons } from 'models/weapons';
+import { PrimaryID } from 'models/primary';
+import { SecondaryID } from 'models/secondary';
+import { JobID } from 'models/job';
+import { WeaponID } from 'models/weapon';
 import { ArmorID } from 'models/armor';
 
-export default interface ICharacter {
+export interface ICharacter {
+	id: string;
 	name: string;
 	sex: SexID;
-	primary: EPrimary;
-	secondary: ESecondary;
-	job: EJobs;
-	main: EWeapons;
-	off: EWeapons;
+	primary: PrimaryID;
+	secondary: SecondaryID;
+	job: JobID;
+	main: WeaponID;
+	off: WeaponID;
 	armor: ArmorID;
 }

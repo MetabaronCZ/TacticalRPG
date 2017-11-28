@@ -1,12 +1,16 @@
 import { SexID, ISex } from 'models/sex';
 
-const Sex = new Map<SexID, ISex>([
-	[SexID.MALE, {
-		title: 'Male'
-	}],
-	[SexID.FEMALE, {
-		title: 'Female'
-	}]
-]);
+interface ISexes {
+	readonly [id: string]: ISex;
+}
 
-export default Sex;
+const Sexes: ISexes = {
+	[SexID.MALE]: {
+		title: 'Male'
+	},
+	[SexID.FEMALE]: {
+		title: 'Female'
+	}
+};
+
+export default Sexes;

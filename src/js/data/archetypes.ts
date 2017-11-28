@@ -1,18 +1,18 @@
-import { EPrimary } from 'models/primary';
-import IArchetype from 'models/archetype';
+import { PrimaryID } from 'models/primary';
+import { IArchetype } from 'models/archetype';
 
 interface IArchetypes {
-	[archetype: string]: IArchetype;
+	readonly [id: string]: IArchetype;
 }
 
 const Archetypes: IArchetypes = {
-	[EPrimary.P]: {
+	[PrimaryID.P]: {
 		title: 'Power'
 	},
-	[EPrimary.S]: {
+	[PrimaryID.S]: {
 		title: 'Speed'
 	},
-	[EPrimary.M]: {
+	[PrimaryID.M]: {
 		title: 'Magic'
 	}
 };

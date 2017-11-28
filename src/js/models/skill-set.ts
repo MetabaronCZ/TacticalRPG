@@ -1,4 +1,4 @@
-export enum ESkillSet {
+export enum SkillSetID {
 	NONE = 'NONE',
 	BERSERKING = 'BERSERKING',
 	PROGRAM = 'PROGRAM',

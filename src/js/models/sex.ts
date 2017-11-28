@@ -4,5 +4,5 @@ export enum SexID {
 }
 
 export interface ISex {
-	title: string;
+	readonly title: string;
 }

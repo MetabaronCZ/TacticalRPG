@@ -1,113 +1,112 @@
-import IWeapon from 'models/weapon';
-import { EWeapons } from 'models/weapons';
+import { WeaponID, IWeapon } from 'models/weapon';
 import { WieldID } from 'models/wield';
-import { EWeaponTypes } from 'models/weapon-types';
+import { WeaponTypeID } from 'models/weapon-types';
 
 interface IWeapons {
-	[weapon: string]: IWeapon;
+	readonly [id: string]: IWeapon;
 }
 
 const Weapons: IWeapons = {
-	[EWeapons.NONE]: {
+	[WeaponID.NONE]: {
 		title: 'none',
 		description: 'No weapon equipped',
-		type: EWeaponTypes.NONE,
+		type: WeaponTypeID.NONE,
 		wield: [WieldID.MAIN, WieldID.OFF]
 	},
-	[EWeapons.FISTS]: {
+	[WeaponID.FISTS]: {
 		title: 'Fists',
 		description: '',
-		type: EWeaponTypes.DUAL,
+		type: WeaponTypeID.DUAL,
 		wield: [WieldID.BOTH]
 	},
-	[EWeapons.DAGGER]: {
+	[WeaponID.DAGGER]: {
 		title: 'Dagger',
 		description: '',
-		type: EWeaponTypes.ONE_HANDED,
+		type: WeaponTypeID.ONE_HANDED,
 		wield: [WieldID.MAIN, WieldID.OFF]
 	},
-	[EWeapons.SWORD_1H]: {
+	[WeaponID.SWORD_1H]: {
 		title: '1H Sword',
 		description: '',
-		type: EWeaponTypes.ONE_HANDED,
+		type: WeaponTypeID.ONE_HANDED,
 		wield: [WieldID.MAIN, WieldID.OFF]
 	},
-	[EWeapons.AXE_1H]: {
+	[WeaponID.AXE_1H]: {
 		title: '1H Axe',
 		description: '',
-		type: EWeaponTypes.ONE_HANDED,
+		type: WeaponTypeID.ONE_HANDED,
 		wield: [WieldID.MAIN, WieldID.OFF]
 	},
-	[EWeapons.HAMMER_1H]: {
+	[WeaponID.HAMMER_1H]: {
 		title: '1H Hammer',
 		description: '',
-		type: EWeaponTypes.ONE_HANDED,
+		type: WeaponTypeID.ONE_HANDED,
 		wield: [WieldID.MAIN, WieldID.OFF]
 	},
-	[EWeapons.SPEAR]: {
+	[WeaponID.SPEAR]: {
 		title: 'Spear',
 		description: '',
-		type: EWeaponTypes.TWO_HANDED,
+		type: WeaponTypeID.TWO_HANDED,
 		wield: [WieldID.BOTH]
 	},
-	[EWeapons.SWORD_2H]: {
+	[WeaponID.SWORD_2H]: {
 		title: '2H Sword',
 		description: '',
-		type: EWeaponTypes.TWO_HANDED,
+		type: WeaponTypeID.TWO_HANDED,
 		wield: [WieldID.BOTH]
 	},
-	[EWeapons.AXE_2H]: {
+	[WeaponID.AXE_2H]: {
 		title: '2H Axe',
 		description: '',
-		type: EWeaponTypes.TWO_HANDED,
+		type: WeaponTypeID.TWO_HANDED,
 		wield: [WieldID.BOTH]
 	},
-	[EWeapons.HAMMER_2H]: {
+	[WeaponID.HAMMER_2H]: {
 		title: '2H Hammer',
 		description: '',
-		type: EWeaponTypes.TWO_HANDED,
+		type: WeaponTypeID.TWO_HANDED,
 		wield: [WieldID.BOTH]
 	},
-	[EWeapons.MACE]: {
+	[WeaponID.MACE]: {
 		title: 'Mace',
 		description: '',
-		type: EWeaponTypes.MAGICAL,
+		type: WeaponTypeID.MAGICAL,
 		wield: [WieldID.MAIN]
 	},
-	[EWeapons.STAFF]: {
+	[WeaponID.STAFF]: {
 		title: 'Staff',
 		description: '',
-		type: EWeaponTypes.MAGICAL,
+		type: WeaponTypeID.MAGICAL,
 		wield: [WieldID.BOTH]
 	},
-	[EWeapons.BOW]: {
+	[WeaponID.BOW]: {
 		title: 'Bow',
 		description: '',
-		type: EWeaponTypes.RANGED,
+		type: WeaponTypeID.RANGED,
 		wield: [WieldID.BOTH]
 	},
-	[EWeapons.GUN_1H]: {
+	[WeaponID.GUN_1H]: {
 		title: '1H Gun',
 		description: '',
-		type: EWeaponTypes.RANGED,
+		type: WeaponTypeID.RANGED,
 		wield: [WieldID.MAIN, WieldID.OFF]
 	},
-	[EWeapons.GUN_2H]: {
+	[WeaponID.GUN_2H]: {
 		title: '2H Gun',
 		description: '',
-		type: EWeaponTypes.RANGED,
+		type: WeaponTypeID.RANGED,
 		wield: [WieldID.BOTH]
 	},
-	[EWeapons.SHIELD_SMALL]: {
+	[WeaponID.SHIELD_SMALL]: {
 		title: 'Small Shield',
 		description: '',
-		type: EWeaponTypes.SHIELD,
+		type: WeaponTypeID.SHIELD,
 		wield: [WieldID.OFF]
 	},
-	[EWeapons.SHIELD_LARGE]: {
+	[WeaponID.SHIELD_LARGE]: {
 		title: 'Large Shield',
 		description: '',
-		type: EWeaponTypes.SHIELD,
+		type: WeaponTypeID.SHIELD,
 		wield: [WieldID.OFF]
 	}
 };

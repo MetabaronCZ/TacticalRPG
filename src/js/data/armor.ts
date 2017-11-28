@@ -1,27 +1,31 @@
-import { EArchetypes as Arch } from 'models/archetypes';
+import { ArchetypeID as ArchID } from 'models/archetype';
 import { ArmorID, IArmor } from 'models/armor';
 
-const Armors = new Map<ArmorID, IArmor>([
-	[ArmorID.NONE, {
+interface IArmors {
+	readonly [id: string]: IArmor;
+}
+
+const Armors: IArmors = {
+	[ArmorID.NONE]: {
 		title: 'none',
 		description: 'No armor equipped',
 		archetype: []
-	}],
-	[ArmorID.ROBE, {
+	},
+	[ArmorID.ROBE]: {
 		title: 'Robe',
 		description: '???',
-		archetype: [Arch.PM, Arch.SM, Arch.MP, Arch.MS, Arch.MM]
-	}],
-	[ArmorID.LIGHT, {
+		archetype: [ArchID.PM, ArchID.SM, ArchID.MP, ArchID.MS, ArchID.MM]
+	},
+	[ArmorID.LIGHT]: {
 		title: 'Light Armor',
 		description: '???',
-		archetype: [Arch.PS, Arch.SP, Arch.SS, Arch.SM, Arch.MS]
-	}],
-	[ArmorID.HEAVY, {
+		archetype: [ArchID.PS, ArchID.SP, ArchID.SS, ArchID.SM, ArchID.MS]
+	},
+	[ArmorID.HEAVY]: {
 		title: 'Heavy Armor',
 		description: '???',
-		archetype: [Arch.PP, Arch.PS, Arch.PM, Arch.SP, Arch.MP]
-	}]
-]);
+		archetype: [ArchID.PP, ArchID.PS, ArchID.PM, ArchID.SP, ArchID.MP]
+	}
+};
 
 export default Armors;
