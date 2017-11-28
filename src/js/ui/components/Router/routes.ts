@@ -10,8 +10,8 @@ import CharacterEdit from 'ui/views/ViewCharacterEdit';
 import CharacterCreate from 'ui/views/ViewCharacterCreate';
 
 export interface IRoute {
-	path: string;
-	component: JSX.Element;
+	readonly path: string;
+	readonly component: JSX.Element;
 }
 
 const routes: IRoute[] = [

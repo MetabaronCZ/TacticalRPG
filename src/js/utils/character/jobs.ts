@@ -8,9 +8,6 @@ export const filter = (char: ICharacter): JobID[] => {
 	const filtered: JobID[] = [];
 
 	for (const id in Jobs) {
-		if (!Jobs[id]) {
-			continue;
-		}
 		if (!Jobs[id].archetype || -1 !== Jobs[id].archetype.indexOf(arch)) {
 			filtered.push(id as JobID);
 		}

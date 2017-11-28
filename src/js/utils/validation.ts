@@ -32,9 +32,6 @@ export const validateForm = (fields: { [name: string]: string }, cb: IValidation
 	let isValidForm: boolean = true;
 
 	for (const field in fields) {
-		if (!fields[field]) {
-			continue;
-		}
 		const isValid: boolean = validateField(field, fields[field], cb);
 
 		if (!isValid) {

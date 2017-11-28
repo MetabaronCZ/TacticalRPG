@@ -47,28 +47,28 @@ export const getRandomCharacter = (name: string, job: JobID): ICharacter => {
 	character.primary = arch[0] as PrimaryID;
 	character.secondary = arch[1] as SecondaryID;
 
-	let main = filterWeapon(character, WieldID.MAIN);
+	let main: WeaponID[] = filterWeapon(character, WieldID.MAIN);
 
 	if (main.length > 1) {
-		main = main.filter((x) => 'NONE' !== x);
+		main = main.filter((x) => WeaponID.NONE !== x);
 		character.main = getRandomArrayItem(main);
 	} else {
 		character.main = main[0];
 	}
 
-	let off = filterWeapon(character, WieldID.OFF);
+	let off: WeaponID[] = filterWeapon(character, WieldID.OFF);
 
 	if (off.length > 1) {
-		off = off.filter((x) => 'NONE' !== x);
+		off = off.filter((x) => WeaponID.NONE !== x);
 		character.off = getRandomArrayItem(off);
 	} else {
 		character.off = off[0];
 	}
 
-	let arm = filterArmor(character);
+	let arm: ArmorID[] = filterArmor(character);
 
 	if (arm.length > 1) {
-		arm = arm.filter((x) => 'NONE' !== x);
+		arm = arm.filter((x) => ArmorID.NONE !== x);
 		character.armor = getRandomArrayItem(arm);
 	} else {
 		character.armor = arm[0];

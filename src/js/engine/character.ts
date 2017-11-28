@@ -9,15 +9,15 @@ import { SecondaryID } from 'models/secondary';
 import { ICharacter } from 'models/character';
 
 export interface ICharacterConfig extends ICharacter {
-	position: number[];
+	readonly position: number[];
 }
 
 class Character {
 	public readonly id: string;
-	private conf: ICharacterConfig;
-	private player: Player;
+	private readonly conf: ICharacterConfig;
+	private readonly player: Player;
 	private position: Position;
-	private baseAttrs: IAttributes;
+	private readonly baseAttrs: IAttributes;
 	private currAttrs: IAttributes;
 
 	constructor(conf: ICharacterConfig, player: Player) {

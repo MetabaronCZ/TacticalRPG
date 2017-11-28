@@ -1,8 +1,11 @@
 import { WieldID, IWield } from 'models/wield';
-import Weapons from 'data/weapon';
 import { WeaponID, IWeapon } from 'models/weapon';
 import { WeaponTypeID } from 'models/weapon-types';
 import { ICharacter } from 'models/character';
+import Weapons from 'data/weapon';
+import { PrimaryID } from 'models/primary';
+import { SecondaryID } from 'models/secondary';
+import { JobID } from 'models/job';
 
 const check = (wpn: IWeapon, char: ICharacter, slot: WieldID): boolean => {
 	const primary = char.primary;
@@ -17,28 +20,28 @@ const check = (wpn: IWeapon, char: ICharacter, slot: WieldID): boolean => {
 		case WeaponTypeID.DUAL:
 		case WeaponTypeID.ONE_HANDED:
 			// only P-type or S-type characters can wield small melee weapons
-			if (('P' !== primary && 'P' !== secondary) && 'S' !== primary && 'S' !== secondary) {
+			if ((PrimaryID.P !== primary && SecondaryID.P !== secondary) && PrimaryID.S !== primary && SecondaryID.S !== secondary) {
 				return false;
 			}
 			break;
 
 		case WeaponTypeID.TWO_HANDED:
 			// only P-type characters can wield 2H weapons
-			if ('P' !== primary && 'P' !== secondary) {
+			if (PrimaryID.P !== primary && SecondaryID.P !== secondary) {
 				return false;
 			}
 			break;
 
 		case WeaponTypeID.MAGICAL:
 			// only M-type characters can wield magical weapons
-			if ('M' !== primary && 'M' !== secondary) {
+			if (PrimaryID.M !== primary && SecondaryID.M !== secondary) {
 				return false;
 			}
 			break;
 
 		case WeaponTypeID.RANGED:
 			// only S-type characters can wield ranged weapons
-			if ('S' !== primary && 'S' !== secondary) {
+			if (PrimaryID.S !== primary && SecondaryID.S !== secondary) {
 				return false;
 			}
 			break;
@@ -59,7 +62,7 @@ const check = (wpn: IWeapon, char: ICharacter, slot: WieldID): boolean => {
 			}
 
 			// Barbarian job exception for weapons in Off hand
-			if ('BAR' === char.job && Weapons[WeaponID.SPEAR] !== wpn) {
+			if (JobID.BAR === char.job && Weapons[WeaponID.SPEAR] !== wpn) {
 				return true;
 			}
 
@@ -69,12 +72,12 @@ const check = (wpn: IWeapon, char: ICharacter, slot: WieldID): boolean => {
 			}
 
 			// only P-type and S-type  archetypes can wield non-shield weapon in Off hand
-			if (WeaponTypeID.SHIELD !== wpn.type && 'P' !== primary && 'P' !== secondary && 'S' !== primary && 'S' !== secondary) {
+			if (WeaponTypeID.SHIELD !== wpn.type && PrimaryID.P !== primary && SecondaryID.P !== secondary && PrimaryID.S !== primary && SecondaryID.S !== secondary) {
 				return false;
 			}
 
 			// only P-type characters can wield Large Shield
-			if (Weapons.SHIELD_LARGE === wpn && 'P' !== primary && 'P' !== secondary) {
+			if (Weapons.SHIELD_LARGE === wpn && PrimaryID.P !== primary && SecondaryID.P !== secondary) {
 				return false;
 			}
 
@@ -90,9 +93,6 @@ export const filter = (char: ICharacter, slot: WieldID): WeaponID[] => {
 	const filtered: WeaponID[] = [];
 
 	for (const id in Weapons) {
-		if (!Weapons[id]) {
-			continue;
-		}
 		const wpn: IWeapon = Weapons[id];
 
 		if (check(wpn, char, slot)) {

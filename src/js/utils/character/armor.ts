@@ -8,10 +8,7 @@ export const filter = (char: ICharacter): ArmorID[] => {
 	const filtered: ArmorID[] = [];
 
 	for (const id in Armors) {
-		if (!Armors[id]) {
-			continue;
-		}
-		const arm = Armors[id];
+		const arm: IArmor = Armors[id];
 
 		if (!arm.archetype || !arm.archetype.length || -1 !== arm.archetype.indexOf(arch)) {
 			filtered.push(id as ArmorID);

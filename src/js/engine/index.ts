@@ -9,13 +9,13 @@ const orderMaxLength: number = 20;
 const cpLimit: number = 100;
 
 export interface IEngineConfig {
-	party: IParty;
-	size: number;
+	readonly party: IParty;
+	readonly size: number;
 }
 
 interface IOrderItem extends IAttributes {
-	id: string;
-	player: Player;
+	readonly id: string;
+	readonly player: Player;
 }
 
 class Engine {
