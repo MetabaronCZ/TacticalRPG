@@ -1,5 +1,4 @@
-import { PrimaryID } from 'models/primary';
-import { SecondaryID } from 'models/secondary';
+import { ArchetypeCharacteristicID as ArchCharID } from 'models/archetype';
 import { IAttributes, IBaseAttributes, ISecondaryAttributes } from 'models/attributes';
 
 export const BaseAttributes: IBaseAttributes = {
@@ -10,19 +9,19 @@ export const BaseAttributes: IBaseAttributes = {
 	MAG: 0
 };
 
-export const getPrimaryAttributes = (primary: PrimaryID, secondary: SecondaryID): IBaseAttributes => {
+export const getPrimaryAttributes = (primary: ArchCharID, secondary: ArchCharID): IBaseAttributes => {
 	const attributes: IBaseAttributes = Object.assign({}, BaseAttributes);
 	let P: number = 0;
 	let S: number = 0;
 	let M: number = 0;
 
-	P += ( PrimaryID.P === primary ? 1 : 0 );
-	S += ( PrimaryID.S === primary ? 1 : 0 );
-	M += ( PrimaryID.M === primary ? 1 : 0 );
+	P += ( ArchCharID.P === primary ? 1 : 0 );
+	S += ( ArchCharID.S === primary ? 1 : 0 );
+	M += ( ArchCharID.M === primary ? 1 : 0 );
 
-	P += ( SecondaryID.P === secondary ? 0.5 : 0 );
-	S += ( SecondaryID.S === secondary ? 0.5 : 0 );
-	M += ( SecondaryID.M === secondary ? 0.5 : 0 );
+	P += ( ArchCharID.P === secondary ? 0.5 : 0 );
+	S += ( ArchCharID.S === secondary ? 0.5 : 0 );
+	M += ( ArchCharID.M === secondary ? 0.5 : 0 );
 
 	attributes.STR += 10 * P;
 	attributes.VIT += 10 * P;
@@ -39,7 +38,7 @@ export const getSecondaryAttributes = (attrs: IBaseAttributes): ISecondaryAttrib
 	CP: 0
 });
 
-export const getAttributes = (primary: PrimaryID, secondary: SecondaryID): IAttributes => {
+export const getAttributes = (primary: ArchCharID, secondary: ArchCharID): IAttributes => {
 	const pAttrs = getPrimaryAttributes(primary, secondary);
 	const sAttrs = getSecondaryAttributes(pAttrs);
 

@@ -1,3 +1,9 @@
+export enum ArchetypeCharacteristicID {
+	P = 'P',
+	S = 'S',
+	M = 'M'
+}
+
 export enum ArchetypeID {
 	PP = 'PP',
 	PS = 'PS',

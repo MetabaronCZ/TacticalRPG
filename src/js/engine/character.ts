@@ -4,8 +4,6 @@ import Player from 'engine/player';
 import Position from 'engine/position';
 import { getAttributes } from 'utils/character/attributes';
 import { IAttributes } from 'models/attributes';
-import { PrimaryID } from 'models/primary';
-import { SecondaryID } from 'models/secondary';
 import { ICharacter } from 'models/character';
 
 export interface ICharacterConfig extends ICharacter {

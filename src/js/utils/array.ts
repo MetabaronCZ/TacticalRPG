@@ -1,6 +1,6 @@
 import uuid from 'uuid/v1';
 
-interface IIndexable {
+export interface IIndexable {
 	readonly id: string;
 	creationDate: number;
 	lastUpdate: number;

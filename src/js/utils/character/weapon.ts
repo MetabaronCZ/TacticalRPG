@@ -3,8 +3,7 @@ import { WeaponID, IWeapon } from 'models/weapon';
 import { WeaponTypeID } from 'models/weapon-types';
 import { ICharacter } from 'models/character';
 import Weapons from 'data/weapon';
-import { PrimaryID } from 'models/primary';
-import { SecondaryID } from 'models/secondary';
+import { ArchetypeCharacteristicID as ArchCharID } from 'models/archetype';
 import { JobID } from 'models/job';
 
 const check = (wpn: IWeapon, char: ICharacter, slot: WieldID): boolean => {
@@ -20,28 +19,28 @@ const check = (wpn: IWeapon, char: ICharacter, slot: WieldID): boolean => {
 		case WeaponTypeID.DUAL:
 		case WeaponTypeID.ONE_HANDED:
 			// only P-type or S-type characters can wield small melee weapons
-			if ((PrimaryID.P !== primary && SecondaryID.P !== secondary) && PrimaryID.S !== primary && SecondaryID.S !== secondary) {
+			if ((ArchCharID.P !== primary && ArchCharID.P !== secondary) && ArchCharID.S !== primary && ArchCharID.S !== secondary) {
 				return false;
 			}
 			break;
 
 		case WeaponTypeID.TWO_HANDED:
 			// only P-type characters can wield 2H weapons
-			if (PrimaryID.P !== primary && SecondaryID.P !== secondary) {
+			if (ArchCharID.P !== primary && ArchCharID.P !== secondary) {
 				return false;
 			}
 			break;
 
 		case WeaponTypeID.MAGICAL:
 			// only M-type characters can wield magical weapons
-			if (PrimaryID.M !== primary && SecondaryID.M !== secondary) {
+			if (ArchCharID.M !== primary && ArchCharID.M !== secondary) {
 				return false;
 			}
 			break;
 
 		case WeaponTypeID.RANGED:
 			// only S-type characters can wield ranged weapons
-			if (PrimaryID.S !== primary && SecondaryID.S !== secondary) {
+			if (ArchCharID.S !== primary && ArchCharID.S !== secondary) {
 				return false;
 			}
 			break;
@@ -72,12 +71,12 @@ const check = (wpn: IWeapon, char: ICharacter, slot: WieldID): boolean => {
 			}
 
 			// only P-type and S-type  archetypes can wield non-shield weapon in Off hand
-			if (WeaponTypeID.SHIELD !== wpn.type && PrimaryID.P !== primary && SecondaryID.P !== secondary && PrimaryID.S !== primary && SecondaryID.S !== secondary) {
+			if (WeaponTypeID.SHIELD !== wpn.type && ArchCharID.P !== primary && ArchCharID.P !== secondary && ArchCharID.S !== primary && ArchCharID.S !== secondary) {
 				return false;
 			}
 
 			// only P-type characters can wield Large Shield
-			if (Weapons.SHIELD_LARGE === wpn && PrimaryID.P !== primary && SecondaryID.P !== secondary) {
+			if (Weapons.SHIELD_LARGE === wpn && ArchCharID.P !== primary && ArchCharID.P !== secondary) {
 				return false;
 			}
 

@@ -11,11 +11,10 @@ import Weapons from 'data/weapon';
 import { WieldID } from 'models/wield';
 import { SexID } from 'models/sex';
 import { ArmorID } from 'models/armor';
-import { ArchetypeID } from 'models/archetype';
+import { ArchetypeID, ArchetypeCharacteristicID as ArchCharID } from 'models/archetype';
 import { JobID } from 'models/job';
 import { ICharacter } from 'models/character';
-import { PrimaryID } from 'models/primary';
-import { SecondaryID } from 'models/secondary';
+
 import { WeaponID } from 'models/weapon';
 
 // character name maximum length
@@ -26,8 +25,8 @@ export const getDefaultCharacter = (): ICharacter => ({
 	id: '',
 	name: '',
 	sex: SexID.MALE,
-	primary: PrimaryID.P,
-	secondary: SecondaryID.P,
+	primary: ArchCharID.P,
+	secondary: ArchCharID.P,
 	job: JobID.NONE,
 	main: WeaponID.NONE,
 	off: WeaponID.NONE,
@@ -44,8 +43,8 @@ export const getRandomCharacter = (name: string, job: JobID): ICharacter => {
 	character.name = name;
 	character.job = job;
 	character.sex = charsex;
-	character.primary = arch[0] as PrimaryID;
-	character.secondary = arch[1] as SecondaryID;
+	character.primary = arch[0] as ArchCharID;
+	character.secondary = arch[1] as ArchCharID;
 
 	let main: WeaponID[] = filterWeapon(character, WieldID.MAIN);
 
