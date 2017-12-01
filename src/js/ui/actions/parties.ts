@@ -1,4 +1,5 @@
 import { IParty } from 'models/party';
+import { IAction } from 'ui/store';
 
 export enum ActionID {
 	ADD = 'PARTY_ADD',
@@ -8,32 +9,27 @@ export enum ActionID {
 	MOVE_UP_LIST = 'PARTY_MOVE_UP_LIST'
 }
 
-export interface IPartyAction {
-	type: ActionID;
-	[data: string]: any;
-}
-
-const addParty = (value: IParty): IPartyAction => ({
+const addParty = (value: IParty): IAction => ({
 	type: ActionID.ADD,
 	value
 });
 
-const editParty = (value: IParty): IPartyAction => ({
+const editParty = (value: IParty): IAction => ({
 	type: ActionID.EDIT,
 	value
 });
 
-const removeParty = (id: string): IPartyAction => ({
+const removeParty = (id: string): IAction => ({
 	type: ActionID.REMOVE,
 	id
 });
 
-const moveDownList = (id: string): IPartyAction => ({
+const moveDownList = (id: string): IAction => ({
 	type: ActionID.MOVE_DOWN_LIST,
 	id
 });
 
-const moveUpList = (id: string): IPartyAction => ({
+const moveUpList = (id: string): IAction => ({
 	type: ActionID.MOVE_UP_LIST,
 	id
 });

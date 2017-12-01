@@ -20,31 +20,63 @@ import { WeaponID } from 'models/weapon';
 // character name maximum length
 export const maxNameLength: number = 16;
 
+interface IDefaultCharacteData {
+	name?: string;
+	id?: string;
+	creationDate?: number;
+	lastUpdate?: number;
+	sex?: SexID;
+	primary?: ArchCharID;
+	secondary?: ArchCharID;
+	job?: JobID;
+	main?: WeaponID;
+	off?: WeaponID;
+	armor?: ArmorID;
+}
+
 // get default character properties
-export const getDefaultCharacter = (): ICharacter => ({
-	id: '',
-	name: '',
-	sex: SexID.MALE,
-	primary: ArchCharID.P,
-	secondary: ArchCharID.P,
-	job: JobID.NONE,
-	main: WeaponID.NONE,
-	off: WeaponID.NONE,
-	armor: ArmorID.NONE
-});
+export const makeCharacter = ({
+	name = '',
+	id = uuid(),
+	creationDate,
+	lastUpdate,
+	sex = SexID.MALE,
+	primary = ArchCharID.P,
+	secondary = ArchCharID.P,
+	job = JobID.NONE,
+	main = WeaponID.NONE,
+	off = WeaponID.NONE,
+	armor = ArmorID.NONE,
+}: IDefaultCharacteData): ICharacter => {
+	const now: number = Date.now();
+
+	return {
+		name,
+		id,
+		creationDate: creationDate || now,
+		lastUpdate: lastUpdate || now,
+		sex,
+		primary,
+		secondary,
+		job,
+		main,
+		off,
+		armor
+	};
+};
 
 // returns random character properties
 export const getRandomCharacter = (name: string, job: JobID): ICharacter => {
-	const character: ICharacter = getDefaultCharacter();
-	const charsex: SexID = (getRandomArrayItem(Object.keys(SexID)) as SexID);
+	const sex: SexID = (getRandomArrayItem(Object.keys(SexID)) as SexID);
 	const arch: ArchetypeID = getRandomArrayItem(Jobs[job].archetype) || ArchetypeID.PP;
 
-	character.id = uuid();
-	character.name = name;
-	character.job = job;
-	character.sex = charsex;
-	character.primary = arch[0] as ArchCharID;
-	character.secondary = arch[1] as ArchCharID;
+	const character: ICharacter = makeCharacter({
+		name,
+		job,
+		sex,
+		primary: arch[0] as ArchCharID,
+		secondary: arch[1] as ArchCharID
+	});
 
 	let main: WeaponID[] = filterWeapon(character, WieldID.MAIN);
 

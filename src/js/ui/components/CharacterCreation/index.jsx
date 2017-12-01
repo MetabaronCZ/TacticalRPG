@@ -14,9 +14,11 @@ import { validateField, validateForm } from 'utils/validation';
 import { filter as filterJobs } from 'utils/character/jobs';
 import { filter as filterWeapon } from 'utils/character/weapon';
 import { filter as filterArmor } from 'utils/character/armor';
-import { getDefaultCharacter } from 'utils/character';
+import { makeCharacter } from 'utils/character';
 
 import { WieldID } from 'models/wield';
+import { ArmorID } from 'models/armor';
+import { WeaponID } from 'models/weapon';
 
 const steps = [
 	{ title: 'Character Identity', component: Step1 },
@@ -24,18 +26,13 @@ const steps = [
 	{ title: 'Equipment', component: Step3 }
 ];
 
-const defaultCharacter = getDefaultCharacter();
-
 class CharacterCreation extends React.Component {
 	constructor(props){
 		super(props);
 
-		let character = props.character || {};
-		let fields = Object.assign({}, defaultCharacter, character);
-
 		this.state = {
 			step: 1,
-			fields: fields,
+			fields: makeCharacter(props.character || {}),
 			errors: {}
 		};
 
@@ -63,13 +60,13 @@ class CharacterCreation extends React.Component {
 
 		// reset character Main hand weapon and armor on job change
 		if ( next.job !== curr.job ){
-			let newArmor = (filterArmor(next).includes(curr.armor) ? curr.armor : defaultCharacter.armor);
-			let newMain = (filterWeapon(next, WieldID.MAIN).includes(curr.main) ? curr.main : defaultCharacter.main);
+			let newArmor = (filterArmor(next).includes(curr.armor) ? curr.armor : ArmorID.NONE);
+			let newMain = (filterWeapon(next, WieldID.MAIN).includes(curr.main) ? curr.main : WeaponID.NONE);
 
 			let tmpNext = { ...next };
 			tmpNext.main = newMain;
 
-			let newOff = (filterWeapon(tmpNext, WieldID.OFF).includes(curr.off) ? curr.off : defaultCharacter.off);
+			let newOff = (filterWeapon(tmpNext, WieldID.OFF).includes(curr.off) ? curr.off : WeaponID.NONE);
 
 			this.setState({
 				fields: {
@@ -83,7 +80,7 @@ class CharacterCreation extends React.Component {
 
 		// reset character Off hand weapon if 2H weapon equiped in Main hand
 		if ( next.main !== curr.main ){
-			let newOff = ( filterWeapon(next, WieldID.OFF).includes(curr.off) ? curr.off : defaultCharacter.off );
+			let newOff = ( filterWeapon(next, WieldID.OFF).includes(curr.off) ? curr.off : WeaponID.NONE );
 
 			this.setState({
 				fields: {

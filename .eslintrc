@@ -25,6 +25,12 @@
         "indent": ["error", "tab", { "SwitchCase": 1 }],
         "quotes": ["error", "single"],
         "semi": ["error", "always"],
-		"react/prop-types": 0
+        "react/prop-types": 0,
+        "react/jsx-sort-prop-types": 0,
+        "react/jsx-indent-props": [2, "tab"],
+        "react/self-closing-comp": ["error", {
+            "component": true,
+            "html": false
+        }]
     }
 }

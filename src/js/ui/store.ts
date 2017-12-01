@@ -7,6 +7,11 @@ export interface IState {
 	parties?: any[];
 }
 
+export interface IAction {
+	type: string;
+	[data: string]: any;
+}
+
 const storageKey: string = 'game';
 
 const loadState = (): IState => {

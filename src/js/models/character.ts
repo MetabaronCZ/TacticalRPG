@@ -5,8 +5,7 @@ import { ArmorID } from 'models/armor';
 import { IIndexable } from 'utils/array';
 import { ArchetypeCharacteristicID as ArchCharID } from 'models/archetype';
 
-export interface ICharacter {
-	id: string;
+export interface ICharacter extends IIndexable {
 	name: string;
 	sex: SexID;
 	primary: ArchCharID;

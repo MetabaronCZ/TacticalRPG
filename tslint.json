@@ -7,7 +7,7 @@
         "max-line-length": false,
         "ordered-imports": false,
         "forin": false,
-        "quotemark": [true, "single"],
+        "quotemark": [true, "single", "jsx-double"],
         "indent": [true, "tabs", 4],
         "trailing-comma": [true, { "esSpecCompliant": true }],
         "jsx-no-multiline-js": false

@@ -1,24 +1,24 @@
-import { ActionID, ICharacterAction } from 'ui/actions/characters';
+import { ActionID as CharacterActionID } from 'ui/actions/characters';
 import { add, edit, remove, swap } from 'utils/array';
-import { IState } from 'ui/store';
+import { IState, IAction } from 'ui/store';
 import { ICharacter } from 'models/character';
 
 // characters reducer
-const characters = (state = [], action: ICharacterAction) => {
+const characters = (state = [], action: IAction) => {
 	switch (action.type) {
-		case ActionID.ADD:
+		case CharacterActionID.ADD:
 			return add(action.value, state);
 
-		case ActionID.EDIT:
+		case CharacterActionID.EDIT:
 			return edit(action.value, state);
 
-		case ActionID.REMOVE:
+		case CharacterActionID.REMOVE:
 			return remove(action.id, state);
 
-		case ActionID.MOVE_DOWN_LIST:
+		case CharacterActionID.MOVE_DOWN_LIST:
 			return swap(action.id, +1, state);
 
-		case ActionID.MOVE_UP_LIST:
+		case CharacterActionID.MOVE_UP_LIST:
 			return swap(action.id, -1, state);
 	}
 	return state;
