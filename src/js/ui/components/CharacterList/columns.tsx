@@ -8,8 +8,8 @@ import icos from 'utils/icos';
 import Jobs from 'data/jobs';
 
 import { WieldID } from 'models/wield';
-import Weapons from 'data/weapon';
-import Armors from 'data/armor';
+import WeaponList from 'data/weapon-list';
+import ArmorList from 'data/armor-list';
 import { ICharacter } from 'models/character';
 import { IWeapon } from 'models/weapon';
 import { IOnMoveDown, IOnMoveUp, IOnDelete } from 'ui/views/ViewCharacterList';
@@ -46,18 +46,19 @@ export interface IColumn {
 }
 
 const getColumns = (editable: boolean = false, onMoveDown?: IOnMoveDown, onMoveUp?: IOnMoveUp, onDelete?: IOnDelete): IColumn[] => {
-	let main: IWeapon;
+	let main: IWeapon|undefined;
 
 	const mainValue = (char: ICharacter): string => {
-		main = Weapons[char.main];
-		return main.title;
+		main = WeaponList.get(char.main);
+		return main ? main.title : '';
 	};
 
 	const offValue = (char: ICharacter): JSX.Element|string => {
 		if (main && ('BAR' !== char.job) && -1 !== main.wield.indexOf(WieldID.BOTH)) {
 			return renderOffHandBothWield(main.title);
 		} else {
-			return Weapons[char.off].title;
+			const off: IWeapon|undefined = WeaponList.get(char.off);
+			return off ? off.title : '';
 		}
 	};
 
@@ -93,7 +94,10 @@ const getColumns = (editable: boolean = false, onMoveDown?: IOnMoveDown, onMoveU
 		}, {
 			title: 'Armor',
 			name: 'armor',
-			value: (char: ICharacter) => Armors[char.armor].title
+			value: (char: ICharacter) => {
+				const armor = ArmorList.get(char.armor);
+				return armor ? armor.title : '';
+			}
 		}, {
 			title: '',
 			name: 'moveDown',

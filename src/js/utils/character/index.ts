@@ -7,7 +7,7 @@ import { getRandomArrayItem } from 'utils/array';
 
 import Jobs from 'data/jobs';
 import Archetypes from 'data/archetypes';
-import Weapons from 'data/weapon';
+import WeaponList from 'data/weapon-list';
 import { WieldID } from 'models/wield';
 import { SexID } from 'models/sex';
 import { ArmorID } from 'models/armor';

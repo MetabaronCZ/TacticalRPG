@@ -13,15 +13,16 @@ import Separator from 'ui/components/Separator';
 import { validateField, validateForm } from 'utils/validation';
 import { characterCount, getCharacterById, makeParty, maxNameLength } from 'utils/party';
 
-import Sexes from 'data/sex';
+import SexList from 'data/sex-list';
 import Jobs from 'data/jobs';
-import Weapons from 'data/weapon';
-import Armors from 'data/armor';
+import WeaponList from 'data/weapon-list';
+import ArmorList from 'data/armor-list';
 import { IParty } from 'models/party';
 import { ICharacter } from 'models/character';
 import { JobID, IJob } from 'models/job';
-import { IArmor } from 'models/armor';
+import { IArmor, ArmorID } from 'models/armor';
 import { IWeapon } from 'models/weapon';
+import { ISex } from 'models/sex';
 
 interface IPartyCreationProps {
 	party?: IParty;
@@ -175,12 +176,18 @@ class PartyCreation extends React.Component {
 		let info: string = '';
 
 		if (selected) {
-			const main: IWeapon = Weapons[selected.main];
-			const off: IWeapon = Weapons[selected.off];
-			const arm: IArmor = Armors[selected.armor];
+			const main: IWeapon|undefined = WeaponList.get(selected.main);
+			const off: IWeapon|undefined = WeaponList.get(selected.off);
+			const arm: IArmor|undefined = ArmorList.get(selected.armor);
+			const sex: ISex|undefined = SexList.get(selected.sex);
 			const job: IJob = Jobs[selected.job];
 
-			info = `${Sexes[selected.sex].title} ${job.title} | ${main.title} + ${off.title} | ${arm.title}`;
+			if (!sex)  { throw new Error('PartyCreation could not render item - invalid SexID'); }
+			if (!main) { throw new Error('PartyCreation could not render item - invalid main WeaponID'); }
+			if (!off)  { throw new Error('PartyCreation could not render item - invalid off WeaponID'); }
+			if (!arm)  { throw new Error('PartyCreation could not render item - invalid ArmorID'); }
+
+			info = `${sex.title} ${job.title} | ${main.title} + ${off.title} | ${arm.title}`;
 		}
 		const fieldId: string = `f-character-${i}`;
 

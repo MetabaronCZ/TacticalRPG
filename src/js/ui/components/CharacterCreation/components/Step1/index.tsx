@@ -7,8 +7,8 @@ import FormRadio from 'ui/components/FormRadio';
 import { maxNameLength } from 'utils/character';
 import icos from 'utils/icos';
 
-import Sexes from 'data/sex';
-import { SexID } from 'models/sex';
+import SexList from 'data/sex-list';
+import { SexID, ISex } from 'models/sex';
 import { ICharacter } from 'models/character';
 
 interface IStep1Props {
@@ -35,9 +35,13 @@ const Step1 = ({ fields, errors, onChange }: IStep1Props): JSX.Element => (
 		</FormField>
 
 		<FormField fieldId="f-sex" label="Sex" error={errors.sex}>
-			{Object.keys(Sexes).map((s: string, i: number) => (
-				<FormRadio id={`f-sex-${s}`} label={`${icos[s.toLocaleLowerCase()]} ${Sexes[s].title}`} name="sex" value={s} isChecked={s === fields.sex} key={i} onChange={onChange} />
-			))}
+			{Array.from(SexList.keys()).map((s: SexID, i: number) => {
+				const sex: ISex|undefined = SexList.get(s);
+
+				return (
+					<FormRadio id={`f-sex-${s}`} label={`${icos[s.toLocaleLowerCase()]} ${sex ? sex.title : ''}`} name="sex" value={s} isChecked={s === fields.sex} key={i} onChange={onChange} />
+				);
+			})}
 		</FormField>
 	</div>
 );

@@ -2,7 +2,7 @@ import { WieldID, IWield } from 'models/wield';
 import { WeaponID, IWeapon } from 'models/weapon';
 import { WeaponTypeID } from 'models/weapon-types';
 import { ICharacter } from 'models/character';
-import Weapons from 'data/weapon';
+import WeaponList from 'data/weapon-list';
 import { ArchetypeCharacteristicID as ArchCharID } from 'models/archetype';
 import { JobID } from 'models/job';
 
@@ -52,7 +52,11 @@ const check = (wpn: IWeapon, char: ICharacter, slot: WieldID): boolean => {
 			return -1 !== wield.indexOf(WieldID.MAIN) || -1 !== wield.indexOf(WieldID.BOTH);
 
 		case WieldID.OFF: {
-			const main: IWeapon = Weapons[char.main];
+			const main: IWeapon|undefined = WeaponList.get(char.main);
+
+			if (!main) {
+				throw new Error('Weapon check error - invalid main WeaponID');
+			}
 			const mainWield: WieldID[] = main.wield;
 
 			// cannot equip a dual weapon in Off hand
@@ -61,7 +65,7 @@ const check = (wpn: IWeapon, char: ICharacter, slot: WieldID): boolean => {
 			}
 
 			// Barbarian job exception for weapons in Off hand
-			if (JobID.BAR === char.job && Weapons[WeaponID.SPEAR] !== wpn) {
+			if (JobID.BAR === char.job && WeaponList.get(WeaponID.SPEAR) !== wpn) {
 				return true;
 			}
 
@@ -76,7 +80,7 @@ const check = (wpn: IWeapon, char: ICharacter, slot: WieldID): boolean => {
 			}
 
 			// only P-type characters can wield Large Shield
-			if (Weapons.SHIELD_LARGE === wpn && ArchCharID.P !== primary && ArchCharID.P !== secondary) {
+			if (WeaponList.get(WeaponID.SHIELD_LARGE) === wpn && ArchCharID.P !== primary && ArchCharID.P !== secondary) {
 				return false;
 			}
 
@@ -91,13 +95,11 @@ const check = (wpn: IWeapon, char: ICharacter, slot: WieldID): boolean => {
 export const filter = (char: ICharacter, slot: WieldID): WeaponID[] => {
 	const filtered: WeaponID[] = [];
 
-	for (const id in Weapons) {
-		const wpn: IWeapon = Weapons[id];
-
+	WeaponList.forEach((wpn: IWeapon, id: WeaponID) => {
 		if (check(wpn, char, slot)) {
-			 filtered.push(id as WeaponID);
+			filtered.push(id);
 		}
-	}
+	});
 
 	return filtered;
 };
