@@ -7,7 +7,7 @@ export interface IRules {
 	readonly [name: string]: IRule;
 }
 
-export type IValidationCallback = (fieldName: string, isValid: string|null) => boolean;
+export type IValidationCallback = (fieldName: string, isValid: string|null) => void;
 
 const rules: IRules = {
 	name: {
@@ -28,7 +28,7 @@ export const validateField = (fieldName: string, value: string, cb?: IValidation
 	return isValid;
 };
 
-export const validateForm = (fields: { [name: string]: string }, cb: IValidationCallback): boolean => {
+export const validateForm = (fields: any, cb: IValidationCallback): boolean => {
 	let isValidForm: boolean = true;
 
 	for (const field in fields) {

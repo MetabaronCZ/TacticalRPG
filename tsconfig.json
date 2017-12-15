@@ -1,8 +1,6 @@
 {
 	"compilerOptions": {
 		"strict": true,
-		"allowJs": true,
-		//"checkJs": true,
 		"target": "es6",
 		"module": "es6",
 		"moduleResolution": "node",
@@ -11,7 +9,6 @@
 		"sourceMap": true,
 		"jsx": "react",
 		"lib": ["es6", "dom"],
-
 		"noImplicitReturns": true,
 		"noImplicitThis": true,
 		"noImplicitAny": true,

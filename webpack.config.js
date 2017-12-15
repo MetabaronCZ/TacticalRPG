@@ -51,17 +51,12 @@ module.exports = env => {
 					test: /\.tsx?$/,
 					enforce: 'pre',
 					loader: 'tslint-loader'
-				},
-				{
-					test: /\.jsx?$/,
-					exclude: /node_modules/,
-					loader: 'eslint-loader'
 				}
 			]
 		},
 		plugins: plugins,
 		resolve: {
-			extensions: ['.ts', '.tsx', '.js', '.jsx'],
+			extensions: ['.ts', '.tsx', '.js'],
 			modules: [
 				path.resolve('./src/js'),
 				path.resolve('./node_modules')

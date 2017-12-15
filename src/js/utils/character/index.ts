@@ -20,7 +20,7 @@ import { WeaponID } from 'models/weapon';
 // character name maximum length
 export const maxNameLength: number = 16;
 
-interface IDefaultCharacteData {
+interface IDefaultCharacterData {
 	name?: string;
 	id?: string;
 	creationDate?: number;
@@ -47,7 +47,7 @@ export const makeCharacter = ({
 	main = WeaponID.NONE,
 	off = WeaponID.NONE,
 	armor = ArmorID.NONE,
-}: IDefaultCharacteData): ICharacter => {
+}: IDefaultCharacterData): ICharacter => {
 	const now: number = Date.now();
 
 	return {

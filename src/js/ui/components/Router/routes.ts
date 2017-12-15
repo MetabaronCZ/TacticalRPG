@@ -11,7 +11,7 @@ import CharacterCreate from 'ui/views/ViewCharacterCreate';
 
 export interface IRoute {
 	readonly path: string;
-	readonly component: JSX.Element;
+	readonly component: React.ComponentType<any>;
 }
 
 const routes: IRoute[] = [

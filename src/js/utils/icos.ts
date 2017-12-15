@@ -1,4 +1,8 @@
-export default {
+interface IIcos {
+	[name: string]: string|null;
+}
+
+const Icos: IIcos = {
 	default: null,
 	back: '‹',
 	next: '›',
@@ -11,3 +15,5 @@ export default {
 	male: '♂',
 	success: '✔'
 };
+
+export default Icos;

@@ -1,3 +1,5 @@
+import uuid from 'uuid';
+
 import getRandomNames from 'utils/random-name/generator';
 import { getRandomArrayItems } from 'utils/array';
 
@@ -18,21 +20,36 @@ export const getCharacterById = (id: string, characters: ICharacter[]): ICharact
 	return characters.filter((char: ICharacter) => char.id === id)[0];
 };
 
-// default party properties
-export const getDefaultParty = (): IParty => ({
-	name: '',
-	characters: Array(characterCount).fill('')
-});
-
-// returns random character party
-export const getRandomParty = (count: number): IParty => {
+// returns random character party array
+export const getRandomPartyCharacters = (count: number): ICharacter[] => {
 	const characters: string[] = getRandomNames(count, maxNameLength);
 	const jobs: JobID[] = getRandomArrayItems(Object.keys(Jobs), count) as JobID[];
 
-	const party: IParty = {
-		name: 'Enemy Party',
-		characters: characters.map((char, i) => getRandomCharacter(char, jobs[i]))
-	};
+	return characters.map((char, i) => getRandomCharacter(char, jobs[i]));
+};
 
-	return party;
+interface IDefaultPartyData {
+	name?: string;
+	id?: string;
+	creationDate?: number;
+	lastUpdate?: number;
+	characters?: string[];
+}
+
+export const makeParty = ({
+	name = '',
+	id = uuid(),
+	creationDate,
+	lastUpdate,
+	characters = []
+}: IDefaultPartyData): IParty => {
+	const now: number = Date.now();
+
+	return {
+		name,
+		id,
+		creationDate: creationDate || now,
+		lastUpdate: lastUpdate || now,
+		characters
+	};
 };

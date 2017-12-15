@@ -1,4 +1,4 @@
-import { getRandomParty } from 'utils/party';
+import { getRandomPartyCharacters, getCharacterById } from 'utils/party';
 import { IParty } from 'models/party';
 import { ICharacter } from 'models/character';
 import { IAttributes } from 'models/attributes';
@@ -10,6 +10,7 @@ const cpLimit: number = 100;
 
 export interface IEngineConfig {
 	readonly party: IParty;
+	readonly characters: ICharacter[];
 	readonly size: number;
 }
 
@@ -29,8 +30,9 @@ class Engine {
 		const enemy: ICharacterConfig[] = [];
 
 		// filter out non-existent characters and assign party character positions
-		party.characters.filter((char: ICharacter) => char)
-			.forEach((char: ICharacter, i: number) => {
+		party.characters.filter((id: string) => !!id)
+			.forEach((id: string, i: number) => {
+				const char = getCharacterById(id, conf.characters);
 				const charConfig: ICharacterConfig = {
 					...char,
 					position: [i + 2, 0]
@@ -41,10 +43,10 @@ class Engine {
 		this.ally = new Player(ally, false);
 
 		// create random enemy party
-		const enemyParty: IParty = getRandomParty(party.characters.length);
+		const enemyParty: ICharacter[] = getRandomPartyCharacters(party.characters.length);
 
 		// assign enemy character positions
-		enemyParty.characters
+		enemyParty
 			.forEach((char: ICharacter, i: number) => {
 				const charConfig: ICharacterConfig = {
 					...char,

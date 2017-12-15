@@ -11,7 +11,7 @@ const removeCharacter = (id: string, state: IParty[]) => {
 	return state.map((party: IParty) => {
 		return {
 			...party,
-			characters: remove(id, party.characters)
+			characters: party.characters.filter((charId: string) => charId !== id)
 		};
 	});
 };
