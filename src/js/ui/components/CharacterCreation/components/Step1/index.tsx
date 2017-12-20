@@ -35,11 +35,9 @@ const Step1 = ({ fields, errors, onChange }: IStep1Props): JSX.Element => (
 		</FormField>
 
 		<FormField fieldId="f-sex" label="Sex" error={errors.sex}>
-			{Array.from(SexList.keys()).map((s: SexID, i: number) => {
-				const sex: ISex|undefined = SexList.get(s);
-
+			{Array.from(SexList.entries()).map(([id, sex]: [SexID, ISex], i: number) => {
 				return (
-					<FormRadio id={`f-sex-${s}`} label={`${icos[s.toLocaleLowerCase()]} ${sex ? sex.title : ''}`} name="sex" value={s} isChecked={s === fields.sex} key={i} onChange={onChange} />
+					<FormRadio id={`f-sex-${id}`} label={`${icos[id.toLocaleLowerCase()]} ${sex ? sex.title : ''}`} name="sex" value={id} isChecked={id === fields.sex} key={i} onChange={onChange} />
 				);
 			})}
 		</FormField>

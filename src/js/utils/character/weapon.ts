@@ -92,12 +92,12 @@ const check = (wpn: IWeapon, char: ICharacter, slot: WieldID): boolean => {
 	}
 };
 
-export const filter = (char: ICharacter, slot: WieldID): WeaponID[] => {
-	const filtered: WeaponID[] = [];
+export const filter = (char: ICharacter, slot: WieldID): Map<WeaponID, IWeapon> => {
+	const filtered = new Map<WeaponID, IWeapon>();
 
 	WeaponList.forEach((wpn: IWeapon, id: WeaponID) => {
 		if (check(wpn, char, slot)) {
-			filtered.push(id);
+			filtered.set(id, wpn);
 		}
 	});
 

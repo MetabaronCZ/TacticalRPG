@@ -4,18 +4,19 @@ import { filter as filterJobs } from 'utils/character/jobs';
 import { filter as filterWeapon } from 'utils/character/weapon';
 import { filter as filterArmor } from 'utils/character/armor';
 import { getRandomArrayItem } from 'utils/array';
+import { getRandomMapItem } from 'utils/map';
 
 import Jobs from 'data/jobs';
 import Archetypes from 'data/archetypes';
 import WeaponList from 'data/weapon-list';
 import { WieldID } from 'models/wield';
 import { SexID } from 'models/sex';
-import { ArmorID } from 'models/armor';
+import { ArmorID, IArmor } from 'models/armor';
 import { ArchetypeID, ArchetypeCharacteristicID as ArchCharID } from 'models/archetype';
 import { JobID } from 'models/job';
 import { ICharacter } from 'models/character';
 
-import { WeaponID } from 'models/weapon';
+import { WeaponID, IWeapon } from 'models/weapon';
 
 // character name maximum length
 export const maxNameLength: number = 16;
@@ -78,31 +79,34 @@ export const getRandomCharacter = (name: string, job: JobID): ICharacter => {
 		secondary: arch[1] as ArchCharID
 	});
 
-	let main: WeaponID[] = filterWeapon(character, WieldID.MAIN);
+	const main: Map<WeaponID, IWeapon> = filterWeapon(character, WieldID.MAIN);
 
-	if (main.length > 1) {
-		main = main.filter((x) => WeaponID.NONE !== x);
-		character.main = getRandomArrayItem(main);
+	if (main.size > 1) {
+		const filtered = new Map<WeaponID, IWeapon>(main);
+		filtered.delete(WeaponID.NONE);
+		character.main = getRandomMapItem(filtered);
 	} else {
-		character.main = main[0];
+		character.main = Array.from(main.keys())[0];
 	}
 
-	let off: WeaponID[] = filterWeapon(character, WieldID.OFF);
+	const off: Map<WeaponID, IWeapon> = filterWeapon(character, WieldID.OFF);
 
-	if (off.length > 1) {
-		off = off.filter((x) => WeaponID.NONE !== x);
-		character.off = getRandomArrayItem(off);
+	if (off.size > 1) {
+		const filtered = new Map<WeaponID, IWeapon>(main);
+		filtered.delete(WeaponID.NONE);
+		character.off = getRandomMapItem(filtered);
 	} else {
-		character.off = off[0];
+		character.off = Array.from(main.keys())[0];
 	}
 
-	let arm: ArmorID[] = filterArmor(character);
+	const arm: Map<ArmorID, IArmor> = filterArmor(character);
 
-	if (arm.length > 1) {
-		arm = arm.filter((x) => ArmorID.NONE !== x);
-		character.armor = getRandomArrayItem(arm);
+	if (arm.size > 1) {
+		const filtered = new Map<ArmorID, IArmor>(arm);
+		filtered.delete(ArmorID.NONE);
+		character.armor = getRandomMapItem(filtered);
 	} else {
-		character.armor = arm[0];
+		character.armor = Array.from(arm.keys())[0];
 	}
 
 	return character;

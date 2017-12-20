@@ -3,13 +3,13 @@ import { ArchetypeID } from 'models/archetype';
 import { ArmorID, IArmor } from 'models/armor';
 import ArmorList from 'data/armor-list';
 
-export const filter = (char: ICharacter): ArmorID[] => {
+export const filter = (char: ICharacter): Map<ArmorID, IArmor> => {
 	const arch = (ArchetypeID as any)[char.primary + char.secondary];
-	const filtered: ArmorID[] = [];
+	const filtered = new Map<ArmorID, IArmor>();
 
 	ArmorList.forEach((arm: IArmor, id: ArmorID) => {
 		if (!arm.archetype || !arm.archetype.length || -1 !== arm.archetype.indexOf(arch)) {
-			filtered.push(id);
+			filtered.set(id, arm);
 		}
 	});
 

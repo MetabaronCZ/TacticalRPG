@@ -99,13 +99,13 @@ class CharacterCreation extends React.Component {
 
 		// reset character Main hand weapon and armor on job change
 		if (next.job !== curr.job) {
-			const newArmor: ArmorID = (-1 !== filterArmor(next).indexOf(curr.armor) ? curr.armor : ArmorID.NONE);
-			const newMain: WeaponID = (-1 !== filterWeapon(next, WieldID.MAIN).indexOf(curr.main) ? curr.main : WeaponID.NONE);
+			const newArmor: ArmorID = (filterArmor(next).has(curr.armor) ? curr.armor : ArmorID.NONE);
+			const newMain: WeaponID = (filterWeapon(next, WieldID.MAIN).has(curr.main) ? curr.main : WeaponID.NONE);
 
 			const tmpNext: ICharacter = { ...next };
 			tmpNext.main = newMain;
 
-			const newOff: WeaponID = (-1 !== filterWeapon(tmpNext, WieldID.OFF).indexOf(curr.off) ? curr.off : WeaponID.NONE);
+			const newOff: WeaponID = (filterWeapon(tmpNext, WieldID.OFF).has(curr.off) ? curr.off : WeaponID.NONE);
 
 			this.setState({
 				fields: {
@@ -119,7 +119,7 @@ class CharacterCreation extends React.Component {
 
 		// reset character Off hand weapon if 2H weapon equiped in Main hand
 		if (next.main !== curr.main) {
-			const newOff: WeaponID = (-1 !== filterWeapon(next, WieldID.OFF).indexOf(curr.off) ? curr.off : WeaponID.NONE);
+			const newOff: WeaponID = (filterWeapon(next, WieldID.OFF).has(curr.off) ? curr.off : WeaponID.NONE);
 
 			this.setState({
 				fields: {

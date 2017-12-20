@@ -6,7 +6,7 @@ interface IFormRadioProps {
 	name: string;
 	value: string;
 	isChecked: boolean;
-	onChange: undefined|(() => void);
+	onChange?: () => void;
 }
 
 const FormRadio = ({ id, label, name, value, isChecked, onChange }: IFormRadioProps): JSX.Element => (
