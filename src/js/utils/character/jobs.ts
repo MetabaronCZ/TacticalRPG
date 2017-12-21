@@ -1,17 +1,17 @@
-import Jobs from 'data/jobs';
+import JobList from 'data/job-list';
 import { ICharacter } from 'models/character';
-import { JobID } from 'models/job';
+import { JobID, IJob } from 'models/job';
 import { ArchetypeID } from 'models/archetype';
 
-export const filter = (char: ICharacter): JobID[] => {
+export const filter = (char: ICharacter): Map<JobID, IJob> => {
 	const arch = (ArchetypeID as any)[char.primary + char.secondary];
-	const filtered: JobID[] = [];
+	const filtered: Map<JobID, IJob> = new Map();
 
-	for (const id in Jobs) {
-		if (!Jobs[id].archetype || -1 !== Jobs[id].archetype.indexOf(arch)) {
-			filtered.push(id as JobID);
+	JobList.forEach((job: IJob, id: JobID) => {
+		if (!job.archetype || -1 !== job.archetype.indexOf(arch)) {
+			filtered.set(id, job);
 		}
-	}
+	});
 
 	return filtered;
 };

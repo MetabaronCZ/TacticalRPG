@@ -1,22 +1,21 @@
 import { WieldID, IWield } from 'models/wield';
 
-interface IWieldTypes {
-	readonly [id: string]: IWield;
-}
+const WieldList: Map<WieldID, IWield> = new Map();
 
-const WieldTypes: IWieldTypes = {
-	[WieldID.MAIN]: {
-		title: 'Main hand'
-	},
-	[WieldID.OFF]: {
-		title: 'Off hand'
-	},
-	[WieldID.BOTH]: {
-		title: 'Both hands'
-	},
-	[WieldID.DUAL]: {
-		title: 'Dual wield'
-	}
-};
+WieldList.set(WieldID.MAIN, {
+	title: 'Main hand'
+});
 
-export default WieldTypes;
+WieldList.set(WieldID.OFF, {
+	title: 'Off hand'
+});
+
+WieldList.set(WieldID.BOTH, {
+	title: 'Both hands'
+});
+
+WieldList.set(WieldID.DUAL, {
+	title: 'Dual wield'
+});
+
+export default WieldList;

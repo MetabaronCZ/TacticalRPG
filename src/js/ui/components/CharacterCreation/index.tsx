@@ -20,7 +20,7 @@ import { WieldID } from 'models/wield';
 import { ArmorID, IArmor } from 'models/armor';
 import { WeaponID } from 'models/weapon';
 import { ICharacter } from 'models/character';
-import { JobID } from 'models/job';
+import { JobID, IJob } from 'models/job';
 
 const steps: string[] = ['Character Identity', 'Character Archetype', 'Equipment'];
 
@@ -87,12 +87,12 @@ class CharacterCreation extends React.Component {
 
 		// reset jobs on archetype change
 		if (next.primary !== curr.primary || next.secondary !== curr.secondary) {
-			const jobs: JobID[] = filterJobs(next);
+			const jobs: Map<JobID, IJob> = filterJobs(next);
 
 			this.setState({
 				fields: {
 					...next,
-					job: jobs[0]
+					job: Array.from(jobs.keys())[0]
 				}
 			});
 		}

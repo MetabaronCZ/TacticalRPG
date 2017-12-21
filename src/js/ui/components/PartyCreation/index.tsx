@@ -14,7 +14,7 @@ import { validateField, validateForm } from 'utils/validation';
 import { characterCount, getCharacterById, makeParty, maxNameLength } from 'utils/party';
 
 import SexList from 'data/sex-list';
-import Jobs from 'data/jobs';
+import JobList from 'data/job-list';
 import WeaponList from 'data/weapon-list';
 import ArmorList from 'data/armor-list';
 import { IParty } from 'models/party';
@@ -180,12 +180,13 @@ class PartyCreation extends React.Component {
 			const off: IWeapon|undefined = WeaponList.get(selected.off);
 			const arm: IArmor|undefined = ArmorList.get(selected.armor);
 			const sex: ISex|undefined = SexList.get(selected.sex);
-			const job: IJob = Jobs[selected.job];
+			const job: IJob|undefined = JobList.get(selected.job);
 
 			if (!sex)  { throw new Error('PartyCreation could not render item - invalid SexID'); }
 			if (!main) { throw new Error('PartyCreation could not render item - invalid main WeaponID'); }
 			if (!off)  { throw new Error('PartyCreation could not render item - invalid off WeaponID'); }
 			if (!arm)  { throw new Error('PartyCreation could not render item - invalid ArmorID'); }
+			if (!job)  { throw new Error('PartyCreation could not render item - invalid JobID'); }
 
 			info = `${sex.title} ${job.title} | ${main.title} + ${off.title} | ${arm.title}`;
 		}

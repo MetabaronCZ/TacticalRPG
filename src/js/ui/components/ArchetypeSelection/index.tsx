@@ -1,9 +1,9 @@
 import React from 'react';
 import FormRadio from 'ui/components/FormRadio';
 import ArchetypeIco from 'ui/components/ArchetypeIco';
-import Archetypes from 'data/archetypes';
+import ArchetypeList from 'data/archetype-list';
 import { SizeID } from 'ui/components/ArchetypeIco/sizes';
-import { ArchetypeCharacteristicID as ArchCharID } from 'models/archetype';
+import { ArchetypeCharacteristicID as ArchCharID, IArchetype } from 'models/archetype';
 
 interface IArchetypeSelectionProps {
 	primary?: ArchCharID;
@@ -42,13 +42,13 @@ const ArchetypeSelection = ({
 				{Object.keys(data).map((attr: string, i: number) => (
 					<div className="ArchetypeSelection-body-row" key={i}>
 						<div className="ArchetypeSelection-body-inputWrapper">
-							{Object.keys(Archetypes).map((arch: string, j: number) => (
+							{Array.from(ArchetypeList.entries()).map(([id, arch]: [ArchCharID, IArchetype], j: number) => (
 								<FormRadio
-									id={`f-archetype-${attr}-${arch}`}
-									label={Archetypes[arch].title}
+									id={`f-archetype-${attr}-${id}`}
+									label={arch.title}
 									name={attr}
-									value={arch}
-									isChecked={arch === data[attr]}
+									value={id}
+									isChecked={id === data[attr]}
 									onChange={onChange}
 									key={j}
 								/>

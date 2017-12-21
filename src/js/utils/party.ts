@@ -7,7 +7,7 @@ import { getRandomCharacter } from 'utils/character';
 import { ICharacter } from 'models/character';
 import { IParty } from 'models/party';
 import { JobID } from 'models/job';
-import Jobs from 'data/jobs';
+import JobList from 'data/job-list';
 
 // maximum character count in one party
 export const characterCount: number = 8;
@@ -23,7 +23,7 @@ export const getCharacterById = (id: string, characters: ICharacter[]): ICharact
 // returns random character party array
 export const getRandomPartyCharacters = (count: number): ICharacter[] => {
 	const characters: string[] = getRandomNames(count, maxNameLength);
-	const jobs: JobID[] = getRandomArrayItems(Object.keys(Jobs), count) as JobID[];
+	const jobs: JobID[] = getRandomArrayItems(Object.keys(JobList), count) as JobID[];
 
 	return characters.map((char, i) => getRandomCharacter(char, jobs[i]));
 };

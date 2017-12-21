@@ -5,7 +5,7 @@ import LinkIco from 'ui/components/LinkIco';
 import LinkButton from 'ui/components/LinkButton';
 
 import icos from 'utils/icos';
-import Jobs from 'data/jobs';
+import JobList from 'data/job-list';
 
 import { WieldID } from 'models/wield';
 import WeaponList from 'data/weapon-list';
@@ -82,7 +82,10 @@ const getColumns = (editable: boolean = false, onMoveDown?: IOnMoveDown, onMoveU
 		}, {
 			title: 'Job',
 			name: 'job',
-			value: (char: ICharacter) => Jobs[char.job].title
+			value: (char: ICharacter) => {
+				const job = JobList.get(char.job);
+				return job ? job.title : '';
+			}
 		}, {
 			title: 'Main hand',
 			name: 'mainHand',

@@ -6,14 +6,14 @@ import { filter as filterArmor } from 'utils/character/armor';
 import { getRandomArrayItem } from 'utils/array';
 import { getRandomMapItem } from 'utils/map';
 
-import Jobs from 'data/jobs';
-import Archetypes from 'data/archetypes';
+import JobList from 'data/job-list';
+import ArchetypeList from 'data/archetype-list';
 import WeaponList from 'data/weapon-list';
 import { WieldID } from 'models/wield';
 import { SexID } from 'models/sex';
 import { ArmorID, IArmor } from 'models/armor';
 import { ArchetypeID, ArchetypeCharacteristicID as ArchCharID } from 'models/archetype';
-import { JobID } from 'models/job';
+import { JobID, IJob } from 'models/job';
 import { ICharacter } from 'models/character';
 
 import { WeaponID, IWeapon } from 'models/weapon';
@@ -67,13 +67,15 @@ export const makeCharacter = ({
 };
 
 // returns random character properties
-export const getRandomCharacter = (name: string, job: JobID): ICharacter => {
+export const getRandomCharacter = (name: string, jobId: JobID): ICharacter => {
 	const sex: SexID = (getRandomArrayItem(Object.keys(SexID)) as SexID);
-	const arch: ArchetypeID = getRandomArrayItem(Jobs[job].archetype) || ArchetypeID.PP;
+	const job: IJob|undefined = JobList.get(jobId);
+	let arch: ArchetypeID = job ? getRandomArrayItem(job.archetype) : ArchetypeID.PP;
+	arch = arch || ArchetypeID.PP;
 
 	const character: ICharacter = makeCharacter({
 		name,
-		job,
+		job: jobId,
 		sex,
 		primary: arch[0] as ArchCharID,
 		secondary: arch[1] as ArchCharID

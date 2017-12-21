@@ -4,7 +4,8 @@ import Bar from 'ui/components/Game/components/Bar';
 
 import Character, { ICharacterAttributes } from 'engine/character';
 import icos from 'utils/icos';
-import Jobs from 'data/jobs';
+import JobList from 'data/job-list';
+import { IJob } from 'models/job';
 
 interface IPartyProps {
 	characters: Character[];
@@ -18,10 +19,11 @@ const Party = ({ characters }: IPartyProps): JSX.Element => (
 
 		{characters.map((char: Character, i: number) => {
 			const attrs: ICharacterAttributes = char.getAttributes();
+			const job: IJob|undefined = JobList.get(char.job);
 
 			return (
 				<div className="Party-item" key={i}>
-					{char.name} <ArchetypeIco primary={char.primary} secondary={char.secondary} /> {icos[char.sex.toLowerCase()]} {Jobs[char.job].title}
+					{char.name} <ArchetypeIco primary={char.primary} secondary={char.secondary} /> {icos[char.sex.toLowerCase()]} {job ? job.title : ''}
 
 					<Bar
 						hp={attrs.current.HP}
