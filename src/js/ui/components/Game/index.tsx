@@ -2,8 +2,10 @@ import React from 'react';
 import Order from 'ui/components/Game/components/Order';
 import Party from 'ui/components/Game/components/Party';
 import Grid from 'ui/components/Game/components/Grid';
+import Layers from 'ui/components/Game/components/Layers';
+import Characters from 'ui/components/Game/components/Characters';
 
-import Engine from 'engine';
+import Engine, { IEngineState } from 'engine';
 import Character from 'engine/character';
 import { IParty } from 'models/party';
 import { ICharacter } from 'models/character';
@@ -18,24 +20,29 @@ interface IGameProps {
 	onSummary: () => void;
 }
 
+interface IGameState {
+	engine: IEngineState;
+}
+
 class Game extends React.Component {
 	public props: IGameProps;
-	private party: Character[];
-	private order: Character[];
+	public state: IGameState;
+	private engine: Engine;
 	private onExit: () => void;
 	private onSummary: () => void;
 
 	constructor(props: IGameProps) {
 		super(props);
 
-		const engine: Engine = new Engine({
+		this.engine = new Engine({
 			party: props.party,
 			characters: props.characters,
 			size: gridSize
 		});
 
-		this.party = engine.getParty();
-		this.order = engine.getOrder();
+		this.state = {
+			engine: this.engine.getState()
+		};
 
 		/* */
 		this.onExit = props.onExit.bind(this);
@@ -43,10 +50,17 @@ class Game extends React.Component {
 		/* */
 	}
 
+	public update() {
+		this.setState({
+			engine: this.engine.getState()
+		});
+	}
+
 	public render() {
-		// filter valid character slots
-		const party: Character[] = this.party;
-		const order: Character[] = this.order;
+		const state: IEngineState = this.state.engine;
+		const ally: Character[] = state.ally;
+		const enemy: Character[] = state.enemy;
+		const order: Character[] = state.order;
 
 		return (
 			<div className="GameUI">
@@ -54,12 +68,15 @@ class Game extends React.Component {
 					<Order characters={order} />
 				</div>
 
-				<div className="GameUI-column GameUI-column--grid">
-					<Grid size={gridSize} blockSize={blockSize} />
+				<div className="GameUI-column GameUI-column--main">
+					<Layers size={gridSize} blockSize={blockSize}>
+						<Grid size={gridSize} blockSize={blockSize} />
+						<Characters ally={ally} enemy={enemy} size={gridSize} blockSize={blockSize} />
+					</Layers>
 				</div>
 
 				<div className="GameUI-column GameUI-column--party">
-					<Party characters={party} />
+					<Party characters={ally} />
 				</div>
 			</div>
 		);

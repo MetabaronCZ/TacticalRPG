@@ -1,6 +1,6 @@
 class Position {
-	private x: number;
-	private y: number;
+	private readonly x: number;
+	private readonly y: number;
 
 	constructor(x: number = 0, y: number = 0) {
 		this.x = x;
@@ -12,7 +12,7 @@ class Position {
 	}
 
 	public getY(): number {
-		return this.x;
+		return this.y;
 	}
 }
 

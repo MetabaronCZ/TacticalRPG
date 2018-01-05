@@ -12,7 +12,7 @@ const Order = ({ characters }: IOrderProps): JSX.Element => (
 		{characters.map((char: Character, i: number) => (
 			<div className={`Order-item Order-item--${char.getPlayer().isEnemy() ? 'enemy' : 'ally'}`} key={i}>
 				<div className="Order-item-inner">
-					{char.job} {char.name}
+					{char.job} {char.name} <small>| SPD {char.getAttributes().current.SPD}</small>
 				</div>
 			</div>
 		))}

@@ -10,7 +10,7 @@ import { ArchetypeCharacteristicID as ArchID } from 'models/archetype';
 import { SexID } from 'models/sex';
 
 export interface ICharacterConfig extends ICharacter {
-	readonly position: number[];
+	readonly position: Position;
 }
 
 export interface ICharacterAttributes {
@@ -28,15 +28,15 @@ class Character {
 
 	private readonly conf: ICharacterConfig;
 	private readonly player: Player;
-	private position: Position;
+	private readonly position: Position;
 	private readonly baseAttrs: IAttributes;
-	private currAttrs: IAttributes;
+	private readonly currAttrs: IAttributes;
 
 	constructor(conf: ICharacterConfig, player: Player) {
 		this.id = conf.id || uuid();
 		this.conf = conf;
 		this.player = player;
-		this.position = new Position(...conf.position);
+		this.position = conf.position;
 
 		this.baseAttrs = getAttributes(conf.primary, conf.secondary);
 		this.currAttrs = getAttributes(conf.primary, conf.secondary);

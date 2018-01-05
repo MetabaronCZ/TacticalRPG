@@ -4,6 +4,7 @@ import { ICharacter } from 'models/character';
 import { IAttributes } from 'models/attributes';
 import Character, { ICharacterConfig } from 'engine/character';
 import Player from 'engine/player';
+import Position from 'engine/position';
 
 const orderMaxLength: number = 20;
 const cpLimit: number = 100;
@@ -19,9 +20,16 @@ interface IOrderItem extends IAttributes {
 	readonly player: Player;
 }
 
+export interface IEngineState {
+	ally: Character[];
+	enemy: Character[];
+	order: Character[];
+}
+
 class Engine {
 	private ally: Player;
 	private enemy: Player;
+	private order: Character[];
 	private initiative: Player;
 
 	constructor(conf: IEngineConfig) {
@@ -35,7 +43,7 @@ class Engine {
 				const char = getCharacterById(id, conf.characters);
 				const charConfig: ICharacterConfig = {
 					...char,
-					position: [i + 2, 0]
+					position: new Position(i + 2, size - 1)
 				};
 				ally.push(charConfig);
 			});
@@ -50,7 +58,7 @@ class Engine {
 			.forEach((char: ICharacter, i: number) => {
 				const charConfig: ICharacterConfig = {
 					...char,
-					position: [i + 2, size - 1]
+					position: new Position(i + 2, 0)
 				};
 				enemy.push(charConfig);
 			});
@@ -59,13 +67,20 @@ class Engine {
 
 		// which player is attacking
 		this.initiative = Math.random() < 0.5 ? this.ally : this.enemy;
+
+		// make initial character order
+		this.order = this.makeOrder();
 	}
 
-	public getParty(): Character[] {
-		return this.ally.getCharacters();
+	public getState(): IEngineState {
+		return {
+			ally: this.ally.getCharacters(),
+			enemy: this.enemy.getCharacters(),
+			order: this.order
+		};
 	}
 
-	public getOrder(): Character[] {
+	private makeOrder(): Character[] {
 		const ally: Character[] = this.ally.getCharacters();
 		const enemy: Character[] = this.enemy.getCharacters();
 		let order: IOrderItem[] = [];
@@ -99,7 +114,7 @@ class Engine {
 			// sort by SPD
 			act = act.sort((a, b) => b.SPD - a.SPD);
 
-			// add acting characters to order array
+			// add acting characters to ordered array
 			order = order.concat(act);
 		}
 
