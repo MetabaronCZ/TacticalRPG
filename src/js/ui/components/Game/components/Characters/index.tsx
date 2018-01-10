@@ -18,7 +18,7 @@ const renderCharacter = (char: Character, blockSize: number, i: number): JSX.Ele
 
 	return (
 		<div className="Characters-item" style={style} key={i}>
-			<CharacterBlock data={char} />
+			<CharacterBlock data={char} size={blockSize} />
 		</div>
 	);
 };

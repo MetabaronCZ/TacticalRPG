@@ -22,8 +22,8 @@ const Layers = ({ size, blockSize, children }: ILayersProps): JSX.Element => {
 
 	return (
 		<div className="Layers" style={style}>
-			{children.map((layer: JSX.Element) => (
-				<div className="Layers-item">
+			{children.map((layer: JSX.Element, i: number) => (
+				<div className="Layers-item" key={i}>
 					{layer}
 				</div>
 			))}

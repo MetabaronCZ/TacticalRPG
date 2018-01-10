@@ -1,6 +1,39 @@
 .Character {
-	.u-text-default;
-	.u-weight-bold;
+	position: relative;
+	display: flex;
+	padding: @vu;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
 
-	color: @color-white;
+	&::after {
+		position: absolute;
+		top: 10%;
+		left: 10%;
+		display: block;
+		content: ' ';
+		z-index: 1;
+		width: 80%;
+		height: 80%;
+		border-radius: 100%;
+	}
+
+	&-title {
+		.u-text-small;
+		.u-weight-bold;
+
+		position: relative;
+		z-index: 2;
+		color: @color-white;
+		text-align: center;
+		word-break: break-all;
+	}
+
+	&&--ally::after {
+		background-color: @color-blue;
+	}
+
+	&&--enemy::after {
+		background-color: @color-red;
+	}
 }
