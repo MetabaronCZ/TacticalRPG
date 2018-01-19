@@ -80,6 +80,10 @@ class Engine {
 		};
 	}
 
+	private hasInitiative(player: Player): boolean {
+		return player === this.initiative;
+	}
+
 	private makeOrder(): Character[] {
 		const ally: Character[] = this.ally.getCharacters();
 		const enemy: Character[] = this.enemy.getCharacters();
@@ -105,10 +109,9 @@ class Engine {
 				char.CP += char.SPD;
 			}
 
-			// sort by character player initiative
+			// sort by character player initiative (+ sign converts boolean to number)
 			act = act.sort((a, b) => {
-				const initPlayer: Player = this.initiative;
-				return +(initPlayer === b.player) - +(initPlayer === a.player);
+				return (+this.hasInitiative(b.player)) - (+this.hasInitiative(a.player));
 			});
 
 			// sort by SPD

@@ -10,7 +10,9 @@ interface ICharacters {
 	blockSize: number;
 }
 
-const renderCharacter = (char: Character, blockSize: number, i: number): JSX.Element => {
+export type IOnSelect = () => void;
+
+const renderCharacter = (char: Character, blockSize: number, onSelect: IOnSelect, i: number): JSX.Element => {
 	const style = {
 		top: (char.getPosition().getY() * blockSize) + 'px',
 		left: (char.getPosition().getX() * blockSize) + 'px'
@@ -18,16 +20,26 @@ const renderCharacter = (char: Character, blockSize: number, i: number): JSX.Ele
 
 	return (
 		<div className="Characters-item" style={style} key={i}>
-			<CharacterBlock data={char} size={blockSize} />
+			<CharacterBlock char={char} size={blockSize} onSelect={onSelect} />
 		</div>
 	);
 };
 
 const Characters = ({ ally, enemy, size, blockSize }: ICharacters): JSX.Element => {
+	const characters: Character[] = ally.concat(enemy);
+
+	const onSelect = (char: Character) => (): void => {
+		characters.forEach((ch: Character) => {
+			ch.select(false);
+		});
+
+		char.select(true);
+	};
+
 	return (
 		<div className="Characters">
-			{ally.concat(enemy).map((char: Character, i: number) => {
-				return renderCharacter(char, blockSize, i);
+			{characters.map((char: Character, i: number) => {
+				return renderCharacter(char, blockSize, onSelect(char), i);
 			})}
 		</div>
 	);

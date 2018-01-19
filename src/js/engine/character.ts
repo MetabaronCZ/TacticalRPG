@@ -32,6 +32,8 @@ class Character {
 	private readonly baseAttrs: IAttributes;
 	private readonly currAttrs: IAttributes;
 
+	private selected: boolean = false;
+
 	constructor(conf: ICharacterConfig, player: Player) {
 		this.id = conf.id || uuid();
 		this.conf = conf;
@@ -61,6 +63,14 @@ class Character {
 
 	public getPosition(): Position {
 		return this.position;
+	}
+
+	public isSelected(): boolean {
+		return this.selected;
+	}
+
+	public select(value?: boolean): void {
+		this.selected = ('undefined' !== typeof value) ? value : !this.selected;
 	}
 }
 
