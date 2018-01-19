@@ -12,10 +12,10 @@ export interface IAction {
 	[data: string]: any;
 }
 
-const storageKey: string = 'game';
+const storageKey = 'game';
 
 const loadState = (): IState => {
-	const state: string = localStorage.getItem(storageKey) || '';
+	const state = localStorage.getItem(storageKey) || '';
 	return state ? JSON.parse(state) : {};
 };
 
@@ -24,8 +24,8 @@ const saveState = (state: IState = {}): void => {
 };
 
 const initStore = (): Store<IState> => {
-	const state: IState = loadState();
-	const store: Store<IState> = createStore(reducers, state);
+	const state = loadState();
+	const store = createStore(reducers, state);
 
 	// save application state on store update
 	store.subscribe(() => saveState(store.getState()));

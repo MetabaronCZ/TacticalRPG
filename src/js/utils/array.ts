@@ -8,13 +8,13 @@ export interface IIndexable {
 
 // swap state array positions
 export const swap = (id: string, dir: number, state: IIndexable[]): IIndexable[] => {
-	const index: number = state.findIndex((item: IIndexable) => id === item.id);
+	const index = state.findIndex((item) => id === item.id);
 
 	if (index + dir < 0 || index + dir > state.length - 1) {
 		return state;
 	}
-	const curr: IIndexable = state[index];
-	const next: IIndexable = state[index + dir];
+	const curr = state[index];
+	const next = state[index + dir];
 
 	return state.map((item, i) => {
 		if (i === index) {
@@ -29,7 +29,7 @@ export const swap = (id: string, dir: number, state: IIndexable[]): IIndexable[]
 
 // add item to state array
 export const add = (item: {}, state: IIndexable[]): IIndexable[] => {
-	const now: number = Date.now();
+	const now = Date.now();
 
 	return state.concat({
 		...item,
@@ -41,14 +41,14 @@ export const add = (item: {}, state: IIndexable[]): IIndexable[] => {
 
 // remove item from state array
 export const remove = (id: string, state: IIndexable[]): IIndexable[] => {
-	return state.filter((item: IIndexable) => id !== item.id);
+	return state.filter((item) => id !== item.id);
 };
 
 // edit item in state array
 export const edit = (value: any, state: IIndexable[]): IIndexable[] => {
-	const now: number = Date.now();
+	const now = Date.now();
 
-	return state.map((item: IIndexable) => {
+	return state.map((item) => {
 		if (value.id === item.id) {
 			return {
 				...item,
@@ -62,7 +62,7 @@ export const edit = (value: any, state: IIndexable[]): IIndexable[] => {
 
 // return array of random items from given array
 export const getRandomArrayItems = <T>(arr: T[], count: number = 1): T[] => {
-	const res: T[] = [];
+	const res = [];
 	arr = arr.slice(0);
 
 	while (count && arr.length) {

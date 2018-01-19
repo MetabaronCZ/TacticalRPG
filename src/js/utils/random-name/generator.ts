@@ -1,8 +1,8 @@
 // random name generator (Markov chains order)
 import samples from 'utils/random-name/samples';
 
-const markovOrder: number = 3;
-const paramEnd: string = 'END';
+const markovOrder = 3;
+const paramEnd = 'END';
 
 interface IGroup {
 	count: number;
@@ -29,9 +29,9 @@ interface ILetterItem {
 }
 
 const createGraph = (dict: string[], order: number): IGraph => {
-	const starters: string[] = [];
-	const groups: IGroups = {};
 	const finishers: IFinishers = {};
+	const groups: IGroups = {};
+	const starters = [];
 	let graph: IGraph;
 
 	order = (order && order > 0) ? order : 1;
@@ -53,8 +53,8 @@ const createGraph = (dict: string[], order: number): IGraph => {
 		finishers[sample.substring(sample.length - order)] = true;
 
 		for (let i = 0, imax = sample.length - order + 1; i < imax; i++) {
-			const group: string = sample.substring(i, i + order);
-			const next: string = sample[i + order] || paramEnd;
+			const group = sample.substring(i, i + order);
+			const next = sample[i + order] || paramEnd;
 
 			if (!groups[group]) {
 				groups[group] = {
@@ -96,17 +96,17 @@ const setWeights = (graph: IGraph): void => {
 };
 
 const getRandomStarter = (graph: IGraph): string => {
-	const starters: string[] = graph.starters;
-	const random: number = Math.random();
+	const starters = graph.starters;
+	const random = Math.random();
 
 	return starters[Math.floor(starters.length * random)];
 };
 
 const getNextLetter = (graph: IGraph, groupName: string): string => {
-	const random: number = Math.random();
-	const node: IGroup = graph.groups[groupName];
-	let weight: number = 0;
-	let list: ILetterItem[] = [];
+	const node = graph.groups[groupName];
+	const random = Math.random();
+	let weight = 0;
+	let list = [];
 
 	if (!node) {
 		return '';
@@ -135,14 +135,14 @@ const getNextLetter = (graph: IGraph, groupName: string): string => {
 };
 
 const getRandomName = (graph: IGraph, maxlength: number): string => {
-	let name: string = getRandomStarter(graph);
-	const order: number = name.length;
+	let name = getRandomStarter(graph);
+	const order = name.length;
 
 	maxlength = (maxlength && maxlength > order) ? maxlength : order;
 	maxlength -= order;
 
 	while (maxlength--) {
-		const letter: string = getNextLetter(graph, name.substring(name.length - order));
+		const letter = getNextLetter(graph, name.substring(name.length - order));
 
 		if (!letter) {
 			break;
@@ -157,8 +157,8 @@ const getRandomName = (graph: IGraph, maxlength: number): string => {
 };
 
 const getRandomNames = (count: number, maxlength: number): string[] => {
-	const graph: IGraph = createGraph(samples, markovOrder);
-	const names: string[] = [];
+	const graph = createGraph(samples, markovOrder);
+	const names = [];
 
 	while (count--) {
 		names.push( getRandomName(graph, maxlength) );

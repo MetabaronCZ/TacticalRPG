@@ -20,13 +20,13 @@ interface IStep3Props {
 }
 
 const Step3 = ({ fields, onChange }: IStep3Props): JSX.Element => {
-	const mainWeapons: Map<WeaponID, IWeapon> = filterWeapon(fields, WieldID.MAIN);
-	const offWeapons: Map<WeaponID, IWeapon> = filterWeapon(fields, WieldID.OFF);
-	const armors: Map<ArmorID, IArmor> = filterArmor(fields);
-	const armor: IArmor|undefined = ArmorList.get(fields.armor);
-	const main: IWeapon|undefined = WeaponList.get(fields.main);
-	const off: IWeapon|undefined = WeaponList.get(fields.off);
-	const isBothWielding: boolean = (offWeapons.size < 2);
+	const mainWeapons = filterWeapon(fields, WieldID.MAIN);
+	const offWeapons = filterWeapon(fields, WieldID.OFF);
+	const armors = filterArmor(fields);
+	const armor = ArmorList.get(fields.armor);
+	const main = WeaponList.get(fields.main);
+	const off = WeaponList.get(fields.off);
+	const isBothWielding = (offWeapons.size < 2);
 
 	if (!main) {
 		throw new Error('PartyCreation could not render item - invalid main WeaponID');
@@ -44,7 +44,7 @@ const Step3 = ({ fields, onChange }: IStep3Props): JSX.Element => {
 		<div>
 			<FormField fieldId="f-main" label="Main hand" info={main.description}>
 				<FormSelect id="f-main" name="main" value={fields.main} onChange={onChange}>
-					{Array.from(mainWeapons.entries()).map(([id, item]: [WeaponID, IWeapon], i: number) => {
+					{Array.from(mainWeapons.entries()).map(([id, item], i) => {
 						return (
 							<FormSelectItem value={id} key={i}>
 								{item.title}
@@ -59,7 +59,7 @@ const Step3 = ({ fields, onChange }: IStep3Props): JSX.Element => {
 					!isBothWielding
 						? (
 							<FormSelect id="f-off" name="off" value={fields.off} onChange={onChange}>
-								{Array.from(offWeapons.entries()).map(([id, item]: [WeaponID, IWeapon], i: number) => {
+								{Array.from(offWeapons.entries()).map(([id, item], i) => {
 									return (
 										<FormSelectItem value={id} key={i}>
 											{item.title}
@@ -78,7 +78,7 @@ const Step3 = ({ fields, onChange }: IStep3Props): JSX.Element => {
 
 			<FormField fieldId="f-armor" label="Armor" info={armor.description}>
 				<FormSelect id="f-armor" name="armor" value={fields.armor} onChange={onChange}>
-					{Array.from(armors.entries()).map(([id, item]: [ArmorID, IArmor], i: number) => {
+					{Array.from(armors.entries()).map(([id, item], i) => {
 						return (
 							<FormSelectItem value={id} key={i}>
 								{item.title}

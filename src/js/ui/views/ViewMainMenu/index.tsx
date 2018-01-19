@@ -25,7 +25,7 @@ interface IViewMainMenuContainerProps {
 const ViewMainMenuContainer = ({ history }: IViewMainMenuContainerProps): JSX.Element => (
 	<div className="MainMenu">
 		<ul className="MainMenu-butttons">
-			{menuItems.map((item: IMenuItem, i: number) => (
+			{menuItems.map((item, i) => (
 				<li className="MainMenu-buttons-item" key={i}>
 					<Button ico={item.ico} size={item.size} text={item.title} onClick={gotoFn(history, item.url)} />
 				</li>

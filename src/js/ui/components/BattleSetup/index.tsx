@@ -34,7 +34,7 @@ class BattleSetup extends React.Component {
 	constructor(props: IBattleSetupProps) {
 		super(props);
 
-		const defaultParty: string|null = ((this.props.parties && this.props.parties.length) ? this.props.parties[0].id : null);
+		const defaultParty = ((this.props.parties && this.props.parties.length) ? this.props.parties[0].id : null);
 
 		this.state = {
 			fields: {
@@ -48,14 +48,14 @@ class BattleSetup extends React.Component {
 
 	public render() {
 		const fields: any = this.state.fields;
-		const characters: ICharacter[] = this.props.characters;
-		const parties: IParty[] = this.props.parties;
-		let selectedParty: IParty;
+		const characters = this.props.characters;
+		const parties = this.props.parties;
+		let selectedParty;
 		let chars: ICharacter[] = [];
 
 		if (parties && parties.length) {
-			selectedParty = parties.filter((p: IParty) => p.id === fields.party)[0];
-			chars = selectedParty.characters.map((id: string) => getCharacterById(id, characters));
+			selectedParty = parties.filter((p) => p.id === fields.party)[0];
+			chars = selectedParty.characters.map((id) => getCharacterById(id, characters));
 		}
 
 		return (
@@ -65,7 +65,7 @@ class BattleSetup extends React.Component {
 					? (
 						<FormField fieldId="f-party" label="Select party">
 							<FormSelect id="f-party" name="party" value={fields.party} onChange={this.onChange}>
-								{parties.map((party: IParty, i) => (
+								{parties.map((party, i) => (
 									<FormSelectItem value={party.id} key={i}>
 										{party.name}
 									</FormSelectItem>
@@ -94,8 +94,8 @@ class BattleSetup extends React.Component {
 	}
 
 	private onChange(e: SyntheticEvent<any>) {
-		const field: string = e.currentTarget.name;
-		const value: string = e.currentTarget.value;
+		const field = e.currentTarget.name;
+		const value = e.currentTarget.value;
 
 		this.setState({
 			fields: {

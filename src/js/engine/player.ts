@@ -5,7 +5,7 @@ class Player {
 	private enemy: boolean;
 
 	constructor(characters: ICharacterConfig[], isEnemy: boolean) {
-		this.characters = characters.map((char: ICharacterConfig) => new Character(char, this));
+		this.characters = characters.map((char) => new Character(char, this));
 		this.enemy = !!isEnemy;
 	}
 

@@ -1,7 +1,7 @@
 import React from 'react';
 
 const renderItem = (type: string, value: number, max: number): JSX.Element => {
-	const pct: number = 100 * value / max;
+	const pct = 100 * value / max;
 
 	return (
 		<div className={`Bar-item Bar-item--${type}`}>

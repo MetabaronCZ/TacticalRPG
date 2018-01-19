@@ -13,10 +13,10 @@ interface IButtonContainerProps {
 }
 
 const ButtonContainer = ({ type, ico, size, color, text, onClick }: IButtonContainerProps): JSX.Element => {
-	const typeName: string = ('submit' === type ? type : 'button');
-	const icoName: string = (ico ? icos[ico] : icos.default) || '';
-	const sizeName: string = (size ? ButtonSize[size] : ButtonSize.default) || '';
-	const colorName: string = (color ? ButtonColor[color] : ButtonColor.default) || '';
+	const typeName = ('submit' === type ? type : 'button');
+	const icoName = (ico ? icos[ico] : icos.default) || '';
+	const sizeName = (size ? ButtonSize[size] : ButtonSize.default) || '';
+	const colorName = (color ? ButtonColor[color] : ButtonColor.default) || '';
 
 	return (
 		<button className={`Button Button--size${sizeName} Button--color${colorName}`} type={typeName} onClick={onClick}>

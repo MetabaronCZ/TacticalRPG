@@ -39,10 +39,10 @@ const ArchetypeSelection = ({
 			</div>
 
 			<div className="ArchetypeSelection-body">
-				{Object.keys(data).map((attr: string, i: number) => (
+				{Object.keys(data).map((attr, i) => (
 					<div className="ArchetypeSelection-body-row" key={i}>
 						<div className="ArchetypeSelection-body-inputWrapper">
-							{Array.from(ArchetypeList.entries()).map(([id, arch]: [ArchCharID, IArchetype], j: number) => (
+							{Array.from(ArchetypeList.entries()).map(([id, arch], j) => (
 								<FormRadio
 									id={`f-archetype-${attr}-${id}`}
 									label={arch.title}

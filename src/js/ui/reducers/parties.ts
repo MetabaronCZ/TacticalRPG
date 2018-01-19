@@ -8,10 +8,10 @@ const removeCharacter = (id: string, state: IParty[]) => {
 	if (!id) {
 		return state;
 	}
-	return state.map((party: IParty) => {
+	return state.map((party) => {
 		return {
 			...party,
-			characters: party.characters.filter((charId: string) => charId !== id)
+			characters: party.characters.filter((charId) => charId !== id)
 		};
 	});
 };

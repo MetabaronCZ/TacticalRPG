@@ -26,10 +26,10 @@ const renderCharacter = (char: Character, blockSize: number, onSelect: IOnSelect
 };
 
 const Characters = ({ ally, enemy, size, blockSize }: ICharacters): JSX.Element => {
-	const characters: Character[] = ally.concat(enemy);
+	const characters = ally.concat(enemy);
 
 	const onSelect = (char: Character) => (): void => {
-		characters.forEach((ch: Character) => {
+		characters.forEach((ch) => {
 			ch.select(false);
 		});
 
@@ -38,7 +38,7 @@ const Characters = ({ ally, enemy, size, blockSize }: ICharacters): JSX.Element 
 
 	return (
 		<div className="Characters">
-			{characters.map((char: Character, i: number) => {
+			{characters.map((char, i) => {
 				return renderCharacter(char, blockSize, onSelect(char), i);
 			})}
 		</div>

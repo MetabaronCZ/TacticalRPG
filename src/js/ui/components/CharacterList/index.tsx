@@ -12,15 +12,15 @@ interface ICharacterListProps {
 }
 
 const CharacterList = ({ editable = false, characters, onMoveDown, onMoveUp, onDelete }: ICharacterListProps): JSX.Element => {
-	const columns: IColumn[] = getColumns(editable, onMoveDown, onMoveUp, onDelete);
+	const columns = getColumns(editable, onMoveDown, onMoveUp, onDelete);
 
 	// ignore empty character slots
-	characters = characters.filter((char: ICharacter) => !!char);
+	characters = characters.filter((char) => !!char);
 
 	return (
 		<ul className="List">
 			<li className="List-row List-row--header">
-				{columns.map((col: IColumn, i: number) => (
+				{columns.map((col, i) => (
 					<span className="List-row-column" key={i}>
 						{col.title}
 					</span>
@@ -30,7 +30,7 @@ const CharacterList = ({ editable = false, characters, onMoveDown, onMoveUp, onD
 			{characters.map((char, i) => {
 				return (
 					<li className="List-row" key={i}>
-						{columns.map((col: IColumn, j: number) => (
+						{columns.map((col, j) => (
 							<span className={`List-row-column List-row-column--${col.name}`} key={j}>
 								{col.value(char, i)}
 							</span>

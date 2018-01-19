@@ -10,20 +10,20 @@ import { JobID } from 'models/job';
 import JobList from 'data/job-list';
 
 // maximum character count in one party
-export const characterCount: number = 8;
+export const characterCount = 8;
 
 // maximum character count of party name
-export const maxNameLength: number = 16;
+export const maxNameLength = 16;
 
 // return character object from character list by its ID
 export const getCharacterById = (id: string, characters: ICharacter[]): ICharacter => {
-	return characters.filter((char: ICharacter) => char.id === id)[0];
+	return characters.filter((char) => char.id === id)[0];
 };
 
 // returns random character party array
 export const getRandomPartyCharacters = (count: number): ICharacter[] => {
-	const characters: string[] = getRandomNames(count, maxNameLength);
-	const jobs: JobID[] = getRandomArrayItems(Object.keys(JobList), count) as JobID[];
+	const characters = getRandomNames(count, maxNameLength);
+	const jobs = getRandomArrayItems(Object.keys(JobList), count) as JobID[];
 
 	return characters.map((char, i) => getRandomCharacter(char, jobs[i]));
 };
@@ -43,7 +43,7 @@ export const makeParty = ({
 	lastUpdate,
 	characters = []
 }: IDefaultPartyData): IParty => {
-	const now: number = Date.now();
+	const now = Date.now();
 
 	return {
 		name,

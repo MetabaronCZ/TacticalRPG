@@ -10,7 +10,7 @@ const ButtonRow = ({ children }: IButtonRowProps): JSX.Element => {
 	}
 	return (
 		<ul className="ButtonRow">
-			{children.map((item: JSX.Element, i: number) => (
+			{children.map((item, i) => (
 				<li className="ButtonRow-item" key={i}>
 					{item}
 				</li>

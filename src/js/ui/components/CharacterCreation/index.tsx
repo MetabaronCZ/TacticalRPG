@@ -82,12 +82,12 @@ class CharacterCreation extends React.Component {
 	}
 
 	public componentWillUpdate(nextProps: ICharacterCreationProps, nextState: ICharacterCreationState) {
-		const curr: ICharacter = this.state.fields;
-		const next: ICharacter = nextState.fields;
+		const curr = this.state.fields;
+		const next = nextState.fields;
 
 		// reset jobs on archetype change
 		if (next.primary !== curr.primary || next.secondary !== curr.secondary) {
-			const jobs: Map<JobID, IJob> = filterJobs(next);
+			const jobs = filterJobs(next);
 
 			this.setState({
 				fields: {
@@ -99,13 +99,13 @@ class CharacterCreation extends React.Component {
 
 		// reset character Main hand weapon and armor on job change
 		if (next.job !== curr.job) {
-			const newArmor: ArmorID = (filterArmor(next).has(curr.armor) ? curr.armor : ArmorID.NONE);
-			const newMain: WeaponID = (filterWeapon(next, WieldID.MAIN).has(curr.main) ? curr.main : WeaponID.NONE);
+			const newArmor = (filterArmor(next).has(curr.armor) ? curr.armor : ArmorID.NONE);
+			const newMain = (filterWeapon(next, WieldID.MAIN).has(curr.main) ? curr.main : WeaponID.NONE);
 
-			const tmpNext: ICharacter = { ...next };
+			const tmpNext = { ...next };
 			tmpNext.main = newMain;
 
-			const newOff: WeaponID = (filterWeapon(tmpNext, WieldID.OFF).has(curr.off) ? curr.off : WeaponID.NONE);
+			const newOff = (filterWeapon(tmpNext, WieldID.OFF).has(curr.off) ? curr.off : WeaponID.NONE);
 
 			this.setState({
 				fields: {
@@ -119,7 +119,7 @@ class CharacterCreation extends React.Component {
 
 		// reset character Off hand weapon if 2H weapon equiped in Main hand
 		if (next.main !== curr.main) {
-			const newOff: WeaponID = (filterWeapon(next, WieldID.OFF).has(curr.off) ? curr.off : WeaponID.NONE);
+			const newOff = (filterWeapon(next, WieldID.OFF).has(curr.off) ? curr.off : WeaponID.NONE);
 
 			this.setState({
 				fields: {
@@ -145,8 +145,8 @@ class CharacterCreation extends React.Component {
 	}
 
 	private onChange(e: SyntheticEvent<any>) {
-		const field: string = e.currentTarget.name;
-		const value: string = e.currentTarget.value;
+		const field = e.currentTarget.name;
+		const value = e.currentTarget.value;
 
 		validateField(field, value, this.handleValidationError);
 
@@ -161,7 +161,7 @@ class CharacterCreation extends React.Component {
 	private onSubmit(e: SyntheticEvent<any>) {
 		e.preventDefault();
 
-		const isValidForm: boolean = validateForm(this.state.fields, this.handleValidationError);
+		const isValidForm = validateForm(this.state.fields, this.handleValidationError);
 
 		if (!isValidForm) {
 			return;

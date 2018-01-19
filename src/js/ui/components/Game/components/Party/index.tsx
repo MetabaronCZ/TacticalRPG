@@ -17,9 +17,9 @@ const Party = ({ characters }: IPartyProps): JSX.Element => (
 			Party
 		</h2>
 
-		{characters.map((char: Character, i: number) => {
-			const attrs: ICharacterAttributes = char.getAttributes();
-			const job: IJob|undefined = JobList.get(char.job);
+		{characters.map((char, i) => {
+			const attrs = char.getAttributes();
+			const job = JobList.get(char.job);
 
 			return (
 				<div className="Party-item" key={i}>

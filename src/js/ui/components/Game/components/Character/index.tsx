@@ -18,10 +18,10 @@ class CharacterBlock extends React.Component {
 	}
 
 	public render() {
-		const char: Character = this.props.char;
-		const size: number = this.props.size;
-		const player: Player = this.props.char.getPlayer();
-		const type: string = (player.isEnemy() ? 'enemy' : 'ally');
+		const char = this.props.char;
+		const size = this.props.size;
+		const player = this.props.char.getPlayer();
+		const type = (player.isEnemy() ? 'enemy' : 'ally');
 
 		const style = {
 			width: size + 'px',

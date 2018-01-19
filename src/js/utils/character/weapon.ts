@@ -9,7 +9,7 @@ import { JobID } from 'models/job';
 const check = (wpn: IWeapon, char: ICharacter, slot: WieldID): boolean => {
 	const primary = char.primary;
 	const secondary = char.secondary;
-	const wield: WieldID[] = wpn.wield;
+	const wield = wpn.wield;
 
 	// check weapon type according to character archetype
 	switch (wpn.type) {
@@ -52,12 +52,12 @@ const check = (wpn: IWeapon, char: ICharacter, slot: WieldID): boolean => {
 			return -1 !== wield.indexOf(WieldID.MAIN) || -1 !== wield.indexOf(WieldID.BOTH);
 
 		case WieldID.OFF: {
-			const main: IWeapon|undefined = WeaponList.get(char.main);
+			const main = WeaponList.get(char.main);
 
 			if (!main) {
 				throw new Error('Weapon check error - invalid main WeaponID');
 			}
-			const mainWield: WieldID[] = main.wield;
+			const mainWield = main.wield;
 
 			// cannot equip a dual weapon in Off hand
 			if (WeaponTypeID.DUAL === main.type || WeaponTypeID.DUAL === wpn.type) {
@@ -93,9 +93,9 @@ const check = (wpn: IWeapon, char: ICharacter, slot: WieldID): boolean => {
 };
 
 export const filter = (char: ICharacter, slot: WieldID): Map<WeaponID, IWeapon> => {
-	const filtered = new Map<WeaponID, IWeapon>();
+	const filtered = new Map();
 
-	WeaponList.forEach((wpn: IWeapon, id: WeaponID) => {
+	WeaponList.forEach((wpn, id) => {
 		if (check(wpn, char, slot)) {
 			filtered.set(id, wpn);
 		}

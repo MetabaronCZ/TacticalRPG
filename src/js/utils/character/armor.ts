@@ -7,7 +7,7 @@ export const filter = (char: ICharacter): Map<ArmorID, IArmor> => {
 	const arch = (ArchetypeID as any)[char.primary + char.secondary];
 	const filtered = new Map<ArmorID, IArmor>();
 
-	ArmorList.forEach((arm: IArmor, id: ArmorID) => {
+	ArmorList.forEach((arm, id) => {
 		if (!arm.archetype || !arm.archetype.length || -1 !== arm.archetype.indexOf(arch)) {
 			filtered.set(id, arm);
 		}

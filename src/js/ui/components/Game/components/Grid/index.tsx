@@ -13,7 +13,7 @@ const Grid = ({ size, blockSize }: IGridProps): JSX.Element => {
 
 	return (
 		<div className="Grid">
-			{Array(size * size).fill(0).map((item: 0, i: number) => (
+			{Array(size * size).fill(0).map((item: 0, i) => (
 				<div className="Grid-item" key={i} style={itemStyle}>
 					<div className="Grid-item-block" />
 				</div>

@@ -57,12 +57,12 @@ const getColumns = (editable: boolean = false, onMoveDown?: IOnMoveDown, onMoveU
 		if (main && ('BAR' !== char.job) && -1 !== main.wield.indexOf(WieldID.BOTH)) {
 			return renderOffHandBothWield(main.title);
 		} else {
-			const off: IWeapon|undefined = WeaponList.get(char.off);
+			const off = WeaponList.get(char.off);
 			return off ? off.title : '';
 		}
 	};
 
-	let columns = [
+	let columns: IColumn[] = [
 		{
 			title: '',
 			name: 'order',
@@ -125,7 +125,7 @@ const getColumns = (editable: boolean = false, onMoveDown?: IOnMoveDown, onMoveU
 	];
 
 	if (!editable) {
-		columns = columns.filter((col: IColumn) => !col.editable);
+		columns = columns.filter((col) => !col.editable);
 	}
 
 	return columns;

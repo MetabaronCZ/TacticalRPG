@@ -5,9 +5,9 @@ import { ArchetypeID } from 'models/archetype';
 
 export const filter = (char: ICharacter): Map<JobID, IJob> => {
 	const arch = (ArchetypeID as any)[char.primary + char.secondary];
-	const filtered: Map<JobID, IJob> = new Map();
+	const filtered = new Map();
 
-	JobList.forEach((job: IJob, id: JobID) => {
+	JobList.forEach((job, id) => {
 		if (!job.archetype || -1 !== job.archetype.indexOf(arch)) {
 			filtered.set(id, job);
 		}

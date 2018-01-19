@@ -10,10 +10,10 @@ export const BaseAttributes: IBaseAttributes = {
 };
 
 export const getPrimaryAttributes = (primary: ArchCharID, secondary: ArchCharID): IBaseAttributes => {
-	const attributes: IBaseAttributes = Object.assign({}, BaseAttributes);
-	let P: number = 0;
-	let S: number = 0;
-	let M: number = 0;
+	const attributes = Object.assign({}, BaseAttributes);
+	let P = 0;
+	let S = 0;
+	let M = 0;
 
 	P += ( ArchCharID.P === primary ? 1 : 0 );
 	S += ( ArchCharID.S === primary ? 1 : 0 );

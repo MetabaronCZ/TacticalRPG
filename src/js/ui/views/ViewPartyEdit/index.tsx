@@ -32,7 +32,7 @@ interface IViewPartyEditContainerProps {
 }
 
 const ViewPartyEditContainer = ({ parties, characters, onSubmit, history, match }: IViewPartyEditContainerProps): JSX.Element => {
-	const party = parties.find((c: IParty) => c.id === match.params.id);
+	const party = parties.find((c) => c.id === match.params.id);
 
 	return (
 		<Page heading="Edit party">

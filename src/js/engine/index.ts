@@ -6,8 +6,8 @@ import Character, { ICharacterConfig } from 'engine/character';
 import Player from 'engine/player';
 import Position from 'engine/position';
 
-const orderMaxLength: number = 20;
-const cpLimit: number = 100;
+const orderMaxLength = 20;
+const cpLimit = 100;
 
 export interface IEngineConfig {
 	readonly party: IParty;
@@ -38,10 +38,10 @@ class Engine {
 		const enemy: ICharacterConfig[] = [];
 
 		// filter out non-existent characters and assign party character positions
-		party.characters.filter((id: string) => !!id)
-			.forEach((id: string, i: number) => {
+		party.characters.filter((id) => !!id)
+			.forEach((id, i) => {
 				const char = getCharacterById(id, conf.characters);
-				const charConfig: ICharacterConfig = {
+				const charConfig = {
 					...char,
 					position: new Position(i + 2, size - 1)
 				};
@@ -51,12 +51,12 @@ class Engine {
 		this.ally = new Player(ally, false);
 
 		// create random enemy party
-		const enemyParty: ICharacter[] = getRandomPartyCharacters(party.characters.length);
+		const enemyParty = getRandomPartyCharacters(party.characters.length);
 
 		// assign enemy character positions
 		enemyParty
-			.forEach((char: ICharacter, i: number) => {
-				const charConfig: ICharacterConfig = {
+			.forEach((char, i) => {
+				const charConfig = {
 					...char,
 					position: new Position(i + 2, 0)
 				};
@@ -85,20 +85,20 @@ class Engine {
 	}
 
 	private makeOrder(): Character[] {
-		const ally: Character[] = this.ally.getCharacters();
-		const enemy: Character[] = this.enemy.getCharacters();
+		const ally = this.ally.getCharacters();
+		const enemy = this.enemy.getCharacters();
 		let order: IOrderItem[] = [];
 
 		// serialize characters
-		const characters: IOrderItem[] = ally.concat(enemy)
-			.map((char: Character) => ({
+		const characters = ally.concat(enemy)
+			.map((char) => ({
 				id: char.id,
 				player: char.getPlayer(),
 				...char.getAttributes().current
 			}));
 
 		while (order.length < orderMaxLength) {
-			let act: IOrderItem[] = [];
+			let act = [];
 
 			// get characters who can act
 			for (const char of characters) {
@@ -122,8 +122,8 @@ class Engine {
 		}
 
 		// convert character IDs to characters
-		return order.map((char: IOrderItem) => {
-			return ally.concat(enemy).filter((c: Character) => c.id === char.id)[0];
+		return order.map((char) => {
+			return ally.concat(enemy).filter((c) => c.id === char.id)[0];
 		});
 	}
 }

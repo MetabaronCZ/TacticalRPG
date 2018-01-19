@@ -34,9 +34,9 @@ interface IViewCharacterEditContainerProps {
 }
 
 const ViewCharacterEditContainer = ({ characters, parties, history, match }: IViewCharacterEditContainerProps): JSX.Element => {
-	const partyID: string = match.params.party;
-	const party: IParty|undefined = parties.find((p: IParty) => p.id === partyID);
-	const onExit: IOnExit = exit(history);
+	const partyID = match.params.party;
+	const party = parties.find((p) => p.id === partyID);
+	const onExit = exit(history);
 
 	if (!party) {
 		throw new Error(`Game started with invalid party ID ${partyID}`);

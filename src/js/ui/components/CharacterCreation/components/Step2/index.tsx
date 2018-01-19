@@ -16,7 +16,7 @@ interface IStep2Props {
 }
 
 const Step2 = ({ fields, onChange }: IStep2Props): JSX.Element => {
-	const job: IJob|undefined = JobList.get(fields.job);
+	const job = JobList.get(fields.job);
 
 	return (
 		<div>
@@ -24,7 +24,7 @@ const Step2 = ({ fields, onChange }: IStep2Props): JSX.Element => {
 
 			<FormField fieldId="f-job" label="Character Job" info={fields.job && job ? job.description : undefined}>
 				<FormSelect id="f-job" name="job" value={fields.job} onChange={onChange}>
-					{Array.from(filterJobs(fields).entries()).map(([id, value]: [JobID, IJob], i: number) => (
+					{Array.from(filterJobs(fields).entries()).map(([id, value], i) => (
 						<FormSelectItem value={id} key={i}>
 							{value.title}
 						</FormSelectItem>

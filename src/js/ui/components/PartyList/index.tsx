@@ -29,11 +29,11 @@ interface IColumn {
 }
 
 const getColumns = (onMoveDown: IFun, onMoveUp: IFun, onDelete: IFun): IColumn[] => ([
-	{ title: 'Name', name: 'name', value: (party: IParty) => party.name },
-	{ title: '', name: 'moveDown', value: (party: IParty) => renderMoveDown(party, onMoveDown) },
-	{ title: '', name: 'moveUp', value: (party: IParty) => renderMoveUp(party, onMoveUp) },
+	{ title: 'Name', name: 'name', value: (party) => party.name },
+	{ title: '', name: 'moveDown', value: (party) => renderMoveDown(party, onMoveDown) },
+	{ title: '', name: 'moveUp', value: (party) => renderMoveUp(party, onMoveUp) },
 	{ title: '', name: 'edit', value: renderEdit },
-	{ title: '', name: 'delete', value: (party: IParty) => renderDelete(party, onDelete) }
+	{ title: '', name: 'delete', value: (party) => renderDelete(party, onDelete) }
 ]);
 
 interface IPartyListProps {
@@ -44,22 +44,22 @@ interface IPartyListProps {
 }
 
 const PartyList = ({ parties, onMoveDown, onMoveUp, onDelete }: IPartyListProps): JSX.Element => {
-	const columns: IColumn[] = getColumns(onMoveDown, onMoveUp, onDelete);
+	const columns = getColumns(onMoveDown, onMoveUp, onDelete);
 
 	return (
 		<ul className="List">
 			<li className="List-row List-row--header">
-				{columns.map((col: IColumn, i: number) => (
+				{columns.map((col, i) => (
 					<span className="List-row-column" key={i}>
 						{col.title}
 					</span>
 				))}
 			</li>
 
-			{parties.map((party: IParty, i: number) => {
+			{parties.map((party, i) => {
 				return (
 					<li className="List-row" key={i}>
-						{columns.map((col: IColumn, j: number) => (
+						{columns.map((col, j) => (
 							<span className={`List-row-column List-row-column--${col.name}`} key={j}>
 								{col.value(party)}
 							</span>

@@ -5,7 +5,7 @@ import routes, { IRoute } from 'ui/components/Router/routes';
 const Router = (): JSX.Element => (
 	<MemoryRouter>
 		<Switch>
-			{routes.map((route: IRoute, key) => (
+			{routes.map((route, key) => (
 				<Route exact={true} path={route.path} component={route.component} key={key} />
 			))}
 		</Switch>

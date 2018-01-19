@@ -19,7 +19,7 @@ import { ICharacter } from 'models/character';
 import { WeaponID, IWeapon } from 'models/weapon';
 
 // character name maximum length
-export const maxNameLength: number = 16;
+export const maxNameLength = 16;
 
 interface IDefaultCharacterData {
 	name?: string;
@@ -49,7 +49,7 @@ export const makeCharacter = ({
 	off = WeaponID.NONE,
 	armor = ArmorID.NONE,
 }: IDefaultCharacterData): ICharacter => {
-	const now: number = Date.now();
+	const now = Date.now();
 
 	return {
 		name,
@@ -68,12 +68,12 @@ export const makeCharacter = ({
 
 // returns random character properties
 export const getRandomCharacter = (name: string, jobId: JobID): ICharacter => {
-	const sex: SexID = (getRandomArrayItem(Object.keys(SexID)) as SexID);
-	const job: IJob|undefined = JobList.get(jobId);
-	let arch: ArchetypeID = job ? getRandomArrayItem(job.archetype) : ArchetypeID.PP;
+	const sex = (getRandomArrayItem(Object.keys(SexID)) as SexID);
+	const job = JobList.get(jobId);
+	let arch = job ? getRandomArrayItem(job.archetype) : ArchetypeID.PP;
 	arch = arch || ArchetypeID.PP;
 
-	const character: ICharacter = makeCharacter({
+	const character = makeCharacter({
 		name,
 		job: jobId,
 		sex,
@@ -81,7 +81,7 @@ export const getRandomCharacter = (name: string, jobId: JobID): ICharacter => {
 		secondary: arch[1] as ArchCharID
 	});
 
-	const main: Map<WeaponID, IWeapon> = filterWeapon(character, WieldID.MAIN);
+	const main = filterWeapon(character, WieldID.MAIN);
 
 	if (main.size > 1) {
 		const filtered = new Map<WeaponID, IWeapon>(main);
@@ -91,7 +91,7 @@ export const getRandomCharacter = (name: string, jobId: JobID): ICharacter => {
 		character.main = Array.from(main.keys())[0];
 	}
 
-	const off: Map<WeaponID, IWeapon> = filterWeapon(character, WieldID.OFF);
+	const off = filterWeapon(character, WieldID.OFF);
 
 	if (off.size > 1) {
 		const filtered = new Map<WeaponID, IWeapon>(main);
@@ -101,7 +101,7 @@ export const getRandomCharacter = (name: string, jobId: JobID): ICharacter => {
 		character.off = Array.from(main.keys())[0];
 	}
 
-	const arm: Map<ArmorID, IArmor> = filterArmor(character);
+	const arm = filterArmor(character);
 
 	if (arm.size > 1) {
 		const filtered = new Map<ArmorID, IArmor>(arm);

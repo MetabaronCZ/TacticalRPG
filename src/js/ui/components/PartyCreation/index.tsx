@@ -58,9 +58,9 @@ class PartyCreation extends React.Component {
 	}
 
 	public render() {
-		const fields: IParty = this.state.fields;
-		const errors: { [field: string]: string } = this.state.errors;
-		const partyExists: boolean = !!(this.props.characters && this.props.characters.length);
+		const fields = this.state.fields;
+		const errors = this.state.errors;
+		const partyExists = !!(this.props.characters && this.props.characters.length);
 
 		return (
 			<Form onSubmit={this.onSubmit}>
@@ -80,7 +80,7 @@ class PartyCreation extends React.Component {
 								/>
 							</FormField>
 
-							{Array(characterCount).fill('').map((x: string, i: number) => this.renderPartyItem(i))}
+							{Array(characterCount).fill('').map((x, i) => this.renderPartyItem(i))}
 						</div>
 					)
 					: this.renderNoCharacter()
@@ -101,14 +101,14 @@ class PartyCreation extends React.Component {
 
 	private onChange(e: SyntheticEvent<any>) {
 		const fields = this.state.fields;
-		let field: string = e.currentTarget.name;
-		let value: any = e.currentTarget.value;
+		let field = e.currentTarget.name;
+		let value = e.currentTarget.value;
 
 		validateField(field, value, this.handleValidationError);
 
 		if (field.match(/^character/)) {
-			const chars: string[] = fields.characters.slice(0);
-			const i: number = parseInt(field.split('-')[1], 10);
+			const chars = fields.characters.slice(0);
+			const i = parseInt(field.split('-')[1], 10);
 			chars[i] = value;
 			field = 'characters';
 			value = chars;
@@ -125,7 +125,7 @@ class PartyCreation extends React.Component {
 	private onSubmit(e: SyntheticEvent<any>) {
 		e.preventDefault();
 
-		const isValidForm: boolean = validateForm(this.state.fields, this.handleValidationError);
+		const isValidForm = validateForm(this.state.fields, this.handleValidationError);
 
 		if (!isValidForm) {
 			return;
@@ -147,22 +147,22 @@ class PartyCreation extends React.Component {
 	}
 
 	private filterCharacters(character?: ICharacter): ICharacter[] {
-		const selected: string[] = this.state.fields.characters;
-		const characters: ICharacter[] = this.props.characters;
+		const selected = this.state.fields.characters;
+		const characters = this.props.characters;
 
 		// filter unselected characters (keep character itself)
-		let filtered = characters.filter((char: ICharacter) => {
+		let filtered = characters.filter((char) => {
 			return (character && char.id === character.id) || -1 === selected.indexOf(char.id);
 		});
 
 		// get selected jobs
-		const selectedJobs: JobID[] = selected.map((id: string) => {
-			const char: ICharacter = getCharacterById(id, characters);
+		const selectedJobs = selected.map((id) => {
+			const char = getCharacterById(id, characters);
 			return char ? char.job : JobID.NONE;
 		});
 
 		// filter characters with job not in selection (keep character itself and unused characters with same job)
-		filtered = filtered.filter((char: ICharacter) => {
+		filtered = filtered.filter((char) => {
 			return (character && char.id === character.id) || (character && char.job === character.job) || -1 === selectedJobs.indexOf(char.job);
 		});
 
@@ -170,17 +170,17 @@ class PartyCreation extends React.Component {
 	}
 
 	private renderPartyItem(i: number) {
-		const id: string = this.state.fields.characters[i];
-		const selected: ICharacter = getCharacterById(id, this.props.characters);
-		const characters: ICharacter[] = this.filterCharacters(selected);
-		let info: string = '';
+		const id = this.state.fields.characters[i];
+		const selected = getCharacterById(id, this.props.characters);
+		const characters = this.filterCharacters(selected);
+		let info = '';
 
 		if (selected) {
-			const main: IWeapon|undefined = WeaponList.get(selected.main);
-			const off: IWeapon|undefined = WeaponList.get(selected.off);
-			const arm: IArmor|undefined = ArmorList.get(selected.armor);
-			const sex: ISex|undefined = SexList.get(selected.sex);
-			const job: IJob|undefined = JobList.get(selected.job);
+			const main = WeaponList.get(selected.main);
+			const off = WeaponList.get(selected.off);
+			const arm = ArmorList.get(selected.armor);
+			const sex = SexList.get(selected.sex);
+			const job = JobList.get(selected.job);
 
 			if (!sex)  { throw new Error('PartyCreation could not render item - invalid SexID'); }
 			if (!main) { throw new Error('PartyCreation could not render item - invalid main WeaponID'); }
@@ -190,7 +190,7 @@ class PartyCreation extends React.Component {
 
 			info = `${sex.title} ${job.title} | ${main.title} + ${off.title} | ${arm.title}`;
 		}
-		const fieldId: string = `f-character-${i}`;
+		const fieldId = `f-character-${i}`;
 
 		return (
 			<FormField fieldId={fieldId} label={`Character ${i + 1}`} info={info} key={i}>
@@ -199,7 +199,7 @@ class PartyCreation extends React.Component {
 						- Empty -
 					</FormSelectItem>
 
-					{characters.map((char: ICharacter, j: number) => (
+					{characters.map((char, j) => (
 						<FormSelectItem value={char.id} key={j}>
 							{char.name}
 						</FormSelectItem>

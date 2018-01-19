@@ -20,7 +20,7 @@ export const validateField = (fieldName: string, value: string, cb?: IValidation
 	if (!rules[fieldName]) {
 		return true;
 	}
-	const isValid: boolean = rules[fieldName].rule(value);
+	const isValid = rules[fieldName].rule(value);
 
 	if ('function' === typeof cb) {
 		cb(fieldName, isValid ? null : rules[fieldName].text);
@@ -29,10 +29,10 @@ export const validateField = (fieldName: string, value: string, cb?: IValidation
 };
 
 export const validateForm = (fields: any, cb: IValidationCallback): boolean => {
-	let isValidForm: boolean = true;
+	let isValidForm = true;
 
 	for (const field in fields) {
-		const isValid: boolean = validateField(field, fields[field], cb);
+		const isValid = validateField(field, fields[field], cb);
 
 		if (!isValid) {
 			isValidForm = false;

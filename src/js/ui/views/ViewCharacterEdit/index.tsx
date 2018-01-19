@@ -29,8 +29,8 @@ interface IViewCharacterEditContainerProps {
 }
 
 const ViewCharacterEditContainer = ({ characters, onSubmit, history, match }: IViewCharacterEditContainerProps): JSX.Element => {
-	const charID: string = match.params.id;
-	const character: ICharacter|undefined = characters.find((char: ICharacter) => char.id === charID);
+	const charID = match.params.id;
+	const character = characters.find((char) => char.id === charID);
 
 	return (
 		<Page heading="Edit character">

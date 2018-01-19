@@ -10,8 +10,8 @@ import Character from 'engine/character';
 import { IParty } from 'models/party';
 import { ICharacter } from 'models/character';
 
-const gridSize: number = 12;
-const blockSize: number = 64;
+const gridSize = 12;
+const blockSize = 64;
 
 interface IGameProps {
 	party: IParty;
@@ -57,10 +57,10 @@ class Game extends React.Component {
 	}
 
 	public render() {
-		const state: IEngineState = this.state.engine;
-		const ally: Character[] = state.ally;
-		const enemy: Character[] = state.enemy;
-		const order: Character[] = state.order;
+		const state = this.state.engine;
+		const ally = state.ally;
+		const enemy = state.enemy;
+		const order = state.order;
 
 		return (
 			<div className="GameUI">
