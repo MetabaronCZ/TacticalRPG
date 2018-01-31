@@ -58,8 +58,7 @@ class PartyCreation extends React.Component {
 	}
 
 	public render() {
-		const fields = this.state.fields;
-		const errors = this.state.errors;
+		const { fields, errors } = this.state;
 		const partyExists = !!(this.props.characters && this.props.characters.length);
 
 		return (

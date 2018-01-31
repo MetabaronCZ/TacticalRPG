@@ -18,8 +18,7 @@ class CharacterBlock extends React.Component {
 	}
 
 	public render() {
-		const char = this.props.char;
-		const size = this.props.size;
+		const { char, size } = this.props;
 		const player = this.props.char.getPlayer();
 		const type = (player.isEnemy() ? 'enemy' : 'ally');
 

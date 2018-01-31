@@ -47,9 +47,8 @@ class BattleSetup extends React.Component {
 	}
 
 	public render() {
+		const { characters, parties } = this.props;
 		const fields: any = this.state.fields;
-		const characters = this.props.characters;
-		const parties = this.props.parties;
 		let selectedParty;
 		let chars: ICharacter[] = [];
 

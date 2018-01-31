@@ -7,8 +7,7 @@ import { ArchetypeCharacteristicID as ArchCharID } from 'models/archetype';
 import { JobID } from 'models/job';
 
 const check = (wpn: IWeapon, char: ICharacter, slot: WieldID): boolean => {
-	const primary = char.primary;
-	const secondary = char.secondary;
+	const { primary, secondary } = char;
 	const wield = wpn.wield;
 
 	// check weapon type according to character archetype

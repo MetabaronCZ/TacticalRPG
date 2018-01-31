@@ -57,10 +57,7 @@ class Game extends React.Component {
 	}
 
 	public render() {
-		const state = this.state.engine;
-		const ally = state.ally;
-		const enemy = state.enemy;
-		const order = state.order;
+		const { ally, enemy, order } = this.state.engine;
 
 		return (
 			<div className="GameUI">
