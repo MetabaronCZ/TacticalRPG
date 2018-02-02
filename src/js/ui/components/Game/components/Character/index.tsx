@@ -2,12 +2,10 @@ import React from 'react';
 
 import Character from 'engine/character';
 import Player from 'engine/player';
-import { IOnSelect } from 'ui/components/Game/components/Characters';
 
 interface ICharacterBlockProps {
 	char: Character;
 	size: number;
-	onSelect: IOnSelect;
 }
 
 class CharacterBlock extends React.Component {
@@ -27,17 +25,8 @@ class CharacterBlock extends React.Component {
 			height: size + 'px'
 		};
 
-		const onSelect = () => {
-			this.props.onSelect();
-			this.forceUpdate();
-		};
-
 		return (
-			<div
-				className={`Character Character--${type} ${char.isSelected() ? 'is-selected' : ''}`}
-				style={style}
-				onClick={onSelect}
-			>
+			<div className={`Character Character--${type}`} style={style}>
 				<span className="Character-title">
 					{char.name}
 				</span>
