@@ -6,7 +6,7 @@ import { withRouter } from 'react-router';
 import { goto, gotoFn } from 'utils/nav';
 import Page from 'ui/components/Page';
 import BattleSetup from 'ui/components/BattleSetup';
-import { IState } from 'ui/store';
+import { IState } from 'store';
 import { ICharacter } from 'models/character';
 import { IParty } from 'models/party';
 

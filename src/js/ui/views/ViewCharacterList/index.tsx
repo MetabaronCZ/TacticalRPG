@@ -6,8 +6,8 @@ import { withRouter } from 'react-router';
 import { gotoFn } from 'utils/nav';
 import ViewCharacterList from 'ui/views/ViewCharacterList/template';
 
-import actions from 'ui/actions/characters';
-import { IState, IAction } from 'ui/store';
+import actions from 'actions/characters';
+import { IState, IAction } from 'store';
 import { ICharacter } from 'models/character';
 
 const mapStateToProps = (state: IState) => ({

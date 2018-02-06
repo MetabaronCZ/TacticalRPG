@@ -1,5 +1,5 @@
 import { ICharacter } from 'models/character';
-import { IAction } from 'ui/store';
+import { IAction } from 'store';
 
 export enum ActionID {
 	ADD = 'CHARACTER_ADD',

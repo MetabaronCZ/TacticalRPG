@@ -4,10 +4,10 @@ import { connect, Dispatch } from 'react-redux';
 import { withRouter } from 'react-router';
 
 import { goto, gotoFn } from 'utils/nav';
-import actions from 'ui/actions/parties';
+import actions from 'actions/parties';
 import Page from 'ui/components/Page';
 import PartyCreation from 'ui/components/PartyCreation';
-import { IState, IAction } from 'ui/store';
+import { IState, IAction } from 'store';
 import { IParty } from 'models/party';
 import { ICharacter } from 'models/character';
 

@@ -1,6 +1,6 @@
 import { createStore } from 'redux';
 import { Store } from 'react-redux';
-import reducers from 'ui/reducers';
+import reducers from 'reducers';
 
 export interface IState {
 	characters?: any[];

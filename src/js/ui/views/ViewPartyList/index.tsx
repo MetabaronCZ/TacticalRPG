@@ -7,8 +7,8 @@ import { withRouter } from 'react-router';
 import { gotoFn } from 'utils/nav';
 import ViewPartyList from 'ui/views/ViewPartyList/template';
 
-import actions from 'ui/actions/parties';
-import { IState, IAction } from 'ui/store';
+import actions from 'actions/parties';
+import { IState, IAction } from 'store';
 import { IParty } from 'models/party';
 
 const mapStateToProps = (state: IState) => ({

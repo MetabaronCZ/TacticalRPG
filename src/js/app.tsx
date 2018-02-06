@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import Router from 'ui/components/Router';
 import PageWrapper from 'ui/components/PageWrapper';
 
-import store from 'ui/store';
+import store from 'store';
 
 ReactDOM.render(
 	<PageWrapper>

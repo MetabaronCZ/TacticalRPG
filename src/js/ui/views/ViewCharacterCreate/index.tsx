@@ -4,10 +4,10 @@ import { connect, Dispatch } from 'react-redux';
 import { withRouter } from 'react-router';
 
 import { goto, gotoFn } from 'utils/nav';
-import actions from 'ui/actions/characters';
+import actions from 'actions/characters';
 import Page from 'ui/components/Page';
 import CharacterCreation from 'ui/components/CharacterCreation';
-import { IAction } from 'ui/store';
+import { IAction } from 'store';
 import { ICharacter } from 'models/character';
 
 const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
