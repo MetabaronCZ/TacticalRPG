@@ -1,7 +1,7 @@
 import uuid from 'uuid';
 
-import { filter as filterWeapon } from 'utils/character/weapon';
-import { filter as filterArmor } from 'utils/character/armor';
+import { filter as filterWeapon } from 'utils/weapon';
+import { filter as filterArmor } from 'utils/armor';
 import { getRandomArrayItem } from 'utils/array';
 import { getRandomMapItem } from 'utils/map';
 

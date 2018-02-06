@@ -11,9 +11,9 @@ import Step3 from 'ui/components/CharacterCreation/components/Step3';
 
 import { validateField, validateForm } from 'utils/validation';
 
-import { filter as filterJobs } from 'utils/character/jobs';
-import { filter as filterWeapon } from 'utils/character/weapon';
-import { filter as filterArmor } from 'utils/character/armor';
+import { filter as filterJobs } from 'utils/jobs';
+import { filter as filterWeapon } from 'utils/weapon';
+import { filter as filterArmor } from 'utils/armor';
 import { makeCharacter } from 'utils/character';
 
 import { WieldID } from 'models/wield';

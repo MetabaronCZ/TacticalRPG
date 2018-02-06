@@ -1,5 +1,5 @@
 // random name generator (Markov chains order)
-import samples from 'utils/random-name/samples';
+import samples from 'data/names';
 
 const markovOrder = 3;
 const paramEnd = 'END';

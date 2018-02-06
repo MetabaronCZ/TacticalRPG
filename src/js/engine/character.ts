@@ -2,7 +2,7 @@ import uuid from 'uuid/v1';
 
 import Player from 'engine/player';
 import Position from 'engine/position';
-import { getAttributes } from 'utils/character/attributes';
+import { getAttributes } from 'utils/attributes';
 import { IAttributes } from 'models/attributes';
 import { ICharacter } from 'models/character';
 import { JobID } from 'models/job';

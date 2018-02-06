@@ -1,6 +1,6 @@
 import uuid from 'uuid';
 
-import getRandomNames from 'utils/random-name/generator';
+import getRandomNames from 'utils/random-name-generator';
 import { getRandomArrayItems } from 'utils/array';
 
 import { getRandomCharacter } from 'utils/character';

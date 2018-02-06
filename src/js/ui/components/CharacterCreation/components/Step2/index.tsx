@@ -6,7 +6,7 @@ import FormSelect from 'ui/components/FormSelect';
 import FormSelectItem from 'ui/components/FormSelectItem';
 
 import JobList from 'data/job-list';
-import { filter as filterJobs } from 'utils/character/jobs';
+import { filter as filterJobs } from 'utils/jobs';
 import { ICharacter } from 'models/character';
 
 interface IStep2Props {

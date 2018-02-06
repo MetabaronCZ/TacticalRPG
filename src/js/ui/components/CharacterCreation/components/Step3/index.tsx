@@ -8,8 +8,8 @@ import { WieldID } from 'models/wield';
 import WeaponList from 'data/weapon-list';
 import ArmorList from 'data/armor-list';
 
-import { filter as filterArmor } from 'utils/character/armor';
-import { filter as filterWeapon } from 'utils/character/weapon';
+import { filter as filterArmor } from 'utils/armor';
+import { filter as filterWeapon } from 'utils/weapon';
 import { ICharacter } from 'models/character';
 
 interface IStep3Props {
