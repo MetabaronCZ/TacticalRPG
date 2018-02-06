@@ -1,5 +1,5 @@
 import React from 'react';
-import getColumns, { IColumn } from 'ui/components/CharacterList/columns';
+import getColumns from 'ui/components/CharacterList/columns';
 import { ICharacter } from 'models/character';
 import { IOnMoveDown, IOnMoveUp, IOnDelete } from 'ui/views/ViewCharacterList';
 

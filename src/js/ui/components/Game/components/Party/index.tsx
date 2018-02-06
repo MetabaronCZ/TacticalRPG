@@ -2,10 +2,9 @@ import React from 'react';
 import ArchetypeIco from 'ui/components/ArchetypeIco';
 import Bar from 'ui/components/Game/components/Bar';
 
-import Character, { ICharacterAttributes } from 'engine/character';
+import Character from 'engine/character';
 import icos from 'utils/icos';
 import JobList from 'data/job-list';
-import { IJob } from 'models/job';
 
 interface IPartyProps {
 	characters: Character[];

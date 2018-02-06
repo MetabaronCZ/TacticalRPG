@@ -1,7 +1,6 @@
 import { ActionID as CharacterActionID } from 'ui/actions/characters';
 import { add, edit, remove, swap } from 'utils/array';
-import { IState, IAction } from 'ui/store';
-import { ICharacter } from 'models/character';
+import { IAction } from 'ui/store';
 
 // characters reducer
 const characters = (state = [], action: IAction) => {

@@ -11,8 +11,6 @@ import ArmorList from 'data/armor-list';
 import { filter as filterArmor } from 'utils/character/armor';
 import { filter as filterWeapon } from 'utils/character/weapon';
 import { ICharacter } from 'models/character';
-import { ArmorID, IArmor } from 'models/armor';
-import { WeaponID, IWeapon } from 'models/weapon';
 
 interface IStep3Props {
 	fields: ICharacter;

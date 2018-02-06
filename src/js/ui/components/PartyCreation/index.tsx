@@ -19,10 +19,7 @@ import WeaponList from 'data/weapon-list';
 import ArmorList from 'data/armor-list';
 import { IParty } from 'models/party';
 import { ICharacter } from 'models/character';
-import { JobID, IJob } from 'models/job';
-import { IArmor, ArmorID } from 'models/armor';
-import { IWeapon } from 'models/weapon';
-import { ISex } from 'models/sex';
+import { JobID } from 'models/job';
 
 interface IPartyCreationProps {
 	party?: IParty;

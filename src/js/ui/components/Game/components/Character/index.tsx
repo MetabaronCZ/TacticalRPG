@@ -1,7 +1,5 @@
 import React from 'react';
-
 import Character from 'engine/character';
-import Player from 'engine/player';
 
 interface ICharacterBlockProps {
 	char: Character;

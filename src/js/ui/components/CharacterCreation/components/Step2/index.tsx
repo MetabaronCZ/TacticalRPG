@@ -8,7 +8,6 @@ import FormSelectItem from 'ui/components/FormSelectItem';
 import JobList from 'data/job-list';
 import { filter as filterJobs } from 'utils/character/jobs';
 import { ICharacter } from 'models/character';
-import { JobID, IJob } from 'models/job';
 
 interface IStep2Props {
 	fields: ICharacter;

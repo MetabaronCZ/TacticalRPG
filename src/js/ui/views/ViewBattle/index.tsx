@@ -5,7 +5,6 @@ import { withRouter } from 'react-router';
 
 import Game from 'ui/components/Game';
 import { goto, gotoFn } from 'utils/nav';
-import { getCharacterById } from 'utils/party';
 import { IParty } from 'models/party';
 import { IState } from 'ui/store';
 import { ICharacter } from 'models/character';

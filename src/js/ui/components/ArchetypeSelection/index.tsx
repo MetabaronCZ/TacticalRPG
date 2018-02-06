@@ -3,7 +3,7 @@ import FormRadio from 'ui/components/FormRadio';
 import ArchetypeIco from 'ui/components/ArchetypeIco';
 import ArchetypeList from 'data/archetype-list';
 import { SizeID } from 'ui/components/ArchetypeIco/sizes';
-import { ArchetypeCharacteristicID as ArchCharID, IArchetype } from 'models/archetype';
+import { ArchetypeCharacteristicID as ArchCharID } from 'models/archetype';
 
 interface IArchetypeSelectionProps {
 	primary?: ArchCharID;

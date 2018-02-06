@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 
 interface IButtonRowProps {
-	children: JSX.Element|JSX.Element[];
+	children: ReactNode;
 }
 
 const ButtonRow = ({ children }: IButtonRowProps): JSX.Element => {

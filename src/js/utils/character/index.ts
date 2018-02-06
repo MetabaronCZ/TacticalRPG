@@ -1,19 +1,16 @@
 import uuid from 'uuid';
 
-import { filter as filterJobs } from 'utils/character/jobs';
 import { filter as filterWeapon } from 'utils/character/weapon';
 import { filter as filterArmor } from 'utils/character/armor';
 import { getRandomArrayItem } from 'utils/array';
 import { getRandomMapItem } from 'utils/map';
 
 import JobList from 'data/job-list';
-import ArchetypeList from 'data/archetype-list';
-import WeaponList from 'data/weapon-list';
 import { WieldID } from 'models/wield';
 import { SexID } from 'models/sex';
 import { ArmorID, IArmor } from 'models/armor';
 import { ArchetypeID, ArchetypeCharacteristicID as ArchCharID } from 'models/archetype';
-import { JobID, IJob } from 'models/job';
+import { JobID } from 'models/job';
 import { ICharacter } from 'models/character';
 
 import { WeaponID, IWeapon } from 'models/weapon';

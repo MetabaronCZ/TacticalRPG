@@ -1,4 +1,4 @@
-import { WieldID, IWield } from 'models/wield';
+import { WieldID } from 'models/wield';
 import { WeaponID, IWeapon } from 'models/weapon';
 import { WeaponTypeID } from 'models/weapon-types';
 import { ICharacter } from 'models/character';

@@ -1,5 +1,4 @@
 import React, { SyntheticEvent } from 'react';
-import { IFormSelectItemProps } from 'ui/components/FormSelectItem';
 import { ReactNode } from 'react-redux';
 
 interface IFormSelect {

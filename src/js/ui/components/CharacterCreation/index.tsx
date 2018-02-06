@@ -17,10 +17,9 @@ import { filter as filterArmor } from 'utils/character/armor';
 import { makeCharacter } from 'utils/character';
 
 import { WieldID } from 'models/wield';
-import { ArmorID, IArmor } from 'models/armor';
+import { ArmorID } from 'models/armor';
 import { WeaponID } from 'models/weapon';
 import { ICharacter } from 'models/character';
-import { JobID, IJob } from 'models/job';
 
 const steps: string[] = ['Character Identity', 'Character Archetype', 'Equipment'];
 

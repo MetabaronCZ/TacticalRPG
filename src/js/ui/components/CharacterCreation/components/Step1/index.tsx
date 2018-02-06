@@ -8,7 +8,6 @@ import { maxNameLength } from 'utils/character';
 import icos from 'utils/icos';
 
 import SexList from 'data/sex-list';
-import { SexID, ISex } from 'models/sex';
 import { ICharacter } from 'models/character';
 
 interface IStep1Props {
