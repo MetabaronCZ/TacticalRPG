@@ -4,26 +4,23 @@ import FormField from 'ui/components/FormField';
 import FormSelect from 'ui/components/FormSelect';
 import FormSelectItem from 'ui/components/FormSelectItem';
 
+import { Armors } from 'models/armor';
 import { WieldID } from 'models/wield';
-import WeaponList from 'data/weapon-list';
-import ArmorList from 'data/armor-list';
-
-import { filter as filterArmor } from 'utils/armor';
-import { filter as filterWeapon } from 'utils/weapon';
-import { ICharacter } from 'models/character';
+import { Weapons } from 'models/weapon';
+import { ICharacterData } from 'models/character';
 
 interface IStep3Props {
-	fields: ICharacter;
+	fields: ICharacterData;
 	onChange: () => void;
 }
 
 const Step3 = ({ fields, onChange }: IStep3Props): JSX.Element => {
-	const mainWeapons = filterWeapon(fields, WieldID.MAIN);
-	const offWeapons = filterWeapon(fields, WieldID.OFF);
-	const armors = filterArmor(fields);
-	const armor = ArmorList.get(fields.armor);
-	const main = WeaponList.get(fields.main);
-	const off = WeaponList.get(fields.off);
+	const mainWeapons = Weapons.filter(fields, WieldID.MAIN);
+	const offWeapons = Weapons.filter(fields, WieldID.OFF);
+	const armors = Armors.filter(fields);
+	const armor = Armors.get(fields.armor);
+	const main = Weapons.get(fields.main);
+	const off = Weapons.get(fields.off);
 	const isBothWielding = (offWeapons.size < 2);
 
 	if (!main) {
@@ -42,7 +39,7 @@ const Step3 = ({ fields, onChange }: IStep3Props): JSX.Element => {
 		<div>
 			<FormField fieldId="f-main" label="Main hand" info={main.description}>
 				<FormSelect id="f-main" name="main" value={fields.main} onChange={onChange}>
-					{Array.from(mainWeapons.entries()).map(([id, item], i) => {
+					{mainWeapons.map((id, item, i) => {
 						return (
 							<FormSelectItem value={id} key={i}>
 								{item.title}
@@ -57,7 +54,7 @@ const Step3 = ({ fields, onChange }: IStep3Props): JSX.Element => {
 					!isBothWielding
 						? (
 							<FormSelect id="f-off" name="off" value={fields.off} onChange={onChange}>
-								{Array.from(offWeapons.entries()).map(([id, item], i) => {
+								{offWeapons.map((id, item, i) => {
 									return (
 										<FormSelectItem value={id} key={i}>
 											{item.title}
@@ -76,7 +73,7 @@ const Step3 = ({ fields, onChange }: IStep3Props): JSX.Element => {
 
 			<FormField fieldId="f-armor" label="Armor" info={armor.description}>
 				<FormSelect id="f-armor" name="armor" value={fields.armor} onChange={onChange}>
-					{Array.from(armors.entries()).map(([id, item], i) => {
+					{armors.map((id, item, i) => {
 						return (
 							<FormSelectItem value={id} key={i}>
 								{item.title}

@@ -1,5 +1,6 @@
 import React, { SyntheticEvent } from 'react';
-import icos from 'utils/icos';
+
+import icos from 'data/icos';
 import ButtonSize from 'ui/components/Button/sizes';
 import ButtonColor from 'ui/components/Button/colors';
 

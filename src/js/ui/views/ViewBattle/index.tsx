@@ -5,9 +5,9 @@ import { withRouter } from 'react-router';
 
 import Game from 'ui/components/Game';
 import { goto, gotoFn } from 'utils/nav';
-import { IParty } from 'models/party';
 import { IState } from 'store';
-import { ICharacter } from 'models/character';
+import { IPartyData } from 'models/party';
+import { ICharacterData } from 'models/character';
 
 const txtExitConfirm = 'Do you realy want to exit and lost your game progress?';
 
@@ -26,8 +26,8 @@ const mapStateToProps = (state: IState) => ({
 });
 
 interface IViewCharacterEditContainerProps {
-	characters: ICharacter[];
-	parties: IParty[];
+	characters: ICharacterData[];
+	parties: IPartyData[];
 	history: History;
 	match: any;
 }

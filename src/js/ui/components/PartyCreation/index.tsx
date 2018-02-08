@@ -11,25 +11,24 @@ import ButtonRow from 'ui/components/ButtonRow';
 import Separator from 'ui/components/Separator';
 
 import { validateField, validateForm } from 'utils/validation';
-import { characterCount, getCharacterById, makeParty, maxNameLength } from 'utils/party';
+import { characterCount, getCharacterById, makeParty, maxNameLength } from 'models/party/utils';
 
-import SexList from 'data/sex-list';
-import JobList from 'data/job-list';
-import WeaponList from 'data/weapon-list';
-import ArmorList from 'data/armor-list';
-import { IParty } from 'models/party';
-import { ICharacter } from 'models/character';
-import { JobID } from 'models/job';
+import { Sexes } from 'models/sex';
+import { Armors } from 'models/armor';
+import { Weapons } from 'models/weapon';
+import { JobID, Jobs } from 'models/job';
+import { IPartyData } from 'models/party';
+import { ICharacterData } from 'models/character';
 
 interface IPartyCreationProps {
-	party?: IParty;
-	characters: ICharacter[];
+	party?: IPartyData;
+	characters: ICharacterData[];
 	onBack?: () => void;
-	onSubmit: (party: IParty) => void;
+	onSubmit: (party: IPartyData) => void;
 }
 
 interface IPartyCreationState {
-	fields: IParty;
+	fields: IPartyData;
 	errors: {
 		[field: string]: string;
 	};
@@ -142,7 +141,7 @@ class PartyCreation extends React.Component {
 		});
 	}
 
-	private filterCharacters(character?: ICharacter): ICharacter[] {
+	private filterCharacters(character?: ICharacterData): ICharacterData[] {
 		const selected = this.state.fields.characters;
 		const characters = this.props.characters;
 
@@ -172,17 +171,11 @@ class PartyCreation extends React.Component {
 		let info = '';
 
 		if (selected) {
-			const main = WeaponList.get(selected.main);
-			const off = WeaponList.get(selected.off);
-			const arm = ArmorList.get(selected.armor);
-			const sex = SexList.get(selected.sex);
-			const job = JobList.get(selected.job);
-
-			if (!sex)  { throw new Error('PartyCreation could not render item - invalid SexID'); }
-			if (!main) { throw new Error('PartyCreation could not render item - invalid main WeaponID'); }
-			if (!off)  { throw new Error('PartyCreation could not render item - invalid off WeaponID'); }
-			if (!arm)  { throw new Error('PartyCreation could not render item - invalid ArmorID'); }
-			if (!job)  { throw new Error('PartyCreation could not render item - invalid JobID'); }
+			const main = Weapons.get(selected.main);
+			const off = Weapons.get(selected.off);
+			const arm = Armors.get(selected.armor);
+			const sex = Sexes.get(selected.sex);
+			const job = Jobs.get(selected.job);
 
 			info = `${sex.title} ${job.title} | ${main.title} + ${off.title} | ${arm.title}`;
 		}

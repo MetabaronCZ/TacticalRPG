@@ -1,5 +1,5 @@
 import React from 'react';
-import icos from 'utils/icos';
+import icos from 'data/icos';
 
 interface ILinkIcoProps {
 	ico: string;

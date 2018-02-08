@@ -1,7 +1,6 @@
 import React from 'react';
 import ArchetypeIcoSizes, { SizeID } from 'ui/components/ArchetypeIco/sizes';
-import ArchetypeList from 'data/archetype-list';
-import { ArchetypeCharacteristicID as ArchCharID } from 'models/archetype';
+import { ArchCharID, Archetypes } from 'models/archetype';
 
 interface IArchetypeIcoProps {
 	size?: SizeID;
@@ -15,8 +14,8 @@ const ArchetypeIco = ({
 	secondary = ArchCharID.P
 }: IArchetypeIcoProps): JSX.Element => {
 	const sizeData = ArchetypeIcoSizes[size];
-	const primaryData = ArchetypeList.get(primary);
-	const secondaryData = ArchetypeList.get(secondary);
+	const primaryData = Archetypes.get(primary);
+	const secondaryData = Archetypes.get(secondary);
 	const cls = `ArchetypeIco ArchetypeIco--primary${primary} ArchetypeIco--secondary${secondary} ArchetypeIco--size${sizeData}`;
 	const title = `${primary}${secondary} Archetype (${primaryData ? primaryData.title : ''} + ${secondaryData ? secondaryData.title : ''})`;
 

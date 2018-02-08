@@ -1,11 +1,13 @@
 import React from 'react';
+
 import getColumns from 'ui/components/CharacterList/columns';
-import { ICharacter } from 'models/character';
 import { IOnMoveDown, IOnMoveUp, IOnDelete } from 'ui/views/ViewCharacterList';
+
+import { ICharacterData } from 'models/character';
 
 interface ICharacterListProps {
 	editable?: boolean;
-	characters: ICharacter[];
+	characters: ICharacterData[];
 	onMoveDown?: IOnMoveDown;
 	onMoveUp?: IOnMoveUp;
 	onDelete?: IOnDelete;

@@ -3,26 +3,27 @@ import { History } from 'history';
 import { connect, Dispatch } from 'react-redux';
 import { withRouter } from 'react-router';
 
-import { goto, gotoFn } from 'utils/nav';
-import actions from 'actions/characters';
 import Page from 'ui/components/Page';
 import CharacterCreation from 'ui/components/CharacterCreation';
+
+import { goto, gotoFn } from 'utils/nav';
+import actions from 'actions/characters';
 import { IState, IAction } from 'store';
-import { ICharacter } from 'models/character';
+import { ICharacterData } from 'models/character';
 
 const mapStateToProps = (state: IState) => ({
 	characters: state.characters
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
-	onSubmit: (history: History) => (char: ICharacter) => {
+	onSubmit: (history: History) => (char: ICharacterData) => {
 		dispatch(actions.editCharacter(char));
 		goto(history, '/character-list');
 	}
 });
 
 interface IViewCharacterEditContainerProps {
-	characters: ICharacter[];
+	characters: ICharacterData[];
 	onSubmit: (history: History) => any;
 	history: History;
 	match: any;

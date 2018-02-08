@@ -10,13 +10,14 @@ import ButtonRow from 'ui/components/ButtonRow';
 import Separator from 'ui/components/Separator';
 import CharacterList from 'ui/components/CharacterList';
 
-import { getCharacterById } from 'utils/party';
-import { IParty } from 'models/party';
-import { ICharacter } from 'models/character';
+import { getCharacterById } from 'models/party/utils';
+
+import { IPartyData } from 'models/party';
+import { ICharacterData } from 'models/character';
 
 interface IBattleSetupProps {
-	parties: IParty[];
-	characters: ICharacter[];
+	parties: IPartyData[];
+	characters: ICharacterData[];
 	onStart: (fields: any) => void;
 	onBack: (e: SyntheticEvent<any>) => void;
 }
@@ -50,7 +51,7 @@ class BattleSetup extends React.Component {
 		const { characters, parties } = this.props;
 		const fields: any = this.state.fields;
 		let selectedParty;
-		let chars: ICharacter[] = [];
+		let chars: ICharacterData[] = [];
 
 		if (parties && parties.length) {
 			selectedParty = parties.filter((p) => p.id === fields.party)[0];

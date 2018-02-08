@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Character from 'engine/character';
+import { Character } from 'models/character';
 import CharacterBlock from 'ui/components/Game/components/Character';
 
 interface ICharacters {
@@ -14,8 +14,8 @@ export type IOnSelect = () => void;
 
 const renderCharacter = (char: Character, blockSize: number, i: number): JSX.Element => {
 	const style = {
-		top: (char.getPosition().getY() * blockSize) + 'px',
-		left: (char.getPosition().getX() * blockSize) + 'px'
+		top: (char.getPosition().y * blockSize) + 'px',
+		left: (char.getPosition().x * blockSize) + 'px'
 	};
 
 	return (

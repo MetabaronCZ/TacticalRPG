@@ -1,4 +1,4 @@
-import { ICharacter } from 'models/character';
+import { ICharacterData } from 'models/character';
 import { IAction } from 'store';
 
 export enum ActionID {
@@ -9,12 +9,12 @@ export enum ActionID {
 	MOVE_UP_LIST = 'CHARACTER_MOVE_UP_LIST'
 }
 
-const addCharacter = (value: ICharacter): IAction => ({
+const addCharacter = (value: ICharacterData): IAction => ({
 	type: ActionID.ADD,
 	value
 });
 
-const editCharacter = (value: ICharacter): IAction => ({
+const editCharacter = (value: ICharacterData): IAction => ({
 	type: ActionID.EDIT,
 	value
 });

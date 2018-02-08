@@ -1,21 +1,22 @@
 import React from 'react';
+
 import Order from 'ui/components/Game/components/Order';
 import Party from 'ui/components/Game/components/Party';
 import Grid from 'ui/components/Game/components/Grid';
 import Layers from 'ui/components/Game/components/Layers';
 import Characters from 'ui/components/Game/components/Characters';
 
-import Engine, { IEngineState } from 'engine';
-import Character from 'engine/character';
-import { IParty } from 'models/party';
-import { ICharacter } from 'models/character';
+import { Engine, IEngineState } from 'models/engine';
+
+import { IPartyData } from 'models/party';
+import { Character, ICharacterData } from 'models/character';
 
 const gridSize = 12;
 const blockSize = 64;
 
 interface IGameProps {
-	party: IParty;
-	characters: ICharacter[];
+	party: IPartyData;
+	characters: ICharacterData[];
 	onExit: () => void;
 	onSummary: () => void;
 }

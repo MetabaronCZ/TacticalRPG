@@ -1,36 +1,36 @@
 import React from 'react';
-import ArchetypeIco from 'ui/components/ArchetypeIco';
+
+import icos from 'data/icos';
+
 import Link from 'ui/components/Link';
 import LinkIco from 'ui/components/LinkIco';
 import LinkButton from 'ui/components/LinkButton';
-
-import icos from 'utils/icos';
-import JobList from 'data/job-list';
-
-import { WieldID } from 'models/wield';
-import WeaponList from 'data/weapon-list';
-import ArmorList from 'data/armor-list';
-import { ICharacter } from 'models/character';
-import { IWeapon } from 'models/weapon';
+import ArchetypeIco from 'ui/components/ArchetypeIco';
 import { IOnMoveDown, IOnMoveUp, IOnDelete } from 'ui/views/ViewCharacterList';
 
-const renderArchetype = (char: ICharacter): JSX.Element => (
+import { Jobs } from 'models/job';
+import { Armors } from 'models/armor';
+import { WieldID } from 'models/wield';
+import { ICharacterData } from 'models/character';
+import { IWeaponData, Weapons } from 'models/weapon';
+
+const renderArchetype = (char: ICharacterData): JSX.Element => (
 	<ArchetypeIco primary={char.primary} secondary={char.secondary} />
 );
 
-const renderMoveDown = (char: ICharacter, onMoveDown?: IOnMoveDown): JSX.Element => (
+const renderMoveDown = (char: ICharacterData, onMoveDown?: IOnMoveDown): JSX.Element => (
 	<LinkIco ico="down" title="Move down" onClick={onMoveDown && onMoveDown(char.id)} />
 );
 
-const renderMoveUp = (char: ICharacter, onMoveUp?: IOnMoveUp): JSX.Element => (
+const renderMoveUp = (char: ICharacterData, onMoveUp?: IOnMoveUp): JSX.Element => (
 	<LinkIco ico="up" title="Move up" onClick={onMoveUp && onMoveUp(char.id)} />
 );
 
-const renderEdit = (char: ICharacter): JSX.Element => (
+const renderEdit = (char: ICharacterData): JSX.Element => (
 	<Link href={`/character-edit/${char.id}`}>Edit</Link>
 );
 
-const renderDelete = (char: ICharacter, onDelete?: IOnDelete): JSX.Element => (
+const renderDelete = (char: ICharacterData, onDelete?: IOnDelete): JSX.Element => (
 	<LinkButton onClick={onDelete ? onDelete(char.id, char.name) : undefined}>Delete</LinkButton>
 );
 
@@ -46,18 +46,18 @@ export interface IColumn {
 }
 
 const getColumns = (editable: boolean = false, onMoveDown?: IOnMoveDown, onMoveUp?: IOnMoveUp, onDelete?: IOnDelete): IColumn[] => {
-	let main: IWeapon|undefined;
+	let main: IWeaponData|undefined;
 
-	const mainValue = (char: ICharacter): string => {
-		main = WeaponList.get(char.main);
+	const mainValue = (char: ICharacterData): string => {
+		main = Weapons.get(char.main);
 		return main ? main.title : '';
 	};
 
-	const offValue = (char: ICharacter): JSX.Element|string => {
+	const offValue = (char: ICharacterData): JSX.Element|string => {
 		if (main && ('BAR' !== char.job) && -1 !== main.wield.indexOf(WieldID.BOTH)) {
 			return renderOffHandBothWield(main.title);
 		} else {
-			const off = WeaponList.get(char.off);
+			const off = Weapons.get(char.off);
 			return off ? off.title : '';
 		}
 	};
@@ -66,7 +66,7 @@ const getColumns = (editable: boolean = false, onMoveDown?: IOnMoveDown, onMoveU
 		{
 			title: '',
 			name: 'order',
-			value: (char: ICharacter, i: number) => i + 1
+			value: (char: ICharacterData, i: number) => i + 1
 		}, {
 			title: '',
 			name: 'archetype',
@@ -74,16 +74,16 @@ const getColumns = (editable: boolean = false, onMoveDown?: IOnMoveDown, onMoveU
 		}, {
 			title: '',
 			name: 'sex',
-			value: (char: ICharacter) => icos[char.sex.toLowerCase()]
+			value: (char: ICharacterData) => icos[char.sex.toLowerCase()]
 		}, {
 			title: 'Name',
 			name: 'name',
-			value: (char: ICharacter) => char.name
+			value: (char: ICharacterData) => char.name
 		}, {
 			title: 'Job',
 			name: 'job',
-			value: (char: ICharacter) => {
-				const job = JobList.get(char.job);
+			value: (char: ICharacterData) => {
+				const job = Jobs.get(char.job);
 				return job ? job.title : '';
 			}
 		}, {
@@ -97,20 +97,20 @@ const getColumns = (editable: boolean = false, onMoveDown?: IOnMoveDown, onMoveU
 		}, {
 			title: 'Armor',
 			name: 'armor',
-			value: (char: ICharacter) => {
-				const armor = ArmorList.get(char.armor);
+			value: (char: ICharacterData) => {
+				const armor = Armors.get(char.armor);
 				return armor ? armor.title : '';
 			}
 		}, {
 			title: '',
 			name: 'moveDown',
 			editable: true,
-			value: (char: ICharacter) => renderMoveDown(char, onMoveDown)
+			value: (char: ICharacterData) => renderMoveDown(char, onMoveDown)
 		}, {
 			title: '',
 			name: 'moveUp',
 			editable: true,
-			value: (char: ICharacter) => renderMoveUp(char, onMoveUp)
+			value: (char: ICharacterData) => renderMoveUp(char, onMoveUp)
 		}, {
 			title: '',
 			name: 'edit',
@@ -120,7 +120,7 @@ const getColumns = (editable: boolean = false, onMoveDown?: IOnMoveDown, onMoveU
 			title: '',
 			name: 'delete',
 			editable: true,
-			value: (char: ICharacter) => renderDelete(char, onDelete)
+			value: (char: ICharacterData) => renderDelete(char, onDelete)
 		}
 	];
 

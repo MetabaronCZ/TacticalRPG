@@ -3,15 +3,16 @@ import { History } from 'history';
 import { connect, Dispatch } from 'react-redux';
 import { withRouter } from 'react-router';
 
-import { goto, gotoFn } from 'utils/nav';
-import actions from 'actions/characters';
 import Page from 'ui/components/Page';
 import CharacterCreation from 'ui/components/CharacterCreation';
+
 import { IAction } from 'store';
-import { ICharacter } from 'models/character';
+import { goto, gotoFn } from 'utils/nav';
+import actions from 'actions/characters';
+import { ICharacterData } from 'models/character';
 
 const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
-	onSubmit: (history: History) => (value: ICharacter): void => {
+	onSubmit: (history: History) => (value: ICharacterData): void => {
 		dispatch(actions.addCharacter(value));
 		goto(history, '/character-list');
 	}

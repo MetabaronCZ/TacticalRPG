@@ -10,28 +10,25 @@ import Step2 from 'ui/components/CharacterCreation/components/Step2';
 import Step3 from 'ui/components/CharacterCreation/components/Step3';
 
 import { validateField, validateForm } from 'utils/validation';
+import { makeCharacter } from 'models/character/utils';
 
-import { filter as filterJobs } from 'utils/jobs';
-import { filter as filterWeapon } from 'utils/weapon';
-import { filter as filterArmor } from 'utils/armor';
-import { makeCharacter } from 'utils/character';
-
+import { Jobs } from 'models/job';
 import { WieldID } from 'models/wield';
-import { ArmorID } from 'models/armor';
-import { WeaponID } from 'models/weapon';
-import { ICharacter } from 'models/character';
+import { ArmorID, Armors } from 'models/armor';
+import { WeaponID, Weapons } from 'models/weapon';
+import { ICharacterData } from 'models/character';
 
 const steps: string[] = ['Character Identity', 'Character Archetype', 'Equipment'];
 
 interface ICharacterCreationProps {
-	character?: ICharacter;
+	character?: ICharacterData;
 	onBack?: () => void;
-	onSubmit?: (data: ICharacter) => void;
+	onSubmit?: (data: ICharacterData) => void;
 }
 
 interface ICharacterCreationState {
 	step: number;
-	fields: ICharacter;
+	fields: ICharacterData;
 	errors: {
 		[field: string]: string;
 	};
@@ -86,7 +83,7 @@ class CharacterCreation extends React.Component {
 
 		// reset jobs on archetype change
 		if (next.primary !== curr.primary || next.secondary !== curr.secondary) {
-			const jobs = filterJobs(next);
+			const jobs = Jobs.filter(next);
 
 			this.setState({
 				fields: {
@@ -98,13 +95,13 @@ class CharacterCreation extends React.Component {
 
 		// reset character Main hand weapon and armor on job change
 		if (next.job !== curr.job) {
-			const newArmor = (filterArmor(next).has(curr.armor) ? curr.armor : ArmorID.NONE);
-			const newMain = (filterWeapon(next, WieldID.MAIN).has(curr.main) ? curr.main : WeaponID.NONE);
+			const newArmor = (Armors.filter(next).has(curr.armor) ? curr.armor : ArmorID.NONE);
+			const newMain = (Weapons.filter(next, WieldID.MAIN).has(curr.main) ? curr.main : WeaponID.NONE);
 
 			const tmpNext = { ...next };
 			tmpNext.main = newMain;
 
-			const newOff = (filterWeapon(tmpNext, WieldID.OFF).has(curr.off) ? curr.off : WeaponID.NONE);
+			const newOff = (Weapons.filter(tmpNext, WieldID.OFF).has(curr.off) ? curr.off : WeaponID.NONE);
 
 			this.setState({
 				fields: {
@@ -118,7 +115,7 @@ class CharacterCreation extends React.Component {
 
 		// reset character Off hand weapon if 2H weapon equiped in Main hand
 		if (next.main !== curr.main) {
-			const newOff = (filterWeapon(next, WieldID.OFF).has(curr.off) ? curr.off : WeaponID.NONE);
+			const newOff = (Weapons.filter(next, WieldID.OFF).has(curr.off) ? curr.off : WeaponID.NONE);
 
 			this.setState({
 				fields: {

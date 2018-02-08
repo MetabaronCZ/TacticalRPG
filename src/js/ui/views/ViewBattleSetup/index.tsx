@@ -4,11 +4,13 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 
 import { goto, gotoFn } from 'utils/nav';
+
 import Page from 'ui/components/Page';
 import BattleSetup from 'ui/components/BattleSetup';
+
 import { IState } from 'store';
-import { ICharacter } from 'models/character';
-import { IParty } from 'models/party';
+import { IPartyData } from 'models/party';
+import { ICharacterData } from 'models/character';
 
 const mapStateToProps = (state: IState) => ({
 	parties: state.parties,
@@ -24,8 +26,8 @@ const onStart = (history: History) => (params: IOnStartParams = {}) => {
 };
 
 interface IViewBattleSetupContainerProps {
-	characters: ICharacter[];
-	parties: IParty[];
+	characters: ICharacterData[];
+	parties: IPartyData[];
 	history: History;
 }
 

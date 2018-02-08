@@ -1,10 +1,11 @@
 import React from 'react';
+
 import ArchetypeIco from 'ui/components/ArchetypeIco';
 import Bar from 'ui/components/Game/components/Bar';
 
-import Character from 'engine/character';
-import icos from 'utils/icos';
-import JobList from 'data/job-list';
+import icos from 'data/icos';
+import { Jobs } from 'models/job';
+import { Character } from 'models/character';
 
 interface IPartyProps {
 	characters: Character[];
@@ -18,11 +19,11 @@ const Party = ({ characters }: IPartyProps): JSX.Element => (
 
 		{characters.map((char, i) => {
 			const attrs = char.getAttributes();
-			const job = JobList.get(char.job);
+			const job = Jobs.get(char.job);
 
 			return (
 				<div className="Party-item" key={i}>
-					{char.name} <ArchetypeIco primary={char.primary} secondary={char.secondary} /> {icos[char.sex.toLowerCase()]} {job ? job.title : ''}
+					{char.name} <ArchetypeIco primary={char.primary} secondary={char.secondary} /> {icos[char.sex.toLowerCase()]} {job.title}
 
 					<Bar
 						hp={attrs.current.HP}

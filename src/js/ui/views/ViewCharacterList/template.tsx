@@ -1,18 +1,20 @@
 import React from 'react';
+
 import Page from 'ui/components/Page';
 import Button from 'ui/components/Button';
 import ButtonRow from 'ui/components/ButtonRow';
 import CharacterList from 'ui/components/CharacterList';
 import Separator from 'ui/components/Separator';
-import { ICharacter } from 'models/character';
 import { IOnMoveDown, IOnMoveUp, IOnDelete } from 'ui/views/ViewCharacterList';
+
+import { ICharacterData } from 'models/character';
 
 const NoCharacters = (): JSX.Element => (
 	<p className="Paragraph">There are no characters.</p>
 );
 
 interface IViewCharacterListProps {
-	characters?: ICharacter[];
+	characters?: ICharacterData[];
 	onBack?: () => void;
 	onCreate?: () => void;
 	onDelete?: IOnDelete;

@@ -1,5 +1,5 @@
 import React from 'react';
-import Character from 'engine/character';
+import { Character } from 'models/character';
 
 interface IOrderProps {
 	characters: Character[];

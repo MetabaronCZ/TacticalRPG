@@ -9,7 +9,7 @@ import ViewPartyList from 'ui/views/ViewPartyList/template';
 
 import actions from 'actions/parties';
 import { IState, IAction } from 'store';
-import { IParty } from 'models/party';
+import { IPartyData } from 'models/party';
 
 const mapStateToProps = (state: IState) => ({
 	parties: state.parties
@@ -30,7 +30,7 @@ const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
 });
 
 interface IViewPartyListContainer {
-	parties: IParty[];
+	parties: IPartyData[];
 	history: History;
 	onMoveDown?: (id: string) => void;
 	onMoveUp?: (id: string) => void;
