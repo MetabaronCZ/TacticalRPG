@@ -13,7 +13,7 @@ interface IStep2Props {
 	onChange: () => void;
 }
 
-const Step2 = ({ fields, onChange }: IStep2Props): JSX.Element => {
+const Step2: React.SFC<IStep2Props> = ({ fields, onChange }) => {
 	const job = Jobs.get(fields.job);
 
 	return (

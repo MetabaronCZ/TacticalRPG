@@ -1,11 +1,10 @@
-import React, { ReactNode, SyntheticEvent } from 'react';
+import React, { SyntheticEvent } from 'react';
 
 interface IFormProps {
-	onSubmit: (e: SyntheticEvent<any>) => void;
-	children: ReactNode;
+	onSubmit: (e: SyntheticEvent<HTMLFormElement>) => void;
 }
 
-const Form = ({ children, onSubmit }: IFormProps): JSX.Element => (
+const Form: React.SFC<IFormProps> = ({ children, onSubmit }) => (
 	<form className="Form" onSubmit={onSubmit}>
 		{children}
 	</form>

@@ -2,10 +2,9 @@ import React from 'react';
 
 export interface IFormSelectItemProps {
 	value?: string;
-	children?: string|JSX.Element|JSX.Element[];
 }
 
-const FormSelectItem = ({ value, children }: IFormSelectItemProps): JSX.Element => (
+const FormSelectItem: React.SFC<IFormSelectItemProps> = ({ value, children }) => (
 	<option className="FormSelect-item" value={value}>
 		{children}
 	</option>

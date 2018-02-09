@@ -1,4 +1,4 @@
-import React, { SyntheticEvent } from 'react';
+import React from 'react';
 
 import FormField from 'ui/components/FormField';
 import FormInput from 'ui/components/FormInput';
@@ -18,7 +18,7 @@ interface IStep1Props {
 	onChange: () => void;
 }
 
-const Step1 = ({ fields, errors, onChange }: IStep1Props): JSX.Element => (
+const Step1: React.SFC<IStep1Props> = ({ fields, errors, onChange }) => (
 	<div>
 		<FormField fieldId="f-name" label="Name" error={errors.name}>
 			<FormInput

@@ -1,7 +1,7 @@
 import React from 'react';
 import { History } from 'history';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router';
+import { withRouter, RouteComponentProps } from 'react-router';
 
 import { goto, gotoFn } from 'utils/nav';
 
@@ -12,26 +12,25 @@ import { IState } from 'store';
 import { IPartyData } from 'models/party';
 import { ICharacterData } from 'models/character';
 
-const mapStateToProps = (state: IState) => ({
-	parties: state.parties,
-	characters: state.characters
-});
-
 interface IOnStartParams {
 	party?: string;
 }
+
+interface IStateToProps {
+	characters?: ICharacterData[];
+	parties?: IPartyData[];
+}
+
+const mapStateToProps = (state: IState): IStateToProps => ({
+	parties: state.parties,
+	characters: state.characters
+});
 
 const onStart = (history: History) => (params: IOnStartParams = {}) => {
 	goto(history, `/battle/${params.party}`);
 };
 
-interface IViewBattleSetupContainerProps {
-	characters: ICharacterData[];
-	parties: IPartyData[];
-	history: History;
-}
-
-const ViewBattleSetupContainer = ({ characters, parties, history }: IViewBattleSetupContainerProps): JSX.Element => (
+const ViewBattleSetupContainer: React.SFC<IStateToProps & RouteComponentProps<any>> = ({ characters, parties, history }) => (
 	<Page heading="Battle setup">
 		<BattleSetup
 			characters={characters}
@@ -43,5 +42,5 @@ const ViewBattleSetupContainer = ({ characters, parties, history }: IViewBattleS
 );
 
 export default withRouter(
-	connect(mapStateToProps, null)(ViewBattleSetupContainer as any)
+	connect<IStateToProps>(mapStateToProps)(ViewBattleSetupContainer)
 );

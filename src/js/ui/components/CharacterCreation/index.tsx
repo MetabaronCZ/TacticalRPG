@@ -30,14 +30,11 @@ interface ICharacterCreationState {
 	step: number;
 	fields: ICharacterData;
 	errors: {
-		[field: string]: string;
+		[field: string]: string|undefined;
 	};
 }
 
-class CharacterCreation extends React.Component {
-	public props: ICharacterCreationProps;
-	public state: ICharacterCreationState;
-
+class CharacterCreation extends React.Component<ICharacterCreationProps, ICharacterCreationState> {
 	constructor(props: ICharacterCreationProps) {
 		super(props);
 
@@ -184,7 +181,7 @@ class CharacterCreation extends React.Component {
 		});
 	}
 
-	private renderStep(): JSX.Element {
+	private renderStep() {
 		const stepProps: any = {
 			fields: this.state.fields,
 			errors: this.state.errors,

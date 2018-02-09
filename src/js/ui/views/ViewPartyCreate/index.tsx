@@ -1,7 +1,7 @@
 import React from 'react';
 import { History } from 'history';
 import { connect, Dispatch } from 'react-redux';
-import { withRouter } from 'react-router';
+import { withRouter, RouteComponentProps } from 'react-router';
 
 import Page from 'ui/components/Page';
 import PartyCreation from 'ui/components/PartyCreation';
@@ -13,7 +13,15 @@ import { IState, IAction } from 'store';
 import { IPartyData } from 'models/party';
 import { ICharacterData } from 'models/character';
 
-const mapStateToProps = (state: IState) => ({
+interface IStateToProps {
+	characters?: ICharacterData[];
+}
+
+interface IViewPartyCreateContainerProps extends RouteComponentProps<any> {
+	onSubmit: (history: History) => any;
+}
+
+const mapStateToProps = (state: IState): IStateToProps => ({
 	characters: state.characters
 });
 
@@ -24,13 +32,7 @@ const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
 	}
 });
 
-interface IViewPartyCreateContainerProps {
-	characters: ICharacterData[];
-	onSubmit: (history: History) => any;
-	history: History;
-}
-
-const ViewPartyCreateContainer = ({ characters, onSubmit, history }: IViewPartyCreateContainerProps): JSX.Element => (
+const ViewPartyCreateContainer: React.SFC<IViewPartyCreateContainerProps & IStateToProps> = ({ characters, onSubmit, history }) => (
 	<Page heading="Party creation">
 		<PartyCreation
 			characters={characters}
@@ -41,5 +43,5 @@ const ViewPartyCreateContainer = ({ characters, onSubmit, history }: IViewPartyC
 );
 
 export default withRouter(
-	connect(mapStateToProps, mapDispatchToProps)(ViewPartyCreateContainer as any)
+	connect<IStateToProps>(mapStateToProps, mapDispatchToProps)(ViewPartyCreateContainer)
 );

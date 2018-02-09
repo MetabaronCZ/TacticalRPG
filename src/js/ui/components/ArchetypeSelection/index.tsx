@@ -14,11 +14,7 @@ interface IArchCharData {
 	[key: string]: ArchCharID;
 }
 
-const ArchetypeSelection = ({
-	primary = ArchCharID.P,
-	secondary = ArchCharID.P,
-	onChange
-}: IArchetypeSelectionProps): JSX.Element => {
+const ArchetypeSelection: React.SFC<IArchetypeSelectionProps> = ({ primary = ArchCharID.P, secondary = ArchCharID.P, onChange }) => {
 	const data: IArchCharData = { primary, secondary };
 
 	return (

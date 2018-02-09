@@ -1,10 +1,11 @@
 import { createStore } from 'redux';
 import { Store } from 'react-redux';
 import reducers from 'reducers';
+import { ICharacterData } from 'models/character';
 
 export interface IState {
-	characters?: any[];
-	parties?: any[];
+	readonly characters?: ICharacterData[];
+	readonly parties?: any[];
 }
 
 export interface IAction {

@@ -12,8 +12,8 @@ interface ICharacters {
 
 export type IOnSelect = () => void;
 
-const renderCharacter = (char: Character, blockSize: number, i: number): JSX.Element => {
-	const style = {
+const renderCharacter = (char: Character, blockSize: number, i: number) => {
+	const style: React.CSSProperties = {
 		top: (char.getPosition().y * blockSize) + 'px',
 		left: (char.getPosition().x * blockSize) + 'px'
 	};
@@ -25,7 +25,7 @@ const renderCharacter = (char: Character, blockSize: number, i: number): JSX.Ele
 	);
 };
 
-const Characters = ({ ally, enemy, size, blockSize }: ICharacters): JSX.Element => {
+const Characters: React.SFC<ICharacters> = ({ ally, enemy, size, blockSize }) => {
 	const characters = ally.concat(enemy);
 
 	return (

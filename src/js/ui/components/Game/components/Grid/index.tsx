@@ -5,8 +5,8 @@ interface IGridProps {
 	blockSize: number;
 }
 
-const Grid = ({ size, blockSize }: IGridProps): JSX.Element => {
-	const itemStyle = {
+const Grid: React.SFC<IGridProps> = ({ size, blockSize }) => {
+	const itemStyle: React.CSSProperties = {
 		width: `${blockSize}px`,
 		height: `${blockSize}px`
 	};

@@ -6,9 +6,7 @@ interface ICharacterBlockProps {
 	size: number;
 }
 
-class CharacterBlock extends React.Component {
-	public props: ICharacterBlockProps;
-
+class CharacterBlock extends React.Component<ICharacterBlockProps, {}> {
 	constructor(props: ICharacterBlockProps) {
 		super(props);
 	}
@@ -18,7 +16,7 @@ class CharacterBlock extends React.Component {
 		const player = this.props.char.getPlayer();
 		const type = (player.isEnemy() ? 'enemy' : 'ally');
 
-		const style = {
+		const style: React.CSSProperties = {
 			width: size + 'px',
 			height: size + 'px'
 		};

@@ -16,8 +16,8 @@ import { IPartyData } from 'models/party';
 import { ICharacterData } from 'models/character';
 
 interface IBattleSetupProps {
-	parties: IPartyData[];
-	characters: ICharacterData[];
+	parties?: IPartyData[];
+	characters?: ICharacterData[];
 	onStart: (fields: any) => void;
 	onBack: (e: SyntheticEvent<any>) => void;
 }
@@ -28,10 +28,7 @@ interface IBattleSetupState {
 	};
 }
 
-class BattleSetup extends React.Component {
-	public state: IBattleSetupState;
-	public props: IBattleSetupProps;
-
+class BattleSetup extends React.Component<IBattleSetupProps, IBattleSetupState> {
 	constructor(props: IBattleSetupProps) {
 		super(props);
 
@@ -52,6 +49,10 @@ class BattleSetup extends React.Component {
 		const fields: any = this.state.fields;
 		let selectedParty;
 		let chars: ICharacterData[] = [];
+
+		if (!characters || !characters.length) {
+			return this.renderNoParty();
+		}
 
 		if (parties && parties.length) {
 			selectedParty = parties.filter((p) => p.id === fields.party)[0];

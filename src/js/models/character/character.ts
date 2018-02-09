@@ -25,7 +25,6 @@ class Character {
 	public readonly primary: ArchCharID;
 	public readonly secondary: ArchCharID;
 
-	private readonly conf: ICharacterConfig;
 	private readonly player: Player;
 	private readonly position: Position;
 	private readonly baseAttrs: IAttributes;
@@ -33,18 +32,20 @@ class Character {
 
 	constructor(conf: ICharacterConfig, player: Player) {
 		this.id = conf.id || uuid();
-		this.conf = conf;
 		this.player = player;
 		this.position = conf.position;
 
 		this.baseAttrs = getAttributes(conf.primary, conf.secondary);
 		this.currAttrs = getAttributes(conf.primary, conf.secondary);
 
+		this.name = conf.name;
+		this.sex = conf.sex;
+		this.job = conf.job;
+		this.primary = conf.primary;
+		this.secondary = conf.secondary;
+
 		// set small random initial CP
 		this.currAttrs.CP = Math.floor(10 * Math.random());
-
-		// TODO: refactor to methods (getAttributes)
-		Object.assign(this, conf);
 	}
 
 	public getAttributes(): ICharacterAttributes {

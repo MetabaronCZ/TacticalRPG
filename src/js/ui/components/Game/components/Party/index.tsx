@@ -11,7 +11,7 @@ interface IPartyProps {
 	characters: Character[];
 }
 
-const Party = ({ characters }: IPartyProps): JSX.Element => (
+const Party: React.SFC<IPartyProps> = ({ characters }) => (
 	<div className="Party">
 		<h2 className="Heading">
 			Party

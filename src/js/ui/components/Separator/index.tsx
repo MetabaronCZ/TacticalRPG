@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Separator = (): JSX.Element => (
+const Separator = () => (
 	<hr className="Separator" />
 );
 

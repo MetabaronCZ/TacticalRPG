@@ -1,7 +1,7 @@
 import React from 'react';
 import { History } from 'history';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router';
+import { withRouter, RouteComponentProps } from 'react-router';
 
 import Game from 'ui/components/Game';
 import { goto, gotoFn } from 'utils/nav';
@@ -13,6 +13,11 @@ const txtExitConfirm = 'Do you realy want to exit and lost your game progress?';
 
 type IOnExit = () => void;
 
+interface IStateToProps {
+	characters?: ICharacterData[];
+	parties?: IPartyData[];
+}
+
 const exit = (history: History): IOnExit => (): void => {
 	if (window.confirm(txtExitConfirm)) {
 		// go to Main Menu
@@ -20,25 +25,18 @@ const exit = (history: History): IOnExit => (): void => {
 	}
 };
 
-const mapStateToProps = (state: IState) => ({
+const mapStateToProps = (state: IState): IStateToProps => ({
 	characters: state.characters,
 	parties: state.parties
 });
 
-interface IViewCharacterEditContainerProps {
-	characters: ICharacterData[];
-	parties: IPartyData[];
-	history: History;
-	match: any;
-}
-
-const ViewCharacterEditContainer = ({ characters, parties, history, match }: IViewCharacterEditContainerProps): JSX.Element => {
+const ViewCharacterEditContainer: React.SFC<IStateToProps & RouteComponentProps<any>> = ({ characters, parties, history, match }) => {
 	const partyID = match.params.party;
-	const party = parties.find((p) => p.id === partyID);
+	const party = (parties ? parties.find((p) => p.id === partyID) : undefined);
 	const onExit = exit(history);
 
-	if (!party) {
-		throw new Error(`Game started with invalid party ID ${partyID}`);
+	if (!party || !characters) {
+		throw new Error('Game started with invalid arguments');
 	}
 	return (
 		<Game
@@ -51,5 +49,5 @@ const ViewCharacterEditContainer = ({ characters, parties, history, match }: IVi
 };
 
 export default withRouter(
-	connect(mapStateToProps, null)(ViewCharacterEditContainer as any)
+	connect<IStateToProps>(mapStateToProps)(ViewCharacterEditContainer)
 );

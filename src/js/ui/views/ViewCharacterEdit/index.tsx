@@ -1,7 +1,7 @@
 import React from 'react';
 import { History } from 'history';
 import { connect, Dispatch } from 'react-redux';
-import { withRouter } from 'react-router';
+import { withRouter, RouteComponentProps } from 'react-router';
 
 import Page from 'ui/components/Page';
 import CharacterCreation from 'ui/components/CharacterCreation';
@@ -11,7 +11,15 @@ import actions from 'actions/characters';
 import { IState, IAction } from 'store';
 import { ICharacterData } from 'models/character';
 
-const mapStateToProps = (state: IState) => ({
+interface IStateToProps {
+	characters?: ICharacterData[];
+}
+
+interface IViewCharacterEditContainerProps extends RouteComponentProps<any> {
+	onSubmit: (history: History) => any;
+}
+
+const mapStateToProps = (state: IState): IStateToProps => ({
 	characters: state.characters
 });
 
@@ -22,16 +30,9 @@ const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
 	}
 });
 
-interface IViewCharacterEditContainerProps {
-	characters: ICharacterData[];
-	onSubmit: (history: History) => any;
-	history: History;
-	match: any;
-}
-
-const ViewCharacterEditContainer = ({ characters, onSubmit, history, match }: IViewCharacterEditContainerProps): JSX.Element => {
+const ViewCharacterEditContainer: React.SFC<IViewCharacterEditContainerProps & IStateToProps> = ({ characters, onSubmit, history, match }) => {
 	const charID = match.params.id;
-	const character = characters.find((char) => char.id === charID);
+	const character = (characters ? characters.find((char) => char.id === charID) : undefined);
 
 	return (
 		<Page heading="Edit character">
@@ -45,5 +46,5 @@ const ViewCharacterEditContainer = ({ characters, onSubmit, history, match }: IV
 };
 
 export default withRouter(
-	connect(mapStateToProps, mapDispatchToProps)(ViewCharacterEditContainer as any)
+	connect<IStateToProps>(mapStateToProps, mapDispatchToProps)(ViewCharacterEditContainer)
 );

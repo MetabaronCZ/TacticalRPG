@@ -9,7 +9,7 @@ interface IFormRadioProps {
 	onChange?: () => void;
 }
 
-const FormRadio = ({ id, label, name, value, isChecked, onChange }: IFormRadioProps): JSX.Element => (
+const FormRadio: React.SFC<IFormRadioProps> = ({ id, label, name, value, isChecked, onChange }) => (
 	<label className="FormRadio" htmlFor={id}>
 		<input id={id} className="FormRadio-input" type="radio" name={name} value={value} defaultChecked={isChecked} onChange={onChange} />
 		{label}

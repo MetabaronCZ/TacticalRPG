@@ -22,7 +22,7 @@ import { ICharacterData } from 'models/character';
 
 interface IPartyCreationProps {
 	party?: IPartyData;
-	characters: ICharacterData[];
+	characters?: ICharacterData[];
 	onBack?: () => void;
 	onSubmit: (party: IPartyData) => void;
 }
@@ -30,19 +30,16 @@ interface IPartyCreationProps {
 interface IPartyCreationState {
 	fields: IPartyData;
 	errors: {
-		[field: string]: string;
+		[field: string]: string|undefined;
 	};
 }
 
-class PartyCreation extends React.Component {
-	public state: IPartyCreationState;
-	public props: IPartyCreationProps;
-
+class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationState> {
 	constructor(props: IPartyCreationProps) {
 		super(props);
 
 		this.state = {
-			fields: makeParty(props.party || {}),
+			fields: makeParty(props.party),
 			errors: {}
 		};
 
@@ -145,6 +142,10 @@ class PartyCreation extends React.Component {
 		const selected = this.state.fields.characters;
 		const characters = this.props.characters;
 
+		if (!characters) {
+			return [];
+		}
+
 		// filter unselected characters (keep character itself)
 		let filtered = characters.filter((char) => {
 			return (character && char.id === character.id) || -1 === selected.indexOf(char.id);
@@ -166,8 +167,9 @@ class PartyCreation extends React.Component {
 
 	private renderPartyItem(i: number) {
 		const id = this.state.fields.characters[i];
-		const selected = getCharacterById(id, this.props.characters);
-		const characters = this.filterCharacters(selected);
+		const characters = this.props.characters;
+		const selected = (characters ? getCharacterById(id, characters) : undefined);
+		const filtered = this.filterCharacters(selected);
 		let info = '';
 
 		if (selected) {
@@ -188,7 +190,7 @@ class PartyCreation extends React.Component {
 						- Empty -
 					</FormSelectItem>
 
-					{characters.map((char, j) => (
+					{filtered.map((char, j) => (
 						<FormSelectItem value={char.id} key={j}>
 							{char.name}
 						</FormSelectItem>

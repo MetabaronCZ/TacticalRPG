@@ -5,7 +5,7 @@ interface IOrderProps {
 	characters: Character[];
 }
 
-const Order = ({ characters }: IOrderProps): JSX.Element => (
+const Order: React.SFC<IOrderProps> = ({ characters }) => (
 	<div className="Order">
 		<h2 className="Heading">Order</h2>
 

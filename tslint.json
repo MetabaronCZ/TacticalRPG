@@ -6,6 +6,7 @@
     "rules": {
         "max-line-length": false,
         "ordered-imports": false,
+        "object-literal-sort-keys": false,
         "forin": false,
         "quotemark": [true, "single", "jsx-double"],
         "indent": [true, "tabs", 4],

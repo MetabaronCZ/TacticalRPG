@@ -6,10 +6,9 @@ import Grid from 'ui/components/Game/components/Grid';
 import Layers from 'ui/components/Game/components/Layers';
 import Characters from 'ui/components/Game/components/Characters';
 
-import { Engine, IEngineState } from 'models/engine';
-
 import { IPartyData } from 'models/party';
-import { Character, ICharacterData } from 'models/character';
+import { ICharacterData } from 'models/character';
+import { Engine, IEngineState } from 'models/engine';
 
 const gridSize = 12;
 const blockSize = 64;
@@ -25,12 +24,8 @@ interface IGameState {
 	engine: IEngineState;
 }
 
-class Game extends React.Component {
-	public props: IGameProps;
-	public state: IGameState;
+class Game extends React.Component<IGameProps, IGameState> {
 	private engine: Engine;
-	private onExit: () => void;
-	private onSummary: () => void;
 
 	constructor(props: IGameProps) {
 		super(props);
@@ -44,11 +39,6 @@ class Game extends React.Component {
 		this.state = {
 			engine: this.engine.getState()
 		};
-
-		/* */
-		this.onExit = props.onExit.bind(this);
-		this.onSummary = props.onSummary.bind(this);
-		/* */
 	}
 
 	public update() {

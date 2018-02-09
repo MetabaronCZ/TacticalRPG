@@ -7,7 +7,7 @@ interface ILinkIcoProps {
 	onClick: any;
 }
 
-const LinkIco = ({ ico = '', title = '', onClick }: ILinkIcoProps): JSX.Element => (
+const LinkIco: React.SFC<ILinkIcoProps> = ({ ico = '', title = '', onClick }) => (
 	<button className="LinkIco" title={title} onClick={onClick}>
 		{ico ? icos[ico] : ''}
 	</button>

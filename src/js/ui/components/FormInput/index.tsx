@@ -12,7 +12,7 @@ interface IInputProps {
 	onChange: (e: SyntheticEvent<any>) => void;
 }
 
-const Input = ({ id, type, value, placeholder, name, maxLength, disabled, isInvalid, onChange }: IInputProps): JSX.Element => (
+const Input: React.SFC<IInputProps> = ({ id, type, value, placeholder, name, maxLength, disabled, isInvalid, onChange }) => (
 	<input
 		id={id}
 		className={`FormInput is-${isInvalid ? 'invalid' : 'valid'}`}

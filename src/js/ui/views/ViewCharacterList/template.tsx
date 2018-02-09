@@ -9,7 +9,7 @@ import { IOnMoveDown, IOnMoveUp, IOnDelete } from 'ui/views/ViewCharacterList';
 
 import { ICharacterData } from 'models/character';
 
-const NoCharacters = (): JSX.Element => (
+const NoCharacters = () => (
 	<p className="Paragraph">There are no characters.</p>
 );
 
@@ -22,7 +22,7 @@ interface IViewCharacterListProps {
 	onMoveUp?: IOnMoveUp;
 }
 
-const ViewCharacterList = ({ characters, onBack, onCreate, onDelete, onMoveDown, onMoveUp }: IViewCharacterListProps): JSX.Element => (
+const ViewCharacterList: React.SFC<IViewCharacterListProps> = ({ characters, onBack, onCreate, onDelete, onMoveDown, onMoveUp }) => (
 	<Page heading="Character list">
 		{
 			characters && characters.length

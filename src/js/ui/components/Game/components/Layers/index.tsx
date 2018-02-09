@@ -3,11 +3,10 @@ import React from 'react';
 interface ILayersProps {
 	size: number;
 	blockSize: number;
-	children?: JSX.Element|JSX.Element[];
 }
 
-const Layers = ({ size, blockSize, children }: ILayersProps): JSX.Element => {
-	const style: any = {
+const Layers: React.SFC<ILayersProps> = ({ size, blockSize, children }) => {
+	const style: React.CSSProperties = {
 		width: (size * blockSize + 'px'),
 		height: (size * blockSize + 'px')
 	};
@@ -15,14 +14,9 @@ const Layers = ({ size, blockSize, children }: ILayersProps): JSX.Element => {
 	if (!children) {
 		return <div />;
 	}
-
-	if (!(children instanceof Array)) {
-		children = [children];
-	}
-
 	return (
 		<div className="Layers" style={style}>
-			{children.map((layer, i) => (
+			{React.Children.map(children, (layer, i) => (
 				<div className="Layers-item" key={i}>
 					{layer}
 				</div>

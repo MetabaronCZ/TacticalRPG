@@ -4,6 +4,9 @@
 		"target": "es6",
 		"module": "es6",
 		"moduleResolution": "node",
+		"importHelpers": true, // importing helper functions from tslib
+		"noEmitHelpers": true, // disable emitting inline helper functions
+		"removeComments": true,
 		"allowSyntheticDefaultImports": true,
 		"baseUrl": "./src/js",
 		"sourceMap": true,
@@ -12,7 +15,9 @@
 		"noImplicitReturns": true,
 		"noImplicitThis": true,
 		"noImplicitAny": true,
-		"strictNullChecks": true
+		"noUnusedLocals": true,
+		"strictNullChecks": true,
+		"pretty": true
 	},
 	"compileOnSave": false,
 	"files": ["./src/js/app.tsx"],

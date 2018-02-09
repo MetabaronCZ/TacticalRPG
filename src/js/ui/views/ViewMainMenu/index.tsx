@@ -1,6 +1,5 @@
 import React from 'react';
-import { History } from 'history';
-import { withRouter } from 'react-router';
+import { withRouter, RouteComponentProps } from 'react-router';
 
 import Button from 'ui/components/Button';
 import { gotoFn } from 'utils/nav';
@@ -18,11 +17,7 @@ const menuItems: IMenuItem[] = [
 	{ title: 'Edit Characters', url: '/character-list' }
 ];
 
-interface IViewMainMenuContainerProps {
-	history: History;
-}
-
-const ViewMainMenuContainer = ({ history }: IViewMainMenuContainerProps): JSX.Element => (
+const ViewMainMenuContainer: React.SFC<RouteComponentProps<any>> = ({ history }) => (
 	<div className="MainMenu">
 		<ul className="MainMenu-butttons">
 			{menuItems.map((item, i) => (

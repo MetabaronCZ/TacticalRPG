@@ -1,5 +1,4 @@
 import React, { SyntheticEvent } from 'react';
-import { ReactNode } from 'react-redux';
 
 interface IFormSelect {
 	id?: string;
@@ -7,10 +6,9 @@ interface IFormSelect {
 	value?: string;
 	disabled?: boolean;
 	onChange?: (e: SyntheticEvent<any>) => void;
-	children: ReactNode;
 }
 
-const FormSelect = ({ id, name, value, disabled, onChange, children }: IFormSelect): JSX.Element => (
+const FormSelect: React.SFC<IFormSelect> = ({ id, name, value, disabled, onChange, children }) => (
 	<select id={id} name={name} className="FormSelect" value={value} onChange={onChange} disabled={disabled}>
 		{children}
 	</select>

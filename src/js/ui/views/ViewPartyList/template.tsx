@@ -6,12 +6,12 @@ import PartyList from 'ui/components/PartyList';
 import Separator from 'ui/components/Separator';
 import { IPartyData } from 'models/party';
 
-const NoParties = (): JSX.Element => (
+const NoParties = () => (
 	<p className="Paragraph">There are no character parties.</p>
 );
 
 interface IViewPartyList {
-	parties: IPartyData[];
+	parties?: IPartyData[];
 	onBack?: () => void;
 	onCreate?: () => void;
 	onMoveDown?: (id: string) => void;
@@ -19,10 +19,10 @@ interface IViewPartyList {
 	onDelete?: () => void;
 }
 
-const ViewPartyList = ({ parties, onBack, onCreate, onMoveDown, onMoveUp, onDelete }: IViewPartyList): JSX.Element => (
+const ViewPartyList: React.SFC<IViewPartyList> = ({ parties, onBack, onCreate, onMoveDown, onMoveUp, onDelete }) => (
 	<Page heading="Party list">
 		{
-			parties.length
+			(parties && parties.length)
 				? <PartyList parties={parties} onDelete={onDelete} onMoveDown={onMoveDown} onMoveUp={onMoveUp} />
 				: <NoParties />
 		}

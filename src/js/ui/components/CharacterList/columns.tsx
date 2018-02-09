@@ -14,27 +14,27 @@ import { WieldID } from 'models/wield';
 import { ICharacterData } from 'models/character';
 import { IWeaponData, Weapons } from 'models/weapon';
 
-const renderArchetype = (char: ICharacterData): JSX.Element => (
+const renderArchetype = (char: ICharacterData) => (
 	<ArchetypeIco primary={char.primary} secondary={char.secondary} />
 );
 
-const renderMoveDown = (char: ICharacterData, onMoveDown?: IOnMoveDown): JSX.Element => (
+const renderMoveDown = (char: ICharacterData, onMoveDown?: IOnMoveDown) => (
 	<LinkIco ico="down" title="Move down" onClick={onMoveDown && onMoveDown(char.id)} />
 );
 
-const renderMoveUp = (char: ICharacterData, onMoveUp?: IOnMoveUp): JSX.Element => (
+const renderMoveUp = (char: ICharacterData, onMoveUp?: IOnMoveUp) => (
 	<LinkIco ico="up" title="Move up" onClick={onMoveUp && onMoveUp(char.id)} />
 );
 
-const renderEdit = (char: ICharacterData): JSX.Element => (
+const renderEdit = (char: ICharacterData) => (
 	<Link href={`/character-edit/${char.id}`}>Edit</Link>
 );
 
-const renderDelete = (char: ICharacterData, onDelete?: IOnDelete): JSX.Element => (
+const renderDelete = (char: ICharacterData, onDelete?: IOnDelete) => (
 	<LinkButton onClick={onDelete ? onDelete(char.id, char.name) : undefined}>Delete</LinkButton>
 );
 
-const renderOffHandBothWield = (title: string): JSX.Element => (
+const renderOffHandBothWield = (title: string) => (
 	<span className="List-disabled">{title}</span>
 );
 
@@ -53,7 +53,7 @@ const getColumns = (editable: boolean = false, onMoveDown?: IOnMoveDown, onMoveU
 		return main ? main.title : '';
 	};
 
-	const offValue = (char: ICharacterData): JSX.Element|string => {
+	const offValue = (char: ICharacterData) => {
 		if (main && ('BAR' !== char.job) && -1 !== main.wield.indexOf(WieldID.BOTH)) {
 			return renderOffHandBothWield(main.title);
 		} else {

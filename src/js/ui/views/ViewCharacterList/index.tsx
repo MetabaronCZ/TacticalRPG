@@ -1,7 +1,6 @@
 import React from 'react';
-import { History } from 'history';
 import { connect, Dispatch } from 'react-redux';
-import { withRouter } from 'react-router';
+import { withRouter, RouteComponentProps } from 'react-router';
 
 import { gotoFn } from 'utils/nav';
 import ViewCharacterList from 'ui/views/ViewCharacterList/template';
@@ -9,7 +8,21 @@ import { IState, IAction } from 'store';
 import actions from 'actions/characters';
 import { ICharacterData } from 'models/character';
 
-const mapStateToProps = (state: IState) => ({
+export type IOnMoveDown = (id: string) => () => void;
+export type IOnMoveUp = (id: string) => () => void;
+export type IOnDelete = (id: string, name: string) => () => void;
+
+interface IStateToProps {
+	characters?: ICharacterData[];
+}
+
+interface IViewCharacterListContainerProps extends RouteComponentProps<any> {
+	onMoveDown?: IOnMoveDown;
+	onMoveUp?: IOnMoveUp;
+	onDelete?: IOnDelete;
+}
+
+const mapStateToProps = (state: IState): IStateToProps => ({
 	characters: state.characters
 });
 
@@ -27,19 +40,7 @@ const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
 	}
 });
 
-export type IOnMoveDown = (id: string) => () => void;
-export type IOnMoveUp = (id: string) => () => void;
-export type IOnDelete = (id: string, name: string) => () => void;
-
-interface IViewCharacterListContainerProps {
-	characters: ICharacterData[];
-	history: History;
-	onMoveDown?: IOnMoveDown;
-	onMoveUp?: IOnMoveUp;
-	onDelete?: IOnDelete;
-}
-
-const ViewCharacterListContainer = ({ characters, history, onMoveDown, onMoveUp, onDelete }: IViewCharacterListContainerProps): JSX.Element => (
+const ViewCharacterListContainer: React.SFC<IViewCharacterListContainerProps & IStateToProps> = ({ characters, history, onMoveDown, onMoveUp, onDelete }) => (
 	<ViewCharacterList
 		characters={characters}
 		onBack={gotoFn(history, '/')}
@@ -51,5 +52,5 @@ const ViewCharacterListContainer = ({ characters, history, onMoveDown, onMoveUp,
 );
 
 export default withRouter(
-	connect(mapStateToProps, mapDispatchToProps)(ViewCharacterListContainer as any)
+	connect<IStateToProps>(mapStateToProps, mapDispatchToProps)(ViewCharacterListContainer)
 );

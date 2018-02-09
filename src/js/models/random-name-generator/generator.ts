@@ -23,11 +23,6 @@ interface IGraph {
 	finishers: IFinishers;
 }
 
-interface ILetterItem {
-	name: string;
-	weight: number;
-}
-
 const createGraph = (dict: string[], order: number): IGraph => {
 	const finishers: IFinishers = {};
 	const groups: IGroups = {};

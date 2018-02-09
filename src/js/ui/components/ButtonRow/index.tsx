@@ -1,10 +1,6 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 
-interface IButtonRowProps {
-	children: ReactNode;
-}
-
-const ButtonRow = ({ children }: IButtonRowProps): JSX.Element => {
+const ButtonRow: React.SFC<{}> = ({ children }) => {
 	if (!(children instanceof Array)) {
 		return <li className="ButtonRow-item">{children}</li>;
 	}

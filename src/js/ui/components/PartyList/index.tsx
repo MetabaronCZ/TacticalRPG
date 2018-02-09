@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import Link from 'ui/components/Link';
 import LinkIco from 'ui/components/LinkIco';
 import LinkButton from 'ui/components/LinkButton';
@@ -6,26 +6,26 @@ import { IPartyData } from 'models/party';
 
 type IFun = any;
 
-const renderMoveDown = (party: IPartyData, onMoveDown: IFun): JSX.Element => (
+const renderMoveDown = (party: IPartyData, onMoveDown: IFun) => (
 	<LinkIco ico="down" title="Move down" onClick={onMoveDown && onMoveDown(party.id)} />
 );
 
-const renderMoveUp = (party: IPartyData, onMoveUp: IFun): JSX.Element => (
+const renderMoveUp = (party: IPartyData, onMoveUp: IFun) => (
 	<LinkIco ico="up" title="Move up" onClick={onMoveUp(party.id)} />
 );
 
-const renderEdit = (party: IPartyData): JSX.Element => (
+const renderEdit = (party: IPartyData) => (
 	<Link href={`/party-edit/${party.id}`}>Edit</Link>
 );
 
-const renderDelete = (party: IPartyData, onDelete: IFun): JSX.Element => (
+const renderDelete = (party: IPartyData, onDelete: IFun) => (
 	<LinkButton onClick={onDelete(party.id, party.name)}>Delete</LinkButton>
 );
 
 interface IColumn {
 	title: string;
 	name: string;
-	value: (party: IPartyData) => string|JSX.Element;
+	value: (party: IPartyData) => ReactNode;
 }
 
 const getColumns = (onMoveDown: IFun, onMoveUp: IFun, onDelete: IFun): IColumn[] => ([
@@ -43,7 +43,7 @@ interface IPartyListProps {
 	onDelete: IFun;
 }
 
-const PartyList = ({ parties, onMoveDown, onMoveUp, onDelete }: IPartyListProps): JSX.Element => {
+const PartyList: React.SFC<IPartyListProps> = ({ parties, onMoveDown, onMoveUp, onDelete }) => {
 	const columns = getColumns(onMoveDown, onMoveUp, onDelete);
 
 	return (

@@ -1,10 +1,6 @@
 import React from 'react';
 
-interface IPageWrapperProps {
-	children: string|JSX.Element|JSX.Element[];
-}
-
-const PageWrapper = ({ children }: IPageWrapperProps): JSX.Element => (
+const PageWrapper: React.SFC<{}> = ({ children }) => (
 	<div className="PageWrapper">
 		<div className="PageWrapper-inner">
 			{children}

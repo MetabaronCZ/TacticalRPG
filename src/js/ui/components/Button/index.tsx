@@ -13,7 +13,7 @@ interface IButtonContainerProps {
 	onClick?: (e: SyntheticEvent<any>) => void;
 }
 
-const ButtonContainer = ({ type, ico, size, color, text, onClick }: IButtonContainerProps): JSX.Element => {
+const ButtonContainer: React.SFC<IButtonContainerProps> = ({ type, ico, size, color, text, onClick }) => {
 	const typeName = ('submit' === type ? type : 'button');
 	const icoName = (ico ? icos[ico] : icos.default) || '';
 	const sizeName = (size ? ButtonSize[size] : ButtonSize.default) || '';

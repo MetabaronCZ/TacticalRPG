@@ -1,8 +1,7 @@
 import React from 'react';
-import { History } from 'history';
 
 import { connect, Dispatch } from 'react-redux';
-import { withRouter } from 'react-router';
+import { withRouter, RouteComponentProps } from 'react-router';
 
 import { gotoFn } from 'utils/nav';
 import ViewPartyList from 'ui/views/ViewPartyList/template';
@@ -11,7 +10,17 @@ import actions from 'actions/parties';
 import { IState, IAction } from 'store';
 import { IPartyData } from 'models/party';
 
-const mapStateToProps = (state: IState) => ({
+interface IStateToProps {
+	parties?: IPartyData[];
+}
+
+interface IViewPartyListContainer extends RouteComponentProps<any> {
+	onMoveDown?: (id: string) => void;
+	onMoveUp?: (id: string) => void;
+	onDelete?: () => void;
+}
+
+const mapStateToProps = (state: IState): IStateToProps => ({
 	parties: state.parties
 });
 
@@ -29,15 +38,7 @@ const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
 	}
 });
 
-interface IViewPartyListContainer {
-	parties: IPartyData[];
-	history: History;
-	onMoveDown?: (id: string) => void;
-	onMoveUp?: (id: string) => void;
-	onDelete?: () => void;
-}
-
-const ViewPartyListContainer = ({ parties, history, onMoveDown, onMoveUp, onDelete }: IViewPartyListContainer): JSX.Element => {
+const ViewPartyListContainer: React.SFC<IViewPartyListContainer & IStateToProps> = ({ parties, history, onMoveDown, onMoveUp, onDelete }) => {
 	const fnGoBack = gotoFn(history, '/');
 	const fnCreate = gotoFn(history, '/party-create');
 
@@ -54,5 +55,5 @@ const ViewPartyListContainer = ({ parties, history, onMoveDown, onMoveUp, onDele
 };
 
 export default withRouter(
-	connect(mapStateToProps, mapDispatchToProps)(ViewPartyListContainer as any)
+	connect<IStateToProps>(mapStateToProps, mapDispatchToProps)(ViewPartyListContainer)
 );

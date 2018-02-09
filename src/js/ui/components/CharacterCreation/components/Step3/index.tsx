@@ -14,7 +14,7 @@ interface IStep3Props {
 	onChange: () => void;
 }
 
-const Step3 = ({ fields, onChange }: IStep3Props): JSX.Element => {
+const Step3: React.SFC<IStep3Props> = ({ fields, onChange }) => {
 	const mainWeapons = Weapons.filter(fields, WieldID.MAIN);
 	const offWeapons = Weapons.filter(fields, WieldID.OFF);
 	const armors = Armors.filter(fields);

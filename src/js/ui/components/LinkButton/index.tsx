@@ -2,10 +2,9 @@ import React from 'react';
 
 interface ILinkButtonProps {
 	onClick?: () => void;
-	children: string|JSX.Element|JSX.Element[];
 }
 
-const LinkButton = ({ onClick, children }: ILinkButtonProps): JSX.Element => (
+const LinkButton: React.SFC<ILinkButtonProps> = ({ onClick, children }) => (
 	<button className="LinkButton" onClick={onClick}>
 		{children}
 	</button>

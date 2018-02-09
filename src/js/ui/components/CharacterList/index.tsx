@@ -13,7 +13,7 @@ interface ICharacterListProps {
 	onDelete?: IOnDelete;
 }
 
-const CharacterList = ({ editable = false, characters, onMoveDown, onMoveUp, onDelete }: ICharacterListProps): JSX.Element => {
+const CharacterList: React.SFC<ICharacterListProps> = ({ editable = false, characters, onMoveDown, onMoveUp, onDelete }) => {
 	const columns = getColumns(editable, onMoveDown, onMoveUp, onDelete);
 
 	// ignore empty character slots

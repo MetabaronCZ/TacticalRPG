@@ -27,20 +27,22 @@ export const getRandomPartyCharacters = (count: number): ICharacterData[] => {
 	return characters.map((char, i) => getRandomCharacter(char, jobs[i]));
 };
 
-export const makeParty = ({
-	name = '',
-	id = uuid(),
-	creationDate = 0,
-	lastUpdate = 0,
-	characters = []
-}): IPartyData => {
+interface IPartyConfig {
+	name?: string;
+	id?: string;
+	creationDate?: number;
+	lastUpdate?: number;
+	characters?: string[]; // list of character IDs
+}
+
+export const makeParty = (conf: IPartyConfig = {}): IPartyData => {
 	const now = Date.now();
 
 	return {
-		name,
-		id,
-		creationDate: creationDate || now,
-		lastUpdate: lastUpdate || now,
-		characters
+		name: conf.name || '',
+		id: conf.id || uuid(),
+		creationDate: conf.creationDate || now,
+		lastUpdate: conf.lastUpdate || now,
+		characters: conf.characters || []
 	};
 };

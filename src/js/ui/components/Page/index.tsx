@@ -2,10 +2,9 @@ import React from 'react';
 
 interface IPageProps {
 	heading: string;
-	children: string|JSX.Element|JSX.Element[];
 }
 
-const Page = ({ heading, children }: IPageProps): JSX.Element => (
+const Page: React.SFC<IPageProps> = ({ heading, children }) => (
 	<div className="Page">
 		<h1 className="Heading Heading--large">
 			{heading}

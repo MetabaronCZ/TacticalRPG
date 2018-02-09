@@ -1,6 +1,6 @@
 import React from 'react';
 
-const renderItem = (type: string, value: number, max: number): JSX.Element => {
+const renderItem = (type: string, value: number, max: number) => {
 	const pct = 100 * value / max;
 
 	return (
@@ -22,7 +22,7 @@ interface IBarProps {
 	apMax: number;
 }
 
-const Bar = ({ hp, hpMax, ap, apMax }: IBarProps): JSX.Element => (
+const Bar: React.SFC<IBarProps> = ({ hp, hpMax, ap, apMax }) => (
 	<div className="Bar">
 		{renderItem('HP', hp, hpMax)}
 		{renderItem('AP', ap, apMax)}

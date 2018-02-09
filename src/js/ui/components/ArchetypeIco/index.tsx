@@ -8,11 +8,7 @@ interface IArchetypeIcoProps {
 	secondary?: ArchCharID;
 }
 
-const ArchetypeIco = ({
-	size = SizeID.default,
-	primary = ArchCharID.P,
-	secondary = ArchCharID.P
-}: IArchetypeIcoProps): JSX.Element => {
+const ArchetypeIco: React.SFC<IArchetypeIcoProps> = ({ size = SizeID.default, primary = ArchCharID.P, secondary = ArchCharID.P }) => {
 	const sizeData = ArchetypeIcoSizes[size];
 	const primaryData = Archetypes.get(primary);
 	const secondaryData = Archetypes.get(secondary);

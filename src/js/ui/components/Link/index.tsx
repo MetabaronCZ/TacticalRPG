@@ -3,10 +3,9 @@ import { Link } from 'react-router-dom';
 
 interface ICustomLinkProps {
 	href: string;
-	children: string|JSX.Element|JSX.Element[];
 }
 
-const CustomLink = ({ href, children }: ICustomLinkProps): JSX.Element => (
+const CustomLink: React.SFC<ICustomLinkProps> = ({ href, children }) => (
 	<Link className="Link" to={href}>
 		{children}
 	</Link>
