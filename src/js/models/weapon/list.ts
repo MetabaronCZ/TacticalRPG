@@ -3,7 +3,6 @@ import { WieldID } from 'models/wield';
 import { ArchCharID} from 'models/archetype';
 import { ICharacterData } from 'models/character';
 import { WeaponID, WeaponTypeID, IWeaponData } from 'models/weapon';
-
 import DataList from 'models/data-list';
 
 class WeaponList extends DataList<WeaponID, IWeaponData> {

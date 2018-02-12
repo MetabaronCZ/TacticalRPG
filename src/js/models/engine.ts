@@ -1,8 +1,8 @@
 import { getRandomPartyCharacters, getCharacterById } from 'models/party/utils';
 
-import { Player } from 'models/player';
+import Player from 'models/player';
+import Position from 'models/position';
 import { IPartyData } from 'models/party';
-import { Position } from 'models/position';
 import { IAttributes } from 'models/attributes';
 import { Character, ICharacterData } from 'models/character';
 import { ICharacterConfig } from 'models/character/character';

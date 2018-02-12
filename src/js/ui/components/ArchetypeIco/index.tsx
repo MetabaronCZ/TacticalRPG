@@ -1,6 +1,7 @@
 import React from 'react';
-import ArchetypeIcoSizes, { SizeID } from 'ui/components/ArchetypeIco/sizes';
+
 import { ArchCharID, Archetypes } from 'models/archetype';
+import ArchetypeIcoSizes, { SizeID } from 'ui/components/ArchetypeIco/sizes';
 
 interface IArchetypeIcoProps {
 	size?: SizeID;

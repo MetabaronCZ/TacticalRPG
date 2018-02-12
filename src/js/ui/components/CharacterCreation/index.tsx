@@ -10,13 +10,13 @@ import Step2 from 'ui/components/CharacterCreation/components/Step2';
 import Step3 from 'ui/components/CharacterCreation/components/Step3';
 
 import { validateField, validateForm } from 'utils/validation';
-import { makeCharacter } from 'models/character/utils';
 
 import { Jobs } from 'models/job';
 import { WieldID } from 'models/wield';
 import { ArmorID, Armors } from 'models/armor';
 import { WeaponID, Weapons } from 'models/weapon';
 import { ICharacterData } from 'models/character';
+import { makeCharacter } from 'models/character/utils';
 
 const steps: string[] = ['Character Identity', 'Character Archetype', 'Equipment'];
 

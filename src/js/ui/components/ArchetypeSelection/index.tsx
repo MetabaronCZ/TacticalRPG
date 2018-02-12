@@ -1,8 +1,10 @@
 import React from 'react';
+
+import { ArchCharID, Archetypes } from 'models/archetype';
+
 import FormRadio from 'ui/components/FormRadio';
 import ArchetypeIco from 'ui/components/ArchetypeIco';
 import { SizeID } from 'ui/components/ArchetypeIco/sizes';
-import { ArchCharID, Archetypes } from 'models/archetype';
 
 interface IArchetypeSelectionProps {
 	primary?: ArchCharID;

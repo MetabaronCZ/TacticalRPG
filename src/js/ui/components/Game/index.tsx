@@ -8,7 +8,7 @@ import Characters from 'ui/components/Game/components/Characters';
 
 import { IPartyData } from 'models/party';
 import { ICharacterData } from 'models/character';
-import { Engine, IEngineState } from 'models/engine';
+import Engine, { IEngineState } from 'models/engine';
 
 const gridSize = 12;
 const blockSize = 64;

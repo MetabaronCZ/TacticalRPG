@@ -5,8 +5,8 @@ import FormSelect from 'ui/components/FormSelect';
 import FormSelectItem from 'ui/components/FormSelectItem';
 
 import { Armors } from 'models/armor';
-import { WieldID } from 'models/wield';
 import { Weapons } from 'models/weapon';
+import { WieldID } from 'models/wield';
 import { ICharacterData } from 'models/character';
 
 interface IStep3Props {

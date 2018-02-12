@@ -2,8 +2,8 @@ import uuid from 'uuid/v1';
 
 import { SexID } from 'models/sex';
 import { JobID } from 'models/job';
-import { Player } from 'models/player';
-import { Position } from 'models/position';
+import Player from 'models/player';
+import Position from 'models/position';
 import { ArchCharID } from 'models/archetype';
 import { ICharacterData } from 'models/character';
 import { IAttributes, getAttributes } from 'models/attributes';

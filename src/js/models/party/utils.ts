@@ -1,8 +1,8 @@
-import uuid from 'uuid';
+import uuid from 'uuid/v1';
 
 import { getRandomArrayItems } from 'utils/array';
 import { getRandomCharacter } from 'models/character/utils';
-import { getRandomNames } from 'models/random-name-generator';
+import getRandomNames from 'models/random-name-generator';
 
 import { Jobs } from 'models/job';
 import { IPartyData } from 'models/party';
