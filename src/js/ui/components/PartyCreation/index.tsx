@@ -11,7 +11,7 @@ import ButtonRow from 'ui/components/ButtonRow';
 import Separator from 'ui/components/Separator';
 
 import { validateField, validateForm } from 'utils/validation';
-import { characterCount, getCharacterById, makeParty, maxNameLength } from 'models/party/utils';
+import { characterCount, getCharacterById, makeParty, maxNameLength, validateParty } from 'models/party/utils';
 
 import { Sexes } from 'models/sex';
 import { Armors } from 'models/armor';
@@ -52,10 +52,14 @@ class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationS
 
 	public render() {
 		const { fields, errors } = this.state;
-		const partyExists = !!(this.props.characters && this.props.characters.length);
+		const chars = this.props.characters;
+		const partyExists = !!(chars && chars.length);
+		const partyValidation = validateParty(chars ? fields.characters.map((id) => getCharacterById(id, chars)) : undefined);
 
 		return (
 			<Form onSubmit={this.onSubmit}>
+				{true !== partyValidation ? this.renderInvalidParty(partyValidation) : ''}
+
 				{partyExists
 					? (
 						<div>
@@ -204,6 +208,14 @@ class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationS
 		return (
 			<p className="Paragraph">
 				You must <Link href="/character-create">create a character</Link> to form a party.
+			</p>
+		);
+	}
+
+	private renderInvalidParty(msg: string|true) {
+		return (
+			<p className="ErrorBox">
+				Party is Invalid: {msg}
 			</p>
 		);
 	}

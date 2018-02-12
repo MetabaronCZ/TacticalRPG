@@ -10,7 +10,7 @@ import ButtonRow from 'ui/components/ButtonRow';
 import Separator from 'ui/components/Separator';
 import CharacterList from 'ui/components/CharacterList';
 
-import { getCharacterById } from 'models/party/utils';
+import { getCharacterById, validateParty } from 'models/party/utils';
 
 import { IPartyData } from 'models/party';
 import { ICharacterData } from 'models/character';
@@ -58,6 +58,8 @@ class BattleSetup extends React.Component<IBattleSetupProps, IBattleSetupState> 
 			selectedParty = parties.filter((p) => p.id === fields.party)[0];
 			chars = selectedParty.characters.map((id) => getCharacterById(id, characters));
 		}
+		const partyValidation = validateParty(chars);
+		const isValidParty = (true === partyValidation);
 
 		return (
 			<Form onSubmit={this.onSubmit}>
@@ -78,14 +80,18 @@ class BattleSetup extends React.Component<IBattleSetupProps, IBattleSetupState> 
 				}
 
 				{/* selected party characters */}
-				{chars && <CharacterList characters={chars} />}
+				{
+					isValidParty
+					? <CharacterList characters={chars} />
+					: this.renderPartyInvalid(partyValidation)
+				}
 
 				<Separator />
 
 				<ButtonRow>
 					<Button ico="back" text="Back" onClick={this.props.onBack} />
 
-					{parties && parties.length
+					{isValidParty
 						? <Button ico="fight" text="Start" color="green" type="submit" />
 						: <span />
 					}
@@ -118,6 +124,14 @@ class BattleSetup extends React.Component<IBattleSetupProps, IBattleSetupState> 
 		return (
 			<p className="Paragraph">
 				You must <Link href="/party-create">form a party</Link> to start a battle.
+			</p>
+		);
+	}
+
+	private renderPartyInvalid(msg: string|true) {
+		return (
+			<p className="ErrorBox">
+				Invalid Party: {msg}
 			</p>
 		);
 	}

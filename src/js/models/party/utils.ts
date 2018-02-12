@@ -46,3 +46,46 @@ export const makeParty = (conf: IPartyConfig = {}): IPartyData => {
 		characters: conf.characters || []
 	};
 };
+
+export const validateParty = (party?: ICharacterData[]): string|true => {
+	if (!party || !party.length) {
+		return 'Party contains no characters';
+	}
+	const ids = party.map((char) => char.id);
+	const idErrs: string[] = [];
+
+	ids.forEach((id, i) => {
+		const name = party[i].name;
+
+		if (i !== ids.lastIndexOf(id) && -1 === idErrs.indexOf(name)) {
+			idErrs.push(name);
+		}
+	});
+
+	if (idErrs.length) {
+		return `Party contains same character multiple times: ${idErrs.join(', ')}`;
+	}
+	const jobs = party.map((char) => char.job);
+	const jobErrs: { [job: string]: string[] } = {};
+	let hasJobErrors = false;
+
+	jobs.forEach((job, i) => {
+		if (i !== jobs.lastIndexOf(job) && !jobErrs[job]) {
+			const names = party.filter((char) => job === char.job).map((char) => char.name);
+			jobErrs[job] = names;
+			hasJobErrors = true;
+		}
+	});
+
+	if (hasJobErrors) {
+		const msg = [];
+
+		for (const err in jobErrs) {
+			msg.push(`${err} (${jobErrs[err].join(', ')})`);
+		}
+		return `Party contains same job multiple times: ${msg.join(', ')}`;
+	}
+
+	// party is valid
+	return true;
+};
