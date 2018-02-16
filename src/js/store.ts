@@ -1,7 +1,8 @@
 import { createStore } from 'redux';
 import { Store } from 'react-redux';
+
 import reducers from 'reducers';
-import { ICharacterData } from 'models/character';
+import { ICharacterData } from 'models/character-data';
 
 export interface IState {
 	readonly characters?: ICharacterData[];

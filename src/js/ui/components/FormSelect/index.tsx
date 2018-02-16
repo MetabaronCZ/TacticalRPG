@@ -8,7 +8,7 @@ interface IFormSelect {
 	onChange?: (e: SyntheticEvent<any>) => void;
 }
 
-const FormSelect: React.SFC<IFormSelect> = ({ id, name, value, disabled, onChange, children }) => (
+const FormSelect: React.SFC<IFormSelect> = ({ id, name, value = '', disabled, onChange, children }) => (
 	<select id={id} name={name} className="FormSelect" value={value} onChange={onChange} disabled={disabled}>
 		{children}
 	</select>

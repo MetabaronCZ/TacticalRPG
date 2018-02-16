@@ -1,4 +1,4 @@
-import { ICharacterData } from 'models/character';
+import { ICharacterData } from 'models/character-data';
 import { IAction } from 'store';
 
 export enum ActionID {

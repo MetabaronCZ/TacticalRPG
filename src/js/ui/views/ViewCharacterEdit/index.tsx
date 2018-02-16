@@ -6,10 +6,10 @@ import { withRouter, RouteComponentProps } from 'react-router';
 import Page from 'ui/components/Page';
 import CharacterCreation from 'ui/components/CharacterCreation';
 
-import { goto, gotoFn } from 'utils/nav';
-import actions from 'actions/characters';
 import { IState, IAction } from 'store';
-import { ICharacterData } from 'models/character';
+import actions from 'actions/characters';
+import { goto, gotoFn } from 'utils/nav';
+import { ICharacterData } from 'models/character-data';
 
 interface IStateToProps {
 	characters?: ICharacterData[];
@@ -30,9 +30,9 @@ const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
 	}
 });
 
-const ViewCharacterEditContainer: React.SFC<IViewCharacterEditContainerProps & IStateToProps> = ({ characters, onSubmit, history, match }) => {
-	const charID = match.params.id;
-	const character = (characters ? characters.find((char) => char.id === charID) : undefined);
+const ViewCharacterEditContainer: React.SFC<IViewCharacterEditContainerProps & IStateToProps> = (props) => {
+	const { characters, onSubmit, history, match } = props;
+	const character = (characters ? characters.find((char) => char.id === match.params.id) : undefined);
 
 	return (
 		<Page heading="Edit character">

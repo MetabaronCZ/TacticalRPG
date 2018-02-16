@@ -1,9 +1,8 @@
 import React from 'react';
 
+import { ICharacterData } from 'models/character-data';
 import getColumns from 'ui/components/CharacterList/columns';
 import { IOnMoveDown, IOnMoveUp, IOnDelete } from 'ui/views/ViewCharacterList';
-
-import { ICharacterData } from 'models/character';
 
 interface ICharacterListProps {
 	editable?: boolean;
@@ -13,11 +12,12 @@ interface ICharacterListProps {
 	onDelete?: IOnDelete;
 }
 
-const CharacterList: React.SFC<ICharacterListProps> = ({ editable = false, characters, onMoveDown, onMoveUp, onDelete }) => {
+const CharacterList: React.SFC<ICharacterListProps> = (props) => {
+	const { editable = false, characters, onMoveDown, onMoveUp, onDelete } = props;
 	const columns = getColumns(editable, onMoveDown, onMoveUp, onDelete);
 
 	// ignore empty character slots
-	characters = characters.filter((char) => !!char);
+	const chars = characters.filter((char) => !!char);
 
 	return (
 		<ul className="List">
@@ -29,7 +29,7 @@ const CharacterList: React.SFC<ICharacterListProps> = ({ editable = false, chara
 				))}
 			</li>
 
-			{characters.map((char, i) => {
+			{chars.map((char, i) => {
 				return (
 					<li className="List-row" key={i}>
 						{columns.map((col, j) => (

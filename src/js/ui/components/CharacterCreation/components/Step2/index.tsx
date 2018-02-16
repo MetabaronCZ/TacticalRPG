@@ -6,7 +6,7 @@ import FormSelectItem from 'ui/components/FormSelectItem';
 import ArchetypeSelection from 'ui/components/ArchetypeSelection';
 
 import { Jobs } from 'models/job';
-import { ICharacterData } from 'models/character';
+import { ICharacterData } from 'models/character-data';
 
 interface IStep2Props {
 	fields: ICharacterData;

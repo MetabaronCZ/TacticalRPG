@@ -3,10 +3,10 @@ import { connect, Dispatch } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router';
 
 import { gotoFn } from 'utils/nav';
-import ViewCharacterList from 'ui/views/ViewCharacterList/template';
-import { IState, IAction } from 'store';
 import actions from 'actions/characters';
-import { ICharacterData } from 'models/character';
+import { IState, IAction } from 'store';
+import { ICharacterData } from 'models/character-data';
+import ViewCharacterList from 'ui/views/ViewCharacterList/template';
 
 export type IOnMoveDown = (id: string) => () => void;
 export type IOnMoveUp = (id: string) => () => void;
@@ -40,16 +40,20 @@ const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
 	}
 });
 
-const ViewCharacterListContainer: React.SFC<IViewCharacterListContainerProps & IStateToProps> = ({ characters, history, onMoveDown, onMoveUp, onDelete }) => (
-	<ViewCharacterList
-		characters={characters}
-		onBack={gotoFn(history, '/')}
-		onCreate={gotoFn(history, '/character-create')}
-		onMoveDown={onMoveDown}
-		onMoveUp={onMoveUp}
-		onDelete={onDelete}
-	/>
-);
+const ViewCharacterListContainer: React.SFC<IViewCharacterListContainerProps & IStateToProps> = (props) => {
+	const { characters, history, onMoveDown, onMoveUp, onDelete } = props;
+
+	return (
+		<ViewCharacterList
+			characters={characters}
+			onBack={gotoFn(history, '/')}
+			onCreate={gotoFn(history, '/character-create')}
+			onMoveDown={onMoveDown}
+			onMoveUp={onMoveUp}
+			onDelete={onDelete}
+		/>
+	);
+};
 
 export default withRouter(
 	connect<IStateToProps>(mapStateToProps, mapDispatchToProps)(ViewCharacterListContainer)

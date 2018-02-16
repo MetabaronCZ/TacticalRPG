@@ -1,8 +1,8 @@
 import { ActionID as CharacterActionID } from 'actions/characters';
 import { ActionID as PartyActionID } from 'actions/parties';
 import { add, edit, remove, swap } from 'utils/array';
-import { IAction } from 'store';
 import { IPartyData } from 'models/party';
+import { IAction } from 'store';
 
 const removeCharacter = (id: string, state: IPartyData[]) => {
 	if (!id) {

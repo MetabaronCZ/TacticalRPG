@@ -1,7 +1,7 @@
 import { JobID } from 'models/job';
 import { WieldID } from 'models/wield';
 import { ArchCharID} from 'models/archetype';
-import { ICharacterData } from 'models/character';
+import { ICharacterData } from 'models/character-data';
 import { WeaponID, WeaponTypeID, IWeaponData } from 'models/weapon';
 import DataList from 'models/data-list';
 

@@ -5,10 +5,8 @@ import FormInput from 'ui/components/FormInput';
 import FormRadio from 'ui/components/FormRadio';
 
 import icos from 'data/icos';
-
 import { Sexes } from 'models/sex';
-import { ICharacterData } from 'models/character';
-import { maxNameLength } from 'models/character/utils';
+import { ICharacterData, CharacterData } from 'models/character-data';
 
 interface IStep1Props {
 	fields: ICharacterData;
@@ -27,7 +25,7 @@ const Step1: React.SFC<IStep1Props> = ({ fields, errors, onChange }) => (
 				value={fields.name}
 				placeholder="Type character name ..."
 				name="name"
-				maxLength={maxNameLength}
+				maxLength={CharacterData.maxNameLength}
 				isInvalid={!!errors.name}
 				onChange={onChange}
 			/>

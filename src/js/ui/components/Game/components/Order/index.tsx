@@ -1,22 +1,36 @@
 import React from 'react';
-import { Character } from 'models/character';
+import { IOrder } from 'models/order';
+import { PlayerType } from 'models/player';
+import { ICharacter } from 'models/character';
 
 interface IOrderProps {
-	characters: Character[];
+	order: IOrder;
+	characters: ICharacter[];
 }
 
-const Order: React.SFC<IOrderProps> = ({ characters }) => (
-	<div className="Order">
-		<h2 className="Heading">Order</h2>
+const Order: React.SFC<IOrderProps> = ({ order, characters }) => {
+	const ordered = order.map((id) => {
+		for (const char of characters) {
+			if (id === char.data.id) {
+				return char;
+			}
+		}
+		throw new Error(`Could not create Order: Invalid Character ID (${id})`);
+	});
 
-		{characters.map((char, i) => (
-			<div className={`Order-item Order-item--${char.getPlayer().isEnemy() ? 'enemy' : 'ally'}`} key={i}>
-				<div className="Order-item-inner">
-					{char.job} {char.name} <small>| SPD {char.getAttributes().current.SPD}</small>
+	return (
+		<div className="Order">
+			<h2 className="Heading">Order</h2>
+
+			{ordered.map((char, i) => (
+				<div className={`Order-item Order-item--${PlayerType.ENEMY === char.player ? 'enemy' : 'ally'}`} key={i}>
+					<div className="Order-item-inner">
+						{char.data.job} {char.data.name} <small>| SPD {char.currAttributes.SPD}</small>
+					</div>
 				</div>
-			</div>
-		))}
-	</div>
-);
+			))}
+		</div>
+	);
+};
 
 export default Order;

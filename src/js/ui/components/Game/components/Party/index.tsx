@@ -5,36 +5,40 @@ import Bar from 'ui/components/Game/components/Bar';
 
 import icos from 'data/icos';
 import { Jobs } from 'models/job';
-import { Character } from 'models/character';
+import { PlayerType } from 'models/player';
+import { ICharacter } from 'models/character';
 
 interface IPartyProps {
-	characters: Character[];
+	characters: ICharacter[];
 }
 
-const Party: React.SFC<IPartyProps> = ({ characters }) => (
-	<div className="Party">
-		<h2 className="Heading">
-			Party
-		</h2>
+const Party: React.SFC<IPartyProps> = ({ characters }) => {
+	const ally = characters.filter((char) => PlayerType.ALLY === char.player);
 
-		{characters.map((char, i) => {
-			const attrs = char.getAttributes();
-			const job = Jobs.get(char.job);
+	return (
+		<div className="Party">
+			<h2 className="Heading">
+				Party
+			</h2>
 
-			return (
-				<div className="Party-item" key={i}>
-					{char.name} <ArchetypeIco primary={char.primary} secondary={char.secondary} /> {icos[char.sex.toLowerCase()]} {job.title}
+			{ally.map((char, i) => {
+				const job = Jobs.get(char.data.job);
 
-					<Bar
-						hp={attrs.current.HP}
-						hpMax={attrs.base.HP}
-						ap={attrs.current.AP}
-						apMax={attrs.base.AP}
-					/>
-				</div>
-			);
-		})}
-	</div>
-);
+				return (
+					<div className="Party-item" key={i}>
+						{char.data.name} <ArchetypeIco primary={char.data.primary} secondary={char.data.secondary} /> {icos[char.data.sex.toLowerCase()]} {job.title}
+
+						<Bar
+							hp={char.currAttributes.HP}
+							hpMax={char.baseAttributes.HP}
+							ap={char.currAttributes.AP}
+							apMax={char.baseAttributes.AP}
+						/>
+					</div>
+				);
+			})}
+		</div>
+	);
+};
 
 export default Party;

@@ -3,11 +3,11 @@ import { History } from 'history';
 import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router';
 
-import Game from 'ui/components/Game';
+import GameUI from 'ui/components/Game';
 import { goto, gotoFn } from 'utils/nav';
 import { IState } from 'store';
 import { IPartyData } from 'models/party';
-import { ICharacterData } from 'models/character';
+import { ICharacterData } from 'models/character-data';
 
 const txtExitConfirm = 'Do you realy want to exit and lost your game progress?';
 
@@ -30,7 +30,8 @@ const mapStateToProps = (state: IState): IStateToProps => ({
 	parties: state.parties
 });
 
-const ViewCharacterEditContainer: React.SFC<IStateToProps & RouteComponentProps<any>> = ({ characters, parties, history, match }) => {
+const ViewCharacterEditContainer: React.SFC<IStateToProps & RouteComponentProps<any>> = (props) => {
+	const { characters, parties, history, match } = props;
 	const partyID = match.params.party;
 	const party = (parties ? parties.find((p) => p.id === partyID) : undefined);
 	const onExit = exit(history);
@@ -39,7 +40,7 @@ const ViewCharacterEditContainer: React.SFC<IStateToProps & RouteComponentProps<
 		throw new Error('Game started with invalid arguments');
 	}
 	return (
-		<Game
+		<GameUI
 			party={party}
 			characters={characters}
 			onExit={onExit}

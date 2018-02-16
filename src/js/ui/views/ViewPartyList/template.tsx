@@ -19,20 +19,24 @@ interface IViewPartyList {
 	onDelete?: () => void;
 }
 
-const ViewPartyList: React.SFC<IViewPartyList> = ({ parties, onBack, onCreate, onMoveDown, onMoveUp, onDelete }) => (
-	<Page heading="Party list">
-		{
-			(parties && parties.length)
-				? <PartyList parties={parties} onDelete={onDelete} onMoveDown={onMoveDown} onMoveUp={onMoveUp} />
-				: <NoParties />
-		}
-		<Separator />
+const ViewPartyList: React.SFC<IViewPartyList> = (props) => {
+	const { parties, onBack, onCreate, onMoveDown, onMoveUp, onDelete } = props;
 
-		<ButtonRow>
-			<Button ico="back" text="Back" onClick={onBack} />
-			<Button ico="create" color="green" text="Create new party" onClick={onCreate} />
-		</ButtonRow>
-	</Page>
-);
+	return (
+		<Page heading="Party list">
+			{
+				(parties && parties.length)
+					? <PartyList parties={parties} onDelete={onDelete} onMoveDown={onMoveDown} onMoveUp={onMoveUp} />
+					: <NoParties />
+			}
+			<Separator />
+
+			<ButtonRow>
+				<Button ico="back" text="Back" onClick={onBack} />
+				<Button ico="create" color="green" text="Create new party" onClick={onCreate} />
+			</ButtonRow>
+		</Page>
+	);
+};
 
 export default ViewPartyList;

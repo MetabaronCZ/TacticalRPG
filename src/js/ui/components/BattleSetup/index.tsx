@@ -10,10 +10,8 @@ import ButtonRow from 'ui/components/ButtonRow';
 import Separator from 'ui/components/Separator';
 import CharacterList from 'ui/components/CharacterList';
 
-import { getCharacterById, validateParty } from 'models/party/utils';
-
-import { IPartyData } from 'models/party';
-import { ICharacterData } from 'models/character';
+import { IPartyData, Party } from 'models/party';
+import { ICharacterData } from 'models/character-data';
 
 interface IBattleSetupProps {
 	parties?: IPartyData[];
@@ -56,9 +54,9 @@ class BattleSetup extends React.Component<IBattleSetupProps, IBattleSetupState> 
 
 		if (parties && parties.length) {
 			selectedParty = parties.filter((p) => p.id === fields.party)[0];
-			chars = selectedParty.characters.map((id) => getCharacterById(id, characters));
+			chars = selectedParty.characters.map((id) => Party.getCharacterById(id, characters));
 		}
-		const partyValidation = validateParty(chars);
+		const partyValidation = Party.validate(chars);
 		const isValidParty = (true === partyValidation);
 
 		return (

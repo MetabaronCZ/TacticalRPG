@@ -11,8 +11,8 @@ import { IOnMoveDown, IOnMoveUp, IOnDelete } from 'ui/views/ViewCharacterList';
 import { Jobs } from 'models/job';
 import { Armors } from 'models/armor';
 import { WieldID } from 'models/wield';
-import { ICharacterData } from 'models/character';
 import { IWeaponData, Weapons } from 'models/weapon';
+import { ICharacterData } from 'models/character-data';
 
 const renderArchetype = (char: ICharacterData) => (
 	<ArchetypeIco primary={char.primary} secondary={char.secondary} />

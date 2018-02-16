@@ -10,15 +10,16 @@ import Button from 'ui/components/Button';
 import ButtonRow from 'ui/components/ButtonRow';
 import Separator from 'ui/components/Separator';
 
-import { validateField, validateForm } from 'utils/validation';
-import { characterCount, getCharacterById, makeParty, maxNameLength, validateParty } from 'models/party/utils';
-
 import { Sexes } from 'models/sex';
 import { Armors } from 'models/armor';
 import { Weapons } from 'models/weapon';
 import { JobID, Jobs } from 'models/job';
-import { IPartyData } from 'models/party';
-import { ICharacterData } from 'models/character';
+import { IPartyData, Party } from 'models/party';
+import { ICharacterData } from 'models/character-data';
+
+import { validateField, validateForm } from 'utils/validation';
+
+const errNoCharacter = 'Party contains no character';
 
 interface IPartyCreationProps {
 	party?: IPartyData;
@@ -38,9 +39,14 @@ class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationS
 	constructor(props: IPartyCreationProps) {
 		super(props);
 
+		let chars = props.party ? props.party.characters : [];
+		chars = chars.filter((id) => !!id);
+
 		this.state = {
-			fields: makeParty(props.party),
-			errors: {}
+			fields: Party.init(props.party || {}),
+			errors: {
+				noCharError: (props.party && !chars.length ? errNoCharacter : undefined)
+			}
 		};
 
 		this.onChange = this.onChange.bind(this);
@@ -54,7 +60,10 @@ class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationS
 		const { fields, errors } = this.state;
 		const chars = this.props.characters;
 		const partyExists = !!(chars && chars.length);
-		const partyValidation = validateParty(chars ? fields.characters.map((id) => getCharacterById(id, chars)) : undefined);
+
+		const partyValidation = errors.noCharError
+			? errors.noCharError
+			: Party.validate(chars ? fields.characters.map((id) => Party.getCharacterById(id, chars)) : undefined);
 
 		return (
 			<Form onSubmit={this.onSubmit}>
@@ -70,13 +79,13 @@ class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationS
 									value={fields.name}
 									placeholder="Type party name ..."
 									name="name"
-									maxLength={maxNameLength}
+									maxLength={Party.maxNameLength}
 									isInvalid={!!errors.name}
 									onChange={this.onChange}
 								/>
 							</FormField>
 
-							{Array(characterCount).fill('').map((x, i) => this.renderPartyItem(i))}
+							{Array(Party.characterCount).fill('').map((x, i) => this.renderPartyItem(i))}
 						</div>
 					)
 					: this.renderNoCharacter()
@@ -97,6 +106,7 @@ class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationS
 
 	private onChange(e: SyntheticEvent<any>) {
 		const fields = this.state.fields;
+		const errors = this.state.errors;
 		let field = e.currentTarget.name;
 		let value = e.currentTarget.value;
 
@@ -108,6 +118,16 @@ class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationS
 			chars[i] = value;
 			field = 'characters';
 			value = chars;
+
+			if (value) {
+				// reset "no character" validation error
+				this.setState({
+					errors: {
+						...errors,
+						noCharError: undefined
+					}
+				});
+			}
 		}
 
 		this.setState({
@@ -121,9 +141,22 @@ class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationS
 	private onSubmit(e: SyntheticEvent<any>) {
 		e.preventDefault();
 
-		const isValidForm = validateForm(this.state.fields, this.handleValidationError);
+		const { fields, errors } = this.state;
+		const isValidForm = validateForm(fields, this.handleValidationError);
 
 		if (!isValidForm) {
+			return;
+		}
+		let ids = fields.characters;
+		ids = ids.filter((id) => !!id);
+
+		if (!ids.length) {
+			this.setState({
+				errors: {
+					...errors,
+					noCharError: errNoCharacter
+				}
+			});
 			return;
 		}
 
@@ -157,7 +190,7 @@ class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationS
 
 		// get selected jobs
 		const selectedJobs = selected.map((id) => {
-			const char = getCharacterById(id, characters);
+			const char = Party.getCharacterById(id, characters);
 			return char ? char.job : JobID.NONE;
 		});
 
@@ -170,9 +203,9 @@ class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationS
 	}
 
 	private renderPartyItem(i: number) {
-		const id = this.state.fields.characters[i];
+		const id = this.state.fields.characters[i] || '';
 		const characters = this.props.characters;
-		const selected = (characters ? getCharacterById(id, characters) : undefined);
+		const selected = (characters ? Party.getCharacterById(id, characters) : undefined);
 		const filtered = this.filterCharacters(selected);
 		let info = '';
 

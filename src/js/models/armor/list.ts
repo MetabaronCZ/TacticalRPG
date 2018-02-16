@@ -1,7 +1,7 @@
-import { ArchetypeID } from 'models/archetype';
-import { ICharacterData } from 'models/character';
-import { ArmorID, IArmorData } from 'models/armor';
 import DataList from 'models/data-list';
+import { ArchetypeID } from 'models/archetype';
+import { ArmorID, IArmorData } from 'models/armor';
+import { ICharacterData } from 'models/character-data';
 
 class ArmorList extends DataList<ArmorID, IArmorData> {
 	constructor(entries: Array<[ArmorID, IArmorData]> = []) {

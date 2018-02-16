@@ -43,7 +43,8 @@ interface IPartyListProps {
 	onDelete: IFun;
 }
 
-const PartyList: React.SFC<IPartyListProps> = ({ parties, onMoveDown, onMoveUp, onDelete }) => {
+const PartyList: React.SFC<IPartyListProps> = (props) => {
+	const { parties, onMoveDown, onMoveUp, onDelete } = props;
 	const columns = getColumns(onMoveDown, onMoveUp, onDelete);
 
 	return (

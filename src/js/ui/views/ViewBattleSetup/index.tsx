@@ -3,14 +3,14 @@ import { History } from 'history';
 import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router';
 
+import { IState } from 'store';
 import { goto, gotoFn } from 'utils/nav';
 
 import Page from 'ui/components/Page';
 import BattleSetup from 'ui/components/BattleSetup';
 
-import { IState } from 'store';
 import { IPartyData } from 'models/party';
-import { ICharacterData } from 'models/character';
+import { ICharacterData } from 'models/character-data';
 
 interface IOnStartParams {
 	party?: string;

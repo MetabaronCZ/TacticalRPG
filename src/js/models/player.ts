@@ -1,22 +1,23 @@
-import { Character } from 'models/character';
-import { ICharacterConfig } from 'models/character/character';
+import { ICharacter } from 'models/character';
+import { IScore, Score } from 'models/score';
 
-class Player {
-	private characters: Character[];
-	private enemy: boolean;
-
-	constructor(characters: ICharacterConfig[], isEnemy: boolean) {
-		this.characters = characters.map((char) => new Character(char, this));
-		this.enemy = !!isEnemy;
-	}
-
-	public getCharacters(): Character[] {
-		return this.characters;
-	}
-
-	public isEnemy(): boolean {
-		return this.enemy;
-	}
+export enum PlayerType {
+	ALLY = 'ALLY',
+	ENEMY = 'ENEMY'
 }
 
-export default Player;
+export interface IPlayer {
+	name: string;
+	score: IScore;
+	characters: ICharacter[];
+}
+
+export class Player {
+	public static init(name: string): IPlayer {
+		return {
+			name,
+			score: Score.init(),
+			characters: []
+		};
+	}
+}

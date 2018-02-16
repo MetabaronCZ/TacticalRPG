@@ -6,12 +6,12 @@ import { withRouter, RouteComponentProps } from 'react-router';
 import Page from 'ui/components/Page';
 import PartyCreation from 'ui/components/PartyCreation';
 
-import { goto, gotoFn } from 'utils/nav';
 import actions from 'actions/parties';
 import { IState, IAction } from 'store';
+import { goto, gotoFn } from 'utils/nav';
 
 import { IPartyData } from 'models/party';
-import { ICharacterData } from 'models/character';
+import { ICharacterData } from 'models/character-data';
 
 interface IStateToProps {
 	characters?: ICharacterData[];
@@ -32,15 +32,19 @@ const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
 	}
 });
 
-const ViewPartyCreateContainer: React.SFC<IViewPartyCreateContainerProps & IStateToProps> = ({ characters, onSubmit, history }) => (
-	<Page heading="Party creation">
-		<PartyCreation
-			characters={characters}
-			onBack={gotoFn(history, '/party-list')}
-			onSubmit={onSubmit(history)}
-		/>
-	</Page>
-);
+const ViewPartyCreateContainer: React.SFC<IViewPartyCreateContainerProps & IStateToProps> = (props) => {
+	const { characters, onSubmit, history } = props;
+
+	return (
+		<Page heading="Party creation">
+			<PartyCreation
+				characters={characters}
+				onBack={gotoFn(history, '/party-list')}
+				onSubmit={onSubmit(history)}
+			/>
+		</Page>
+	);
+};
 
 export default withRouter(
 	connect<IStateToProps>(mapStateToProps, mapDispatchToProps)(ViewPartyCreateContainer)

@@ -1,4 +1,4 @@
-import samples from 'models/random-name-generator/samples';
+import samples from 'data/names';
 
 // random name generator (Markov chains order)
 const markovOrder = 3;
@@ -151,7 +151,7 @@ const getRandomName = (graph: IGraph, maxlength: number): string => {
 	return name[0] + name.substring(1).toLowerCase();
 };
 
-const getRandomNames = (count: number, maxlength: number): string[] => {
+export const getRandomNames = (count: number, maxlength: number): string[] => {
 	const graph = createGraph(samples, markovOrder);
 	const names = [];
 
@@ -160,5 +160,3 @@ const getRandomNames = (count: number, maxlength: number): string[] => {
 	}
 	return names;
 };
-
-export default getRandomNames;

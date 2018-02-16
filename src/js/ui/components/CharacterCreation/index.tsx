@@ -15,8 +15,7 @@ import { Jobs } from 'models/job';
 import { WieldID } from 'models/wield';
 import { ArmorID, Armors } from 'models/armor';
 import { WeaponID, Weapons } from 'models/weapon';
-import { ICharacterData } from 'models/character';
-import { makeCharacter } from 'models/character/utils';
+import { ICharacterData, CharacterData } from 'models/character-data';
 
 const steps: string[] = ['Character Identity', 'Character Archetype', 'Equipment'];
 
@@ -40,7 +39,7 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 
 		this.state = {
 			step: 1,
-			fields: makeCharacter(props.character || {}),
+			fields: CharacterData.init(props.character || {}),
 			errors: {}
 		};
 

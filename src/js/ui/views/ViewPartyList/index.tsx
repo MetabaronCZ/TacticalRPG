@@ -38,9 +38,10 @@ const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
 	}
 });
 
-const ViewPartyListContainer: React.SFC<IViewPartyListContainer & IStateToProps> = ({ parties, history, onMoveDown, onMoveUp, onDelete }) => {
-	const fnGoBack = gotoFn(history, '/');
+const ViewPartyListContainer: React.SFC<IViewPartyListContainer & IStateToProps> = (props) => {
+	const { parties, history, onMoveDown, onMoveUp, onDelete } = props;
 	const fnCreate = gotoFn(history, '/party-create');
+	const fnGoBack = gotoFn(history, '/');
 
 	return (
 		<ViewPartyList

@@ -1,8 +1,10 @@
 import React from 'react';
-import { Character } from 'models/character';
+
+import { PlayerType } from 'models/player';
+import { ICharacter } from 'models/character';
 
 interface ICharacterBlockProps {
-	char: Character;
+	char: ICharacter;
 	size: number;
 }
 
@@ -13,8 +15,8 @@ class CharacterBlock extends React.Component<ICharacterBlockProps, {}> {
 
 	public render() {
 		const { char, size } = this.props;
-		const player = this.props.char.getPlayer();
-		const type = (player.isEnemy() ? 'enemy' : 'ally');
+		const player = this.props.char.player;
+		const type = (PlayerType.ENEMY === player ? 'enemy' : 'ally');
 
 		const style: React.CSSProperties = {
 			width: size + 'px',
@@ -24,7 +26,7 @@ class CharacterBlock extends React.Component<ICharacterBlockProps, {}> {
 		return (
 			<div className={`Character Character--${type}`} style={style}>
 				<span className="Character-title">
-					{char.name}
+					{char.data.name}
 				</span>
 			</div>
 		);

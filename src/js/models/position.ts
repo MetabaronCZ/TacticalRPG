@@ -1,4 +1,4 @@
-class Position {
+export class Position {
 	private readonly posX: number;
 	private readonly posY: number;
 
@@ -15,5 +15,3 @@ class Position {
 		return this.posY;
 	}
 }
-
-export default Position;

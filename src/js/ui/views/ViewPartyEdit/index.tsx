@@ -6,12 +6,11 @@ import { withRouter, RouteComponentProps } from 'react-router';
 import Page from 'ui/components/Page';
 import PartyCreation from 'ui/components/PartyCreation';
 
-import { goto, gotoFn } from 'utils/nav';
 import actions from 'actions/parties';
 import { IState, IAction } from 'store';
-
+import { goto, gotoFn } from 'utils/nav';
 import { IPartyData } from 'models/party';
-import { ICharacterData } from 'models/character';
+import { ICharacterData } from 'models/character-data';
 
 interface IStateToProps {
 	parties?: IPartyData[];
@@ -34,7 +33,8 @@ const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
 	}
 });
 
-const ViewPartyEditContainer: React.SFC<IViewPartyEditContainerProps & IStateToProps> = ({ parties, characters, onSubmit, history, match }) => {
+const ViewPartyEditContainer: React.SFC<IViewPartyEditContainerProps & IStateToProps> = (props) => {
+	const { parties, characters, onSubmit, history, match } = props;
 	const party = (parties ? parties.find((c) => c.id === match.params.id) : undefined);
 
 	return (

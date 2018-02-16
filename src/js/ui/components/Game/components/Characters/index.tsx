@@ -1,21 +1,20 @@
 import React from 'react';
 
-import { Character } from 'models/character';
 import CharacterBlock from 'ui/components/Game/components/Character';
+import { ICharacter } from 'models/character';
 
 interface ICharacters {
-	ally: Character[];
-	enemy: Character[];
+	characters: ICharacter[];
 	size: number;
 	blockSize: number;
 }
 
 export type IOnSelect = () => void;
 
-const renderCharacter = (char: Character, blockSize: number, i: number) => {
+const renderCharacter = (char: ICharacter, blockSize: number, i: number) => {
 	const style: React.CSSProperties = {
-		top: (char.getPosition().y * blockSize) + 'px',
-		left: (char.getPosition().x * blockSize) + 'px'
+		top: (char.position.y * blockSize) + 'px',
+		left: (char.position.x * blockSize) + 'px'
 	};
 
 	return (
@@ -25,16 +24,12 @@ const renderCharacter = (char: Character, blockSize: number, i: number) => {
 	);
 };
 
-const Characters: React.SFC<ICharacters> = ({ ally, enemy, size, blockSize }) => {
-	const characters = ally.concat(enemy);
-
-	return (
-		<div className="Characters">
-			{characters.map((char, i) => {
-				return renderCharacter(char, blockSize, i);
-			})}
-		</div>
-	);
-};
+const Characters: React.SFC<ICharacters> = ({ characters, size, blockSize }) => (
+	<div className="Characters">
+		{characters.map((char, i) => {
+			return renderCharacter(char, blockSize, i);
+		})}
+	</div>
+);
 
 export default Characters;
