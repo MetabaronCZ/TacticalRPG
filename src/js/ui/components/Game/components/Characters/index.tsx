@@ -9,8 +9,6 @@ interface ICharacters {
 	blockSize: number;
 }
 
-export type IOnSelect = () => void;
-
 const renderCharacter = (char: ICharacter, blockSize: number, i: number) => {
 	const style: React.CSSProperties = {
 		top: (char.position.y * blockSize) + 'px',

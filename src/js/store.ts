@@ -4,6 +4,8 @@ import { Store } from 'react-redux';
 import reducers from 'reducers';
 import { ICharacterData } from 'models/character-data';
 
+const storageKey = 'game';
+
 export interface IState {
 	readonly characters?: ICharacterData[];
 	readonly parties?: any[];
@@ -13,8 +15,6 @@ export interface IAction {
 	type: string;
 	[data: string]: any;
 }
-
-const storageKey = 'game';
 
 const loadState = (): IState => {
 	const state = localStorage.getItem(storageKey) || '';

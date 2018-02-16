@@ -1,10 +1,9 @@
 import { PlayerType, Player, IPlayer } from 'models/player';
 import { ICharacter, Character } from 'models/character';
 import { ICharacterData } from 'models/character-data';
-import { Party } from 'models/party';
 import { Position } from 'models/position';
+import { Party } from 'models/party';
 import { Order } from 'models/order';
-import { IGame } from 'models/game';
 
 const allyPlayerName = 'Player';
 const enemyPlayerName = 'Computer';

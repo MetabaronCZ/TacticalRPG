@@ -1,4 +1,4 @@
-import { IPartyData } from 'models/party';
+import { IParty } from 'models/party';
 import { IAction } from 'store';
 
 export enum ActionID {
@@ -9,12 +9,12 @@ export enum ActionID {
 	MOVE_UP_LIST = 'PARTY_MOVE_UP_LIST'
 }
 
-const addParty = (value: IPartyData): IAction => ({
+const addParty = (value: IParty): IAction => ({
 	type: ActionID.ADD,
 	value
 });
 
-const editParty = (value: IPartyData): IAction => ({
+const editParty = (value: IParty): IAction => ({
 	type: ActionID.EDIT,
 	value
 });

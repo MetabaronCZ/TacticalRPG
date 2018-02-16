@@ -3,8 +3,8 @@ import { connect, Dispatch } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router';
 
 import { gotoFn } from 'utils/nav';
-import actions from 'actions/characters';
 import { IState, IAction } from 'store';
+import actions from 'actions/characters';
 import { ICharacterData } from 'models/character-data';
 import ViewCharacterList from 'ui/views/ViewCharacterList/template';
 

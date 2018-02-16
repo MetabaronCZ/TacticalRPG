@@ -4,9 +4,10 @@ import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router';
 
 import GameUI from 'ui/components/Game';
-import { goto, gotoFn } from 'utils/nav';
+
 import { IState } from 'store';
-import { IPartyData } from 'models/party';
+import { IParty } from 'models/party';
+import { goto, gotoFn } from 'utils/nav';
 import { ICharacterData } from 'models/character-data';
 
 const txtExitConfirm = 'Do you realy want to exit and lost your game progress?';
@@ -15,7 +16,7 @@ type IOnExit = () => void;
 
 interface IStateToProps {
 	characters?: ICharacterData[];
-	parties?: IPartyData[];
+	parties?: IParty[];
 }
 
 const exit = (history: History): IOnExit => (): void => {

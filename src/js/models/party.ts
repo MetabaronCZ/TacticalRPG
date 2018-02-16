@@ -5,9 +5,9 @@ import { getRandomNames } from 'models/random-name-generator';
 import { ICharacterData, CharacterData } from 'models/character-data';
 import { IIndexable, getRandomArrayItems } from 'utils/array';
 
-export interface IPartyData extends IIndexable {
+export interface IParty extends IIndexable {
 	name: string;
-	characters: string[];
+	characters: string[];  // list of character IDs
 }
 
 export class Party {
@@ -17,14 +17,19 @@ export class Party {
 	// maximum character count of party name
 	public static maxNameLength = 16;
 
-	public static init({
-		name = '',
-		characters = new Array<string>(), // list of character IDs
-		id = uuid(),
-		creationDate = Date.now(),
-		lastUpdate = Date.now()
-	}): IPartyData {
-		return { name, id, creationDate, lastUpdate, characters };
+	public static init(conf = {}): IParty {
+		const now = Date.now();
+		const chars: string[] = [];
+
+		const defaultParty: IParty = {
+			id: uuid(),
+			name: '',
+			characters: chars,
+			creationDate: now,
+			lastUpdate: now
+		};
+
+		return Object.assign({}, defaultParty, conf);
 	}
 
 	// return character object from character list by its ID

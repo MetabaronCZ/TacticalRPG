@@ -1,11 +1,11 @@
 import { PlayerType } from 'models/player';
 import { ICharacter, Character } from 'models/character';
 
+const maxCapacity = 20;
+
 export type IOrder = string[];
 
 export class Order {
-	public static maxCapacity = 20;
-
 	public static make(characters: ICharacter[], initiative: PlayerType): IOrder {
 		let order: IOrder = [];
 
@@ -17,7 +17,7 @@ export class Order {
 			SPD: char.currAttributes.SPD
 		}));
 
-		while (order.length < this.maxCapacity) {
+		while (order.length < maxCapacity) {
 			let act = [];
 
 			// get characters who can act

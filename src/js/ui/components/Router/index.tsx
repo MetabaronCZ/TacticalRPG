@@ -1,5 +1,6 @@
 import React from 'react';
 import { Switch, MemoryRouter, Route } from 'react-router';
+
 import routes from 'ui/components/Router/routes';
 
 const Router = () => (

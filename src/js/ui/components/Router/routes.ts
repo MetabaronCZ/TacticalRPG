@@ -9,7 +9,7 @@ import CharacterList from 'ui/views/ViewCharacterList';
 import CharacterEdit from 'ui/views/ViewCharacterEdit';
 import CharacterCreate from 'ui/views/ViewCharacterCreate';
 
-export interface IRoute {
+interface IRoute {
 	readonly path: string;
 	readonly component: React.ComponentType<any>;
 }

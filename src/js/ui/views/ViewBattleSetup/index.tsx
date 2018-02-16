@@ -9,7 +9,7 @@ import { goto, gotoFn } from 'utils/nav';
 import Page from 'ui/components/Page';
 import BattleSetup from 'ui/components/BattleSetup';
 
-import { IPartyData } from 'models/party';
+import { IParty } from 'models/party';
 import { ICharacterData } from 'models/character-data';
 
 interface IOnStartParams {
@@ -18,7 +18,7 @@ interface IOnStartParams {
 
 interface IStateToProps {
 	characters?: ICharacterData[];
-	parties?: IPartyData[];
+	parties?: IParty[];
 }
 
 const mapStateToProps = (state: IState): IStateToProps => ({

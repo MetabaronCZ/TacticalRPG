@@ -14,7 +14,7 @@ import { Sexes } from 'models/sex';
 import { Armors } from 'models/armor';
 import { Weapons } from 'models/weapon';
 import { JobID, Jobs } from 'models/job';
-import { IPartyData, Party } from 'models/party';
+import { IParty, Party } from 'models/party';
 import { ICharacterData } from 'models/character-data';
 
 import { validateField, validateForm } from 'utils/validation';
@@ -22,14 +22,14 @@ import { validateField, validateForm } from 'utils/validation';
 const errNoCharacter = 'Party contains no character';
 
 interface IPartyCreationProps {
-	party?: IPartyData;
+	party?: IParty;
 	characters?: ICharacterData[];
 	onBack?: () => void;
-	onSubmit: (party: IPartyData) => void;
+	onSubmit: (party: IParty) => void;
 }
 
 interface IPartyCreationState {
-	fields: IPartyData;
+	fields: IParty;
 	errors: {
 		[field: string]: string|undefined;
 	};

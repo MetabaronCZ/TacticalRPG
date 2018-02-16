@@ -4,14 +4,14 @@ import Button from 'ui/components/Button';
 import ButtonRow from 'ui/components/ButtonRow';
 import PartyList from 'ui/components/PartyList';
 import Separator from 'ui/components/Separator';
-import { IPartyData } from 'models/party';
+import { IParty } from 'models/party';
 
 const NoParties = () => (
 	<p className="Paragraph">There are no character parties.</p>
 );
 
 interface IViewPartyList {
-	parties?: IPartyData[];
+	parties?: IParty[];
 	onBack?: () => void;
 	onCreate?: () => void;
 	onMoveDown?: (id: string) => void;

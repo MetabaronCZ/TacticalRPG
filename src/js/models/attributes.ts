@@ -1,24 +1,8 @@
-import { BaseAttributes, BaseAttrFormula, SecondaryAttrFormula } from 'data/attributes';
-import { IAttributes, IBaseAttributes, ISecondaryAttributes } from 'models/attributes';
 import { ArchCharID } from 'models/archetype';
 
-export interface IBaseAttributes {
-	STR: number;
-	VIT: number;
-	SPD: number;
-	MOV: number;
-	MAG: number;
-}
+type IBaseAttrFormula = (P: number, S: number, M: number) => number;
 
-export interface ISecondaryAttributes {
-	HP: number;
-	AP: number;
-	CP: number;
-}
-
-export type IBaseAttrFormula = (P: number, S: number, M: number) => number;
-
-export interface IBaseAttrFormulas {
+interface IBaseAttrFormulas {
 	STR: IBaseAttrFormula;
 	VIT: IBaseAttrFormula;
 	SPD: IBaseAttrFormula;
@@ -26,52 +10,88 @@ export interface IBaseAttrFormulas {
 	MAG: IBaseAttrFormula;
 }
 
-export type ISecondaryAttrFormula = (attrs: IBaseAttributes) => number;
+type ISecondaryAttrFormula = (attrs: IBaseAttributes) => number;
 
-export interface ISecondaryAttrFormulas {
+interface ISecondaryAttrFormulas {
 	HP: ISecondaryAttrFormula;
 	AP: ISecondaryAttrFormula;
 	CP: ISecondaryAttrFormula;
 }
 
+const BaseAttributes: IBaseAttributes = {
+	STR: 10,
+	VIT: 10,
+	SPD: 3,
+	MOV: 3,
+	MAG: 0
+};
+
+const BaseAttrFormula: IBaseAttrFormulas = {
+	STR: (P, S, M) => 10 * P,
+	VIT: (P, S, M) => 10 * P,
+	SPD: (P, S, M) => 2 * S,
+	MOV: (P, S, M) => 2 * S,
+	MAG: (P, S, M) => 10 * M
+};
+
+const SecondaryAttrFormula: ISecondaryAttrFormulas = {
+	HP: (attrs) => 10 * attrs.VIT,
+	AP: (attrs) => 4 * attrs.SPD,
+	CP: (attrs) => 0
+};
+
+interface IBaseAttributes {
+	STR: number;
+	VIT: number;
+	SPD: number;
+	MOV: number;
+	MAG: number;
+}
+
+interface ISecondaryAttributes {
+	HP: number;
+	AP: number;
+	CP: number;
+}
+
 export interface IAttributes extends IBaseAttributes, ISecondaryAttributes {}
+
+const getPrimary = (primary: ArchCharID, secondary: ArchCharID): IBaseAttributes => {
+	const attributes = Object.assign({}, BaseAttributes);
+	let P = 0;
+	let S = 0;
+	let M = 0;
+
+	P += ( ArchCharID.P === primary ? 1 : 0 );
+	S += ( ArchCharID.S === primary ? 1 : 0 );
+	M += ( ArchCharID.M === primary ? 1 : 0 );
+
+	P += ( ArchCharID.P === secondary ? 0.5 : 0 );
+	S += ( ArchCharID.S === secondary ? 0.5 : 0 );
+	M += ( ArchCharID.M === secondary ? 0.5 : 0 );
+
+	attributes.STR += BaseAttrFormula.STR(P, S, M);
+	attributes.VIT += BaseAttrFormula.VIT(P, S, M);
+	attributes.SPD += BaseAttrFormula.SPD(P, S, M);
+	attributes.MOV += BaseAttrFormula.MOV(P, S, M);
+	attributes.MAG += BaseAttrFormula.MAG(P, S, M);
+
+	return attributes;
+};
+
+const getSecondary = (attrs: IBaseAttributes): ISecondaryAttributes => {
+	return {
+		HP: SecondaryAttrFormula.HP(attrs),
+		AP: SecondaryAttrFormula.AP(attrs),
+		CP: SecondaryAttrFormula.CP(attrs)
+	};
+};
 
 export class Attributes {
 	public static create(primary: ArchCharID, secondary: ArchCharID): IAttributes {
-		const pAttrs = this.getPrimary(primary, secondary);
-		const sAttrs = this.getSecondary(pAttrs);
+		const pAttrs = getPrimary(primary, secondary);
+		const sAttrs = getSecondary(pAttrs);
 
 		return { ...pAttrs, ...sAttrs };
-	}
-
-	private static getPrimary(primary: ArchCharID, secondary: ArchCharID): IBaseAttributes {
-		const attributes = Object.assign({}, BaseAttributes);
-		let P = 0;
-		let S = 0;
-		let M = 0;
-
-		P += ( ArchCharID.P === primary ? 1 : 0 );
-		S += ( ArchCharID.S === primary ? 1 : 0 );
-		M += ( ArchCharID.M === primary ? 1 : 0 );
-
-		P += ( ArchCharID.P === secondary ? 0.5 : 0 );
-		S += ( ArchCharID.S === secondary ? 0.5 : 0 );
-		M += ( ArchCharID.M === secondary ? 0.5 : 0 );
-
-		attributes.STR += BaseAttrFormula.STR(P, S, M);
-		attributes.VIT += BaseAttrFormula.VIT(P, S, M);
-		attributes.SPD += BaseAttrFormula.SPD(P, S, M);
-		attributes.MOV += BaseAttrFormula.MOV(P, S, M);
-		attributes.MAG += BaseAttrFormula.MAG(P, S, M);
-
-		return attributes;
-	}
-
-	private static getSecondary(attrs: IBaseAttributes): ISecondaryAttributes {
-		return {
-			HP: SecondaryAttrFormula.HP(attrs),
-			AP: SecondaryAttrFormula.AP(attrs),
-			CP: SecondaryAttrFormula.CP(attrs)
-		};
 	}
 }

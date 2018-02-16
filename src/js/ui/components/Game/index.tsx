@@ -6,16 +6,15 @@ import Party from 'ui/components/Game/components/Party';
 import Layers from 'ui/components/Game/components/Layers';
 import Characters from 'ui/components/Game/components/Characters';
 
+import { IParty } from 'models/party';
+import { IGame, Game } from 'models/game';
 import { ICharacterData } from 'models/character-data';
-import { Game } from 'models/game';
-import { IPartyData } from 'models/party';
-import { IGame } from 'models/game';
 
 const gridSize = 12;
 const blockSize = 64;
 
 interface IGameProps {
-	party: IPartyData;
+	party: IParty;
 	characters: ICharacterData[];
 	onExit: () => void;
 	onSummary: () => void;

@@ -10,7 +10,7 @@ import actions from 'actions/parties';
 import { IState, IAction } from 'store';
 import { goto, gotoFn } from 'utils/nav';
 
-import { IPartyData } from 'models/party';
+import { IParty } from 'models/party';
 import { ICharacterData } from 'models/character-data';
 
 interface IStateToProps {
@@ -26,7 +26,7 @@ const mapStateToProps = (state: IState): IStateToProps => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
-	onSubmit: (history: History) => (value: IPartyData): void => {
+	onSubmit: (history: History) => (value: IParty): void => {
 		dispatch(actions.addParty(value));
 		goto(history, '/party-list');
 	}

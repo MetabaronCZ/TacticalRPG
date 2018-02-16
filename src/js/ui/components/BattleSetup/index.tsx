@@ -10,11 +10,11 @@ import ButtonRow from 'ui/components/ButtonRow';
 import Separator from 'ui/components/Separator';
 import CharacterList from 'ui/components/CharacterList';
 
-import { IPartyData, Party } from 'models/party';
+import { IParty, Party } from 'models/party';
 import { ICharacterData } from 'models/character-data';
 
 interface IBattleSetupProps {
-	parties?: IPartyData[];
+	parties?: IParty[];
 	characters?: ICharacterData[];
 	onStart: (fields: any) => void;
 	onBack: (e: SyntheticEvent<any>) => void;
@@ -56,8 +56,10 @@ class BattleSetup extends React.Component<IBattleSetupProps, IBattleSetupState> 
 			selectedParty = parties.filter((p) => p.id === fields.party)[0];
 			chars = selectedParty.characters.map((id) => Party.getCharacterById(id, characters));
 		}
+		chars = chars.filter((char) => !!char);
+
 		const partyValidation = Party.validate(chars);
-		const isValidParty = (true === partyValidation);
+		const isValidParty = (true === partyValidation && chars.length);
 
 		return (
 			<Form onSubmit={this.onSubmit}>

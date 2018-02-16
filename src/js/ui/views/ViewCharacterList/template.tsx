@@ -3,8 +3,8 @@ import React from 'react';
 import Page from 'ui/components/Page';
 import Button from 'ui/components/Button';
 import ButtonRow from 'ui/components/ButtonRow';
-import CharacterList from 'ui/components/CharacterList';
 import Separator from 'ui/components/Separator';
+import CharacterList from 'ui/components/CharacterList';
 import { IOnMoveDown, IOnMoveUp, IOnDelete } from 'ui/views/ViewCharacterList';
 
 import { ICharacterData } from 'models/character-data';

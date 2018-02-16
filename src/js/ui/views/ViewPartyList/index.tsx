@@ -1,17 +1,16 @@
 import React from 'react';
-
 import { connect, Dispatch } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router';
 
-import { gotoFn } from 'utils/nav';
 import ViewPartyList from 'ui/views/ViewPartyList/template';
 
+import { gotoFn } from 'utils/nav';
+import { IParty } from 'models/party';
 import actions from 'actions/parties';
 import { IState, IAction } from 'store';
-import { IPartyData } from 'models/party';
 
 interface IStateToProps {
-	parties?: IPartyData[];
+	parties?: IParty[];
 }
 
 interface IViewPartyListContainer extends RouteComponentProps<any> {

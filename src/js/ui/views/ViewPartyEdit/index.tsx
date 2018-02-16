@@ -9,11 +9,12 @@ import PartyCreation from 'ui/components/PartyCreation';
 import actions from 'actions/parties';
 import { IState, IAction } from 'store';
 import { goto, gotoFn } from 'utils/nav';
-import { IPartyData } from 'models/party';
+
+import { IParty } from 'models/party';
 import { ICharacterData } from 'models/character-data';
 
 interface IStateToProps {
-	parties?: IPartyData[];
+	parties?: IParty[];
 	characters?: ICharacterData[];
 }
 
@@ -27,7 +28,7 @@ const mapStateToProps = (state: IState): IStateToProps => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
-	onSubmit: (history: History) => (party: IPartyData) => {
+	onSubmit: (history: History) => (party: IParty) => {
 		dispatch(actions.editParty(party));
 		goto(history, '/party-list');
 	}

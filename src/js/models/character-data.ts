@@ -1,13 +1,13 @@
 import uuid from 'uuid/v1';
 
-import { IIndexable, getRandomArrayItem } from 'utils/array';
-
 import { WieldID } from 'models/wield';
 import { JobID, Jobs } from 'models/job';
 import { SexID, Sexes } from 'models/sex';
 import { ArmorID, Armors } from 'models/armor';
 import { WeaponID, Weapons } from 'models/weapon';
 import { ArchetypeID, ArchCharID } from 'models/archetype';
+
+import { IIndexable, getRandomArrayItem } from 'utils/array';
 
 export interface ICharacterData extends IIndexable {
 	name: string;
@@ -25,34 +25,24 @@ export class CharacterData {
 	public static maxNameLength = 16;
 
 	// get default character properties
-	public static init({
-		name = '',
-		id = uuid(),
-		creationDate = 0,
-		lastUpdate = 0,
-		sex = SexID.MALE,
-		primary = ArchCharID.P,
-		secondary = ArchCharID.P,
-		job = JobID.NONE,
-		main = WeaponID.NONE,
-		off = WeaponID.NONE,
-		armor = ArmorID.NONE,
-	}): ICharacterData {
+	public static init(conf = {}): ICharacterData {
 		const now = Date.now();
 
-		return {
-			name,
-			id,
-			creationDate: creationDate || now,
-			lastUpdate: lastUpdate || now,
-			sex,
-			primary,
-			secondary,
-			job,
-			main,
-			off,
-			armor
+		const defaultCharacterData: ICharacterData = {
+			name: '',
+			id: uuid(),
+			creationDate: now,
+			lastUpdate: now,
+			sex: SexID.MALE,
+			primary: ArchCharID.P,
+			secondary: ArchCharID.P,
+			job: JobID.NONE,
+			main: WeaponID.NONE,
+			off: WeaponID.NONE,
+			armor: ArmorID.NONE
 		};
+
+		return Object.assign({}, defaultCharacterData, conf);
 	}
 
 	// returns random character properties

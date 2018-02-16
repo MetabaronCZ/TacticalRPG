@@ -1,13 +1,13 @@
-export interface IRule {
+interface IRule {
 	readonly rule: (value: string) => boolean;
 	readonly text: string;
 }
 
-export interface IRules {
+interface IRules {
 	readonly [name: string]: IRule;
 }
 
-export type IValidationCallback = (fieldName: string, isValid: string|null) => void;
+type IValidationCallback = (fieldName: string, isValid: string|null) => void;
 
 const rules: IRules = {
 	name: {

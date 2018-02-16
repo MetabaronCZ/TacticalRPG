@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { ICharacterData } from 'models/character-data';
+
 import getColumns from 'ui/components/CharacterList/columns';
 import { IOnMoveDown, IOnMoveUp, IOnDelete } from 'ui/views/ViewCharacterList';
 
