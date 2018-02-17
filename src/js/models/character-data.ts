@@ -42,6 +42,9 @@ export class CharacterData {
 			armor: ArmorID.NONE
 		};
 
+		// assign job
+		defaultCharacterData.job = Jobs.filter(defaultCharacterData).keys()[0];
+
 		return Object.assign({}, defaultCharacterData, conf);
 	}
 
@@ -82,5 +85,15 @@ export class CharacterData {
 		character.armor = arm.getRandomKey();
 
 		return character;
+	}
+
+	public static isBothWielding(char: ICharacterData): boolean {
+		const main = Weapons.get(char.main);
+		return main && (JobID.BAR !== char.job) && -1 !== main.wield.indexOf(WieldID.BOTH);
+	}
+
+	public static isDualWielding(char: ICharacterData): boolean {
+		const main = Weapons.get(char.main);
+		return main && -1 !== main.wield.indexOf(WieldID.DUAL);
 	}
 }

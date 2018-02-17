@@ -10,9 +10,8 @@ import { IOnMoveDown, IOnMoveUp, IOnDelete } from 'ui/views/ViewCharacterList';
 
 import { Jobs } from 'models/job';
 import { Armors } from 'models/armor';
-import { WieldID } from 'models/wield';
-import { IWeaponData, Weapons } from 'models/weapon';
-import { ICharacterData } from 'models/character-data';
+import { Weapons } from 'models/weapon';
+import { CharacterData, ICharacterData } from 'models/character-data';
 
 const renderArchetype = (char: ICharacterData) => (
 	<ArchetypeIco primary={char.primary} secondary={char.secondary} />
@@ -46,18 +45,20 @@ export interface IColumn {
 }
 
 const getColumns = (editable: boolean = false, onMoveDown?: IOnMoveDown, onMoveUp?: IOnMoveUp, onDelete?: IOnDelete): IColumn[] => {
-	let main: IWeaponData|undefined;
-
 	const mainValue = (char: ICharacterData): string => {
-		main = Weapons.get(char.main);
+		const main = Weapons.get(char.main);
 		return main ? main.title : '';
 	};
 
 	const offValue = (char: ICharacterData) => {
-		if (main && ('BAR' !== char.job) && -1 !== main.wield.indexOf(WieldID.BOTH)) {
+		const main = Weapons.get(char.main);
+		const off = Weapons.get(char.off);
+
+		if (CharacterData.isBothWielding(char)) {
 			return renderOffHandBothWield(main.title);
+		} else if (CharacterData.isDualWielding(char)) {
+			return main ? main.title : '';
 		} else {
-			const off = Weapons.get(char.off);
 			return off ? off.title : '';
 		}
 	};

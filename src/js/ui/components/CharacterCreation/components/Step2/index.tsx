@@ -20,7 +20,7 @@ const Step2: React.SFC<IStep2Props> = ({ fields, onChange }) => {
 		<div>
 			<ArchetypeSelection primary={fields.primary} secondary={fields.secondary} onChange={onChange} />
 
-			<FormField fieldId="f-job" label="Character Job" info={fields.job && job ? job.description : undefined}>
+			<FormField fieldId="f-job" label="Character Job" info={job ? job.description : undefined}>
 				<FormSelect id="f-job" name="job" value={fields.job} onChange={onChange}>
 					{Jobs.filter(fields).map((id, value, i) => (
 						<FormSelectItem value={id} key={i}>

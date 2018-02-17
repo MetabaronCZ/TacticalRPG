@@ -7,7 +7,7 @@ import FormSelectItem from 'ui/components/FormSelectItem';
 import { Armors } from 'models/armor';
 import { Weapons } from 'models/weapon';
 import { WieldID } from 'models/wield';
-import { ICharacterData } from 'models/character-data';
+import { ICharacterData, CharacterData } from 'models/character-data';
 
 interface IStep3Props {
 	fields: ICharacterData;
@@ -21,7 +21,6 @@ const Step3: React.SFC<IStep3Props> = ({ fields, onChange }) => {
 	const armor = Armors.get(fields.armor);
 	const main = Weapons.get(fields.main);
 	const off = Weapons.get(fields.off);
-	const isBothWielding = (offWeapons.size < 2);
 
 	if (!main) {
 		throw new Error('PartyCreation could not render item - invalid main WeaponID');
@@ -34,6 +33,8 @@ const Step3: React.SFC<IStep3Props> = ({ fields, onChange }) => {
 	if (!armor) {
 		throw new Error('PartyCreation could not render item - invalid ArmorID');
 	}
+
+	const hasNoOffHand = CharacterData.isBothWielding(fields) || CharacterData.isDualWielding(fields);
 
 	return (
 		<div>
@@ -49,9 +50,9 @@ const Step3: React.SFC<IStep3Props> = ({ fields, onChange }) => {
 				</FormSelect>
 			</FormField>
 
-			<FormField fieldId="f-off" label="Off hand" info={!isBothWielding ? off.description : undefined}>
+			<FormField fieldId="f-off" label="Off hand" info={!hasNoOffHand ? off.description : undefined}>
 				{
-					!isBothWielding
+					!hasNoOffHand
 						? (
 							<FormSelect id="f-off" name="off" value={fields.off} onChange={onChange}>
 								{offWeapons.map((id, item, i) => {

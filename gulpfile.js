@@ -1,6 +1,5 @@
+const del = require('del');
 const gulp = require('gulp');
-const gutil = require('gulp-util');
-const clean = require('gulp-clean');
 const less = require('gulp-less');
 const postcss = require('gulp-postcss');
 const stylelint = require('gulp-stylelint');
@@ -23,11 +22,9 @@ let env = 'prod';
 gulp.task('set-watch', () => env = 'dev');
 
 // clear "dist" folder
-gulp.task('clear', () => {
-	return gulp.src(paths.dist, { read: false })
-		.pipe(clean());
-});
+gulp.task('clear', () => del(paths.dist));
 
+// lint LESS files
 gulp.task('stylelint', () => {
 	return gulp.src(`${paths.src}/css/**/*.less`)
 		.pipe(stylelint({
@@ -40,12 +37,7 @@ gulp.task('stylelint', () => {
 // build CSS
 gulp.task('less', ['stylelint'], () => {
 	return gulp.src(`${paths.src}/css/app.less`)
-		.pipe(
-			less().on('error', function(err){
-				gutil.log(err);
-				this.emit('end');
-			})
-		)
+		.pipe(less())
 		.pipe(postcss([
 			autoprefixer({
 				browsers: ['last 2 versions']

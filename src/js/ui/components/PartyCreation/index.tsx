@@ -15,7 +15,7 @@ import { Armors } from 'models/armor';
 import { Weapons } from 'models/weapon';
 import { JobID, Jobs } from 'models/job';
 import { IParty, Party } from 'models/party';
-import { ICharacterData } from 'models/character-data';
+import { ICharacterData, CharacterData } from 'models/character-data';
 
 import { validateField, validateForm } from 'utils/validation';
 
@@ -95,7 +95,7 @@ class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationS
 				<ButtonRow>
 					<Button ico="back" text="Back" onClick={this.props.onBack} />
 
-					{partyExists
+					{partyExists && true === partyValidation
 						? <Button type="submit" ico="success" color="green" text="Save" />
 						: <span />
 					}
@@ -215,9 +215,18 @@ class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationS
 			const arm = Armors.get(selected.armor);
 			const sex = Sexes.get(selected.sex);
 			const job = Jobs.get(selected.job);
+			let weapons = '';
 
-			info = `${sex.title} ${job.title} | ${main.title} + ${off.title} | ${arm.title}`;
+			if (CharacterData.isBothWielding(selected)) {
+				weapons = main.title;
+			} else if (CharacterData.isDualWielding(selected)) {
+				weapons = `${main.title} + ${main.title}`;
+			} else {
+				weapons = `${main.title} + ${off.title}`;
+			}
+			info = `${sex.title} ${job.title} | ${weapons} | ${arm.title}`;
 		}
+
 		const fieldId = `f-character-${i}`;
 
 		return (

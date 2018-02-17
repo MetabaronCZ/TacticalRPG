@@ -49,7 +49,7 @@ export const Weapons = new WeaponList([
 		title: 'Fists',
 		description: '',
 		type: WeaponTypeID.DUAL,
-		wield: [WieldID.BOTH]
+		wield: [WieldID.DUAL]
 	}],
 	[WeaponID.DAGGER, {
 		title: 'Dagger',

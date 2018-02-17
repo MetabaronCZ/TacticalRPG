@@ -56,7 +56,7 @@ class WeaponList extends DataList<WeaponID, IWeaponData> {
 		// check weapon slot
 		switch (slot) {
 			case WieldID.MAIN:
-				return -1 !== wield.indexOf(WieldID.MAIN) || -1 !== wield.indexOf(WieldID.BOTH);
+				return -1 !== wield.indexOf(WieldID.MAIN) || -1 !== wield.indexOf(WieldID.BOTH)  || -1 !== wield.indexOf(WieldID.DUAL);
 
 			case WieldID.OFF: {
 				const main = this.get(char.main);
@@ -66,8 +66,8 @@ class WeaponList extends DataList<WeaponID, IWeaponData> {
 				}
 				const mainWield = main.wield;
 
-				// cannot equip a dual weapon in Off hand
-				if (WeaponTypeID.DUAL === main.type || WeaponTypeID.DUAL === wpn.type) {
+				// only main hand can equip a dual wield weapon
+				if (-1 !== mainWield.indexOf(WieldID.DUAL) || -1 !== wield.indexOf(WieldID.DUAL)) {
 					return false;
 				}
 

@@ -45,18 +45,15 @@ class BattleSetup extends React.Component<IBattleSetupProps, IBattleSetupState> 
 	public render() {
 		const { characters, parties } = this.props;
 		const fields: any = this.state.fields;
-		let selectedParty;
-		let chars: ICharacterData[] = [];
 
-		if (!characters || !characters.length) {
+		if (!characters || !characters.length || !parties || !parties.length) {
 			return this.renderNoParty();
 		}
+		const selectedParty = parties.filter((p) => p.id === fields.party)[0];
 
-		if (parties && parties.length) {
-			selectedParty = parties.filter((p) => p.id === fields.party)[0];
-			chars = selectedParty.characters.map((id) => Party.getCharacterById(id, characters));
-		}
-		chars = chars.filter((char) => !!char);
+		const chars = selectedParty.characters
+			.map((id) => Party.getCharacterById(id, characters))
+			.filter((char) => !!char);
 
 		const partyValidation = Party.validate(chars);
 		const isValidParty = (true === partyValidation && chars.length);
@@ -64,20 +61,15 @@ class BattleSetup extends React.Component<IBattleSetupProps, IBattleSetupState> 
 		return (
 			<Form onSubmit={this.onSubmit}>
 				{/* party selection */}
-				{parties && parties.length
-					? (
-						<FormField fieldId="f-party" label="Select party">
-							<FormSelect id="f-party" name="party" value={fields.party} onChange={this.onChange}>
-								{parties.map((party, i) => (
-									<FormSelectItem value={party.id} key={i}>
-										{party.name}
-									</FormSelectItem>
-								))}
-							</FormSelect>
-						</FormField>
-					)
-					: this.renderNoParty()
-				}
+				<FormField fieldId="f-party" label="Select party">
+					<FormSelect id="f-party" name="party" value={fields.party} onChange={this.onChange}>
+						{parties.map((party, i) => (
+							<FormSelectItem value={party.id} key={i}>
+								{party.name}
+							</FormSelectItem>
+						))}
+					</FormSelect>
+				</FormField>
 
 				{/* selected party characters */}
 				{
