@@ -2,15 +2,16 @@ import React from 'react';
 
 import CharacterBlock from 'ui/components/Game/components/Character';
 import { ICharacter } from 'models/character';
-import { Game } from 'models/game';
+import { Game, IOnCharacterSelect } from 'models/game';
 
 const { blockSize } = Game;
 
 interface ICharacters {
 	characters: ICharacter[];
+	onSelect: IOnCharacterSelect;
 }
 
-const renderCharacter = (char: ICharacter, i: number) => {
+const renderCharacter = (char: ICharacter, i: number, onSelect: IOnCharacterSelect) => {
 	const style: React.CSSProperties = {
 		top: (char.position.y * blockSize) + 'px',
 		left: (char.position.x * blockSize) + 'px'
@@ -18,14 +19,14 @@ const renderCharacter = (char: ICharacter, i: number) => {
 
 	return (
 		<div className="Characters-item" style={style} key={i}>
-			<CharacterBlock char={char} />
+			<CharacterBlock char={char} onSelect={onSelect} />
 		</div>
 	);
 };
 
-const Characters: React.SFC<ICharacters> = ({ characters }) => (
+const Characters: React.SFC<ICharacters> = ({ characters, onSelect }) => (
 	<div className="Characters">
-		{characters.map(renderCharacter)}
+		{characters.map((char, i) => renderCharacter(char, i , onSelect))}
 	</div>
 );
 

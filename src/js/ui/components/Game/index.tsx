@@ -34,8 +34,8 @@ class GameUI extends React.Component<IGameUIProps, IGame> {
 
 				<div className="GameUI-column GameUI-column--main">
 					<Layers>
-						<Grid />
-						<Characters characters={characters} />
+						<Characters characters={characters} onSelect={Game.onCharacterSelect} />
+						<Grid onSelect={Game.onGridSelect} />
 					</Layers>
 				</div>
 

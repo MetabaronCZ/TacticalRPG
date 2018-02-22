@@ -16,6 +16,9 @@ export interface IGame {
 	initiative: PlayerType;
 }
 
+export type IOnGridSelect = (pos: Position) => void;
+export type IOnCharacterSelect = (char: ICharacter) => void;
+
 export class Game {
 	public static gridSize = 12;
 	public static blockSize = 64;
@@ -53,5 +56,15 @@ export class Game {
 			order: Order.make(chars, initiative),
 			initiative
 		};
+	}
+
+	public static onGridSelect(pos: Position) {
+		// TODO: show block info or character goto block
+		console.log('GRID selected', pos);
+	}
+
+	public static onCharacterSelect(char: ICharacter) {
+		// TODO: show character info or select character for action
+		console.log('CHARACTER selected', char);
 	}
 }

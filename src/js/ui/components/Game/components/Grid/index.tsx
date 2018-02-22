@@ -1,9 +1,19 @@
 import React from 'react';
-import { Game } from 'models/game';
+import { Position } from 'models/position';
+import { Game, IOnGridSelect } from 'models/game';
 
 const { gridSize, blockSize } = Game;
 
-const Grid: React.SFC = () => {
+interface IGridProps {
+	onSelect: IOnGridSelect;
+}
+
+const selectBlock = (i: number, onSelect: IOnGridSelect) => () => {
+	const pos = new Position(i % gridSize, Math.floor(i / gridSize));
+	onSelect(pos);
+};
+
+const Grid: React.SFC<IGridProps> = ({ onSelect }) => {
 	const itemStyle: React.CSSProperties = {
 		width: `${blockSize}px`,
 		height: `${blockSize}px`
@@ -13,7 +23,7 @@ const Grid: React.SFC = () => {
 		<div className="Grid">
 			{Array(gridSize * gridSize).fill(0).map((item: 0, i) => (
 				<div className="Grid-item" key={i} style={itemStyle}>
-					<div className="Grid-item-block" />
+					<div className="Grid-item-block" onClick={selectBlock(i, onSelect)} />
 				</div>
 			))}
 		</div>
