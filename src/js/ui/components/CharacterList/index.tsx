@@ -30,17 +30,15 @@ const CharacterList: React.SFC<ICharacterListProps> = (props) => {
 				))}
 			</li>
 
-			{chars.map((char, i) => {
-				return (
-					<li className="List-row" key={i}>
-						{columns.map((col, j) => (
-							<span className={`List-row-column List-row-column--${col.name}`} key={j}>
-								{col.value(char, i)}
-							</span>
-						))}
-					</li>
-				);
-			})}
+			{chars.map((char, i) => (
+				<li className="List-row" key={i}>
+					{columns.map((col, j) => (
+						<span className={`List-row-column List-row-column--${col.name}`} key={j}>
+							{col.value(char, i)}
+						</span>
+					))}
+				</li>
+			))}
 		</ul>
 	);
 };

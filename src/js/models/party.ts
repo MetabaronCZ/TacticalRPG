@@ -71,7 +71,10 @@ export class Party {
 
 		jobs.forEach((job, i) => {
 			if (i !== jobs.lastIndexOf(job) && !jobErrs[job]) {
-				const names = party.filter((char) => job === char.job).map((char) => char.name);
+				const names = party
+					.filter((char) => job === char.job)
+					.map((char) => char.name);
+
 				jobErrs[job] = names;
 				hasJobErrors = true;
 			}

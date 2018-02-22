@@ -40,13 +40,11 @@ const Step3: React.SFC<IStep3Props> = ({ fields, onChange }) => {
 		<div>
 			<FormField fieldId="f-main" label="Main hand" info={main.description}>
 				<FormSelect id="f-main" name="main" value={fields.main} onChange={onChange}>
-					{mainWeapons.map((id, item, i) => {
-						return (
-							<FormSelectItem value={id} key={i}>
-								{item.title}
-							</FormSelectItem>
-						);
-					})}
+					{mainWeapons.map((id, item, i) => (
+						<FormSelectItem value={id} key={i}>
+							{item.title}
+						</FormSelectItem>
+					))}
 				</FormSelect>
 			</FormField>
 
@@ -55,13 +53,11 @@ const Step3: React.SFC<IStep3Props> = ({ fields, onChange }) => {
 					!hasNoOffHand
 						? (
 							<FormSelect id="f-off" name="off" value={fields.off} onChange={onChange}>
-								{offWeapons.map((id, item, i) => {
-									return (
-										<FormSelectItem value={id} key={i}>
-											{item.title}
-										</FormSelectItem>
-									);
-								})}
+								{offWeapons.map((id, item, i) => (
+									<FormSelectItem value={id} key={i}>
+										{item.title}
+									</FormSelectItem>
+								))}
 							</FormSelect>
 						)
 						: (
@@ -74,13 +70,11 @@ const Step3: React.SFC<IStep3Props> = ({ fields, onChange }) => {
 
 			<FormField fieldId="f-armor" label="Armor" info={armor.description}>
 				<FormSelect id="f-armor" name="armor" value={fields.armor} onChange={onChange}>
-					{armors.map((id, item, i) => {
-						return (
-							<FormSelectItem value={id} key={i}>
-								{item.title}
-							</FormSelectItem>
-						);
-					})}
+					{armors.map((id, item, i) => (
+						<FormSelectItem value={id} key={i}>
+							{item.title}
+						</FormSelectItem>
+					))}
 				</FormSelect>
 			</FormField>
 		</div>

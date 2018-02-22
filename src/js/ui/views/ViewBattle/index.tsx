@@ -3,23 +3,22 @@ import { History } from 'history';
 import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router';
 
-import GameUI from 'ui/components/Game';
-
 import { IState } from 'store';
-import { IParty } from 'models/party';
 import { goto, gotoFn } from 'utils/nav';
+
+import { IParty } from 'models/party';
 import { ICharacterData } from 'models/character-data';
 
-const txtExitConfirm = 'Do you realy want to exit and lost your game progress?';
+import GameUI from 'ui/components/Game';
 
-type IOnExit = () => void;
+const txtExitConfirm = 'Do you realy want to exit and lost your game progress?';
 
 interface IStateToProps {
 	characters?: ICharacterData[];
 	parties?: IParty[];
 }
 
-const exit = (history: History): IOnExit => (): void => {
+const exit = (history: History) => () => {
 	if (window.confirm(txtExitConfirm)) {
 		// go to Main Menu
 		goto(history, '/');

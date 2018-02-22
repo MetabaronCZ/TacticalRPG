@@ -1,14 +1,12 @@
 import React from 'react';
+import { Game } from 'models/game';
 
-interface ILayersProps {
-	size: number;
-	blockSize: number;
-}
+const { blockSize, gridSize } = Game;
 
-const Layers: React.SFC<ILayersProps> = ({ size, blockSize, children }) => {
+const Layers: React.SFC = ({ children }) => {
 	const style: React.CSSProperties = {
-		width: (size * blockSize + 'px'),
-		height: (size * blockSize + 'px')
+		width: (gridSize * blockSize + 'px'),
+		height: (gridSize * blockSize + 'px')
 	};
 
 	if (!children) {

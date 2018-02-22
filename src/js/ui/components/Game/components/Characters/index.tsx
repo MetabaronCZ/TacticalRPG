@@ -2,14 +2,15 @@ import React from 'react';
 
 import CharacterBlock from 'ui/components/Game/components/Character';
 import { ICharacter } from 'models/character';
+import { Game } from 'models/game';
+
+const { blockSize } = Game;
 
 interface ICharacters {
 	characters: ICharacter[];
-	size: number;
-	blockSize: number;
 }
 
-const renderCharacter = (char: ICharacter, blockSize: number, i: number) => {
+const renderCharacter = (char: ICharacter, i: number) => {
 	const style: React.CSSProperties = {
 		top: (char.position.y * blockSize) + 'px',
 		left: (char.position.x * blockSize) + 'px'
@@ -17,16 +18,14 @@ const renderCharacter = (char: ICharacter, blockSize: number, i: number) => {
 
 	return (
 		<div className="Characters-item" style={style} key={i}>
-			<CharacterBlock char={char} size={blockSize} />
+			<CharacterBlock char={char} />
 		</div>
 	);
 };
 
-const Characters: React.SFC<ICharacters> = ({ characters, size, blockSize }) => (
+const Characters: React.SFC<ICharacters> = ({ characters }) => (
 	<div className="Characters">
-		{characters.map((char, i) => {
-			return renderCharacter(char, blockSize, i);
-		})}
+		{characters.map(renderCharacter)}
 	</div>
 );
 

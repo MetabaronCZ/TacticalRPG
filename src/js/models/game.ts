@@ -17,18 +17,28 @@ export interface IGame {
 }
 
 export class Game {
-	public static init(charIds: string[], characters: ICharacterData[], size: number): IGame {
-		const party = charIds.filter((id) => !!id).map((id) => Party.getCharacterById(id, characters));
-		const chars: ICharacter[] = [];
+	public static gridSize = 12;
+	public static blockSize = 64;
+
+	public static init(charIds: string[], characters: ICharacterData[]): IGame {
+		const party = charIds
+			.filter((id) => !!id)
+			.map((id) => Party.getCharacterById(id, characters));
 
 		const ally = party;
 		const enemy = Party.getRandomCharacters(party.length);
 		const initiative = (Math.random() < 0.5 ? PlayerType.ALLY : PlayerType.ENEMY);
+		const chars: ICharacter[] = [];
 
 		// initialize characters
-		party.map((ch, i) => {
-			chars.push(Character.create(PlayerType.ALLY, ally[i], new Position(i + 2, size - 1)));
-			chars.push(Character.create(PlayerType.ENEMY, enemy[i], new Position(i + 2, 0)));
+		party.forEach((ch, i) => {
+			const posAlly = new Position(i + 2, this.gridSize - 1);
+			const posEnemy = new Position(i + 2, 0);
+			const charAlly = Character.create(PlayerType.ALLY, ally[i], posAlly);
+			const charEnemy = Character.create(PlayerType.ENEMY, enemy[i], posEnemy);
+
+			chars.push(charAlly);
+			chars.push(charEnemy);
 		});
 
 		// set small random initial CP

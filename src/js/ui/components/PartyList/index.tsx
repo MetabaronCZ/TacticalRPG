@@ -59,17 +59,15 @@ const PartyList: React.SFC<IPartyListProps> = (props) => {
 				))}
 			</li>
 
-			{parties.map((party, i) => {
-				return (
-					<li className="List-row" key={i}>
-						{columns.map((col, j) => (
-							<span className={`List-row-column List-row-column--${col.name}`} key={j}>
-								{col.value(party)}
-							</span>
-						))}
-					</li>
-				);
-			})}
+			{parties.map((party, i) => (
+				<li className="List-row" key={i}>
+					{columns.map((col, j) => (
+						<span className={`List-row-column List-row-column--${col.name}`} key={j}>
+							{col.value(party)}
+						</span>
+					))}
+				</li>
+			))}
 		</ul>
 	);
 };

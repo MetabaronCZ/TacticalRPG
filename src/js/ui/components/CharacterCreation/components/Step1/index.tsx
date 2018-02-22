@@ -32,11 +32,17 @@ const Step1: React.SFC<IStep1Props> = ({ fields, errors, onChange }) => (
 		</FormField>
 
 		<FormField fieldId="f-sex" label="Sex" error={errors.sex}>
-			{Sexes.map((id, sex, i) => {
-				return (
-					<FormRadio id={`f-sex-${id}`} label={`${icos[id.toLocaleLowerCase()]} ${sex ? sex.title : ''}`} name="sex" value={id} isChecked={id === fields.sex} key={i} onChange={onChange} />
-				);
-			})}
+			{Sexes.map((id, sex, i) => (
+				<FormRadio
+					id={`f-sex-${id}`}
+					label={`${icos[id.toLocaleLowerCase()]} ${sex ? sex.title : ''}`}
+					name="sex"
+					value={id}
+					isChecked={id === fields.sex}
+					key={i}
+					onChange={onChange}
+				/>
+			))}
 		</FormField>
 	</div>
 );

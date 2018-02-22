@@ -10,20 +10,17 @@ import { IParty } from 'models/party';
 import { IGame, Game } from 'models/game';
 import { ICharacterData } from 'models/character-data';
 
-const gridSize = 12;
-const blockSize = 64;
-
-interface IGameProps {
+interface IGameUIProps {
 	party: IParty;
 	characters: ICharacterData[];
 	onExit: () => void;
 	onSummary: () => void;
 }
 
-class GameUI extends React.Component<IGameProps, IGame> {
-	constructor(props: IGameProps) {
+class GameUI extends React.Component<IGameUIProps, IGame> {
+	constructor(props: IGameUIProps) {
 		super(props);
-		this.state = Game.init(props.party.characters, props.characters, gridSize);
+		this.state = Game.init(props.party.characters, props.characters);
 	}
 
 	public render() {
@@ -36,9 +33,9 @@ class GameUI extends React.Component<IGameProps, IGame> {
 				</div>
 
 				<div className="GameUI-column GameUI-column--main">
-					<Layers size={gridSize} blockSize={blockSize}>
-						<Grid size={gridSize} blockSize={blockSize} />
-						<Characters characters={characters} size={gridSize} blockSize={blockSize} />
+					<Layers>
+						<Grid />
+						<Characters characters={characters} />
 					</Layers>
 				</div>
 
