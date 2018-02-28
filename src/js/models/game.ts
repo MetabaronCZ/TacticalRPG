@@ -1,18 +1,20 @@
-import { PlayerType, Player, IPlayer } from 'models/player';
-import { ICharacter, Character } from 'models/character';
-import { ICharacterData } from 'models/character-data';
-import { Position } from 'models/position';
 import { Party } from 'models/party';
-import { Order } from 'models/order';
+import { Position } from 'models/position';
+import { IOrder, Order } from 'models/order';
+import { IRound, Round } from 'models/round';
+import { ICharacterData } from 'models/character-data';
+import { ICharacter, Character } from 'models/character';
+import { PlayerType, Player, IPlayer } from 'models/player';
 
 const allyPlayerName = 'Player';
 const enemyPlayerName = 'Computer';
 
 export interface IGame {
+	round: IRound;
+	order: IOrder;
 	ally: IPlayer;
 	enemy: IPlayer;
 	characters: ICharacter[];
-	order: string[];
 	initiative: PlayerType;
 }
 
@@ -48,12 +50,15 @@ export class Game {
 		for (const char of chars) {
 			char.currAttributes.CP = Math.floor(10 * Math.random());
 		}
+		const order = Order.make(chars, initiative);
+		const round = Round.init(order);
 
 		return {
 			ally: Player.init(allyPlayerName),
 			enemy: Player.init(enemyPlayerName),
 			characters: chars,
-			order: Order.make(chars, initiative),
+			order,
+			round,
 			initiative
 		};
 	}
