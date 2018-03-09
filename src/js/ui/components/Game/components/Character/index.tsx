@@ -2,9 +2,8 @@ import React from 'react';
 
 import { PlayerType } from 'models/player';
 import { ICharacter } from 'models/character';
-import { Game, IOnCharacterSelect } from 'models/game';
 
-const { blockSize } = Game;
+import { IOnCharacterSelect, blockSize } from 'ui/components/Game';
 
 interface ICharacterBlockProps {
 	char: ICharacter;

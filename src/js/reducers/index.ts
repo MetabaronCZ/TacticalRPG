@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
 
-import characters from 'reducers/characters';
-import parties from 'reducers/parties';
+import app from 'reducers/app';
+import game from 'reducers/game';
 import { IState } from 'store';
 
 export default combineReducers<IState>({
-	characters,
-	parties
+	app,
+	game
 });

@@ -1,50 +1,95 @@
 import React from 'react';
+import { connect, Dispatch } from 'react-redux';
 
-import Grid from 'ui/components/Game/components/Grid';
-import Order from 'ui/components/Game/components/Order';
-import Party from 'ui/components/Game/components/Party';
-import Layers from 'ui/components/Game/components/Layers';
-import Characters from 'ui/components/Game/components/Characters';
+import { IState, IAction } from 'store';
+import { IGameState } from 'reducers/game';
 
-import { IParty } from 'models/party';
-import { IGame, Game } from 'models/game';
+import orderAction from 'actions/game/order';
+import playerAction from 'actions/game/players';
+import characterAction from 'actions/game/characters';
+
+import { Position } from 'models/position';
+import { PlayerType } from 'models/player';
+import { ICharacter } from 'models/character';
+import { IParty, Party } from 'models/party';
 import { ICharacterData } from 'models/character-data';
 
-interface IGameUIProps {
+import GameUI from 'ui/components/Game/template';
+
+const allyPlayerName = 'Player';
+const enemyPlayerName = 'Computer';
+
+export const gridSize = 12;
+export const blockSize = 64;
+
+export type IOnGridSelect = (pos: Position) => void;
+export type IOnCharacterSelect = (char: ICharacter) => void;
+
+export interface IGameUIProps {
+	store: IGameState;
 	party: IParty;
 	characters: ICharacterData[];
-	onExit: () => void;
-	onSummary: () => void;
+	startGame: (charIds: string[], characters: ICharacterData[]) => void;
+	onCharacterSelect: () => any;
+	onGridSelect: () => any;
+	onSummary: () => any;
+	onExit: () => any;
 }
 
-class GameUI extends React.Component<IGameUIProps, IGame> {
-	constructor(props: IGameUIProps) {
-		super(props);
-		this.state = Game.init(props.party.characters, props.characters);
+const mapStateToProps = (state: IState) => ({
+	store: state.game
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
+	startGame: (charIds: string[], characters: ICharacterData[]) => {
+		const party = charIds
+			.filter((id) => !!id)
+			.map((id) => Party.getCharacterById(id, characters));
+
+		const ally = party;
+		const enemy = Party.getRandomCharacters(party.length);
+		const initiative = (Math.random() < 0.5 ? PlayerType.ALLY : PlayerType.ENEMY);
+
+		// inititalize players
+		dispatch(playerAction.add(allyPlayerName, PlayerType.ALLY));
+		dispatch(playerAction.add(enemyPlayerName, PlayerType.ENEMY));
+
+		// initialize characters
+		party.forEach((ch, i) => {
+			dispatch(
+				characterAction.add(ally[i], PlayerType.ALLY, new Position(i + 2, gridSize - 1))
+			);
+			dispatch(
+				characterAction.add(enemy[i], PlayerType.ENEMY, new Position(i + 2, 0))
+			);
+		});
+
+		// create character order
+		dispatch(orderAction.update(initiative));
+	},
+	onCharacterSelect: (char: ICharacter) => {
+		// TODO: show character info or select character for action
+		console.log('CHARACTER selected', char);
+	},
+	onGridSelect: (pos: Position) => {
+		// TODO: show block info or character goto block
+		console.log('GRID selected', pos);
+	}
+});
+
+class GameUIContainer extends React.Component<IGameUIProps, {}> {
+	public componentWillMount() {
+		const { party, characters, startGame } = this.props;
+
+		// init game state
+		startGame(party.characters, characters);
 	}
 
 	public render() {
-		const { order, characters } = this.state;
-
 		return (
-			<div className="GameUI">
-				<div className="GameUI-column  GameUI-column--order">
-					<Order order={order} characters={characters} />
-				</div>
-
-				<div className="GameUI-column GameUI-column--main">
-					<Layers>
-						<Characters characters={characters} onSelect={Game.onCharacterSelect} />
-						<Grid onSelect={Game.onGridSelect} />
-					</Layers>
-				</div>
-
-				<div className="GameUI-column GameUI-column--party">
-					<Party characters={characters} />
-				</div>
-			</div>
+			<GameUI {...this.props} />
 		);
 	}
 }
 
-export default GameUI;
+export default connect(mapStateToProps, mapDispatchToProps)(GameUIContainer);

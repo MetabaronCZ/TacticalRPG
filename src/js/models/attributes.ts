@@ -54,44 +54,44 @@ interface ISecondaryAttributes {
 	CP: number;
 }
 
-export interface IAttributes extends IBaseAttributes, ISecondaryAttributes {}
-
-const getPrimary = (primary: ArchCharID, secondary: ArchCharID): IBaseAttributes => {
-	const attributes = Object.assign({}, BaseAttributes);
-	let P = 0;
-	let S = 0;
-	let M = 0;
-
-	P += ( ArchCharID.P === primary ? 1 : 0 );
-	S += ( ArchCharID.S === primary ? 1 : 0 );
-	M += ( ArchCharID.M === primary ? 1 : 0 );
-
-	P += ( ArchCharID.P === secondary ? 0.5 : 0 );
-	S += ( ArchCharID.S === secondary ? 0.5 : 0 );
-	M += ( ArchCharID.M === secondary ? 0.5 : 0 );
-
-	attributes.STR += BaseAttrFormula.STR(P, S, M);
-	attributes.VIT += BaseAttrFormula.VIT(P, S, M);
-	attributes.SPD += BaseAttrFormula.SPD(P, S, M);
-	attributes.MOV += BaseAttrFormula.MOV(P, S, M);
-	attributes.MAG += BaseAttrFormula.MAG(P, S, M);
-
-	return attributes;
-};
-
-const getSecondary = (attrs: IBaseAttributes): ISecondaryAttributes => {
-	return {
-		HP: SecondaryAttrFormula.HP(attrs),
-		AP: SecondaryAttrFormula.AP(attrs),
-		CP: SecondaryAttrFormula.CP(attrs)
-	};
-};
+export type IAttributes = IBaseAttributes & ISecondaryAttributes;
 
 export class Attributes {
 	public static create(primary: ArchCharID, secondary: ArchCharID): IAttributes {
-		const pAttrs = getPrimary(primary, secondary);
-		const sAttrs = getSecondary(pAttrs);
+		const pAttrs = Attributes.getPrimary(primary, secondary);
+		const sAttrs = Attributes.getSecondary(pAttrs);
 
 		return { ...pAttrs, ...sAttrs };
+	}
+
+	private static getPrimary(primary: ArchCharID, secondary: ArchCharID): IBaseAttributes {
+		const attributes = Object.assign({}, BaseAttributes);
+		let P = 0;
+		let S = 0;
+		let M = 0;
+
+		P += ( ArchCharID.P === primary ? 1 : 0 );
+		S += ( ArchCharID.S === primary ? 1 : 0 );
+		M += ( ArchCharID.M === primary ? 1 : 0 );
+
+		P += ( ArchCharID.P === secondary ? 0.5 : 0 );
+		S += ( ArchCharID.S === secondary ? 0.5 : 0 );
+		M += ( ArchCharID.M === secondary ? 0.5 : 0 );
+
+		attributes.STR += BaseAttrFormula.STR(P, S, M);
+		attributes.VIT += BaseAttrFormula.VIT(P, S, M);
+		attributes.SPD += BaseAttrFormula.SPD(P, S, M);
+		attributes.MOV += BaseAttrFormula.MOV(P, S, M);
+		attributes.MAG += BaseAttrFormula.MAG(P, S, M);
+
+		return attributes;
+	}
+
+	private static getSecondary(attrs: IBaseAttributes): ISecondaryAttributes {
+		return {
+			HP: SecondaryAttrFormula.HP(attrs),
+			AP: SecondaryAttrFormula.AP(attrs),
+			CP: SecondaryAttrFormula.CP(attrs)
+		};
 	}
 }

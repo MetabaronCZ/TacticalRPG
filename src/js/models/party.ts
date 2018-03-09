@@ -1,7 +1,7 @@
 import uuid from 'uuid/v1';
 
 import { Jobs } from 'models/job';
-import { getRandomNames } from 'models/random-name-generator';
+import { RandomNameGenerator } from 'models/random-name-generator';
 import { ICharacterData, CharacterData } from 'models/character-data';
 import { IIndexable, getRandomArrayItems } from 'utils/array';
 
@@ -39,7 +39,7 @@ export class Party {
 
 	// returns random character party array
 	public static getRandomCharacters(count: number): ICharacterData[] {
-		const characters = getRandomNames(count, this.maxNameLength);
+		const characters = RandomNameGenerator.get(count, this.maxNameLength);
 		const jobs = getRandomArrayItems(Jobs.keys(), count);
 
 		return characters.map((char, i) => CharacterData.random(char, jobs[i]));

@@ -1,5 +1,5 @@
-import { ICharacterData } from 'models/character-data';
 import { IAction } from 'store';
+import { ICharacterData } from 'models/character-data';
 
 export enum ActionID {
 	ADD = 'CHARACTER_ADD',

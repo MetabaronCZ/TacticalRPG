@@ -1,23 +1,30 @@
-import { ActionID as CharacterActionID } from 'actions/characters';
-import { ActionID as PartyActionID } from 'actions/parties';
+import { ActionID as CharacterActionID } from 'actions/app/characters';
+import { ActionID as PartyActionID } from 'actions/app/parties';
 import { add, edit, remove, swap } from 'utils/array';
 import { IParty } from 'models/party';
 import { IAction } from 'store';
 
-const removeCharacter = (id: string, state: IParty[]) => {
-	if (!id) {
+const removeCharacter = (id: string, state: IParty[]): IParty[] => {
+	if (!id || !state.length) {
 		return state;
 	}
-	const newState = state.map((party) => {
-		const newChars = party.characters.filter((charId) => charId !== id);
-		return newChars.length ? { ...party, characters: newChars } : null;
-	});
+	const newState: IParty[] = [];
 
-	return newState.filter((party) => null !== party);
+	for (const party of state) {
+		const newChars = party.characters.filter((charId) => charId !== id);
+
+		if (newChars.length) {
+			newState.push({
+				...party,
+				characters: newChars
+			});
+		}
+	}
+	return newState;
 };
 
 // parties reducer
-const parties = (state = [], action: IAction) => {
+const parties = (state: IParty[] = [], action: IAction): IParty[] => {
 	switch (action.type) {
 		case PartyActionID.ADD:
 			return add(action.value, state);

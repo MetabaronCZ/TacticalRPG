@@ -6,8 +6,8 @@ import { withRouter, RouteComponentProps } from 'react-router';
 import Page from 'ui/components/Page';
 import PartyCreation from 'ui/components/PartyCreation';
 
-import actions from 'actions/parties';
 import { IState, IAction } from 'store';
+import actions from 'actions/app/parties';
 import { goto, gotoFn } from 'utils/nav';
 
 import { IParty } from 'models/party';
@@ -23,8 +23,8 @@ interface IViewPartyEditContainerProps extends RouteComponentProps<any> {
 }
 
 const mapStateToProps = (state: IState): IStateToProps => ({
-	parties: state.parties,
-	characters: state.characters
+	parties: state.app.parties,
+	characters: state.app.characters
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
@@ -51,5 +51,5 @@ const ViewPartyEditContainer: React.SFC<IViewPartyEditContainerProps & IStateToP
 };
 
 export default withRouter(
-	connect<IStateToProps>(mapStateToProps, mapDispatchToProps)(ViewPartyEditContainer)
+	connect(mapStateToProps, mapDispatchToProps)(ViewPartyEditContainer)
 );

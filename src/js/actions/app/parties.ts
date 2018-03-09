@@ -1,5 +1,5 @@
-import { IParty } from 'models/party';
 import { IAction } from 'store';
+import { IParty } from 'models/party';
 
 export enum ActionID {
 	ADD = 'PARTY_ADD',

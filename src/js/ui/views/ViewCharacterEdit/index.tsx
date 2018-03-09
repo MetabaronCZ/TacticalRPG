@@ -3,16 +3,16 @@ import { History } from 'history';
 import { connect, Dispatch } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router';
 
+import { IState, IAction } from 'store';
+import { goto, gotoFn } from 'utils/nav';
+import actions from 'actions/app/characters';
+import { ICharacterData } from 'models/character-data';
+
 import Page from 'ui/components/Page';
 import CharacterCreation from 'ui/components/CharacterCreation';
 
-import { IState, IAction } from 'store';
-import actions from 'actions/characters';
-import { goto, gotoFn } from 'utils/nav';
-import { ICharacterData } from 'models/character-data';
-
 interface IStateToProps {
-	characters?: ICharacterData[];
+	characters: ICharacterData[];
 }
 
 interface IViewCharacterEditContainerProps extends RouteComponentProps<any> {
@@ -20,7 +20,7 @@ interface IViewCharacterEditContainerProps extends RouteComponentProps<any> {
 }
 
 const mapStateToProps = (state: IState): IStateToProps => ({
-	characters: state.characters
+	characters: state.app.characters
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
@@ -46,5 +46,5 @@ const ViewCharacterEditContainer: React.SFC<IViewCharacterEditContainerProps & I
 };
 
 export default withRouter(
-	connect<IStateToProps>(mapStateToProps, mapDispatchToProps)(ViewCharacterEditContainer)
+	connect(mapStateToProps, mapDispatchToProps)(ViewCharacterEditContainer)
 );

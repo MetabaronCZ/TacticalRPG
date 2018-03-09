@@ -1,10 +1,8 @@
 import React from 'react';
 
-import CharacterBlock from 'ui/components/Game/components/Character';
 import { ICharacter } from 'models/character';
-import { Game, IOnCharacterSelect } from 'models/game';
-
-const { blockSize } = Game;
+import CharacterBlock from 'ui/components/Game/components/Character';
+import { IOnCharacterSelect, blockSize } from 'ui/components/Game';
 
 interface ICharacters {
 	characters: ICharacter[];

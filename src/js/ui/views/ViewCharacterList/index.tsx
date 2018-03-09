@@ -4,7 +4,7 @@ import { withRouter, RouteComponentProps } from 'react-router';
 
 import { gotoFn } from 'utils/nav';
 import { IState, IAction } from 'store';
-import actions from 'actions/characters';
+import actions from 'actions/app/characters';
 import { ICharacterData } from 'models/character-data';
 import ViewCharacterList from 'ui/views/ViewCharacterList/template';
 
@@ -13,17 +13,17 @@ export type IOnMoveUp = (id: string) => () => void;
 export type IOnDelete = (id: string, name: string) => () => void;
 
 interface IStateToProps {
-	characters?: ICharacterData[];
+	characters: ICharacterData[];
 }
 
 interface IViewCharacterListContainerProps extends RouteComponentProps<any> {
-	onMoveDown?: IOnMoveDown;
-	onMoveUp?: IOnMoveUp;
-	onDelete?: IOnDelete;
+	onMoveDown: IOnMoveDown;
+	onMoveUp: IOnMoveUp;
+	onDelete: IOnDelete;
 }
 
 const mapStateToProps = (state: IState): IStateToProps => ({
-	characters: state.characters
+	characters: state.app.characters
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
@@ -56,5 +56,5 @@ const ViewCharacterListContainer: React.SFC<IViewCharacterListContainerProps & I
 };
 
 export default withRouter(
-	connect<IStateToProps>(mapStateToProps, mapDispatchToProps)(ViewCharacterListContainer)
+	connect(mapStateToProps, mapDispatchToProps)(ViewCharacterListContainer)
 );

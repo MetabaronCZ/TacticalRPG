@@ -1,8 +1,6 @@
 import React from 'react';
 import { Position } from 'models/position';
-import { Game, IOnGridSelect } from 'models/game';
-
-const { gridSize, blockSize } = Game;
+import { IOnGridSelect, gridSize, blockSize } from 'ui/components/Game';
 
 interface IGridProps {
 	onSelect: IOnGridSelect;

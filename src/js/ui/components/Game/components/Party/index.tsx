@@ -1,12 +1,12 @@
 import React from 'react';
 
-import ArchetypeIco from 'ui/components/ArchetypeIco';
-import Bar from 'ui/components/Game/components/Bar';
-
 import icos from 'data/icos';
 import { Jobs } from 'models/job';
 import { PlayerType } from 'models/player';
 import { ICharacter } from 'models/character';
+
+import Bar from 'ui/components/Game/components/Bar';
+import ArchetypeIco from 'ui/components/ArchetypeIco';
 
 interface IPartyProps {
 	characters: ICharacter[];

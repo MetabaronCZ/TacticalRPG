@@ -1,7 +1,5 @@
 import React from 'react';
-import { Game } from 'models/game';
-
-const { blockSize, gridSize } = Game;
+import { blockSize, gridSize } from 'ui/components/Game';
 
 const Layers: React.SFC = ({ children }) => {
 	const style: React.CSSProperties = {

@@ -2,13 +2,14 @@ import { createStore } from 'redux';
 import { Store } from 'react-redux';
 
 import reducers from 'reducers';
-import { ICharacterData } from 'models/character-data';
+import { IAppState, defaultAppState } from 'reducers/app';
+import { IGameState, defaultGameState } from 'reducers/game';
 
 const storageKey = 'game';
 
 export interface IState {
-	readonly characters?: ICharacterData[];
-	readonly parties?: any[];
+	app: IAppState;
+	game: IGameState;
 }
 
 export interface IAction {
@@ -16,13 +17,28 @@ export interface IAction {
 	[data: string]: any;
 }
 
-const loadState = (): IState => {
-	const state = localStorage.getItem(storageKey) || '';
-	return state ? JSON.parse(state) : {};
+const defaultState: IState = {
+	app: defaultAppState,
+	game: defaultGameState
 };
 
-const saveState = (state: IState = {}): void => {
-	localStorage.setItem(storageKey, JSON.stringify(state));
+const loadState = (): IState => {
+	const stateString = localStorage.getItem(storageKey) || '';
+
+	if (!stateString) {
+		return defaultState;
+	}
+	try {
+		return JSON.parse(stateString) as IState;
+	} catch (err) {
+		return defaultState;
+	}
+};
+
+const saveState = (state: IState = defaultState): void => {
+	const saved = JSON.parse(JSON.stringify(state));
+	saved.game = defaultGameState;
+	localStorage.setItem(storageKey, JSON.stringify(saved));
 };
 
 const initStore = (): Store<IState> => {

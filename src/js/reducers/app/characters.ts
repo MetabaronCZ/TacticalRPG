@@ -1,9 +1,10 @@
+import { ICharacterData } from 'models/character-data';
 import { add, edit, remove, swap } from 'utils/array';
-import { ActionID } from 'actions/characters';
+import { ActionID } from 'actions/app/characters';
 import { IAction } from 'store';
 
 // characters reducer
-const characters = (state = [], action: IAction) => {
+const characters = (state: ICharacterData[] = [], action: IAction): ICharacterData[] => {
 	switch (action.type) {
 		case ActionID.ADD:
 			return add(action.value, state);

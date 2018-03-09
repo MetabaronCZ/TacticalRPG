@@ -17,13 +17,13 @@ interface IOnStartParams {
 }
 
 interface IStateToProps {
-	characters?: ICharacterData[];
-	parties?: IParty[];
+	characters: ICharacterData[];
+	parties: IParty[];
 }
 
 const mapStateToProps = (state: IState): IStateToProps => ({
-	parties: state.parties,
-	characters: state.characters
+	parties: state.app.parties,
+	characters: state.app.characters
 });
 
 const onStart = (history: History) => (params: IOnStartParams = {}) => {
@@ -42,5 +42,5 @@ const ViewBattleSetupContainer: React.SFC<IStateToProps & RouteComponentProps<an
 );
 
 export default withRouter(
-	connect<IStateToProps>(mapStateToProps)(ViewBattleSetupContainer)
+	connect(mapStateToProps)(ViewBattleSetupContainer)
 );

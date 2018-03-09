@@ -9,13 +9,13 @@ import { goto, gotoFn } from 'utils/nav';
 import { IParty } from 'models/party';
 import { ICharacterData } from 'models/character-data';
 
-import GameUI from 'ui/components/Game';
+import GameUIContainer from 'ui/components/Game';
 
 const txtExitConfirm = 'Do you realy want to exit and lost your game progress?';
 
 interface IStateToProps {
-	characters?: ICharacterData[];
-	parties?: IParty[];
+	characters: ICharacterData[];
+	parties: IParty[];
 }
 
 const exit = (history: History) => () => {
@@ -26,8 +26,8 @@ const exit = (history: History) => () => {
 };
 
 const mapStateToProps = (state: IState): IStateToProps => ({
-	characters: state.characters,
-	parties: state.parties
+	characters: state.app.characters,
+	parties: state.app.parties
 });
 
 const ViewCharacterEditContainer: React.SFC<IStateToProps & RouteComponentProps<any>> = (props) => {
@@ -40,7 +40,7 @@ const ViewCharacterEditContainer: React.SFC<IStateToProps & RouteComponentProps<
 		throw new Error('Game started with invalid arguments');
 	}
 	return (
-		<GameUI
+		<GameUIContainer
 			party={party}
 			characters={characters}
 			onExit={onExit}
@@ -50,5 +50,5 @@ const ViewCharacterEditContainer: React.SFC<IStateToProps & RouteComponentProps<
 };
 
 export default withRouter(
-	connect<IStateToProps>(mapStateToProps)(ViewCharacterEditContainer)
+	connect(mapStateToProps)(ViewCharacterEditContainer)
 );

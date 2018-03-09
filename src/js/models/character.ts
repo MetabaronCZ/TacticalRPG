@@ -1,7 +1,7 @@
-import { IAttributes, Attributes } from 'models/attributes';
-import { ICharacterData } from 'models/character-data';
-import { PlayerType } from 'models/player';
 import { Position } from 'models/position';
+import { PlayerType } from 'models/player';
+import { IAttributes } from 'models/attributes';
+import { ICharacterData } from 'models/character-data';
 
 export interface ICharacter {
 	data: ICharacterData;
@@ -9,22 +9,9 @@ export interface ICharacter {
 	player: PlayerType;
 	baseAttributes: IAttributes;
 	currAttributes: IAttributes;
-	isSelected: boolean;
-	isActive: boolean;
 }
 
 export class Character {
+	// maximum point of CP of every character
 	public static cpLimit = 100;
-
-	public static create(type: PlayerType, data: ICharacterData, position: Position): ICharacter {
-		return {
-			data,
-			position,
-			player: type,
-			baseAttributes: Attributes.create(data.primary, data.secondary),
-			currAttributes: Attributes.create(data.primary, data.secondary),
-			isSelected: false,
-			isActive: false
-		};
-	}
 }

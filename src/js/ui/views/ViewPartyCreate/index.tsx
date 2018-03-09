@@ -6,9 +6,9 @@ import { withRouter, RouteComponentProps } from 'react-router';
 import Page from 'ui/components/Page';
 import PartyCreation from 'ui/components/PartyCreation';
 
-import actions from 'actions/parties';
-import { IState, IAction } from 'store';
 import { goto, gotoFn } from 'utils/nav';
+import actions from 'actions/app/parties';
+import { IState, IAction } from 'store';
 
 import { IParty } from 'models/party';
 import { ICharacterData } from 'models/character-data';
@@ -22,7 +22,7 @@ interface IViewPartyCreateContainerProps extends RouteComponentProps<any> {
 }
 
 const mapStateToProps = (state: IState): IStateToProps => ({
-	characters: state.characters
+	characters: state.app.characters
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
@@ -47,5 +47,5 @@ const ViewPartyCreateContainer: React.SFC<IViewPartyCreateContainerProps & IStat
 };
 
 export default withRouter(
-	connect<IStateToProps>(mapStateToProps, mapDispatchToProps)(ViewPartyCreateContainer)
+	connect(mapStateToProps, mapDispatchToProps)(ViewPartyCreateContainer)
 );
