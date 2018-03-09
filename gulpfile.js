@@ -65,7 +65,7 @@ gulp.task('index', () => {
 gulp.task('js', () => {
 	let conf = webpackConfig(env);
 
-	return gulp.src(`${paths.src}/app.js`)
+	return gulp.src(`${paths.src}/index.tsx`)
 		.pipe(webpack(conf))
 		.pipe(gulp.dest(`${paths.dist}/js`));
 });

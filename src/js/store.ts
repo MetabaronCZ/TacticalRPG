@@ -1,15 +1,13 @@
 import { createStore } from 'redux';
-import { Store } from 'react-redux';
+import { Store as ReduxStore } from 'react-redux';
 
 import reducers from 'reducers';
-import { IAppState, defaultAppState } from 'reducers/app';
-import { IGameState, defaultGameState } from 'reducers/game';
-
-const storageKey = 'game';
+import { IGame, Game } from 'models/game';
+import { IApp, App } from 'models/app';
 
 export interface IState {
-	app: IAppState;
-	game: IGameState;
+	app: IApp;
+	game: IGame;
 }
 
 export interface IAction {
@@ -17,38 +15,46 @@ export interface IAction {
 	[data: string]: any;
 }
 
-const defaultState: IState = {
-	app: defaultAppState,
-	game: defaultGameState
-};
+class Store {
+	public static KEY = 'game'; // storage key
+	private value: ReduxStore<IState>; // store instance
 
-const loadState = (): IState => {
-	const stateString = localStorage.getItem(storageKey) || '';
-
-	if (!stateString) {
-		return defaultState;
+	constructor() {
+		const saved = this.load();
+		this.value = createStore(reducers, saved);
+		this.value.subscribe(() => this.save()); // save on store changes
 	}
-	try {
-		return JSON.parse(stateString) as IState;
-	} catch (err) {
-		return defaultState;
+
+	public get(): ReduxStore<IState> {
+		return this.value;
 	}
-};
 
-const saveState = (state: IState = defaultState): void => {
-	const saved = JSON.parse(JSON.stringify(state));
-	saved.game = defaultGameState;
-	localStorage.setItem(storageKey, JSON.stringify(saved));
-};
+	private getDefault(): IState {
+		return {
+			app: App.getDefault(),
+			game: Game.getDefault()
+		};
+	}
 
-const initStore = (): Store<IState> => {
-	const state = loadState();
-	const store = createStore(reducers, state);
+	private load(): IState {
+		const saved = localStorage.getItem(Store.KEY) || '';
 
-	// save application state on store update
-	store.subscribe(() => saveState(store.getState()));
+		if (!saved) {
+			return this.getDefault();
+		}
+		try {
+			return JSON.parse(saved) as IState;
+		} catch (err) {
+			return this.getDefault();
+		}
+	}
 
-	return store;
-};
+	private save() {
+		const state = this.value ? this.value.getState() : this.getDefault();
+		const saved = JSON.parse(JSON.stringify(state));
+		saved.game = Game.getDefault();
+		localStorage.setItem(Store.KEY, JSON.stringify(saved));
+	}
+}
 
-export default initStore;
+export default Store;

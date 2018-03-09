@@ -2,14 +2,13 @@ import React from 'react';
 import { connect, Dispatch } from 'react-redux';
 
 import { IState, IAction } from 'store';
-import { IGameState } from 'reducers/game';
-
 import orderAction from 'actions/game/order';
 import playerAction from 'actions/game/players';
 import characterAction from 'actions/game/characters';
 
-import { Position } from 'models/position';
+import { IGame } from 'models/game';
 import { PlayerType } from 'models/player';
+import { Position } from 'models/position';
 import { ICharacter } from 'models/character';
 import { IParty, Party } from 'models/party';
 import { ICharacterData } from 'models/character-data';
@@ -26,7 +25,7 @@ export type IOnGridSelect = (pos: Position) => void;
 export type IOnCharacterSelect = (char: ICharacter) => void;
 
 export interface IGameUIProps {
-	store: IGameState;
+	store: IGame;
 	party: IParty;
 	characters: ICharacterData[];
 	startGame: (charIds: string[], characters: ICharacterData[]) => void;

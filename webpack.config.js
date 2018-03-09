@@ -31,7 +31,7 @@ module.exports = env => {
 
 	return {
 		entry: {
-			app: './src/js/app',
+			app: './src/js/index',
 			libs: ['react', 'react-dom', 'redux', 'react-redux', 'react-router', 'react-router-dom', 'uuid']
 		},
 		output: {

@@ -2,11 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 
-import initStore from 'store';
+import Store from 'store';
 import Router from 'ui/components/Router';
 import PageWrapper from 'ui/components/PageWrapper';
 
-export const store = initStore();
+export const store = (new Store()).get();
 
 ReactDOM.render(
 	<PageWrapper>

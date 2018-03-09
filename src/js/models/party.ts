@@ -17,7 +17,7 @@ export class Party {
 	// maximum character count of party name
 	public static maxNameLength = 16;
 
-	public static init(conf = {}): IParty {
+	public static create(conf = {}): IParty {
 		const now = Date.now();
 		const chars: string[] = [];
 
@@ -43,6 +43,25 @@ export class Party {
 		const jobs = getRandomArrayItems(Jobs.keys(), count);
 
 		return characters.map((char, i) => CharacterData.random(char, jobs[i]));
+	}
+
+	public static removeCharacter(characterId: string, partyList: IParty[]): IParty[] {
+		if (!characterId || !partyList.length) {
+			return partyList;
+		}
+		const newPartyList: IParty[] = [];
+
+		for (const party of partyList) {
+			const newChars = party.characters.filter((charId) => charId !== characterId);
+
+			if (newChars.length) {
+				newPartyList.push({
+					...party,
+					characters: newChars
+				});
+			}
+		}
+		return newPartyList;
 	}
 
 	public static validate(party: ICharacterData[] = []): string|true {

@@ -20,6 +20,6 @@
 		"pretty": true
 	},
 	"compileOnSave": false,
-	"files": ["./src/js/app.tsx"],
+	"files": ["./src/js/index.tsx"],
 	"exclude": ["node_modules"]
 }

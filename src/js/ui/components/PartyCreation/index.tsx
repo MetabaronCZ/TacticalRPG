@@ -43,7 +43,7 @@ class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationS
 		chars = chars.filter((id) => !!id);
 
 		this.state = {
-			fields: Party.init(props.party || {}),
+			fields: Party.create(props.party || {}),
 			errors: {
 				noCharError: (props.party && !chars.length ? errNoCharacter : undefined)
 			}

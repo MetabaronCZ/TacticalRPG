@@ -1,11 +1,7 @@
 import { IAction } from 'store';
-import { IRound } from 'models/round';
+import { IRound, Round } from 'models/round';
 
-export const initialState: IRound = {
-	number: 1
-};
-
-const round = (state = initialState, action: IAction): IRound => {
+const round = (state = Round.getDefault(), action: IAction): IRound => {
 	return state;
 };
 
