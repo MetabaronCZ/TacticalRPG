@@ -7,7 +7,7 @@ import Button from 'components/Button';
 import ButtonRow from 'components/ButtonRow';
 import PartyList from 'components/PartyList';
 import Separator from 'components/Separator';
-import { IOnMoveDown, IOnMoveUp, IOnDelete } from 'views/ViewPartyList';
+import { IOnMoveDown, IOnMoveUp, IOnDelete } from 'pages/ViewPartyList';
 
 const NoParties = () => (
 	<p className="Paragraph">There are no character parties.</p>

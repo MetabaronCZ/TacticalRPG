@@ -1,13 +1,13 @@
-import MainMenu from 'views/ViewMainMenu';
-import BattleSetup from 'views/ViewBattleSetup';
-import Battle from 'views/ViewBattle';
-import BattleSummary from 'views/ViewBattleSummary';
-import PartyList from 'views/ViewPartyList';
-import PartyEdit from 'views/ViewPartyEdit';
-import PartyCreate from 'views/ViewPartyCreate';
-import CharacterList from 'views/ViewCharacterList';
-import CharacterEdit from 'views/ViewCharacterEdit';
-import CharacterCreate from 'views/ViewCharacterCreate';
+import MainMenu from 'pages/ViewMainMenu';
+import BattleSetup from 'pages/ViewBattleSetup';
+import Battle from 'pages/ViewBattle';
+import BattleSummary from 'pages/ViewBattleSummary';
+import PartyList from 'pages/ViewPartyList';
+import PartyEdit from 'pages/ViewPartyEdit';
+import PartyCreate from 'pages/ViewPartyCreate';
+import CharacterList from 'pages/ViewCharacterList';
+import CharacterEdit from 'pages/ViewCharacterEdit';
+import CharacterCreate from 'pages/ViewCharacterCreate';
 
 interface IRoute {
 	readonly path: string;

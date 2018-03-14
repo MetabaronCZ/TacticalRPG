@@ -6,7 +6,7 @@ import Link from 'components/Link';
 import LinkIco from 'components/LinkIco';
 import LinkButton from 'components/LinkButton';
 import ArchetypeIco from 'components/ArchetypeIco';
-import { IOnMoveDown, IOnMoveUp, IOnDelete } from 'views/ViewCharacterList';
+import { IOnMoveDown, IOnMoveUp, IOnDelete } from 'pages/ViewCharacterList';
 
 import { Jobs } from 'models/job';
 import { Armors } from 'models/armor';

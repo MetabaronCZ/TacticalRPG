@@ -3,7 +3,7 @@ import React from 'react';
 import { ICharacterData } from 'models/character-data';
 
 import getColumns from 'components/CharacterList/columns';
-import { IOnMoveDown, IOnMoveUp, IOnDelete } from 'views/ViewCharacterList';
+import { IOnMoveDown, IOnMoveUp, IOnDelete } from 'pages/ViewCharacterList';
 
 interface ICharacterListProps {
 	editable?: boolean;

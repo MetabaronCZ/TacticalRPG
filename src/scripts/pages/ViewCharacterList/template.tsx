@@ -5,7 +5,7 @@ import Button from 'components/Button';
 import ButtonRow from 'components/ButtonRow';
 import Separator from 'components/Separator';
 import CharacterList from 'components/CharacterList';
-import { IOnMoveDown, IOnMoveUp, IOnDelete } from 'views/ViewCharacterList';
+import { IOnMoveDown, IOnMoveUp, IOnDelete } from 'pages/ViewCharacterList';
 
 import { ICharacterData } from 'models/character-data';
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router';
 
-import ViewPartyList from 'views/ViewPartyList/template';
+import ViewPartyList from 'pages/ViewPartyList/template';
 
 import { gotoFn } from 'utils/nav';
 import { IParty } from 'models/party';
