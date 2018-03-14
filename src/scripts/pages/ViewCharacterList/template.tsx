@@ -22,7 +22,7 @@ interface IViewCharacterListProps {
 	onMoveUp?: IOnMoveUp;
 }
 
-const ViewCharacterList: React.SFC<IViewCharacterListProps> = (props) => {
+const ViewCharacterList: React.SFC<IViewCharacterListProps> = props => {
 	const { characters, onBack, onCreate, onDelete, onMoveDown, onMoveUp } = props;
 
 	return (

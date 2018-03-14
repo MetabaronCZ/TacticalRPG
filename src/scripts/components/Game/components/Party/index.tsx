@@ -13,7 +13,7 @@ interface IPartyProps {
 }
 
 const Party: React.SFC<IPartyProps> = ({ characters }) => {
-	const ally = characters.filter((char) => PlayerType.ALLY === char.player);
+	const ally = characters.filter(char => PlayerType.ALLY === char.player);
 
 	return (
 		<div className="Party">

@@ -10,7 +10,7 @@ interface IOrderProps {
 }
 
 const Order: React.SFC<IOrderProps> = ({ order, characters }) => {
-	const ordered = order.map((id) => {
+	const ordered = order.map(id => {
 		for (const char of characters) {
 			if (id === char.data.id) {
 				return char;

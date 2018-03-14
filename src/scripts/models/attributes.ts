@@ -35,9 +35,9 @@ const BaseAttrFormula: IBaseAttrFormulas = {
 };
 
 const SecondaryAttrFormula: ISecondaryAttrFormulas = {
-	HP: (attrs) => 10 * attrs.VIT,
-	AP: (attrs) => 4 * attrs.SPD,
-	CP: (attrs) => 0
+	HP: attrs => 10 * attrs.VIT,
+	AP: attrs => 4 * attrs.SPD,
+	CP: attrs => 0
 };
 
 interface IBaseAttributes {

@@ -34,7 +34,7 @@ export class Party {
 
 	// return character object from character list by its ID
 	public static getCharacterById(id: string, characters: ICharacterData[]): ICharacterData {
-		return characters.filter((char) => char.id === id)[0];
+		return characters.filter(char => char.id === id)[0];
 	}
 
 	// returns random character party array
@@ -52,7 +52,7 @@ export class Party {
 		const newPartyList: IParty[] = [];
 
 		for (const party of partyList) {
-			const newChars = party.characters.filter((charId) => charId !== characterId);
+			const newChars = party.characters.filter(charId => charId !== characterId);
 
 			if (newChars.length) {
 				newPartyList.push({
@@ -65,12 +65,12 @@ export class Party {
 	}
 
 	public static validate(party: ICharacterData[] = []): string|true {
-		party = party.filter((char) => !!char);
+		party = party.filter(char => !!char);
 
 		if (!party.length) {
 			return true;
 		}
-		const ids = party.map((char) => char.id);
+		const ids = party.map(char => char.id);
 		const idErrs: string[] = [];
 
 		ids.forEach((id, i) => {
@@ -84,15 +84,15 @@ export class Party {
 		if (idErrs.length) {
 			return `Party contains same character multiple times: ${idErrs.join(', ')}`;
 		}
-		const jobs = party.map((char) => char.job);
+		const jobs = party.map(char => char.job);
 		const jobErrs: { [job: string]: string[] } = {};
 		let hasJobErrors = false;
 
 		jobs.forEach((job, i) => {
 			if (i !== jobs.lastIndexOf(job) && !jobErrs[job]) {
 				const names = party
-					.filter((char) => job === char.job)
-					.map((char) => char.name);
+					.filter(char => job === char.job)
+					.map(char => char.name);
 
 				jobErrs[job] = names;
 				hasJobErrors = true;

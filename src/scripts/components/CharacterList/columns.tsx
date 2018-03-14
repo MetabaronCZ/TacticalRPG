@@ -126,7 +126,7 @@ const getColumns = (editable: boolean = false, onMoveDown?: IOnMoveDown, onMoveU
 	];
 
 	if (!editable) {
-		columns = columns.filter((col) => !col.editable);
+		columns = columns.filter(col => !col.editable);
 	}
 
 	return columns;

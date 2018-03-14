@@ -18,7 +18,7 @@ export class Order {
 		let o: IOrder = [];
 
 		// serialize characters
-		const chars = characters.map((char) => ({
+		const chars = characters.map(char => ({
 			id: char.data.id,
 			initiative: (char.player === initiative),
 			CP: char.currAttributes.CP,
@@ -46,7 +46,7 @@ export class Order {
 			act = act.sort((a, b) => b.SPD - a.SPD);
 
 			// add acting characters to ordered array
-			o = o.concat(act.map((char) => char.id));
+			o = o.concat(act.map(char => char.id));
 		}
 
 		return o;

@@ -11,7 +11,7 @@ type IValidationCallback = (fieldName: string, isValid: string|null) => void;
 
 const rules: IRules = {
 	name: {
-		rule: (value) => !!value.match(/^[a-zA-Z0-9-_\s.]+$/),
+		rule: value => !!value.match(/^[a-zA-Z0-9-_\s.]+$/),
 		text: 'Name should contain at least one alphanumeric character, spaces or symbols (_, -, .)'
 	}
 };

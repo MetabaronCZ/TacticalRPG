@@ -22,7 +22,7 @@ interface IViewPartyList {
 	onDelete?: IOnDelete;
 }
 
-const ViewPartyList: React.SFC<IViewPartyList> = (props) => {
+const ViewPartyList: React.SFC<IViewPartyList> = props => {
 	const { parties, onBack, onCreate, onMoveDown, onMoveUp, onDelete } = props;
 
 	return (

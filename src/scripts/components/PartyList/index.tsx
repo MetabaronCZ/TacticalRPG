@@ -31,11 +31,11 @@ interface IColumn {
 }
 
 const getColumns = (onMoveDown: IFun, onMoveUp: IFun, onDelete: IFun): IColumn[] => ([
-	{ title: 'Name', name: 'name', value: (party) => party.name },
-	{ title: '', name: 'moveDown', value: (party) => renderMoveDown(party, onMoveDown) },
-	{ title: '', name: 'moveUp', value: (party) => renderMoveUp(party, onMoveUp) },
+	{ title: 'Name', name: 'name', value: party => party.name },
+	{ title: '', name: 'moveDown', value: party => renderMoveDown(party, onMoveDown) },
+	{ title: '', name: 'moveUp', value: party => renderMoveUp(party, onMoveUp) },
 	{ title: '', name: 'edit', value: renderEdit },
-	{ title: '', name: 'delete', value: (party) => renderDelete(party, onDelete) }
+	{ title: '', name: 'delete', value: party => renderDelete(party, onDelete) }
 ]);
 
 interface IPartyListProps {
@@ -45,7 +45,7 @@ interface IPartyListProps {
 	onDelete: IFun;
 }
 
-const PartyList: React.SFC<IPartyListProps> = (props) => {
+const PartyList: React.SFC<IPartyListProps> = props => {
 	const { parties, onMoveDown, onMoveUp, onDelete } = props;
 	const columns = getColumns(onMoveDown, onMoveUp, onDelete);
 

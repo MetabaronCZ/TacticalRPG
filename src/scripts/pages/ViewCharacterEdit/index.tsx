@@ -30,9 +30,9 @@ const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
 	}
 });
 
-const ViewCharacterEditContainer: React.SFC<IViewCharacterEditContainerProps & IStateToProps> = (props) => {
+const ViewCharacterEditContainer: React.SFC<IViewCharacterEditContainerProps & IStateToProps> = props => {
 	const { characters, onSubmit, history, match } = props;
-	const character = (characters ? characters.find((char) => char.id === match.params.id) : undefined);
+	const character = (characters ? characters.find(char => char.id === match.params.id) : undefined);
 
 	return (
 		<Page heading="Edit character">

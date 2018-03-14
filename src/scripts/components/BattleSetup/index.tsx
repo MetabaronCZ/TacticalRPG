@@ -49,11 +49,11 @@ class BattleSetup extends React.Component<IBattleSetupProps, IBattleSetupState> 
 		if (!characters || !characters.length || !parties || !parties.length) {
 			return this.renderNoParty();
 		}
-		const selectedParty = parties.filter((p) => p.id === fields.party)[0];
+		const selectedParty = parties.filter(p => p.id === fields.party)[0];
 
 		const chars = selectedParty.characters
-			.map((id) => Party.getCharacterById(id, characters))
-			.filter((char) => !!char);
+			.map(id => Party.getCharacterById(id, characters))
+			.filter(char => !!char);
 
 		const partyValidation = Party.validate(chars);
 		const isValidParty = (true === partyValidation && chars.length);

@@ -13,12 +13,12 @@ interface ICharacterListProps {
 	onDelete?: IOnDelete;
 }
 
-const CharacterList: React.SFC<ICharacterListProps> = (props) => {
+const CharacterList: React.SFC<ICharacterListProps> = props => {
 	const { editable = false, characters, onMoveDown, onMoveUp, onDelete } = props;
 	const columns = getColumns(editable, onMoveDown, onMoveUp, onDelete);
 
 	// ignore empty character slots
-	const chars = characters.filter((char) => !!char);
+	const chars = characters.filter(char => !!char);
 
 	return (
 		<ul className="List">

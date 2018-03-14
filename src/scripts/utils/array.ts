@@ -8,7 +8,7 @@ export interface IIndexable {
 
 // swap state array positions
 export const swap = <T extends IIndexable>(id: string, dir: number, state: T[]): T[] => {
-	const index = state.findIndex((item) => id === item.id);
+	const index = state.findIndex(item => id === item.id);
 
 	if (index + dir < 0 || index + dir > state.length - 1) {
 		return state;
@@ -41,7 +41,7 @@ export const add = <T extends IIndexable>(item: any, state: T[]): T[] => {
 
 // remove item from state array
 export const remove = <T extends IIndexable>(id: string, state: T[]): T[] => {
-	return state.filter((item) => id !== item.id);
+	return state.filter(item => id !== item.id);
 };
 
 // edit item in state array

@@ -40,7 +40,7 @@ class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationS
 		super(props);
 
 		let chars = props.party ? props.party.characters : [];
-		chars = chars.filter((id) => !!id);
+		chars = chars.filter(id => !!id);
 
 		this.state = {
 			fields: Party.create(props.party || {}),
@@ -63,7 +63,7 @@ class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationS
 
 		const partyValidation = errors.noCharError
 			? errors.noCharError
-			: Party.validate(chars ? fields.characters.map((id) => Party.getCharacterById(id, chars)) : undefined);
+			: Party.validate(chars ? fields.characters.map(id => Party.getCharacterById(id, chars)) : undefined);
 
 		return (
 			<Form onSubmit={this.onSubmit}>
@@ -148,7 +148,7 @@ class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationS
 			return;
 		}
 		let ids = fields.characters;
-		ids = ids.filter((id) => !!id);
+		ids = ids.filter(id => !!id);
 
 		if (!ids.length) {
 			this.setState({
@@ -184,18 +184,18 @@ class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationS
 		}
 
 		// filter unselected characters (keep character itself)
-		let filtered = characters.filter((char) => {
+		let filtered = characters.filter(char => {
 			return (character && char.id === character.id) || -1 === selected.indexOf(char.id);
 		});
 
 		// get selected jobs
-		const selectedJobs = selected.map((id) => {
+		const selectedJobs = selected.map(id => {
 			const char = Party.getCharacterById(id, characters);
 			return char ? char.job : JobID.NONE;
 		});
 
 		// filter characters with job not in selection (keep character itself and unused characters with same job)
-		filtered = filtered.filter((char) => {
+		filtered = filtered.filter(char => {
 			return (character && char.id === character.id) || (character && char.job === character.job) || -1 === selectedJobs.indexOf(char.job);
 		});
 

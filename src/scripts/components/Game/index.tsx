@@ -42,8 +42,8 @@ const mapStateToProps = (state: IState) => ({
 const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
 	startGame: (charIds: string[], characters: ICharacterData[]) => {
 		const party = charIds
-			.filter((id) => !!id)
-			.map((id) => Party.getCharacterById(id, characters));
+			.filter(id => !!id)
+			.map(id => Party.getCharacterById(id, characters));
 
 		const ally = party;
 		const enemy = Party.getRandomCharacters(party.length);

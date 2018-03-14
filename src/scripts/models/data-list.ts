@@ -42,11 +42,11 @@ class DataList<T, U> {
 	}
 
 	public keys(): T[] {
-		return this.entries.map((entry) => entry[0]);
+		return this.entries.map(entry => entry[0]);
 	}
 
 	public values(): U[] {
-		return this.entries.map((entry) => entry[1]);
+		return this.entries.map(entry => entry[1]);
 	}
 
 	public map(cb: DataListIterator<T, U>): any[] {

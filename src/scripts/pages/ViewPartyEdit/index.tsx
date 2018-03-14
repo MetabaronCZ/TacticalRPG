@@ -34,9 +34,9 @@ const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
 	}
 });
 
-const ViewPartyEditContainer: React.SFC<IViewPartyEditContainerProps & IStateToProps> = (props) => {
+const ViewPartyEditContainer: React.SFC<IViewPartyEditContainerProps & IStateToProps> = props => {
 	const { parties, characters, onSubmit, history, match } = props;
-	const party = (parties ? parties.find((c) => c.id === match.params.id) : undefined);
+	const party = (parties ? parties.find(c => c.id === match.params.id) : undefined);
 
 	return (
 		<Page heading="Edit party">

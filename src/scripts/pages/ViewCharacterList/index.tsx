@@ -40,7 +40,7 @@ const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
 	}
 });
 
-const ViewCharacterListContainer: React.SFC<IViewCharacterListContainerProps & IStateToProps> = (props) => {
+const ViewCharacterListContainer: React.SFC<IViewCharacterListContainerProps & IStateToProps> = props => {
 	const { characters, history, onMoveDown, onMoveUp, onDelete } = props;
 
 	return (

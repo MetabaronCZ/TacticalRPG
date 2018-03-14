@@ -32,7 +32,7 @@ const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
 	}
 });
 
-const ViewPartyCreateContainer: React.SFC<IViewPartyCreateContainerProps & IStateToProps> = (props) => {
+const ViewPartyCreateContainer: React.SFC<IViewPartyCreateContainerProps & IStateToProps> = props => {
 	const { characters, onSubmit, history } = props;
 
 	return (

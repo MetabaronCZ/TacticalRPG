@@ -30,10 +30,10 @@ const mapStateToProps = (state: IState): IStateToProps => ({
 	parties: state.app.parties
 });
 
-const ViewCharacterEditContainer: React.SFC<IStateToProps & RouteComponentProps<any>> = (props) => {
+const ViewCharacterEditContainer: React.SFC<IStateToProps & RouteComponentProps<any>> = props => {
 	const { characters, parties, history, match } = props;
 	const partyID = match.params.party;
-	const party = (parties ? parties.find((p) => p.id === partyID) : undefined);
+	const party = (parties ? parties.find(p => p.id === partyID) : undefined);
 	const onExit = exit(history);
 
 	if (!party || !characters) {

@@ -8,7 +8,7 @@ import Layers from 'components/Game/components/Layers';
 import Characters from 'components/Game/components/Characters';
 import { IGameUIProps } from 'components/Game';
 
-const GameUI: React.SFC<IGameUIProps> = (props) => {
+const GameUI: React.SFC<IGameUIProps> = props => {
 	const { order, characters } = props.store;
 
 	return (
