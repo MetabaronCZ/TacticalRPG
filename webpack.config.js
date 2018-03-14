@@ -2,6 +2,10 @@ const webpack = require('webpack');
 const path = require('path');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
+const pathSrc = './src/scripts';
+const pathDist = './dist/scripts';
+const pathModules = './node_modules';
+
 module.exports = env => {
 	let watch = false;
 	let devtool = false;
@@ -31,11 +35,11 @@ module.exports = env => {
 
 	return {
 		entry: {
-			app: './src/js/index',
+			app: `${pathSrc}/index`,
 			libs: ['react', 'react-dom', 'redux', 'react-redux', 'react-router', 'react-router-dom', 'uuid']
 		},
 		output: {
-			path: path.resolve(__dirname, 'dist/js'),
+			path: path.resolve(__dirname, pathDist),
 			filename: '[name].js'
 		},
 		watch: watch,
@@ -45,7 +49,7 @@ module.exports = env => {
 				{
 					test: /\.[jt]sx?$/,
 					loaders: ['babel-loader','ts-loader'],
-					include: path.resolve('./src/js')
+					include: path.resolve(pathSrc)
 				},
 				{
 					test: /\.tsx?$/,
@@ -58,8 +62,8 @@ module.exports = env => {
 		resolve: {
 			extensions: ['.ts', '.tsx', '.js'],
 			modules: [
-				path.resolve('./src/js'),
-				path.resolve('./node_modules')
+				path.resolve(pathSrc),
+				path.resolve(pathModules)
 			]
 		}
 	};

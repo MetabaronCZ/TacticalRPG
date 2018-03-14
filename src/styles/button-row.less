@@ -1,0 +1,12 @@
+.ButtonRow {
+	list-style-type: none;
+	display: table;
+	table-layout: fixed;
+	width: calc(~'100% + ' @vu*2);
+	margin: 0 -@vu @vu*2;
+
+	&-item {
+		display: table-cell;
+		padding: 0 @vu;
+	}
+}

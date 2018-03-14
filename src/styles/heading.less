@@ -1,0 +1,25 @@
+.Heading {
+	@border-size: 1px;
+
+	.u-text-default;
+	.u-weight-regular;
+
+	color: @color-yellow;
+	font-weight: normal;
+	text-transform: uppercase;
+	padding: 0 0 (@vu*2 - @border-size);
+	margin-bottom: @vu*2;
+	border-bottom: @border-size solid transparent;
+
+	& {
+		border-bottom-style: dotted;
+		border-bottom-color: @color-yellow;
+	}
+
+	&&--large {
+		.u-text-larger;
+
+		border-bottom-style: solid;
+		border-bottom-color: @color-yellow;
+	}
+}

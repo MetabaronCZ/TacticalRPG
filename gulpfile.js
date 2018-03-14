@@ -11,9 +11,30 @@ const autoprefixer = require('autoprefixer');
 
 const webpackConfig = require('./webpack.config.js');
 
+const pathSrc = './src';
+const pathDist = './dist';
+
 const paths = {
-	src: './src',
-	dist: './dist'
+	styles: {
+		src: `${pathSrc}/styles/app.less`,
+		files: `${pathSrc}/styles/**/*.less`,
+		dist: `${pathDist}/styles`
+	},
+	scripts: {
+		src: `${pathSrc}/scripts/index.tsx`,
+		files: `${pathSrc}/scripts/**/*.tsx?`,
+		dist: `${pathDist}/scripts`
+	},
+	fonts: {
+		src: `${pathSrc}/`,
+		files: `${pathSrc}/fonts/**/*`,
+		dist: `${pathDist}/fonts`
+	},
+	templates: {
+		src: `${pathSrc}/templates/index.html`,
+		files: `${pathSrc}/templates/**/*.html`,
+		dist: pathDist
+	}
 };
 
 let env = 'prod';
@@ -22,11 +43,11 @@ let env = 'prod';
 gulp.task('set-watch', () => env = 'dev');
 
 // clear "dist" folder
-gulp.task('clear', () => del(paths.dist));
+gulp.task('clear', () => del(pathDist));
 
 // lint LESS files
 gulp.task('stylelint', () => {
-	return gulp.src(`${paths.src}/css/**/*.less`)
+	return gulp.src(paths.styles.files)
 		.pipe(stylelint({
 			reporters: [
 				{ formatter: 'string', console: true }
@@ -35,8 +56,8 @@ gulp.task('stylelint', () => {
 });
 
 // build CSS
-gulp.task('less', ['stylelint'], () => {
-	return gulp.src(`${paths.src}/css/app.less`)
+gulp.task('styles', ['stylelint'], () => {
+	return gulp.src(paths.styles.src)
 		.pipe(less())
 		.pipe(postcss([
 			autoprefixer({
@@ -46,40 +67,40 @@ gulp.task('less', ['stylelint'], () => {
 				discardComments: { removeAll: true }
 			})
 		]))
-		.pipe(gulp.dest(`${paths.dist}/css`));
+		.pipe(gulp.dest(paths.styles.dist));
 });
 
 // copy font files
 gulp.task('fonts', () => {
-	return gulp.src(`${paths.src}/fonts/**/*`)
-		.pipe(gulp.dest(`${paths.dist}/fonts`));
+	return gulp.src(paths.fonts.files)
+		.pipe(gulp.dest(paths.fonts.dist));
 });
 
 // copy index.html
 gulp.task('index', () => {
-	return gulp.src(`${paths.src}/templates/index.html`)
-		.pipe(gulp.dest(paths.dist));
+	return gulp.src(paths.templates.files)
+		.pipe(gulp.dest(paths.templates.dist));
 });
 
 // build JS
-gulp.task('js', () => {
+gulp.task('scripts', () => {
 	let conf = webpackConfig(env);
 
-	return gulp.src(`${paths.src}/index.tsx`)
+	return gulp.src(paths.scripts.src)
 		.pipe(webpack(conf))
-		.pipe(gulp.dest(`${paths.dist}/js`));
+		.pipe(gulp.dest(paths.scripts.dist));
 });
 
 // watch files and perform given tasks
 gulp.task('watch', () => {
-	gulp.watch(`${paths.src}/css/**/*.less`, ['less']);
-	gulp.watch(`${paths.src}/fonts/**/*`, ['fonts']);
-	gulp.watch(`${paths.src}/templates/**/*`, ['index']);
+	gulp.watch(paths.templates.files, ['index']);
+	gulp.watch(paths.styles.files, ['styles']);
+	gulp.watch(paths.fonts.files, ['fonts']);
 });
 
 // build app
 gulp.task('build', cb => {
-	runSequence('clear', ['index', 'fonts', 'less', 'js'], cb);
+	runSequence('clear', ['index', 'fonts', 'styles', 'scripts'], cb);
 });
 
 // develop app

@@ -8,7 +8,7 @@
 		"noEmitHelpers": true, // disable emitting inline helper functions
 		"removeComments": true,
 		"allowSyntheticDefaultImports": true,
-		"baseUrl": "./src/js",
+		"baseUrl": "./src/scripts",
 		"sourceMap": true,
 		"jsx": "react",
 		"lib": ["es6", "dom"],
@@ -20,6 +20,6 @@
 		"pretty": true
 	},
 	"compileOnSave": false,
-	"files": ["./src/js/index.tsx"],
+	"files": ["./src/scripts/index.tsx"],
 	"exclude": ["node_modules"]
 }
