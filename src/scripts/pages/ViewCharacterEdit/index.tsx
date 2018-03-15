@@ -3,9 +3,9 @@ import { History } from 'history';
 import { connect, Dispatch } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router';
 
-import { IState, IAction } from 'store';
+import { IStore, IAction } from 'store';
 import { goto, gotoFn } from 'utils/nav';
-import actions from 'actions/app/characters';
+import actions from 'actions/characters';
 import { ICharacterData } from 'models/character-data';
 
 import Page from 'components/Page';
@@ -19,8 +19,8 @@ interface IViewCharacterEditContainerProps extends RouteComponentProps<any> {
 	onSubmit: (history: History) => any;
 }
 
-const mapStateToProps = (state: IState): IStateToProps => ({
-	characters: state.app.characters
+const mapStateToProps = (state: IStore): IStateToProps => ({
+	characters: state.characters
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({

@@ -3,8 +3,8 @@ import { connect, Dispatch } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router';
 
 import { gotoFn } from 'utils/nav';
-import { IState, IAction } from 'store';
-import actions from 'actions/app/characters';
+import { IStore, IAction } from 'store';
+import actions from 'actions/characters';
 import { ICharacterData } from 'models/character-data';
 import ViewCharacterList from 'pages/ViewCharacterList/template';
 
@@ -22,8 +22,8 @@ interface IViewCharacterListContainerProps extends RouteComponentProps<any> {
 	onDelete: IOnDelete;
 }
 
-const mapStateToProps = (state: IState): IStateToProps => ({
-	characters: state.app.characters
+const mapStateToProps = (state: IStore): IStateToProps => ({
+	characters: state.characters
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({

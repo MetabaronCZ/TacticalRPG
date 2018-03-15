@@ -1,62 +1,106 @@
 import React from 'react';
-import { connect, Dispatch } from 'react-redux';
 
-import { IState, IAction } from 'store';
-import { default as Action } from 'actions/game';
-
-import { IParty } from 'models/party';
-import { IGame, Game } from 'models/game';
 import { Position } from 'models/position';
-import { ICharacter } from 'models/character';
+import { IParty, Party } from 'models/party';
+import { Round, IRound } from 'models/round';
+import { Order, IOrder } from 'models/order';
 import { ICharacterData } from 'models/character-data';
+import { ICharacter, Character } from 'models/character';
+import { Player, PlayerType, IPlayer } from 'models/player';
 
 import GameUI from 'components/Game/template';
 
-export type IOnGridSelect = (pos: Position) => void;
-export type IOnCharacterSelect = (char: ICharacter) => void;
+export const gridSize = 12;
+export const blockSize = 64;
+export const allyPlayerName = 'Player';
+export const enemyPlayerName = 'Computer';
 
-export interface IGameUIProps {
-	game: IGame;
+export type IOnCharacterSelect = (char: ICharacter) => void;
+export type IOnGridSelect = (pos: Position) => void;
+
+interface IGameUIContainerProps {
 	party: IParty;
 	characters: ICharacterData[];
-	startGame: (charIds: string[], characters: ICharacterData[]) => void;
-	onCharacterSelect: () => any;
-	onGridSelect: () => any;
 	onSummary: () => any;
 	onExit: () => any;
 }
 
-const mapStateToProps = (state: IState) => ({
-	game: state.game
-});
+export interface IGameState {
+	characters: ICharacter[];
+	ally?: IPlayer;
+	enemy?: IPlayer;
+	order: IOrder;
+	round: IRound;
+	selected?: Position;
+	initiative?: PlayerType;
+}
 
-const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
-	startGame: (charIds: string[], characters: ICharacterData[]) => {
-		const game = Game.create(charIds, characters);
-		dispatch(Action.gameStart(game.ally, game.enemy, game.characters, game.initiative));
-		dispatch(Action.orderUpdate());
-	},
-	onCharacterSelect: (char: ICharacter) => {
-		dispatch(Action.characterSelect(char));
-	},
-	onGridSelect: (pos: Position) => {
-		dispatch(Action.gridSelect(pos));
-	}
-});
+class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState> {
+	constructor(props: IGameUIContainerProps) {
+		super(props);
 
-class GameUIContainer extends React.Component<IGameUIProps, {}> {
-	public componentWillMount() {
-		const { party, characters, startGame } = this.props;
+		this.initGameState(props.party.characters, props.characters);
 
-		// init game state
-		startGame(party.characters, characters);
+		this.onGridSelect = this.onGridSelect.bind(this);
+		this.onCharacterSelect = this.onCharacterSelect.bind(this);
 	}
 
 	public render() {
 		return (
-			<GameUI {...this.props} />
+			<GameUI
+				order={this.state.order}
+				characters={this.state.characters}
+				selected={this.state.selected}
+				onCharacterSelect={this.onCharacterSelect}
+				onGridSelect={this.onGridSelect}
+			/>
 		);
+	}
+
+	private initGameState(charIds: string[], chars: ICharacterData[]) {
+		const party = charIds
+			.filter(id => !!id)
+			.map(id => Party.getCharacterById(id, chars));
+
+		const ally = Player.create(allyPlayerName, PlayerType.ALLY);
+		const enemy = Player.create(enemyPlayerName, PlayerType.ENEMY);
+
+		const allies = party.map((char, i) => {
+			return Character.create(char, new Position(i + 2, gridSize - 1), PlayerType.ALLY);
+		});
+
+		const enemies = Party.getRandomCharacters(party.length)
+			.map((char, i) => {
+				return Character.create(char, new Position(i + 2, 0), PlayerType.ENEMY);
+			});
+
+		const round = Round.getDefault();
+		const initiative = (Math.random() < 0.5 ? PlayerType.ALLY : PlayerType.ENEMY);
+		const characters = allies.concat(enemies);
+		const order = Order.get(characters, initiative);
+
+		this.state = {
+			ally,
+			enemy,
+			characters,
+			initiative,
+			round,
+			order
+		};
+	}
+	private onGridSelect(position: Position) {
+		this.setState({
+			...this.state,
+			selected: position
+		});
+	}
+
+	private onCharacterSelect(character: ICharacter) {
+		this.setState({
+			...this.state,
+			selected: character.position
+		});
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(GameUIContainer);
+export default GameUIContainer;

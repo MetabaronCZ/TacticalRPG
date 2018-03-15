@@ -6,9 +6,9 @@ import { withRouter, RouteComponentProps } from 'react-router';
 import Page from 'components/Page';
 import PartyCreation from 'components/PartyCreation';
 
+import actions from 'actions/parties';
 import { goto, gotoFn } from 'utils/nav';
-import actions from 'actions/app/parties';
-import { IState, IAction } from 'store';
+import { IStore, IAction } from 'store';
 
 import { IParty } from 'models/party';
 import { ICharacterData } from 'models/character-data';
@@ -21,8 +21,8 @@ interface IViewPartyCreateContainerProps extends RouteComponentProps<any> {
 	onSubmit: (history: History) => any;
 }
 
-const mapStateToProps = (state: IState): IStateToProps => ({
-	characters: state.app.characters
+const mapStateToProps = (state: IStore): IStateToProps => ({
+	characters: state.characters
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({

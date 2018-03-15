@@ -6,8 +6,8 @@ import { withRouter, RouteComponentProps } from 'react-router';
 import Page from 'components/Page';
 import PartyCreation from 'components/PartyCreation';
 
-import { IState, IAction } from 'store';
-import actions from 'actions/app/parties';
+import actions from 'actions/parties';
+import { IStore, IAction } from 'store';
 import { goto, gotoFn } from 'utils/nav';
 
 import { IParty } from 'models/party';
@@ -22,9 +22,9 @@ interface IViewPartyEditContainerProps extends RouteComponentProps<any> {
 	onSubmit: (history: History) => any;
 }
 
-const mapStateToProps = (state: IState): IStateToProps => ({
-	parties: state.app.parties,
-	characters: state.app.characters
+const mapStateToProps = (state: IStore): IStateToProps => ({
+	parties: state.parties,
+	characters: state.characters
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({

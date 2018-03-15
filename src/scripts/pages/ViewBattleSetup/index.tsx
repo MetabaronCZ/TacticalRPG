@@ -3,7 +3,7 @@ import { History } from 'history';
 import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router';
 
-import { IState } from 'store';
+import { IStore } from 'store';
 import { goto, gotoFn } from 'utils/nav';
 
 import Page from 'components/Page';
@@ -21,9 +21,9 @@ interface IStateToProps {
 	parties: IParty[];
 }
 
-const mapStateToProps = (state: IState): IStateToProps => ({
-	parties: state.app.parties,
-	characters: state.app.characters
+const mapStateToProps = (state: IStore): IStateToProps => ({
+	parties: state.parties,
+	characters: state.characters
 });
 
 const onStart = (history: History) => (params: IOnStartParams = {}) => {

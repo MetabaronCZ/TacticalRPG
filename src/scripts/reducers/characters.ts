@@ -1,6 +1,6 @@
 import { IAction } from 'store';
 import * as Array from 'utils/array';
-import { ActionID } from 'actions/app/characters';
+import { ActionID } from 'actions/characters';
 import { ICharacterData } from 'models/character-data';
 
 // characters reducer

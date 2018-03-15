@@ -8,7 +8,7 @@ import CharacterCreation from 'components/CharacterCreation';
 
 import { IAction } from 'store';
 import { goto, gotoFn } from 'utils/nav';
-import actions from 'actions/app/characters';
+import actions from 'actions/characters';
 import { ICharacterData } from 'models/character-data';
 
 interface IViewCharacterCreateContainerProps extends RouteComponentProps<any> {

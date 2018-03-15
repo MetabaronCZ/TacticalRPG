@@ -1,8 +1,8 @@
 import { IAction } from 'store';
 import * as Array from 'utils/array';
 import { IParty, Party } from 'models/party';
-import { ActionID as PartyActionID } from 'actions/app/parties';
-import { ActionID as CharacterActionID } from 'actions/app/characters';
+import { ActionID as PartyActionID } from 'actions/parties';
+import { ActionID as CharacterActionID } from 'actions/characters';
 
 // parties reducer
 const parties = (state: IParty[] = [], action: IAction): IParty[] => {

@@ -6,8 +6,8 @@ import ViewPartyList from 'pages/ViewPartyList/template';
 
 import { gotoFn } from 'utils/nav';
 import { IParty } from 'models/party';
-import { IState, IAction } from 'store';
-import actions from 'actions/app/parties';
+import actions from 'actions/parties';
+import { IAction, IStore } from 'store';
 
 export type IOnMoveDown = (id: string) => () => void;
 export type IOnMoveUp = (id: string) => () => void;
@@ -23,8 +23,8 @@ interface IViewPartyListContainerProps extends RouteComponentProps<any> {
 	onDelete: IOnDelete;
 }
 
-const mapStateToProps = (state: IState): IStateToProps => ({
-	parties: state.app.parties
+const mapStateToProps = (state: IStore): IStateToProps => ({
+	parties: state.parties
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({

@@ -3,7 +3,7 @@ import { History } from 'history';
 import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router';
 
-import { IState } from 'store';
+import { IStore } from 'store';
 import { goto, gotoFn } from 'utils/nav';
 
 import { IParty } from 'models/party';
@@ -25,9 +25,9 @@ const exit = (history: History) => () => {
 	}
 };
 
-const mapStateToProps = (state: IState): IStateToProps => ({
-	characters: state.app.characters,
-	parties: state.app.parties
+const mapStateToProps = (state: IStore): IStateToProps => ({
+	characters: state.characters,
+	parties: state.parties
 });
 
 const ViewCharacterEditContainer: React.SFC<IStateToProps & RouteComponentProps<any>> = props => {

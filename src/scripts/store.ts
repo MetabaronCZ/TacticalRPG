@@ -2,12 +2,12 @@ import { createStore } from 'redux';
 import { Store as ReduxStore } from 'react-redux';
 
 import reducers from 'reducers';
-import { IGame, Game } from 'models/game';
-import { IApp, App } from 'models/app';
+import { IParty } from 'models/party';
+import { ICharacterData } from 'models/character-data';
 
-export interface IState {
-	app: IApp;
-	game: IGame;
+export interface IStore {
+	readonly characters: ICharacterData[];
+	readonly parties: IParty[];
 }
 
 export interface IAction {
@@ -17,7 +17,7 @@ export interface IAction {
 
 class Store {
 	public static KEY = 'game'; // storage key
-	private value: ReduxStore<IState>; // store instance
+	private value: ReduxStore<IStore>; // store instance
 
 	constructor() {
 		const saved = this.load();
@@ -25,25 +25,25 @@ class Store {
 		this.value.subscribe(() => this.save()); // save on store changes
 	}
 
-	public get(): ReduxStore<IState> {
+	public get(): ReduxStore<IStore> {
 		return this.value;
 	}
 
-	private getDefault(): IState {
+	private getDefault(): IStore {
 		return {
-			app: App.getDefault(),
-			game: Game.getDefault()
+			characters: [],
+			parties: []
 		};
 	}
 
-	private load(): IState {
+	private load(): IStore {
 		const saved = localStorage.getItem(Store.KEY) || '';
 
 		if (!saved) {
 			return this.getDefault();
 		}
 		try {
-			return JSON.parse(saved) as IState;
+			return JSON.parse(saved) as IStore;
 		} catch (err) {
 			return this.getDefault();
 		}
@@ -51,9 +51,7 @@ class Store {
 
 	private save() {
 		const state = this.value ? this.value.getState() : this.getDefault();
-		const saved = JSON.parse(JSON.stringify(state));
-		saved.game = Game.getDefault();
-		localStorage.setItem(Store.KEY, JSON.stringify(saved));
+		localStorage.setItem(Store.KEY, JSON.stringify(state));
 	}
 }
 
