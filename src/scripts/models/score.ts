@@ -3,7 +3,7 @@ export interface IScore {
 }
 
 export class Score {
-	public static init(): IScore {
+	public static getDefault(): IScore {
 		return {
 			points: 0
 		};

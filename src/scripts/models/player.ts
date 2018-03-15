@@ -16,7 +16,7 @@ export class Player {
 		return {
 			name,
 			type,
-			score: Score.init()
+			score: Score.getDefault()
 		};
 	}
 }

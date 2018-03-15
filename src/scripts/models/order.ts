@@ -7,8 +7,12 @@ export class Order {
 	// maximum size of ordered character array
 	public static maxCapacity = 20;
 
-	public static get(characters: ICharacter[], initiative: PlayerType): IOrder {
-		if (0 === characters.length) {
+	public static getDefault(): IOrder {
+		return [];
+	}
+
+	public static get(characters: ICharacter[], initiative?: PlayerType): IOrder {
+		if (0 === characters.length || !initiative) {
 			return [];
 		}
 

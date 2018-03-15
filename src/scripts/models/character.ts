@@ -16,12 +16,18 @@ export class Character {
 	public static cpLimit = 100;
 
 	public static create(data: ICharacterData, position: Position, player: PlayerType): ICharacter {
+		const baseAttrs = Attributes.create(data.primary, data.secondary);
+		const currAttrs = Attributes.create(data.primary, data.secondary);
+
+		// set small random initial CP
+		currAttrs.CP = Math.floor((Character.cpLimit / 10) * Math.random());
+
 		return {
 			data,
 			player,
 			position,
-			baseAttributes: Attributes.create(data.primary, data.secondary),
-			currAttributes: Attributes.create(data.primary, data.secondary)
+			baseAttributes: baseAttrs,
+			currAttributes: currAttrs
 		};
 	}
 }

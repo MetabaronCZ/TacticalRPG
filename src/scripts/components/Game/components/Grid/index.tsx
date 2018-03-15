@@ -1,10 +1,12 @@
 import React from 'react';
+import { Game } from 'models/game';
 import { Position } from 'models/position';
-import { IOnGridSelect, gridSize, blockSize } from 'components/Game';
+import { IOnGridSelect } from 'components/Game';
 
 interface IGridProps {
 	onSelect: IOnGridSelect;
 }
+const { blockSize, gridSize } = Game;
 
 const selectBlock = (i: number, onSelect: IOnGridSelect) => () => {
 	const pos = new Position(i % gridSize, Math.floor(i / gridSize));

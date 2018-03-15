@@ -2,30 +2,21 @@ import React from 'react';
 import { connect, Dispatch } from 'react-redux';
 
 import { IState, IAction } from 'store';
-import orderAction from 'actions/game/order';
-import playerAction from 'actions/game/players';
-import characterAction from 'actions/game/characters';
+import { default as Action } from 'actions/game';
 
-import { IGame } from 'models/game';
-import { PlayerType } from 'models/player';
+import { IParty } from 'models/party';
+import { IGame, Game } from 'models/game';
 import { Position } from 'models/position';
 import { ICharacter } from 'models/character';
-import { IParty, Party } from 'models/party';
 import { ICharacterData } from 'models/character-data';
 
 import GameUI from 'components/Game/template';
-
-const allyPlayerName = 'Player';
-const enemyPlayerName = 'Computer';
-
-export const gridSize = 12;
-export const blockSize = 64;
 
 export type IOnGridSelect = (pos: Position) => void;
 export type IOnCharacterSelect = (char: ICharacter) => void;
 
 export interface IGameUIProps {
-	store: IGame;
+	game: IGame;
 	party: IParty;
 	characters: ICharacterData[];
 	startGame: (charIds: string[], characters: ICharacterData[]) => void;
@@ -36,43 +27,20 @@ export interface IGameUIProps {
 }
 
 const mapStateToProps = (state: IState) => ({
-	store: state.game
+	game: state.game
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
 	startGame: (charIds: string[], characters: ICharacterData[]) => {
-		const party = charIds
-			.filter(id => !!id)
-			.map(id => Party.getCharacterById(id, characters));
-
-		const ally = party;
-		const enemy = Party.getRandomCharacters(party.length);
-		const initiative = (Math.random() < 0.5 ? PlayerType.ALLY : PlayerType.ENEMY);
-
-		// inititalize players
-		dispatch(playerAction.add(allyPlayerName, PlayerType.ALLY));
-		dispatch(playerAction.add(enemyPlayerName, PlayerType.ENEMY));
-
-		// initialize characters
-		party.forEach((ch, i) => {
-			dispatch(
-				characterAction.add(ally[i], PlayerType.ALLY, new Position(i + 2, gridSize - 1))
-			);
-			dispatch(
-				characterAction.add(enemy[i], PlayerType.ENEMY, new Position(i + 2, 0))
-			);
-		});
-
-		// create character order
-		dispatch(orderAction.update(initiative));
+		const game = Game.create(charIds, characters);
+		dispatch(Action.gameStart(game.ally, game.enemy, game.characters, game.initiative));
+		dispatch(Action.orderUpdate());
 	},
 	onCharacterSelect: (char: ICharacter) => {
-		// TODO: show character info or select character for action
-		console.log('CHARACTER selected', char);
+		dispatch(Action.characterSelect(char));
 	},
 	onGridSelect: (pos: Position) => {
-		// TODO: show block info or character goto block
-		console.log('GRID selected', pos);
+		dispatch(Action.gridSelect(pos));
 	}
 });
 

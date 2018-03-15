@@ -1,14 +1,17 @@
 import React from 'react';
 
+import { Game } from 'models/game';
 import { PlayerType } from 'models/player';
 import { ICharacter } from 'models/character';
 
-import { IOnCharacterSelect, blockSize } from 'components/Game';
+import { IOnCharacterSelect } from 'components/Game';
 
 interface ICharacterBlockProps {
 	char: ICharacter;
 	onSelect: IOnCharacterSelect;
 }
+
+const { blockSize } = Game;
 
 const selectCharacter = (char: ICharacter, onSelect: IOnCharacterSelect) => () => onSelect(char);
 

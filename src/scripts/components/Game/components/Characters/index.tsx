@@ -1,13 +1,17 @@
 import React from 'react';
 
+import { Game } from 'models/game';
 import { ICharacter } from 'models/character';
+
+import { IOnCharacterSelect } from 'components/Game';
 import CharacterBlock from 'components/Game/components/Character';
-import { IOnCharacterSelect, blockSize } from 'components/Game';
 
 interface ICharacters {
 	characters: ICharacter[];
 	onSelect: IOnCharacterSelect;
 }
+
+const { blockSize } = Game;
 
 const renderCharacter = (char: ICharacter, i: number, onSelect: IOnCharacterSelect) => {
 	const style: React.CSSProperties = {

@@ -9,7 +9,7 @@ import Characters from 'components/Game/components/Characters';
 import { IGameUIProps } from 'components/Game';
 
 const GameUI: React.SFC<IGameUIProps> = props => {
-	const { order, characters } = props.store;
+	const { order, characters, selected } = props.game;
 
 	return (
 		<div className="GameUI">
@@ -25,7 +25,7 @@ const GameUI: React.SFC<IGameUIProps> = props => {
 			</div>
 
 			<div className="GameUI-column GameUI-column--info">
-				<Info x="10" />
+				<Info selected={selected} />
 			</div>
 
 			<div className="GameUI-column GameUI-column--party">
