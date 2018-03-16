@@ -2,8 +2,8 @@ import uuid from 'uuid/v1';
 
 export interface IIndexable {
 	readonly id: string;
-	creationDate: number;
-	lastUpdate: number;
+	readonly creationDate: number;
+	readonly lastUpdate: number;
 }
 
 // swap state array positions

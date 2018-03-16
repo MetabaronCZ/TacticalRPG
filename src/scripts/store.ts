@@ -11,8 +11,8 @@ export interface IStore {
 }
 
 export interface IAction {
-	type: string;
-	[data: string]: any;
+	readonly type: string;
+	readonly [data: string]: any;
 }
 
 class Store {

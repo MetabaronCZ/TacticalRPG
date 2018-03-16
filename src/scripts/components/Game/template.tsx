@@ -1,27 +1,23 @@
 import React from 'react';
 
-import { IOrder } from 'models/order';
-import { Position } from 'models/position';
-import { ICharacter } from 'models/character';
-
 import Grid from 'components/Game/components/Grid';
 import Info from 'components/Game/components/Info';
 import Order from 'components/Game/components/Order';
 import Party from 'components/Game/components/Party';
 import Layers from 'components/Game/components/Layers';
 import Characters from 'components/Game/components/Characters';
-import { IOnCharacterSelect, IOnGridSelect } from 'components/Game';
+import CharacterMenu from 'components/Game/components/CharacterMenu';
+import { IOnCharacterSelect, IOnGridSelect, IGameState, IOnActionSelect } from 'components/Game';
 
 export interface IGameUIProps {
-	order: IOrder;
-	characters: ICharacter[];
-	selected?: Position;
+	game: IGameState;
 	onCharacterSelect: IOnCharacterSelect;
 	onGridSelect: IOnGridSelect;
+	onActionSelect: IOnActionSelect;
 }
 
 const GameUI: React.SFC<IGameUIProps> = props => {
-	const { order, characters, selected } = props;
+	const { order, characters, selected, characterActions, tick } = props.game;
 
 	return (
 		<div className="GameUI">
@@ -37,7 +33,14 @@ const GameUI: React.SFC<IGameUIProps> = props => {
 			</div>
 
 			<div className="GameUI-column GameUI-column--info">
-				<Info selected={selected} />
+				<Info tick={tick} selected={selected} />
+
+				{characterActions && characterActions.length && (
+					<CharacterMenu
+						actions={characterActions}
+						onSelect={props.onActionSelect}
+					/>
+				)}
 			</div>
 
 			<div className="GameUI-column GameUI-column--party">

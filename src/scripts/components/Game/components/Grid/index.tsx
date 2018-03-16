@@ -9,7 +9,7 @@ interface IGridProps {
 }
 
 const selectBlock = (i: number, onSelect: IOnGridSelect) => () => {
-	const pos = new Position(i % gridSize, Math.floor(i / gridSize));
+	const pos = Position.create(i % gridSize, Math.floor(i / gridSize));
 	onSelect(pos);
 };
 

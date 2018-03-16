@@ -6,8 +6,8 @@ import { ICharacterData, CharacterData } from 'models/character-data';
 import { IIndexable, getRandomArrayItems } from 'utils/array';
 
 export interface IParty extends IIndexable {
-	name: string;
-	characters: string[];  // list of character IDs
+	readonly name: string;
+	readonly characters: string[];  // list of character IDs
 }
 
 export class Party {

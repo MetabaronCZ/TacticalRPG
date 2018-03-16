@@ -49,6 +49,9 @@ export class Order {
 			// sort by SPD
 			act = act.sort((a, b) => b.SPD - a.SPD);
 
+			// sort by CP
+			act = act.sort((a, b) => b.CP - a.CP);
+
 			// add acting characters to ordered array
 			o = o.concat(act.map(char => char.id));
 		}

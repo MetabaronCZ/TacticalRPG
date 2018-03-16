@@ -14,9 +14,9 @@ interface IFinishers {
 }
 
 interface IGraph {
-	groups: IGroups;
-	starters: string[];
-	finishers: IFinishers;
+	readonly groups: IGroups;
+	readonly starters: string[];
+	readonly finishers: IFinishers;
 }
 
 export class RandomNameGenerator {

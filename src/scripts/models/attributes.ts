@@ -3,19 +3,19 @@ import { ArchCharID } from 'models/archetype';
 type IBaseAttrFormula = (P: number, S: number, M: number) => number;
 
 interface IBaseAttrFormulas {
-	STR: IBaseAttrFormula;
-	VIT: IBaseAttrFormula;
-	SPD: IBaseAttrFormula;
-	MOV: IBaseAttrFormula;
-	MAG: IBaseAttrFormula;
+	readonly STR: IBaseAttrFormula;
+	readonly VIT: IBaseAttrFormula;
+	readonly SPD: IBaseAttrFormula;
+	readonly MOV: IBaseAttrFormula;
+	readonly MAG: IBaseAttrFormula;
 }
 
 type ISecondaryAttrFormula = (attrs: IBaseAttributes) => number;
 
 interface ISecondaryAttrFormulas {
-	HP: ISecondaryAttrFormula;
-	AP: ISecondaryAttrFormula;
-	CP: ISecondaryAttrFormula;
+	readonly HP: ISecondaryAttrFormula;
+	readonly AP: ISecondaryAttrFormula;
+	readonly CP: ISecondaryAttrFormula;
 }
 
 const BaseAttributes: IBaseAttributes = {

@@ -1,5 +1,5 @@
 interface IIcos {
-	[name: string]: string|null;
+	readonly [name: string]: string|null;
 }
 
 const Icos: IIcos = {

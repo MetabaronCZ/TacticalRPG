@@ -26,7 +26,7 @@ const Order: React.SFC<IOrderProps> = ({ order, characters }) => {
 			{ordered.map((char, i) => (
 				<div className={`Order-item Order-item--${PlayerType.ENEMY === char.player ? 'enemy' : 'ally'}`} key={i}>
 					<div className="Order-item-inner">
-						{char.data.job} {char.data.name} <small>| SPD {char.currAttributes.SPD}</small>
+						{char.data.job} {char.data.name} <small>| SPD {char.currAttributes.SPD} | CP {char.currAttributes.CP}</small>
 					</div>
 				</div>
 			))}

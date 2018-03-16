@@ -10,10 +10,10 @@ import { ArchetypeID, ArchCharID } from 'models/archetype';
 import { IIndexable, getRandomArrayItem } from 'utils/array';
 
 export interface ICharacterData extends IIndexable {
-	name: string;
-	sex: SexID;
-	primary: ArchCharID;
-	secondary: ArchCharID;
+	readonly name: string;
+	readonly sex: SexID;
+	readonly primary: ArchCharID;
+	readonly secondary: ArchCharID;
 	job: JobID;
 	main: WeaponID;
 	off: WeaponID;

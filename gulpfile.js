@@ -22,7 +22,7 @@ const paths = {
 	},
 	scripts: {
 		src: `${pathSrc}/scripts/index.tsx`,
-		files: `${pathSrc}/scripts/**/*.tsx?`,
+		files: `${pathSrc}/scripts/**/*.(ts|tsx)`,
 		dist: `${pathDist}/scripts`
 	},
 	fonts: {

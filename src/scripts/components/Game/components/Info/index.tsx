@@ -1,13 +1,18 @@
 import React from 'react';
-import { Position } from 'models/position';
+import { IPosition } from 'models/position';
 
 interface IInfoProps {
-	selected?: Position;
+	tick: number;
+	selected?: IPosition;
 }
 
-const Info: React.SFC<IInfoProps> = ({ selected }) => (
+const Info: React.SFC<IInfoProps> = ({ tick, selected }) => (
 	<div className="GameInfo">
-		{JSON.stringify(selected, null, '\t')}
+		<h2 className="Heading">
+			TICK: {tick}
+		</h2>
+
+		{selected && `SELECTED: [${selected.x}, ${selected.y}]`}
 	</div>
 );
 
