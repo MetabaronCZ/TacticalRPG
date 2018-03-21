@@ -1,6 +1,6 @@
 import WeaponList from 'models/weapon/list';
 import { WieldID } from 'models/wield';
-import { WeaponSKillID as SKillID } from 'models/skill/weapons';
+import { WeaponSKillID as SKillID } from 'models/skill/weapon/id';
 
 export enum WeaponID {
 	NONE = 'NONE',
