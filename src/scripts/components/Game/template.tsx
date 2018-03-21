@@ -1,5 +1,10 @@
 import React from 'react';
 
+import Icos from 'data/icos';
+import { Jobs } from 'models/job';
+
+import Bar from 'components/Game/components/Bar';
+import ArchetypeIco from 'components/ArchetypeIco';
 import Grid from 'components/Game/components/Grid';
 import Info from 'components/Game/components/Info';
 import Order from 'components/Game/components/Order';
@@ -17,7 +22,9 @@ export interface IGameUIProps {
 }
 
 const GameUI: React.SFC<IGameUIProps> = props => {
-	const { order, characters, selected, characterActions, tick } = props.game;
+	const { order, characters, actors, selected, characterActions, tick } = props.game;
+	const acts = actors.map(id => characters.find(char => char.data.id === id));
+	const actor = acts[0];
 
 	return (
 		<div className="GameUI">
@@ -34,6 +41,33 @@ const GameUI: React.SFC<IGameUIProps> = props => {
 
 			<div className="GameUI-column GameUI-column--info">
 				<Info tick={tick} selected={selected} />
+
+				{actor && (
+					<div className="u-mb-2">
+						<div className="Paragraph">
+							{actor.data.name}
+							{' '}
+							<ArchetypeIco primary={actor.data.primary} secondary={actor.data.secondary} />
+							{' '}
+							{Icos[actor.data.sex.toLowerCase()]}
+							{' '}
+							{Jobs.get(actor.data.job).title}
+						</div>
+
+						<Bar
+							hp={actor.currAttributes.HP}
+							hpMax={actor.baseAttributes.HP}
+							ap={actor.currAttributes.AP}
+							apMax={actor.baseAttributes.AP}
+						/>
+
+						<br/>
+
+						<p className="Paragraph">
+							ACTORS: {acts.map(char => char && char.data.name).join(', ')}
+						</p>
+					</div>
+				)}
 
 				{characterActions && characterActions.length && (
 					<CharacterMenu

@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { IPosition } from 'models/position';
 
 interface IInfoProps {
@@ -12,7 +13,9 @@ const Info: React.SFC<IInfoProps> = ({ tick, selected }) => (
 			TICK: {tick}
 		</h2>
 
-		{selected && `SELECTED: [${selected.x}, ${selected.y}]`}
+		<p className="Paragraph">
+			{selected && `SELECTED: [${selected.x}, ${selected.y}]`}
+		</p>
 	</div>
 );
 

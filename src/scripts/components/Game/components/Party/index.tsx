@@ -26,7 +26,13 @@ const Party: React.SFC<IPartyProps> = ({ characters }) => {
 
 				return (
 					<div className="Party-item" key={i}>
-						{char.data.name} <ArchetypeIco primary={char.data.primary} secondary={char.data.secondary} /> {icos[char.data.sex.toLowerCase()]} {job.title}
+						{char.data.name}
+						{' '}
+						<ArchetypeIco primary={char.data.primary} secondary={char.data.secondary} />
+						{' '}
+						{icos[char.data.sex.toLowerCase()]}
+						{' '}
+						{job.title}
 
 						<Bar
 							hp={char.currAttributes.HP}

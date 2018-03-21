@@ -1,6 +1,6 @@
 import React from 'react';
 import { IOnActionSelect } from 'components/Game';
-import { ICharacterActions, ICharacterActionItem } from 'models/character';
+import { ICharacterActions, ICharacterActionItem, CharacterActionID } from 'models/character';
 
 interface ICharacterMenuProps {
 	actions: ICharacterActions;
@@ -12,13 +12,23 @@ const selectMenu = (action: ICharacterActionItem, onSelect: IOnActionSelect ) =>
 const CharacterMenu: React.SFC<ICharacterMenuProps> = ({ actions, onSelect }) => {
 	return (
 		<ul className="CharacterMenu">
-			{actions.map((act, i) => (
-				<li className="CharacterMenu-item" key={i}>
-					<button className="Button" onClick={selectMenu(act, onSelect)}>
-						{act.title}
-					</button>
-				</li>
-			))}
+			{actions.map((act, i) => {
+				const actionType = act.id;
+				let color = 'Yellow';
+
+				switch (actionType) {
+					case CharacterActionID.MOVE: color = 'Blue'; break;
+					case CharacterActionID.PASS: color = 'Green'; break;
+					case CharacterActionID.ATTACK: color = 'Red'; break;
+				}
+				return (
+					<li className="CharacterMenu-item" key={i}>
+						<button className={`Button Button--color${color}`} onClick={selectMenu(act, onSelect)}>
+							{act.title}
+						</button>
+					</li>
+				);
+			})}
 		</ul>
 	);
 };

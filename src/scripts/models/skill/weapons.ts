@@ -1,4 +1,5 @@
 import DataList from 'models/data-list';
+import { IWeaponData } from 'models/weapon';
 import { ISKill, SKillType, SKillRange, SKillArea, SkillUsage } from 'models/skill';
 
 export enum WeaponSKillID {
@@ -32,7 +33,35 @@ export enum WeaponSKillID {
 	SHIELD_LARGE_BLOCK = 'SHIELD_LARGE_BLOCK'
 }
 
-export const WeaponSKills = new DataList<WeaponSKillID, ISKill> ([
+class WeaponSkillList extends DataList<WeaponSKillID, ISKill> {
+	public filterAttack(main: IWeaponData, off: IWeaponData): WeaponSKillID[] {
+		const skills: WeaponSKillID[] = [];
+
+		for (const id of [...main.skills, ...off.skills]) {
+			const skill = this.get(id);
+
+			if (SKillType.ACTIVE === skill.type && SkillUsage.ATTACK === skill.usage) {
+				skills.push(id);
+			}
+		}
+		return skills;
+	}
+
+	public filterSpecial(main: IWeaponData, off: IWeaponData): WeaponSKillID[] {
+		const skills: WeaponSKillID[] = [];
+
+		for (const id of [...main.skills, ...off.skills]) {
+			const skill = this.get(id);
+
+			if (SKillType.ACTIVE === skill.type && SkillUsage.SPECIAL === skill.usage && -1 === skills.indexOf(id)) {
+				skills.push(id);
+			}
+		}
+		return skills;
+	}
+}
+
+export const WeaponSKills = new WeaponSkillList([
 	[WeaponSKillID.FISTS_ATTACK, {
 		title: 'Attack',
 		type: SKillType.ACTIVE,

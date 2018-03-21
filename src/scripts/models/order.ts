@@ -11,7 +11,7 @@ export class Order {
 		return [];
 	}
 
-	public static get(characters: ICharacter[], initiative?: PlayerType): IOrder {
+	public static get(characters: ICharacter[], initiative: PlayerType): IOrder {
 		if (0 === characters.length || !initiative) {
 			return [];
 		}

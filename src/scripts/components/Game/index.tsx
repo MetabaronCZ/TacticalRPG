@@ -41,7 +41,7 @@ export interface IGameState {
 	enemy: IPlayer;
 	order: IOrder;
 	tick: number;
-	actor: string; // character ID
+	actors: string[]; // characters ID
 	selected?: IPosition;
 	characterActions?: ICharacterActions;
 }
@@ -98,7 +98,7 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 		this.state = {
 			phase: GamePhase.IDLE,
 			tick: 0,
-			actor: '',
+			actors: [],
 			ally,
 			enemy,
 			characters,
@@ -107,7 +107,7 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 	}
 
 	private getActor() {
-		return this.state.characters.find(char => this.state.actor === char.data.id);
+		return this.state.characters.find(char => this.state.actors[0] === char.data.id);
 	}
 
 	private tick() {
@@ -123,14 +123,14 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 			},
 			() => setTimeout(() => {
 				const tick = this.state.tick + 1;
-				let characterOnMove: string = '';
+				const actors: string[] = [];
 
 				// update characters
-				let characters = this.state.characters.map((char, i) => {
+				const characters = this.state.characters.map((char, i) => {
 					const updated = Character.tick(char);
 
 					if (updated.currAttributes.CP >= Character.cpLimit) {
-						characterOnMove = char.data.id;
+						actors.push(updated.data.id);
 					}
 					return updated;
 				});
@@ -138,22 +138,23 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 				// generate order
 				const order = Order.get(characters, this.initiative);
 
-				// fix excess CP
-				if (characterOnMove) {
-					characters = characters.map(char => {
-						char.currAttributes.CP %= Character.cpLimit;
-						return char;
-					});
+				// order actors
+				let orderedActors: any[] = [];
+
+				for (const a of actors) {
+					orderedActors.push([a, order.indexOf(a)]);
 				}
+				orderedActors = orderedActors.sort((a, b) => a[1] - b[1]);
+				orderedActors = orderedActors.map(a => a[0]);
 
 				this.setState(
 					{
 						characters,
 						order,
 						tick,
-						actor: characterOnMove
+						actors: orderedActors
 					},
-					() => !characterOnMove ? this.tick() : this.act()
+					() => actors.length ? this.act() : this.tick()
 				);
 			}, tickDelay)
 		);
@@ -182,6 +183,31 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 		});
 	}
 
+	private endAct() {
+		const actors = this.state.actors.slice(0);
+		const actor = actors[0];
+		actors.shift();
+
+		const characters = this.state.characters.map(char => {
+			if (actor === char.data.id) {
+				char.currAttributes.CP %= Character.cpLimit;
+			}
+			return char;
+		});
+
+		const order = Order.get(characters, this.initiative);
+
+		return this.setState(
+			{
+				phase: GamePhase.IDLE,
+				actors,
+				characters,
+				order
+			},
+			() => actors.length ? this.act() : this.tick()
+		);
+	}
+
 	private onGridSelect(position: IPosition) {
 		this.setState({
 			...this.state,
@@ -202,12 +228,10 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 		if (!actor) {
 			return;
 		}
-
-		console.log('Action', actor.data.name, action);
+		console.log(actor.data.name, action);
 
 		if (CharacterActionID.PASS === action.id) {
-			// pass character ACT phase
-			return this.setState({ phase: GamePhase.TICK }, () => this.tick());
+			return this.endAct();
 		}
 	}
 }

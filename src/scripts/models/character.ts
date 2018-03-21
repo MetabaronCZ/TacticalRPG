@@ -1,12 +1,12 @@
 import { Weapons } from 'models/weapon';
 import { PlayerType } from 'models/player';
 import { IPosition } from 'models/position';
-import { SkillUsage, SKillType } from 'models/skill';
 import { ICharacterData } from 'models/character-data';
 import { IAttributes, Attributes } from 'models/attributes';
 import { WeaponSKills, WeaponSKillID } from 'models/skill/weapons';
 
 export enum CharacterActionID {
+	MOVE = 'MOVE',
 	ATTACK = 'ATTACK',
 	WEAPON = 'WEAPON',
 	JOB = 'JOB',
@@ -59,61 +59,39 @@ export class Character {
 		const main = Weapons.get(char.data.main);
 		const off = Weapons.get(char.data.off);
 
+		const moveAction: ICharacterActionItem = {
+			id: CharacterActionID.MOVE,
+			title: `Move (${char.currAttributes.MOV} squares)`,
+			skills: []
+		};
+
 		const attackAction: ICharacterActionItem = {
 			id: CharacterActionID.ATTACK,
 			title: `Attack (${main.title + ('NONE' !== char.data.off ? ' + ' + off.title : '')})`,
-			skills: []
+			skills: WeaponSKills.filterAttack(main, off)
 		};
 
 		const passAction: ICharacterActionItem = {
 			id: CharacterActionID.PASS,
-			title: 'Pass',
+			title: 'End turn',
 			skills: []
 		};
 
-		const specialActions: ICharacterActions = [];
+		const weaponActions: ICharacterActionItem[] = WeaponSKills.filterSpecial(main, off)
+			.map(id => {
+				const skill = WeaponSKills.get(id);
 
-		for (const id of main.skills) {
-			const skill = WeaponSKills.get(id);
-
-			if (SKillType.ACTIVE !== skill.type) {
-				continue;
-			}
-
-			if (SkillUsage.ATTACK === skill.usage) {
-				attackAction.skills.push(id);
-
-			} else if (SkillUsage.SPECIAL === skill.usage) {
-				specialActions.push({
+				return {
 					id: CharacterActionID.WEAPON,
 					title: `${skill.title} (${main.title})`,
 					skills: [id]
-				});
-			}
-		}
-
-		for (const id of off.skills) {
-			const skill = WeaponSKills.get(id);
-
-			if (SKillType.ACTIVE !== skill.type) {
-				continue;
-			}
-
-			if (SkillUsage.ATTACK === skill.usage) {
-				attackAction.skills.push(id);
-
-			} else if (SkillUsage.SPECIAL === skill.usage && char.data.main !== char.data.off) {
-				specialActions.push({
-					id: CharacterActionID.WEAPON,
-					title: `${skill.title} (${off.title})`,
-					skills: [id]
-				});
-			}
-		}
+				};
+			});
 
 		return [
+			moveAction,
 			attackAction,
-			...specialActions,
+			...weaponActions,
 			passAction
 		];
 	}
