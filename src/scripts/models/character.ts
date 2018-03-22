@@ -64,6 +64,7 @@ export class Character {
 		const main = Weapons.get(char.data.main);
 		const off = Weapons.get(char.data.off);
 		const job = Jobs.get(char.data.job);
+		const attackActionSkills = WeaponSKills.filterAttack(main, off);
 
 		const moveAction: ICharacterActionItem = {
 			id: CharacterActionID.MOVE,
@@ -73,8 +74,8 @@ export class Character {
 
 		const attackAction: ICharacterActionItem = {
 			id: CharacterActionID.ATTACK,
-			title: `Attack (${main.title + ('NONE' !== char.data.off ? ' + ' + off.title : '')})`,
-			skills: WeaponSKills.filterAttack(main, off)
+			title: `Attack (${attackActionSkills.map(([id, wpn]) => wpn.title).join(' + ')})`,
+			skills: attackActionSkills.map(([id, wpn]) => id)
 		};
 
 		const passAction: ICharacterActionItem = {

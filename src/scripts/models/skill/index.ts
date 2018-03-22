@@ -12,12 +12,14 @@ export enum SKillRange {
 }
 
 export enum SKillArea {
-	SINGLE = 'SINGLE'
+	SINGLE = 'SINGLE',
+	AOE3x3 = 'AOE3x3'
 }
 
 export enum SkillUsage {
 	ATTACK = 'ATTACK',
 	SPECIAL = 'SPECIAL',
+	ULTIMATE = 'ULTIMATE'
 }
 
 export interface ISKill {

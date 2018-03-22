@@ -12,7 +12,7 @@ FIRE		> Fireball [A]
 			> Fire storm [A][AOE]
 			> Fire aura [P] (DOT to enemy in R1)
 
-WATER		> ??? [A]
+WATER		> Splash [A]
 			> Silence [A][CC]
 			> Flood [A][AOE]
 			> Water aura [P] (small magic boost for allies in R1)
@@ -23,8 +23,8 @@ WIND		> Air blast [A]
 			> Float [S]
 			> Wind aura [P] (fields in R1 unapproachable by enemy)
 
-EARTH		> Earth spike [A]
-			> Earth dagger [A][DOT]
+EARTH		> Boulder [A]
+			> Earth spike [A][DOT]
 			> Earthquake [A][AOE]
 			> Stone skin [P] (defense up)
 
@@ -54,8 +54,9 @@ HOLY		> ??? [A]
 PSYCHIC		> Kinetic strike [A]
 			> Forget [A][AOE] (enemy cannot use Weapon and Job skills for X ticks)
 			> Psychodome [P] (enemies cannot use Weapon and Job skills in R1)
-			> Invisibility [S] (illusion)
 			> Control mind [A][CC][ULT] (turn enemy to AI driven ally for X ticks)
+
+ILLUSION	> Invisibility [S]
 
 
 ---------------------------------------------

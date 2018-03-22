@@ -11,14 +11,16 @@ import rangedSkills from 'models/skill/weapon/ranged';
 import shieldSkills from 'models/skill/weapon/shield';
 
 class WeaponSkillList extends DataList<WeaponSKillID, ISKill> {
-	public filterAttack(main: IWeaponData, off: IWeaponData): WeaponSKillID[] {
-		const skills: WeaponSKillID[] = [];
+	public filterAttack(main: IWeaponData, off: IWeaponData): Array<[WeaponSKillID, IWeaponData]> {
+		const skills: Array<[WeaponSKillID, IWeaponData]> = [];
 
-		for (const id of [...main.skills, ...off.skills]) {
-			const skill = this.get(id);
+		for (const wpn of [main, off]) {
+			for (const id of wpn.skills) {
+				const skill = this.get(id);
 
-			if (SKillType.ACTIVE === skill.type && SkillUsage.ATTACK === skill.usage) {
-				skills.push(id);
+				if (SKillType.ACTIVE === skill.type && SkillUsage.ATTACK === skill.usage) {
+					skills.push([id, wpn]);
+				}
 			}
 		}
 		return skills;
