@@ -3,6 +3,7 @@ import uuid from 'uuid/v1';
 import { WieldID } from 'models/wield';
 import { JobID, Jobs } from 'models/job';
 import { SexID, Sexes } from 'models/sex';
+import { SkillsetID } from 'models/skillset';
 import { ArmorID, Armors } from 'models/armor';
 import { WeaponID, Weapons } from 'models/weapon';
 import { ArchetypeID, ArchCharID } from 'models/archetype';
@@ -14,6 +15,7 @@ export interface ICharacterData extends IIndexable {
 	readonly sex: SexID;
 	readonly primary: ArchCharID;
 	readonly secondary: ArchCharID;
+	skillset: SkillsetID;
 	job: JobID;
 	main: WeaponID;
 	off: WeaponID;
@@ -37,13 +39,16 @@ export class CharacterData {
 			primary: ArchCharID.P,
 			secondary: ArchCharID.P,
 			job: JobID.NONE,
+			skillset: SkillsetID.NONE,
 			main: WeaponID.NONE,
 			off: WeaponID.NONE,
 			armor: ArmorID.NONE
 		};
 
-		// assign job
-		defaultCharacterData.job = Jobs.filter(defaultCharacterData).keys()[0];
+		const job = Jobs.filter(defaultCharacterData).entries()[0];
+
+		defaultCharacterData.job = job[0];
+		defaultCharacterData.skillset = job[1].skillsets[0];
 
 		return Object.assign({}, defaultCharacterData, conf);
 	}
@@ -52,12 +57,14 @@ export class CharacterData {
 	public static random(name: string, jobId: JobID): ICharacterData {
 		const sex = Sexes.getRandomKey();
 		const job = Jobs.get(jobId);
+		const skillset = getRandomArrayItem(job.skillsets);
 		let arch = job ? getRandomArrayItem(job.archetype) : ArchetypeID.PP;
 		arch = arch || ArchetypeID.PP;
 
 		const character = this.init({
 			name,
 			job: jobId,
+			skillset,
 			sex,
 			primary: arch[0] as ArchCharID,
 			secondary: arch[1] as ArchCharID

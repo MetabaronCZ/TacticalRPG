@@ -1,3 +1,4 @@
+import { ISkillset } from 'models/skillset';
 import { JobSKillID } from 'models/skill/job/id';
 import { ISKill, SKillType, SKillRange, SKillArea, SkillUsage } from 'models/skill';
 
@@ -32,5 +33,10 @@ const iceMagic: Array<[JobSKillID, ISKill]> = [
 	}]
 ];
 
-export const iceMagicSkills = iceMagic.map(([id, skill]) => id);
+export const iceMagicSkillset: ISkillset = {
+	title: 'Ice Magic',
+	description: '',
+	skills: iceMagic.map(([id, skill]) => id)
+};
+
 export default iceMagic;

@@ -1,3 +1,4 @@
+import { ISkillset } from 'models/skillset';
 import { JobSKillID } from 'models/skill/job/id';
 import { ISKill, SKillType, SKillRange, SKillArea, SkillUsage } from 'models/skill';
 
@@ -46,5 +47,10 @@ const whiteMagic: Array<[JobSKillID, ISKill]> = [
 	}]
 ];
 
-export const whiteMagicSkills = whiteMagic.map(([id, skill]) => id);
+export const whiteMagicSkillset: ISkillset = {
+	title: 'White Magic',
+	description: '',
+	skills: whiteMagic.map(([id, skill]) => id)
+};
+
 export default whiteMagic;

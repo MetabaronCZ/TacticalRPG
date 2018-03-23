@@ -1,3 +1,4 @@
+import { ISkillset } from 'models/skillset';
 import { JobSKillID } from 'models/skill/job/id';
 import { ISKill, SKillType, SKillRange, SKillArea, SkillUsage } from 'models/skill';
 
@@ -25,5 +26,10 @@ const psychokinesis: Array<[JobSKillID, ISKill]> = [
 	}]
 ];
 
-export const psychokinesisSkills = psychokinesis.map(([id, skill]) => id);
+export const psychokinesisSkillset: ISkillset = {
+	title: 'Psychokinesis',
+	description: '',
+	skills: psychokinesis.map(([id, skill]) => id)
+};
+
 export default psychokinesis;

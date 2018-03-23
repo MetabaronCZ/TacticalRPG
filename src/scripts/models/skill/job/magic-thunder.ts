@@ -1,3 +1,4 @@
+import { ISkillset } from 'models/skillset';
 import { JobSKillID } from 'models/skill/job/id';
 import { ISKill, SKillType, SKillRange, SKillArea, SkillUsage } from 'models/skill';
 
@@ -32,5 +33,10 @@ const thunderMagic: Array<[JobSKillID, ISKill]> = [
 	}]
 ];
 
-export const thunderMagicSkills = thunderMagic.map(([id, skill]) => id);
+export const thunderMagicSkillset: ISkillset = {
+	title: 'Thunder Magic',
+	description: '',
+	skills: thunderMagic.map(([id, skill]) => id)
+};
+
 export default thunderMagic;

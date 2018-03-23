@@ -1,7 +1,8 @@
+import { ISkillset } from 'models/skillset';
 import { JobSKillID } from 'models/skill/job/id';
 import { ISKill, SKillType, SKillRange, SKillArea, SkillUsage } from 'models/skill';
 
-const flameBlade: Array<[JobSKillID, ISKill]> = [
+const flameblade: Array<[JobSKillID, ISKill]> = [
 	[JobSKillID.FLAMEBLADE_FLAMESTRIKE, {
 		title: 'Flamestrike',
 		type: SKillType.ACTIVE,
@@ -18,5 +19,10 @@ const flameBlade: Array<[JobSKillID, ISKill]> = [
 	}]
 ];
 
-export const flameBladeSkills = flameBlade.map(([id, skill]) => id);
-export default flameBlade;
+export const flamebladeSkillset: ISkillset = {
+	title: 'Flameblade',
+	description: '',
+	skills: flameblade.map(([id, skill]) => id)
+};
+
+export default flameblade;

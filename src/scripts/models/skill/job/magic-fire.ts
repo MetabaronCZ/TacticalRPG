@@ -1,3 +1,4 @@
+import { ISkillset } from 'models/skillset';
 import { JobSKillID } from 'models/skill/job/id';
 import { ISKill, SKillType, SKillRange, SKillArea, SkillUsage } from 'models/skill';
 
@@ -32,5 +33,10 @@ const fireMagic: Array<[JobSKillID, ISKill]> = [
 	}]
 ];
 
-export const fireMagicSkills = fireMagic.map(([id, skill]) => id);
+export const fireMagicSkillset: ISkillset = {
+	title: 'Fire Magic',
+	description: '',
+	skills: fireMagic.map(([id, skill]) => id)
+};
+
 export default fireMagic;

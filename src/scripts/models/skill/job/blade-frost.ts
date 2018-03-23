@@ -1,7 +1,8 @@
+import { ISkillset } from 'models/skillset';
 import { JobSKillID } from 'models/skill/job/id';
 import { ISKill, SKillType, SKillRange, SKillArea, SkillUsage } from 'models/skill';
 
-const frostBlade: Array<[JobSKillID, ISKill]> = [
+const frostblade: Array<[JobSKillID, ISKill]> = [
 	[JobSKillID.FROSTBLADE_FROSTSTRIKE, {
 		title: 'Froststrike',
 		type: SKillType.ACTIVE,
@@ -18,5 +19,10 @@ const frostBlade: Array<[JobSKillID, ISKill]> = [
 	}]
 ];
 
-export const frostBladeSkills = frostBlade.map(([id, skill]) => id);
-export default frostBlade;
+export const frostbladeSkillset: ISkillset = {
+	title: 'Frostblade',
+	description: '',
+	skills: frostblade.map(([id, skill]) => id)
+};
+
+export default frostblade;

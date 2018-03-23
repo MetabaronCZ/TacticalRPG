@@ -1,3 +1,4 @@
+import { ISkillset } from 'models/skillset';
 import { JobSKillID } from 'models/skill/job/id';
 import { ISKill, SKillType, SKillRange, SKillArea, SkillUsage } from 'models/skill';
 
@@ -11,5 +12,10 @@ const lycanthropy: Array<[JobSKillID, ISKill]> = [
 	}],
 ];
 
-export const lycanthropySkills = lycanthropy.map(([id, skill]) => id);
+export const lycanthropySkillset: ISkillset = {
+	title: 'Lycanthropy',
+	description: '',
+	skills: lycanthropy.map(([id, skill]) => id)
+};
+
 export default lycanthropy;

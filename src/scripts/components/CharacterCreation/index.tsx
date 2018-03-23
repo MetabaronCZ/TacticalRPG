@@ -89,8 +89,8 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 			});
 		}
 
-		// reset character Main hand weapon and armor on job change
 		if (next.job !== curr.job) {
+			// reset character Main hand weapon and armor on job change
 			const newArmor = (Armors.filter(next).has(curr.armor) ? curr.armor : ArmorID.NONE);
 			const newMain = (Weapons.filter(next, WieldID.MAIN).has(curr.main) ? curr.main : WeaponID.NONE);
 

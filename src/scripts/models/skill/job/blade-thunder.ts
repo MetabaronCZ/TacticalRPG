@@ -1,7 +1,8 @@
+import { ISkillset } from 'models/skillset';
 import { JobSKillID } from 'models/skill/job/id';
 import { ISKill, SKillType, SKillRange, SKillArea, SkillUsage } from 'models/skill';
 
-const thunderBlade: Array<[JobSKillID, ISKill]> = [
+const thunderblade: Array<[JobSKillID, ISKill]> = [
 	[JobSKillID.THUNDERBLADE_THUNDERSTRIKE, {
 		title: 'Thunderstrike',
 		type: SKillType.ACTIVE,
@@ -18,5 +19,10 @@ const thunderBlade: Array<[JobSKillID, ISKill]> = [
 	}]
 ];
 
-export const thunderBladeSkills = thunderBlade.map(([id, skill]) => id);
-export default thunderBlade;
+export const thunderbladeSkillset: ISkillset = {
+	title: 'Thunderblade',
+	description: '',
+	skills: thunderblade.map(([id, skill]) => id)
+};
+
+export default thunderblade;

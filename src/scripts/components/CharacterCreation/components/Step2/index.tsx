@@ -6,6 +6,7 @@ import FormSelectItem from 'components/FormSelectItem';
 import ArchetypeSelection from 'components/ArchetypeSelection';
 
 import { Jobs } from 'models/job';
+import { Skillsets } from 'models/skillset';
 import { ICharacterData } from 'models/character-data';
 
 interface IStep2Props {
@@ -15,6 +16,12 @@ interface IStep2Props {
 
 const Step2: React.SFC<IStep2Props> = ({ fields, onChange }) => {
 	const job = Jobs.get(fields.job);
+	const skillset = Skillsets.get(fields.skillset);
+
+	const skillsets = job.skillsets.map(id => ({
+		id,
+		set: Skillsets.get(id)
+	}));
 
 	return (
 		<div>
@@ -25,6 +32,16 @@ const Step2: React.SFC<IStep2Props> = ({ fields, onChange }) => {
 					{Jobs.filter(fields).map((id, value, i) => (
 						<FormSelectItem value={id} key={i}>
 							{value.title}
+						</FormSelectItem>
+					))}
+				</FormSelect>
+			</FormField>
+
+			<FormField fieldId="f-skillset" label="Skillset" info={skillset ? skillset.description : undefined}>
+				<FormSelect id="f-skillset" name="skillset" value={fields.skillset} disabled={skillsets.length < 2} onChange={onChange}>
+					{skillsets.map(({ id, set }, i) => (
+						<FormSelectItem value={id} key={i}>
+							{set.title}
 						</FormSelectItem>
 					))}
 				</FormSelect>

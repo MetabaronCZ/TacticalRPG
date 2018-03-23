@@ -1,7 +1,8 @@
+import { ISkillset } from 'models/skillset';
 import { JobSKillID } from 'models/skill/job/id';
 import { ISKill, SKillType, SKillRange, SKillArea, SkillUsage } from 'models/skill';
 
-const stoneBlade: Array<[JobSKillID, ISKill]> = [
+const stoneblade: Array<[JobSKillID, ISKill]> = [
 	[JobSKillID.STONEBLADE_EARTHSTRIKE, {
 		title: 'Earthstrike',
 		type: SKillType.ACTIVE,
@@ -18,5 +19,10 @@ const stoneBlade: Array<[JobSKillID, ISKill]> = [
 	}]
 ];
 
-export const stoneBladeSkills = stoneBlade.map(([id, skill]) => id);
-export default stoneBlade;
+export const stonebladeSkillset: ISkillset = {
+	title: 'Stoneblade',
+	description: '',
+	skills: stoneblade.map(([id, skill]) => id)
+};
+
+export default stoneblade;

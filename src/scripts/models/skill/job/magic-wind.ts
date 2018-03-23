@@ -1,3 +1,4 @@
+import { ISkillset } from 'models/skillset';
 import { JobSKillID } from 'models/skill/job/id';
 import { ISKill, SKillType, SKillRange, SKillArea, SkillUsage } from 'models/skill';
 
@@ -39,5 +40,10 @@ const windMagic: Array<[JobSKillID, ISKill]> = [
 	}]
 ];
 
-export const windMagicSkills = windMagic.map(([id, skill]) => id);
+export const windMagicSkillset: ISkillset = {
+	title: 'Wind Magic',
+	description: '',
+	skills: windMagic.map(([id, skill]) => id)
+};
+
 export default windMagic;

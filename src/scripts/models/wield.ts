@@ -11,7 +11,7 @@ export interface IWieldData {
 	readonly title: string;
 }
 
-export const Wields = new  DataList<WieldID, IWieldData>([
+export const Wields = new DataList<WieldID, IWieldData>([
 	[WieldID.MAIN, {
 		title: 'Main hand'
 	}],

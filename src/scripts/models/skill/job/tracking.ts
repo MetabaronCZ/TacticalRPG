@@ -1,3 +1,4 @@
+import { ISkillset } from 'models/skillset';
 import { JobSKillID } from 'models/skill/job/id';
 import { ISKill, SKillType, SKillRange, SKillArea, SkillUsage } from 'models/skill';
 
@@ -11,5 +12,10 @@ const tracking: Array<[JobSKillID, ISKill]> = [
 	}],
 ];
 
-export const trackingSkills = tracking.map(([id, skill]) => id);
+export const trackingSkillset: ISkillset = {
+	title: 'Tracking',
+	description: '',
+	skills: tracking.map(([id, skill]) => id)
+};
+
 export default tracking;

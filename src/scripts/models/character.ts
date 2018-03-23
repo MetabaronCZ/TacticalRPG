@@ -1,4 +1,3 @@
-import { Jobs } from 'models/job';
 import { Weapons } from 'models/weapon';
 import { PlayerType } from 'models/player';
 import { IPosition } from 'models/position';
@@ -9,6 +8,8 @@ import { WeaponSKillID } from 'models/skill/weapon/id';
 import { WeaponSKills } from 'models/skill/weapon';
 import { JobSKillID } from 'models/skill/job/id';
 import { JobSKills } from 'models/skill/job';
+import { Skillsets } from 'models/skillset';
+import { SKillType } from './skill';
 
 export enum CharacterActionID {
 	MOVE = 'MOVE',
@@ -63,7 +64,7 @@ export class Character {
 	public static getActions(char: ICharacter): ICharacterActions {
 		const main = Weapons.get(char.data.main);
 		const off = Weapons.get(char.data.off);
-		const job = Jobs.get(char.data.job);
+		const skillset = Skillsets.get(char.data.skillset);
 		const attackActionSkills = WeaponSKills.filterAttack(main, off);
 
 		const moveAction: ICharacterActionItem = {
@@ -95,15 +96,14 @@ export class Character {
 				};
 			});
 
-		const jobActions: ICharacterActionItem[] = job.skills.map(id => {
-			const skill = JobSKills.get(id);
-
-			return {
-				id: CharacterActionID.JOB,
-				title: `${skill.title} (${char.data.job})`,
-				skills: [id]
-			};
-		});
+		const jobActions: ICharacterActionItem[] = skillset.skills
+			.map(id => ({ id, skill: JobSKills.get(id) }))
+			.filter(({ skill }) => SKillType.ACTIVE === skill.type)
+			.map(({ id, skill }) => ({
+					id: CharacterActionID.JOB,
+					title: `${skill.title} (${char.data.job})`,
+					skills: [id]
+			}));
 
 		return [
 			moveAction,

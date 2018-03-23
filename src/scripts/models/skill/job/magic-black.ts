@@ -1,3 +1,4 @@
+import { ISkillset } from 'models/skillset';
 import { JobSKillID } from 'models/skill/job/id';
 import { ISKill, SKillType, SKillRange, SKillArea, SkillUsage } from 'models/skill';
 
@@ -18,5 +19,10 @@ const blackMagic: Array<[JobSKillID, ISKill]> = [
 	}],
 ];
 
-export const blackMagicSkills = blackMagic.map(([id, skill]) => id);
+export const blackMagicSkillset: ISkillset = {
+	title: 'Black Magic',
+	description: '',
+	skills: blackMagic.map(([id, skill]) => id)
+};
+
 export default blackMagic;

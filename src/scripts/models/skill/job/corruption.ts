@@ -1,3 +1,4 @@
+import { ISkillset } from 'models/skillset';
 import { JobSKillID } from 'models/skill/job/id';
 import { ISKill, SKillType, SKillRange, SKillArea, SkillUsage } from 'models/skill';
 
@@ -11,5 +12,10 @@ const corruption: Array<[JobSKillID, ISKill]> = [
 	}],
 ];
 
-export const corruptionSkills = corruption.map(([id, skill]) => id);
+export const corruptionSkillset: ISkillset = {
+	title: 'Corruption',
+	description: '',
+	skills: corruption.map(([id, skill]) => id)
+};
+
 export default corruption;

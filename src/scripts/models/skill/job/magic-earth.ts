@@ -1,3 +1,4 @@
+import { ISkillset } from 'models/skillset';
 import { JobSKillID } from 'models/skill/job/id';
 import { ISKill, SKillType, SKillRange, SKillArea, SkillUsage } from 'models/skill';
 
@@ -32,5 +33,10 @@ const earthMagic: Array<[JobSKillID, ISKill]> = [
 	}]
 ];
 
-export const earthMagicSkills = earthMagic.map(([id, skill]) => id);
+export const earthMagicSkillset: ISkillset = {
+	title: 'Earth Magic',
+	description: '',
+	skills: earthMagic.map(([id, skill]) => id)
+};
+
 export default earthMagic;

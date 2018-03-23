@@ -228,7 +228,7 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 		if (!actor) {
 			return;
 		}
-		console.log(actor.data.name, action);
+		console.log(actor.data.name, action.id, action.skills);
 
 		if (CharacterActionID.PASS === action.id) {
 			return this.endAct();

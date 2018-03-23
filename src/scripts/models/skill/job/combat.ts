@@ -1,3 +1,4 @@
+import { ISkillset } from 'models/skillset';
 import { JobSKillID } from 'models/skill/job/id';
 import { ISKill, SKillType, SKillRange, SKillArea, SkillUsage } from 'models/skill';
 
@@ -11,5 +12,10 @@ const combat: Array<[JobSKillID, ISKill]> = [
 	}],
 ];
 
-export const combatSkills = combat.map(([id, skill]) => id);
+export const combatSkillset: ISkillset = {
+	title: 'Combat',
+	description: '',
+	skills: combat.map(([id, skill]) => id)
+};
+
 export default combat;

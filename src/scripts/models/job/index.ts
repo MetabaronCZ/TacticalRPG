@@ -1,29 +1,6 @@
-import { ArchetypeID as ArchID } from 'models/archetype';
-import { JobSKillID } from 'models/skill/job/id';
 import JobList from 'models/job/list';
-
-import { aimSkills } from 'models/skill/job/aim';
-import { blitzSkills } from 'models/skill/job/blitz';
-import { combatSkills } from 'models/skill/job/combat';
-import { alchemySkills } from 'models/skill/job/alchemy';
-import { programSkills } from 'models/skill/job/program';
-import { divinitySkills } from 'models/skill/job/divinity';
-import { illusionSkills } from 'models/skill/job/illusion';
-import { trackingSkills } from 'models/skill/job/tracking';
-import { supremacySkills } from 'models/skill/job/supremacy';
-import { vampirismSkills } from 'models/skill/job/vampirism';
-import { mysticArtSkills } from 'models/skill/job/mystic-art';
-import { berserkingSkills } from 'models/skill/job/berserking';
-import { corruptionSkills } from 'models/skill/job/corruption';
-import { knighthoodSkills } from 'models/skill/job/knighthood';
-import { blackMagicSkills } from 'models/skill/job/magic-black';
-import { whiteMagicSkills } from 'models/skill/job/magic-white';
-import { lycanthropySkills } from 'models/skill/job/lycanthropy';
-import { martiaArtsSkills } from 'models/skill/job/martial-arts';
-import { performanceSkills } from 'models/skill/job/performance';
-import { assassinationSkills } from 'models/skill/job/assassination';
-import { psychokinesisSkills } from 'models/skill/job/psychokinesis';
-import { weaponMasterySkills } from 'models/skill/job/weapon-mastery';
+import { SkillsetID } from 'models/skillset';
+import { ArchetypeID as ArchID } from 'models/archetype';
 
 export enum JobID {
 	NONE = 'NONE',
@@ -39,7 +16,7 @@ export interface IJobData {
 	readonly title: string;
 	readonly description: string;
 	readonly archetype: ArchID[];
-	readonly skills: JobSKillID[];
+	readonly skillsets: SkillsetID[];
 }
 
 export const Jobs = new JobList([
@@ -47,150 +24,164 @@ export const Jobs = new JobList([
 		title: 'none',
 		description: 'No job selected',
 		archetype: [],
-		skills: []
+		skillsets: [SkillsetID.NONE]
 	}],
 	[JobID.BAR, {
 		title: 'Barbarian',
 		description: 'A warrior with extreme strength',
 		archetype: [ArchID.PP],
-		skills: berserkingSkills
+		skillsets: [SkillsetID.BERSERKING]
 	}],
 	[JobID.KNG, {
 		title: 'Knight',
 		description: 'A warrior with high endurance',
 		archetype: [ArchID.PP],
-		skills: knighthoodSkills
+		skillsets: [SkillsetID.KNIGHTHOOD]
 	}],
 	[JobID.DRG, {
 		title: 'Dragonkin',
 		description: '???',
 		archetype: [ArchID.PP],
-		skills: supremacySkills
+		skillsets: [SkillsetID.SUPREMACY]
 	}],
 	[JobID.CYB, {
 		title: 'Cyborg',
 		description: '???',
 		archetype: [ArchID.PP],
-		skills: programSkills
+		skillsets: [SkillsetID.PROGRAM]
 	}],
 	[JobID.WAR, {
 		title: 'Warrior',
 		description: 'A master of weapons',
 		archetype: [ArchID.PS, ArchID.SP],
-		skills: weaponMasterySkills
+		skillsets: [SkillsetID.WEAPON_MASTERY]
 	}],
 	[JobID.BRW, {
 		title: 'Brawler',
 		description: '???',
 		archetype: [ArchID.PS, ArchID.SP],
-		skills: combatSkills
+		skillsets: [SkillsetID.COMBAT]
 	}],
 	[JobID.HUN, {
 		title: 'Hunter',
 		description: '???',
 		archetype: [ArchID.PS, ArchID.SP],
-		skills: trackingSkills
+		skillsets: [SkillsetID.TRACKING]
 	}],
 	[JobID.WER, {
 		title: 'Werewolf',
 		description: 'A feral warrior',
 		archetype: [ArchID.PS, ArchID.SP],
-		skills: lycanthropySkills
+		skillsets: [SkillsetID.LYCANTHROPY]
 	}],
 	[JobID.BLD, {
 		title: 'Blademaster',
 		description: '???',
 		archetype: [ArchID.PM, ArchID.MP],
-		skills: mysticArtSkills
+		skillsets: [SkillsetID.MYSTIC_ART]
 	}],
 	[JobID.PAL, {
 		title: 'Paladin',
 		description: 'A holy guardian',
 		archetype: [ArchID.PM, ArchID.MP],
-		skills: divinitySkills
+		skillsets: [SkillsetID.DIVINITY]
 	}],
 	[JobID.DRK, {
 		title: 'Dark Knight',
 		description: 'A knight of darkness',
 		archetype: [ArchID.PM, ArchID.MP],
-		skills: corruptionSkills
+		skillsets: [SkillsetID.CORRUPTION]
 	}],
 	[JobID.SPL, {
 		title: 'Spellblade',
 		description: '???',
 		archetype: [ArchID.PM, ArchID.MP],
-		skills: []
+		skillsets: [
+			SkillsetID.FLAMEBLADE,
+			SkillsetID.WATER_MAGIC,
+			SkillsetID.AIRBLADE,
+			SkillsetID.STONEBLADE,
+			SkillsetID.FROSTBLADE,
+			SkillsetID.THUNDERBLADE
+		]
 	}],
 	[JobID.ROG, {
 		title: 'Rogue',
 		description: '???',
 		archetype: [ArchID.SS],
-		skills: blitzSkills
+		skillsets: [SkillsetID.BLITZ]
 	}],
 	[JobID.RAN, {
 		title: 'Ranger',
 		description: 'A ranged weapon specialist',
 		archetype: [ArchID.SS],
-		skills: aimSkills
+		skillsets: [SkillsetID.AIM]
 	}],
 	[JobID.ENT, {
 		title: 'Entertainer',
 		description: '???',
 		archetype: [ArchID.SS],
-		skills: performanceSkills
+		skillsets: [SkillsetID.PERFORMANCE]
 	}],
 	[JobID.VMP, {
 		title: 'Vampire',
 		description: '???',
 		archetype: [ArchID.SS],
-		skills: vampirismSkills
+		skillsets: [SkillsetID.VAMPIRISM]
 	}],
 	[JobID.TRI, {
 		title: 'Trickster',
 		description: '???',
 		archetype: [ArchID.SM, ArchID.MS],
-		skills: illusionSkills
+		skillsets: [SkillsetID.ILLUSION]
 	}],
 	[JobID.MNK, {
 		title: 'Monk',
 		description: '???',
 		archetype: [ArchID.SM, ArchID.MS],
-		skills: martiaArtsSkills
+		skillsets: [SkillsetID.MARTIAL_ARTS]
 	}],
 	[JobID.ASA, {
 		title: 'Assassin',
 		description: 'A fighter of shadows',
 		archetype: [ArchID.SM, ArchID.MS],
-		skills: assassinationSkills
+		skillsets: [SkillsetID.ASSASSINATION]
 	}],
 	[JobID.ALC, {
 		title: 'Alchemist',
 		description: '???',
 		archetype: [ArchID.SM, ArchID.MS],
-		skills: alchemySkills
+		skillsets: [SkillsetID.ALCHEMY]
 	}],
 	[JobID.PSY, {
 		title: 'Psyker',
 		description: 'A fighter with strong mental abilites',
 		archetype: [ArchID.MM],
-		skills: psychokinesisSkills
+		skillsets: [SkillsetID.PSYCHOKINESIS]
 	}],
 	[JobID.PRI, {
 		title: 'Priest',
 		description: 'A holy magician',
 		archetype: [ArchID.MM],
-		skills: whiteMagicSkills
+		skillsets: [SkillsetID.WHITE_MAGIC]
 	}],
 	[JobID.SOR, {
 		title: 'Sorcerer',
 		description: 'A dark magician',
 		archetype: [ArchID.MM],
-		skills: blackMagicSkills
+		skillsets: [SkillsetID.BLACK_MAGIC]
 	}],
 	[JobID.ELM, {
 		title: 'Elemental Mage',
 		description: 'A master of elemental magic',
 		archetype: [ArchID.MM],
-		skills: []
+		skillsets: [
+			SkillsetID.FIRE_MAGIC,
+			SkillsetID.WATER_MAGIC,
+			SkillsetID.WIND_MAGIC,
+			SkillsetID.EARTH_MAGIC,
+			SkillsetID.ICE_MAGIC,
+			SkillsetID.THUNDER_MAGIC
+		]
 	}]
 ]);

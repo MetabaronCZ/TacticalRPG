@@ -1,3 +1,4 @@
+import { ISkillset } from 'models/skillset';
 import { JobSKillID } from 'models/skill/job/id';
 import { ISKill, SKillType, SKillRange, SKillArea, SkillUsage } from 'models/skill';
 
@@ -11,5 +12,10 @@ const mysticArt: Array<[JobSKillID, ISKill]> = [
 	}],
 ];
 
-export const mysticArtSkills = mysticArt.map(([id, skill]) => id);
+export const mysticArtSkillset: ISkillset = {
+	title: 'Mystic Arts',
+	description: '',
+	skills: mysticArt.map(([id, skill]) => id)
+};
+
 export default mysticArt;
