@@ -90,6 +90,10 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 		}
 
 		if (next.job !== curr.job) {
+			// assign skillset
+			const newJob = Jobs.get(next.job);
+			const newSkillset = newJob.skillsets[0];
+
 			// reset character Main hand weapon and armor on job change
 			const newArmor = (Armors.filter(next).has(curr.armor) ? curr.armor : ArmorID.NONE);
 			const newMain = (Weapons.filter(next, WieldID.MAIN).has(curr.main) ? curr.main : WeaponID.NONE);
@@ -104,7 +108,8 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 					...next,
 					main: newMain,
 					off: newOff,
-					armor: newArmor
+					armor: newArmor,
+					skillset: newSkillset
 				}
 			});
 		}
