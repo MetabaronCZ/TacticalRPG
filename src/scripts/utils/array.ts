@@ -78,3 +78,16 @@ export const getRandomArrayItems = <T>(arr: T[], count: number = 1): T[] => {
 export const getRandomArrayItem = <T>(arr: T[]): T => {
 	return getRandomArrayItems(arr, 1)[0];
 };
+
+export const randomizeArray = <T>(arr: T[]): T[] => {
+	const randomized: T[] = [];
+	const copy = arr.slice(0);
+
+	while (copy.length) {
+		const item = getRandomArrayItem(copy);
+		const i = copy.indexOf(item);
+		randomized.push(item);
+		copy.splice(i, 1);
+	}
+	return randomized;
+};

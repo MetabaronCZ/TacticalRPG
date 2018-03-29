@@ -1,20 +1,23 @@
 import React from 'react';
 
+import Animation from 'models/animation';
 import { IParty, Party } from 'models/party';
 import { Order, IOrder } from 'models/order';
-import { Position, IPosition } from 'models/position';
 import { ICharacterData } from 'models/character-data';
+import { Position, IPosition } from 'models/position';
 import { Player, PlayerType, IPlayer } from 'models/player';
-import { ICharacter, Character, ICharacterActions, CharacterActionID, ICharacterActionItem } from 'models/character';
+import { getShortestPath, getMovableTiles, IPath } from 'models/pathfinding';
+import { ICharacter, Character, IActions, ActionID, IActionItem } from 'models/character';
 
 import GameUI from 'components/Game/template';
+
+const tickDelay = 20;
+const moveAnimDuration = 150;
 
 export const gridSize = 12;
 export const blockSize = 64;
 export const allyPlayerName = 'Player';
 export const enemyPlayerName = 'Computer';
-
-const tickDelay = 50;
 
 export enum GamePhase {
 	IDLE = 'IDLE',
@@ -23,7 +26,7 @@ export enum GamePhase {
 	REACT = 'REACT'
 }
 
-export type IOnActionSelect = (action: ICharacterActionItem) => void;
+export type IOnActionSelect = (action: IActionItem) => void;
 export type IOnCharacterSelect = (char: ICharacter) => void;
 export type IOnGridSelect = (pos: IPosition) => void;
 
@@ -36,14 +39,20 @@ interface IGameUIContainerProps {
 
 export interface IGameState {
 	phase: GamePhase;
+	act: {
+		action?: IActionItem;
+		selected?: IPosition;
+		hasMoved: boolean;
+		path?: IPath;
+	};
 	characters: ICharacter[];
 	ally: IPlayer;
 	enemy: IPlayer;
 	order: IOrder;
 	tick: number;
-	actors: string[]; // characters ID
-	selected?: IPosition;
-	characterActions?: ICharacterActions;
+	actors: string[]; // character ID array
+	actionMenu?: IActions;
+	movable?: IPosition[]; // array of position actor can move to
 }
 
 class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState> {
@@ -102,7 +111,11 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 			ally,
 			enemy,
 			characters,
-			order
+			order,
+			act: {
+				action: undefined,
+				hasMoved: false
+			}
 		};
 	}
 
@@ -162,7 +175,7 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 
 	private act() {
 		const actor = this.getActor();
-		let actions: ICharacterActions = [];
+		let actions: IActions = [];
 
 		if (!actor) {
 			return;
@@ -170,20 +183,29 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 
 		if (PlayerType.ENEMY === actor.player) {
 			// TODO - AI act
-			actions = Character.getActions(actor);
+			actions = Character.getActions(actor, this.state.act.hasMoved);
 
 		} else {
 			// character actions
-			actions = Character.getActions(actor);
+			actions = Character.getActions(actor, this.state.act.hasMoved);
 		}
 
 		this.setState({
 			phase: GamePhase.ACT,
-			characterActions: actions
+			act: {
+				...this.state.act,
+				action: undefined,
+				selected: undefined,
+				path: undefined
+			},
+			actionMenu: actions,
+			movable: undefined
 		});
 	}
 
 	private endAct() {
+		console.log((() => { const a = this.getActor(); return a ? a.data.name : ''; })(), '> END ACT');
+
 		const actors = this.state.actors.slice(0);
 		const actor = actors[0];
 		actors.shift();
@@ -200,43 +222,189 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 		return this.setState(
 			{
 				phase: GamePhase.IDLE,
+				act: {
+					action: undefined,
+					hasMoved: false,
+					selected: undefined,
+					path: undefined
+				},
 				actors,
 				characters,
-				order
+				order,
+				movable: undefined
 			},
 			() => actors.length ? this.act() : this.tick()
 		);
 	}
 
-	private onGridSelect(position: IPosition) {
-		this.setState({
-			...this.state,
-			selected: position
-		});
-	}
-
-	private onCharacterSelect(character: ICharacter) {
-		this.setState({
-			...this.state,
-			selected: character.position
-		});
-	}
-
-	private onActionSelect(action: ICharacterActionItem) {
+	private startMove(action: IActionItem) {
 		const actor = this.getActor();
 
 		if (!actor) {
 			return;
 		}
-		console.log(actor.data.name, action.id, action.skills);
+		const obstacles = this.state.characters.map(char => char.position);
+		const range = Math.min(actor.currAttributes.MOV, actor.currAttributes.AP);
+		const movable = getMovableTiles(actor.position, obstacles, range, gridSize);
 
+		this.setState({
+			act: {
+				...this.state.act,
+				action,
+			},
+			movable,
+			actionMenu: Character.getMoveActions()
+		});
+	}
+
+	private move() {
+		const actor = this.getActor();
+		const path = this.state.act.path;
+
+		if (!actor) {
+			throw new Error('Could not MOVE - actor does not exist');
+		}
+
+		if (!path) {
+			return this.endMove();
+		}
+		const timing = Array(path.length).fill(moveAnimDuration);
+		console.log(actor.data.name, '> MOVE');
+
+		this.setState(
+			{
+				actionMenu: undefined
+			},
+			() => {
+				// animate movement
+				const moveAnim = new Animation(timing, step => {
+					const tile = path[step.number - 1];
+
+					// change character position
+					this.setState(
+						{
+							characters: this.state.characters.map(char => {
+								if (char.data.id === actor.data.id) {
+									return {
+										...actor,
+										position: tile,
+										currAttributes: {
+											...char.currAttributes,
+											AP: (char.currAttributes.AP - tile.cost)
+										}
+									};
+								}
+								return char;
+							})
+						},
+						() => {
+							// return to main menu
+							if (step.isLast) {
+								this.endMove();
+							}
+						}
+					);
+				});
+
+				moveAnim.start();
+			}
+		);
+	}
+
+	private endMove() {
+		this.setState(
+			{
+				act: {
+					...this.state.act,
+					hasMoved: true
+				},
+				movable: undefined
+			},
+			() => this.act()
+		);
+	}
+
+	private confirm(action?: IActionItem) {
+		if (!action) {
+			throw new Error('Confirming non-existent action');
+		}
 		switch (action.id) {
-			case CharacterActionID.MOVE:
-			case CharacterActionID.ATTACK:
-			case CharacterActionID.WEAPON:
-			case CharacterActionID.JOB:
-			case CharacterActionID.PASS:
+			case ActionID.MOVE:
+				return this.move();
+
+			default:
+				return this.act();
+		}
+	}
+
+	private selectMovePosition(position: IPosition) {
+		const { movable, characters } = this.state;
+		const actor = this.getActor();
+
+		if (!actor || !Position.isContained(position, movable)) {
+			return;
+		}
+		const obstacles = characters.map(char => char.position);
+		const path: IPath = getShortestPath(actor.position, position, obstacles, gridSize);
+
+		this.setState({
+			act: {
+				...this.state.act,
+				selected: position,
+				path
+			},
+			actionMenu: Character.getMoveActions(path)
+		});
+	}
+
+	private onGridSelect(position: IPosition) {
+		const action = this.state.act.action;
+
+		if (!action) {
+			return;
+		}
+		switch (action.id) {
+			case ActionID.MOVE:
+				return this.selectMovePosition(position);
+		}
+	}
+
+	private onCharacterSelect(character: ICharacter) {
+		const action = this.state.act.action;
+
+		if (!action) {
+			return;
+		}
+		switch (action.id) {
+			case ActionID.MOVE:
+				return this.selectMovePosition(character.position);
+		}
+	}
+
+	private onActionSelect(action: IActionItem) {
+		const actor = this.getActor();
+
+		if (!actor) {
+			return;
+		}
+		switch (action.id) {
+			case ActionID.MOVE:
+				return this.startMove(action);
+
+			case ActionID.ATTACK:
+			case ActionID.WEAPON:
+			case ActionID.JOB:
+				console.log(`${actor.data.name} > ${action.id} (${action.skills})`);
+				return;
+
+			case ActionID.PASS:
 				return this.endAct();
+
+			case ActionID.CONFIRM:
+				return this.confirm(this.state.act.action);
+
+			case ActionID.BACK:
+				return this.act();
 		}
 	}
 }

@@ -16,6 +16,7 @@
 		width: 80%;
 		height: 80%;
 		border-radius: 100%;
+		border: 6px solid;
 	}
 
 	&-title {
@@ -31,9 +32,15 @@
 
 	&&--ally::after {
 		background-color: @color-blue;
+		border-color: @color-blue;
 	}
 
 	&&--enemy::after {
 		background-color: @color-red;
+		border-color: @color-red;
+	}
+
+	&.is-actor::after {
+		border-color: @color-yellow;
 	}
 }

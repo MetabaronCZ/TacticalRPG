@@ -1,5 +1,6 @@
 import { Weapons } from 'models/weapon';
 import { PlayerType } from 'models/player';
+import { IPath } from 'models/pathfinding';
 import { IPosition } from 'models/position';
 import { ICharacterData } from 'models/character-data';
 import { IAttributes, Attributes } from 'models/attributes';
@@ -9,23 +10,25 @@ import { WeaponSKills } from 'models/skill/weapon';
 import { JobSKillID } from 'models/skill/job/id';
 import { JobSKills } from 'models/skill/job';
 import { Skillsets } from 'models/skillset';
-import { SKillType } from './skill';
+import { SKillType } from 'models/skill';
 
-export enum CharacterActionID {
+export enum ActionID {
 	MOVE = 'MOVE',
 	ATTACK = 'ATTACK',
 	WEAPON = 'WEAPON',
 	JOB = 'JOB',
-	PASS = 'PASS'
+	PASS = 'PASS',
+	CONFIRM = 'CONFIRM',
+	BACK = 'BACK'
 }
 
-export interface ICharacterActionItem {
-	readonly id: CharacterActionID;
+export interface IActionItem {
+	readonly id: ActionID;
 	readonly title: string;
-	readonly skills: WeaponSKillID[] | JobSKillID[];
+	readonly skills?: WeaponSKillID[] | JobSKillID[];
 }
 
-export type ICharacterActions = ICharacterActionItem[];
+export type IActions = IActionItem[];
 
 export interface ICharacter {
 	readonly data: ICharacterData;
@@ -34,6 +37,21 @@ export interface ICharacter {
 	readonly baseAttributes: IAttributes;
 	readonly currAttributes: IAttributes;
 }
+
+const passAction: IActionItem = {
+	id: ActionID.PASS,
+	title: 'End turn'
+};
+
+const confirmMoveAction = (length: number): IActionItem => ({
+	id: ActionID.CONFIRM,
+	title: `Move (${length} AP)`
+});
+
+const backAction: IActionItem = {
+	id: ActionID.BACK,
+	title: 'Back'
+};
 
 export class Character {
 	// maximum point of CP of every character
@@ -61,56 +79,72 @@ export class Character {
 		return updated;
 	}
 
-	public static getActions(char: ICharacter): ICharacterActions {
-		const main = Weapons.get(char.data.main);
-		const off = Weapons.get(char.data.off);
-		const skillset = Skillsets.get(char.data.skillset);
+	public static getActions(actor: ICharacter, hasMoved: boolean): IActions {
+		const main = Weapons.get(actor.data.main);
+		const off = Weapons.get(actor.data.off);
+		const skillset = Skillsets.get(actor.data.skillset);
 		const attackActionSkills = WeaponSKills.filterAttack(main, off);
+		const attributes = actor.currAttributes;
+		const actions: IActionItem[] = [];
 
-		const moveAction: ICharacterActionItem = {
-			id: CharacterActionID.MOVE,
-			title: `Move (${char.currAttributes.MOV} squares)`,
-			skills: []
-		};
+		if (attributes.AP) {
+			// MOVE action
+			if (!hasMoved) {
+				actions.push({
+					id: ActionID.MOVE,
+					title: `Move`
+				});
+			}
 
-		const attackAction: ICharacterActionItem = {
-			id: CharacterActionID.ATTACK,
-			title: `Attack (${attackActionSkills.map(([id, wpn]) => wpn.title).join(' + ')})`,
-			skills: attackActionSkills.map(([id, wpn]) => id)
-		};
-
-		const passAction: ICharacterActionItem = {
-			id: CharacterActionID.PASS,
-			title: 'End turn',
-			skills: []
-		};
-
-		const weaponActions: ICharacterActionItem[] = WeaponSKills.filterSpecial(main, off)
-			.map(([id, wpn]) => {
-				const skill = WeaponSKills.get(id);
-
-				return {
-					id: CharacterActionID.WEAPON,
-					title: `${skill.title} (${wpn.title})`,
-					skills: [id]
-				};
+			// ATTACK action
+			actions.push({
+				id: ActionID.ATTACK,
+				title: `Attack (${attackActionSkills.map(([id, wpn]) => wpn.title).join(' + ')})`,
+				skills: attackActionSkills.map(([id, wpn]) => id)
 			});
 
-		const jobActions: ICharacterActionItem[] = skillset.skills
-			.map(id => ({ id, skill: JobSKills.get(id) }))
-			.filter(({ skill }) => SKillType.ACTIVE === skill.type)
-			.map(({ id, skill }) => ({
-					id: CharacterActionID.JOB,
-					title: `${skill.title} (${char.data.job})`,
-					skills: [id]
-			}));
+			// WEAPON actions
+			for (const [id, wpn] of WeaponSKills.filterSpecial(main, off)) {
+				const skill = WeaponSKills.get(id);
 
-		return [
-			moveAction,
-			attackAction,
-			...weaponActions,
-			...jobActions,
-			passAction
-		];
+				actions.push({
+					id: ActionID.WEAPON,
+					title: `${skill.title} (${wpn.title})`,
+					skills: [id]
+				});
+			}
+
+			// JOB actions
+			for (const id of skillset.skills) {
+				const skill = JobSKills.get(id);
+
+				if (SKillType.ACTIVE === skill.type) {
+					actions.push({
+						id: ActionID.JOB,
+						title: `${skill.title} (${actor.data.job})`,
+						skills: [id]
+					});
+				}
+			}
+		}
+
+		// PASS action
+		actions.push(passAction);
+
+		return actions;
+	}
+
+	public static getMoveActions(path?: IPath): IActionItem[] {
+		const actions: IActionItem[] = [];
+
+		// confirm MOVE action
+		if (path) {
+			actions.push(confirmMoveAction(path.length));
+		}
+
+		// cancel MOVE action
+		actions.push(backAction);
+
+		return actions;
 	}
 }

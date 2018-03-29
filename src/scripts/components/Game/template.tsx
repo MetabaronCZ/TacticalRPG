@@ -11,7 +11,7 @@ import Order from 'components/Game/components/Order';
 import Party from 'components/Game/components/Party';
 import Layers from 'components/Game/components/Layers';
 import Characters from 'components/Game/components/Characters';
-import CharacterMenu from 'components/Game/components/CharacterMenu';
+import ActionrMenu from 'components/Game/components/ActionMenu';
 import { IOnCharacterSelect, IOnGridSelect, IGameState, IOnActionSelect } from 'components/Game';
 
 export interface IGameUIProps {
@@ -22,7 +22,7 @@ export interface IGameUIProps {
 }
 
 const GameUI: React.SFC<IGameUIProps> = props => {
-	const { order, characters, actors, selected, characterActions, tick } = props.game;
+	const { order, characters, actors, act: { selected, path }, actionMenu, movable, tick } = props.game;
 	const acts = actors.map(id => characters.find(char => char.data.id === id));
 	const actor = acts[0];
 
@@ -34,8 +34,8 @@ const GameUI: React.SFC<IGameUIProps> = props => {
 
 			<div className="GameUI-column GameUI-column--main">
 				<Layers>
-					<Characters characters={characters} onSelect={props.onCharacterSelect} />
-					<Grid onSelect={props.onGridSelect} />
+					<Characters actor={actor} characters={characters} onSelect={props.onCharacterSelect} />
+					<Grid selected={selected} movable={movable} path={path} onSelect={props.onGridSelect} />
 				</Layers>
 			</div>
 
@@ -69,9 +69,9 @@ const GameUI: React.SFC<IGameUIProps> = props => {
 					</div>
 				)}
 
-				{characterActions && characterActions.length && (
-					<CharacterMenu
-						actions={characterActions}
+				{actionMenu && actionMenu.length && (
+					<ActionrMenu
+						actions={actionMenu}
 						onSelect={props.onActionSelect}
 					/>
 				)}

@@ -41,6 +41,42 @@
 					background-color: fade(@color-white, 10%);
 				}
 			}
+
+			&.is-movable {
+				border-color: @color-blue;
+
+				&::before {
+					background-color: fade(@color-blue, 10%);
+				}
+
+				&:hover::before {
+					background-color: fade(@color-blue, 30%);
+				}
+			}
+
+			&.is-highlighted {
+				border-color: @color-green;
+
+				&::before {
+					background-color: fade(@color-green, 10%);
+				}
+
+				&:hover::before {
+					background-color: fade(@color-green, 30%);
+				}
+			}
+
+			&.is-selected {
+				border-color: @color-yellow;
+
+				&::before {
+					background-color: fade(@color-yellow, 10%);
+				}
+
+				&:hover::before {
+					background-color: fade(@color-yellow, 30%);
+				}
+			}
 		}
 	}
 }
