@@ -27,6 +27,7 @@ const ActionrMenu: React.SFC<ICharacterMenuProps> = ({ actions, onSelect }) => {
 						break;
 
 					case ActionID.ATTACK:
+					case ActionID.DOUBLE_ATTACK:
 						color = 'Red';
 						break;
 				}

@@ -167,9 +167,30 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 						tick,
 						actors: orderedActors
 					},
-					() => actors.length ? this.act() : this.tick()
+					() => actors.length ? this.startTurn() : this.tick()
 				);
 			}, tickDelay)
+		);
+	}
+
+	private startTurn() {
+		const actor = this.getActor();
+
+		if (!actor) {
+			return;
+		}
+
+		// update actor data
+		this.setState(
+			{
+				characters: this.state.characters.map(char => {
+					if (actor.data.id === char.data.id) {
+						return Character.startTurn(actor);
+					}
+					return char;
+				})
+			},
+			() => this.act()
 		);
 	}
 
@@ -203,9 +224,7 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 		});
 	}
 
-	private endAct() {
-		console.log((() => { const a = this.getActor(); return a ? a.data.name : ''; })(), '> END ACT');
-
+	private endTurn() {
 		const actors = this.state.actors.slice(0);
 		const actor = actors[0];
 		actors.shift();
@@ -233,7 +252,7 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 				order,
 				movable: undefined
 			},
-			() => actors.length ? this.act() : this.tick()
+			() => actors.length ? this.startTurn() : this.tick()
 		);
 	}
 
@@ -269,7 +288,6 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 			return this.endMove();
 		}
 		const timing = Array(path.length).fill(moveAnimDuration);
-		console.log(actor.data.name, '> MOVE');
 
 		this.setState(
 			{
@@ -389,21 +407,26 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 		}
 		switch (action.id) {
 			case ActionID.MOVE:
+				// starts MOVE action
 				return this.startMove(action);
 
 			case ActionID.ATTACK:
+			case ActionID.DOUBLE_ATTACK:
 			case ActionID.WEAPON:
 			case ActionID.JOB:
 				console.log(`${actor.data.name} > ${action.id} (${action.skills})`);
 				return;
 
 			case ActionID.PASS:
-				return this.endAct();
+				// ends character turn
+				return this.endTurn();
 
 			case ActionID.CONFIRM:
+				// overall CONFIRM action handler
 				return this.confirm(this.state.act.action);
 
 			case ActionID.BACK:
+				// cancelling current action brings back main character menu
 				return this.act();
 		}
 	}

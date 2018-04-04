@@ -15,6 +15,7 @@ import { SKillType } from 'models/skill';
 export enum ActionID {
 	MOVE = 'MOVE',
 	ATTACK = 'ATTACK',
+	DOUBLE_ATTACK = 'DOUBLE_ATTACK',
 	WEAPON = 'WEAPON',
 	JOB = 'JOB',
 	PASS = 'PASS',
@@ -96,12 +97,23 @@ export class Character {
 				});
 			}
 
-			// ATTACK action
-			actions.push({
-				id: ActionID.ATTACK,
-				title: `Attack (${attackActionSkills.map(([id, wpn]) => wpn.title).join(' + ')})`,
-				skills: attackActionSkills.map(([id, wpn]) => id)
-			});
+			// ATTACK actions
+			for (const skill of attackActionSkills) {
+				actions.push({
+					id: ActionID.ATTACK,
+					title: `Attack (${skill[1].title})`,
+					skills: [skill[0]]
+				});
+			}
+
+			// DOUBLE ATTACK action
+			if (attackActionSkills.length > 1) {
+				actions.push({
+					id: ActionID.DOUBLE_ATTACK,
+					title: 'Double Attack',
+					skills: attackActionSkills.map(([id, wpn]) => id)
+				});
+			}
 
 			// WEAPON actions
 			for (const [id, wpn] of WeaponSKills.filterSpecial(main, off)) {
@@ -146,5 +158,18 @@ export class Character {
 		actions.push(backAction);
 
 		return actions;
+	}
+
+	public static startTurn(actor: ICharacter): ICharacter {
+		// regenerate AP
+		const newAP = actor.baseAttributes.AP;
+
+		return {
+			...actor,
+			currAttributes: {
+				...actor.currAttributes,
+				AP: newAP
+			}
+		};
 	}
 }
