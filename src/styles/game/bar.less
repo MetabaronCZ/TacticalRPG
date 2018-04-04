@@ -1,29 +1,29 @@
+.mx-bar-color-variant(@type, @color) {
+	&::before {
+		.u-text-small;
+		.u-weight-bold;
+
+		position: absolute;
+		top: 0;
+		left: -@label-width;
+		width: @label-width;
+		content: @type;
+		color: @color-grey-dark;
+		text-align: center;
+		line-height: 1;
+		transform: skew(-@skew);
+	}
+
+	.Bar-item-value {
+		background: linear-gradient(to right, darken(@color, 10%), @color);
+	}
+}
+
 .Bar {
 	@border-size: 3px;
 	@border-radius: 5px;
 	@skew: -10deg;
 	@label-width: 40px;
-
-	.mx-color-variant(@type, @color) {
-		&::before {
-			.u-text-small;
-			.u-weight-bold;
-
-			position: absolute;
-			top: 0;
-			left: -@label-width;
-			width: @label-width;
-			content: @type;
-			color: @color-grey-dark;
-			text-align: center;
-			line-height: 1;
-			transform: skew(-@skew);
-		}
-
-		.Bar-item-value {
-			background: linear-gradient(to right, darken(@color, 10%), @color);
-		}
-	}
 
 	background: @color-grey;
 	border: @border-size solid @color-grey;
@@ -80,11 +80,11 @@
 		}
 
 		&&--HP {
-			.mx-color-variant('Hp', @color-green);
+			.mx-bar-color-variant('Hp', @color-green);
 		}
 
 		&&--AP {
-			.mx-color-variant('Ap', @color-blue);
+			.mx-bar-color-variant('Ap', @color-blue);
 		}
 	}
 }

@@ -1,10 +1,11 @@
 const del = require('del');
 const gulp = require('gulp');
 const less = require('gulp-less');
+const webpack = require('webpack');
 const postcss = require('gulp-postcss');
 const stylelint = require('gulp-stylelint');
 
-const webpack = require('webpack-stream');
+const webpackStream = require('webpack-stream');
 const runSequence = require('run-sequence');
 const cssnano = require('cssnano');
 const autoprefixer = require('autoprefixer');
@@ -87,7 +88,7 @@ gulp.task('scripts', () => {
 	let conf = webpackConfig(env);
 
 	return gulp.src(paths.scripts.src)
-		.pipe(webpack(conf))
+		.pipe(webpackStream(conf, webpack))
 		.pipe(gulp.dest(paths.scripts.dist));
 });
 
