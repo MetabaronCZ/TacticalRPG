@@ -11,7 +11,6 @@ import { ICharacter, Character, IActions, ActionID, IActionItem } from 'models/c
 
 import GameUI from 'components/Game/template';
 
-const tickDelay = 20;
 const moveAnimDuration = 150;
 
 export const gridSize = 12;
@@ -169,7 +168,7 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 					},
 					() => actors.length ? this.startTurn() : this.tick()
 				);
-			}, tickDelay)
+			}, 0)
 		);
 	}
 

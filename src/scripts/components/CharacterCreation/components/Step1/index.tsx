@@ -17,7 +17,7 @@ interface IStep1Props {
 }
 
 const Step1: React.SFC<IStep1Props> = ({ fields, errors, onChange }) => (
-	<div>
+	<React.Fragment>
 		<FormField fieldId="f-name" label="Name" error={errors.name}>
 			<FormInput
 				id="f-name"
@@ -44,7 +44,7 @@ const Step1: React.SFC<IStep1Props> = ({ fields, errors, onChange }) => (
 				/>
 			))}
 		</FormField>
-	</div>
+	</React.Fragment>
 );
 
 export default Step1;

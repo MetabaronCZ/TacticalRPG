@@ -24,7 +24,7 @@ const Step2: React.SFC<IStep2Props> = ({ fields, onChange }) => {
 	}));
 
 	return (
-		<div>
+		<React.Fragment>
 			<ArchetypeSelection primary={fields.primary} secondary={fields.secondary} onChange={onChange} />
 
 			<FormField fieldId="f-job" label="Character Job" info={job ? job.description : undefined}>
@@ -46,7 +46,7 @@ const Step2: React.SFC<IStep2Props> = ({ fields, onChange }) => {
 					))}
 				</FormSelect>
 			</FormField>
-		</div>
+		</React.Fragment>
 	);
 };
 

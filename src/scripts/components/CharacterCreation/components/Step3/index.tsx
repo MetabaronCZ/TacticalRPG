@@ -37,7 +37,7 @@ const Step3: React.SFC<IStep3Props> = ({ fields, onChange }) => {
 	const hasNoOffHand = CharacterData.isBothWielding(fields) || CharacterData.isDualWielding(fields);
 
 	return (
-		<div>
+		<React.Fragment>
 			<FormField fieldId="f-main" label="Main hand" info={main.description}>
 				<FormSelect id="f-main" name="main" value={fields.main} onChange={onChange}>
 					{mainWeapons.map((id, item, i) => (
@@ -77,7 +77,7 @@ const Step3: React.SFC<IStep3Props> = ({ fields, onChange }) => {
 					))}
 				</FormSelect>
 			</FormField>
-		</div>
+		</React.Fragment>
 	);
 };
 

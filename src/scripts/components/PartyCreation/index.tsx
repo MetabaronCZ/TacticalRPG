@@ -71,7 +71,7 @@ class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationS
 
 				{partyExists
 					? (
-						<div>
+						<React.Fragment>
 							<FormField fieldId="f-name" label="Name" error={errors.name}>
 								<FormInput
 									id="f-name"
@@ -86,7 +86,7 @@ class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationS
 							</FormField>
 
 							{Array(Party.characterCount).fill('').map((x, i) => this.renderPartyItem(i))}
-						</div>
+						</React.Fragment>
 					)
 					: this.renderNoCharacter()
 				}
