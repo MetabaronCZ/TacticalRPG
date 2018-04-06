@@ -1,8 +1,20 @@
 import React, { SyntheticEvent } from 'react';
-
 import icos from 'data/icos';
-import ButtonSize from 'components/Button/sizes';
-import ButtonColor from 'components/Button/colors';
+
+export enum ButtonColor {
+	DEFAULT = 'Default',
+	YELLOW = 'Yellow',
+	RED = 'Red',
+	GREEN = 'Green',
+	BLUE = 'Blue',
+	GREY = 'Grey'
+}
+
+export enum ButtonSize {
+	DEFAULT = 'Default',
+	SMALL = 'Small',
+	LARGE = 'Large'
+}
 
 interface IButtonContainerProps {
 	type?: string;
@@ -13,12 +25,12 @@ interface IButtonContainerProps {
 	onClick?: (e: SyntheticEvent<any>) => void;
 }
 
-const ButtonContainer: React.SFC<IButtonContainerProps> = props => {
+const Button: React.SFC<IButtonContainerProps> = props => {
 	const { type, ico, size, color, text, onClick } = props;
 	const typeName = ('submit' === type ? type : 'button');
 	const icoName = (ico ? icos[ico] : icos.default) || '';
-	const sizeName = (size ? ButtonSize[size] : ButtonSize.default) || '';
-	const colorName = (color ? ButtonColor[color] : ButtonColor.default) || '';
+	const sizeName = size || ButtonSize.DEFAULT;
+	const colorName = color || ButtonColor.DEFAULT;
 
 	return (
 		<button className={`Button Button--size${sizeName} Button--color${colorName}`} type={typeName} onClick={onClick}>
@@ -28,4 +40,4 @@ const ButtonContainer: React.SFC<IButtonContainerProps> = props => {
 	);
 };
 
-export default ButtonContainer;
+export default Button;

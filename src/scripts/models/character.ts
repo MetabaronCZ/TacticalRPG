@@ -10,7 +10,7 @@ import { WeaponSKills } from 'models/skill/weapon';
 import { JobSKillID } from 'models/skill/job/id';
 import { JobSKills } from 'models/skill/job';
 import { Skillsets } from 'models/skillset';
-import { SKillType } from 'models/skill';
+import { SKillType, Skill } from 'models/skill';
 
 export enum ActionID {
 	MOVE = 'MOVE',
@@ -26,6 +26,7 @@ export enum ActionID {
 export interface IActionItem {
 	readonly id: ActionID;
 	readonly title: string;
+	readonly active: boolean;
 	readonly skills?: WeaponSKillID[] | JobSKillID[];
 }
 
@@ -41,17 +42,20 @@ export interface ICharacter {
 
 const passAction: IActionItem = {
 	id: ActionID.PASS,
-	title: 'End turn'
+	title: 'End turn',
+	active: true
 };
 
 const confirmMoveAction = (length: number): IActionItem => ({
 	id: ActionID.CONFIRM,
-	title: `Move (${length} AP)`
+	title: `Move (${length} AP)`,
+	active: true
 });
 
 const backAction: IActionItem = {
 	id: ActionID.BACK,
-	title: 'Back'
+	title: 'Back',
+	active: true
 };
 
 export class Character {
@@ -87,56 +91,67 @@ export class Character {
 		const attackActionSkills = WeaponSKills.filterAttack(main, off);
 		const attributes = actor.currAttributes;
 		const actions: IActionItem[] = [];
+		const AP = attributes.AP;
 
-		if (attributes.AP) {
-			// MOVE action
-			if (!hasMoved) {
+		// MOVE action
+		actions.push({
+			id: ActionID.MOVE,
+			title: `Move`,
+			active: !hasMoved && AP > 0
+		});
+
+		// ATTACK actions
+		for (const [id, wpn] of attackActionSkills) {
+			const skill = WeaponSKills.get(id);
+			const active = (AP >= skill.cost);
+
+			actions.push({
+				id: ActionID.ATTACK,
+				title: `Attack (${wpn.title})${active ? ' [' + skill.cost + ' AP]' : ''}`,
+				skills: [id],
+				active
+			});
+		}
+
+		// DOUBLE ATTACK action
+		if (attackActionSkills.length > 1) {
+			const costs = attackActionSkills.map(([id, wpn]) => WeaponSKills.get(id).cost);
+			const cost = costs.reduce((a, b) => a + b);
+			const active = (AP >= cost);
+
+			actions.push({
+				id: ActionID.DOUBLE_ATTACK,
+				title: `Double Attack${active ? ' [' + cost + ' AP]' : ''}`,
+				skills: attackActionSkills.map(([id, wpn]) => id),
+				active
+			});
+		}
+
+		// WEAPON actions
+		for (const [id, wpn] of WeaponSKills.filterSpecial(main, off)) {
+			const skill = WeaponSKills.get(id);
+			const active = (AP >= skill.cost);
+
+			actions.push({
+				id: ActionID.WEAPON,
+				title: `${skill.title} (${wpn.title})${active ? ' [' + skill.cost + ' AP]' : ''}`,
+				skills: [id],
+				active
+			});
+		}
+
+		// JOB actions
+		for (const id of skillset.skills) {
+			const skill = JobSKills.get(id);
+			const active = (AP >= skill.cost);
+
+			if (SKillType.ACTIVE === skill.type) {
 				actions.push({
-					id: ActionID.MOVE,
-					title: `Move`
+					id: ActionID.JOB,
+					title: `${skill.title} (${actor.data.job})${active ? ' [' + skill.cost + ' AP]' : ''}`,
+					skills: [id],
+					active
 				});
-			}
-
-			// ATTACK actions
-			for (const skill of attackActionSkills) {
-				actions.push({
-					id: ActionID.ATTACK,
-					title: `Attack (${skill[1].title})`,
-					skills: [skill[0]]
-				});
-			}
-
-			// DOUBLE ATTACK action
-			if (attackActionSkills.length > 1) {
-				actions.push({
-					id: ActionID.DOUBLE_ATTACK,
-					title: 'Double Attack',
-					skills: attackActionSkills.map(([id, wpn]) => id)
-				});
-			}
-
-			// WEAPON actions
-			for (const [id, wpn] of WeaponSKills.filterSpecial(main, off)) {
-				const skill = WeaponSKills.get(id);
-
-				actions.push({
-					id: ActionID.WEAPON,
-					title: `${skill.title} (${wpn.title})`,
-					skills: [id]
-				});
-			}
-
-			// JOB actions
-			for (const id of skillset.skills) {
-				const skill = JobSKills.get(id);
-
-				if (SKillType.ACTIVE === skill.type) {
-					actions.push({
-						id: ActionID.JOB,
-						title: `${skill.title} (${actor.data.job})`,
-						skills: [id]
-					});
-				}
 			}
 		}
 

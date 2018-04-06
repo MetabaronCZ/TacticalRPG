@@ -1,21 +1,19 @@
 import { ISkillset } from 'models/skillset';
 import { JobSKillID } from 'models/skill/job/id';
-import { ISKill, SKillType, SKillRange, SKillArea, SkillUsage } from 'models/skill';
+import { ISKill, SKillType, SKillRange, SKillArea, SKillElement } from 'models/skill';
 
 const blackMagic: Array<[JobSKillID, ISKill]> = [
-	[JobSKillID.BLACK_MAGIC_CONDEMN, {
-		title: 'Condemn',
-		type: SKillType.ACTIVE,
-		range: SKillRange.R4,
-		area: SKillArea.SINGLE,
-		usage: SkillUsage.SPECIAL
-	}],
 	[JobSKillID.BLACK_MAGIC_DARK_AURA, {
 		title: 'Dark Aura',
+		cost: 0,
 		type: SKillType.PASSIVE,
 		range: SKillRange.R0,
 		area: SKillArea.AOE3x3,
-		usage: SkillUsage.SPECIAL
+		isAreaEffect: true,
+		element: SKillElement.DARK,
+		physicalDamage: 0,
+		elementalDamage: 0,
+		status: []
 	}],
 ];
 

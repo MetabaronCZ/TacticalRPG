@@ -1,5 +1,6 @@
 import React from 'react';
 import { IOnActionSelect } from 'components/Game';
+import Button, { ButtonColor } from 'components/Button';
 import { IActions, IActionItem, ActionID } from 'models/character';
 
 interface ICharacterMenuProps {
@@ -7,35 +8,40 @@ interface ICharacterMenuProps {
 	onSelect: IOnActionSelect;
 }
 
-const selectMenu = (action: IActionItem, onSelect: IOnActionSelect ) => () => onSelect(action);
+const selectMenu = (action: IActionItem, onSelect: IOnActionSelect ) => () => action.active && onSelect(action);
 
 const ActionrMenu: React.SFC<ICharacterMenuProps> = ({ actions, onSelect }) => {
 	return (
 		<ul className="ActionMenu">
 			{actions.map((act, i) => {
 				const actionType = act.id;
-				let color = 'Yellow';
+				let color = ButtonColor.YELLOW;
 
-				switch (actionType) {
-					case ActionID.MOVE:
-						color = 'Blue';
-						break;
+				if (!act.active) {
+					// disabled button
+					color = ButtonColor.GREY;
 
-					case ActionID.PASS:
-					case ActionID.CONFIRM:
-						color = 'Green';
-						break;
+				} else {
+					// colored buttons
+					switch (actionType) {
+						case ActionID.MOVE:
+							color = ButtonColor.BLUE;
+							break;
 
-					case ActionID.ATTACK:
-					case ActionID.DOUBLE_ATTACK:
-						color = 'Red';
-						break;
+						case ActionID.PASS:
+						case ActionID.CONFIRM:
+							color = ButtonColor.GREEN;
+							break;
+
+						case ActionID.ATTACK:
+						case ActionID.DOUBLE_ATTACK:
+							color = ButtonColor.RED;
+							break;
+					}
 				}
 				return (
 					<li className="ActionMenu-item" key={i}>
-						<button className={`Button Button--color${color}`} onClick={selectMenu(act, onSelect)}>
-							{act.title}
-						</button>
+						<Button text={act.title} color={color} onClick={selectMenu(act, onSelect)} />
 					</li>
 				);
 			})}

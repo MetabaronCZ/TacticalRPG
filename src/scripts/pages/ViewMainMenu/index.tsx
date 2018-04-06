@@ -1,7 +1,7 @@
 import React from 'react';
 import { withRouter, RouteComponentProps } from 'react-router';
 
-import Button from 'components/Button';
+import Button, { ButtonSize } from 'components/Button';
 import { gotoFn } from 'utils/nav';
 
 interface IMenuItem {
@@ -12,7 +12,7 @@ interface IMenuItem {
 }
 
 const menuItems: IMenuItem[] = [
-	{ title: 'Start Battle', ico: 'fight', size: 'large', url: '/battle-setup' },
+	{ title: 'Start Battle', ico: 'fight', size: ButtonSize.LARGE, url: '/battle-setup' },
 	{ title: 'Edit Party', url: '/party-list' },
 	{ title: 'Edit Characters', url: '/character-list' }
 ];

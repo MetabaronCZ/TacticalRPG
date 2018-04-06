@@ -1,21 +1,31 @@
 import { ISkillset } from 'models/skillset';
 import { JobSKillID } from 'models/skill/job/id';
-import { ISKill, SKillType, SKillRange, SKillArea, SkillUsage } from 'models/skill';
+import { ISKill, SKillType, SKillRange, SKillArea, SKillElement } from 'models/skill';
 
 const frostblade: Array<[JobSKillID, ISKill]> = [
 	[JobSKillID.FROSTBLADE_FROSTSTRIKE, {
 		title: 'Froststrike',
+		cost: 2,
 		type: SKillType.ACTIVE,
 		range: SKillRange.R1,
 		area: SKillArea.SINGLE,
-		usage: SkillUsage.SPECIAL
+		isAreaEffect: false,
+		element: SKillElement.ICE,
+		physicalDamage: 0.75,
+		elementalDamage: 0.75,
+		status: []
 	}],
 	[JobSKillID.FROSTBLADE_FROSTSPEAR, {
 		title: 'Frostspear',
+		cost: 2,
 		type: SKillType.ACTIVE,
 		range: SKillRange.R2,
 		area: SKillArea.SINGLE,
-		usage: SkillUsage.SPECIAL
+		isAreaEffect: false,
+		element: SKillElement.ICE,
+		physicalDamage: 0.5,
+		elementalDamage: 1,
+		status: []
 	}]
 ];
 

@@ -1,14 +1,19 @@
 import { ISkillset } from 'models/skillset';
 import { JobSKillID } from 'models/skill/job/id';
-import { ISKill, SKillType, SKillRange, SKillArea, SkillUsage } from 'models/skill';
+import { ISKill, SKillType, SKillRange, SKillArea, SKillElement } from 'models/skill';
 
 const martialArts: Array<[JobSKillID, ISKill]> = [
 	[JobSKillID.MARTIAL_ARTS_NONE, {
 		title: 'Martial Arts',
+		cost: 0,
 		type: SKillType.ACTIVE,
 		range: SKillRange.R1,
 		area: SKillArea.SINGLE,
-		usage: SkillUsage.ATTACK
+		isAreaEffect: false,
+		element: SKillElement.NONE,
+		physicalDamage: 0,
+		elementalDamage: 0,
+		status: []
 	}],
 ];
 

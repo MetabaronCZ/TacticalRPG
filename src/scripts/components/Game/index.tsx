@@ -60,7 +60,7 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 	constructor(props: IGameUIContainerProps) {
 		super(props);
 
-		this.onGridSelect = this.onGridSelect.bind(this);
+		this.onTileSelect = this.onTileSelect.bind(this);
 		this.onCharacterSelect = this.onCharacterSelect.bind(this);
 		this.onActionSelect = this.onActionSelect.bind(this);
 
@@ -73,7 +73,7 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 			<GameUI
 				game={this.state}
 				onCharacterSelect={this.onCharacterSelect}
-				onGridSelect={this.onGridSelect}
+				onGridSelect={this.onTileSelect}
 				onActionSelect={this.onActionSelect}
 			/>
 		);
@@ -374,7 +374,7 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 		});
 	}
 
-	private onGridSelect(position: IPosition) {
+	private onTileSelect(position: IPosition) {
 		const action = this.state.act.action;
 
 		if (!action) {
@@ -383,6 +383,9 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 		switch (action.id) {
 			case ActionID.MOVE:
 				return this.selectMovePosition(position);
+
+			default:
+				throw new Error('Unsupported tile select action');
 		}
 	}
 
@@ -395,6 +398,9 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 		switch (action.id) {
 			case ActionID.MOVE:
 				return this.selectMovePosition(character.position);
+
+			default:
+				throw new Error('Unsupported character select action');
 		}
 	}
 
@@ -427,6 +433,9 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 			case ActionID.BACK:
 				// cancelling current action brings back main character menu
 				return this.act();
+
+			default:
+				throw new Error('Unsupported action ID');
 		}
 	}
 }
