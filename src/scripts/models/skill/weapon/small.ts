@@ -1,51 +1,55 @@
-import { WeaponSKillID } from 'models/skill/weapon/id';
-import { ISKill, SKillType, SKillRange, SKillArea, SKillElement, SkillStatus } from 'models/skill';
+import { WeaponSkillID } from 'models/skill/weapon/id';
+import { ISkill, SkillType, SkillRange, SkillArea, SkillElement, SkillStatus, SkillTarget } from 'models/skill';
 
-const smallSkills: Array<[WeaponSKillID, ISKill]> = [
-	[WeaponSKillID.FISTS_ATTACK, {
+const smallSkills: Array<[WeaponSkillID, ISkill]> = [
+	[WeaponSkillID.FISTS_ATTACK, {
 		title: 'Attack',
 		cost: 1,
-		type: SKillType.ACTIVE,
-		range: SKillRange.R1,
-		area: SKillArea.SINGLE,
+		type: SkillType.ACTIVE,
+		range: SkillRange.R1,
+		area: SkillArea.SINGLE,
+		target: SkillTarget.ENEMY,
 		isAreaEffect: false,
-		element: SKillElement.NONE,
+		element: SkillElement.NONE,
 		physicalDamage: 1,
 		elementalDamage: 0,
 		status: []
 	}],
-	[WeaponSKillID.FISTS_DISARM, {
+	[WeaponSkillID.FISTS_DISARM, {
 		title: 'Disarm',
 		cost: 2,
-		type: SKillType.ACTIVE,
-		range: SKillRange.R1,
-		area: SKillArea.SINGLE,
+		type: SkillType.ACTIVE,
+		range: SkillRange.R1,
+		area: SkillArea.SINGLE,
+		target: SkillTarget.ENEMY,
 		isAreaEffect: false,
-		element: SKillElement.NONE,
+		element: SkillElement.NONE,
 		physicalDamage: 0.5,
 		elementalDamage: 0,
 		status: [SkillStatus.DISARM]
 	}],
-	[WeaponSKillID.DAGGER_ATTACK, {
+	[WeaponSkillID.DAGGER_ATTACK, {
 		title: 'Attack',
 		cost: 1,
-		type: SKillType.ACTIVE,
-		range: SKillRange.R1,
-		area: SKillArea.SINGLE,
+		type: SkillType.ACTIVE,
+		range: SkillRange.R1,
+		area: SkillArea.SINGLE,
+		target: SkillTarget.ENEMY,
 		isAreaEffect: false,
-		element: SKillElement.NONE,
+		element: SkillElement.NONE,
 		physicalDamage: 1,
 		elementalDamage: 0,
 		status: []
 	}],
-	[WeaponSKillID.DAGGER_STAB, {
+	[WeaponSkillID.DAGGER_STAB, {
 		title: 'Stab',
 		cost: 2,
-		type: SKillType.ACTIVE,
-		range: SKillRange.R1,
-		area: SKillArea.SINGLE,
+		type: SkillType.ACTIVE,
+		range: SkillRange.R1,
+		area: SkillArea.SINGLE,
+		target: SkillTarget.ENEMY,
 		isAreaEffect: false,
-		element: SKillElement.NONE,
+		element: SkillElement.NONE,
 		physicalDamage: 2,
 		elementalDamage: 0,
 		status: []

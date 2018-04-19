@@ -2,16 +2,12 @@ import React from 'react';
 
 import { PlayerType } from 'models/player';
 import { ICharacter } from 'models/character';
-
-import { IOnCharacterSelect, blockSize } from 'components/Game';
+import { blockSize } from 'components/Game';
 
 interface ICharacterBlockProps {
 	char: ICharacter;
 	isActor: boolean;
-	onSelect: IOnCharacterSelect;
 }
-
-const selectCharacter = (char: ICharacter, onSelect: IOnCharacterSelect) => () => onSelect(char);
 
 class CharacterBlock extends React.Component<ICharacterBlockProps, {}> {
 	constructor(props: ICharacterBlockProps) {
@@ -19,7 +15,7 @@ class CharacterBlock extends React.Component<ICharacterBlockProps, {}> {
 	}
 
 	public render() {
-		const { char, isActor, onSelect } = this.props;
+		const { char, isActor } = this.props;
 		const player = this.props.char.player;
 		const type = (PlayerType.ENEMY === player ? 'enemy' : 'ally');
 
@@ -29,7 +25,7 @@ class CharacterBlock extends React.Component<ICharacterBlockProps, {}> {
 		};
 
 		return (
-			<div className={`Character Character--${type} ${isActor ? 'is-actor' : ''}`} style={style} onClick={selectCharacter(char, onSelect)}>
+			<div className={`Character Character--${type} ${isActor ? 'is-actor' : ''}`} style={style}>
 				<span className="Character-title">
 					{char.data.name}
 				</span>

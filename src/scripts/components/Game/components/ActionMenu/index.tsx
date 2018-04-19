@@ -14,7 +14,8 @@ const ActionrMenu: React.SFC<ICharacterMenuProps> = ({ actions, onSelect }) => {
 	return (
 		<ul className="ActionMenu">
 			{actions.map((act, i) => {
-				const actionType = act.id;
+				const title = act.title + (act.cost && act.active ? ` [${act.cost} AP]` : '');
+				const type = act.id;
 				let color = ButtonColor.YELLOW;
 
 				if (!act.active) {
@@ -23,7 +24,7 @@ const ActionrMenu: React.SFC<ICharacterMenuProps> = ({ actions, onSelect }) => {
 
 				} else {
 					// colored buttons
-					switch (actionType) {
+					switch (type) {
 						case ActionID.MOVE:
 							color = ButtonColor.BLUE;
 							break;
@@ -41,7 +42,7 @@ const ActionrMenu: React.SFC<ICharacterMenuProps> = ({ actions, onSelect }) => {
 				}
 				return (
 					<li className="ActionMenu-item" key={i}>
-						<Button text={act.title} color={color} onClick={selectMenu(act, onSelect)} />
+						<Button text={title} color={color} onClick={selectMenu(act, onSelect)} />
 					</li>
 				);
 			})}

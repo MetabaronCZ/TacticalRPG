@@ -1,6 +1,6 @@
 import WeaponList from 'models/weapon/list';
 import { WieldID } from 'models/wield';
-import { WeaponSKillID as SKillID } from 'models/skill/weapon/id';
+import { WeaponSkillID as SKillID } from 'models/skill/weapon/id';
 
 export enum WeaponID {
 	NONE = 'NONE',
@@ -144,7 +144,7 @@ export const Weapons = new WeaponList([
 		description: '',
 		type: WeaponTypeID.RANGED,
 		wield: [WieldID.BOTH],
-		skills: [SKillID.GUN_2H_ATTACK, SKillID.GUN_2H_SPREAD]
+		skills: [SKillID.GUN_2H_ATTACK, SKillID.GUN_2H_PIERCE]
 	}],
 	[WeaponID.SHIELD_SMALL, {
 		title: 'Small Shield',

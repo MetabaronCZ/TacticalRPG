@@ -1,5 +1,5 @@
 import DataList from 'models/data-list';
-import { JobSKillID } from 'models/skill/job/id';
+import { JobSkillID } from 'models/skill/job/id';
 
 import { berserkingSkillset } from 'models/skill/job/berserking';
 import { knighthoodSkillset } from 'models/skill/job/knighthood';
@@ -80,7 +80,7 @@ export enum SkillsetID {
 export interface ISkillset {
 	readonly title: string;
 	readonly description: string;
-	readonly skills: JobSKillID[];
+	readonly skills: JobSkillID[];
 }
 
 export const Skillsets = new DataList<SkillsetID, ISkillset>([

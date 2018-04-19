@@ -1,28 +1,30 @@
 import { ISkillset } from 'models/skillset';
-import { JobSKillID } from 'models/skill/job/id';
-import { ISKill, SKillType, SKillRange, SKillArea, SKillElement } from 'models/skill';
+import { JobSkillID } from 'models/skill/job/id';
+import { ISkill, SkillType, SkillRange, SkillArea, SkillElement, SkillTarget } from 'models/skill';
 
-const flameblade: Array<[JobSKillID, ISKill]> = [
-	[JobSKillID.FLAMEBLADE_FLAMESTRIKE, {
+const flameblade: Array<[JobSkillID, ISkill]> = [
+	[JobSkillID.FLAMEBLADE_FLAMESTRIKE, {
 		title: 'Flamestrike',
 		cost: 2,
-		type: SKillType.ACTIVE,
-		range: SKillRange.R2,
-		area: SKillArea.SINGLE,
+		type: SkillType.ACTIVE,
+		range: SkillRange.R2,
+		area: SkillArea.SINGLE,
+		target: SkillTarget.ENEMY,
 		isAreaEffect: false,
-		element: SKillElement.FIRE,
+		element: SkillElement.FIRE,
 		physicalDamage: 0.75,
 		elementalDamage: 0.75,
 		status: []
 	}],
-	[JobSKillID.FLAMEBLADE_FIREBALL, {
+	[JobSkillID.FLAMEBLADE_FIREBALL, {
 		title: 'Fireball',
 		cost: 2,
-		type: SKillType.ACTIVE,
-		range: SKillRange.R2,
-		area: SKillArea.SINGLE,
+		type: SkillType.ACTIVE,
+		range: SkillRange.R2,
+		area: SkillArea.SINGLE,
+		target: SkillTarget.ENEMY,
 		isAreaEffect: false,
-		element: SKillElement.FIRE,
+		element: SkillElement.FIRE,
 		physicalDamage: 0.5,
 		elementalDamage: 1,
 		status: []

@@ -6,23 +6,21 @@ import { Jobs } from 'models/job';
 import Bar from 'components/Game/components/Bar';
 import ArchetypeIco from 'components/ArchetypeIco';
 import Grid from 'components/Game/components/Grid';
-import Info from 'components/Game/components/Info';
 import Order from 'components/Game/components/Order';
 import Party from 'components/Game/components/Party';
 import Layers from 'components/Game/components/Layers';
 import Characters from 'components/Game/components/Characters';
 import ActionrMenu from 'components/Game/components/ActionMenu';
-import { IOnCharacterSelect, IOnGridSelect, IGameState, IOnActionSelect } from 'components/Game';
+import { IOnTileSelect, IGameState, IOnActionSelect } from 'components/Game';
 
 export interface IGameUIProps {
 	game: IGameState;
-	onCharacterSelect: IOnCharacterSelect;
-	onGridSelect: IOnGridSelect;
+	onTileSelect: IOnTileSelect;
 	onActionSelect: IOnActionSelect;
 }
 
 const GameUI: React.SFC<IGameUIProps> = props => {
-	const { order, characters, actors, act: { selected, path }, actionMenu, movable, tick } = props.game;
+	const { order, characters, actors, act, tick } = props.game;
 	const acts = actors.map(id => characters.find(char => char.data.id === id));
 	const actor = acts[0];
 
@@ -34,14 +32,21 @@ const GameUI: React.SFC<IGameUIProps> = props => {
 
 			<div className="GameUI-column GameUI-column--main">
 				<Layers>
-					<Characters actor={actor} characters={characters} onSelect={props.onCharacterSelect} />
-					<Grid selected={selected} movable={movable} path={path} onSelect={props.onGridSelect} />
+					<Characters actor={actor} characters={characters} />
+					<Grid
+						moveArea={act.moveArea}
+						movePath={act.movePath}
+						moveTarget={act.moveTarget}
+						skillTargetArea={act.skillTargetArea}
+						skillTargets={act.skillTargets}
+						skillEffectArea={act.skillEffectArea}
+						skillEffectTargets={act.skillEffectTargets}
+						onSelect={props.onTileSelect}
+					/>
 				</Layers>
 			</div>
 
 			<div className="GameUI-column GameUI-column--info">
-				<Info tick={tick} selected={selected} />
-
 				{actor && (
 					<div className="u-mb-2">
 						<div className="Paragraph">
@@ -60,18 +65,12 @@ const GameUI: React.SFC<IGameUIProps> = props => {
 							ap={actor.currAttributes.AP}
 							apMax={actor.baseAttributes.AP}
 						/>
-
-						<br/>
-
-						<p className="Paragraph">
-							ACTORS: {acts.map(char => char && char.data.name).join(', ')}
-						</p>
 					</div>
 				)}
 
-				{actionMenu && actionMenu.length && (
+				{act.actionMenu && act.actionMenu.length && (
 					<ActionrMenu
-						actions={actionMenu}
+						actions={act.actionMenu}
 						onSelect={props.onActionSelect}
 					/>
 				)}

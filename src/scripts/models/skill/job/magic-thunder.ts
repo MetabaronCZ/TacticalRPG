@@ -1,52 +1,56 @@
 import { ISkillset } from 'models/skillset';
-import { JobSKillID } from 'models/skill/job/id';
-import { ISKill, SKillType, SKillRange, SKillArea, SKillElement, SkillStatus } from 'models/skill';
+import { JobSkillID } from 'models/skill/job/id';
+import { ISkill, SkillType, SkillRange, SkillArea, SkillElement, SkillStatus, SkillTarget } from 'models/skill';
 
-const thunderMagic: Array<[JobSKillID, ISKill]> = [
-	[JobSKillID.THUNDER_MAGIC_THUNDERBOLT, {
+const thunderMagic: Array<[JobSkillID, ISkill]> = [
+	[JobSkillID.THUNDER_MAGIC_THUNDERBOLT, {
 		title: 'Thunderbolt',
 		cost: 2,
-		type: SKillType.ACTIVE,
-		range: SKillRange.R4,
-		area: SKillArea.SINGLE,
+		type: SkillType.ACTIVE,
+		range: SkillRange.R4,
+		area: SkillArea.SINGLE,
+		target: SkillTarget.ENEMY,
 		isAreaEffect: false,
-		element: SKillElement.THUNDER,
+		element: SkillElement.THUNDER,
 		physicalDamage: 0.5,
 		elementalDamage: 1,
 		status: []
 	}],
-	[JobSKillID.THUNDER_MAGIC_SHOCK, {
+	[JobSkillID.THUNDER_MAGIC_SHOCK, {
 		title: 'Shock',
 		cost: 2,
-		type: SKillType.ACTIVE,
-		range: SKillRange.R4,
-		area: SKillArea.SINGLE,
+		type: SkillType.ACTIVE,
+		range: SkillRange.R4,
+		area: SkillArea.SINGLE,
+		target: SkillTarget.ENEMY,
 		isAreaEffect: false,
-		element: SKillElement.THUNDER,
+		element: SkillElement.THUNDER,
 		physicalDamage: 0.25,
 		elementalDamage: 0.25,
 		status: [SkillStatus.SHOCK]
 	}],
-	[JobSKillID.THUNDER_MAGIC_THUNDERSTORM, {
+	[JobSkillID.THUNDER_MAGIC_THUNDERSTORM, {
 		title: 'Thunderstorm',
 		cost: 4,
-		type: SKillType.ACTIVE,
-		range: SKillRange.R4,
-		area: SKillArea.AOE3x3,
+		type: SkillType.ACTIVE,
+		range: SkillRange.R4,
+		area: SkillArea.AOE3x3,
+		target: SkillTarget.ENEMY,
 		isAreaEffect: true,
-		element: SKillElement.THUNDER,
+		element: SkillElement.THUNDER,
 		physicalDamage: 0.25,
 		elementalDamage: 0.5,
 		status: []
 	}],
-	[JobSKillID.THUNDER_MAGIC_THUNDER_AURA, {
+	[JobSkillID.THUNDER_MAGIC_THUNDER_AURA, {
 		title: 'Thunder Aura',
 		cost: 0,
-		type: SKillType.PASSIVE,
-		range: SKillRange.R0,
-		area: SKillArea.AOE3x3,
+		type: SkillType.PASSIVE,
+		range: SkillRange.R0,
+		area: SkillArea.AOE3x3,
+		target: SkillTarget.SELF,
 		isAreaEffect: true,
-		element: SKillElement.THUNDER,
+		element: SkillElement.THUNDER,
 		physicalDamage: 0,
 		elementalDamage: 0.25,
 		status: [SkillStatus.SHOCK]

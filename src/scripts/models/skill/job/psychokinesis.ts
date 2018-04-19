@@ -1,40 +1,43 @@
 import { ISkillset } from 'models/skillset';
-import { JobSKillID } from 'models/skill/job/id';
-import { ISKill, SKillType, SKillRange, SKillArea, SKillElement, SkillStatus } from 'models/skill';
+import { JobSkillID } from 'models/skill/job/id';
+import { ISkill, SkillType, SkillRange, SkillArea, SkillElement, SkillStatus, SkillTarget } from 'models/skill';
 
-const psychokinesis: Array<[JobSKillID, ISKill]> = [
-	[JobSKillID.PSYCHOKINESIS_KINETIC_STRIKE, {
+const psychokinesis: Array<[JobSkillID, ISkill]> = [
+	[JobSkillID.PSYCHOKINESIS_KINETIC_STRIKE, {
 		title: 'Kinetic Strike',
 		cost: 2,
-		type: SKillType.ACTIVE,
-		range: SKillRange.R4,
-		area: SKillArea.SINGLE,
+		type: SkillType.ACTIVE,
+		range: SkillRange.R4,
+		area: SkillArea.SINGLE,
+		target: SkillTarget.ENEMY,
 		isAreaEffect: false,
-		element: SKillElement.PSYCHIC,
+		element: SkillElement.PSYCHIC,
 		physicalDamage: 0.5,
 		elementalDamage: 1,
 		status: []
 	}],
-	[JobSKillID.PSYCHOKINESIS_FORGET, {
+	[JobSkillID.PSYCHOKINESIS_FORGET, {
 		title: 'Forget',
 		cost: 2,
-		type: SKillType.ACTIVE,
-		range: SKillRange.R4,
-		area: SKillArea.SINGLE,
+		type: SkillType.ACTIVE,
+		range: SkillRange.R4,
+		area: SkillArea.SINGLE,
+		target: SkillTarget.ENEMY,
 		isAreaEffect: false,
-		element: SKillElement.PSYCHIC,
+		element: SkillElement.PSYCHIC,
 		physicalDamage: 0,
 		elementalDamage: 0,
 		status: [SkillStatus.FORGET]
 	}],
-	[JobSKillID.PSYCHOKINESIS_PSYCHODOME, {
+	[JobSkillID.PSYCHOKINESIS_PSYCHODOME, {
 		title: 'Psychodome',
 		cost: 0,
-		type: SKillType.PASSIVE,
-		range: SKillRange.R0,
-		area: SKillArea.AOE3x3,
+		type: SkillType.PASSIVE,
+		range: SkillRange.R0,
+		area: SkillArea.AOE3x3,
+		target: SkillTarget.ENEMY,
 		isAreaEffect: true,
-		element: SKillElement.PSYCHIC,
+		element: SkillElement.PSYCHIC,
 		physicalDamage: 0,
 		elementalDamage: 0,
 		status: []

@@ -1,27 +1,29 @@
-import { WeaponSKillID } from 'models/skill/weapon/id';
-import { ISKill, SKillType, SKillRange, SKillArea, SKillElement } from 'models/skill';
+import { WeaponSkillID } from 'models/skill/weapon/id';
+import { ISkill, SkillType, SkillRange, SkillArea, SkillElement, SkillTarget } from 'models/skill';
 
-const magicalSkills: Array<[WeaponSKillID, ISKill]> = [
-	[WeaponSKillID.MACE_ATTACK, {
+const magicalSkills: Array<[WeaponSkillID, ISkill]> = [
+	[WeaponSkillID.MACE_ATTACK, {
 		title: 'Attack',
 		cost: 1,
-		type: SKillType.ACTIVE,
-		range: SKillRange.R1,
-		area: SKillArea.SINGLE,
+		type: SkillType.ACTIVE,
+		range: SkillRange.R1,
+		area: SkillArea.SINGLE,
+		target: SkillTarget.ENEMY,
 		isAreaEffect: false,
-		element: SKillElement.NONE,
+		element: SkillElement.NONE,
 		physicalDamage: 1,
 		elementalDamage: 0,
 		status: []
 	}],
-	[WeaponSKillID.STAFF_ATTACK, {
+	[WeaponSkillID.STAFF_ATTACK, {
 		title: 'Attack',
 		cost: 2,
-		type: SKillType.ACTIVE,
-		range: SKillRange.R1,
-		area: SKillArea.SINGLE,
+		type: SkillType.ACTIVE,
+		range: SkillRange.R1,
+		area: SkillArea.SINGLE,
+		target: SkillTarget.ENEMY,
 		isAreaEffect: false,
-		element: SKillElement.NONE,
+		element: SkillElement.NONE,
 		physicalDamage: 1,
 		elementalDamage: 0,
 		status: []

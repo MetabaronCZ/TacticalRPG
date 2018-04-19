@@ -1,7 +1,7 @@
 import DataList from 'models/data-list';
 import { IWeaponData } from 'models/weapon';
-import { ISKill, SKillType } from 'models/skill';
-import { WeaponSKillID } from 'models/skill/weapon/id';
+import { ISkill, SkillType } from 'models/skill';
+import { WeaponSkillID } from 'models/skill/weapon/id';
 
 import smallSkills from 'models/skill/weapon/small';
 import wield1HSkills from 'models/skill/weapon/wield1h';
@@ -11,33 +11,33 @@ import rangedSkills from 'models/skill/weapon/ranged';
 import shieldSkills from 'models/skill/weapon/shield';
 
 const attackSkills = [
-	WeaponSKillID.FISTS_ATTACK,
-	WeaponSKillID.DAGGER_ATTACK,
-	WeaponSKillID.SWORD_1H_ATTACK,
-	WeaponSKillID.AXE_1H_ATTACK,
-	WeaponSKillID.HAMMER_1H_ATTACK,
-	WeaponSKillID.SPEAR_ATTACK,
-	WeaponSKillID.SWORD_2H_ATTACK,
-	WeaponSKillID.AXE_2H_ATTACK,
-	WeaponSKillID.HAMMER_2H_ATTACK,
-	WeaponSKillID.MACE_ATTACK,
-	WeaponSKillID.STAFF_ATTACK,
-	WeaponSKillID.BOW_ATTACK,
-	WeaponSKillID.GUN_1H_ATTACK,
-	WeaponSKillID.GUN_2H_ATTACK
+	WeaponSkillID.FISTS_ATTACK,
+	WeaponSkillID.DAGGER_ATTACK,
+	WeaponSkillID.SWORD_1H_ATTACK,
+	WeaponSkillID.AXE_1H_ATTACK,
+	WeaponSkillID.HAMMER_1H_ATTACK,
+	WeaponSkillID.SPEAR_ATTACK,
+	WeaponSkillID.SWORD_2H_ATTACK,
+	WeaponSkillID.AXE_2H_ATTACK,
+	WeaponSkillID.HAMMER_2H_ATTACK,
+	WeaponSkillID.MACE_ATTACK,
+	WeaponSkillID.STAFF_ATTACK,
+	WeaponSkillID.BOW_ATTACK,
+	WeaponSkillID.GUN_1H_ATTACK,
+	WeaponSkillID.GUN_2H_ATTACK
 ];
 
-const isAttackSkill = (id: WeaponSKillID): boolean => -1 !== attackSkills.indexOf(id);
+const isAttackSkill = (id: WeaponSkillID): boolean => -1 !== attackSkills.indexOf(id);
 
-class WeaponSkillList extends DataList<WeaponSKillID, ISKill> {
-	public filterAttack(main: IWeaponData, off: IWeaponData): Array<[WeaponSKillID, IWeaponData]> {
-		const skills: Array<[WeaponSKillID, IWeaponData]> = [];
+export class WeaponSkillList extends DataList<WeaponSkillID, ISkill> {
+	public filterAttack(main: IWeaponData, off: IWeaponData): Array<[WeaponSkillID, IWeaponData]> {
+		const skills: Array<[WeaponSkillID, IWeaponData]> = [];
 
 		for (const wpn of [main, off]) {
 			for (const id of wpn.skills) {
 				const skill = this.get(id);
 
-				if (SKillType.ACTIVE === skill.type && isAttackSkill(id)) {
+				if (SkillType.ACTIVE === skill.type && isAttackSkill(id)) {
 					skills.push([id, wpn]);
 				}
 			}
@@ -45,15 +45,15 @@ class WeaponSkillList extends DataList<WeaponSKillID, ISKill> {
 		return skills;
 	}
 
-	public filterSpecial(main: IWeaponData, off: IWeaponData): Array<[WeaponSKillID, IWeaponData]> {
-		const skills: Array<[WeaponSKillID, IWeaponData]> = [];
-		const uniqueSkills: WeaponSKillID[] = [];
+	public filterSpecial(main: IWeaponData, off: IWeaponData): Array<[WeaponSkillID, IWeaponData]> {
+		const skills: Array<[WeaponSkillID, IWeaponData]> = [];
+		const uniqueSkills: WeaponSkillID[] = [];
 
 		for (const wpn of [main, off]) {
 			for (const id of wpn.skills) {
 				const skill = this.get(id);
 
-				if (SKillType.ACTIVE === skill.type && !isAttackSkill(id) && -1 === uniqueSkills.indexOf(id)) {
+				if (SkillType.ACTIVE === skill.type && !isAttackSkill(id) && -1 === uniqueSkills.indexOf(id)) {
 					uniqueSkills.push(id);
 					skills.push([id, wpn]);
 				}
@@ -63,7 +63,7 @@ class WeaponSkillList extends DataList<WeaponSKillID, ISKill> {
 	}
 }
 
-export const WeaponSKills = new WeaponSkillList([
+export const WeaponSkills = new WeaponSkillList([
 	...smallSkills,
 	...wield1HSkills,
 	...wield2HSkills,

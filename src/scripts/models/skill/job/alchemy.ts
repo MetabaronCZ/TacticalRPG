@@ -1,16 +1,17 @@
 import { ISkillset } from 'models/skillset';
-import { JobSKillID } from 'models/skill/job/id';
-import { ISKill, SKillType, SKillRange, SKillArea, SKillElement } from 'models/skill';
+import { JobSkillID } from 'models/skill/job/id';
+import { ISkill, SkillType, SkillRange, SkillArea, SkillElement, SkillTarget } from 'models/skill';
 
-const alchemy: Array<[JobSKillID, ISKill]> = [
-	[JobSKillID.ALCHEMY_NONE, {
+const alchemy: Array<[JobSkillID, ISkill]> = [
+	[JobSkillID.ALCHEMY_NONE, {
 		title: 'Alchemy',
 		cost: 0,
-		type: SKillType.ACTIVE,
-		range: SKillRange.R1,
-		area: SKillArea.SINGLE,
+		type: SkillType.ACTIVE,
+		range: SkillRange.R1,
+		area: SkillArea.SINGLE,
+		target: SkillTarget.NONE,
 		isAreaEffect: false,
-		element: SKillElement.NONE,
+		element: SkillElement.NONE,
 		physicalDamage: 0,
 		elementalDamage: 0,
 		status: []

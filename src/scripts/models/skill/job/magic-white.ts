@@ -1,76 +1,82 @@
 import { ISkillset } from 'models/skillset';
-import { JobSKillID } from 'models/skill/job/id';
-import { ISKill, SKillType, SKillRange, SKillArea, SKillElement, SkillStatus } from 'models/skill';
+import { JobSkillID } from 'models/skill/job/id';
+import { ISkill, SkillType, SkillRange, SkillArea, SkillElement, SkillStatus, SkillTarget } from 'models/skill';
 
-const whiteMagic: Array<[JobSKillID, ISKill]> = [
-	[JobSKillID.WHITE_MAGIC_HEAL, {
+const whiteMagic: Array<[JobSkillID, ISkill]> = [
+	[JobSkillID.WHITE_MAGIC_HEAL, {
 		title: 'Heal',
 		cost: 2,
-		type: SKillType.ACTIVE,
-		range: SKillRange.R4,
-		area: SKillArea.SINGLE,
+		type: SkillType.ACTIVE,
+		range: SkillRange.R4,
+		area: SkillArea.SINGLE,
+		target: SkillTarget.ALLY,
 		isAreaEffect: false,
-		element: SKillElement.HOLY,
+		element: SkillElement.HOLY,
 		physicalDamage: 0,
 		elementalDamage: 1,
 		status: []
 	}],
-	[JobSKillID.WHITE_MAGIC_REMEDY, {
+	[JobSkillID.WHITE_MAGIC_REMEDY, {
 		title: 'Remedy',
 		cost: 2,
-		type: SKillType.ACTIVE,
-		range: SKillRange.R4,
-		area: SKillArea.SINGLE,
+		type: SkillType.ACTIVE,
+		range: SkillRange.R4,
+		area: SkillArea.SINGLE,
+		target: SkillTarget.ALLY,
 		isAreaEffect: false,
-		element: SKillElement.HOLY,
+		element: SkillElement.HOLY,
 		physicalDamage: 0,
 		elementalDamage: 0,
 		status: []
 	}],
-	[JobSKillID.WHITE_MAGIC_REGENERATE, {
+	[JobSkillID.WHITE_MAGIC_REGENERATE, {
 		title: 'Regenerate',
 		cost: 2,
-		type: SKillType.ACTIVE,
-		range: SKillRange.R4,
-		area: SKillArea.SINGLE,
+		type: SkillType.ACTIVE,
+		range: SkillRange.R4,
+		area: SkillArea.SINGLE,
+		target: SkillTarget.ALLY,
 		isAreaEffect: false,
-		element: SKillElement.HOLY,
+		element: SkillElement.HOLY,
 		physicalDamage: 0,
 		elementalDamage: 0.5,
 		status: [SkillStatus.REGEN]
 	}],
-	[JobSKillID.WHITE_MAGIC_GROUP_HEAL, {
+	[JobSkillID.WHITE_MAGIC_GROUP_HEAL, {
 		title: 'Group Heal',
 		cost: 4,
-		type: SKillType.ACTIVE,
-		range: SKillRange.R4,
-		area: SKillArea.AOE3x3,
+		type: SkillType.ACTIVE,
+		range: SkillRange.R4,
+		area: SkillArea.AOE3x3,
+		target: SkillTarget.ALLY,
 		isAreaEffect: true,
-		element: SKillElement.HOLY,
+		element: SkillElement.HOLY,
 		physicalDamage: 0,
 		elementalDamage: 0.5,
 		status: []
 	}],
-	[JobSKillID.WHITE_MAGIC_HOLY_AURA, {
+	[JobSkillID.WHITE_MAGIC_HOLY_AURA, {
 		title: 'Holy Aura',
 		cost: 0,
-		type: SKillType.PASSIVE,
-		range: SKillRange.R0,
-		area: SKillArea.AOE3x3,
+		type: SkillType.PASSIVE,
+		range: SkillRange.R0,
+		area: SkillArea.AOE3x3,
+		target: SkillTarget.ALLY,
 		isAreaEffect: true,
-		element: SKillElement.HOLY,
+		element: SkillElement.HOLY,
 		physicalDamage: 0,
 		elementalDamage: 0.25,
 		status: []
 	}],
-	[JobSKillID.WHITE_MAGIC_REVIVE, {
+	[JobSkillID.WHITE_MAGIC_REVIVE, {
 		title: 'Revive',
 		cost: 2,
-		type: SKillType.ACTIVE,
-		range: SKillRange.R4,
-		area: SKillArea.SINGLE,
+		type: SkillType.ACTIVE,
+		range: SkillRange.R4,
+		area: SkillArea.SINGLE,
+		target: SkillTarget.ALLY,
 		isAreaEffect: false,
-		element: SKillElement.HOLY,
+		element: SkillElement.HOLY,
 		physicalDamage: 0,
 		elementalDamage: 0,
 		status: []

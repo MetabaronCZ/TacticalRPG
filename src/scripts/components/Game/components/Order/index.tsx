@@ -23,13 +23,18 @@ const Order: React.SFC<IOrderProps> = ({ order, characters }) => {
 		<div className="Order">
 			<h2 className="Heading">Order</h2>
 
-			{ordered.map((char, i) => (
-				<div className={`Order-item Order-item--${PlayerType.ENEMY === char.player ? 'enemy' : 'ally'}`} key={i}>
-					<div className="Order-item-inner">
-						{char.data.name}
+			{ordered.map((char, i) => {
+				const playerType = `Order-item--${PlayerType.ENEMY === char.player ? 'enemy' : 'ally'}`;
+				const highlighted = (0 === i ? ' Order-item--highlighted' : '');
+
+				return (
+					<div className={`Order-item ${playerType}${highlighted}`} key={i}>
+						<div className="Order-item-inner">
+							{char.data.name}
+						</div>
 					</div>
-				</div>
-			))}
+				);
+			})}
 		</div>
 	);
 };

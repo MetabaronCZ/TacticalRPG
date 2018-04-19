@@ -1,16 +1,17 @@
 import { ISkillset } from 'models/skillset';
-import { JobSKillID } from 'models/skill/job/id';
-import { ISKill, SKillType, SKillRange, SKillArea, SKillElement, SkillStatus } from 'models/skill';
+import { JobSkillID } from 'models/skill/job/id';
+import { ISkill, SkillType, SkillRange, SkillArea, SkillElement, SkillStatus, SkillTarget } from 'models/skill';
 
-const berserking: Array<[JobSKillID, ISKill]> = [
-	[JobSKillID.BERSERKING_BERSERK, {
+const berserking: Array<[JobSkillID, ISkill]> = [
+	[JobSkillID.BERSERKING_BERSERK, {
 		title: 'Berserk',
 		cost: 2,
-		type: SKillType.ACTIVE,
-		range: SKillRange.R0,
-		area: SKillArea.SINGLE,
+		type: SkillType.ACTIVE,
+		range: SkillRange.R0,
+		area: SkillArea.SINGLE,
+		target: SkillTarget.SELF,
 		isAreaEffect: false,
-		element: SKillElement.NONE,
+		element: SkillElement.NONE,
 		physicalDamage: 0,
 		elementalDamage: 0,
 		status: [SkillStatus.BERSERK]

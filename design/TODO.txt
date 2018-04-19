@@ -1,2 +1,6 @@
 TODO:
---	???
+--	this.setState({ x: this.state.x + 1 }) predelat na this.setState(state => ({ x: state.x + 1 }))
+	- je to synchronni (overit)
+	- bere to aktulani state a je zaruceno, ze se vykona ve spravnem poradi
+
+--	u SELF target skillu rovnou predvybrat actora (Berserking)

@@ -30,21 +30,41 @@ export class Position {
 		return false;
 	}
 
+	public static isOnStraightLine(pos: IPosition, ref: IPosition): boolean {
+		return (pos.x === ref.x || pos.y === ref.y || 0 === (Math.abs(pos.x - ref.x) - Math.abs(pos.y - ref.y)));
+	}
+
+	public static getSideTiles(pos: IPosition, obstacles: IPosition[], gridSize: number): IPosition[] {
+		const neighbours: IPosition[] = [];
+
+		neighbours.push(Position.create(pos.x - 1, pos.y));
+		neighbours.push(Position.create(pos.x + 1, pos.y));
+		neighbours.push(Position.create(pos.x, pos.y - 1));
+		neighbours.push(Position.create(pos.x, pos.y + 1));
+
+		return neighbours.filter(n => {
+			return Position.isInGrid(n, gridSize) && !Position.isContained(n, obstacles);
+		});
+	}
+
 	public static getNeighbours(pos: IPosition, obstacles: IPosition[], gridSize: number): IPosition[] {
 		const neighbours: IPosition[] = [];
 
-		if (pos.x - 1 >= 0) {
-			neighbours.push(Position.create(pos.x - 1, pos.y));
+		for (let x = -1; x <= 1; x++) {
+			for (let y = -1; y <= 1; y++) {
+				if (!x && !y) {
+					continue;
+				}
+				neighbours.push(Position.create(pos.x + x, pos.y + y));
+			}
 		}
-		if (pos.x + 1 < gridSize) {
-			neighbours.push(Position.create(pos.x + 1, pos.y));
-		}
-		if (pos.y - 1 >= 0) {
-			neighbours.push(Position.create(pos.x, pos.y - 1));
-		}
-		if (pos.y + 1 < gridSize) {
-			neighbours.push(Position.create(pos.x, pos.y + 1));
-		}
-		return neighbours.filter(n => !Position.isContained(n, obstacles));
+
+		return neighbours.filter(n => {
+			return Position.isInGrid(n, gridSize) && !Position.isContained(n, obstacles);
+		});
+	}
+
+	public static isInGrid(pos: IPosition, gridSize: number): boolean {
+		return pos.x >= 0 && pos.y >= 0 && pos.x < gridSize && pos.y < gridSize;
 	}
 }

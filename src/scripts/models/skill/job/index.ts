@@ -1,6 +1,6 @@
 import DataList from 'models/data-list';
-import { JobSKillID } from 'models/skill/job/id';
-import { ISKill, SKillType, SKillRange, SKillArea, SKillElement } from 'models/skill';
+import { JobSkillID } from 'models/skill/job/id';
+import { ISkill, SkillType, SkillRange, SkillArea, SkillElement, SkillTarget } from 'models/skill';
 
 import berserking from 'models/skill/job/berserking';
 import knighthood from 'models/skill/job/knighthood';
@@ -37,15 +37,18 @@ import earthMagic from 'models/skill/job/magic-earth';
 import iceMagic from 'models/skill/job/magic-ice';
 import thunderMagic from 'models/skill/job/magic-thunder';
 
-export const JobSKills = new DataList<JobSKillID, ISKill>([
-	[JobSKillID.NONE, {
+export class JobSkillList extends DataList<JobSkillID, ISkill> {}
+
+export const JobSkills = new JobSkillList([
+	[JobSkillID.NONE, {
 		title: 'Job Skill',
 		cost: 0,
-		type: SKillType.ACTIVE,
-		range: SKillRange.R1,
-		area: SKillArea.SINGLE,
+		type: SkillType.ACTIVE,
+		range: SkillRange.R1,
+		area: SkillArea.SINGLE,
+		target: SkillTarget.NONE,
 		isAreaEffect: false,
-		element: SKillElement.NONE,
+		element: SkillElement.NONE,
 		physicalDamage: 0,
 		elementalDamage: 0,
 		status: []

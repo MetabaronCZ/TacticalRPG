@@ -15,7 +15,7 @@ export const getMovableTiles = (start: IPosition, obstacles: IPosition[], max: n
 		if (!curr) {
 			continue;
 		}
-		const neighbours = Position.getNeighbours(curr, obstacles, gridSize);
+		const neighbours = Position.getSideTiles(curr, obstacles, gridSize);
 
 		for (const n of neighbours) {
 			const newCost = cost[curr.id] + n.cost;

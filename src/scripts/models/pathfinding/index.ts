@@ -4,15 +4,13 @@ export interface IGraph {
 	[id: string]: IPosition;
 }
 
-export type IPath = IPosition[];
-
 export const getPriority = (a: IPosition, b: IPosition): number => {
 	return Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
 };
 
-export const constructPath = (start: IPosition, target: IPosition, graph: IGraph): IPath => {
+export const constructPath = (start: IPosition, target: IPosition, graph: IGraph): IPosition[] => {
 	let curr: IPosition = target;
-	const path: IPath = [];
+	const path: IPosition[] = [];
 
 	while (!Position.isEqual(curr, start)) {
 		if (Position.isEqual(curr, Position.NULL_POSITION)) {

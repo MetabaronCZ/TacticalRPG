@@ -1,16 +1,17 @@
 import { ISkillset } from 'models/skillset';
-import { JobSKillID } from 'models/skill/job/id';
-import { ISKill, SKillType, SKillRange, SKillArea, SKillElement } from 'models/skill';
+import { JobSkillID } from 'models/skill/job/id';
+import { ISkill, SkillType, SkillRange, SkillArea, SkillElement, SkillTarget } from 'models/skill';
 
-const aim: Array<[JobSKillID, ISKill]> = [
-	[JobSKillID.AIM_NONE, {
+const aim: Array<[JobSkillID, ISkill]> = [
+	[JobSkillID.AIM_NONE, {
 		title: 'Aim',
 		cost: 0,
-		type: SKillType.ACTIVE,
-		range: SKillRange.R1,
-		area: SKillArea.SINGLE,
+		type: SkillType.ACTIVE,
+		range: SkillRange.R1,
+		area: SkillArea.SINGLE,
+		target: SkillTarget.NONE,
 		isAreaEffect: false,
-		element: SKillElement.NONE,
+		element: SkillElement.NONE,
 		physicalDamage: 0,
 		elementalDamage: 0,
 		status: []

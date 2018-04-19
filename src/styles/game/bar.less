@@ -1,24 +1,3 @@
-.mx-bar-color-variant(@type, @color) {
-	&::before {
-		.u-text-small;
-		.u-weight-bold;
-
-		position: absolute;
-		top: 0;
-		left: -@label-width;
-		width: @label-width;
-		content: @type;
-		color: @color-grey-dark;
-		text-align: center;
-		line-height: 1;
-		transform: skew(-@skew);
-	}
-
-	.Bar-item-value {
-		background: linear-gradient(to right, darken(@color, 10%), @color);
-	}
-}
-
 .Bar {
 	@border-size: 3px;
 	@border-radius: 5px;

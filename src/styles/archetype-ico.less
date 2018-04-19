@@ -1,14 +1,6 @@
 .ArchetypeIco {
 	@border-size: 1px;
 
-	.mx-primary(@color) {
-		background-color: @color;
-
-		&::before {
-			background-color: @color;
-		}
-	}
-
 	display: inline-block;
 	border-radius: 100%;
 	overflow: hidden;
@@ -38,15 +30,15 @@
 	}
 
 	&--primaryP {
-		.mx-primary(@color-red);
+		.mx-archetype-primary(@color-red);
 	}
 
 	&--primaryS {
-		.mx-primary(@color-green);
+		.mx-archetype-primary(@color-green);
 	}
 
 	&--primaryM {
-		.mx-primary(@color-blue);
+		.mx-archetype-primary(@color-blue);
 	}
 
 	&--secondaryP::after {

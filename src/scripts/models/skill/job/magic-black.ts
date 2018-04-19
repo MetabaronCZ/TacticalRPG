@@ -1,16 +1,17 @@
 import { ISkillset } from 'models/skillset';
-import { JobSKillID } from 'models/skill/job/id';
-import { ISKill, SKillType, SKillRange, SKillArea, SKillElement } from 'models/skill';
+import { JobSkillID } from 'models/skill/job/id';
+import { ISkill, SkillType, SkillRange, SkillArea, SkillElement, SkillTarget } from 'models/skill';
 
-const blackMagic: Array<[JobSKillID, ISKill]> = [
-	[JobSKillID.BLACK_MAGIC_DARK_AURA, {
+const blackMagic: Array<[JobSkillID, ISkill]> = [
+	[JobSkillID.BLACK_MAGIC_DARK_AURA, {
 		title: 'Dark Aura',
 		cost: 0,
-		type: SKillType.PASSIVE,
-		range: SKillRange.R0,
-		area: SKillArea.AOE3x3,
+		type: SkillType.PASSIVE,
+		range: SkillRange.R0,
+		area: SkillArea.AOE3x3,
+		target: SkillTarget.SELF,
 		isAreaEffect: true,
-		element: SKillElement.DARK,
+		element: SkillElement.DARK,
 		physicalDamage: 0,
 		elementalDamage: 0,
 		status: []

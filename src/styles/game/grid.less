@@ -42,40 +42,20 @@
 				}
 			}
 
-			&.is-movable {
-				border-color: @color-blue;
-
-				&::before {
-					background-color: fade(@color-blue, 10%);
-				}
-
-				&:hover::before {
-					background-color: fade(@color-blue, 30%);
-				}
+			&.is-targetArea {
+				.mx-grid-block-variant(@color-blue);
 			}
 
-			&.is-highlighted {
-				border-color: @color-green;
+			&.is-targetable {
+				.mx-grid-block-variant(@color-red);
+			}
 
-				&::before {
-					background-color: fade(@color-green, 10%);
-				}
-
-				&:hover::before {
-					background-color: fade(@color-green, 30%);
-				}
+			&.is-effectArea {
+				.mx-grid-block-variant(@color-green);
 			}
 
 			&.is-selected {
-				border-color: @color-yellow;
-
-				&::before {
-					background-color: fade(@color-yellow, 10%);
-				}
-
-				&:hover::before {
-					background-color: fade(@color-yellow, 30%);
-				}
+				.mx-grid-block-variant(@color-yellow);
 			}
 		}
 	}

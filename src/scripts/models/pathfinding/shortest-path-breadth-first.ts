@@ -17,7 +17,7 @@ export const getShortestPath = (start: IPosition, target: IPosition, obstacles: 
 		if (Position.isEqual(curr, target)) {
 			break;
 		}
-		const neighbours = Position.getNeighbours(curr, obstacles, gridSize);
+		const neighbours = Position.getSideTiles(curr, obstacles, gridSize);
 
 		for (const n of neighbours) {
 			if (!graph[n.id]) {
