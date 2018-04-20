@@ -18,11 +18,11 @@ const renderArchetype = (char: ICharacterData) => (
 );
 
 const renderMoveDown = (char: ICharacterData, onMoveDown?: IOnMoveDown) => (
-	<LinkIco ico="down" title="Move down" onClick={onMoveDown && onMoveDown(char.id)} />
+	<LinkIco ico="down" title="Move down" onClick={onMoveDown && onMoveDown(char)} />
 );
 
 const renderMoveUp = (char: ICharacterData, onMoveUp?: IOnMoveUp) => (
-	<LinkIco ico="up" title="Move up" onClick={onMoveUp && onMoveUp(char.id)} />
+	<LinkIco ico="up" title="Move up" onClick={onMoveUp && onMoveUp(char)} />
 );
 
 const renderEdit = (char: ICharacterData) => (
@@ -30,7 +30,7 @@ const renderEdit = (char: ICharacterData) => (
 );
 
 const renderDelete = (char: ICharacterData, onDelete?: IOnDelete) => (
-	<LinkButton onClick={onDelete ? onDelete(char.id, char.name) : undefined}>Delete</LinkButton>
+	<LinkButton onClick={onDelete ? onDelete(char, char.name) : undefined}>Delete</LinkButton>
 );
 
 const renderOffHandBothWield = (title: string) => (

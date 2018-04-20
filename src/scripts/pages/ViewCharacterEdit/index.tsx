@@ -5,7 +5,7 @@ import { withRouter, RouteComponentProps } from 'react-router';
 
 import { IStore, IAction } from 'store';
 import { goto, gotoFn } from 'utils/nav';
-import actions from 'actions/characters';
+import Actions from 'actions/characters';
 import { ICharacterData } from 'models/character-data';
 
 import Page from 'components/Page';
@@ -25,7 +25,7 @@ const mapStateToProps = (state: IStore): IStateToProps => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
 	onSubmit: (history: History) => (char: ICharacterData) => {
-		dispatch(actions.editCharacter(char));
+		dispatch(Actions.editCharacter(char));
 		goto(history, '/character-list');
 	}
 });

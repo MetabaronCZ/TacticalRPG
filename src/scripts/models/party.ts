@@ -48,14 +48,14 @@ export class Party {
 		return characters.map((char, i) => CharacterData.random(char, jobs[i]));
 	}
 
-	public static removeCharacter(characterId: string, partyList: IParty[]): IParty[] {
-		if (!characterId || !partyList.length) {
+	public static removeCharacter(partyList: IParty[], char?: ICharacterData): IParty[] {
+		if (!char || !partyList.length) {
 			return partyList;
 		}
 		const newPartyList: IParty[] = [];
 
 		for (const party of partyList) {
-			const newChars = party.characters.filter(charId => charId !== characterId);
+			const newChars = party.characters.filter(charId => charId !== char.id);
 
 			if (newChars.length) {
 				newPartyList.push({

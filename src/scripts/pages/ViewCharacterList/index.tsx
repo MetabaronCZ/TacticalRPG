@@ -4,13 +4,13 @@ import { withRouter, RouteComponentProps } from 'react-router';
 
 import { gotoFn } from 'utils/nav';
 import { IStore, IAction } from 'store';
-import actions from 'actions/characters';
+import Actions from 'actions/characters';
 import { ICharacterData } from 'models/character-data';
 import ViewCharacterList from 'pages/ViewCharacterList/template';
 
-export type IOnMoveDown = (id: string) => () => void;
-export type IOnMoveUp = (id: string) => () => void;
-export type IOnDelete = (id: string, name: string) => () => void;
+export type IOnMoveDown = (char: ICharacterData) => () => void;
+export type IOnMoveUp = (char: ICharacterData) => () => void;
+export type IOnDelete = (char: ICharacterData, name: string) => () => void;
 
 interface IStateToProps {
 	characters: ICharacterData[];
@@ -27,15 +27,15 @@ const mapStateToProps = (state: IStore): IStateToProps => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
-	onMoveDown: (id: string) => () => {
-		dispatch(actions.moveDownList(id));
+	onMoveDown: (char: ICharacterData) => () => {
+		dispatch(Actions.moveDownList(char));
 	},
-	onMoveUp: (id: string) => () => {
-		dispatch(actions.moveUpList(id));
+	onMoveUp: (char: ICharacterData) => () => {
+		dispatch(Actions.moveUpList(char));
 	},
-	onDelete: (id: string, name: string) => () => {
+	onDelete: (char: ICharacterData, name: string) => () => {
 		if (confirm(`Do you realy want to delete "${name}"?`)) {
-			dispatch(actions.removeCharacter(id));
+			dispatch(Actions.removeCharacter(char));
 		}
 	}
 });

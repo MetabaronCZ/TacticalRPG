@@ -1,4 +1,4 @@
-import { IAction } from 'store';
+import { createAction } from 'redux-actions';
 import { ICharacterData } from 'models/character-data';
 
 export enum ActionID {
@@ -9,35 +9,10 @@ export enum ActionID {
 	MOVE_UP_LIST = 'CHARACTER_MOVE_UP_LIST'
 }
 
-const addCharacter = (value: ICharacterData): IAction => ({
-	type: ActionID.ADD,
-	value
-});
-
-const editCharacter = (value: ICharacterData): IAction => ({
-	type: ActionID.EDIT,
-	value
-});
-
-const removeCharacter = (id: string): IAction => ({
-	type: ActionID.REMOVE,
-	id
-});
-
-const moveDownList = (id: string): IAction => ({
-	type: ActionID.MOVE_DOWN_LIST,
-	id
-});
-
-const moveUpList = (id: string): IAction => ({
-	type: ActionID.MOVE_UP_LIST,
-	id
-});
-
 export default {
-	addCharacter,
-	editCharacter,
-	removeCharacter,
-	moveDownList,
-	moveUpList
+	addCharacter: createAction(ActionID.ADD, (char: ICharacterData) => char),
+	editCharacter: createAction(ActionID.EDIT, (char: ICharacterData) => char),
+	removeCharacter: createAction(ActionID.REMOVE, (char: ICharacterData) => char),
+	moveDownList: createAction(ActionID.MOVE_DOWN_LIST, (char: ICharacterData) => char),
+	moveUpList: createAction(ActionID.MOVE_UP_LIST, (char: ICharacterData) => char)
 };

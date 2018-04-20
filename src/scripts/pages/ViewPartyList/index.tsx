@@ -9,9 +9,9 @@ import { IParty } from 'models/party';
 import actions from 'actions/parties';
 import { IAction, IStore } from 'store';
 
-export type IOnMoveDown = (id: string) => () => void;
-export type IOnMoveUp = (id: string) => () => void;
-export type IOnDelete = (id: string, name: string) => () => void;
+export type IOnMoveDown = (party: IParty) => () => void;
+export type IOnMoveUp = (party: IParty) => () => void;
+export type IOnDelete = (party: IParty, name: string) => () => void;
 
 interface IStateToProps {
 	parties: IParty[];
@@ -28,15 +28,15 @@ const mapStateToProps = (state: IStore): IStateToProps => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
-	onMoveDown: (id: string) => () => {
-		dispatch(actions.moveDownList(id));
+	onMoveDown: (party: IParty) => () => {
+		dispatch(actions.moveDownList(party));
 	},
-	onMoveUp: (id: string) => () => {
-		dispatch(actions.moveUpList(id));
+	onMoveUp: (party: IParty) => () => {
+		dispatch(actions.moveUpList(party));
 	},
-	onDelete: (id: string, name: string) => () => {
+	onDelete: (party: IParty, name: string) => () => {
 		if (confirm(`Do you realy want to delete "${name}"?`)) {
-			dispatch(actions.removeParty(id));
+			dispatch(actions.removeParty(party));
 		}
 	}
 });

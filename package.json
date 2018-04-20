@@ -15,6 +15,7 @@
     "@types/react-redux": "^5.0.15",
     "@types/react-router": "^4.0.23",
     "@types/react-router-dom": "^4.2.6",
+    "@types/redux-actions": "^2.2.4",
     "@types/uuid": "^3.4.3",
     "autoprefixer": "^8.2.0",
     "babel-core": "^6.26.0",
@@ -45,6 +46,7 @@
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
     "redux": "^3.7.2",
+    "redux-actions": "^2.3.0",
     "tslib": "^1.9.0",
     "uuid": "^3.2.1"
   }

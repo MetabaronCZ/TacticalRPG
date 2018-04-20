@@ -1,27 +1,18 @@
-import { IAction } from 'store';
+import { handleActions } from 'redux-actions';
+
 import { ActionID } from 'actions/characters';
 import * as Indexable from 'models/indexable';
 import { ICharacterData } from 'models/character-data';
 
-// characters reducer
-const characters = (state: ICharacterData[] = [], action: IAction): ICharacterData[] => {
-	switch (action.type) {
-		case ActionID.ADD:
-			return Indexable.add(action.value, state);
+const defaultState: ICharacterData[] = [];
 
-		case ActionID.EDIT:
-			return Indexable.edit(action.value, state);
-
-		case ActionID.REMOVE:
-			return Indexable.remove(action.id, state);
-
-		case ActionID.MOVE_DOWN_LIST:
-			return Indexable.swap(action.id, +1, state);
-
-		case ActionID.MOVE_UP_LIST:
-			return Indexable.swap(action.id, -1, state);
-	}
-	return state;
-};
-
-export default characters;
+export default handleActions<ICharacterData[], ICharacterData>(
+	{
+		[ActionID.ADD]: (state, { payload }) => Indexable.add(state, payload),
+		[ActionID.EDIT]: (state, { payload }) => Indexable.edit(state, payload),
+		[ActionID.REMOVE]: (state, { payload }) => Indexable.remove(state, payload),
+		[ActionID.MOVE_DOWN_LIST]: (state, { payload }) => Indexable.swap(state, +1, payload),
+		[ActionID.MOVE_UP_LIST]: (state, { payload }) => Indexable.swap(state, -1, payload)
+	},
+	defaultState
+);

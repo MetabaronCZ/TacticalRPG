@@ -1,4 +1,4 @@
-import { IAction } from 'store';
+import { createAction } from 'redux-actions';
 import { IParty } from 'models/party';
 
 export enum ActionID {
@@ -9,35 +9,10 @@ export enum ActionID {
 	MOVE_UP_LIST = 'PARTY_MOVE_UP_LIST'
 }
 
-const addParty = (value: IParty): IAction => ({
-	type: ActionID.ADD,
-	value
-});
-
-const editParty = (value: IParty): IAction => ({
-	type: ActionID.EDIT,
-	value
-});
-
-const removeParty = (id: string): IAction => ({
-	type: ActionID.REMOVE,
-	id
-});
-
-const moveDownList = (id: string): IAction => ({
-	type: ActionID.MOVE_DOWN_LIST,
-	id
-});
-
-const moveUpList = (id: string): IAction => ({
-	type: ActionID.MOVE_UP_LIST,
-	id
-});
-
 export default {
-	addParty,
-	editParty,
-	removeParty,
-	moveDownList,
-	moveUpList
+	addParty: createAction(ActionID.ADD, (party: IParty) => party),
+	editParty: createAction(ActionID.EDIT, (party: IParty) => party),
+	removeParty: createAction(ActionID.REMOVE, (party: IParty) => party),
+	moveDownList: createAction(ActionID.MOVE_DOWN_LIST, (party: IParty) => party),
+	moveUpList: createAction(ActionID.MOVE_UP_LIST, (party: IParty) => party)
 };
