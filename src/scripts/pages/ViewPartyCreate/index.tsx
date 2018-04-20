@@ -6,6 +6,7 @@ import { withRouter, RouteComponentProps } from 'react-router';
 import Page from 'components/Page';
 import PartyCreation from 'components/PartyCreation';
 
+import * as Selector from 'selectors';
 import actions from 'actions/parties';
 import { goto, gotoFn } from 'utils/nav';
 import { IStore, IAction } from 'store';
@@ -22,7 +23,7 @@ interface IViewPartyCreateContainerProps extends RouteComponentProps<any> {
 }
 
 const mapStateToProps = (state: IStore): IStateToProps => ({
-	characters: state.characters
+	characters: Selector.getCharacters(state)
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({

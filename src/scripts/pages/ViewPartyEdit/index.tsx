@@ -7,6 +7,7 @@ import Page from 'components/Page';
 import PartyCreation from 'components/PartyCreation';
 
 import actions from 'actions/parties';
+import * as Selector from 'selectors';
 import { IStore, IAction } from 'store';
 import { goto, gotoFn } from 'utils/nav';
 
@@ -23,8 +24,8 @@ interface IViewPartyEditContainerProps extends RouteComponentProps<any> {
 }
 
 const mapStateToProps = (state: IStore): IStateToProps => ({
-	parties: state.parties,
-	characters: state.characters
+	characters: Selector.getCharacters(state),
+	parties: Selector.getParties(state)
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({

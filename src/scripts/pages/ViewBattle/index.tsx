@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router';
 
 import { IStore } from 'store';
+import * as Selector from 'selectors';
 import { goto, gotoFn } from 'utils/nav';
 
 import { IParty } from 'models/party';
@@ -26,8 +27,8 @@ const exit = (history: History) => () => {
 };
 
 const mapStateToProps = (state: IStore): IStateToProps => ({
-	characters: state.characters,
-	parties: state.parties
+	characters: Selector.getCharacters(state),
+	parties: Selector.getParties(state)
 });
 
 const ViewCharacterEditContainer: React.SFC<IStateToProps & RouteComponentProps<any>> = props => {

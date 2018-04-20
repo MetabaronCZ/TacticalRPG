@@ -6,7 +6,8 @@ import ViewPartyList from 'pages/ViewPartyList/template';
 
 import { gotoFn } from 'utils/nav';
 import { IParty } from 'models/party';
-import actions from 'actions/parties';
+import * as Selector from 'selectors';
+import Actions from 'actions/parties';
 import { IAction, IStore } from 'store';
 
 export type IOnMoveDown = (party: IParty) => () => void;
@@ -24,19 +25,19 @@ interface IViewPartyListContainerProps extends RouteComponentProps<any> {
 }
 
 const mapStateToProps = (state: IStore): IStateToProps => ({
-	parties: state.parties
+	parties: Selector.getParties(state)
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
 	onMoveDown: (party: IParty) => () => {
-		dispatch(actions.moveDownList(party));
+		dispatch(Actions.moveDownList(party));
 	},
 	onMoveUp: (party: IParty) => () => {
-		dispatch(actions.moveUpList(party));
+		dispatch(Actions.moveUpList(party));
 	},
 	onDelete: (party: IParty, name: string) => () => {
 		if (confirm(`Do you realy want to delete "${name}"?`)) {
-			dispatch(actions.removeParty(party));
+			dispatch(Actions.removeParty(party));
 		}
 	}
 });

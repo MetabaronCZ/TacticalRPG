@@ -4,3 +4,6 @@ TODO:
 	- bere to aktulani state a je zaruceno, ze se vykona ve spravnem poradi
 
 --	u SELF target skillu rovnou predvybrat actora (Berserking)
+
+--	odmazat IAction >> mistzo toho spravny datovy typ
+--	rename actions > Actions

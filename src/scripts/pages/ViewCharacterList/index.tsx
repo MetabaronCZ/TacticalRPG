@@ -3,6 +3,7 @@ import { connect, Dispatch } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router';
 
 import { gotoFn } from 'utils/nav';
+import * as Selector from 'selectors';
 import { IStore, IAction } from 'store';
 import Actions from 'actions/characters';
 import { ICharacterData } from 'models/character-data';
@@ -23,7 +24,7 @@ interface IViewCharacterListContainerProps extends RouteComponentProps<any> {
 }
 
 const mapStateToProps = (state: IStore): IStateToProps => ({
-	characters: state.characters
+	characters: Selector.getCharacters(state)
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({

@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router';
 
 import { IStore } from 'store';
+import * as Selector from 'selectors';
 import { goto, gotoFn } from 'utils/nav';
 
 import Page from 'components/Page';
@@ -22,8 +23,8 @@ interface IStateToProps {
 }
 
 const mapStateToProps = (state: IStore): IStateToProps => ({
-	parties: state.parties,
-	characters: state.characters
+	characters: Selector.getCharacters(state),
+	parties: Selector.getParties(state)
 });
 
 const onStart = (history: History) => (params: IOnStartParams = {}) => {
