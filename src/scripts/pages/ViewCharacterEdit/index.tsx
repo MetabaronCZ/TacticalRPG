@@ -3,8 +3,8 @@ import { History } from 'history';
 import { connect, Dispatch } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router';
 
+import { IStore } from 'store';
 import * as Selector from 'selectors';
-import { IStore, IAction } from 'store';
 import { goto, gotoFn } from 'utils/nav';
 import Actions from 'actions/characters';
 import { ICharacterData } from 'models/character-data';
@@ -24,7 +24,7 @@ const mapStateToProps = (state: IStore): IStateToProps => ({
 	characters: Selector.getCharacters(state)
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
+const mapDispatchToProps = (dispatch: Dispatch<ICharacterData>) => ({
 	onSubmit: (history: History) => (char: ICharacterData) => {
 		dispatch(Actions.editCharacter(char));
 		goto(history, '/character-list');

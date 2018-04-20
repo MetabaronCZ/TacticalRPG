@@ -6,10 +6,10 @@ import { withRouter, RouteComponentProps } from 'react-router';
 import Page from 'components/Page';
 import PartyCreation from 'components/PartyCreation';
 
+import { IStore } from 'store';
+import Actions from 'actions/parties';
 import * as Selector from 'selectors';
-import actions from 'actions/parties';
 import { goto, gotoFn } from 'utils/nav';
-import { IStore, IAction } from 'store';
 
 import { IParty } from 'models/party';
 import { ICharacterData } from 'models/character-data';
@@ -26,9 +26,9 @@ const mapStateToProps = (state: IStore): IStateToProps => ({
 	characters: Selector.getCharacters(state)
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
+const mapDispatchToProps = (dispatch: Dispatch<IParty>) => ({
 	onSubmit: (history: History) => (value: IParty): void => {
-		dispatch(actions.addParty(value));
+		dispatch(Actions.addParty(value));
 		goto(history, '/party-list');
 	}
 });

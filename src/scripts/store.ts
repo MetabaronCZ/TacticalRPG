@@ -10,11 +10,6 @@ export interface IStore {
 	readonly parties: IParty[];
 }
 
-export interface IAction {
-	readonly type: string;
-	readonly [data: string]: any;
-}
-
 class Store {
 	public static KEY = 'game'; // storage key
 	private value: ReduxStore<IStore>; // store instance

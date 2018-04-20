@@ -4,11 +4,11 @@ import { withRouter, RouteComponentProps } from 'react-router';
 
 import ViewPartyList from 'pages/ViewPartyList/template';
 
+import { IStore } from 'store';
 import { gotoFn } from 'utils/nav';
 import { IParty } from 'models/party';
 import * as Selector from 'selectors';
 import Actions from 'actions/parties';
-import { IAction, IStore } from 'store';
 
 export type IOnMoveDown = (party: IParty) => () => void;
 export type IOnMoveUp = (party: IParty) => () => void;
@@ -28,7 +28,7 @@ const mapStateToProps = (state: IStore): IStateToProps => ({
 	parties: Selector.getParties(state)
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
+const mapDispatchToProps = (dispatch: Dispatch<IParty>) => ({
 	onMoveDown: (party: IParty) => () => {
 		dispatch(Actions.moveDownList(party));
 	},

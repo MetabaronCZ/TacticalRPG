@@ -2,9 +2,9 @@ import React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router';
 
+import { IStore } from 'store';
 import { gotoFn } from 'utils/nav';
 import * as Selector from 'selectors';
-import { IStore, IAction } from 'store';
 import Actions from 'actions/characters';
 import { ICharacterData } from 'models/character-data';
 import ViewCharacterList from 'pages/ViewCharacterList/template';
@@ -27,7 +27,7 @@ const mapStateToProps = (state: IStore): IStateToProps => ({
 	characters: Selector.getCharacters(state)
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
+const mapDispatchToProps = (dispatch: Dispatch<ICharacterData>) => ({
 	onMoveDown: (char: ICharacterData) => () => {
 		dispatch(Actions.moveDownList(char));
 	},

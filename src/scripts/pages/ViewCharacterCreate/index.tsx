@@ -6,7 +6,6 @@ import { withRouter, RouteComponentProps } from 'react-router';
 import Page from 'components/Page';
 import CharacterCreation from 'components/CharacterCreation';
 
-import { IAction } from 'store';
 import { goto, gotoFn } from 'utils/nav';
 import Actions from 'actions/characters';
 import { ICharacterData } from 'models/character-data';
@@ -16,7 +15,7 @@ interface IViewCharacterCreateContainerProps extends RouteComponentProps<any> {
 	onBack: () => void;
 }
 
-const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
+const mapDispatchToProps = (dispatch: Dispatch<ICharacterData>) => ({
 	onSubmit: (history: History) => (value: ICharacterData): void => {
 		dispatch(Actions.addCharacter(value));
 		goto(history, '/character-list');
