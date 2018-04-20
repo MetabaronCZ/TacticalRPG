@@ -93,15 +93,14 @@ class BattleSetup extends React.Component<IBattleSetupProps, IBattleSetupState> 
 	}
 
 	private onChange(e: SyntheticEvent<any>) {
-		const field = e.currentTarget.name;
-		const value = e.currentTarget.value;
+		const { name, value } = e.currentTarget;
 
-		this.setState({
+		this.setState(state => ({
 			fields: {
-				...this.state.fields,
-				[field]: value
+				...state.fields,
+				[name]: value
 			}
-		});
+		}));
 	}
 
 	private onSubmit(e: SyntheticEvent<any>) {

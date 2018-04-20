@@ -105,8 +105,7 @@ class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationS
 	}
 
 	private onChange(e: SyntheticEvent<any>) {
-		const fields = this.state.fields;
-		const errors = this.state.errors;
+		const { fields, errors } = this.state;
 		let field = e.currentTarget.name;
 		let value = e.currentTarget.value;
 
@@ -167,12 +166,12 @@ class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationS
 	}
 
 	private handleValidationError(field: string, error: string|null) {
-		this.setState({
+		this.setState(state => ({
 			errors: {
-				...this.state.errors,
-				[field]: (error ? error : undefined)
+				...state.errors,
+				[field]: error || undefined
 			}
-		});
+		}));
 	}
 
 	private filterCharacters(character?: ICharacterData): ICharacterData[] {

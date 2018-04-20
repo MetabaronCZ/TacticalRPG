@@ -203,14 +203,14 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 
 		// update actor data
 		this.setState(
-			{
-				characters: this.state.characters.map(char => {
+			state => ({
+				characters: state.characters.map(char => {
 					if (actor.data.id === char.data.id) {
 						return Character.startTurn(actor);
 					}
 					return char;
 				})
-			},
+			}),
 			() => this.act()
 		);
 	}
@@ -232,10 +232,10 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 			actions = Character.getActions(actor, this.state.act.hasMoved);
 		}
 
-		this.setState({
+		this.setState(state => ({
 			phase: GamePhase.ACT,
 			act: {
-				...this.state.act,
+				...state.act,
 				action: undefined,
 				actionMenu: actions,
 				movePath: undefined,
@@ -246,7 +246,7 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 				skillEffectArea: undefined,
 				skillEffectTargets: undefined
 			}
-		});
+		}));
 	}
 
 	private endTurn() {
@@ -263,7 +263,7 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 
 		const order = Order.get(characters, this.initiative);
 
-		return this.setState(
+		this.setState(
 			{
 				phase: GamePhase.IDLE,
 				act: {
@@ -292,20 +292,19 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 		const movable = getMovableTiles(actor.position, obstacles, range, gridSize);
 
 		// show movable area
-		this.setState({
+		this.setState(state => ({
 			act: {
-				...this.state.act,
+				...state.act,
 				action,
 				actionMenu: Character.getMoveActions(),
 				moveArea: movable
 			}
-		});
+		}));
 	}
 
 	private move() {
 		const actor = this.getActor();
-		const state = this.state;
-		const path = state.act.movePath;
+		const path = this.state.act.movePath;
 
 		if (!actor) {
 			throw new Error('Could not MOVE - actor does not exist');
@@ -317,12 +316,12 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 		const timing = Array(path.length).fill(moveAnimDuration);
 
 		this.setState(
-			{
+			state => ({
 				act: {
 					...state.act,
 					actionMenu: undefined
 				}
-			},
+			}),
 			() => {
 				// animate movement
 				const moveAnim = new Animation(timing, step => {
@@ -330,8 +329,8 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 
 					// change character position
 					this.setState(
-						{
-							characters: this.state.characters.map(char => {
+						state => ({
+							characters: state.characters.map(char => {
 								if (char.data.id === actor.data.id) {
 									return {
 										...actor,
@@ -344,7 +343,7 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 								}
 								return char;
 							})
-						},
+						}),
 						() => {
 							// return to main menu
 							if (step.isLast) {
@@ -361,15 +360,15 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 
 	private endMove() {
 		this.setState(
-			{
+			state => ({
 				act: {
-					...this.state.act,
+					...state.act,
 					hasMoved: true,
 					moveArea: undefined,
 					movePath: undefined,
 					moveTarget: undefined
 				}
-			},
+			}),
 			() => this.act()
 		);
 	}
@@ -385,15 +384,15 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 		const targets = Skill.getTargets(actor, skills[0], this.state.characters, targetable);
 
 		// show skill targetable area
-		this.setState({
+		this.setState(state => ({
 			act: {
-				...this.state.act,
+				...state.act,
 				action,
 				actionMenu: Character.getSkillActions(action.title, action.cost),
 				skillTargets: targets,
 				skillTargetArea: targetable
 			}
-		});
+		}));
 	}
 
 	private runSkill() {
@@ -436,15 +435,15 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 
 	private endSkill() {
 		this.setState(
-			{
+			state => ({
 				act: {
-					...this.state.act,
+					...state.act,
 					skillTargetArea: undefined,
 					skillTargets: undefined,
 					skillEffectArea: undefined,
 					skillEffectTargets: undefined
 				}
-			},
+			}),
 			() => this.endTurn()
 		);
 	}
@@ -478,14 +477,14 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 		const obstacles = characters.map(char => char.position);
 		const path = getShortestPath(actor.position, position, obstacles, gridSize);
 
-		this.setState({
+		this.setState(state => ({
 			act: {
-				...this.state.act,
+				...state.act,
 				actionMenu: Character.getMoveActions(path),
 				moveTarget: position,
 				movePath: path
 			}
-		});
+		}));
 	}
 
 	private selectSkillTarget(position: IPosition) {
@@ -504,16 +503,16 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 		const effectArea = ArrayUtils.getIntersection(effectAreas, pos => pos.id);
 		const targets = Skill.getEffectTargets(actor, skills[0], effectArea, characters);
 
-		this.setState({
+		this.setState(state => ({
 			act: {
-				...this.state.act,
+				...state.act,
 				actionMenu: Character.getSkillActions(action.title, action.cost, skillTargets),
 				skillTargetArea: undefined,
 				skillTargets: undefined,
 				skillEffectArea: effectArea,
 				skillEffectTargets: targets
 			}
-		});
+		}));
 	}
 
 	private onTileSelect(position: IPosition) {

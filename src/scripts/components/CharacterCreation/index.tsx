@@ -128,31 +128,30 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 	}
 
 	private onBack() {
-		if (1 === this.state.step) {
+		const step = this.state.step;
+		const onBack = this.props.onBack;
+
+		if (1 === step) {
 			// exit Character Creation
-			if ('function' === typeof this.props.onBack) {
-				this.props.onBack();
+			if ('function' === typeof onBack) {
+				onBack();
 			}
 		} else {
 			// return to previous step
-			this.setState({
-				step: this.state.step - 1
-			});
+			this.setState({ step: step - 1 });
 		}
 	}
 
 	private onChange(e: SyntheticEvent<any>) {
-		const field = e.currentTarget.name;
-		const value = e.currentTarget.value;
+		const { name, value } = e.currentTarget;
+		validateField(name, value, this.handleValidationError);
 
-		validateField(field, value, this.handleValidationError);
-
-		this.setState({
+		this.setState(state => ({
 			fields: {
-				...this.state.fields,
-				[field]: value
+				...state.fields,
+				[name]: value
 			}
-		});
+		}));
 	}
 
 	private onSubmit(e: SyntheticEvent<any>) {
@@ -163,26 +162,26 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 		if (!isValidForm) {
 			return;
 		}
+		const { step, fields } = this.state;
+		const onSubmit = this.props.onSubmit;
 
-		if (this.state.step < steps.length) {
+		if (step < steps.length) {
 			// go to next step
-			this.setState({
-				step: this.state.step + 1
-			});
+			this.setState({ step: step + 1 });
 
-		} else if ('function' === typeof this.props.onSubmit) {
+		} else if ('function' === typeof onSubmit) {
 			// submit data from all steps
-			this.props.onSubmit(this.state.fields);
+			onSubmit(fields);
 		}
 	}
 
 	private handleValidationError(field: string, error: string|null) {
-		this.setState({
+		this.setState(state => ({
 			errors: {
-				...this.state.errors,
-				[field]: (error ? error : undefined)
+				...state.errors,
+				[field]: error || undefined
 			}
-		});
+		}));
 	}
 
 	private renderStep() {
