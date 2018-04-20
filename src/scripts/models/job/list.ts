@@ -1,4 +1,5 @@
-import DataList from 'models/data-list';
+import DataList from 'core/data-list';
+
 import { JobID, IJobData } from 'models/job';
 import { ArchetypeID } from 'models/archetype';
 import { ICharacterData } from 'models/character-data';

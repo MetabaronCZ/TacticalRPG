@@ -1,14 +1,15 @@
 import uuid from 'uuid/v1';
 
+import * as ArrayUtils from 'core/array';
+
 import { WieldID } from 'models/wield';
 import { JobID, Jobs } from 'models/job';
 import { SexID, Sexes } from 'models/sex';
 import { SkillsetID } from 'models/skillset';
+import { IIndexable } from 'models/indexable';
 import { ArmorID, Armors } from 'models/armor';
 import { WeaponID, Weapons } from 'models/weapon';
 import { ArchetypeID, ArchCharID } from 'models/archetype';
-
-import { IIndexable, getRandomArrayItem } from 'utils/array';
 
 export interface ICharacterData extends IIndexable {
 	readonly name: string;
@@ -57,8 +58,8 @@ export class CharacterData {
 	public static random(name: string, jobId: JobID): ICharacterData {
 		const sex = Sexes.getRandomKey();
 		const job = Jobs.get(jobId);
-		const skillset = getRandomArrayItem(job.skillsets);
-		let arch = job ? getRandomArrayItem(job.archetype) : ArchetypeID.PP;
+		const skillset = ArrayUtils.getRandomItem(job.skillsets);
+		let arch = job ? ArrayUtils.getRandomItem(job.archetype) : ArchetypeID.PP;
 		arch = arch || ArchetypeID.PP;
 
 		const character = this.init({

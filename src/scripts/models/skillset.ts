@@ -1,6 +1,6 @@
-import DataList from 'models/data-list';
-import { JobSkillID } from 'models/skill/job/id';
+import DataList from 'core/data-list';
 
+import { JobSkillID } from 'models/skill/job/id';
 import { berserkingSkillset } from 'models/skill/job/berserking';
 import { knighthoodSkillset } from 'models/skill/job/knighthood';
 import { supremacySkillset } from 'models/skill/job/supremacy';

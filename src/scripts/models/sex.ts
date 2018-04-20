@@ -1,4 +1,4 @@
-import DataList from 'models/data-list';
+import DataList from 'core/data-list';
 
 export enum SexID {
 	MALE = 'MALE',

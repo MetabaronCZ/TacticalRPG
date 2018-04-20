@@ -25,4 +25,3 @@ export const constructPath = (start: IPosition, target: IPosition, graph: IGraph
 export { getMovableTiles } from 'models/pathfinding/movable';
 export { getShortestPath } from 'models/pathfinding/shortest-path-a-star';
 export { getShortestPath as getShortestPathB } from 'models/pathfinding/shortest-path-breadth-first';
-export { default as PriorityQueue } from 'models/pathfinding/priority-queue';

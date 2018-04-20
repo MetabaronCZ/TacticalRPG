@@ -1,5 +1,5 @@
+import PriorityQueue from 'core/priority-queue';
 import { Position, IPosition } from 'models/position';
-import { PriorityQueue } from 'models/pathfinding';
 
 // Dijkstra algorithm (movement cost based search)
 export const getMovableTiles = (start: IPosition, obstacles: IPosition[], max: number, gridSize: number): IPosition[] => {

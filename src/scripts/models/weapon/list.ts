@@ -1,9 +1,10 @@
+import DataList from 'core/data-list';
+
 import { JobID } from 'models/job';
 import { WieldID } from 'models/wield';
 import { ArchCharID} from 'models/archetype';
 import { ICharacterData } from 'models/character-data';
 import { WeaponID, WeaponTypeID, IWeaponData } from 'models/weapon';
-import DataList from 'models/data-list';
 
 class WeaponList extends DataList<WeaponID, IWeaponData> {
 	constructor(entries: Array<[WeaponID, IWeaponData]> = []) {

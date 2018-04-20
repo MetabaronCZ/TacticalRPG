@@ -1,9 +1,12 @@
 import uuid from 'uuid/v1';
 
+import * as ArrayUtils from 'core/array';
+import nameSamples from 'data/names';
+import { IIndexable } from 'models/indexable';
+
 import { Jobs } from 'models/job';
-import { RandomNameGenerator } from 'models/random-name-generator';
+import { RandomNameGenerator } from 'core/random-name-generator';
 import { ICharacterData, CharacterData } from 'models/character-data';
-import { IIndexable, getRandomArrayItems } from 'utils/array';
 
 export interface IParty extends IIndexable {
 	readonly name: string;
@@ -39,8 +42,8 @@ export class Party {
 
 	// returns random character party array
 	public static getRandomCharacters(count: number): ICharacterData[] {
-		const characters = RandomNameGenerator.get(count, this.maxNameLength);
-		const jobs = getRandomArrayItems(Jobs.keys(), count);
+		const characters = RandomNameGenerator.get(nameSamples, count, this.maxNameLength);
+		const jobs = ArrayUtils.getRandomItems(Jobs.keys(), count);
 
 		return characters.map((char, i) => CharacterData.random(char, jobs[i]));
 	}

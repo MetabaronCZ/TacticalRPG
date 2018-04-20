@@ -1,5 +1,3 @@
-import samples from 'data/names';
-
 interface IGroup {
 	count: number;
 	readonly next: any;
@@ -23,8 +21,8 @@ export class RandomNameGenerator {
 	public static markovOrder = 3; // Markov chains order
 	public static paramEnd = 'END';
 
-	public static get(count: number, maxlength: number): string[] {
-		const graph = RandomNameGenerator.createGraph(samples, RandomNameGenerator.markovOrder);
+	public static get(nameSamples: string[], count: number, maxlength: number): string[] {
+		const graph = RandomNameGenerator.createGraph(nameSamples, RandomNameGenerator.markovOrder);
 		const names = [];
 
 		while (count--) {

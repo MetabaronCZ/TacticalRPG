@@ -1,4 +1,4 @@
-import { getRandomArrayItem } from 'utils/array';
+import * as ArrayUtils from 'core/array';
 
 type DataListIterator<T, U> = (key: T, value: U, i: number) => void;
 
@@ -62,11 +62,11 @@ class DataList<T, U> {
 	}
 
 	public getRandomKey(): T {
-		return getRandomArrayItem(this.items)[0];
+		return ArrayUtils.getRandomItem(this.items)[0];
 	}
 
 	public getRandomValue(): U {
-		return getRandomArrayItem(this.items)[1];
+		return ArrayUtils.getRandomItem(this.items)[1];
 	}
 
 	protected filterFn(cb: DataListIterator<T, U>): DataList<T, U> {

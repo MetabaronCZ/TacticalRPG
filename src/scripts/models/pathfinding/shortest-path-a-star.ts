@@ -1,7 +1,8 @@
-import * as Array from 'utils/array';
+import * as ArrayUtils from 'core/array';
+import PriorityQueue from 'core/priority-queue';
 
 import { Position, IPosition } from 'models/position';
-import { getPriority, constructPath, PriorityQueue, IGraph } from 'models/pathfinding';
+import { getPriority, constructPath, IGraph } from 'models/pathfinding';
 
 // A* algorithm (get shortest path according to movement cost)
 export const getShortestPath = (start: IPosition, target: IPosition, obstacles: IPosition[], gridSize: number): IPosition[] => {
@@ -25,7 +26,7 @@ export const getShortestPath = (start: IPosition, target: IPosition, obstacles: 
 			break;
 		}
 		let neighbours = Position.getSideTiles(curr, obstacles, gridSize);
-		neighbours = Array.randomizeArray(neighbours);
+		neighbours = ArrayUtils.randomize(neighbours);
 
 		for (const n of neighbours) {
 			const newCost = cost[curr.id] + n.cost;

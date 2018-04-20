@@ -1,4 +1,5 @@
-import DataList from 'models/data-list';
+import DataList from 'core/data-list';
+
 import { ArchetypeID } from 'models/archetype';
 import { ArmorID, IArmorData } from 'models/armor';
 import { ICharacterData } from 'models/character-data';

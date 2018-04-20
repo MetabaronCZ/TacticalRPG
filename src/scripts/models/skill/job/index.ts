@@ -1,7 +1,7 @@
-import DataList from 'models/data-list';
+import DataList from 'core/data-list';
+
 import { JobSkillID } from 'models/skill/job/id';
 import { ISkill, SkillType, SkillRange, SkillArea, SkillElement, SkillTarget } from 'models/skill';
-
 import berserking from 'models/skill/job/berserking';
 import knighthood from 'models/skill/job/knighthood';
 import supremacy from 'models/skill/job/supremacy';

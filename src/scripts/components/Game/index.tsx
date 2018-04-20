@@ -1,6 +1,7 @@
 import React from 'react';
 
-import Animation from 'models/animation';
+import Animation from 'core/animation';
+
 import { IParty, Party } from 'models/party';
 import { Order, IOrder } from 'models/order';
 import { Skill, ISkill } from 'models/skill';
@@ -14,7 +15,7 @@ import { WeaponSkills, WeaponSkillList } from 'models/skill/weapon';
 import { getShortestPath, getMovableTiles } from 'models/pathfinding';
 import { ICharacter, Character, IActions, ActionID, IActionItem } from 'models/character';
 
-import * as ArrayUtils from 'utils/array';
+import * as ArrayUtils from 'core/array';
 import GameUI from 'components/Game/template';
 
 const moveAnimDuration = 150;
