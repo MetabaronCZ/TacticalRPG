@@ -1,6 +1,9 @@
 import React from 'react';
 
 import Animation from 'core/animation';
+import * as ArrayUtils from 'core/array';
+
+import GameUI from 'components/Game/template';
 
 import { IParty, Party } from 'models/party';
 import { Order, IOrder } from 'models/order';
@@ -14,16 +17,7 @@ import { Player, PlayerType, IPlayer } from 'models/player';
 import { WeaponSkills, WeaponSkillList } from 'models/skill/weapon';
 import { getShortestPath, getMovableTiles } from 'models/pathfinding';
 import { ICharacter, Character, IActions, ActionID, IActionItem } from 'models/character';
-
-import * as ArrayUtils from 'core/array';
-import GameUI from 'components/Game/template';
-
-const moveAnimDuration = 150;
-
-export const gridSize = 12;
-export const blockSize = 64;
-export const allyPlayerName = 'Player';
-export const enemyPlayerName = 'Computer';
+import { allyPlayerName, enemyPlayerName, gridSize, moveAnimDuration } from 'models/game-config';
 
 export enum GamePhase {
 	IDLE = 'IDLE',
@@ -290,7 +284,7 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 		}
 		const obstacles = this.state.characters.map(char => char.position);
 		const range = Math.min(actor.currAttributes.MOV, actor.currAttributes.AP);
-		const movable = getMovableTiles(actor.position, obstacles, range, gridSize);
+		const movable = getMovableTiles(actor.position, obstacles, range);
 
 		// show movable area
 		this.setState(state => ({
@@ -380,7 +374,7 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 		if (!actor || !action.active || !skills.length) {
 			return;
 		}
-		const skillAreas = skills.map(skill => Skill.getTargetableArea(skill, actor.position, gridSize));
+		const skillAreas = skills.map(skill => Skill.getTargetableArea(skill, actor.position));
 		const targetable = ArrayUtils.getIntersection(skillAreas, pos => pos.id);
 		const targets = Skill.getTargets(actor, skills[0], this.state.characters, targetable);
 
@@ -476,7 +470,7 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 			return;
 		}
 		const obstacles = characters.map(char => char.position);
-		const path = getShortestPath(actor.position, position, obstacles, gridSize);
+		const path = getShortestPath(actor.position, position, obstacles);
 
 		this.setState(state => ({
 			act: {
@@ -500,7 +494,7 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 		if (!skills) {
 			return;
 		}
-		const effectAreas = skills.map(skill => Skill.getEffectArea(skill, actor.position, position, gridSize));
+		const effectAreas = skills.map(skill => Skill.getEffectArea(skill, actor.position, position));
 		const effectArea = ArrayUtils.getIntersection(effectAreas, pos => pos.id);
 		const targets = Skill.getEffectTargets(actor, skills[0], effectArea, characters);
 

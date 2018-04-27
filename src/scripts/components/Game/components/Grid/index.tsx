@@ -1,7 +1,8 @@
 import React from 'react';
 
+import { IOnTileSelect } from 'components/Game';
 import { Position, IPosition } from 'models/position';
-import { blockSize, gridSize, IOnTileSelect } from 'components/Game';
+import { gridSize, blockSize } from 'models/game-config';
 
 interface IGridProps {
 	onSelect: IOnTileSelect;

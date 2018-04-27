@@ -1,5 +1,5 @@
 import React from 'react';
-import { blockSize, gridSize } from 'components/Game';
+import { blockSize, gridSize } from 'models/game-config';
 
 const Layers: React.SFC = ({ children }) => {
 	const style: React.CSSProperties = {

@@ -1,7 +1,7 @@
 import React from 'react';
 
+import { blockSize } from 'models/game-config';
 import { ICharacter } from 'models/character';
-import { blockSize } from 'components/Game';
 import CharacterBlock from 'components/Game/components/Character';
 
 interface ICharacters {

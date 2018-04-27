@@ -2,7 +2,7 @@ import { constructPath, IGraph } from 'models/pathfinding';
 import { Position, IPosition } from 'models/position';
 
 // Breadth first (shortest path at uniform maovement cost)
-export const getShortestPath = (start: IPosition, target: IPosition, obstacles: IPosition[], gridSize: number) => {
+export const getShortestPath = (start: IPosition, target: IPosition, obstacles: IPosition[]) => {
 	const frontier: IPosition[] = [start];
 
 	const graph: IGraph = {};
@@ -17,7 +17,7 @@ export const getShortestPath = (start: IPosition, target: IPosition, obstacles: 
 		if (Position.isEqual(curr, target)) {
 			break;
 		}
-		const neighbours = Position.getSideTiles(curr, obstacles, gridSize);
+		const neighbours = Position.getSideTiles(curr, obstacles);
 
 		for (const n of neighbours) {
 			if (!graph[n.id]) {

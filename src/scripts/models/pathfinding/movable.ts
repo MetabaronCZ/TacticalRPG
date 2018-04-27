@@ -2,7 +2,7 @@ import PriorityQueue from 'core/priority-queue';
 import { Position, IPosition } from 'models/position';
 
 // Dijkstra algorithm (movement cost based search)
-export const getMovableTiles = (start: IPosition, obstacles: IPosition[], max: number, gridSize: number): IPosition[] => {
+export const getMovableTiles = (start: IPosition, obstacles: IPosition[], max: number): IPosition[] => {
 	const frontier = new PriorityQueue<IPosition>();
 	frontier.push(start, 0);
 
@@ -15,7 +15,7 @@ export const getMovableTiles = (start: IPosition, obstacles: IPosition[], max: n
 		if (!curr) {
 			continue;
 		}
-		const neighbours = Position.getSideTiles(curr, obstacles, gridSize);
+		const neighbours = Position.getSideTiles(curr, obstacles);
 
 		for (const n of neighbours) {
 			const newCost = cost[curr.id] + n.cost;

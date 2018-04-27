@@ -100,7 +100,7 @@ export class Skill {
 		return 1;
 	}
 
-	public static getTargetableArea(skill: ISkill, source: IPosition, gridSize: number): IPosition[] {
+	public static getTargetableArea(skill: ISkill, source: IPosition): IPosition[] {
 		if (SkillTarget.NONE === skill.target) {
 			return [];
 		}
@@ -115,7 +115,7 @@ export class Skill {
 			for (let y = -range; y <= range; y++) {
 				const pos = Position.create(source.x + x, source.y + y);
 
-				if (!Position.isInGrid(pos, gridSize)) {
+				if (!Position.isInGrid(pos)) {
 					continue;
 				}
 				targetable.push(pos);
@@ -157,7 +157,7 @@ export class Skill {
 		return targetable.filter(pos => Position.isContained(pos, targets.map(char => char.position)));
 	}
 
-	public static getEffectArea(skill: ISkill, source: IPosition, target: IPosition, gridSize: number): IPosition[] {
+	public static getEffectArea(skill: ISkill, source: IPosition, target: IPosition): IPosition[] {
 		let effect: IPosition[] = [];
 
 		switch (skill.area) {
@@ -179,22 +179,22 @@ export class Skill {
 				break;
 
 			case SkillArea.CROSS:
-				effect = [target, ...Position.getSideTiles(target, [], gridSize)];
+				effect = [target, ...Position.getSideTiles(target)];
 				break;
 
 			case SkillArea.NEIGHBOURS:
-				effect = Position.getNeighbours(source, [], gridSize);
+				effect = Position.getNeighbours(source);
 				break;
 
 			case SkillArea.AOE3x3:
-				effect = [target, ...Position.getNeighbours(target, [], gridSize)];
+				effect = [target, ...Position.getNeighbours(target)];
 				break;
 
 			default:
 				throw new Error(`Unsupported skill area: ${skill.area}`);
 		}
 
-		return effect.filter(pos => Position.isInGrid(pos, gridSize));
+		return effect.filter(pos => Position.isInGrid(pos));
 	}
 
 	public static getEffectTargets(actor: ICharacter, skill: ISkill, effectArea: IPosition[], characters: ICharacter[]): IPosition[] {

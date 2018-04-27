@@ -5,7 +5,7 @@ import { Position, IPosition } from 'models/position';
 import { getPriority, constructPath, IGraph } from 'models/pathfinding';
 
 // A* algorithm (get shortest path according to movement cost)
-export const getShortestPath = (start: IPosition, target: IPosition, obstacles: IPosition[], gridSize: number): IPosition[] => {
+export const getShortestPath = (start: IPosition, target: IPosition, obstacles: IPosition[]): IPosition[] => {
 	const frontier = new PriorityQueue<IPosition>();
 	frontier.push(start, 0);
 
@@ -25,7 +25,7 @@ export const getShortestPath = (start: IPosition, target: IPosition, obstacles: 
 		if (Position.isEqual(curr, target)) {
 			break;
 		}
-		let neighbours = Position.getSideTiles(curr, obstacles, gridSize);
+		let neighbours = Position.getSideTiles(curr, obstacles);
 		neighbours = ArrayUtils.randomize(neighbours);
 
 		for (const n of neighbours) {

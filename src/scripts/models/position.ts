@@ -1,3 +1,5 @@
+import { gridSize } from 'models/game-config';
+
 export interface IPosition {
 	x: number;
 	y: number;
@@ -34,7 +36,7 @@ export class Position {
 		return (pos.x === ref.x || pos.y === ref.y || 0 === (Math.abs(pos.x - ref.x) - Math.abs(pos.y - ref.y)));
 	}
 
-	public static getSideTiles(pos: IPosition, obstacles: IPosition[], gridSize: number): IPosition[] {
+	public static getSideTiles(pos: IPosition, obstacles: IPosition[] = []): IPosition[] {
 		const neighbours: IPosition[] = [];
 
 		neighbours.push(Position.create(pos.x - 1, pos.y));
@@ -43,11 +45,11 @@ export class Position {
 		neighbours.push(Position.create(pos.x, pos.y + 1));
 
 		return neighbours.filter(n => {
-			return Position.isInGrid(n, gridSize) && !Position.isContained(n, obstacles);
+			return Position.isInGrid(n) && !Position.isContained(n, obstacles);
 		});
 	}
 
-	public static getNeighbours(pos: IPosition, obstacles: IPosition[], gridSize: number): IPosition[] {
+	public static getNeighbours(pos: IPosition, obstacles: IPosition[] = []): IPosition[] {
 		const neighbours: IPosition[] = [];
 
 		for (let x = -1; x <= 1; x++) {
@@ -60,11 +62,11 @@ export class Position {
 		}
 
 		return neighbours.filter(n => {
-			return Position.isInGrid(n, gridSize) && !Position.isContained(n, obstacles);
+			return Position.isInGrid(n) && !Position.isContained(n, obstacles);
 		});
 	}
 
-	public static isInGrid(pos: IPosition, gridSize: number): boolean {
+	public static isInGrid(pos: IPosition): boolean {
 		return pos.x >= 0 && pos.y >= 0 && pos.x < gridSize && pos.y < gridSize;
 	}
 }
