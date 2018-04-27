@@ -62,15 +62,15 @@ const backAction: IActionItem = {
 };
 
 export class Character {
-	// maximum point of CP of every character
-	public static cpLimit = 100;
+	// maximum point of CT of every character
+	public static ctLimit = 100;
 
 	public static create(data: ICharacterData, position: IPosition, player: PlayerType): ICharacter {
 		const baseAttrs = Attributes.create(data.primary, data.secondary);
 		const currAttrs = Attributes.create(data.primary, data.secondary);
 
 		// set small random initial CP
-		currAttrs.CP = Math.floor((Character.cpLimit / 10) * Math.random());
+		currAttrs.CT = Math.floor((Character.ctLimit / 10) * Math.random());
 
 		return {
 			data,
@@ -83,7 +83,7 @@ export class Character {
 
 	public static tick(char: ICharacter): ICharacter {
 		const updated = JSON.parse(JSON.stringify(char)) as ICharacter;
-		updated.currAttributes.CP += updated.currAttributes.SPD;
+		updated.currAttributes.CT += updated.currAttributes.SPD;
 		return updated;
 	}
 

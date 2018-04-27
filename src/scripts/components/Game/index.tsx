@@ -164,7 +164,7 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 					const updated = Character.tick(char);
 
 					// collect acting characters
-					if (updated.currAttributes.CP >= Character.cpLimit) {
+					if (updated.currAttributes.CT >= Character.ctLimit) {
 						actors.push(updated.data.id);
 					}
 					return updated;
@@ -257,7 +257,7 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 
 		const characters = this.state.characters.map(char => {
 			if (actor === char.data.id) {
-				char.currAttributes.CP %= Character.cpLimit;
+				char.currAttributes.CT %= Character.ctLimit;
 			}
 			return char;
 		});

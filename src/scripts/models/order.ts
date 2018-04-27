@@ -25,7 +25,7 @@ export class Order {
 		const chars = characters.map(char => ({
 			id: char.data.id,
 			initiative: (char.player === initiative),
-			CP: char.currAttributes.CP,
+			CT: char.currAttributes.CT,
 			SPD: char.currAttributes.SPD
 		}));
 
@@ -34,11 +34,11 @@ export class Order {
 
 			// get characters who can act
 			for (const char of chars) {
-				if (char.CP >= Character.cpLimit) {
+				if (char.CT >= Character.ctLimit) {
 					act.push(char);
-					char.CP %= Character.cpLimit;
+					char.CT %= Character.ctLimit;
 				}
-				char.CP += char.SPD;
+				char.CT += char.SPD;
 			}
 
 			// sort by character player initiative (+ sign converts boolean to number)
@@ -50,7 +50,7 @@ export class Order {
 			act = act.sort((a, b) => b.SPD - a.SPD);
 
 			// sort by CP
-			act = act.sort((a, b) => b.CP - a.CP);
+			act = act.sort((a, b) => b.CT - a.CT);
 
 			// add acting characters to ordered array
 			o = o.concat(act.map(char => char.id));

@@ -15,7 +15,7 @@ type ISecondaryAttrFormula = (attrs: IBaseAttributes) => number;
 interface ISecondaryAttrFormulas {
 	readonly HP: ISecondaryAttrFormula;
 	readonly AP: ISecondaryAttrFormula;
-	readonly CP: ISecondaryAttrFormula;
+	readonly CT: ISecondaryAttrFormula;
 }
 
 const BaseAttributes: IBaseAttributes = {
@@ -37,7 +37,7 @@ const BaseAttrFormula: IBaseAttrFormulas = {
 const SecondaryAttrFormula: ISecondaryAttrFormulas = {
 	HP: attrs => 10 * attrs.VIT,
 	AP: attrs => 4 * attrs.SPD,
-	CP: attrs => 0
+	CT: attrs => 0
 };
 
 interface IBaseAttributes {
@@ -51,7 +51,7 @@ interface IBaseAttributes {
 interface ISecondaryAttributes {
 	HP: number;
 	AP: number;
-	CP: number;
+	CT: number;
 }
 
 export type IAttributes = IBaseAttributes & ISecondaryAttributes;
@@ -91,7 +91,7 @@ export class Attributes {
 		return {
 			HP: SecondaryAttrFormula.HP(attrs),
 			AP: SecondaryAttrFormula.AP(attrs),
-			CP: SecondaryAttrFormula.CP(attrs)
+			CT: SecondaryAttrFormula.CT(attrs)
 		};
 	}
 }
