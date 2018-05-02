@@ -1,6 +1,3 @@
 TODO
 --	u SELF target skillu rovnou predvybrat actora (Berserking)
---	pridat character direction + vyber smeru na konci aktu
---	nasmerovat se na target (priblizne podle uhlu) po potvrzeni skillu
-
---	zkontrolvat pole, jestli naji carku na konci navic [a, b, ]
+--	zbavit se statickych class

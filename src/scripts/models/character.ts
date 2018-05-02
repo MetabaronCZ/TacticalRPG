@@ -5,34 +5,11 @@ import { Direction } from 'models/direction';
 import { ICharacterData } from 'models/character-data';
 import { IAttributes, Attributes } from 'models/attributes';
 
+import { IActionItem, ActionID, IActions, passAction, confirmAction, backAction } from 'models/character-action';
 import { SkillType, Skill, ISkill } from 'models/skill';
-import { WeaponSkillID } from 'models/skill/weapon/id';
 import { WeaponSkills } from 'models/skill/weapon';
-import { JobSkillID } from 'models/skill/job/id';
 import { JobSkills } from 'models/skill/job';
 import { Skillsets } from 'models/skillset';
-
-export enum ActionID {
-	MOVE = 'MOVE',
-	ATTACK = 'ATTACK',
-	DOUBLE_ATTACK = 'DOUBLE_ATTACK',
-	WEAPON = 'WEAPON',
-	JOB = 'JOB',
-	PASS = 'PASS',
-	DIRECT	 = 'DIRECT',
-	CONFIRM = 'CONFIRM',
-	BACK = 'BACK'
-}
-
-export interface IActionItem {
-	readonly id: ActionID;
-	readonly cost: number;
-	readonly title: string;
-	readonly active: boolean;
-	readonly skills?: WeaponSkillID[] | JobSkillID[];
-}
-
-export type IActions = IActionItem[];
 
 export interface ICharacter {
 	readonly data: ICharacterData;
@@ -42,27 +19,6 @@ export interface ICharacter {
 	position: IPosition;
 	direction: Direction;
 }
-
-const passAction: IActionItem = {
-	id: ActionID.PASS,
-	cost: 0,
-	title: 'End turn',
-	active: true
-};
-
-const confirmAction = (skillName: string, cost: number): IActionItem => ({
-	id: ActionID.CONFIRM,
-	cost,
-	title: skillName,
-	active: true
-});
-
-const backAction: IActionItem = {
-	id: ActionID.BACK,
-	cost: 0,
-	title: 'Back',
-	active: true
-};
 
 export class Character {
 	// maximum point of CT of every character

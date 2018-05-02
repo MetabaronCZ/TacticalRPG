@@ -10,11 +10,12 @@ import { JobSkillID } from 'models/skill/job/id';
 import { Position, IPosition } from 'models/position';
 import { WeaponSkillID } from 'models/skill/weapon/id';
 import { ICharacterData } from 'models/character-data';
+import { ICharacter, Character } from 'models/character';
 import { JobSkills, JobSkillList } from 'models/skill/job';
 import { Player, PlayerType, IPlayer } from 'models/player';
 import { WeaponSkills, WeaponSkillList } from 'models/skill/weapon';
 import { getShortestPath, getMovableTiles } from 'models/pathfinding';
-import { ICharacter, Character, IActions, ActionID, IActionItem } from 'models/character';
+import { IActions, ActionID, IActionItem } from 'models/character-action';
 
 import * as ArrayUtils from 'core/array';
 import GameUI from 'components/Game/template';
