@@ -55,6 +55,7 @@ export interface IGameState {
 		skillTargetArea?: IPosition[]; // skill range tiles
 		skillTargets?: IPosition[]; // skill targetable tiles
 		skillEffectArea?: IPosition[]; // skill effect area tiles
+		skillEffectTarget?: IPosition; // skill target tile where actor should face to
 		skillEffectTargets?: IPosition[]; // skill effect targets
 		directArea?: IPosition[]; // positions character can be aligned to
 		directTarget?: IPosition; // position character is directed to
@@ -239,8 +240,9 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 		this.setState(state => ({
 			phase: GamePhase.ACT,
 			act: {
-				...state.act,
-				actionMenu: actions
+				action: state.act.action,
+				actionMenu: actions,
+				hasMoved: state.act.hasMoved
 			}
 		}));
 	}
@@ -407,14 +409,16 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 	private runSkill() {
 		const actor = this.getActor();
 		const { act, characters } = this.state;
+		const targetTile = act.skillEffectTarget;
 		const targetTiles = act.skillEffectTargets;
 
-		if (!actor || !act.action) {
-			throw new Error('Could not run skill - actor does not exist');
+		if (!actor || !act.action || !targetTile) {
+			throw new Error('Could not run skill - invalid ACT data');
 		}
 		if (!targetTiles || !targetTiles.length) {
 			this.endSkill();
 		}
+		const dir = Position.getDirection(actor.position, targetTile);
 		const skills = this.getSkills();
 		const targets: ICharacter[] = [];
 
@@ -426,12 +430,23 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 		}
 
 		this.setState(
-			{
+			state => ({
 				act: {
 					...act,
 					actionMenu: undefined
-				}
-			},
+				},
+				characters: state.characters.map(char => {
+					if (char.data.id === actor.data.id) {
+						// face character to skill target tile
+						return {
+							...char,
+							direction: dir
+						};
+					} else {
+						return char;
+					}
+				})
+			}),
 			() => {
 				// TODO
 				console.log('actor:', actor.data.name);
@@ -450,6 +465,7 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 					skillTargetArea: undefined,
 					skillTargets: undefined,
 					skillEffectArea: undefined,
+					skillEffectTarget: undefined,
 					skillEffectTargets: undefined
 				}
 			}),
@@ -464,7 +480,7 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 			return;
 		}
 		const characters = this.state.characters.map(char => char.position);
-		const directions = Position.getSideTiles(actor.position, characters);
+		const directions = Position.getSideTiles(actor.position);
 
 		if (!directions.length) {
 			return this.endTurn();
@@ -567,6 +583,7 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 				skillTargetArea: undefined,
 				skillTargets: undefined,
 				skillEffectArea: effectArea,
+				skillEffectTarget: position,
 				skillEffectTargets: targets
 			}
 		}));

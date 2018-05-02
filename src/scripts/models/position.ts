@@ -104,16 +104,23 @@ export class Position {
 	public static getDirection(source: IPosition, target: IPosition): Direction {
 		const diffX = target.x - source.x;
 		const diffY = target.y - source.y;
+		const diffXMag = Math.abs(diffX);
+		const diffYMag = Math.abs(diffY);
 
-		if (diffY < 0) {
-			return Direction.TOP;
-		} else if (diffY > 0) {
-			return Direction.BOTTOM;
-		} else if (diffX < 0) {
-			return Direction.LEFT;
-		} else if (diffX > 0) {
-			return Direction.RIGHT;
+		if (diffXMag > diffYMag) {
+			// horizontal direction
+			if (diffX < 0) {
+				return Direction.LEFT;
+			} else {
+				return Direction.RIGHT;
+			}
+		} else {
+			// vertical direction
+			if (diffY < 0) {
+				return Direction.TOP;
+			} else {
+				return Direction.BOTTOM;
+			}
 		}
-		throw new Error('Diagonal direction is invalid');
 	}
 }
