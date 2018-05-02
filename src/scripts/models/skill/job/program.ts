@@ -15,7 +15,7 @@ const program: Array<[JobSkillID, ISkill]> = [
 		physicalDamage: 0,
 		elementalDamage: 0,
 		status: []
-	}],
+	}]
 ];
 
 export const programSkillset: ISkillset = {

@@ -15,7 +15,7 @@ const lycanthropy: Array<[JobSkillID, ISkill]> = [
 		physicalDamage: 0.75,
 		elementalDamage: 0.75,
 		status: []
-	}],
+	}]
 ];
 
 export const lycanthropySkillset: ISkillset = {

@@ -15,7 +15,7 @@ const supremacy: Array<[JobSkillID, ISkill]> = [
 		physicalDamage: 0,
 		elementalDamage: 0,
 		status: []
-	}],
+	}]
 ];
 
 export const supremacySkillset: ISkillset = {

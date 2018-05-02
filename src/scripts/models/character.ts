@@ -1,15 +1,16 @@
 import { Weapons } from 'models/weapon';
 import { PlayerType } from 'models/player';
 import { IPosition } from 'models/position';
+import { Direction } from 'models/direction';
 import { ICharacterData } from 'models/character-data';
 import { IAttributes, Attributes } from 'models/attributes';
 
+import { SkillType, Skill, ISkill } from 'models/skill';
 import { WeaponSkillID } from 'models/skill/weapon/id';
 import { WeaponSkills } from 'models/skill/weapon';
 import { JobSkillID } from 'models/skill/job/id';
 import { JobSkills } from 'models/skill/job';
 import { Skillsets } from 'models/skillset';
-import { SkillType, Skill, ISkill } from 'models/skill';
 
 export enum ActionID {
 	MOVE = 'MOVE',
@@ -18,6 +19,7 @@ export enum ActionID {
 	WEAPON = 'WEAPON',
 	JOB = 'JOB',
 	PASS = 'PASS',
+	DIRECT	 = 'DIRECT',
 	CONFIRM = 'CONFIRM',
 	BACK = 'BACK'
 }
@@ -35,9 +37,10 @@ export type IActions = IActionItem[];
 export interface ICharacter {
 	readonly data: ICharacterData;
 	readonly player: PlayerType;
-	readonly position: IPosition;
 	readonly baseAttributes: IAttributes;
-	readonly currAttributes: IAttributes;
+	currAttributes: IAttributes;
+	position: IPosition;
+	direction: Direction;
 }
 
 const passAction: IActionItem = {
@@ -65,7 +68,7 @@ export class Character {
 	// maximum point of CT of every character
 	public static ctLimit = 100;
 
-	public static create(data: ICharacterData, position: IPosition, player: PlayerType): ICharacter {
+	public static create(data: ICharacterData, position: IPosition, direction: Direction, player: PlayerType): ICharacter {
 		const baseAttrs = Attributes.create(data.primary, data.secondary);
 		const currAttrs = Attributes.create(data.primary, data.secondary);
 
@@ -76,6 +79,7 @@ export class Character {
 			data,
 			player,
 			position,
+			direction,
 			baseAttributes: baseAttrs,
 			currAttributes: currAttrs
 		};
@@ -195,6 +199,10 @@ export class Character {
 		actions.push(backAction);
 
 		return actions;
+	}
+
+	public static getDirectActions(): IActionItem[] {
+		return [confirmAction('Confirm direction', 0)];
 	}
 
 	public static startTurn(actor: ICharacter): ICharacter {

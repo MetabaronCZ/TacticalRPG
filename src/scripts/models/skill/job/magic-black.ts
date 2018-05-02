@@ -15,7 +15,7 @@ const blackMagic: Array<[JobSkillID, ISkill]> = [
 		physicalDamage: 0,
 		elementalDamage: 0,
 		status: []
-	}],
+	}]
 ];
 
 export const blackMagicSkillset: ISkillset = {

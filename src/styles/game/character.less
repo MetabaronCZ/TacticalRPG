@@ -1,10 +1,22 @@
 .Character {
+	@dir-ico-size: 0.5rem;
+	@dir-ico-distance: 85%;
+
 	position: relative;
 	display: flex;
 	padding: @vu;
 	align-items: center;
 	justify-content: center;
 	cursor: pointer;
+
+	&::before {
+		position: absolute;
+		z-index: 100;
+		content: ' ';
+		width: 0;
+		height: 0;
+		border: @dir-ico-size solid @color-white;
+	}
 
 	&::after {
 		position: absolute;
@@ -28,6 +40,42 @@
 		color: @color-white;
 		text-align: center;
 		word-break: break-all;
+	}
+
+	&&--looking-top::before {
+		bottom: @dir-ico-distance;
+		left: 50%;
+		margin-left: -@dir-ico-size;
+		border-top-color: transparent;
+		border-left-color: transparent;
+		border-right-color: transparent;
+	}
+
+	&&--looking-bottom::before {
+		top: @dir-ico-distance;
+		left: 50%;
+		margin-left: -@dir-ico-size;
+		border-left-color: transparent;
+		border-right-color: transparent;
+		border-bottom-color: transparent;
+	}
+
+	&&--looking-left::before {
+		right: @dir-ico-distance;
+		top: 50%;
+		margin-top: -@dir-ico-size;
+		border-top-color: transparent;
+		border-left-color: transparent;
+		border-bottom-color: transparent;
+	}
+
+	&&--looking-right::before {
+		left: @dir-ico-distance;
+		top: 50%;
+		margin-top: -@dir-ico-size;
+		border-top-color: transparent;
+		border-right-color: transparent;
+		border-bottom-color: transparent;
 	}
 
 	&&--ally::after {

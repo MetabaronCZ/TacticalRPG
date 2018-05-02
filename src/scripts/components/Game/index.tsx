@@ -1,13 +1,11 @@
 import React from 'react';
 
 import Animation from 'core/animation';
-import * as ArrayUtils from 'core/array';
-
-import GameUI from 'components/Game/template';
 
 import { IParty, Party } from 'models/party';
 import { Order, IOrder } from 'models/order';
 import { Skill, ISkill } from 'models/skill';
+import { Direction } from 'models/direction';
 import { JobSkillID } from 'models/skill/job/id';
 import { Position, IPosition } from 'models/position';
 import { WeaponSkillID } from 'models/skill/weapon/id';
@@ -17,7 +15,16 @@ import { Player, PlayerType, IPlayer } from 'models/player';
 import { WeaponSkills, WeaponSkillList } from 'models/skill/weapon';
 import { getShortestPath, getMovableTiles } from 'models/pathfinding';
 import { ICharacter, Character, IActions, ActionID, IActionItem } from 'models/character';
-import { allyPlayerName, enemyPlayerName, gridSize, moveAnimDuration } from 'models/game-config';
+
+import * as ArrayUtils from 'core/array';
+import GameUI from 'components/Game/template';
+
+const moveAnimDuration = 150;
+
+export const gridSize = 12;
+export const blockSize = 64;
+export const allyPlayerName = 'Player';
+export const enemyPlayerName = 'Computer';
 
 export enum GamePhase {
 	IDLE = 'IDLE',
@@ -49,6 +56,8 @@ export interface IGameState {
 		skillTargets?: IPosition[]; // skill targetable tiles
 		skillEffectArea?: IPosition[]; // skill effect area tiles
 		skillEffectTargets?: IPosition[]; // skill effect targets
+		directArea?: IPosition[]; // positions character can be aligned to
+		directTarget?: IPosition; // position character is directed to
 	};
 	characters: ICharacter[];
 	ally: IPlayer;
@@ -94,12 +103,12 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 		const enemy = Player.create(enemyPlayerName, PlayerType.ENEMY);
 
 		const allies = party.map((char, i) => {
-			return Character.create(char, Position.create(i + 2, gridSize - 1), PlayerType.ALLY);
+			return Character.create(char, Position.create(i + 2, gridSize - 1), Direction.TOP, PlayerType.ALLY);
 		});
 
 		const enemies = Party.getRandomCharacters(party.length)
 			.map((char, i) => {
-				return Character.create(char, Position.create(i + 2, 0), PlayerType.ENEMY);
+				return Character.create(char, Position.create(i + 2, 0), Direction.BOTTOM, PlayerType.ENEMY);
 			});
 
 		const characters = allies.concat(enemies);
@@ -231,15 +240,7 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 			phase: GamePhase.ACT,
 			act: {
 				...state.act,
-				action: undefined,
-				actionMenu: actions,
-				movePath: undefined,
-				moveArea: undefined,
-				moveTarget: undefined,
-				skillTargetArea: undefined,
-				skillTargets: undefined,
-				skillEffectArea: undefined,
-				skillEffectTargets: undefined
+				actionMenu: actions
 			}
 		}));
 	}
@@ -262,11 +263,7 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 			{
 				phase: GamePhase.IDLE,
 				act: {
-					action: undefined,
-					hasMoved: false,
-					moveTarget: undefined,
-					movePath: undefined,
-					moveArea: undefined
+					hasMoved: false
 				},
 				actors,
 				characters,
@@ -298,12 +295,7 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 	}
 
 	private move() {
-		const actor = this.getActor();
 		const path = this.state.act.movePath;
-
-		if (!actor) {
-			throw new Error('Could not MOVE - actor does not exist');
-		}
 
 		if (!path) {
 			return this.endMove();
@@ -320,7 +312,27 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 			() => {
 				// animate movement
 				const moveAnim = new Animation(timing, step => {
+					const actor = this.getActor();
+
+					if (!actor) {
+						throw new Error('Could not MOVE - actor does not exist');
+					}
 					const tile = path[step.number - 1];
+					const pos = actor.position;
+					let dir: Direction;
+
+					// change direction
+					if (tile.x - pos.x < 0) {
+						dir = Direction.LEFT;
+					} else if (tile.x - pos.x > 0) {
+						dir = Direction.RIGHT;
+					} else if (tile.y - pos.y < 0) {
+						dir = Direction.TOP;
+					} else if (tile.y - pos.y > 0) {
+						dir = Direction.BOTTOM;
+					} else {
+						throw new Error('Diagonal movement is not valid');
+					}
 
 					// change character position
 					this.setState(
@@ -330,6 +342,7 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 									return {
 										...actor,
 										position: tile,
+										direction: dir,
 										currAttributes: {
 											...char.currAttributes,
 											AP: (char.currAttributes.AP - tile.cost)
@@ -348,6 +361,7 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 					);
 				});
 
+				// start move animation
 				moveAnim.start();
 			}
 		);
@@ -439,6 +453,51 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 					skillEffectTargets: undefined
 				}
 			}),
+			() => this.startDirect()
+		);
+	}
+
+	private startDirect() {
+		const actor = this.getActor();
+
+		if (!actor) {
+			return;
+		}
+		const characters = this.state.characters.map(char => char.position);
+		const directions = Position.getSideTiles(actor.position, characters);
+
+		if (!directions.length) {
+			return this.endTurn();
+		}
+
+		// show available directions
+		this.setState(
+			state => ({
+				act: {
+					...state.act,
+					action: {
+						id: ActionID.DIRECT,
+						cost: 0,
+						title: 'Direct',
+						active: true
+					},
+					directArea: directions,
+					directTarget: Position.getByDirection(actor.position, actor.direction),
+					actionMenu: Character.getDirectActions(),
+				}
+			})
+		);
+	}
+
+	private endDirect() {
+		this.setState(
+			state => ({
+				act: {
+					...state.act,
+					directArea: undefined,
+					directTarget: undefined
+				}
+			}),
 			() => this.endTurn()
 		);
 	}
@@ -456,6 +515,9 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 			case ActionID.WEAPON:
 			case ActionID.JOB:
 				return this.runSkill();
+
+			case ActionID.DIRECT:
+				return this.endDirect();
 
 			default:
 				throw new Error(`Action is not comfirmable: ${action.id}`);
@@ -510,6 +572,30 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 		}));
 	}
 
+	private selectDirectTarget(position: IPosition) {
+		const { act: { directArea }} = this.state;
+		const actor = this.getActor();
+
+		if (!actor || !Position.isContained(position, directArea)) {
+			return;
+		}
+		this.setState(state => ({
+			act: {
+				...state.act,
+				directTarget: position
+			},
+			characters: state.characters.map(char => {
+				if (char.data.id === actor.data.id) {
+					return {
+						...char,
+						direction: Position.getDirection(actor.position, position)
+					};
+				}
+				return char;
+			})
+		}));
+	}
+
 	private onTileSelect(position: IPosition) {
 		const action = this.state.act.action;
 
@@ -525,6 +611,9 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 			case ActionID.WEAPON:
 			case ActionID.JOB:
 				return this.selectSkillTarget(position);
+
+			case ActionID.DIRECT:
+				return this.selectDirectTarget(position);
 
 			default:
 				throw new Error('Unsupported tile select action');
@@ -550,7 +639,7 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 
 			case ActionID.PASS:
 				// ends character turn
-				return this.endTurn();
+				return this.startDirect();
 
 			case ActionID.CONFIRM:
 				// overall CONFIRM action handler

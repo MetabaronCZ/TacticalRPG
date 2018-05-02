@@ -2,7 +2,7 @@ import React from 'react';
 
 import { IOnTileSelect } from 'components/Game';
 import { Position, IPosition } from 'models/position';
-import { gridSize, blockSize } from 'models/game-config';
+import { blockSize, gridSize } from 'models/game-config';
 
 interface IGridProps {
 	onSelect: IOnTileSelect;
@@ -13,6 +13,8 @@ interface IGridProps {
 	skillTargets?: IPosition[];
 	skillEffectArea?: IPosition[];
 	skillEffectTargets?: IPosition[];
+	directArea?: IPosition[];
+	directTarget?: IPosition;
 }
 
 const selectBlock = (i: number, onSelect: IOnTileSelect) => () => {
@@ -38,11 +40,22 @@ const Grid: React.SFC<IGridProps> = ({ onSelect, ...props }) => {
 	return (
 		<div className="Grid">
 			{grid.map((pos, i) => {
-				const isMoveAction = (props.moveArea || props.movePath || props.moveTarget);
-				const isSKillAction = (props.skillTargetArea || props.skillTargets || props.skillEffectArea || props.skillEffectTargets);
+				const isDirectAction = !!(props.directArea || props.directTarget);
+				const isMoveAction = !!(props.moveArea || props.movePath || props.moveTarget);
+				const isSKillAction = !!(props.skillTargetArea || props.skillTargets || props.skillEffectArea || props.skillEffectTargets);
 				let blockType = '';
 
-				if (isMoveAction) {
+				if (isDirectAction) {
+					const isDirectArea = Position.isContained(pos, props.directArea);
+					const isDirectTarget = Position.isEqual(pos, props.directTarget);
+
+					if (isDirectTarget) {
+						blockType = 'is-selected';
+					} else if (isDirectArea) {
+						blockType = 'is-targetArea';
+					}
+
+				} else if (isMoveAction) {
 					const isMoveArea = Position.isContained(pos, props.moveArea);
 					const isMovePath = Position.isContained(pos, props.movePath);
 					const isMoveTarget = Position.isEqual(pos, props.moveTarget);

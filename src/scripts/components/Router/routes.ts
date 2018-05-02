@@ -24,7 +24,7 @@ const routes: IRoute[] = [
 	{ path: '/party-create', component: PartyCreate },
 	{ path: '/character-list', component: CharacterList },
 	{ path: '/character-edit/:id', component: CharacterEdit },
-	{ path: '/character-create', component: CharacterCreate },
+	{ path: '/character-create', component: CharacterCreate }
 ];
 
 export default routes;

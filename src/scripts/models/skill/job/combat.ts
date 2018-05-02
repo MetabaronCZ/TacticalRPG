@@ -15,7 +15,7 @@ const combat: Array<[JobSkillID, ISkill]> = [
 		physicalDamage: 0,
 		elementalDamage: 0,
 		status: []
-	}],
+	}]
 ];
 
 export const combatSkillset: ISkillset = {

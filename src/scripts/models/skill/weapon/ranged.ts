@@ -79,7 +79,7 @@ const rangedSkills: Array<[WeaponSkillID, ISkill]> = [
 		physicalDamage: 0.5,
 		elementalDamage: 0,
 		status: []
-	}],
+	}]
 ];
 
 export default rangedSkills;

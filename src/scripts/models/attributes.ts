@@ -1,5 +1,19 @@
 import { ArchCharID } from 'models/archetype';
 
+interface IBaseAttributes {
+	STR: number; // strength
+	VIT: number; // vitality
+	SPD: number; // speed
+	MOV: number; // movement
+	MAG: number; // magic
+}
+
+interface ISecondaryAttributes {
+	HP: number; // hit points
+	AP: number; // action points
+	CT: number; // charge time
+}
+
 type IBaseAttrFormula = (P: number, S: number, M: number) => number;
 
 interface IBaseAttrFormulas {
@@ -39,20 +53,6 @@ const SecondaryAttrFormula: ISecondaryAttrFormulas = {
 	AP: attrs => 4 * attrs.SPD,
 	CT: attrs => 0
 };
-
-interface IBaseAttributes {
-	STR: number;
-	VIT: number;
-	SPD: number;
-	MOV: number;
-	MAG: number;
-}
-
-interface ISecondaryAttributes {
-	HP: number;
-	AP: number;
-	CT: number;
-}
 
 export type IAttributes = IBaseAttributes & ISecondaryAttributes;
 

@@ -15,7 +15,7 @@ const berserking: Array<[JobSkillID, ISkill]> = [
 		physicalDamage: 0,
 		elementalDamage: 0,
 		status: [SkillStatus.BERSERK]
-	}],
+	}]
 ];
 
 export const berserkingSkillset: ISkillset = {

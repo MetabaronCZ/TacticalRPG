@@ -1,4 +1,5 @@
 import { gridSize } from 'models/game-config';
+import { Direction } from 'models/direction';
 
 export interface IPosition {
 	x: number;
@@ -68,5 +69,51 @@ export class Position {
 
 	public static isInGrid(pos: IPosition): boolean {
 		return pos.x >= 0 && pos.y >= 0 && pos.x < gridSize && pos.y < gridSize;
+	}
+
+	public static getByDirection(source: IPosition, dir: Direction) {
+		let pos: IPosition;
+
+		switch (dir) {
+			case Direction.TOP:
+				pos = Position.create(source.x, source.y - 1);
+				break;
+
+			case Direction.BOTTOM:
+				pos = Position.create(source.x, source.y + 1);
+				break;
+
+			case Direction.LEFT:
+				pos = Position.create(source.x - 1, source.y);
+				break;
+
+			case Direction.RIGHT:
+				pos = Position.create(source.x + 1, source.y);
+				break;
+
+			default:
+				throw new Error('Invalid direction');
+		}
+
+		if (!Position.isInGrid(pos)) {
+			return;
+		}
+		return pos;
+	}
+
+	public static getDirection(source: IPosition, target: IPosition): Direction {
+		const diffX = target.x - source.x;
+		const diffY = target.y - source.y;
+
+		if (diffY < 0) {
+			return Direction.TOP;
+		} else if (diffY > 0) {
+			return Direction.BOTTOM;
+		} else if (diffX < 0) {
+			return Direction.LEFT;
+		} else if (diffX > 0) {
+			return Direction.RIGHT;
+		}
+		throw new Error('Diagonal direction is invalid');
 	}
 }

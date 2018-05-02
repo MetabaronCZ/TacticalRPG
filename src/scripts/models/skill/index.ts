@@ -86,7 +86,7 @@ const elementAffinityTable = {
 	[SkillElement.WATER]: SkillElement.FIRE,
 	[SkillElement.DARK]: SkillElement.HOLY,
 	[SkillElement.HOLY]: SkillElement.DARK,
-	[SkillElement.PSYCHIC]: SkillElement.PSYCHIC,
+	[SkillElement.PSYCHIC]: SkillElement.PSYCHIC
 };
 
 export class Skill {

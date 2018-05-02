@@ -41,6 +41,8 @@ const GameUI: React.SFC<IGameUIProps> = props => {
 						skillTargets={act.skillTargets}
 						skillEffectArea={act.skillEffectArea}
 						skillEffectTargets={act.skillEffectTargets}
+						directArea={act.directArea}
+						directTarget={act.directTarget}
 						onSelect={props.onTileSelect}
 					/>
 				</Layers>
