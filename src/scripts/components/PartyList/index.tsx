@@ -21,7 +21,7 @@ const renderEdit = (party: IParty) => (
 );
 
 const renderDelete = (party: IParty, onDelete: IFun) => (
-	<LinkButton onClick={onDelete(party.id, party.name)}>Delete</LinkButton>
+	<LinkButton onClick={onDelete(party)}>Delete</LinkButton>
 );
 
 interface IColumn {

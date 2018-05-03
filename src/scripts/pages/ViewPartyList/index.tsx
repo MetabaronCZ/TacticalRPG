@@ -12,7 +12,7 @@ import Actions from 'actions/parties';
 
 export type IOnMoveDown = (party: IParty) => () => void;
 export type IOnMoveUp = (party: IParty) => () => void;
-export type IOnDelete = (party: IParty, name: string) => () => void;
+export type IOnDelete = (party: IParty) => () => void;
 
 interface IStateToProps {
 	parties: IParty[];
@@ -35,8 +35,8 @@ const mapDispatchToProps = (dispatch: Dispatch<IParty>) => ({
 	onMoveUp: (party: IParty) => () => {
 		dispatch(Actions.moveUpList(party));
 	},
-	onDelete: (party: IParty, name: string) => () => {
-		if (confirm(`Do you realy want to delete "${name}"?`)) {
+	onDelete: (party: IParty) => () => {
+		if (confirm(`Do you realy want to delete "${party.name}"?`)) {
 			dispatch(Actions.removeParty(party));
 		}
 	}
