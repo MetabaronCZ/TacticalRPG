@@ -11,12 +11,14 @@ export interface IPlayer {
 	type: PlayerType;
 }
 
-export class Player {
-	public static create(name: string, type: PlayerType) {
-		return {
-			name,
-			type,
-			score: Score.getDefault()
-		};
-	}
-}
+const create = (name: string, type: PlayerType) => {
+	return {
+		name,
+		type,
+		score: Score.getDefault()
+	};
+};
+
+export const Player = {
+	create
+};

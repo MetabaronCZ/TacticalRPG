@@ -1,7 +1,7 @@
 TODO
 -----------------------------------------------------------
 --	u SELF target skillu rovnou predvybrat actora (Berserking)
---	zbavit se statickych class
+!!	nefunguje party delete
 
 
 JOBS refactor
