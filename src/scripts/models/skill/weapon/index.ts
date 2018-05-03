@@ -1,7 +1,8 @@
 import DataList from 'core/data-list';
 
+import { ISkill } from 'models/skill';
+import { SkillType } from 'models/skill/attributes';
 import { IWeaponData } from 'models/weapon';
-import { ISkill, SkillType } from 'models/skill';
 import { WeaponSkillID } from 'models/skill/weapon/id';
 import smallSkills from 'models/skill/weapon/small';
 import wield1HSkills from 'models/skill/weapon/wield1h';

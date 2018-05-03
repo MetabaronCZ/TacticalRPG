@@ -1,6 +1,7 @@
+import { ISkill } from 'models/skill';
 import { ISkillset } from 'models/skillset';
 import { JobSkillID } from 'models/skill/job/id';
-import { ISkill, SkillType, SkillRange, SkillArea, SkillElement, SkillTarget } from 'models/skill';
+import { SkillType, SkillRange, SkillArea, SkillElement, SkillTarget } from 'models/skill/attributes';
 
 const blackMagic: Array<[JobSkillID, ISkill]> = [
 	[JobSkillID.BLACK_MAGIC_DARK_AURA, {

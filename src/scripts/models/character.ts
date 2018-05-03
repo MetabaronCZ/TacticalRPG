@@ -6,9 +6,10 @@ import { ICharacterData } from 'models/character-data';
 import { IAttributes, Attributes } from 'models/attributes';
 
 import { IActionItem, ActionID, IActions, passAction, confirmAction, backAction } from 'models/character-action';
-import { SkillType, Skill, ISkill } from 'models/skill';
+import { SkillType } from 'models/skill/attributes';
 import { WeaponSkills } from 'models/skill/weapon';
 import { JobSkills } from 'models/skill/job';
+import { Skill, ISkill } from 'models/skill';
 import { Skillsets } from 'models/skillset';
 
 export interface ICharacter {
@@ -39,6 +40,10 @@ export class Character {
 			baseAttributes: baseAttrs,
 			currAttributes: currAttrs
 		};
+	}
+
+	public static isEqual(charA: ICharacter, charB: ICharacter): boolean {
+		return charA && charB && charA.data.id === charB.data.id;
 	}
 
 	public static tick(char: ICharacter): ICharacter {

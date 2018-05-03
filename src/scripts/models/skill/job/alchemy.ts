@@ -1,6 +1,7 @@
+import { ISkill } from 'models/skill';
 import { ISkillset } from 'models/skillset';
 import { JobSkillID } from 'models/skill/job/id';
-import { ISkill, SkillType, SkillRange, SkillArea, SkillElement, SkillTarget } from 'models/skill';
+import { SkillType, SkillRange, SkillArea, SkillElement, SkillTarget } from 'models/skill/attributes';
 
 const alchemy: Array<[JobSkillID, ISkill]> = [
 	[JobSkillID.ALCHEMY_NONE, {

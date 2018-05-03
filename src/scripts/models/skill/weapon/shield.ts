@@ -1,5 +1,6 @@
+import { ISkill } from 'models/skill';
 import { WeaponSkillID } from 'models/skill/weapon/id';
-import { ISkill, SkillType, SkillRange, SkillArea, SkillElement, SkillTarget } from 'models/skill';
+import { SkillType, SkillRange, SkillArea, SkillElement, SkillTarget } from 'models/skill/attributes';
 
 const shieldSkills: Array<[WeaponSkillID, ISkill]> = [
 	[WeaponSkillID.SHIELD_SMALL_BLOCK, {

@@ -1,5 +1,6 @@
+import { ISkill } from 'models/skill';
 import { WeaponSkillID } from 'models/skill/weapon/id';
-import { ISkill, SkillType, SkillRange, SkillArea, SkillElement, SkillTarget } from 'models/skill';
+import { SkillType, SkillRange, SkillArea, SkillElement, SkillTarget } from 'models/skill/attributes';
 
 const sword2HSkills: Array<[WeaponSkillID, ISkill]> = [
 	[WeaponSkillID.SPEAR_ATTACK, {

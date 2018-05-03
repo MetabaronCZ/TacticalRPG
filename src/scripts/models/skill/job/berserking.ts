@@ -1,6 +1,7 @@
+import { ISkill } from 'models/skill';
 import { ISkillset } from 'models/skillset';
 import { JobSkillID } from 'models/skill/job/id';
-import { ISkill, SkillType, SkillRange, SkillArea, SkillElement, SkillStatus, SkillTarget } from 'models/skill';
+import { SkillType, SkillArea, SkillRange, SkillTarget, SkillElement, SkillStatus } from 'models/skill/attributes';
 
 const berserking: Array<[JobSkillID, ISkill]> = [
 	[JobSkillID.BERSERKING_BERSERK, {

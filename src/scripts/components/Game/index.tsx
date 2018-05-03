@@ -211,7 +211,7 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 		this.setState(
 			state => ({
 				characters: state.characters.map(char => {
-					if (actor.data.id === char.data.id) {
+					if (Character.isEqual(actor, char)) {
 						return Character.startTurn(actor);
 					}
 					return char;
@@ -250,11 +250,11 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 
 	private endTurn() {
 		const actors = this.state.actors.slice(0);
-		const actor = actors[0];
+		const actorId = actors[0];
 		actors.shift();
 
 		const characters = this.state.characters.map(char => {
-			if (actor === char.data.id) {
+			if (actorId === char.data.id) {
 				char.currAttributes.CT %= Character.ctLimit;
 			}
 			return char;
@@ -341,7 +341,7 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 					this.setState(
 						state => ({
 							characters: state.characters.map(char => {
-								if (char.data.id === actor.data.id) {
+								if (Character.isEqual(actor, char)) {
 									return {
 										...actor,
 										position: tile,
@@ -437,7 +437,7 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 					actionMenu: undefined
 				},
 				characters: state.characters.map(char => {
-					if (char.data.id === actor.data.id) {
+					if (Character.isEqual(actor, char)) {
 						// face character to skill target tile
 						return {
 							...char,
@@ -603,7 +603,7 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 				directTarget: position
 			},
 			characters: state.characters.map(char => {
-				if (char.data.id === actor.data.id) {
+				if (Character.isEqual(actor, char)) {
 					return {
 						...char,
 						direction: Position.getDirection(actor.position, position)

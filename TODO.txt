@@ -1,3 +1,17 @@
 TODO
+-----------------------------------------------------------
 --	u SELF target skillu rovnou predvybrat actora (Berserking)
 --	zbavit se statickych class
+
+
+JOBS refactor
+-----------------------------------------------------------
+
+				P 			S 			M
+-----------------------------------------------------------
+TANK		|	Knight		Warrior		Magi-knight
+MELEE DPS	|	Barbarian	Blademaster	Spellblade
+AGILE DPS	|	Brawler		Rogue		Monk
+RANGED DPS	|	Archer		Machinist	Alchemist
+MAGICAL DPS	|	Dark Knight	Assassin	Sorcerer
+HEALER		|	Paladin		Druid		Priest

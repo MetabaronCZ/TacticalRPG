@@ -1,5 +1,6 @@
+import { ISkill } from 'models/skill';
 import { WeaponSkillID } from 'models/skill/weapon/id';
-import { ISkill, SkillType, SkillRange, SkillArea, SkillElement, SkillStatus, SkillTarget } from 'models/skill';
+import { SkillType, SkillRange, SkillArea, SkillElement, SkillTarget, SkillStatus } from 'models/skill/attributes';
 
 const rangedSkills: Array<[WeaponSkillID, ISkill]> = [
 	[WeaponSkillID.BOW_ATTACK, {
