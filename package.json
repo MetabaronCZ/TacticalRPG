@@ -17,7 +17,7 @@
     "@types/react-router-dom": "^4.2.6",
     "@types/redux-actions": "^2.2.4",
     "@types/uuid": "^3.4.3",
-    "autoprefixer": "^8.2.0",
+    "autoprefixer": "^8.4.1",
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.4",
     "babel-preset-env": "^1.6.0",
@@ -35,7 +35,7 @@
     "tslint-loader": "^3.6.0",
     "tslint-react": "^3.5.1",
     "typescript": "^2.8.3",
-    "webpack": "^4.5.0",
+    "webpack": "^4.8.1",
     "webpack-stream": "^4.0.3"
   },
   "dependencies": {
