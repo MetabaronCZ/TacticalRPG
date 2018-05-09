@@ -161,10 +161,6 @@ const getSkillActions = (skillName: string, cost: number, targets?: IPosition[])
 	return actions;
 };
 
-const getDirectActions = (): IActionItem[] => {
-	return [confirmAction('Confirm direction', 0)];
-};
-
 const startTurn = (actor: ICharacter): ICharacter => {
 	// regenerate AP
 	const newAP = actor.baseAttributes.AP;
@@ -186,6 +182,5 @@ export const Character = {
 	getActions,
 	getMoveActions,
 	getSkillActions,
-	getDirectActions,
 	startTurn
 };

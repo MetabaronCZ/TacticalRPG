@@ -500,22 +500,9 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 					},
 					directArea: directions,
 					directTarget: Position.getByDirection(actor.position, actor.direction),
-					actionMenu: Character.getDirectActions(),
+					actionMenu: undefined
 				}
 			})
-		);
-	}
-
-	private endDirect() {
-		this.setState(
-			state => ({
-				act: {
-					...state.act,
-					directArea: undefined,
-					directTarget: undefined
-				}
-			}),
-			() => this.endTurn()
 		);
 	}
 
@@ -534,8 +521,6 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 				return this.runSkill();
 
 			case ActionID.DIRECT:
-				return this.endDirect();
-
 			default:
 				throw new Error(`Action is not comfirmable: ${action.id}`);
 		}
@@ -597,21 +582,25 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 		if (!actor || !Position.isContained(position, directArea)) {
 			return;
 		}
-		this.setState(state => ({
-			act: {
-				...state.act,
-				directTarget: position
-			},
-			characters: state.characters.map(char => {
-				if (Character.isEqual(actor, char)) {
-					return {
-						...char,
-						direction: Position.getDirection(actor.position, position)
-					};
-				}
-				return char;
-			})
-		}));
+		this.setState(
+			state => ({
+				act: {
+					...state.act,
+					directArea: undefined,
+					directTarget: undefined
+				},
+				characters: state.characters.map(char => {
+					if (Character.isEqual(actor, char)) {
+						return {
+							...char,
+							direction: Position.getDirection(actor.position, position)
+						};
+					}
+					return char;
+				})
+			}),
+			() => this.endTurn()
+		);
 	}
 
 	private onTileSelect(position: IPosition) {
