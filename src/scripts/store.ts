@@ -1,53 +1,48 @@
 import { createStore } from 'redux';
-import { Store as ReduxStore } from 'react-redux';
+import { Store } from 'react-redux';
 
 import reducers from 'reducers';
 import { IParty } from 'models/party';
 import { ICharacterData } from 'models/character-data';
+
+const KEY = 'game'; // storage key
 
 export interface IStore {
 	readonly characters: ICharacterData[];
 	readonly parties: IParty[];
 }
 
-class Store {
-	public static KEY = 'game'; // storage key
-	private value: ReduxStore<IStore>; // store instance
+const getDefaultState = (): IStore => ({
+	characters: [],
+	parties: []
+});
 
-	constructor() {
-		const saved = this.load();
-		this.value = createStore(reducers, saved);
-		this.value.subscribe(() => this.save()); // save on store changes
+const load = (): IStore => {
+	const state = localStorage.getItem(KEY) || '';
+
+	if (!state) {
+		return getDefaultState();
 	}
-
-	public get(): ReduxStore<IStore> {
-		return this.value;
+	try {
+		return JSON.parse(state) as IStore;
+	} catch (err) {
+		return getDefaultState();
 	}
+};
 
-	private getDefault(): IStore {
-		return {
-			characters: [],
-			parties: []
-		};
-	}
+const save = (store: Store<IStore>) => {
+	const state = store.getState() || getDefaultState();
+	localStorage.setItem(KEY, JSON.stringify(state));
+};
 
-	private load(): IStore {
-		const saved = localStorage.getItem(Store.KEY) || '';
+const initStore = (): Store<IStore> => {
+	const saved = load();
+	const store = createStore(reducers, saved) as Store<IStore>;
 
-		if (!saved) {
-			return this.getDefault();
-		}
-		try {
-			return JSON.parse(saved) as IStore;
-		} catch (err) {
-			return this.getDefault();
-		}
-	}
+	// save on store changes
+	store.subscribe(() => save(store));
 
-	private save() {
-		const state = this.value ? this.value.getState() : this.getDefault();
-		localStorage.setItem(Store.KEY, JSON.stringify(state));
-	}
-}
+	return store;
+};
 
-export default Store;
+export default initStore;
