@@ -1,6 +1,7 @@
 TODO
 -----------------------------------------------------------
 --	u SELF target skillu rovnou predvybrat actora (Berserking)
+--	spustit skill pri kliku na vybrany cil
 
 
 JOB refactor

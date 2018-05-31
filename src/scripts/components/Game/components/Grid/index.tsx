@@ -1,10 +1,11 @@
 import React from 'react';
 
-import { IOnTileSelect } from 'components/Game';
 import { Position, IPosition } from 'models/position';
 import { blockSize, gridSize } from 'models/game-config';
+import { IOnTileSelect, ActPhase } from 'components/Game';
 
 interface IGridProps {
+	phase: ActPhase;
 	onSelect: IOnTileSelect;
 	movePath?: IPosition[];
 	moveArea?: IPosition[];
@@ -17,17 +18,76 @@ interface IGridProps {
 	directTarget?: IPosition;
 }
 
+enum BlockType {
+	NONE = '',
+	SELECTED = 'is-selected',
+	TARGETABLE = 'is-targetable',
+	EFFECT_AREA = 'is-effectArea',
+	TARGET_AREA = 'is-targetArea'
+}
+
 const selectBlock = (i: number, onSelect: IOnTileSelect) => () => {
 	const pos = Position.create(i % gridSize, Math.floor(i / gridSize));
 	onSelect(pos);
 };
 
-const Grid: React.SFC<IGridProps> = ({ onSelect, ...props }) => {
+const getBlockType = (pos: IPosition, props: IGridProps) => {
+	switch (props.phase) {
+		case ActPhase.MOVE:
+		case ActPhase.MOVE_ANIM:
+			const isMoveArea = Position.isContained(pos, props.moveArea);
+			const isMovePath = Position.isContained(pos, props.movePath);
+			const isMoveTarget = Position.isEqual(pos, props.moveTarget);
+
+			if (isMoveTarget) {
+				return BlockType.SELECTED;
+			} else if (isMovePath) {
+				return BlockType.EFFECT_AREA;
+			} else if (isMoveArea) {
+				return BlockType.TARGET_AREA;
+			}
+			break;
+
+		case ActPhase.ACTION:
+		case ActPhase.ACTION_ANIM:
+			const isSkillArea = Position.isContained(pos, props.skillTargetArea);
+			const isSkillTarget = Position.isContained(pos, props.skillTargets);
+			const isSkillEffectArea = Position.isContained(pos, props.skillEffectArea);
+			const isSkillEffectTarget = Position.isContained(pos, props.skillEffectTargets);
+
+			if (isSkillEffectTarget) {
+				return BlockType.SELECTED;
+			} else if (isSkillEffectArea) {
+				return BlockType.EFFECT_AREA;
+			} else if (isSkillTarget) {
+				return BlockType.TARGETABLE;
+			} else if (isSkillArea) {
+				return BlockType.TARGET_AREA;
+			}
+			break;
+
+		case ActPhase.DIRECT:
+			const isDirectArea = Position.isContained(pos, props.directArea);
+			const isDirectTarget = Position.isEqual(pos, props.directTarget);
+
+			if (isDirectTarget) {
+				return BlockType.SELECTED;
+			} else if (isDirectArea) {
+				return BlockType.TARGET_AREA;
+			}
+			break;
+
+		default:
+			throw new Error('Unsupported act phase');
+	}
+	return BlockType.NONE;
+};
+
+const Grid: React.SFC<IGridProps> = (props: IGridProps) => {
 	const itemStyle: React.CSSProperties = {
 		width: `${blockSize}px`,
 		height: `${blockSize}px`
 	};
-
 	const grid: IPosition[] = [];
 
 	// generate grid item coordinates
@@ -39,57 +99,11 @@ const Grid: React.SFC<IGridProps> = ({ onSelect, ...props }) => {
 
 	return (
 		<div className="Grid">
-			{grid.map((pos, i) => {
-				const isDirectAction = !!(props.directArea || props.directTarget);
-				const isMoveAction = !!(props.moveArea || props.movePath || props.moveTarget);
-				const isSKillAction = !!(props.skillTargetArea || props.skillTargets || props.skillEffectArea || props.skillEffectTargets);
-				let blockType = '';
-
-				if (isDirectAction) {
-					const isDirectArea = Position.isContained(pos, props.directArea);
-					const isDirectTarget = Position.isEqual(pos, props.directTarget);
-
-					if (isDirectTarget) {
-						blockType = 'is-selected';
-					} else if (isDirectArea) {
-						blockType = 'is-targetArea';
-					}
-
-				} else if (isMoveAction) {
-					const isMoveArea = Position.isContained(pos, props.moveArea);
-					const isMovePath = Position.isContained(pos, props.movePath);
-					const isMoveTarget = Position.isEqual(pos, props.moveTarget);
-
-					if (isMoveTarget) {
-						blockType = 'is-selected';
-					} else if (isMovePath) {
-						blockType = 'is-effectArea';
-					} else if (isMoveArea) {
-						blockType = 'is-targetArea';
-					}
-
-				} else if (isSKillAction) {
-					const isSkillArea = Position.isContained(pos, props.skillTargetArea);
-					const isSkillTarget = Position.isContained(pos, props.skillTargets);
-					const isSkillEffectArea = Position.isContained(pos, props.skillEffectArea);
-					const isSkillEffectTarget = Position.isContained(pos, props.skillEffectTargets);
-
-					if (isSkillEffectTarget) {
-						blockType = 'is-selected';
-					} else if (isSkillEffectArea) {
-						blockType = 'is-effectArea';
-					} else if (isSkillTarget) {
-						blockType = 'is-targetable';
-					} else if (isSkillArea) {
-						blockType = 'is-targetArea';
-					}
-				}
-				return (
-					<div className="Grid-item" key={i} style={itemStyle}>
-						<div className={`Grid-item-block ${blockType}`} onClick={selectBlock(i, onSelect)} />
-					</div>
-				);
-			})}
+			{grid.map((pos, i) => (
+				<div className="Grid-item" key={i} style={itemStyle}>
+					<div className={`Grid-item-block ${getBlockType(pos, props)}`} onClick={selectBlock(i, props.onSelect)} />
+				</div>
+			))}
 		</div>
 	);
 };

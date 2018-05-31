@@ -2,7 +2,6 @@ import { WeaponSkillID } from 'models/skill/weapon/id';
 import { JobSkillID } from 'models/skill/job/id';
 
 export enum ActionID {
-	MOVE = 'MOVE',
 	ATTACK = 'ATTACK',
 	DOUBLE_ATTACK = 'DOUBLE_ATTACK',
 	WEAPON = 'WEAPON',

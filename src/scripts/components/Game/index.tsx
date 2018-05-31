@@ -13,6 +13,7 @@ import { ICharacterData } from 'models/character-data';
 import { ICharacter, Character } from 'models/character';
 import { JobSkills, JobSkillList } from 'models/skill/job';
 import { Player, PlayerType, IPlayer } from 'models/player';
+import { IMovable, IMoveCostMap } from 'models/pathfinding/movable';
 import { WeaponSkills, WeaponSkillList } from 'models/skill/weapon';
 import { getShortestPath, getMovableTiles } from 'models/pathfinding';
 import { IActions, ActionID, IActionItem } from 'models/character-action';
@@ -34,6 +35,14 @@ export enum GamePhase {
 	REACT = 'REACT'
 }
 
+export enum ActPhase {
+	MOVE = 'MOVE',
+	ACTION = 'ACTION',
+	DIRECT = 'DIRECT',
+	MOVE_ANIM = 'MOVE_ANIM',
+	ACTION_ANIM = 'ACTION_ANIM'
+}
+
 export type IOnActionSelect = (action: IActionItem) => void;
 export type IOnTileSelect = (pos: IPosition) => void;
 
@@ -47,17 +56,23 @@ interface IGameUIContainerProps {
 export interface IGameState {
 	phase: GamePhase;
 	act: {
+		phase: ActPhase;
 		action?: IActionItem;
 		actionMenu?: IActions;
-		hasMoved: boolean;
-		movePath?: IPosition[];
+
+		initAP?: number; // actor's AP on turn start
+		moveOrigin?: IPosition; // move start position
+		moveTarget?: IPosition; // move target position
 		moveArea?: IPosition[]; // movable tiles
-		moveTarget?: IPosition; // move target tile
+		moveCostMap?: IMoveCostMap; // move area cost map
+		movePath?: IPosition[]; // origin-target path
+
 		skillTargetArea?: IPosition[]; // skill range tiles
 		skillTargets?: IPosition[]; // skill targetable tiles
 		skillEffectArea?: IPosition[]; // skill effect area tiles
 		skillEffectTarget?: IPosition; // skill target tile where actor should face to
 		skillEffectTargets?: IPosition[]; // skill effect targets
+
 		directArea?: IPosition[]; // positions character can be aligned to
 		directTarget?: IPosition; // position character is directed to
 	};
@@ -125,7 +140,7 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 			characters,
 			order,
 			act: {
-				hasMoved: false
+				phase: ActPhase.MOVE
 			}
 		};
 	}
@@ -206,10 +221,21 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 		if (!actor) {
 			return;
 		}
+		const actorPos = actor.position;
+		const obstacles = this.state.characters.map(char => char.position);
+		const range = Math.min(actor.currAttributes.MOV, actor.currAttributes.AP);
+		const movable = getMovableTiles(actorPos, obstacles, range);
 
 		// update actor data
 		this.setState(
 			state => ({
+				act: {
+					phase: ActPhase.MOVE,
+					initAP: actor.currAttributes.AP,
+					moveOrigin: actorPos,
+					moveArea: movable.movable,
+					moveCostMap: movable.cost
+				},
 				characters: state.characters.map(char => {
 					if (Character.isEqual(actor, char)) {
 						return Character.startTurn(actor);
@@ -231,19 +257,19 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 
 		if (PlayerType.ENEMY === actor.player) {
 			// TODO - AI act
-			actions = Character.getActions(actor, this.state.act.hasMoved);
+			actions = Character.getActions(actor);
 
 		} else {
 			// character actions
-			actions = Character.getActions(actor, this.state.act.hasMoved);
+			actions = Character.getActions(actor);
 		}
 
 		this.setState(state => ({
 			phase: GamePhase.ACT,
 			act: {
-				action: state.act.action,
-				actionMenu: actions,
-				hasMoved: state.act.hasMoved
+				...state.act,
+				phase: ActPhase.MOVE,
+				actionMenu: actions
 			}
 		}));
 	}
@@ -265,9 +291,6 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 		this.setState(
 			{
 				phase: GamePhase.IDLE,
-				act: {
-					hasMoved: false
-				},
 				actors,
 				characters,
 				order
@@ -276,39 +299,25 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 		);
 	}
 
-	private startMove(action: IActionItem) {
-		const actor = this.getActor();
-
-		if (!actor) {
-			return;
-		}
-		const obstacles = this.state.characters.map(char => char.position);
-		const range = Math.min(actor.currAttributes.MOV, actor.currAttributes.AP);
-		const movable = getMovableTiles(actor.position, obstacles, range);
-
-		// show movable area
-		this.setState(state => ({
-			act: {
-				...state.act,
-				action,
-				actionMenu: Character.getMoveActions(),
-				moveArea: movable
-			}
-		}));
-	}
-
 	private move() {
 		const path = this.state.act.movePath;
 
 		if (!path) {
 			return this.endMove();
 		}
-		const timing = Array(path.length).fill(moveAnimDuration);
+		const movePath = path.slice(0); // path without actor position
+		movePath.shift();
+
+		if (!movePath.length) {
+			return this.endMove();
+		}
+		const timing = Array(movePath.length).fill(moveAnimDuration);
 
 		this.setState(
 			state => ({
 				act: {
 					...state.act,
+					phase: ActPhase.MOVE_ANIM,
 					actionMenu: undefined
 				}
 			}),
@@ -316,11 +325,12 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 				// animate movement
 				const moveAnim = new Animation(timing, step => {
 					const actor = this.getActor();
+					const { initAP, moveCostMap } = this.state.act;
 
-					if (!actor) {
+					if (!actor || !moveCostMap || ('undefined' === typeof initAP)) {
 						throw new Error('Could not MOVE - actor does not exist');
 					}
-					const tile = path[step.number - 1];
+					const tile = movePath[step.number - 1];
 					const pos = actor.position;
 					let dir: Direction;
 
@@ -348,7 +358,7 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 										direction: dir,
 										currAttributes: {
 											...char.currAttributes,
-											AP: (char.currAttributes.AP - tile.cost)
+											AP: (initAP - moveCostMap[tile.id])
 										}
 									};
 								}
@@ -375,8 +385,7 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 			state => ({
 				act: {
 					...state.act,
-					hasMoved: true,
-					moveArea: undefined,
+					phase: ActPhase.MOVE,
 					movePath: undefined,
 					moveTarget: undefined
 				}
@@ -399,6 +408,7 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 		this.setState(state => ({
 			act: {
 				...state.act,
+				phase: ActPhase.ACTION,
 				action,
 				actionMenu: Character.getSkillActions(action.title, action.cost),
 				skillTargets: targets,
@@ -434,6 +444,7 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 			state => ({
 				act: {
 					...act,
+					phase: ActPhase.ACTION_ANIM,
 					actionMenu: undefined
 				},
 				characters: state.characters.map(char => {
@@ -492,6 +503,7 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 			state => ({
 				act: {
 					...state.act,
+					phase: ActPhase.DIRECT,
 					action: {
 						id: ActionID.DIRECT,
 						cost: 0,
@@ -511,9 +523,6 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 			throw new Error('Confirming non-existent action');
 		}
 		switch (action.id) {
-			case ActionID.MOVE:
-				return this.move();
-
 			case ActionID.ATTACK:
 			case ActionID.DOUBLE_ATTACK:
 			case ActionID.WEAPON:
@@ -534,16 +543,30 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 			return;
 		}
 		const obstacles = characters.map(char => char.position);
+
+		// add non-moveArea positions in obstacles
+		for (let x = 0; x < gridSize; x++) {
+			for (let y = 0; y < gridSize; y++) {
+				const pos = Position.create(x, y);
+
+				if (Position.isContained(pos, moveArea) || Position.isContained(pos, obstacles)) {
+					continue;
+				}
+				obstacles.push(pos);
+			}
+		}
 		const path = getShortestPath(actor.position, position, obstacles);
 
-		this.setState(state => ({
-			act: {
-				...state.act,
-				actionMenu: Character.getMoveActions(path),
-				moveTarget: position,
-				movePath: path
-			}
-		}));
+		this.setState(
+			state => ({
+				act: {
+					...state.act,
+					moveTarget: position,
+					movePath: path
+				}
+			}),
+			() => path.length ? this.move() : this.endMove()
+		);
 	}
 
 	private selectSkillTarget(position: IPosition) {
@@ -604,40 +627,31 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 	}
 
 	private onTileSelect(position: IPosition) {
-		const action = this.state.act.action;
-
-		if (!action) {
-			return;
-		}
-		switch (action.id) {
-			case ActionID.MOVE:
+		switch (this.state.act.phase) {
+			case ActPhase.MOVE:
+				// go to given position
 				return this.selectMoveTarget(position);
 
-			case ActionID.ATTACK:
-			case ActionID.DOUBLE_ATTACK:
-			case ActionID.WEAPON:
-			case ActionID.JOB:
+			case ActPhase.ACTION:
+				// select skill target
 				return this.selectSkillTarget(position);
 
-			case ActionID.DIRECT:
+			case ActPhase.DIRECT:
+				// select actor direction
 				return this.selectDirectTarget(position);
 
+			case ActPhase.MOVE_ANIM:
+			case ActPhase.ACTION_ANIM:
+				// do nothing during animation
+				return;
+
 			default:
-				throw new Error('Unsupported tile select action');
+				throw new Error('Unsupported act phase');
 		}
 	}
 
 	private onActionSelect(action: IActionItem) {
-		const actor = this.getActor();
-
-		if (!actor) {
-			return;
-		}
 		switch (action.id) {
-			case ActionID.MOVE:
-				// starts MOVE action
-				return this.startMove(action);
-
 			case ActionID.ATTACK:
 			case ActionID.DOUBLE_ATTACK:
 			case ActionID.WEAPON:
@@ -645,15 +659,15 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 				return this.startSkill(action, this.getSkills(action));
 
 			case ActionID.PASS:
-				// ends character turn
+				// end character turn
 				return this.startDirect();
 
 			case ActionID.CONFIRM:
-				// overall CONFIRM action handler
+				// handle confirm action
 				return this.confirm(this.state.act.action);
 
 			case ActionID.BACK:
-				// cancelling current action brings back main character menu
+				// cancel current action > show menu
 				return this.act();
 
 			default:

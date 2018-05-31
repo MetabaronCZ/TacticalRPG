@@ -51,7 +51,7 @@ const tick = (char: ICharacter): ICharacter => {
 	return updated;
 };
 
-const getActions = (actor: ICharacter, hasMoved: boolean): IActions => {
+const getActions = (actor: ICharacter): IActions => {
 	const main = Weapons.get(actor.data.main);
 	const off = Weapons.get(actor.data.off);
 	const skillset = Skillsets.get(actor.data.skillset);
@@ -59,14 +59,6 @@ const getActions = (actor: ICharacter, hasMoved: boolean): IActions => {
 	const attributes = actor.currAttributes;
 	const actions: IActionItem[] = [];
 	const AP = attributes.AP;
-
-	// MOVE action
-	actions.push({
-		id: ActionID.MOVE,
-		cost: 0,
-		title: 'Move',
-		active: !hasMoved && AP > 0
-	});
 
 	// ATTACK actions
 	for (const [id, wpn] of attackActionSkills) {

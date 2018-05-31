@@ -25,10 +25,6 @@ const ActionrMenu: React.SFC<ICharacterMenuProps> = ({ actions, onSelect }) => {
 				} else {
 					// colored buttons
 					switch (type) {
-						case ActionID.MOVE:
-							color = ButtonColor.BLUE;
-							break;
-
 						case ActionID.PASS:
 						case ActionID.CONFIRM:
 							color = ButtonColor.GREEN;

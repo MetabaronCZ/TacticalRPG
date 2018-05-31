@@ -34,6 +34,7 @@ const GameUI: React.SFC<IGameUIProps> = props => {
 				<Layers>
 					<Characters actor={actor} characters={characters} />
 					<Grid
+						phase={act.phase}
 						moveArea={act.moveArea}
 						movePath={act.movePath}
 						moveTarget={act.moveTarget}

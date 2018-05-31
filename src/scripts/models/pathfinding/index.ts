@@ -19,6 +19,7 @@ export const constructPath = (start: IPosition, target: IPosition, graph: IGraph
 		path.push(curr);
 		curr = graph[curr.id];
 	}
+	path.push(start);
 	return path.reverse();
 };
 

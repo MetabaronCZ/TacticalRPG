@@ -1,12 +1,22 @@
 import PriorityQueue from 'core/priority-queue';
 import { Position, IPosition } from 'models/position';
 
+export interface IMoveCostMap {
+	[id: string]: number;
+}
+
+export interface IMovable {
+	movable: IPosition[];
+	cost: IMoveCostMap;
+}
+
 // Dijkstra algorithm (movement cost based search)
-export const getMovableTiles = (start: IPosition, obstacles: IPosition[], max: number): IPosition[] => {
+export const getMovableTiles = (start: IPosition, obstacles: IPosition[], max: number): IMovable => {
+	const movable: IPosition[] = [start];
 	const frontier = new PriorityQueue<IPosition>();
 	frontier.push(start, 0);
 
-	const cost: { [id: string]: number } = {};
+	const cost: IMoveCostMap = {};
 	cost[start.id] = 0;
 
 	while (frontier.size()) {
@@ -31,9 +41,6 @@ export const getMovableTiles = (start: IPosition, obstacles: IPosition[], max: n
 		}
 	}
 
-	const movable: IPosition[] = [];
-	delete cost[start.id];
-
 	// get movable tiles
 	for (const id in cost) {
 		const pos = id.split('|');
@@ -41,5 +48,6 @@ export const getMovableTiles = (start: IPosition, obstacles: IPosition[], max: n
 		const y = parseInt(pos[1], 10);
 		movable.push(Position.create(x, y));
 	}
-	return movable;
+
+	return { movable, cost };
 };
