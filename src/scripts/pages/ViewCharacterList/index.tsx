@@ -6,7 +6,7 @@ import { IStore } from 'store';
 import { gotoFn } from 'utils/nav';
 import * as Selector from 'selectors';
 import Actions from 'actions/characters';
-import { ICharacterData } from 'models/character-data';
+import { ICharacterData } from 'modules/character-data';
 import ViewCharacterList from 'pages/ViewCharacterList/template';
 
 export type IOnMoveDown = (char: ICharacterData) => () => void;

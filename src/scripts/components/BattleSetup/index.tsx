@@ -10,8 +10,8 @@ import ButtonRow from 'components/ButtonRow';
 import Separator from 'components/Separator';
 import CharacterList from 'components/CharacterList';
 
-import { IParty, Party } from 'models/party';
-import { ICharacterData } from 'models/character-data';
+import { IParty, Party } from 'modules/party';
+import { ICharacterData } from 'modules/character-data';
 
 interface IBattleSetupProps {
 	parties?: IParty[];

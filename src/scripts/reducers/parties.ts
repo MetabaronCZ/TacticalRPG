@@ -3,9 +3,9 @@ import { handleActions } from 'redux-actions';
 import { ActionID as PartyActionID } from 'actions/parties';
 import { ActionID as CharacterActionID } from 'actions/characters';
 
-import { IParty, Party } from 'models/party';
-import * as Indexable from 'models/indexable';
-import { ICharacterData } from 'models/character-data';
+import { IParty, Party } from 'modules/party';
+import * as Indexable from 'modules/indexable';
+import { ICharacterData } from 'modules/character-data';
 
 const defaultState: IParty[] = [];
 

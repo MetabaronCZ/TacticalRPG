@@ -4,10 +4,10 @@ import FormField from 'components/FormField';
 import FormSelect from 'components/FormSelect';
 import FormSelectItem from 'components/FormSelectItem';
 
-import { Armors } from 'models/armor';
-import { Weapons } from 'models/weapon';
-import { WieldID } from 'models/wield';
-import { ICharacterData, CharacterData } from 'models/character-data';
+import { Armors } from 'modules/armor';
+import { Weapons } from 'modules/weapon';
+import { WieldID } from 'modules/wield';
+import { ICharacterData, CharacterData } from 'modules/character-data';
 
 interface IStep3Props {
 	fields: ICharacterData;

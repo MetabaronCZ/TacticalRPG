@@ -4,7 +4,7 @@ import Link from 'components/Link';
 import LinkIco from 'components/LinkIco';
 import LinkButton from 'components/LinkButton';
 
-import { IParty } from 'models/party';
+import { IParty } from 'modules/party';
 
 type IFun = any;
 

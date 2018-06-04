@@ -10,8 +10,8 @@ import { goto, gotoFn } from 'utils/nav';
 import Page from 'components/Page';
 import BattleSetup from 'components/BattleSetup';
 
-import { IParty } from 'models/party';
-import { ICharacterData } from 'models/character-data';
+import { IParty } from 'modules/party';
+import { ICharacterData } from 'modules/character-data';
 
 interface IOnStartParams {
 	party?: string;

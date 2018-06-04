@@ -10,12 +10,12 @@ import Button from 'components/Button';
 import ButtonRow from 'components/ButtonRow';
 import Separator from 'components/Separator';
 
-import { Sexes } from 'models/sex';
-import { Armors } from 'models/armor';
-import { Weapons } from 'models/weapon';
-import { JobID, Jobs } from 'models/job';
-import { IParty, Party } from 'models/party';
-import { ICharacterData, CharacterData } from 'models/character-data';
+import { Sexes } from 'modules/sex';
+import { Armors } from 'modules/armor';
+import { Weapons } from 'modules/weapon';
+import { JobID, Jobs } from 'modules/job';
+import { IParty, Party } from 'modules/party';
+import { ICharacterData, CharacterData } from 'modules/character-data';
 
 import { validateField, validateForm } from 'utils/validation';
 

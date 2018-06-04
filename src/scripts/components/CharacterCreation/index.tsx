@@ -11,11 +11,11 @@ import Step3 from 'components/CharacterCreation/components/Step3';
 
 import { validateField, validateForm } from 'utils/validation';
 
-import { Jobs } from 'models/job';
-import { WieldID } from 'models/wield';
-import { ArmorID, Armors } from 'models/armor';
-import { WeaponID, Weapons } from 'models/weapon';
-import { ICharacterData, CharacterData } from 'models/character-data';
+import { Jobs } from 'modules/job';
+import { WieldID } from 'modules/wield';
+import { ArmorID, Armors } from 'modules/armor';
+import { WeaponID, Weapons } from 'modules/weapon';
+import { ICharacterData, CharacterData } from 'modules/character-data';
 
 const steps: string[] = ['Character Identity', 'Character Archetype', 'Equipment'];
 

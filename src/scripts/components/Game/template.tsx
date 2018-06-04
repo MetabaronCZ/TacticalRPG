@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Icos from 'data/icos';
-import { Jobs } from 'models/job';
+import { Jobs } from 'modules/job';
 
 import Bar from 'components/Game/components/Bar';
 import ArchetypeIco from 'components/ArchetypeIco';

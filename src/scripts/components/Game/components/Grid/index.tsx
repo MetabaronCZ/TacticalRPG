@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { Position, IPosition } from 'models/position';
-import { blockSize, gridSize } from 'models/game-config';
+import { Position, IPosition } from 'modules/position';
+import { blockSize, gridSize } from 'modules/game-config';
 import { IOnTileSelect, ActPhase } from 'components/Game';
 
 interface IGridProps {

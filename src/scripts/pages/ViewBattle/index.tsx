@@ -7,8 +7,8 @@ import { IStore } from 'store';
 import * as Selector from 'selectors';
 import { goto, gotoFn } from 'utils/nav';
 
-import { IParty } from 'models/party';
-import { ICharacterData } from 'models/character-data';
+import { IParty } from 'modules/party';
+import { ICharacterData } from 'modules/character-data';
 
 import GameUIContainer from 'components/Game';
 

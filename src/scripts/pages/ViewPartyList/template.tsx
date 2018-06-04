@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { IParty } from 'models/party';
+import { IParty } from 'modules/party';
 
 import Page from 'components/Page';
 import Button from 'components/Button';

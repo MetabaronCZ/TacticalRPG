@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ArchCharID, Archetypes } from 'models/archetype';
+import { ArchCharID, Archetypes } from 'modules/archetype';
 
 import FormRadio from 'components/FormRadio';
 import ArchetypeIco from 'components/ArchetypeIco';

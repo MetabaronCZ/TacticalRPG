@@ -1,5 +1,5 @@
 import { createAction } from 'redux-actions';
-import { IParty } from 'models/party';
+import { IParty } from 'modules/party';
 
 export enum ActionID {
 	ADD = 'PARTY_ADD',

@@ -2,8 +2,8 @@ import { createStore } from 'redux';
 import { Store } from 'react-redux';
 
 import reducers from 'reducers';
-import { IParty } from 'models/party';
-import { ICharacterData } from 'models/character-data';
+import { IParty } from 'modules/party';
+import { ICharacterData } from 'modules/character-data';
 
 const KEY = 'game'; // storage key
 

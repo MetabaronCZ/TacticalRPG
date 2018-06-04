@@ -1,9 +1,9 @@
 import React from 'react';
 
 import icos from 'data/icos';
-import { Jobs } from 'models/job';
-import { PlayerType } from 'models/player';
-import { ICharacter } from 'models/character';
+import { Jobs } from 'modules/job';
+import { PlayerType } from 'modules/player';
+import { ICharacter } from 'modules/character';
 
 import Bar from 'components/Game/components/Bar';
 import ArchetypeIco from 'components/ArchetypeIco';

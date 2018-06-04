@@ -6,7 +6,7 @@ import ViewPartyList from 'pages/ViewPartyList/template';
 
 import { IStore } from 'store';
 import { gotoFn } from 'utils/nav';
-import { IParty } from 'models/party';
+import { IParty } from 'modules/party';
 import * as Selector from 'selectors';
 import Actions from 'actions/parties';
 

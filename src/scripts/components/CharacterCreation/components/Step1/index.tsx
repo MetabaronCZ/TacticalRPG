@@ -5,8 +5,8 @@ import FormInput from 'components/FormInput';
 import FormRadio from 'components/FormRadio';
 
 import icos from 'data/icos';
-import { Sexes } from 'models/sex';
-import { ICharacterData, CharacterData } from 'models/character-data';
+import { Sexes } from 'modules/sex';
+import { ICharacterData, CharacterData } from 'modules/character-data';
 
 interface IStep1Props {
 	fields: ICharacterData;

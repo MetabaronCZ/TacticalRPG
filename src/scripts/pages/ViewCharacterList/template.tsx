@@ -7,7 +7,7 @@ import Separator from 'components/Separator';
 import CharacterList from 'components/CharacterList';
 import { IOnMoveDown, IOnMoveUp, IOnDelete } from 'pages/ViewCharacterList';
 
-import { ICharacterData } from 'models/character-data';
+import { ICharacterData } from 'modules/character-data';
 
 const NoCharacters = () => (
 	<p className="Paragraph">There are no characters.</p>

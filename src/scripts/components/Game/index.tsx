@@ -2,25 +2,25 @@ import React from 'react';
 
 import Animation from 'core/animation';
 
-import { IParty, Party } from 'models/party';
-import { Order, IOrder } from 'models/order';
-import { Skill, ISkill } from 'models/skill';
-import { Direction } from 'models/direction';
-import { JobSkillID } from 'models/skill/job/id';
-import { Position, IPosition } from 'models/position';
-import { WeaponSkillID } from 'models/skill/weapon/id';
-import { ICharacterData } from 'models/character-data';
-import { ICharacter, Character } from 'models/character';
-import { JobSkills, JobSkillList } from 'models/skill/job';
-import { Player, PlayerType, IPlayer } from 'models/player';
-import { IMovable, IMoveCostMap } from 'models/pathfinding/movable';
-import { WeaponSkills, WeaponSkillList } from 'models/skill/weapon';
-import { getShortestPath, getMovableTiles } from 'models/pathfinding';
-import { IActions, ActionID, IActionItem } from 'models/character-action';
+import { IParty, Party } from 'modules/party';
+import { Order, IOrder } from 'modules/order';
+import { Skill, ISkill } from 'modules/skill';
+import { Direction } from 'modules/direction';
+import { JobSkillID } from 'modules/skill/job/id';
+import { Position, IPosition } from 'modules/position';
+import { WeaponSkillID } from 'modules/skill/weapon/id';
+import { ICharacterData } from 'modules/character-data';
+import { ICharacter, Character } from 'modules/character';
+import { JobSkills, JobSkillList } from 'modules/skill/job';
+import { Player, PlayerType, IPlayer } from 'modules/player';
+import { IMovable, IMoveCostMap } from 'modules/pathfinding/movable';
+import { WeaponSkills, WeaponSkillList } from 'modules/skill/weapon';
+import { getShortestPath, getMovableTiles } from 'modules/pathfinding';
+import { IActions, ActionID, IActionItem } from 'modules/character-action';
 
 import * as ArrayUtils from 'core/array';
 import GameUI from 'components/Game/template';
-import { SkillTarget } from 'models/skill/attributes';
+import { SkillTarget } from 'modules/skill/attributes';
 
 const moveAnimDuration = 150;
 

@@ -8,10 +8,10 @@ import LinkButton from 'components/LinkButton';
 import ArchetypeIco from 'components/ArchetypeIco';
 import { IOnMoveDown, IOnMoveUp, IOnDelete } from 'pages/ViewCharacterList';
 
-import { Jobs } from 'models/job';
-import { Armors } from 'models/armor';
-import { Weapons } from 'models/weapon';
-import { CharacterData, ICharacterData } from 'models/character-data';
+import { Jobs } from 'modules/job';
+import { Armors } from 'modules/armor';
+import { Weapons } from 'modules/weapon';
+import { CharacterData, ICharacterData } from 'modules/character-data';
 
 const renderArchetype = (char: ICharacterData) => (
 	<ArchetypeIco primary={char.primary} secondary={char.secondary} />

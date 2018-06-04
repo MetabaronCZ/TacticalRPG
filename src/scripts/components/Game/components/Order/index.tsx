@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { IOrder } from 'models/order';
-import { PlayerType } from 'models/player';
-import { ICharacter } from 'models/character';
+import { IOrder } from 'modules/order';
+import { PlayerType } from 'modules/player';
+import { ICharacter } from 'modules/character';
 
 interface IOrderProps {
 	order: IOrder;
