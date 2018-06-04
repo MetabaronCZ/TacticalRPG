@@ -20,6 +20,7 @@ import { IActions, ActionID, IActionItem } from 'models/character-action';
 
 import * as ArrayUtils from 'core/array';
 import GameUI from 'components/Game/template';
+import { SkillTarget } from 'models/skill/attributes';
 
 const moveAnimDuration = 150;
 
@@ -405,16 +406,24 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 		const targets = Skill.getTargets(actor, skills[0], this.state.characters, targetable);
 
 		// show skill targetable area
-		this.setState(state => ({
-			act: {
-				...state.act,
-				phase: ActPhase.ACTION,
-				action,
-				actionMenu: Character.getSkillActions(action.title, action.cost),
-				skillTargets: targets,
-				skillTargetArea: targetable
+		this.setState(
+			state => ({
+				act: {
+					...state.act,
+					phase: ActPhase.ACTION,
+					action,
+					actionMenu: Character.getSkillActions(action.title, action.cost),
+					skillTargets: targets,
+					skillTargetArea: targetable
+				}
+			}),
+			() => {
+				// pre-select target of skill with SELF target
+				if (1 === targets.length && SkillTarget.SELF === skills[0].target) {
+					this.selectSkillTarget(targets[0]);
+				}
 			}
-		}));
+		);
 	}
 
 	private runSkill() {

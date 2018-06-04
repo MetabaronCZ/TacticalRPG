@@ -1,7 +1,6 @@
 TODO
 -----------------------------------------------------------
---	u SELF target skillu rovnou predvybrat actora (Berserking)
---	utok kopim by nemel jit, pokud je v ceste jina postava
+--	...
 
 
 JOB refactor

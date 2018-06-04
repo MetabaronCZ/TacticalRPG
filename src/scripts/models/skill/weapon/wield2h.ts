@@ -8,7 +8,7 @@ const sword2HSkills: Array<[WeaponSkillID, ISkill]> = [
 		cost: 2,
 		type: SkillType.ACTIVE,
 		range: SkillRange.R2,
-		area: SkillArea.SINGLE,
+		area: SkillArea.LINE,
 		target: SkillTarget.ENEMY,
 		isAreaEffect: false,
 		element: SkillElement.NONE,
