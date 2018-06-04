@@ -1,7 +1,7 @@
 TODO
 -----------------------------------------------------------
 --	u SELF target skillu rovnou predvybrat actora (Berserking)
---	spustit skill pri kliku na vybrany cil
+--	utok kopim by nemel jit, pokud je v ceste jina postava
 
 
 JOB refactor

@@ -576,6 +576,15 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 		if (!actor || !action || !Position.isContained(position, skillTargets)) {
 			return;
 		}
+
+		// confirm target on double selection
+		const prevTarget = this.state.act.skillEffectTarget;
+
+		if (prevTarget && Position.isEqual(prevTarget, position)) {
+			return this.confirm(this.state.act.action);
+		}
+
+		// get skill effect area
 		const skills = this.getSkills();
 
 		if (!skills) {
@@ -589,8 +598,6 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 			act: {
 				...state.act,
 				actionMenu: Character.getSkillActions(action.title, action.cost, skillTargets),
-				skillTargetArea: undefined,
-				skillTargets: undefined,
 				skillEffectArea: effectArea,
 				skillEffectTarget: position,
 				skillEffectTargets: targets
