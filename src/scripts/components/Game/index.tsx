@@ -1,88 +1,28 @@
 import React from 'react';
 
 import Animation from 'core/animation';
+import * as ArrayUtils from 'core/array';
 
-import { IParty, Party } from 'modules/party';
-import { Order, IOrder } from 'modules/order';
+import GameUI from 'components/Game/template';
+
+import { Order } from 'modules/order';
+import { IParty } from 'modules/party';
+import { PlayerType } from 'modules/player';
 import { Skill, ISkill } from 'modules/skill';
-import { Direction } from 'modules/direction';
-import { JobSkillID } from 'modules/skill/job/id';
+import { SkillTarget } from 'modules/skill/attributes';
 import { Position, IPosition } from 'modules/position';
-import { WeaponSkillID } from 'modules/skill/weapon/id';
 import { ICharacterData } from 'modules/character-data';
 import { ICharacter, Character } from 'modules/character';
-import { JobSkills, JobSkillList } from 'modules/skill/job';
-import { Player, PlayerType, IPlayer } from 'modules/player';
-import { IMovable, IMoveCostMap } from 'modules/pathfinding/movable';
-import { WeaponSkills, WeaponSkillList } from 'modules/skill/weapon';
+import { gridSize, moveAnimDuration } from 'modules/game-config';
 import { getShortestPath, getMovableTiles } from 'modules/pathfinding';
-import { IActions, ActionID, IActionItem } from 'modules/character-action';
-
-import * as ArrayUtils from 'core/array';
-import GameUI from 'components/Game/template';
-import { SkillTarget } from 'modules/skill/attributes';
-
-const moveAnimDuration = 150;
-
-export const gridSize = 12;
-export const blockSize = 64;
-export const allyPlayerName = 'Player';
-export const enemyPlayerName = 'Computer';
-
-export enum GamePhase {
-	IDLE = 'IDLE',
-	TICK = 'TICK',
-	ACT = 'ACT',
-	REACT = 'REACT'
-}
-
-export enum ActPhase {
-	MOVE = 'MOVE',
-	ACTION = 'ACTION',
-	DIRECT = 'DIRECT',
-	MOVE_ANIM = 'MOVE_ANIM',
-	ACTION_ANIM = 'ACTION_ANIM'
-}
-
-export type IOnActionSelect = (action: IActionItem) => void;
-export type IOnTileSelect = (pos: IPosition) => void;
+import { IGameState, GamePhase, ActPhase, getInitialState } from 'modules/game';
+import { IActions, ActionID, IActionItem, directAction } from 'modules/character-action';
 
 interface IGameUIContainerProps {
 	party: IParty;
 	characters: ICharacterData[];
 	onSummary: () => any;
 	onExit: () => any;
-}
-
-export interface IGameState {
-	phase: GamePhase;
-	act: {
-		phase: ActPhase;
-		action?: IActionItem;
-		actionMenu?: IActions;
-
-		initAP?: number; // actor's AP on turn start
-		moveOrigin?: IPosition; // move start position
-		moveTarget?: IPosition; // move target position
-		moveArea?: IPosition[]; // movable tiles
-		moveCostMap?: IMoveCostMap; // move area cost map
-		movePath?: IPosition[]; // origin-target path
-
-		skillTargetArea?: IPosition[]; // skill range tiles
-		skillTargets?: IPosition[]; // skill targetable tiles
-		skillEffectArea?: IPosition[]; // skill effect area tiles
-		skillEffectTarget?: IPosition; // skill target tile where actor should face to
-		skillEffectTargets?: IPosition[]; // skill effect targets
-
-		directArea?: IPosition[]; // positions character can be aligned to
-		directTarget?: IPosition; // position character is directed to
-	};
-	characters: ICharacter[];
-	ally: IPlayer;
-	enemy: IPlayer;
-	order: IOrder;
-	tick: number;
-	actors: string[]; // character ID array
 }
 
 class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState> {
@@ -95,7 +35,11 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 		this.onActionSelect = this.onActionSelect.bind(this);
 
 		this.initiative = (Math.random() < 0.5 ? PlayerType.ALLY : PlayerType.ENEMY);
-		this.initGameState(props.party.characters, props.characters);
+		this.state = getInitialState(props.party.characters, props.characters, this.initiative);
+	}
+
+	public componentDidMount() {
+		this.tick();
 	}
 
 	public render() {
@@ -108,61 +52,8 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 		);
 	}
 
-	public componentDidMount() {
-		this.tick();
-	}
-
-	private initGameState(charIds: string[], chars: ICharacterData[]) {
-		const party = charIds
-			.filter(id => !!id)
-			.map(id => Party.getCharacterById(id, chars));
-
-		const ally = Player.create(allyPlayerName, PlayerType.ALLY);
-		const enemy = Player.create(enemyPlayerName, PlayerType.ENEMY);
-
-		const allies = party.map((char, i) => {
-			return Character.create(char, Position.create(i + 2, gridSize - 1), Direction.TOP, PlayerType.ALLY);
-		});
-
-		const enemies = Party.getRandomCharacters(party.length)
-			.map((char, i) => {
-				return Character.create(char, Position.create(i + 2, 0), Direction.BOTTOM, PlayerType.ENEMY);
-			});
-
-		const characters = allies.concat(enemies);
-		const order = Order.get(characters, this.initiative);
-
-		this.state = {
-			phase: GamePhase.IDLE,
-			tick: 0,
-			actors: [],
-			ally,
-			enemy,
-			characters,
-			order,
-			act: {
-				phase: ActPhase.MOVE
-			}
-		};
-	}
-
 	private getActor() {
 		return this.state.characters.find(char => this.state.actors[0] === char.data.id);
-	}
-
-	private getSkills(action = this.state.act.action): ISkill[] {
-		if (!action || !action.skills || !action.skills.length) {
-			return [];
-		}
-		let skillIds = action.skills;
-
-		if (WeaponSkills.has(skillIds[0] as WeaponSkillID)) {
-			skillIds = skillIds as WeaponSkillID[];
-			return skillIds.map(id => WeaponSkills.get(id));
-		} else {
-			skillIds = skillIds as JobSkillID[];
-			return skillIds.map(id => JobSkills.get(id));
-		}
 	}
 
 	private tick() {
@@ -232,10 +123,12 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 			state => ({
 				act: {
 					phase: ActPhase.MOVE,
-					initAP: actor.currAttributes.AP,
-					moveOrigin: actorPos,
-					moveArea: movable.movable,
-					moveCostMap: movable.cost
+					initAP: actor.currAttributes.AP
+				},
+				move: {
+					origin: actorPos,
+					area: movable.movable,
+					costMap: movable.cost
 				},
 				characters: state.characters.map(char => {
 					if (Character.isEqual(actor, char)) {
@@ -301,7 +194,7 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 	}
 
 	private move() {
-		const path = this.state.act.movePath;
+		const path = this.state.move.path;
 
 		if (!path) {
 			return this.endMove();
@@ -326,29 +219,15 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 				// animate movement
 				const moveAnim = new Animation(timing, step => {
 					const actor = this.getActor();
-					const { initAP, moveCostMap } = this.state.act;
+					const initAP = this.state.act.initAP;
+					const moveCostMap = this.state.move.costMap;
 
 					if (!actor || !moveCostMap || ('undefined' === typeof initAP)) {
 						throw new Error('Could not MOVE - actor does not exist');
 					}
 					const tile = movePath[step.number - 1];
-					const pos = actor.position;
-					let dir: Direction;
+					const dir = Position.getDirection(actor.position, tile);
 
-					// change direction
-					if (tile.x - pos.x < 0) {
-						dir = Direction.LEFT;
-					} else if (tile.x - pos.x > 0) {
-						dir = Direction.RIGHT;
-					} else if (tile.y - pos.y < 0) {
-						dir = Direction.TOP;
-					} else if (tile.y - pos.y > 0) {
-						dir = Direction.BOTTOM;
-					} else {
-						throw new Error('Diagonal movement is not valid');
-					}
-
-					// change character position
 					this.setState(
 						state => ({
 							characters: state.characters.map(char => {
@@ -367,7 +246,7 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 							})
 						}),
 						() => {
-							// return to main menu
+							// show menu
 							if (step.isLast) {
 								this.endMove();
 							}
@@ -386,9 +265,12 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 			state => ({
 				act: {
 					...state.act,
-					phase: ActPhase.MOVE,
-					movePath: undefined,
-					moveTarget: undefined
+					phase: ActPhase.MOVE
+				},
+				move: {
+					...state.move,
+					path: undefined,
+					target: undefined
 				}
 			}),
 			() => this.act()
@@ -412,9 +294,11 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 					...state.act,
 					phase: ActPhase.ACTION,
 					action,
-					actionMenu: Character.getSkillActions(action.title, action.cost),
-					skillTargets: targets,
-					skillTargetArea: targetable
+					actionMenu: Character.getSkillActions(action.title, action.cost)
+				},
+				skill: {
+					targets,
+					targetArea: targetable
 				}
 			}),
 			() => {
@@ -428,18 +312,19 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 
 	private runSkill() {
 		const actor = this.getActor();
-		const { act, characters } = this.state;
-		const targetTile = act.skillEffectTarget;
-		const targetTiles = act.skillEffectTargets;
+		const { skill, characters } = this.state;
+		const action = this.state.act.action;
+		const targetTile = skill.effectTarget;
+		const targetTiles = skill.effectTargets;
 
-		if (!actor || !act.action || !targetTile) {
+		if (!actor || !action || !targetTile) {
 			throw new Error('Could not run skill - invalid ACT data');
 		}
 		if (!targetTiles || !targetTiles.length) {
 			this.endSkill();
 		}
 		const dir = Position.getDirection(actor.position, targetTile);
-		const skills = this.getSkills();
+		const skills = Skill.getByID(action.skills || []);
 		const targets: ICharacter[] = [];
 
 		// collect skill target characters
@@ -452,7 +337,7 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 		this.setState(
 			state => ({
 				act: {
-					...act,
+					...state.act,
 					phase: ActPhase.ACTION_ANIM,
 					actionMenu: undefined
 				},
@@ -471,8 +356,9 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 			() => {
 				// TODO
 				console.log('actor:', actor.data.name);
-				console.log('skill:', skills.map(skill => skill.title));
+				console.log('skill:', skills.map(s => s.title));
 				console.log('targets:', targets.map(char => char.data.name));
+
 				this.endSkill();
 			}
 		);
@@ -480,16 +366,7 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 
 	private endSkill() {
 		this.setState(
-			state => ({
-				act: {
-					...state.act,
-					skillTargetArea: undefined,
-					skillTargets: undefined,
-					skillEffectArea: undefined,
-					skillEffectTarget: undefined,
-					skillEffectTargets: undefined
-				}
-			}),
+			state => ({ skill: {} }),
 			() => this.startDirect()
 		);
 	}
@@ -513,15 +390,12 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 				act: {
 					...state.act,
 					phase: ActPhase.DIRECT,
-					action: {
-						id: ActionID.DIRECT,
-						cost: 0,
-						title: 'Direct',
-						active: true
-					},
-					directArea: directions,
-					directTarget: Position.getByDirection(actor.position, actor.direction),
+					action: directAction,
 					actionMenu: undefined
+				},
+				direct: {
+					area: directions,
+					target: Position.getByDirection(actor.position, actor.direction),
 				}
 			})
 		);
@@ -545,7 +419,8 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 	}
 
 	private selectMoveTarget(position: IPosition) {
-		const { act: { moveArea }, characters } = this.state;
+		const characters = this.state.characters;
+		const moveArea = this.state.move.area;
 		const actor = this.getActor();
 
 		if (!actor || !Position.isContained(position, moveArea)) {
@@ -568,10 +443,10 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 
 		this.setState(
 			state => ({
-				act: {
-					...state.act,
-					moveTarget: position,
-					movePath: path
+				move: {
+					...state.move,
+					path,
+					target: position
 				}
 			}),
 			() => path.length ? this.move() : this.endMove()
@@ -579,55 +454,54 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 	}
 
 	private selectSkillTarget(position: IPosition) {
-		const { act: { action, skillTargets }, characters } = this.state;
+		const { act, skill, characters } = this.state;
+		const action = act.action;
 		const actor = this.getActor();
 
-		if (!actor || !action || !Position.isContained(position, skillTargets)) {
+		if (!actor || !action || !Position.isContained(position, skill.targets)) {
 			return;
 		}
 
 		// confirm target on double selection
-		const prevTarget = this.state.act.skillEffectTarget;
+		const prevTarget = skill.effectTarget;
 
 		if (prevTarget && Position.isEqual(prevTarget, position)) {
-			return this.confirm(this.state.act.action);
+			return this.confirm(action);
 		}
 
 		// get skill effect area
-		const skills = this.getSkills();
+		const skills = Skill.getByID(action.skills || []);
 
 		if (!skills) {
 			return;
 		}
-		const effectAreas = skills.map(skill => Skill.getEffectArea(skill, actor.position, position));
+		const effectAreas = skills.map(s => Skill.getEffectArea(s, actor.position, position));
 		const effectArea = ArrayUtils.getIntersection(effectAreas, pos => pos.id);
-		const targets = Skill.getEffectTargets(actor, skills[0], effectArea, characters);
+		const effectTargets = Skill.getEffectTargets(actor, skills[0], effectArea, characters);
 
 		this.setState(state => ({
 			act: {
 				...state.act,
-				actionMenu: Character.getSkillActions(action.title, action.cost, skillTargets),
-				skillEffectArea: effectArea,
-				skillEffectTarget: position,
-				skillEffectTargets: targets
+				actionMenu: Character.getSkillActions(action.title, action.cost, skill.targets)
+			},
+			skill: {
+				effectArea,
+				effectTargets,
+				effectTarget: position,
 			}
 		}));
 	}
 
 	private selectDirectTarget(position: IPosition) {
-		const { act: { directArea }} = this.state;
+		const { direct } = this.state;
 		const actor = this.getActor();
 
-		if (!actor || !Position.isContained(position, directArea)) {
+		if (!actor || !Position.isContained(position, direct.area)) {
 			return;
 		}
 		this.setState(
 			state => ({
-				act: {
-					...state.act,
-					directArea: undefined,
-					directTarget: undefined
-				},
+				direct: {},
 				characters: state.characters.map(char => {
 					if (Character.isEqual(actor, char)) {
 						return {
@@ -672,7 +546,7 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 			case ActionID.DOUBLE_ATTACK:
 			case ActionID.WEAPON:
 			case ActionID.JOB:
-				return this.startSkill(action, this.getSkills(action));
+				return this.startSkill(action, Skill.getByID(action.skills || []));
 
 			case ActionID.PASS:
 				// end character turn

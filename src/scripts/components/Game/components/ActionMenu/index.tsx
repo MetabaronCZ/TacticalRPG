@@ -1,7 +1,8 @@
 import React from 'react';
-import { IOnActionSelect } from 'components/Game';
-import Button, { ButtonColor } from 'components/Button';
+
+import { IOnActionSelect } from 'modules/game';
 import { IActions, IActionItem, ActionID } from 'modules/character-action';
+import Button, { ButtonColor } from 'components/Button';
 
 interface ICharacterMenuProps {
 	actions: IActions;

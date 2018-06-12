@@ -42,3 +42,10 @@ export const backAction: IActionItem = {
 	title: 'Back',
 	active: true
 };
+
+export const directAction: IActionItem = {
+	id: ActionID.DIRECT,
+	cost: 0,
+	title: 'Direct',
+	active: true
+};

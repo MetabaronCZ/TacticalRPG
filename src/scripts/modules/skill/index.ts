@@ -1,7 +1,10 @@
 import { SkillType, SkillRange, SkillArea, SkillTarget, SkillElement, SkillStatus } from 'modules/skill/attributes';
-import { ICharacter, Character } from 'modules/character';
+import { JobSkills } from 'modules/skill/job';
+import { JobSkillID } from 'modules/skill/job/id';
+import { WeaponSkills } from 'modules/skill/weapon';
+import { WeaponSkillID } from 'modules/skill/weapon/id';
 import { IPosition, Position } from 'modules/position';
-import { PlayerType } from 'modules/player';
+import { ICharacter, Character } from 'modules/character';
 
 export interface ISkill {
 	readonly title: string;
@@ -180,10 +183,24 @@ const getEffectTargets = (actor: ICharacter, skill: ISkill, effectArea: IPositio
 	return targets;
 };
 
+const getByID = (ids: WeaponSkillID[]|JobSkillID[]): ISkill[] => {
+	if (!ids.length) {
+		return [];
+	}
+	if (WeaponSkills.has(ids[0] as WeaponSkillID)) {
+		ids = ids as WeaponSkillID[];
+		return ids.map(id => WeaponSkills.get(id));
+	} else {
+		ids = ids as JobSkillID[];
+		return ids.map(id => JobSkills.get(id));
+	}
+};
+
 export const Skill = {
 	getElementModifier,
 	getTargetableArea,
 	getTargets,
 	getEffectArea,
-	getEffectTargets
+	getEffectTargets,
+	getByID
 };
