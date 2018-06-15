@@ -1,20 +1,16 @@
 import React from 'react';
 
-import FormField from 'components/FormField';
-import FormSelect from 'components/FormSelect';
-import FormSelectItem from 'components/FormSelectItem';
-
 import { Armors } from 'modules/armor';
 import { Weapons } from 'modules/weapon';
 import { WieldID } from 'modules/wield';
-import { ICharacterData, CharacterData } from 'modules/character-data';
+import { CharacterData } from 'modules/character-data';
 
-interface IStep3Props {
-	fields: ICharacterData;
-	onChange: () => void;
-}
+import FormField from 'components/FormField';
+import FormSelect from 'components/FormSelect';
+import FormSelectItem from 'components/FormSelectItem';
+import { IStepProps } from 'components/CharacterCreation';
 
-const Step3: React.SFC<IStep3Props> = ({ fields, onChange }) => {
+const Step3: React.SFC<IStepProps> = ({ fields, onChange }) => {
 	const mainWeapons = Weapons.filter(fields, WieldID.MAIN);
 	const offWeapons = Weapons.filter(fields, WieldID.OFF);
 	const armors = Armors.filter(fields);

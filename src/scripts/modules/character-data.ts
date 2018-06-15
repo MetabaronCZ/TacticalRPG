@@ -26,6 +26,10 @@ export interface ICharacterData extends IIndexable {
 	armor: ArmorID;
 }
 
+export type IOnMoveDown = (char: ICharacterData) => () => void;
+export type IOnMoveUp = (char: ICharacterData) => () => void;
+export type IOnDelete = (char: ICharacterData, name: string) => () => void;
+
 // get default character properties
 const init = (conf = {}): ICharacterData => {
 	const now = Date.now();

@@ -2,17 +2,13 @@ import React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router';
 
-import ViewPartyList from 'pages/ViewPartyList/template';
-
 import { IStore } from 'store';
 import { gotoFn } from 'utils/nav';
-import { IParty } from 'modules/party';
 import * as Selector from 'selectors';
 import Actions from 'actions/parties';
+import { IParty, IOnMoveDown, IOnMoveUp, IOnDelete } from 'modules/party';
 
-export type IOnMoveDown = (party: IParty) => () => void;
-export type IOnMoveUp = (party: IParty) => () => void;
-export type IOnDelete = (party: IParty) => () => void;
+import ViewPartyList from 'pages/ViewPartyList/template';
 
 interface IStateToProps {
 	parties: IParty[];

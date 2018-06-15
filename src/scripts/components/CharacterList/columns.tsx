@@ -6,12 +6,11 @@ import Link from 'components/Link';
 import LinkIco from 'components/LinkIco';
 import LinkButton from 'components/LinkButton';
 import ArchetypeIco from 'components/ArchetypeIco';
-import { IOnMoveDown, IOnMoveUp, IOnDelete } from 'pages/ViewCharacterList';
 
 import { Jobs } from 'modules/job';
 import { Armors } from 'modules/armor';
 import { Weapons } from 'modules/weapon';
-import { CharacterData, ICharacterData } from 'modules/character-data';
+import { CharacterData, ICharacterData, IOnMoveDown, IOnMoveUp, IOnDelete } from 'modules/character-data';
 
 const renderArchetype = (char: ICharacterData) => (
 	<ArchetypeIco primary={char.primary} secondary={char.secondary} />
@@ -37,7 +36,7 @@ const renderOffHandBothWield = (title: string) => (
 	<span className="List-disabled">{title}</span>
 );
 
-export interface IColumn {
+interface IColumn {
 	title: string;
 	name: string;
 	value: any;

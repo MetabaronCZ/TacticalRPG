@@ -30,7 +30,7 @@ class BattleSetup extends React.Component<IBattleSetupProps, IBattleSetupState> 
 	constructor(props: IBattleSetupProps) {
 		super(props);
 
-		const defaultParty = ((this.props.parties && this.props.parties.length) ? this.props.parties[0].id : null);
+		const defaultParty = (this.props.parties && this.props.parties.length) ? this.props.parties[0].id : null;
 
 		this.state = {
 			fields: {
@@ -106,7 +106,7 @@ class BattleSetup extends React.Component<IBattleSetupProps, IBattleSetupState> 
 	private onSubmit(e: SyntheticEvent<any>) {
 		e.preventDefault();
 
-		if ('function' === typeof this.props.onStart) {
+		if (this.props.onStart) {
 			this.props.onStart(this.state.fields);
 		}
 	}

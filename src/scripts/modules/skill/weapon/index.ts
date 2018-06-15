@@ -13,7 +13,7 @@ import { WeaponSkillID, attackSkills } from 'modules/skill/weapon/types';
 
 const isAttackSkill = (id: WeaponSkillID): boolean => -1 !== attackSkills.indexOf(id);
 
-export class WeaponSkillList extends DataList<WeaponSkillID, ISkill> {
+class WeaponSkillList extends DataList<WeaponSkillID, ISkill> {
 	public filterAttack(main: IWeaponData, off: IWeaponData): Array<[WeaponSkillID, IWeaponData]> {
 		const skills: Array<[WeaponSkillID, IWeaponData]> = [];
 

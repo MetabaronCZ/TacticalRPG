@@ -1,12 +1,12 @@
-export interface IAnimationStep {
+interface IAnimationStep {
 	number: number;
 	duration: number;
 	isLast: boolean;
 	isFirst: boolean;
 }
 
-export type AnimationTiming = number[]; // step time intervals (in ms)
-export type AnimationHandler = (step: IAnimationStep) => void;
+type AnimationTiming = number[]; // step time intervals (in ms)
+type AnimationHandler = (step: IAnimationStep) => void;
 
 class Animation {
 	private readonly timing: AnimationTiming;

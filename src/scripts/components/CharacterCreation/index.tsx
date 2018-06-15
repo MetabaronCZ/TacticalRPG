@@ -16,9 +16,14 @@ import { WieldID } from 'modules/wield';
 import { ArmorID, Armors } from 'modules/armor';
 import { WeaponID, Weapons } from 'modules/weapon';
 import { ICharacterData, CharacterData } from 'modules/character-data';
-import { SkillsetID } from 'modules/skillset';
 
-const steps: string[] = ['Character Identity', 'Character Archetype', 'Equipment'];
+export interface IStepProps {
+	fields: ICharacterData;
+	errors: {
+		[field: string]: string|undefined;
+	};
+	onChange: (e?: SyntheticEvent<any>) => void;
+}
 
 interface ICharacterCreationProps {
 	character?: ICharacterData;
@@ -34,12 +39,35 @@ interface ICharacterCreationState {
 	};
 }
 
+interface IStepData {
+	title: string;
+	get: (props: IStepProps) => JSX.Element;
+}
+
+const stepData: IStepData[] = [
+	{
+		title: 'Character Identity',
+		get: (props: IStepProps) => <Step1 {...props} />
+	},
+	{
+		title: 'Character Archetype',
+		get: (props: IStepProps) => <Step2 {...props} />
+	},
+	{
+		title: 'Equipment',
+		get: (props: IStepProps) => <Step3 {...props} />
+	}
+];
+
+const firstStep = 1;
+const lastStep = 3;
+
 class CharacterCreation extends React.Component<ICharacterCreationProps, ICharacterCreationState> {
 	constructor(props: ICharacterCreationProps) {
 		super(props);
 
 		this.state = {
-			step: 1,
+			step: firstStep,
 			fields: CharacterData.init(props.character || {}),
 			errors: {}
 		};
@@ -56,7 +84,7 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 		return (
 			<Form onSubmit={this.onSubmit}>
 				<h2 className="Heading">
-					STEP {step}: {steps[step - 1]}
+					STEP {step}: {stepData[step - 1].title}
 				</h2>
 
 				{this.renderStep()}
@@ -64,10 +92,9 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 
 				<ButtonRow>
 					<Button ico="back" text="Back" onClick={this.onBack} />
-					{
-						steps.length === step
-							? <Button type="submit" ico="success" color="green" text="Save" />
-							: <Button ico="next" text="Next" type="submit" />
+					{lastStep === step
+						? <Button type="submit" ico="success" color="green" text="Save" />
+						: <Button ico="next" text="Next" type="submit" />
 					}
 				</ButtonRow>
 			</Form>
@@ -114,7 +141,7 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 		const step = this.state.step;
 		const onBack = this.props.onBack;
 
-		if (1 === step) {
+		if (firstStep === step) {
 			// exit Character Creation
 			if ('function' === typeof onBack) {
 				onBack();
@@ -125,7 +152,10 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 		}
 	}
 
-	private onChange(e: SyntheticEvent<any>) {
+	private onChange(e?: SyntheticEvent<any>) {
+		if (!e) {
+			return;
+		}
 		const { name, value } = e.currentTarget;
 		validateField(name, value, this.handleValidationError);
 
@@ -148,7 +178,7 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 		const { step, fields } = this.state;
 		const onSubmit = this.props.onSubmit;
 
-		if (step < steps.length) {
+		if (step < lastStep) {
 			// go to next step
 			this.setState({ step: step + 1 });
 
@@ -168,22 +198,13 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 	}
 
 	private renderStep() {
-		const stepProps: any = {
-			fields: this.state.fields,
-			errors: this.state.errors,
-			onChange: this.onChange
-		};
+		const { step, fields, errors } = this.state;
 
-		switch (this.state.step) {
-			case 1:
-				return <Step1 {...stepProps} />;
-			case 2:
-				return <Step2 {...stepProps} />;
-			case 3:
-				return <Step3 {...stepProps} />;
-			default:
-				throw new Error(`CharacterCreation step out of range: ${this.state.step}`);
-		}
+		return stepData[step - 1].get({
+			fields,
+			errors,
+			onChange: this.onChange
+		});
 	}
 }
 

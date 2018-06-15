@@ -1,13 +1,12 @@
 import React from 'react';
 
-import { IParty } from 'modules/party';
-
 import Page from 'components/Page';
 import Button from 'components/Button';
 import ButtonRow from 'components/ButtonRow';
 import PartyList from 'components/PartyList';
 import Separator from 'components/Separator';
-import { IOnMoveDown, IOnMoveUp, IOnDelete } from 'pages/ViewPartyList';
+
+import { IParty, IOnMoveDown, IOnMoveUp, IOnDelete } from 'modules/party';
 
 const NoParties = () => (
 	<p className="Paragraph">There are no character parties.</p>

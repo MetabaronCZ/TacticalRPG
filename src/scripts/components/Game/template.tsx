@@ -13,7 +13,7 @@ import Layers from 'components/Game/components/Layers';
 import Characters from 'components/Game/components/Characters';
 import ActionrMenu from 'components/Game/components/ActionMenu';
 
-export interface IGameUIProps {
+interface IGameUIProps {
 	game: IGameState;
 	onTileSelect: IOnTileSelect;
 	onActionSelect: IOnActionSelect;

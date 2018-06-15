@@ -79,13 +79,11 @@ const getPrimary = (primary: ArchCharID, secondary: ArchCharID): IBaseAttributes
 	return attributes;
 };
 
-const getSecondary = (attrs: IBaseAttributes): ISecondaryAttributes => {
-	return {
-		HP: SecondaryAttrFormula.HP(attrs),
-		AP: SecondaryAttrFormula.AP(attrs),
-		CT: SecondaryAttrFormula.CT(attrs)
-	};
-};
+const getSecondary = (attrs: IBaseAttributes): ISecondaryAttributes => ({
+	HP: SecondaryAttrFormula.HP(attrs),
+	AP: SecondaryAttrFormula.AP(attrs),
+	CT: SecondaryAttrFormula.CT(attrs)
+});
 
 const create = (primary: ArchCharID, secondary: ArchCharID): IAttributes => {
 	const pAttrs = getPrimary(primary, secondary);

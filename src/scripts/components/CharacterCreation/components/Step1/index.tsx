@@ -1,22 +1,15 @@
 import React from 'react';
 
+import icos from 'data/icos';
+import { Sexes } from 'modules/sex';
+import { CharacterData } from 'modules/character-data';
+
 import FormField from 'components/FormField';
 import FormInput from 'components/FormInput';
 import FormRadio from 'components/FormRadio';
+import { IStepProps } from 'components/CharacterCreation';
 
-import icos from 'data/icos';
-import { Sexes } from 'modules/sex';
-import { ICharacterData, CharacterData } from 'modules/character-data';
-
-interface IStep1Props {
-	fields: ICharacterData;
-	errors: {
-		[field: string]: string;
-	};
-	onChange: () => void;
-}
-
-const Step1: React.SFC<IStep1Props> = ({ fields, errors, onChange }) => (
+const Step1: React.SFC<IStepProps> = ({ fields, errors, onChange }) => (
 	<React.Fragment>
 		<FormField fieldId="f-name" label="Name" error={errors.name}>
 			<FormInput

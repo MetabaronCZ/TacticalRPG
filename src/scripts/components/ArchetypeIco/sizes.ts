@@ -1,11 +1,11 @@
-interface IArchetypeIcoSizes {
-	[name: string]: string;
-}
-
 export enum SizeID {
 	'default' = 'default',
 	'large' = 'large'
 }
+
+type IArchetypeIcoSizes = {
+	[size in SizeID]: string;
+};
 
 const ArchetypeIcoSizes: IArchetypeIcoSizes = {
 	[SizeID.default]: 'Default',

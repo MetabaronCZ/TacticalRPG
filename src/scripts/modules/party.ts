@@ -19,6 +19,10 @@ export interface IParty extends IIndexable {
 	readonly characters: string[];  // list of character IDs
 }
 
+export type IOnMoveDown = (party: IParty) => () => void;
+export type IOnMoveUp = (party: IParty) => () => void;
+export type IOnDelete = (party: IParty) => () => void;
+
 const create = (conf = {}): IParty => {
 	const now = Date.now();
 	const chars: string[] = [];

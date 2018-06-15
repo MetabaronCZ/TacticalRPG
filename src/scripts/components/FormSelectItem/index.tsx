@@ -1,6 +1,6 @@
 import React from 'react';
 
-export interface IFormSelectItemProps {
+interface IFormSelectItemProps {
 	value?: string;
 }
 

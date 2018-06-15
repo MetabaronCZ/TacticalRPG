@@ -6,12 +6,8 @@ import { IStore } from 'store';
 import { gotoFn } from 'utils/nav';
 import * as Selector from 'selectors';
 import Actions from 'actions/characters';
-import { ICharacterData } from 'modules/character-data';
 import ViewCharacterList from 'pages/ViewCharacterList/template';
-
-export type IOnMoveDown = (char: ICharacterData) => () => void;
-export type IOnMoveUp = (char: ICharacterData) => () => void;
-export type IOnDelete = (char: ICharacterData, name: string) => () => void;
+import { ICharacterData, IOnMoveDown, IOnMoveUp, IOnDelete } from 'modules/character-data';
 
 interface IStateToProps {
 	characters: ICharacterData[];

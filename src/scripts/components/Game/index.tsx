@@ -3,7 +3,7 @@ import React from 'react';
 import Animation from 'core/animation';
 import * as ArrayUtils from 'core/array';
 
-import { gridSize, moveAnimDuration } from 'data/game-config';
+import { gridSize, moveAnimDuration, tickDelay } from 'data/game-config';
 import GameUI from 'components/Game/template';
 
 import { Order } from 'modules/order';
@@ -53,7 +53,8 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 	}
 
 	private getActor() {
-		return this.state.characters.find(char => this.state.actors[0] === char.data.id);
+		const actorId = this.state.actors[0];
+		return this.state.characters.find(char => actorId === char.data.id);
 	}
 
 	private tick() {
@@ -103,7 +104,7 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 					},
 					() => actors.length ? this.startTurn() : this.tick()
 				);
-			}, 0)
+			}, tickDelay)
 		);
 	}
 
@@ -366,7 +367,9 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 
 	private endSkill() {
 		this.setState(
-			state => ({ skill: {} }),
+			{
+				skill: {}
+			},
 			() => this.startDirect()
 		);
 	}
@@ -445,8 +448,8 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 			state => ({
 				move: {
 					...state.move,
-					path,
-					target: position
+					target: position,
+					path
 				}
 			}),
 			() => path.length ? this.move() : this.endMove()
@@ -455,8 +458,8 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 
 	private selectSkillTarget(position: IPosition) {
 		const { act, skill, characters } = this.state;
-		const action = act.action;
 		const actor = this.getActor();
+		const action = act.action;
 
 		if (!actor || !action || !Position.isContained(position, skill.targets)) {
 			return;
@@ -493,7 +496,7 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 	}
 
 	private selectDirectTarget(position: IPosition) {
-		const { direct } = this.state;
+		const direct = this.state.direct;
 		const actor = this.getActor();
 
 		if (!actor || !Position.isContained(position, direct.area)) {

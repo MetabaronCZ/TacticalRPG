@@ -9,7 +9,6 @@ import { IActionItem, ActionID, IActions, passAction, confirmAction, backAction 
 import { SkillType } from 'modules/skill/attributes';
 import { WeaponSkills } from 'modules/skill/weapon';
 import { JobSkills } from 'modules/skill/job';
-import { Skill, ISkill } from 'modules/skill';
 import { Skillsets } from 'modules/skillset';
 
 export interface ICharacter {
@@ -125,20 +124,6 @@ const getActions = (actor: ICharacter): IActions => {
 	return actions;
 };
 
-const getMoveActions = (path?: IPosition[]): IActionItem[] => {
-	const actions: IActionItem[] = [];
-
-	// confirm MOVE action
-	if (path) {
-		actions.push(confirmAction('Move', path.length));
-	}
-
-	// cancel MOVE action
-	actions.push(backAction);
-
-	return actions;
-};
-
 const getSkillActions = (skillName: string, cost: number, targets?: IPosition[]): IActionItem[] => {
 	const actions: IActionItem[] = [];
 
@@ -172,7 +157,6 @@ export const Character = {
 	isEqual,
 	tick,
 	getActions,
-	getMoveActions,
 	getSkillActions,
 	startTurn
 };

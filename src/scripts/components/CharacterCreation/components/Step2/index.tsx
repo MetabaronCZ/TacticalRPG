@@ -1,20 +1,15 @@
 import React from 'react';
 
+import { Jobs } from 'modules/job';
+import { Skillsets } from 'modules/skillset';
+
 import FormField from 'components/FormField';
 import FormSelect from 'components/FormSelect';
 import FormSelectItem from 'components/FormSelectItem';
 import ArchetypeSelection from 'components/ArchetypeSelection';
+import { IStepProps } from 'components/CharacterCreation';
 
-import { Jobs } from 'modules/job';
-import { Skillsets } from 'modules/skillset';
-import { ICharacterData } from 'modules/character-data';
-
-interface IStep2Props {
-	fields: ICharacterData;
-	onChange: () => void;
-}
-
-const Step2: React.SFC<IStep2Props> = ({ fields, onChange }) => {
+const Step2: React.SFC<IStepProps> = ({ fields, onChange }) => {
 	const job = Jobs.get(fields.job);
 	const skillset = Skillsets.get(fields.skillset);
 

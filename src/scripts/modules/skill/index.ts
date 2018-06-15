@@ -20,7 +20,11 @@ export interface ISkill {
 	readonly status: SkillStatus[]; // status effects added to attack
 }
 
-const elementAffinityTable = {
+type IElementAffinityTable = {
+	[E in SkillElement]: SkillElement|null;
+};
+
+const ElementAffinityTable: IElementAffinityTable = {
 	[SkillElement.NONE]: null,
 	[SkillElement.FIRE]: SkillElement.ICE,
 	[SkillElement.ICE]: SkillElement.WIND,
@@ -34,10 +38,10 @@ const elementAffinityTable = {
 };
 
 const getElementModifier = (offensiveElm: SkillElement, defensiveElm: SkillElement): number => {
-	if (elementAffinityTable[offensiveElm] === defensiveElm) {
+	if (ElementAffinityTable[offensiveElm] === defensiveElm) {
 		return 2;
 	}
-	if (elementAffinityTable[defensiveElm] === offensiveElm) {
+	if (ElementAffinityTable[defensiveElm] === offensiveElm) {
 		return 0.5;
 	}
 	return 1;

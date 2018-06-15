@@ -8,6 +8,17 @@ export interface IPosition {
 	cost: number;
 }
 
+type IByDirectionTable = {
+	[T in Direction]: (pos: IPosition) => IPosition;
+};
+
+const byDirectionTable: IByDirectionTable = {
+	[Direction.TOP]:    (pos: IPosition) => create(pos.x, pos.y - 1),
+	[Direction.BOTTOM]: (pos: IPosition) => create(pos.x, pos.y + 1),
+	[Direction.LEFT]:   (pos: IPosition) => create(pos.x - 1, pos.y),
+	[Direction.RIGHT]:  (pos: IPosition) => create(pos.x + 1, pos.y),
+};
+
 const create = (x: number = 0, y: number = 0): IPosition => {
 	return {
 		x,
@@ -69,55 +80,21 @@ const isInGrid = (pos: IPosition): boolean => {
 };
 
 const getByDirection = (source: IPosition, dir: Direction) => {
-	let pos: IPosition;
-
-	switch (dir) {
-		case Direction.TOP:
-			pos = create(source.x, source.y - 1);
-			break;
-
-		case Direction.BOTTOM:
-			pos = create(source.x, source.y + 1);
-			break;
-
-		case Direction.LEFT:
-			pos = create(source.x - 1, source.y);
-			break;
-
-		case Direction.RIGHT:
-			pos = create(source.x + 1, source.y);
-			break;
-
-		default:
-			throw new Error('Invalid direction');
-	}
-
-	if (!isInGrid(pos)) {
-		return;
-	}
-	return pos;
+	const pos = byDirectionTable[dir](source);
+	return isInGrid(pos) ? pos : undefined;
 };
 
 const getDirection = (source: IPosition, target: IPosition): Direction => {
 	const diffX = target.x - source.x;
 	const diffY = target.y - source.y;
-	const diffXMag = Math.abs(diffX);
-	const diffYMag = Math.abs(diffY);
 
-	if (diffXMag > diffYMag) {
+	if (Math.abs(diffX) > Math.abs(diffY)) {
 		// horizontal direction
-		if (diffX < 0) {
-			return Direction.LEFT;
-		} else {
-			return Direction.RIGHT;
-		}
+		return diffX < 0 ? Direction.LEFT : Direction.RIGHT;
+
 	} else {
 		// vertical direction
-		if (diffY < 0) {
-			return Direction.TOP;
-		} else {
-			return Direction.BOTTOM;
-		}
+		return diffY < 0 ? Direction.TOP : Direction.BOTTOM;
 	}
 };
 

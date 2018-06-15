@@ -5,7 +5,7 @@ export interface IMoveCostMap {
 	[id: string]: number;
 }
 
-export interface IMovable {
+interface IMovable {
 	movable: IPosition[];
 	cost: IMoveCostMap;
 }

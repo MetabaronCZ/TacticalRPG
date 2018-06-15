@@ -20,8 +20,8 @@ interface IStateToProps {
 }
 
 const exit = (history: History) => () => {
+	 // go to Main Menu
 	if (window.confirm(txtExitConfirm)) {
-		// go to Main Menu
 		goto(history, '/');
 	}
 };

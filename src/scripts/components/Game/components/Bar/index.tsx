@@ -1,5 +1,12 @@
 import React from 'react';
 
+interface IBarProps {
+	hp: number;
+	hpMax: number;
+	ap: number;
+	apMax: number;
+}
+
 const renderItem = (type: string, value: number, max: number) => {
 	const pct = 100 * value / max;
 
@@ -14,13 +21,6 @@ const renderItem = (type: string, value: number, max: number) => {
 		</div>
 	);
 };
-
-interface IBarProps {
-	hp: number;
-	hpMax: number;
-	ap: number;
-	apMax: number;
-}
 
 const Bar: React.SFC<IBarProps> = ({ hp, hpMax, ap, apMax }) => (
 	<div className="Bar">
