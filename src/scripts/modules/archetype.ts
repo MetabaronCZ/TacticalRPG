@@ -22,14 +22,14 @@ export interface IArchetypeData {
 	readonly title: string;
 }
 
-export const Archetypes = new DataList<ArchCharID, IArchetypeData>([
-	[ArchCharID.P, {
+export const Archetypes = new DataList<ArchCharID, IArchetypeData>({
+	[ArchCharID.P]: {
 		title: 'Power'
-	}],
-	[ArchCharID.S, {
+	},
+	[ArchCharID.S]: {
 		title: 'Speed'
-	}],
-	[ArchCharID.M, {
+	},
+	[ArchCharID.M]: {
 		title: 'Magic'
-	}]
-]);
+	}
+});

@@ -1,10 +1,9 @@
-import { ISkill } from 'modules/skill';
 import { ISkillset } from 'modules/skillset';
-import { JobSkillID } from 'modules/skill/job/id';
+import { JobSkillID, IAssassinationJobSkillList } from 'modules/skill/job/types';
 import { SkillType, SkillRange, SkillArea, SkillElement, SkillTarget } from 'modules/skill/attributes';
 
-const assassination: Array<[JobSkillID, ISkill]> = [
-	[JobSkillID.ASSASSINATION_NONE, {
+const assassination: IAssassinationJobSkillList = {
+	[JobSkillID.ASSASSINATION_NONE]: {
 		title: 'Assassination',
 		cost: 0,
 		type: SkillType.ACTIVE,
@@ -16,13 +15,13 @@ const assassination: Array<[JobSkillID, ISkill]> = [
 		physicalDamage: 0,
 		elementalDamage: 0,
 		status: []
-	}]
-];
+	}
+};
 
 export const assassinationSkillset: ISkillset = {
 	title: 'Assassination',
 	description: '',
-	skills: assassination.map(([id, skill]) => id)
+	skills: Object.keys(assassination) as JobSkillID[]
 };
 
 export default assassination;

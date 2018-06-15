@@ -1,10 +1,9 @@
-import { ISkill } from 'modules/skill';
 import { ISkillset } from 'modules/skillset';
-import { JobSkillID } from 'modules/skill/job/id';
+import { JobSkillID, IAimJobSkillList } from 'modules/skill/job/types';
 import { SkillType, SkillRange, SkillArea, SkillElement, SkillTarget } from 'modules/skill/attributes';
 
-const aim: Array<[JobSkillID, ISkill]> = [
-	[JobSkillID.AIM_NONE, {
+const aim: IAimJobSkillList = {
+	[JobSkillID.AIM_NONE]: {
 		title: 'Aim',
 		cost: 0,
 		type: SkillType.ACTIVE,
@@ -16,13 +15,13 @@ const aim: Array<[JobSkillID, ISkill]> = [
 		physicalDamage: 0,
 		elementalDamage: 0,
 		status: []
-	}]
-];
+	}
+};
 
 export const aimSkillset: ISkillset = {
 	title: 'Aim',
 	description: '',
-	skills: aim.map(([id, skill]) => id)
+	skills: Object.keys(aim) as JobSkillID[]
 };
 
 export default aim;

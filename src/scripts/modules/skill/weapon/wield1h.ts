@@ -1,9 +1,8 @@
-import { ISkill } from 'modules/skill';
-import { WeaponSkillID } from 'modules/skill/weapon/id';
 import { SkillType, SkillRange, SkillArea, SkillElement, SkillTarget, SkillStatus } from 'modules/skill/attributes';
+import { WeaponSkillID, IWield1HWeaponSkillList } from 'modules/skill/weapon/types';
 
-const wield1HSkills: Array<[WeaponSkillID, ISkill]> = [
-	[WeaponSkillID.SWORD_1H_ATTACK, {
+const wield1HSkills: IWield1HWeaponSkillList = {
+	[WeaponSkillID.SWORD_1H_ATTACK]: {
 		title: 'Attack',
 		cost: 1,
 		type: SkillType.ACTIVE,
@@ -15,8 +14,8 @@ const wield1HSkills: Array<[WeaponSkillID, ISkill]> = [
 		physicalDamage: 1,
 		elementalDamage: 0,
 		status: []
-	}],
-	[WeaponSkillID.SWORD_1H_BLEED, {
+	},
+	[WeaponSkillID.SWORD_1H_BLEED]: {
 		title: 'Bleed',
 		cost: 2,
 		type: SkillType.ACTIVE,
@@ -28,8 +27,8 @@ const wield1HSkills: Array<[WeaponSkillID, ISkill]> = [
 		physicalDamage: 0.5,
 		elementalDamage: 0,
 		status: [SkillStatus.BLEED]
-	}],
-	[WeaponSkillID.AXE_1H_ATTACK, {
+	},
+	[WeaponSkillID.AXE_1H_ATTACK]: {
 		title: 'Attack',
 		cost: 1,
 		type: SkillType.ACTIVE,
@@ -41,8 +40,8 @@ const wield1HSkills: Array<[WeaponSkillID, ISkill]> = [
 		physicalDamage: 1,
 		elementalDamage: 0,
 		status: []
-	}],
-	[WeaponSkillID.AXE_1H_SMASH, {
+	},
+	[WeaponSkillID.AXE_1H_SMASH]: {
 		title: 'Smash',
 		cost: 2,
 		type: SkillType.ACTIVE,
@@ -54,8 +53,8 @@ const wield1HSkills: Array<[WeaponSkillID, ISkill]> = [
 		physicalDamage: 1.5,
 		elementalDamage: 0,
 		status: []
-	}],
-	[WeaponSkillID.HAMMER_1H_ATTACK, {
+	},
+	[WeaponSkillID.HAMMER_1H_ATTACK]: {
 		title: 'Attack',
 		cost: 1,
 		type: SkillType.ACTIVE,
@@ -67,8 +66,8 @@ const wield1HSkills: Array<[WeaponSkillID, ISkill]> = [
 		physicalDamage: 1,
 		elementalDamage: 0,
 		status: []
-	}],
-	[WeaponSkillID.HAMMER_1H_STUN, {
+	},
+	[WeaponSkillID.HAMMER_1H_STUN]: {
 		title: 'Stun',
 		cost: 2,
 		type: SkillType.ACTIVE,
@@ -80,7 +79,7 @@ const wield1HSkills: Array<[WeaponSkillID, ISkill]> = [
 		physicalDamage: 0.5,
 		elementalDamage: 0,
 		status: [SkillStatus.STUN]
-	}]
-];
+	}
+};
 
 export default wield1HSkills;

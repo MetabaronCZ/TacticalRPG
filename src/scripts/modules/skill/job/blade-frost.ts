@@ -1,10 +1,9 @@
-import { ISkill } from 'modules/skill';
 import { ISkillset } from 'modules/skillset';
-import { JobSkillID } from 'modules/skill/job/id';
+import { JobSkillID, IFrostBladeJobSkillList } from 'modules/skill/job/types';
 import { SkillType, SkillRange, SkillArea, SkillElement, SkillTarget } from 'modules/skill/attributes';
 
-const frostblade: Array<[JobSkillID, ISkill]> = [
-	[JobSkillID.FROSTBLADE_FROSTSTRIKE, {
+const frostblade: IFrostBladeJobSkillList = {
+	[JobSkillID.FROSTBLADE_FROSTSTRIKE]: {
 		title: 'Froststrike',
 		cost: 2,
 		type: SkillType.ACTIVE,
@@ -16,8 +15,8 @@ const frostblade: Array<[JobSkillID, ISkill]> = [
 		physicalDamage: 0.75,
 		elementalDamage: 0.75,
 		status: []
-	}],
-	[JobSkillID.FROSTBLADE_FROSTSPEAR, {
+	},
+	[JobSkillID.FROSTBLADE_FROSTSPEAR]: {
 		title: 'Frostspear',
 		cost: 2,
 		type: SkillType.ACTIVE,
@@ -29,13 +28,13 @@ const frostblade: Array<[JobSkillID, ISkill]> = [
 		physicalDamage: 0.5,
 		elementalDamage: 1,
 		status: []
-	}]
-];
+	}
+};
 
 export const frostbladeSkillset: ISkillset = {
 	title: 'Frostblade',
 	description: '',
-	skills: frostblade.map(([id, skill]) => id)
+	skills: Object.keys(frostblade) as JobSkillID[]
 };
 
 export default frostblade;

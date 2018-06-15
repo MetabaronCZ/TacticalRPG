@@ -1,4 +1,5 @@
-import { gridSize, enemyPlayerName, allyPlayerName } from 'modules/game-config';
+import { gridSize, enemyPlayerName, allyPlayerName } from 'data/game-config';
+
 import { IActionItem, IActions } from 'modules/character-action';
 import { IPlayer, Player, PlayerType } from 'modules/player';
 import { IMoveCostMap } from 'modules/pathfinding/movable';

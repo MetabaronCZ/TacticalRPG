@@ -11,11 +11,12 @@ import Step3 from 'components/CharacterCreation/components/Step3';
 
 import { validateField, validateForm } from 'utils/validation';
 
-import { Jobs } from 'modules/job';
+import { Jobs, JobID } from 'modules/job';
 import { WieldID } from 'modules/wield';
 import { ArmorID, Armors } from 'modules/armor';
 import { WeaponID, Weapons } from 'modules/weapon';
 import { ICharacterData, CharacterData } from 'modules/character-data';
+import { SkillsetID } from 'modules/skillset';
 
 const steps: string[] = ['Character Identity', 'Character Archetype', 'Equipment'];
 
@@ -73,56 +74,38 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 		);
 	}
 
-	public componentWillUpdate(nextProps: ICharacterCreationProps, nextState: ICharacterCreationState) {
+	public componentDidUpdate(prevProps: ICharacterCreationProps, prevState: ICharacterCreationState) {
 		const curr = this.state.fields;
-		const next = nextState.fields;
+		const prev = prevState.fields;
+		const newData = { ...curr };
+		let shouldUpdate = false;
 
-		// reset jobs on archetype change
-		if (next.primary !== curr.primary || next.secondary !== curr.secondary) {
-			const jobs = Jobs.filter(next);
-
-			this.setState({
-				fields: {
-					...next,
-					job: Array.from(jobs.keys())[0]
-				}
-			});
+		// reset jobs / equipment on archetype change
+		if (prev.primary !== newData.primary || prev.secondary !== newData.secondary) {
+			const jobData = Jobs.filter(newData)[0];
+			newData.job = jobData[0];
+			newData.skillset = jobData[1].skillsets[0];
+			shouldUpdate = true;
 		}
 
-		if (next.job !== curr.job) {
-			// assign skillset
-			const newJob = Jobs.get(next.job);
-			const newSkillset = newJob.skillsets[0];
-
-			// reset character Main hand weapon and armor on job change
-			const newArmor = (Armors.filter(next).has(curr.armor) ? curr.armor : ArmorID.NONE);
-			const newMain = (Weapons.filter(next, WieldID.MAIN).has(curr.main) ? curr.main : WeaponID.NONE);
-
-			const tmpNext = { ...next };
-			tmpNext.main = newMain;
-
-			const newOff = (Weapons.filter(tmpNext, WieldID.OFF).has(curr.off) ? curr.off : WeaponID.NONE);
-
-			this.setState({
-				fields: {
-					...next,
-					main: newMain,
-					off: newOff,
-					armor: newArmor,
-					skillset: newSkillset
-				}
-			});
+		// reset main hand weapon / armor on job change
+		if (prev.job !== newData.job) {
+			newData.main = (CharacterData.canWieldWeapon(newData, newData.main, WieldID.MAIN) ? newData.main : WeaponID.NONE);
+			newData.off = (CharacterData.canWieldWeapon(newData, newData.off, WieldID.OFF) ? newData.off : WeaponID.NONE);
+			newData.armor = (CharacterData.canWieldArmor(newData, newData.armor) ? newData.armor : ArmorID.NONE);
+			shouldUpdate = true;
 		}
 
-		// reset character Off hand weapon if 2H weapon equiped in Main hand
-		if (next.main !== curr.main) {
-			const newOff = (Weapons.filter(next, WieldID.OFF).has(curr.off) ? curr.off : WeaponID.NONE);
+		// reset character off hand weapon on main hand change
+		if (prev.main !== newData.main) {
+			newData.off = (CharacterData.canWieldWeapon(newData, newData.off, WieldID.OFF) ? newData.off : WeaponID.NONE);
+			shouldUpdate = true;
+		}
 
+		// update character data
+		if (shouldUpdate) {
 			this.setState({
-				fields: {
-					...next,
-					off: newOff
-				}
+				fields: { ...newData }
 			});
 		}
 	}

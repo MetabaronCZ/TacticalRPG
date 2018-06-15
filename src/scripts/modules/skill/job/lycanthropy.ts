@@ -1,10 +1,9 @@
-import { ISkill } from 'modules/skill';
 import { ISkillset } from 'modules/skillset';
-import { JobSkillID } from 'modules/skill/job/id';
+import { JobSkillID, ILycanthropyJobSkillList } from 'modules/skill/job/types';
 import { SkillType, SkillRange, SkillArea, SkillElement, SkillTarget } from 'modules/skill/attributes';
 
-const lycanthropy: Array<[JobSkillID, ISkill]> = [
-	[JobSkillID.LYCANTHROPY_NONE, {
+const lycanthropy: ILycanthropyJobSkillList = {
+	[JobSkillID.LYCANTHROPY_NONE]: {
 		title: 'Lycanthropy',
 		cost: 0,
 		type: SkillType.ACTIVE,
@@ -16,13 +15,13 @@ const lycanthropy: Array<[JobSkillID, ISkill]> = [
 		physicalDamage: 0.75,
 		elementalDamage: 0.75,
 		status: []
-	}]
-];
+	}
+};
 
 export const lycanthropySkillset: ISkillset = {
 	title: 'Lycanthropy',
 	description: '',
-	skills: lycanthropy.map(([id, skill]) => id)
+	skills: Object.keys(lycanthropy) as JobSkillID[]
 };
 
 export default lycanthropy;

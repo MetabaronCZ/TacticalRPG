@@ -21,26 +21,13 @@ const Step3: React.SFC<IStep3Props> = ({ fields, onChange }) => {
 	const armor = Armors.get(fields.armor);
 	const main = Weapons.get(fields.main);
 	const off = Weapons.get(fields.off);
-
-	if (!main) {
-		throw new Error('PartyCreation could not render item - invalid main WeaponID');
-	}
-
-	if (!off) {
-		throw new Error('PartyCreation could not render item - invalid off WeaponID');
-	}
-
-	if (!armor) {
-		throw new Error('PartyCreation could not render item - invalid ArmorID');
-	}
-
 	const hasNoOffHand = CharacterData.isBothWielding(fields) || CharacterData.isDualWielding(fields);
 
 	return (
 		<React.Fragment>
 			<FormField fieldId="f-main" label="Main hand" info={main.description}>
 				<FormSelect id="f-main" name="main" value={fields.main} onChange={onChange}>
-					{mainWeapons.map((id, item, i) => (
+					{mainWeapons.map(([id, item], i) => (
 						<FormSelectItem value={id} key={i}>
 							{item.title}
 						</FormSelectItem>
@@ -53,7 +40,7 @@ const Step3: React.SFC<IStep3Props> = ({ fields, onChange }) => {
 					!hasNoOffHand
 						? (
 							<FormSelect id="f-off" name="off" value={fields.off} onChange={onChange}>
-								{offWeapons.map((id, item, i) => (
+								{offWeapons.map(([id, item], i) => (
 									<FormSelectItem value={id} key={i}>
 										{item.title}
 									</FormSelectItem>
@@ -70,7 +57,7 @@ const Step3: React.SFC<IStep3Props> = ({ fields, onChange }) => {
 
 			<FormField fieldId="f-armor" label="Armor" info={armor.description}>
 				<FormSelect id="f-armor" name="armor" value={fields.armor} onChange={onChange}>
-					{armors.map((id, item, i) => (
+					{armors.map(([id, item], i) => (
 						<FormSelectItem value={id} key={i}>
 							{item.title}
 						</FormSelectItem>

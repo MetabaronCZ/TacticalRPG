@@ -1,9 +1,8 @@
-import { ISkill } from 'modules/skill';
-import { WeaponSkillID } from 'modules/skill/weapon/id';
 import { SkillType, SkillRange, SkillArea, SkillElement, SkillTarget, SkillStatus } from 'modules/skill/attributes';
+import { WeaponSkillID, ISmallWeaponSkillList } from 'modules/skill/weapon/types';
 
-const smallSkills: Array<[WeaponSkillID, ISkill]> = [
-	[WeaponSkillID.FISTS_ATTACK, {
+const smallSkills: ISmallWeaponSkillList = {
+	[WeaponSkillID.FISTS_ATTACK]: {
 		title: 'Attack',
 		cost: 1,
 		type: SkillType.ACTIVE,
@@ -15,8 +14,8 @@ const smallSkills: Array<[WeaponSkillID, ISkill]> = [
 		physicalDamage: 1,
 		elementalDamage: 0,
 		status: []
-	}],
-	[WeaponSkillID.FISTS_DISARM, {
+	},
+	[WeaponSkillID.FISTS_DISARM]: {
 		title: 'Disarm',
 		cost: 2,
 		type: SkillType.ACTIVE,
@@ -28,8 +27,8 @@ const smallSkills: Array<[WeaponSkillID, ISkill]> = [
 		physicalDamage: 0.5,
 		elementalDamage: 0,
 		status: [SkillStatus.DISARM]
-	}],
-	[WeaponSkillID.DAGGER_ATTACK, {
+	},
+	[WeaponSkillID.DAGGER_ATTACK]: {
 		title: 'Attack',
 		cost: 1,
 		type: SkillType.ACTIVE,
@@ -41,8 +40,8 @@ const smallSkills: Array<[WeaponSkillID, ISkill]> = [
 		physicalDamage: 1,
 		elementalDamage: 0,
 		status: []
-	}],
-	[WeaponSkillID.DAGGER_STAB, {
+	},
+	[WeaponSkillID.DAGGER_STAB]: {
 		title: 'Stab',
 		cost: 2,
 		type: SkillType.ACTIVE,
@@ -54,7 +53,7 @@ const smallSkills: Array<[WeaponSkillID, ISkill]> = [
 		physicalDamage: 2,
 		elementalDamage: 0,
 		status: []
-	}]
-];
+	}
+};
 
 export default smallSkills;

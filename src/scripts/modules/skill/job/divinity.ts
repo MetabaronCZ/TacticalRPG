@@ -1,10 +1,9 @@
-import { ISkill } from 'modules/skill';
 import { ISkillset } from 'modules/skillset';
-import { JobSkillID } from 'modules/skill/job/id';
+import { JobSkillID, IDivinityJobSkillList } from 'modules/skill/job/types';
 import { SkillType, SkillRange, SkillArea, SkillElement, SkillTarget } from 'modules/skill/attributes';
 
-const divinity: Array<[JobSkillID, ISkill]> = [
-	[JobSkillID.DIVINITY_NONE, {
+const divinity: IDivinityJobSkillList = {
+	[JobSkillID.DIVINITY_NONE]: {
 		title: 'Divinity',
 		cost: 0,
 		type: SkillType.ACTIVE,
@@ -16,13 +15,13 @@ const divinity: Array<[JobSkillID, ISkill]> = [
 		physicalDamage: 0,
 		elementalDamage: 0,
 		status: []
-	}]
-];
+	}
+};
 
 export const divinitySkillset: ISkillset = {
 	title: 'Divinity',
 	description: '',
-	skills: divinity.map(([id, skill]) => id)
+	skills: Object.keys(divinity) as JobSkillID[]
 };
 
 export default divinity;

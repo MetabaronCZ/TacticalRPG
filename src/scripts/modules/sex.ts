@@ -9,11 +9,11 @@ export interface ISexData {
 	readonly title: string;
 }
 
-export const Sexes = new DataList<SexID, ISexData>([
-	[SexID.MALE, {
+export const Sexes = new DataList<SexID, ISexData>({
+	[SexID.MALE]: {
 		title: 'Male'
-	}],
-	[SexID.FEMALE, {
+	},
+	[SexID.FEMALE]: {
 		title: 'Female'
-	}]
-]);
+	}
+});

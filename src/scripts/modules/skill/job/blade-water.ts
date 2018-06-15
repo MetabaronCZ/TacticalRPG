@@ -1,10 +1,9 @@
-import { ISkill } from 'modules/skill';
 import { ISkillset } from 'modules/skillset';
-import { JobSkillID } from 'modules/skill/job/id';
+import { JobSkillID, IWaterBladeJobSkillList } from 'modules/skill/job/types';
 import { SkillType, SkillRange, SkillArea, SkillElement, SkillTarget } from 'modules/skill/attributes';
 
-const waterblade: Array<[JobSkillID, ISkill]> = [
-	[JobSkillID.WATERBLADE_WATERSTRIKE, {
+const waterblade: IWaterBladeJobSkillList = {
+	[JobSkillID.WATERBLADE_WATERSTRIKE]: {
 		title: 'Waterstrike',
 		cost: 2,
 		type: SkillType.ACTIVE,
@@ -16,8 +15,8 @@ const waterblade: Array<[JobSkillID, ISkill]> = [
 		physicalDamage: 0.75,
 		elementalDamage: 0.75,
 		status: []
-	}],
-	[JobSkillID.WATERBLADE_SPLASH, {
+	},
+	[JobSkillID.WATERBLADE_SPLASH]: {
 		title: 'Splash',
 		cost: 2,
 		type: SkillType.ACTIVE,
@@ -29,13 +28,13 @@ const waterblade: Array<[JobSkillID, ISkill]> = [
 		physicalDamage: 0.5,
 		elementalDamage: 1,
 		status: []
-	}]
-];
+	}
+};
 
 export const waterbladeSkillset: ISkillset = {
 	title: 'Waterblade',
 	description: '',
-	skills: waterblade.map(([id, skill]) => id)
+	skills: Object.keys(waterblade) as JobSkillID[]
 };
 
 export default waterblade;

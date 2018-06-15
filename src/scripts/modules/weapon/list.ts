@@ -7,11 +7,7 @@ import { ICharacterData } from 'modules/character-data';
 import { WeaponID, WeaponTypeID, IWeaponData } from 'modules/weapon';
 
 class WeaponList extends DataList<WeaponID, IWeaponData> {
-	constructor(entries: Array<[WeaponID, IWeaponData]> = []) {
-		super(entries);
-	}
-
-	public filter(char: ICharacterData, slot: WieldID): DataList<WeaponID, IWeaponData> {
+	public filter(char: ICharacterData, slot: WieldID) {
 		return super.filterFn((id, wpn) => this.check(wpn, char, slot));
 	}
 
@@ -61,10 +57,6 @@ class WeaponList extends DataList<WeaponID, IWeaponData> {
 
 			case WieldID.OFF: {
 				const main = this.get(char.main);
-
-				if (!main) {
-					throw new Error('Weapon check error - invalid main WeaponID');
-				}
 				const mainWield = main.wield;
 
 				// only main hand can equip a dual wield weapon

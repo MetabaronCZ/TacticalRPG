@@ -1,10 +1,9 @@
-import { ISkill } from 'modules/skill';
 import { ISkillset } from 'modules/skillset';
-import { JobSkillID } from 'modules/skill/job/id';
+import { JobSkillID, IAlchemyJobSkillList } from 'modules/skill/job/types';
 import { SkillType, SkillRange, SkillArea, SkillElement, SkillTarget } from 'modules/skill/attributes';
 
-const alchemy: Array<[JobSkillID, ISkill]> = [
-	[JobSkillID.ALCHEMY_NONE, {
+const alchemy: IAlchemyJobSkillList = {
+	[JobSkillID.ALCHEMY_NONE]: {
 		title: 'Alchemy',
 		cost: 0,
 		type: SkillType.ACTIVE,
@@ -16,13 +15,13 @@ const alchemy: Array<[JobSkillID, ISkill]> = [
 		physicalDamage: 0,
 		elementalDamage: 0,
 		status: []
-	}]
-];
+	}
+};
 
 export const alchemySkillset: ISkillset = {
 	title: 'Alchemy',
 	description: '',
-	skills: alchemy.map(([id, skill]) => id)
+	skills: Object.keys(alchemy) as JobSkillID[]
 };
 
 export default alchemy;

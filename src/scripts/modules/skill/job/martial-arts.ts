@@ -1,10 +1,9 @@
-import { ISkill } from 'modules/skill';
 import { ISkillset } from 'modules/skillset';
-import { JobSkillID } from 'modules/skill/job/id';
+import { JobSkillID, IMartialArtsJobSkillList } from 'modules/skill/job/types';
 import { SkillType, SkillRange, SkillArea, SkillElement, SkillTarget } from 'modules/skill/attributes';
 
-const martialArts: Array<[JobSkillID, ISkill]> = [
-	[JobSkillID.MARTIAL_ARTS_NONE, {
+const martialArts: IMartialArtsJobSkillList = {
+	[JobSkillID.MARTIAL_ARTS_NONE]: {
 		title: 'Martial Arts',
 		cost: 0,
 		type: SkillType.ACTIVE,
@@ -16,13 +15,13 @@ const martialArts: Array<[JobSkillID, ISkill]> = [
 		physicalDamage: 0,
 		elementalDamage: 0,
 		status: []
-	}]
-];
+	}
+};
 
 export const martialArtsSkillset: ISkillset = {
 	title: 'Martial Arts',
 	description: '',
-	skills: martialArts.map(([id, skill]) => id)
+	skills: Object.keys(martialArts) as JobSkillID[]
 };
 
 export default martialArts;

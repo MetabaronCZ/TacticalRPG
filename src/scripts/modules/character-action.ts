@@ -1,5 +1,5 @@
-import { WeaponSkillID } from 'modules/skill/weapon/id';
-import { JobSkillID } from 'modules/skill/job/id';
+import { WeaponSkillID } from 'modules/skill/weapon/types';
+import { JobSkillID } from 'modules/skill/job/types';
 
 export enum ActionID {
 	ATTACK = 'ATTACK',

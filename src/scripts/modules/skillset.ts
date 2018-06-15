@@ -1,6 +1,6 @@
 import DataList from 'core/data-list';
 
-import { JobSkillID } from 'modules/skill/job/id';
+import { JobSkillID } from 'modules/skill/job/types';
 import { berserkingSkillset } from 'modules/skill/job/berserking';
 import { knighthoodSkillset } from 'modules/skill/job/knighthood';
 import { supremacySkillset } from 'modules/skill/job/supremacy';
@@ -83,44 +83,44 @@ export interface ISkillset {
 	readonly skills: JobSkillID[];
 }
 
-export const Skillsets = new DataList<SkillsetID, ISkillset>([
-	[SkillsetID.NONE, {
+export const Skillsets = new DataList<SkillsetID, ISkillset>({
+	[SkillsetID.NONE]: {
 		title: 'none',
 		description: 'No skillset',
 		skills: []
-	}],
-	[SkillsetID.BERSERKING, berserkingSkillset],
-	[SkillsetID.KNIGHTHOOD, knighthoodSkillset],
-	[SkillsetID.SUPREMACY, supremacySkillset],
-	[SkillsetID.PROGRAM, programSkillset],
-	[SkillsetID.WEAPON_MASTERY, weaponMasterySkillset],
-	[SkillsetID.COMBAT, combatSkillset],
-	[SkillsetID.TRACKING, trackingSkillset],
-	[SkillsetID.LYCANTHROPY, lycanthropySkillset],
-	[SkillsetID.MYSTIC_ART, mysticArtSkillset],
-	[SkillsetID.DIVINITY, divinitySkillset],
-	[SkillsetID.CORRUPTION, corruptionSkillset],
- 	[SkillsetID.FLAMEBLADE, flamebladeSkillset],
-	[SkillsetID.WATERBLADE, waterbladeSkillset],
-	[SkillsetID.AIRBLADE, airbladeSkillset],
-	[SkillsetID.STONEBLADE, stonebladeSkillset],
-	[SkillsetID.FROSTBLADE, frostbladeSkillset],
-	[SkillsetID.THUNDERBLADE, thunderbladeSkillset],
- 	[SkillsetID.BLITZ, blitzSkillset],
-	[SkillsetID.AIM, aimSkillset],
-	[SkillsetID.PERFORMANCE, performanceSkillset],
-	[SkillsetID.VAMPIRISM, vampirismSkillset],
-	[SkillsetID.ILLUSION, illusionSkillset],
-	[SkillsetID.MARTIAL_ARTS, martialArtsSkillset],
-	[SkillsetID.ASSASSINATION, assassinationSkillset],
-	[SkillsetID.ALCHEMY, alchemySkillset],
-	[SkillsetID.PSYCHOKINESIS, psychokinesisSkillset],
-	[SkillsetID.WHITE_MAGIC, whiteMagicSkillset],
-	[SkillsetID.BLACK_MAGIC, blackMagicSkillset],
-	[SkillsetID.FIRE_MAGIC, fireMagicSkillset],
-	[SkillsetID.WATER_MAGIC, waterMagicSkillset],
-	[SkillsetID.WIND_MAGIC, windMagicSkillset],
-	[SkillsetID.EARTH_MAGIC, earthMagicSkillset],
-	[SkillsetID.ICE_MAGIC, iceMagicSkillset],
-	[SkillsetID.THUNDER_MAGIC, thunderMagicSkillset]
-]);
+	},
+	[SkillsetID.BERSERKING]: berserkingSkillset,
+	[SkillsetID.KNIGHTHOOD]: knighthoodSkillset,
+	[SkillsetID.SUPREMACY]: supremacySkillset,
+	[SkillsetID.PROGRAM]: programSkillset,
+	[SkillsetID.WEAPON_MASTERY]: weaponMasterySkillset,
+	[SkillsetID.COMBAT]: combatSkillset,
+	[SkillsetID.TRACKING]: trackingSkillset,
+	[SkillsetID.LYCANTHROPY]: lycanthropySkillset,
+	[SkillsetID.MYSTIC_ART]: mysticArtSkillset,
+	[SkillsetID.DIVINITY]: divinitySkillset,
+	[SkillsetID.CORRUPTION]: corruptionSkillset,
+ 	[SkillsetID.FLAMEBLADE]: flamebladeSkillset,
+	[SkillsetID.WATERBLADE]: waterbladeSkillset,
+	[SkillsetID.AIRBLADE]: airbladeSkillset,
+	[SkillsetID.STONEBLADE]: stonebladeSkillset,
+	[SkillsetID.FROSTBLADE]: frostbladeSkillset,
+	[SkillsetID.THUNDERBLADE]: thunderbladeSkillset,
+ 	[SkillsetID.BLITZ]: blitzSkillset,
+	[SkillsetID.AIM]: aimSkillset,
+	[SkillsetID.PERFORMANCE]: performanceSkillset,
+	[SkillsetID.VAMPIRISM]: vampirismSkillset,
+	[SkillsetID.ILLUSION]: illusionSkillset,
+	[SkillsetID.MARTIAL_ARTS]: martialArtsSkillset,
+	[SkillsetID.ASSASSINATION]: assassinationSkillset,
+	[SkillsetID.ALCHEMY]: alchemySkillset,
+	[SkillsetID.PSYCHOKINESIS]: psychokinesisSkillset,
+	[SkillsetID.WHITE_MAGIC]: whiteMagicSkillset,
+	[SkillsetID.BLACK_MAGIC]: blackMagicSkillset,
+	[SkillsetID.FIRE_MAGIC]: fireMagicSkillset,
+	[SkillsetID.WATER_MAGIC]: waterMagicSkillset,
+	[SkillsetID.WIND_MAGIC]: windMagicSkillset,
+	[SkillsetID.EARTH_MAGIC]: earthMagicSkillset,
+	[SkillsetID.ICE_MAGIC]: iceMagicSkillset,
+	[SkillsetID.THUNDER_MAGIC]: thunderMagicSkillset
+});

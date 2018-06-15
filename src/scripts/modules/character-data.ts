@@ -45,7 +45,7 @@ const init = (conf = {}): ICharacterData => {
 		armor: ArmorID.NONE
 	};
 
-	const job = Jobs.filter(defaultCharacterData).entries()[0];
+	const job = Jobs.filter(defaultCharacterData)[0];
 
 	defaultCharacterData.job = job[0];
 	defaultCharacterData.skillset = job[1].skillsets[0];
@@ -55,7 +55,7 @@ const init = (conf = {}): ICharacterData => {
 
 // returns random character properties
 const random = (name: string, jobId: JobID): ICharacterData => {
-	const sex = Sexes.getRandomKey();
+	const sex = ArrayUtils.getRandomItem(Sexes.keys());
 	const job = Jobs.get(jobId);
 	const skillset = ArrayUtils.getRandomItem(job.skillsets);
 	let arch = job ? ArrayUtils.getRandomItem(job.archetype) : ArchetypeID.PP;
@@ -70,26 +70,26 @@ const random = (name: string, jobId: JobID): ICharacterData => {
 		secondary: arch[1] as ArchCharID
 	});
 
-	const main = Weapons.filter(character, WieldID.MAIN);
+	let main = Weapons.filter(character, WieldID.MAIN);
 
-	if (main.size > 1) {
-		main.delete(WeaponID.NONE);
+	if (main.length > 1) {
+		main = main.filter(([id, data]) => id !== WeaponID.NONE);
 	}
-	character.main = main.getRandomKey() || WeaponID.NONE;
+	character.main = ArrayUtils.getRandomItem(main)[0] || WeaponID.NONE;
 
-	const off = Weapons.filter(character, WieldID.OFF);
+	let off = Weapons.filter(character, WieldID.OFF);
 
-	if (off.size > 1) {
-		off.delete(WeaponID.NONE);
+	if (off.length > 1) {
+		off = off.filter(([id, data]) => id !== WeaponID.NONE);
 	}
-	character.off = off.getRandomKey() || WeaponID.NONE;
+	character.off = ArrayUtils.getRandomItem(off)[0] || WeaponID.NONE;
 
-	const arm = Armors.filter(character);
+	let arm = Armors.filter(character);
 
-	if (arm.size > 1) {
-		arm.delete(ArmorID.NONE);
+	if (arm.length > 1) {
+		arm = arm.filter(([id, data]) => id !== ArmorID.NONE);
 	}
-	character.armor = arm.getRandomKey();
+	character.armor = ArrayUtils.getRandomItem(arm)[0] || ArmorID.NONE;
 
 	return character;
 };
@@ -104,10 +104,20 @@ const isDualWielding = (char: ICharacterData): boolean => {
 	return main && -1 !== main.wield.indexOf(WieldID.DUAL);
 };
 
+const canWieldWeapon = (char: ICharacterData, weapon: WeaponID, wield: WieldID): boolean => {
+	return Weapons.filter(char, wield).filter(([id]) => id === weapon).length > 0;
+};
+
+const canWieldArmor = (char: ICharacterData, armor: ArmorID): boolean => {
+	return Armors.filter(char).filter(([id]) => id === armor).length > 0;
+};
+
 export const CharacterData = {
 	maxNameLength,
 	init,
 	random,
 	isBothWielding,
-	isDualWielding
+	isDualWielding,
+	canWieldWeapon,
+	canWieldArmor
 };

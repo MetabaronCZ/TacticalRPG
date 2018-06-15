@@ -5,11 +5,7 @@ import { ArmorID, IArmorData } from 'modules/armor';
 import { ICharacterData } from 'modules/character-data';
 
 class ArmorList extends DataList<ArmorID, IArmorData> {
-	constructor(entries: Array<[ArmorID, IArmorData]> = []) {
-		super(entries);
-	}
-
-	public filter(char: ICharacterData): DataList<ArmorID, IArmorData> {
+	public filter(char: ICharacterData) {
 		const arch = (ArchetypeID as any)[char.primary + char.secondary];
 		return super.filterFn((id, arm) => this.check(arch, arm));
 	}

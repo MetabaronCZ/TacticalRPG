@@ -1,10 +1,9 @@
-import { ISkill } from 'modules/skill';
 import { ISkillset } from 'modules/skillset';
-import { JobSkillID } from 'modules/skill/job/id';
+import { JobSkillID, IBlitzJobSkillList } from 'modules/skill/job/types';
 import { SkillType, SkillRange, SkillArea, SkillElement, SkillTarget } from 'modules/skill/attributes';
 
-const blitz: Array<[JobSkillID, ISkill]> = [
-	[JobSkillID.BLITZ_NONE, {
+const blitz: IBlitzJobSkillList = {
+	[JobSkillID.BLITZ_NONE]: {
 		title: 'Blitz',
 		cost: 0,
 		type: SkillType.ACTIVE,
@@ -16,13 +15,13 @@ const blitz: Array<[JobSkillID, ISkill]> = [
 		physicalDamage: 0,
 		elementalDamage: 0,
 		status: []
-	}]
-];
+	}
+};
 
 export const blitzSkillset: ISkillset = {
 	title: 'Blitz',
 	description: '',
-	skills: blitz.map(([id, skill]) => id)
+	skills: Object.keys(blitz) as JobSkillID[]
 };
 
 export default blitz;

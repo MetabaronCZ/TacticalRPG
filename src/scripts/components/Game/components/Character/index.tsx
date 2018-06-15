@@ -1,8 +1,8 @@
 import React from 'react';
 
+import { blockSize } from 'data/game-config';
 import { PlayerType } from 'modules/player';
 import { ICharacter } from 'modules/character';
-import { blockSize } from 'modules/game-config';
 
 interface ICharacterBlockProps {
 	char: ICharacter;

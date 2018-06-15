@@ -1,9 +1,8 @@
-import { ISkill } from 'modules/skill';
-import { WeaponSkillID } from 'modules/skill/weapon/id';
 import { SkillType, SkillRange, SkillArea, SkillElement, SkillTarget } from 'modules/skill/attributes';
+import { WeaponSkillID, IMagicalWeaponSkillList } from 'modules/skill/weapon/types';
 
-const magicalSkills: Array<[WeaponSkillID, ISkill]> = [
-	[WeaponSkillID.MACE_ATTACK, {
+const magicalSkills: IMagicalWeaponSkillList = {
+	[WeaponSkillID.MACE_ATTACK]: {
 		title: 'Attack',
 		cost: 1,
 		type: SkillType.ACTIVE,
@@ -15,8 +14,8 @@ const magicalSkills: Array<[WeaponSkillID, ISkill]> = [
 		physicalDamage: 1,
 		elementalDamage: 0,
 		status: []
-	}],
-	[WeaponSkillID.STAFF_ATTACK, {
+	},
+	[WeaponSkillID.STAFF_ATTACK]: {
 		title: 'Attack',
 		cost: 2,
 		type: SkillType.ACTIVE,
@@ -28,7 +27,7 @@ const magicalSkills: Array<[WeaponSkillID, ISkill]> = [
 		physicalDamage: 1,
 		elementalDamage: 0,
 		status: []
-	}]
-];
+	}
+};
 
 export default magicalSkills;

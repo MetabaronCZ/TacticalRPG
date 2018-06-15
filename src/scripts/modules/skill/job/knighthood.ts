@@ -1,10 +1,9 @@
-import { ISkill } from 'modules/skill';
 import { ISkillset } from 'modules/skillset';
-import { JobSkillID } from 'modules/skill/job/id';
+import { JobSkillID, IKnighthoodJobSkillList } from 'modules/skill/job/types';
 import { SkillType, SkillRange, SkillArea, SkillElement, SkillTarget, SkillStatus } from 'modules/skill/attributes';
 
-const knighthood: Array<[JobSkillID, ISkill]> = [
-	[JobSkillID.KNIGHTHOOD_ULTIMATE_DEFENSE, {
+const knighthood: IKnighthoodJobSkillList = {
+	[JobSkillID.KNIGHTHOOD_ULTIMATE_DEFENSE]: {
 		title: 'Ultimate Defense',
 		cost: 2,
 		type: SkillType.ACTIVE,
@@ -16,13 +15,13 @@ const knighthood: Array<[JobSkillID, ISkill]> = [
 		physicalDamage: 0,
 		elementalDamage: 0,
 		status: [SkillStatus.ULTIMATE_DEFENSE]
-	}]
-];
+	}
+};
 
 export const knighthoodSkillset: ISkillset = {
 	title: 'Knighthood',
 	description: '',
-	skills: knighthood.map(([id, skill]) => id)
+	skills: Object.keys(knighthood) as JobSkillID[]
 };
 
 export default knighthood;

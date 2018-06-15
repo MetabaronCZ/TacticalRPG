@@ -1,9 +1,8 @@
-import { ISkill } from 'modules/skill';
-import { WeaponSkillID } from 'modules/skill/weapon/id';
 import { SkillType, SkillRange, SkillArea, SkillElement, SkillTarget, SkillStatus } from 'modules/skill/attributes';
+import { WeaponSkillID, IRangedWeaponSkillList } from 'modules/skill/weapon/types';
 
-const rangedSkills: Array<[WeaponSkillID, ISkill]> = [
-	[WeaponSkillID.BOW_ATTACK, {
+const rangedSkills: IRangedWeaponSkillList = {
+	[WeaponSkillID.BOW_ATTACK]: {
 		title: 'Attack',
 		cost: 2,
 		type: SkillType.ACTIVE,
@@ -15,8 +14,8 @@ const rangedSkills: Array<[WeaponSkillID, ISkill]> = [
 		physicalDamage: 1,
 		elementalDamage: 0,
 		status: []
-	}],
-	[WeaponSkillID.BOW_CHARGE, {
+	},
+	[WeaponSkillID.BOW_CHARGE]: {
 		title: 'Charge',
 		cost: 4,
 		type: SkillType.ACTIVE,
@@ -28,8 +27,8 @@ const rangedSkills: Array<[WeaponSkillID, ISkill]> = [
 		physicalDamage: 1.5,
 		elementalDamage: 0,
 		status: []
-	}],
-	[WeaponSkillID.GUN_1H_ATTACK, {
+	},
+	[WeaponSkillID.GUN_1H_ATTACK]: {
 		title: 'Attack',
 		cost: 1,
 		type: SkillType.ACTIVE,
@@ -41,8 +40,8 @@ const rangedSkills: Array<[WeaponSkillID, ISkill]> = [
 		physicalDamage: 1,
 		elementalDamage: 0,
 		status: []
-	}],
-	[WeaponSkillID.GUN_1H_CRIPPLE, {
+	},
+	[WeaponSkillID.GUN_1H_CRIPPLE]: {
 		title: 'Cripple',
 		cost: 2,
 		type: SkillType.ACTIVE,
@@ -54,8 +53,8 @@ const rangedSkills: Array<[WeaponSkillID, ISkill]> = [
 		physicalDamage: 0.5,
 		elementalDamage: 0,
 		status: [SkillStatus.CRIPPLE]
-	}],
-	[WeaponSkillID.GUN_2H_ATTACK, {
+	},
+	[WeaponSkillID.GUN_2H_ATTACK]: {
 		title: 'Attack',
 		cost: 2,
 		type: SkillType.ACTIVE,
@@ -67,8 +66,8 @@ const rangedSkills: Array<[WeaponSkillID, ISkill]> = [
 		physicalDamage: 1,
 		elementalDamage: 0,
 		status: []
-	}],
-	[WeaponSkillID.GUN_2H_PIERCE, {
+	},
+	[WeaponSkillID.GUN_2H_PIERCE]: {
 		title: 'Pierce',
 		cost: 4,
 		type: SkillType.ACTIVE,
@@ -80,7 +79,7 @@ const rangedSkills: Array<[WeaponSkillID, ISkill]> = [
 		physicalDamage: 0.5,
 		elementalDamage: 0,
 		status: []
-	}]
-];
+	}
+};
 
 export default rangedSkills;

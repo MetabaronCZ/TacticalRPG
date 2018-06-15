@@ -1,8 +1,7 @@
 import DataList from 'core/data-list';
 
 import { ISkill } from 'modules/skill';
-import { SkillType, SkillRange, SkillArea, SkillElement, SkillTarget } from 'modules/skill/attributes';
-import { JobSkillID } from 'modules/skill/job/id';
+import { JobSkillID } from 'modules/skill/job/types';
 import berserking from 'modules/skill/job/berserking';
 import knighthood from 'modules/skill/job/knighthood';
 import supremacy from 'modules/skill/job/supremacy';
@@ -37,11 +36,12 @@ import windMagic from 'modules/skill/job/magic-wind';
 import earthMagic from 'modules/skill/job/magic-earth';
 import iceMagic from 'modules/skill/job/magic-ice';
 import thunderMagic from 'modules/skill/job/magic-thunder';
+import { SkillType, SkillRange, SkillArea, SkillElement, SkillTarget } from 'modules/skill/attributes';
 
 export class JobSkillList extends DataList<JobSkillID, ISkill> {}
 
-export const JobSkills = new JobSkillList([
-	[JobSkillID.NONE, {
+export const JobSkills = new JobSkillList({
+	[JobSkillID.NONE]: {
 		title: 'Job Skill',
 		cost: 0,
 		type: SkillType.ACTIVE,
@@ -53,7 +53,7 @@ export const JobSkills = new JobSkillList([
 		physicalDamage: 0,
 		elementalDamage: 0,
 		status: []
-	}],
+	},
 	...berserking,
 	...knighthood,
 	...supremacy,
@@ -88,4 +88,4 @@ export const JobSkills = new JobSkillList([
 	...earthMagic,
 	...iceMagic,
 	...thunderMagic
-]);
+});

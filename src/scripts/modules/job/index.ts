@@ -19,80 +19,80 @@ export interface IJobData {
 	readonly skillsets: SkillsetID[];
 }
 
-export const Jobs = new JobList([
-	[JobID.NONE, {
+export const Jobs = new JobList({
+	[JobID.NONE]: {
 		title: 'none',
 		description: 'No job selected',
 		archetype: [],
 		skillsets: [SkillsetID.NONE]
-	}],
-	[JobID.BAR, {
+	},
+	[JobID.BAR]: {
 		title: 'Barbarian',
 		description: 'A warrior with extreme strength',
 		archetype: [ArchID.PP],
 		skillsets: [SkillsetID.BERSERKING]
-	}],
-	[JobID.KNG, {
+	},
+	[JobID.KNG]: {
 		title: 'Knight',
 		description: 'A warrior with high endurance',
 		archetype: [ArchID.PP],
 		skillsets: [SkillsetID.KNIGHTHOOD]
-	}],
-	[JobID.DRG, {
+	},
+	[JobID.DRG]: {
 		title: 'Dragonkin',
 		description: '???',
 		archetype: [ArchID.PP],
 		skillsets: [SkillsetID.SUPREMACY]
-	}],
-	[JobID.CYB, {
+	},
+	[JobID.CYB]: {
 		title: 'Cyborg',
 		description: '???',
 		archetype: [ArchID.PP],
 		skillsets: [SkillsetID.PROGRAM]
-	}],
-	[JobID.WAR, {
+	},
+	[JobID.WAR]: {
 		title: 'Warrior',
 		description: 'A master of weapons',
 		archetype: [ArchID.PS, ArchID.SP],
 		skillsets: [SkillsetID.WEAPON_MASTERY]
-	}],
-	[JobID.BRW, {
+	},
+	[JobID.BRW]: {
 		title: 'Brawler',
 		description: '???',
 		archetype: [ArchID.PS, ArchID.SP],
 		skillsets: [SkillsetID.COMBAT]
-	}],
-	[JobID.HUN, {
+	},
+	[JobID.HUN]: {
 		title: 'Hunter',
 		description: '???',
 		archetype: [ArchID.PS, ArchID.SP],
 		skillsets: [SkillsetID.TRACKING]
-	}],
-	[JobID.WER, {
+	},
+	[JobID.WER]: {
 		title: 'Werewolf',
 		description: 'A feral warrior',
 		archetype: [ArchID.PS, ArchID.SP],
 		skillsets: [SkillsetID.LYCANTHROPY]
-	}],
-	[JobID.BLD, {
+	},
+	[JobID.BLD]: {
 		title: 'Blademaster',
 		description: '???',
 		archetype: [ArchID.PM, ArchID.MP],
 		skillsets: [SkillsetID.MYSTIC_ART]
-	}],
-	[JobID.PAL, {
+	},
+	[JobID.PAL]: {
 		title: 'Paladin',
 		description: 'A holy guardian',
 		archetype: [ArchID.PM, ArchID.MP],
 		skillsets: [SkillsetID.DIVINITY]
-	}],
-	[JobID.DRK, {
+	},
+	[JobID.DRK]: {
 		title: 'Dark Knight',
 		description: 'A knight of darkness',
 		archetype: [ArchID.PM, ArchID.MP],
 		skillsets: [SkillsetID.CORRUPTION]
-	}],
-	[JobID.SPL, {
+	},
+	[JobID.SPL]: {
 		title: 'Spellblade',
 		description: '???',
 		archetype: [ArchID.PM, ArchID.MP],
@@ -104,74 +104,74 @@ export const Jobs = new JobList([
 			SkillsetID.FROSTBLADE,
 			SkillsetID.THUNDERBLADE
 		]
-	}],
-	[JobID.ROG, {
+	},
+	[JobID.ROG]: {
 		title: 'Rogue',
 		description: '???',
 		archetype: [ArchID.SS],
 		skillsets: [SkillsetID.BLITZ]
-	}],
-	[JobID.RAN, {
+	},
+	[JobID.RAN]: {
 		title: 'Ranger',
 		description: 'A ranged weapon specialist',
 		archetype: [ArchID.SS],
 		skillsets: [SkillsetID.AIM]
-	}],
-	[JobID.ENT, {
+	},
+	[JobID.ENT]: {
 		title: 'Entertainer',
 		description: '???',
 		archetype: [ArchID.SS],
 		skillsets: [SkillsetID.PERFORMANCE]
-	}],
-	[JobID.VMP, {
+	},
+	[JobID.VMP]: {
 		title: 'Vampire',
 		description: '???',
 		archetype: [ArchID.SS],
 		skillsets: [SkillsetID.VAMPIRISM]
-	}],
-	[JobID.TRI, {
+	},
+	[JobID.TRI]: {
 		title: 'Trickster',
 		description: '???',
 		archetype: [ArchID.SM, ArchID.MS],
 		skillsets: [SkillsetID.ILLUSION]
-	}],
-	[JobID.MNK, {
+	},
+	[JobID.MNK]: {
 		title: 'Monk',
 		description: '???',
 		archetype: [ArchID.SM, ArchID.MS],
 		skillsets: [SkillsetID.MARTIAL_ARTS]
-	}],
-	[JobID.ASA, {
+	},
+	[JobID.ASA]: {
 		title: 'Assassin',
 		description: 'A fighter of shadows',
 		archetype: [ArchID.SM, ArchID.MS],
 		skillsets: [SkillsetID.ASSASSINATION]
-	}],
-	[JobID.ALC, {
+	},
+	[JobID.ALC]: {
 		title: 'Alchemist',
 		description: '???',
 		archetype: [ArchID.SM, ArchID.MS],
 		skillsets: [SkillsetID.ALCHEMY]
-	}],
-	[JobID.PSY, {
+	},
+	[JobID.PSY]: {
 		title: 'Psyker',
 		description: 'A fighter with strong mental abilites',
 		archetype: [ArchID.MM],
 		skillsets: [SkillsetID.PSYCHOKINESIS]
-	}],
-	[JobID.PRI, {
+	},
+	[JobID.PRI]: {
 		title: 'Priest',
 		description: 'A holy magician',
 		archetype: [ArchID.MM],
 		skillsets: [SkillsetID.WHITE_MAGIC]
-	}],
-	[JobID.SOR, {
+	},
+	[JobID.SOR]: {
 		title: 'Sorcerer',
 		description: 'A dark magician',
 		archetype: [ArchID.MM],
 		skillsets: [SkillsetID.BLACK_MAGIC]
-	}],
-	[JobID.ELM, {
+	},
+	[JobID.ELM]: {
 		title: 'Elemental Mage',
 		description: 'A master of elemental magic',
 		archetype: [ArchID.MM],
@@ -183,5 +183,5 @@ export const Jobs = new JobList([
 			SkillsetID.ICE_MAGIC,
 			SkillsetID.THUNDER_MAGIC
 		]
-	}]
-]);
+	}
+});

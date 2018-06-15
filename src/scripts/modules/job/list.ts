@@ -5,7 +5,7 @@ import { ArchetypeID } from 'modules/archetype';
 import { ICharacterData } from 'modules/character-data';
 
 class JobList extends DataList<JobID, IJobData> {
-	public filter(char: ICharacterData): DataList<JobID, IJobData> {
+	public filter(char: ICharacterData) {
 		const arch = (ArchetypeID as any)[char.primary + char.secondary];
 		return this.filterFn((id, job) => this.check(arch, job));
 	}

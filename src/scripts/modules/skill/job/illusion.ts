@@ -1,10 +1,9 @@
-import { ISkill } from 'modules/skill';
 import { ISkillset } from 'modules/skillset';
-import { JobSkillID } from 'modules/skill/job/id';
+import { JobSkillID, IIlusionJobSkillList } from 'modules/skill/job/types';
 import { SkillType, SkillRange, SkillArea, SkillElement, SkillTarget } from 'modules/skill/attributes';
 
-const illusion: Array<[JobSkillID, ISkill]> = [
-	[JobSkillID.ILLUSION_NONE, {
+const illusion: IIlusionJobSkillList = {
+	[JobSkillID.ILLUSION_NONE]: {
 		title: 'Invisibility',
 		cost: 0,
 		type: SkillType.ACTIVE,
@@ -16,13 +15,13 @@ const illusion: Array<[JobSkillID, ISkill]> = [
 		physicalDamage: 0,
 		elementalDamage: 0,
 		status: []
-	}]
-];
+	}
+};
 
 export const illusionSkillset: ISkillset = {
 	title: 'Illusion',
 	description: '',
-	skills: illusion.map(([id, skill]) => id)
+	skills: Object.keys(illusion) as JobSkillID[]
 };
 
 export default illusion;

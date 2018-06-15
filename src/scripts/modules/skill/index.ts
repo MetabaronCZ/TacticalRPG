@@ -1,8 +1,8 @@
 import { SkillType, SkillRange, SkillArea, SkillTarget, SkillElement, SkillStatus } from 'modules/skill/attributes';
 import { JobSkills } from 'modules/skill/job';
-import { JobSkillID } from 'modules/skill/job/id';
+import { JobSkillID } from 'modules/skill/job/types';
 import { WeaponSkills } from 'modules/skill/weapon';
-import { WeaponSkillID } from 'modules/skill/weapon/id';
+import { WeaponSkillID } from 'modules/skill/weapon/types';
 import { IPosition, Position } from 'modules/position';
 import { ICharacter, Character } from 'modules/character';
 
@@ -187,7 +187,7 @@ const getByID = (ids: WeaponSkillID[]|JobSkillID[]): ISkill[] => {
 	if (!ids.length) {
 		return [];
 	}
-	if (WeaponSkills.has(ids[0] as WeaponSkillID)) {
+	if (WeaponSkills.get(ids[0] as WeaponSkillID)) {
 		ids = ids as WeaponSkillID[];
 		return ids.map(id => WeaponSkills.get(id));
 	} else {

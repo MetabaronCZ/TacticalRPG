@@ -1,4 +1,4 @@
-import { gridSize } from 'modules/game-config';
+import { gridSize } from 'data/game-config';
 import { Direction } from 'modules/direction';
 
 export interface IPosition {

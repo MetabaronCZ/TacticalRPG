@@ -3,6 +3,7 @@ import React from 'react';
 import Animation from 'core/animation';
 import * as ArrayUtils from 'core/array';
 
+import { gridSize, moveAnimDuration } from 'data/game-config';
 import GameUI from 'components/Game/template';
 
 import { Order } from 'modules/order';
@@ -13,7 +14,6 @@ import { SkillTarget } from 'modules/skill/attributes';
 import { Position, IPosition } from 'modules/position';
 import { ICharacterData } from 'modules/character-data';
 import { ICharacter, Character } from 'modules/character';
-import { gridSize, moveAnimDuration } from 'modules/game-config';
 import { getShortestPath, getMovableTiles } from 'modules/pathfinding';
 import { IGameState, GamePhase, ActPhase, getInitialState } from 'modules/game';
 import { IActions, ActionID, IActionItem, directAction } from 'modules/character-action';

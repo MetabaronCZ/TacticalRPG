@@ -29,7 +29,7 @@ const Step2: React.SFC<IStep2Props> = ({ fields, onChange }) => {
 
 			<FormField fieldId="f-job" label="Character Job" info={job ? job.description : undefined}>
 				<FormSelect id="f-job" name="job" value={fields.job} onChange={onChange}>
-					{Jobs.filter(fields).map((id, value, i) => (
+					{Jobs.filter(fields).map(([id, value], i) => (
 						<FormSelectItem value={id} key={i}>
 							{value.title}
 						</FormSelectItem>

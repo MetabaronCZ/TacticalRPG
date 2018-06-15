@@ -1,10 +1,9 @@
-import { ISkill } from 'modules/skill';
 import { ISkillset } from 'modules/skillset';
-import { JobSkillID } from 'modules/skill/job/id';
+import { JobSkillID, IWindMagicJobSkillList } from 'modules/skill/job/types';
 import { SkillType, SkillRange, SkillArea, SkillElement, SkillTarget, SkillStatus } from 'modules/skill/attributes';
 
-const windMagic: Array<[JobSkillID, ISkill]> = [
-	[JobSkillID.WIND_MAGIC_AIR_BLAST, {
+const windMagic: IWindMagicJobSkillList = {
+	[JobSkillID.WIND_MAGIC_AIR_BLAST]: {
 		title: 'Air Blast',
 		cost: 2,
 		type: SkillType.ACTIVE,
@@ -16,8 +15,8 @@ const windMagic: Array<[JobSkillID, ISkill]> = [
 		physicalDamage: 0.5,
 		elementalDamage: 1,
 		status: []
-	}],
-	[JobSkillID.WIND_MAGIC_JET_STREAM, {
+	},
+	[JobSkillID.WIND_MAGIC_JET_STREAM]: {
 		title: 'Jet Stream',
 		cost: 2,
 		type: SkillType.ACTIVE,
@@ -29,8 +28,8 @@ const windMagic: Array<[JobSkillID, ISkill]> = [
 		physicalDamage: 0.25,
 		elementalDamage: 0.25,
 		status: [] // ??? replace enemy
-	}],
-	[JobSkillID.WIND_MAGIC_TORNADO, {
+	},
+	[JobSkillID.WIND_MAGIC_TORNADO]: {
 		title: 'Tornado',
 		cost: 4,
 		type: SkillType.ACTIVE,
@@ -42,8 +41,8 @@ const windMagic: Array<[JobSkillID, ISkill]> = [
 		physicalDamage: 0.25,
 		elementalDamage: 0.5,
 		status: []
-	}],
-	[JobSkillID.WIND_MAGIC_FLOAT, {
+	},
+	[JobSkillID.WIND_MAGIC_FLOAT]: {
 		title: 'Float',
 		cost: 2,
 		type: SkillType.ACTIVE,
@@ -55,8 +54,8 @@ const windMagic: Array<[JobSkillID, ISkill]> = [
 		physicalDamage: 0,
 		elementalDamage: 0,
 		status: [SkillStatus.FLOAT]
-	}],
-	[JobSkillID.WIND_MAGIC_WIND_AURA, {
+	},
+	[JobSkillID.WIND_MAGIC_WIND_AURA]: {
 		title: 'Wind Aura',
 		cost: 0,
 		type: SkillType.PASSIVE,
@@ -68,13 +67,13 @@ const windMagic: Array<[JobSkillID, ISkill]> = [
 		physicalDamage: 0,
 		elementalDamage: 0.25,
 		status: []
-	}]
-];
+	}
+};
 
 export const windMagicSkillset: ISkillset = {
 	title: 'Wind Magic',
 	description: '',
-	skills: windMagic.map(([id, skill]) => id)
+	skills: Object.keys(windMagic) as JobSkillID[]
 };
 
 export default windMagic;

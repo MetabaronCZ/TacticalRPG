@@ -1,10 +1,9 @@
-import { ISkill } from 'modules/skill';
 import { ISkillset } from 'modules/skillset';
-import { JobSkillID } from 'modules/skill/job/id';
+import { JobSkillID, IPerformanceJobSkillList } from 'modules/skill/job/types';
 import { SkillType, SkillRange, SkillArea, SkillElement, SkillTarget } from 'modules/skill/attributes';
 
-const performance: Array<[JobSkillID, ISkill]> = [
-	[JobSkillID.PERFORMANCE_NONE, {
+const performance: IPerformanceJobSkillList = {
+	[JobSkillID.PERFORMANCE_NONE]: {
 		title: 'Performance',
 		cost: 0,
 		type: SkillType.ACTIVE,
@@ -16,13 +15,13 @@ const performance: Array<[JobSkillID, ISkill]> = [
 		physicalDamage: 0,
 		elementalDamage: 0,
 		status: []
-	}]
-];
+	}
+};
 
 export const performanceSkillset: ISkillset = {
 	title: 'Performance',
 	description: '',
-	skills: performance.map(([id, skill]) => id)
+	skills: Object.keys(performance) as JobSkillID[]
 };
 
 export default performance;

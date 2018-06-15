@@ -11,17 +11,17 @@ export interface IWieldData {
 	readonly title: string;
 }
 
-export const Wields = new DataList<WieldID, IWieldData>([
-	[WieldID.MAIN, {
+export const Wields = new DataList<WieldID, IWieldData>({
+	[WieldID.MAIN]: {
 		title: 'Main hand'
-	}],
-	[WieldID.OFF, {
+	},
+	[WieldID.OFF]: {
 		title: 'Off hand'
-	}],
-	[WieldID.BOTH, {
+	},
+	[WieldID.BOTH]: {
 		title: 'Both hands'
-	}],
-	[WieldID.DUAL, {
+	},
+	[WieldID.DUAL]: {
 		title: 'Dual wield'
-	}]
-]);
+	}
+});

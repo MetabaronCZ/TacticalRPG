@@ -1,10 +1,9 @@
-import { ISkill } from 'modules/skill';
 import { ISkillset } from 'modules/skillset';
-import { JobSkillID } from 'modules/skill/job/id';
+import { JobSkillID, IFireMagicJobSkillList } from 'modules/skill/job/types';
 import { SkillType, SkillRange, SkillArea, SkillElement, SkillTarget, SkillStatus } from 'modules/skill/attributes';
 
-const fireMagic: Array<[JobSkillID, ISkill]> = [
-	[JobSkillID.FIRE_MAGIC_FIREBALL, {
+const fireMagic: IFireMagicJobSkillList = {
+	[JobSkillID.FIRE_MAGIC_FIREBALL]: {
 		title: 'Fireball',
 		cost: 2,
 		type: SkillType.ACTIVE,
@@ -16,8 +15,8 @@ const fireMagic: Array<[JobSkillID, ISkill]> = [
 		physicalDamage: 0.5,
 		elementalDamage: 1,
 		status: []
-	}],
-	[JobSkillID.FIRE_MAGIC_BURN, {
+	},
+	[JobSkillID.FIRE_MAGIC_BURN]: {
 		title: 'Burn',
 		cost: 2,
 		type: SkillType.ACTIVE,
@@ -29,8 +28,8 @@ const fireMagic: Array<[JobSkillID, ISkill]> = [
 		physicalDamage: 0.25,
 		elementalDamage: 0.25,
 		status: [SkillStatus.BURN]
-	}],
-	[JobSkillID.FIRE_MAGIC_FIRESTORM, {
+	},
+	[JobSkillID.FIRE_MAGIC_FIRESTORM]: {
 		title: 'Firestorm',
 		cost: 4,
 		type: SkillType.ACTIVE,
@@ -42,8 +41,8 @@ const fireMagic: Array<[JobSkillID, ISkill]> = [
 		physicalDamage: 0.25,
 		elementalDamage: 0.5,
 		status: []
-	}],
-	[JobSkillID.FIRE_MAGIC_FIRE_AURA, {
+	},
+	[JobSkillID.FIRE_MAGIC_FIRE_AURA]: {
 		title: 'Fire Aura',
 		cost: 0,
 		type: SkillType.PASSIVE,
@@ -55,13 +54,13 @@ const fireMagic: Array<[JobSkillID, ISkill]> = [
 		physicalDamage: 0,
 		elementalDamage: 0.25,
 		status: [SkillStatus.BURN]
-	}]
-];
+	}
+};
 
 export const fireMagicSkillset: ISkillset = {
 	title: 'Fire Magic',
 	description: '',
-	skills: fireMagic.map(([id, skill]) => id)
+	skills: Object.keys(fireMagic) as JobSkillID[]
 };
 
 export default fireMagic;

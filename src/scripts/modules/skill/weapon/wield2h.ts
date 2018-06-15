@@ -1,9 +1,8 @@
-import { ISkill } from 'modules/skill';
-import { WeaponSkillID } from 'modules/skill/weapon/id';
 import { SkillType, SkillRange, SkillArea, SkillElement, SkillTarget } from 'modules/skill/attributes';
+import { WeaponSkillID, IWield2HWeaponSkillList } from 'modules/skill/weapon/types';
 
-const sword2HSkills: Array<[WeaponSkillID, ISkill]> = [
-	[WeaponSkillID.SPEAR_ATTACK, {
+const sword2HSkills: IWield2HWeaponSkillList = {
+	[WeaponSkillID.SPEAR_ATTACK]: {
 		title: 'Attack',
 		cost: 2,
 		type: SkillType.ACTIVE,
@@ -15,8 +14,8 @@ const sword2HSkills: Array<[WeaponSkillID, ISkill]> = [
 		physicalDamage: 1,
 		elementalDamage: 0,
 		status: []
-	}],
-	[WeaponSkillID.SPEAR_THRUST, {
+	},
+	[WeaponSkillID.SPEAR_THRUST]: {
 		title: 'Thrust',
 		cost: 4,
 		type: SkillType.ACTIVE,
@@ -28,8 +27,8 @@ const sword2HSkills: Array<[WeaponSkillID, ISkill]> = [
 		physicalDamage: 1,
 		elementalDamage: 0,
 		status: []
-	}],
-	[WeaponSkillID.SWORD_2H_ATTACK, {
+	},
+	[WeaponSkillID.SWORD_2H_ATTACK]: {
 		title: 'Attack',
 		cost: 2,
 		type: SkillType.ACTIVE,
@@ -41,8 +40,8 @@ const sword2HSkills: Array<[WeaponSkillID, ISkill]> = [
 		physicalDamage: 1,
 		elementalDamage: 0,
 		status: []
-	}],
-	[WeaponSkillID.SWORD_2H_CLEAVE, {
+	},
+	[WeaponSkillID.SWORD_2H_CLEAVE]: {
 		title: 'Cleave',
 		cost: 4,
 		type: SkillType.ACTIVE,
@@ -54,8 +53,8 @@ const sword2HSkills: Array<[WeaponSkillID, ISkill]> = [
 		physicalDamage: 0.5,
 		elementalDamage: 0,
 		status: []
-	}],
-	[WeaponSkillID.AXE_2H_ATTACK, {
+	},
+	[WeaponSkillID.AXE_2H_ATTACK]: {
 		title: 'Attack',
 		cost: 2,
 		type: SkillType.ACTIVE,
@@ -67,8 +66,8 @@ const sword2HSkills: Array<[WeaponSkillID, ISkill]> = [
 		physicalDamage: 1,
 		elementalDamage: 0,
 		status: []
-	}],
-	[WeaponSkillID.AXE_2H_WHIRLWIND, {
+	},
+	[WeaponSkillID.AXE_2H_WHIRLWIND]: {
 		title: 'Whirlwind',
 		cost: 4,
 		type: SkillType.ACTIVE,
@@ -80,8 +79,8 @@ const sword2HSkills: Array<[WeaponSkillID, ISkill]> = [
 		physicalDamage: 0.5,
 		elementalDamage: 0,
 		status: []
-	}],
-	[WeaponSkillID.HAMMER_2H_ATTACK, {
+	},
+	[WeaponSkillID.HAMMER_2H_ATTACK]: {
 		title: 'Attack',
 		cost: 2,
 		type: SkillType.ACTIVE,
@@ -93,8 +92,8 @@ const sword2HSkills: Array<[WeaponSkillID, ISkill]> = [
 		physicalDamage: 1,
 		elementalDamage: 0,
 		status: []
-	}],
-	[WeaponSkillID.HAMMER_2H_SHOCKWAVE, {
+	},
+	[WeaponSkillID.HAMMER_2H_SHOCKWAVE]: {
 		title: 'Shockwave',
 		cost: 4,
 		type: SkillType.ACTIVE,
@@ -106,7 +105,7 @@ const sword2HSkills: Array<[WeaponSkillID, ISkill]> = [
 		physicalDamage: 0.5,
 		elementalDamage: 0,
 		status: []
-	}]
-];
+	}
+};
 
 export default sword2HSkills;

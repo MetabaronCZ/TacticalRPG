@@ -1,10 +1,9 @@
-import { ISkill } from 'modules/skill';
 import { ISkillset } from 'modules/skillset';
-import { JobSkillID } from 'modules/skill/job/id';
+import { JobSkillID, IIceMagicJobSkillList } from 'modules/skill/job/types';
 import { SkillType, SkillRange, SkillArea, SkillElement, SkillTarget, SkillStatus } from 'modules/skill/attributes';
 
-const iceMagic: Array<[JobSkillID, ISkill]> = [
-	[JobSkillID.ICE_MAGIC_ICE_SPEAR, {
+const iceMagic: IIceMagicJobSkillList = {
+	[JobSkillID.ICE_MAGIC_ICE_SPEAR]: {
 		title: 'Ice Spear',
 		cost: 2,
 		type: SkillType.ACTIVE,
@@ -16,8 +15,8 @@ const iceMagic: Array<[JobSkillID, ISkill]> = [
 		physicalDamage: 0.5,
 		elementalDamage: 1,
 		status: []
-	}],
-	[JobSkillID.ICE_MAGIC_FREEZE, {
+	},
+	[JobSkillID.ICE_MAGIC_FREEZE]: {
 		title: 'Freeze',
 		cost: 2,
 		type: SkillType.ACTIVE,
@@ -29,8 +28,8 @@ const iceMagic: Array<[JobSkillID, ISkill]> = [
 		physicalDamage: 0.25,
 		elementalDamage: 0.25,
 		status: [SkillStatus.FREEZE]
-	}],
-	[JobSkillID.ICE_MAGIC_BLIZZARD, {
+	},
+	[JobSkillID.ICE_MAGIC_BLIZZARD]: {
 		title: 'Blizzard',
 		cost: 4,
 		type: SkillType.ACTIVE,
@@ -42,8 +41,8 @@ const iceMagic: Array<[JobSkillID, ISkill]> = [
 		physicalDamage: 0.25,
 		elementalDamage: 0.5,
 		status: []
-	}],
-	[JobSkillID.ICE_MAGIC_FROST_AURA, {
+	},
+	[JobSkillID.ICE_MAGIC_FROST_AURA]: {
 		title: 'Frost Aura',
 		cost: 0,
 		type: SkillType.PASSIVE,
@@ -55,13 +54,13 @@ const iceMagic: Array<[JobSkillID, ISkill]> = [
 		physicalDamage: 0,
 		elementalDamage: 0.25,
 		status: [SkillStatus.FREEZE]
-	}]
-];
+	}
+};
 
 export const iceMagicSkillset: ISkillset = {
 	title: 'Ice Magic',
 	description: '',
-	skills: iceMagic.map(([id, skill]) => id)
+	skills: Object.keys(iceMagic) as JobSkillID[]
 };
 
 export default iceMagic;
