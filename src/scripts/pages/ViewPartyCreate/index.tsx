@@ -1,5 +1,6 @@
 import React from 'react';
 import { History } from 'history';
+import { Action } from 'redux-actions';
 import { connect, Dispatch } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router';
 
@@ -26,7 +27,7 @@ const mapStateToProps = (state: IStore): IStateToProps => ({
 	characters: Selector.getCharacters(state)
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<IParty>) => ({
+const mapDispatchToProps = (dispatch: Dispatch<Action<IParty>>) => ({
 	onSubmit: (history: History) => (value: IParty): void => {
 		dispatch(Actions.addParty(value));
 		goto(history, '/party-list');

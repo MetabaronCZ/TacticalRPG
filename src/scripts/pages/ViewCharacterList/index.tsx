@@ -1,4 +1,5 @@
 import React from 'react';
+import { Action } from 'redux-actions';
 import { connect, Dispatch } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router';
 
@@ -23,7 +24,7 @@ const mapStateToProps = (state: IStore): IStateToProps => ({
 	characters: Selector.getCharacters(state)
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<ICharacterData>) => ({
+const mapDispatchToProps = (dispatch: Dispatch<Action<ICharacterData>>) => ({
 	onMoveDown: (char: ICharacterData) => () => {
 		dispatch(Actions.moveDownList(char));
 	},

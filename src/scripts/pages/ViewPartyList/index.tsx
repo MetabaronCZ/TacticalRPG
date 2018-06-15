@@ -1,4 +1,5 @@
 import React from 'react';
+import { Action } from 'redux-actions';
 import { connect, Dispatch } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router';
 
@@ -24,7 +25,7 @@ const mapStateToProps = (state: IStore): IStateToProps => ({
 	parties: Selector.getParties(state)
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<IParty>) => ({
+const mapDispatchToProps = (dispatch: Dispatch<Action<IParty>>) => ({
 	onMoveDown: (party: IParty) => () => {
 		dispatch(Actions.moveDownList(party));
 	},

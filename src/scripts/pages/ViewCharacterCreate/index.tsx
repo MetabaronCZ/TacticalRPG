@@ -1,5 +1,6 @@
 import React from 'react';
 import { History } from 'history';
+import { Action } from 'redux-actions';
 import { connect, Dispatch } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router';
 
@@ -15,7 +16,7 @@ interface IViewCharacterCreateContainerProps extends RouteComponentProps<any> {
 	onBack: () => void;
 }
 
-const mapDispatchToProps = (dispatch: Dispatch<ICharacterData>) => ({
+const mapDispatchToProps = (dispatch: Dispatch<Action<ICharacterData>>) => ({
 	onSubmit: (history: History) => (value: ICharacterData): void => {
 		dispatch(Actions.addCharacter(value));
 		goto(history, '/character-list');

@@ -1,5 +1,6 @@
 import React from 'react';
 import { History } from 'history';
+import { Action } from 'redux-actions';
 import { connect, Dispatch } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router';
 
@@ -24,7 +25,7 @@ const mapStateToProps = (state: IStore): IStateToProps => ({
 	characters: Selector.getCharacters(state)
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<ICharacterData>) => ({
+const mapDispatchToProps = (dispatch: Dispatch<Action<ICharacterData>>) => ({
 	onSubmit: (history: History) => (char: ICharacterData) => {
 		dispatch(Actions.editCharacter(char));
 		goto(history, '/character-list');
