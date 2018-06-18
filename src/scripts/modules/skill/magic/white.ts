@@ -1,9 +1,9 @@
 import { ISkillset } from 'modules/skillset';
-import { JobSkillID, IWhiteMagicJobSkillList } from 'modules/skill/job/types';
+import { MagicSkillID, IWhiteMagicSkillList } from 'modules/skill/magic/types';
 import { SkillType, SkillRange, SkillArea, SkillElement, SkillTarget, SkillStatus } from 'modules/skill/attributes';
 
-const whiteMagic: IWhiteMagicJobSkillList = {
-	[JobSkillID.WHITE_MAGIC_HEAL]: {
+const whiteMagic: IWhiteMagicSkillList = {
+	[MagicSkillID.WHITE_MAGIC_HEAL]: {
 		title: 'Heal',
 		cost: 2,
 		type: SkillType.ACTIVE,
@@ -16,7 +16,7 @@ const whiteMagic: IWhiteMagicJobSkillList = {
 		elementalDamage: 1,
 		status: []
 	},
-	[JobSkillID.WHITE_MAGIC_REMEDY]: {
+	[MagicSkillID.WHITE_MAGIC_REMEDY]: {
 		title: 'Remedy',
 		cost: 2,
 		type: SkillType.ACTIVE,
@@ -29,7 +29,7 @@ const whiteMagic: IWhiteMagicJobSkillList = {
 		elementalDamage: 0,
 		status: []
 	},
-	[JobSkillID.WHITE_MAGIC_REGENERATE]: {
+	[MagicSkillID.WHITE_MAGIC_REGENERATE]: {
 		title: 'Regenerate',
 		cost: 2,
 		type: SkillType.ACTIVE,
@@ -42,7 +42,7 @@ const whiteMagic: IWhiteMagicJobSkillList = {
 		elementalDamage: 0.5,
 		status: [SkillStatus.REGEN]
 	},
-	[JobSkillID.WHITE_MAGIC_GROUP_HEAL]: {
+	[MagicSkillID.WHITE_MAGIC_GROUP_HEAL]: {
 		title: 'Group Heal',
 		cost: 4,
 		type: SkillType.ACTIVE,
@@ -55,7 +55,7 @@ const whiteMagic: IWhiteMagicJobSkillList = {
 		elementalDamage: 0.5,
 		status: []
 	},
-	[JobSkillID.WHITE_MAGIC_HOLY_AURA]: {
+	[MagicSkillID.WHITE_MAGIC_HOLY_AURA]: {
 		title: 'Holy Aura',
 		cost: 0,
 		type: SkillType.PASSIVE,
@@ -68,7 +68,7 @@ const whiteMagic: IWhiteMagicJobSkillList = {
 		elementalDamage: 0.25,
 		status: []
 	},
-	[JobSkillID.WHITE_MAGIC_REVIVE]: {
+	[MagicSkillID.WHITE_MAGIC_REVIVE]: {
 		title: 'Revive',
 		cost: 2,
 		type: SkillType.ACTIVE,
@@ -86,7 +86,7 @@ const whiteMagic: IWhiteMagicJobSkillList = {
 export const whiteMagicSkillset: ISkillset = {
 	title: 'White Magic',
 	description: '',
-	skills: Object.keys(whiteMagic) as JobSkillID[]
+	skills: Object.keys(whiteMagic) as MagicSkillID[]
 };
 
 export default whiteMagic;

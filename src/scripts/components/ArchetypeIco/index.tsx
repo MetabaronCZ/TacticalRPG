@@ -1,21 +1,19 @@
 import React from 'react';
 
-import { ArchCharID, Archetypes } from 'modules/archetype';
+import { Archetypes, ArchetypeID } from 'modules/archetype';
 import ArchetypeIcoSizes, { SizeID } from 'components/ArchetypeIco/sizes';
 
 interface IArchetypeIcoProps {
 	size?: SizeID;
-	primary?: ArchCharID;
-	secondary?: ArchCharID;
+	archetype?: ArchetypeID;
 }
 
 const ArchetypeIco: React.SFC<IArchetypeIcoProps> = props => {
-	const { size = SizeID.default, primary = ArchCharID.P, secondary = ArchCharID.P } = props;
+	const { size = SizeID.default, archetype = ArchetypeID.PP } = props;
 	const sizeData = ArchetypeIcoSizes[size];
-	const primaryData = Archetypes.get(primary);
-	const secondaryData = Archetypes.get(secondary);
-	const cls = `ArchetypeIco ArchetypeIco--primary${primary} ArchetypeIco--secondary${secondary} ArchetypeIco--size${sizeData}`;
-	const title = `${primary}${secondary} Archetype (${primaryData ? primaryData.title : ''} + ${secondaryData ? secondaryData.title : ''})`;
+	const archData = Archetypes.get(archetype);
+	const cls = `ArchetypeIco ArchetypeIco--primary${archetype[0]} ArchetypeIco--secondary${archetype[1]} ArchetypeIco--size${sizeData}`;
+	const title = `${archetype} Archetype (${archData.title}`;
 
 	return <span className={cls} title={title} />;
 };

@@ -7,13 +7,14 @@ import LinkIco from 'components/LinkIco';
 import LinkButton from 'components/LinkButton';
 import ArchetypeIco from 'components/ArchetypeIco';
 
-import { Jobs } from 'modules/job';
 import { Armors } from 'modules/armor';
 import { Weapons } from 'modules/weapon';
 import { CharacterData, ICharacterData, IOnMoveDown, IOnMoveUp, IOnDelete } from 'modules/character-data';
+import { Archetypes } from 'modules/archetype';
+import { Skillsets } from 'modules/skillset';
 
 const renderArchetype = (char: ICharacterData) => (
-	<ArchetypeIco primary={char.primary} secondary={char.secondary} />
+	<ArchetypeIco archetype={char.archetype} />
 );
 
 const renderMoveDown = (char: ICharacterData, onMoveDown?: IOnMoveDown) => (
@@ -69,7 +70,7 @@ const getColumns = (editable: boolean = false, onMoveDown?: IOnMoveDown, onMoveU
 			value: (char: ICharacterData, i: number) => i + 1
 		}, {
 			title: '',
-			name: 'archetype',
+			name: 'ico',
 			value: renderArchetype
 		}, {
 			title: '',
@@ -80,11 +81,12 @@ const getColumns = (editable: boolean = false, onMoveDown?: IOnMoveDown, onMoveU
 			name: 'name',
 			value: (char: ICharacterData) => char.name
 		}, {
-			title: 'Job',
-			name: 'job',
+			title: 'Archetype',
+			name: 'archetype',
 			value: (char: ICharacterData) => {
-				const job = Jobs.get(char.job);
-				return job ? job.title : '';
+				const archetype = Archetypes.get(char.archetype);
+				const skillset = Skillsets.get(char.skillset);
+				return `${archetype.title}${CharacterData.isMagicUser(char) ? ' (' + skillset.title + ')' : ''}`;
 			}
 		}, {
 			title: 'Main hand',

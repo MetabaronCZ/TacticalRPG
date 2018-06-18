@@ -1,14 +1,16 @@
 import DataList from 'core/data-list';
 
-import { JobID } from 'modules/job';
 import { WieldID } from 'modules/wield';
-import { ArchCharID } from 'modules/archetype';
+import { ArchetypeID } from 'modules/archetype';
 import { ICharacterData } from 'modules/character-data';
 import { WeaponID, WeaponTypeID, IWeaponData } from 'modules/weapon';
 
-const ArchP = ArchCharID.P;
-const ArchS = ArchCharID.S;
-const ArchM = ArchCharID.M;
+const PP = ArchetypeID.PP;
+const PS = ArchetypeID.PS;
+const PM = ArchetypeID.PM;
+const SS = ArchetypeID.SS;
+const SM = ArchetypeID.SM;
+const MM = ArchetypeID.MM;
 
 class WeaponList extends DataList<WeaponID, IWeaponData> {
 	public filter(char: ICharacterData, slot: WieldID) {
@@ -16,7 +18,7 @@ class WeaponList extends DataList<WeaponID, IWeaponData> {
 	}
 
 	private check(wpn: IWeaponData, char: ICharacterData, slot: WieldID): boolean {
-		const { primary, secondary } = char;
+		const archetype = char.archetype;
 		const wield = wpn.wield;
 
 		// check weapon type according to character archetype
@@ -27,28 +29,28 @@ class WeaponList extends DataList<WeaponID, IWeaponData> {
 			case WeaponTypeID.DUAL:
 			case WeaponTypeID.ONE_HANDED:
 				// only P-type or S-type characters can wield small melee weapons
-				if ((ArchP !== primary && ArchP !== secondary) && ArchS !== primary && ArchS !== secondary) {
+				if (-1 === [PP, PS, PM, SS, SM].indexOf(archetype)) {
 					return false;
 				}
 				break;
 
 			case WeaponTypeID.TWO_HANDED:
 				// only P-type characters can wield 2H weapons
-				if (ArchP !== primary && ArchP !== secondary) {
+				if (-1 === [PP, PS, PM].indexOf(archetype)) {
 					return false;
 				}
 				break;
 
 			case WeaponTypeID.MAGICAL:
 				// only M-type characters can wield magical weapons
-				if (ArchM !== primary && ArchM !== secondary) {
+				if (-1 === [PM, SM, MM].indexOf(archetype)) {
 					return false;
 				}
 				break;
 
 			case WeaponTypeID.RANGED:
 				// only S-type characters can wield ranged weapons
-				if (ArchS !== primary && ArchS !== secondary) {
+				if (-1 === [PS, SS, SM].indexOf(archetype)) {
 					return false;
 				}
 				break;
@@ -68,23 +70,18 @@ class WeaponList extends DataList<WeaponID, IWeaponData> {
 					return false;
 				}
 
-				// Barbarian job exception for weapons in Off hand
-				if (JobID.BAR === char.job && this.get(WeaponID.SPEAR) !== wpn) {
-					return true;
-				}
-
-				// cannot equip any other weapon while wielding 2H weapon in Main hand
+				// cannot equip any other weapon while wielding 2H weapon in main hand
 				if (-1 !== mainWield.indexOf(WieldID.BOTH)) {
 					return false;
 				}
 
-				// only P-type and S-type  archetypes can wield non-shield weapon in Off hand
-				if (WeaponTypeID.SHIELD !== wpn.type && ArchP !== primary && ArchP !== secondary && ArchS !== primary && ArchS !== secondary) {
+				// only P-type and S-type archetypes can wield non-shield in off hand
+				if (WeaponTypeID.SHIELD !== wpn.type && -1 === [PP, PS, PM, SS, SM].indexOf(archetype)) {
 					return false;
 				}
 
-				// only P-type characters can wield Large Shield
-				if (this.get(WeaponID.SHIELD_LARGE) === wpn && ArchP !== primary && ArchP !== secondary) {
+				// only P-type characters can wield large shield
+				if (this.get(WeaponID.SHIELD_LARGE) === wpn && -1 === [PP, PS, PM].indexOf(archetype)) {
 					return false;
 				}
 

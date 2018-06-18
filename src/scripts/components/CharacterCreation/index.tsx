@@ -1,29 +1,26 @@
 import React, { SyntheticEvent } from 'react';
 
+import Icos from 'data/icos';
+import { validateField, validateForm } from 'utils/validation';
+
 import Form from 'components/Form';
+import FormField from 'components/FormField';
+import FormInput from 'components/FormInput';
+import FormRadio from 'components/FormRadio';
+import FormSelect from 'components/FormSelect';
+import FormSelectItem from 'components/FormSelectItem';
+
 import Button from 'components/Button';
 import ButtonRow from 'components/ButtonRow';
 import Separator from 'components/Separator';
 
-import Step1 from 'components/CharacterCreation/components/Step1';
-import Step2 from 'components/CharacterCreation/components/Step2';
-import Step3 from 'components/CharacterCreation/components/Step3';
-
-import { validateField, validateForm } from 'utils/validation';
-
-import { Jobs, JobID } from 'modules/job';
+import { Sexes } from 'modules/sex';
 import { WieldID } from 'modules/wield';
+import { Archetypes } from 'modules/archetype';
 import { ArmorID, Armors } from 'modules/armor';
 import { WeaponID, Weapons } from 'modules/weapon';
+import { Skillsets, SkillsetID } from 'modules/skillset';
 import { ICharacterData, CharacterData } from 'modules/character-data';
-
-export interface IStepProps {
-	fields: ICharacterData;
-	errors: {
-		[field: string]: string|undefined;
-	};
-	onChange: (e?: SyntheticEvent<any>) => void;
-}
 
 interface ICharacterCreationProps {
 	character?: ICharacterData;
@@ -32,70 +29,132 @@ interface ICharacterCreationProps {
 }
 
 interface ICharacterCreationState {
-	step: number;
 	fields: ICharacterData;
 	errors: {
 		[field: string]: string|undefined;
 	};
 }
 
-interface IStepData {
-	title: string;
-	get: (props: IStepProps) => JSX.Element;
-}
-
-const stepData: IStepData[] = [
-	{
-		title: 'Character Identity',
-		get: (props: IStepProps) => <Step1 {...props} />
-	},
-	{
-		title: 'Character Archetype',
-		get: (props: IStepProps) => <Step2 {...props} />
-	},
-	{
-		title: 'Equipment',
-		get: (props: IStepProps) => <Step3 {...props} />
-	}
-];
-
-const firstStep = 1;
-const lastStep = 3;
-
 class CharacterCreation extends React.Component<ICharacterCreationProps, ICharacterCreationState> {
 	constructor(props: ICharacterCreationProps) {
 		super(props);
 
 		this.state = {
-			step: firstStep,
 			fields: CharacterData.init(props.character || {}),
 			errors: {}
 		};
-
-		this.onBack = this.onBack.bind(this);
 		this.onChange = this.onChange.bind(this);
 		this.onSubmit = this.onSubmit.bind(this);
 		this.handleValidationError = this.handleValidationError.bind(this);
 	}
 
 	public render() {
-		const step = this.state.step;
+		const onChange = this.onChange;
+		const { fields, errors } = this.state;
+
+		const archetype = Archetypes.get(fields.archetype);
+		const skillset = Skillsets.get(fields.skillset);
+		const armor = Armors.get(fields.armor);
+		const main = Weapons.get(fields.main);
+		const off = Weapons.get(fields.off);
+
+		const isMagicUser = CharacterData.isMagicUser(fields);
+		const hasNoOffHand = CharacterData.isBothWielding(fields) || CharacterData.isDualWielding(fields);
 
 		return (
 			<Form onSubmit={this.onSubmit}>
-				<h2 className="Heading">
-					STEP {step}: {stepData[step - 1].title}
-				</h2>
+				<FormField fieldId="f-name" label="Name" error={errors.name}>
+					<FormInput
+						id="f-name"
+						type="text"
+						value={fields.name}
+						placeholder="Type character name ..."
+						name="name"
+						maxLength={CharacterData.maxNameLength}
+						isInvalid={!!errors.name}
+						onChange={onChange}
+					/>
+				</FormField>
 
-				{this.renderStep()}
+				<FormField fieldId="f-sex" label="Sex" error={errors.sex}>
+					{Sexes.map((id, sex, i) => (
+						<FormRadio
+							id={`f-sex-${id}`}
+							label={`${Icos[id.toLocaleLowerCase()]} ${sex ? sex.title : ''}`}
+							name="sex"
+							value={id}
+							isChecked={id === fields.sex}
+							key={i}
+							onChange={onChange}
+						/>
+					))}
+				</FormField>
+
+				<FormField fieldId="f-archetype" label="Archetype" info={archetype.description}>
+					<FormSelect id="f-archetype" name="archetype" value={fields.archetype} onChange={onChange}>
+						{Archetypes.map((id, value, i) => (
+							<FormSelectItem value={id} key={i}>
+								{value.title}
+							</FormSelectItem>
+						))}
+					</FormSelect>
+				</FormField>
+
+				<FormField fieldId="f-skillset" label="Magic" info={skillset.description}>
+					<FormSelect id="f-skillset" name="skillset" value={isMagicUser ? fields.skillset : SkillsetID.NONE} disabled={!isMagicUser} onChange={onChange}>
+						{Skillsets.map((id, set, i) => (
+							<FormSelectItem value={id} key={i}>
+								{set.title}
+							</FormSelectItem>
+						))}
+					</FormSelect>
+				</FormField>
+
+				<FormField fieldId="f-main" label="Main hand" info={main.description}>
+					<FormSelect id="f-main" name="main" value={fields.main} onChange={onChange}>
+						{Weapons.filter(fields, WieldID.MAIN).map(([id, item], i) => (
+							<FormSelectItem value={id} key={i}>
+								{item.title}
+							</FormSelectItem>
+						))}
+					</FormSelect>
+				</FormField>
+
+				<FormField fieldId="f-off" label="Off hand" info={!hasNoOffHand ? off.description : undefined}>
+					{
+						!hasNoOffHand
+							? (
+								<FormSelect id="f-off" name="off" value={fields.off} onChange={onChange}>
+									{Weapons.filter(fields, WieldID.OFF).map(([id, item], i) => (
+										<FormSelectItem value={id} key={i}>
+											{item.title}
+										</FormSelectItem>
+									))}
+								</FormSelect>
+							)
+							: (
+								<FormSelect disabled={true}>
+									<FormSelectItem>{main.title}</FormSelectItem>
+								</FormSelect>
+							)
+					}
+				</FormField>
+
+				<FormField fieldId="f-armor" label="Armor" info={armor.description}>
+					<FormSelect id="f-armor" name="armor" value={fields.armor} onChange={onChange}>
+						{Armors.filter(fields).map(([id, item], i) => (
+							<FormSelectItem value={id} key={i}>
+								{item.title}
+							</FormSelectItem>
+						))}
+					</FormSelect>
+				</FormField>
+
 				<Separator />
 
 				<ButtonRow>
-					<Button ico="back" text="Back" onClick={this.onBack} />
-					{lastStep === step
-						? <Button type="submit" ico="success" color="green" text="Save" />
-						: <Button ico="next" text="Next" type="submit" />
-					}
+					<Button ico="back" text="Back" onClick={this.props.onBack} />
+					<Button type="submit" ico="success" color="green" text="Save" />
 				</ButtonRow>
 			</Form>
 		);
@@ -107,16 +166,11 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 		const newData = { ...curr };
 		let shouldUpdate = false;
 
-		// reset jobs / equipment on archetype change
-		if (prev.primary !== newData.primary || prev.secondary !== newData.secondary) {
-			const jobData = Jobs.filter(newData)[0];
-			newData.job = jobData[0];
-			newData.skillset = jobData[1].skillsets[0];
-			shouldUpdate = true;
-		}
-
-		// reset main hand weapon / armor on job change
-		if (prev.job !== newData.job) {
+		// reset character data on archetype change
+		if (prev.archetype !== newData.archetype) {
+			if (CharacterData.isMagicUser(newData)) {
+				newData.skillset = newData.skillset || SkillsetID.NONE;
+			}
 			newData.main = (CharacterData.canWieldWeapon(newData, newData.main, WieldID.MAIN) ? newData.main : WeaponID.NONE);
 			newData.off = (CharacterData.canWieldWeapon(newData, newData.off, WieldID.OFF) ? newData.off : WeaponID.NONE);
 			newData.armor = (CharacterData.canWieldArmor(newData, newData.armor) ? newData.armor : ArmorID.NONE);
@@ -134,21 +188,6 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 			this.setState({
 				fields: { ...newData }
 			});
-		}
-	}
-
-	private onBack() {
-		const step = this.state.step;
-		const onBack = this.props.onBack;
-
-		if (firstStep === step) {
-			// exit Character Creation
-			if ('function' === typeof onBack) {
-				onBack();
-			}
-		} else {
-			// return to previous step
-			this.setState({ step: step - 1 });
 		}
 	}
 
@@ -175,14 +214,10 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 		if (!isValidForm) {
 			return;
 		}
-		const { step, fields } = this.state;
+		const { fields } = this.state;
 		const onSubmit = this.props.onSubmit;
 
-		if (step < lastStep) {
-			// go to next step
-			this.setState({ step: step + 1 });
-
-		} else if ('function' === typeof onSubmit) {
+		if ('function' === typeof onSubmit) {
 			// submit data from all steps
 			onSubmit(fields);
 		}
@@ -195,16 +230,6 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 				[field]: error || undefined
 			}
 		}));
-	}
-
-	private renderStep() {
-		const { step, fields, errors } = this.state;
-
-		return stepData[step - 1].get({
-			fields,
-			errors,
-			onChange: this.onChange
-		});
 	}
 }
 

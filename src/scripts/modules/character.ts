@@ -1,15 +1,14 @@
 import { Weapons } from 'modules/weapon';
 import { PlayerType } from 'modules/player';
+import { Skillsets } from 'modules/skillset';
 import { IPosition } from 'modules/position';
 import { Direction } from 'modules/direction';
+import { MagicSkills } from 'modules/skill/magic';
+import { WeaponSkills } from 'modules/skill/weapon';
+import { SkillType } from 'modules/skill/attributes';
 import { ICharacterData } from 'modules/character-data';
 import { IAttributes, Attributes } from 'modules/attributes';
-
 import { IActionItem, ActionID, IActions, passAction, confirmAction, backAction } from 'modules/character-action';
-import { SkillType } from 'modules/skill/attributes';
-import { WeaponSkills } from 'modules/skill/weapon';
-import { JobSkills } from 'modules/skill/job';
-import { Skillsets } from 'modules/skillset';
 
 export interface ICharacter {
 	readonly data: ICharacterData;
@@ -24,8 +23,8 @@ export interface ICharacter {
 const ctLimit = 100;
 
 const create = (data: ICharacterData, position: IPosition, direction: Direction, player: PlayerType): ICharacter => {
-	const baseAttrs = Attributes.create(data.primary, data.secondary);
-	const currAttrs = Attributes.create(data.primary, data.secondary);
+	const baseAttrs = Attributes.create(data.archetype);
+	const currAttrs = Attributes.create(data.archetype);
 
 	// set small random initial CP
 	currAttrs.CT = Math.floor((ctLimit / 10) * Math.random());
@@ -102,16 +101,16 @@ const getActions = (actor: ICharacter): IActions => {
 		});
 	}
 
-	// JOB actions
+	// MAGIC actions
 	for (const id of skillset.skills) {
-		const skill = JobSkills.get(id);
+		const skill = MagicSkills.get(id);
 		const active = (AP >= skill.cost);
 
 		if (SkillType.ACTIVE === skill.type) {
 			actions.push({
-				id: ActionID.JOB,
+				id: ActionID.MAGIC,
 				cost: skill.cost,
-				title: `${skill.title} (${actor.data.job})`,
+				title: `${skill.title} (${skillset.title})`,
 				skills: [id],
 				active
 			});

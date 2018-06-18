@@ -412,7 +412,7 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 			case ActionID.ATTACK:
 			case ActionID.DOUBLE_ATTACK:
 			case ActionID.WEAPON:
-			case ActionID.JOB:
+			case ActionID.MAGIC:
 				return this.runSkill();
 
 			case ActionID.DIRECT:
@@ -548,7 +548,7 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 			case ActionID.ATTACK:
 			case ActionID.DOUBLE_ATTACK:
 			case ActionID.WEAPON:
-			case ActionID.JOB:
+			case ActionID.MAGIC:
 				return this.startSkill(action, Skill.getByID(action.skills || []));
 
 			case ActionID.PASS:

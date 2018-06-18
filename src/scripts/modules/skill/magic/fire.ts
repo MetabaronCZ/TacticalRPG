@@ -1,66 +1,66 @@
 import { ISkillset } from 'modules/skillset';
-import { JobSkillID, IIceMagicJobSkillList } from 'modules/skill/job/types';
+import { MagicSkillID, IFireMagicSkillList } from 'modules/skill/magic/types';
 import { SkillType, SkillRange, SkillArea, SkillElement, SkillTarget, SkillStatus } from 'modules/skill/attributes';
 
-const iceMagic: IIceMagicJobSkillList = {
-	[JobSkillID.ICE_MAGIC_ICE_SPEAR]: {
-		title: 'Ice Spear',
+const fireMagic: IFireMagicSkillList = {
+	[MagicSkillID.FIRE_MAGIC_FIREBALL]: {
+		title: 'Fireball',
 		cost: 2,
 		type: SkillType.ACTIVE,
 		range: SkillRange.R4,
 		area: SkillArea.SINGLE,
 		target: SkillTarget.ENEMY,
 		isAreaEffect: false,
-		element: SkillElement.ICE,
+		element: SkillElement.FIRE,
 		physicalDamage: 0.5,
 		elementalDamage: 1,
 		status: []
 	},
-	[JobSkillID.ICE_MAGIC_FREEZE]: {
-		title: 'Freeze',
+	[MagicSkillID.FIRE_MAGIC_BURN]: {
+		title: 'Burn',
 		cost: 2,
 		type: SkillType.ACTIVE,
 		range: SkillRange.R4,
 		area: SkillArea.SINGLE,
 		target: SkillTarget.ENEMY,
 		isAreaEffect: false,
-		element: SkillElement.ICE,
+		element: SkillElement.FIRE,
 		physicalDamage: 0.25,
 		elementalDamage: 0.25,
-		status: [SkillStatus.FREEZE]
+		status: [SkillStatus.BURN]
 	},
-	[JobSkillID.ICE_MAGIC_BLIZZARD]: {
-		title: 'Blizzard',
+	[MagicSkillID.FIRE_MAGIC_FIRESTORM]: {
+		title: 'Firestorm',
 		cost: 4,
 		type: SkillType.ACTIVE,
 		range: SkillRange.R4,
 		area: SkillArea.AOE3x3,
 		target: SkillTarget.ENEMY,
 		isAreaEffect: true,
-		element: SkillElement.ICE,
+		element: SkillElement.FIRE,
 		physicalDamage: 0.25,
 		elementalDamage: 0.5,
 		status: []
 	},
-	[JobSkillID.ICE_MAGIC_FROST_AURA]: {
-		title: 'Frost Aura',
+	[MagicSkillID.FIRE_MAGIC_FIRE_AURA]: {
+		title: 'Fire Aura',
 		cost: 0,
 		type: SkillType.PASSIVE,
-		range: SkillRange.R1,
+		range: SkillRange.R0,
 		area: SkillArea.AOE3x3,
-		target: SkillTarget.ENEMY,
-		isAreaEffect: true,
-		element: SkillElement.ICE,
+		target: SkillTarget.SELF,
+		isAreaEffect: false,
+		element: SkillElement.FIRE,
 		physicalDamage: 0,
 		elementalDamage: 0.25,
-		status: [SkillStatus.FREEZE]
+		status: [SkillStatus.BURN]
 	}
 };
 
-export const iceMagicSkillset: ISkillset = {
-	title: 'Ice Magic',
+export const fireMagicSkillset: ISkillset = {
+	title: 'Fire Magic',
 	description: '',
-	skills: Object.keys(iceMagic) as JobSkillID[]
+	skills: Object.keys(fireMagic) as MagicSkillID[]
 };
 
-export default iceMagic;
+export default fireMagic;

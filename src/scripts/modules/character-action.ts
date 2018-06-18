@@ -1,11 +1,11 @@
 import { WeaponSkillID } from 'modules/skill/weapon/types';
-import { JobSkillID } from 'modules/skill/job/types';
+import { MagicSkillID } from 'modules/skill/magic/types';
 
 export enum ActionID {
 	ATTACK = 'ATTACK',
 	DOUBLE_ATTACK = 'DOUBLE_ATTACK',
 	WEAPON = 'WEAPON',
-	JOB = 'JOB',
+	MAGIC = 'MAGIC',
 	PASS = 'PASS',
 	DIRECT	 = 'DIRECT',
 	CONFIRM = 'CONFIRM',
@@ -17,7 +17,7 @@ export interface IActionItem {
 	readonly cost: number;
 	readonly title: string;
 	readonly active: boolean;
-	readonly skills?: WeaponSkillID[] | JobSkillID[];
+	readonly skills?: WeaponSkillID[] | MagicSkillID[];
 }
 
 export type IActions = IActionItem[];

@@ -6,8 +6,7 @@ import { ICharacterData } from 'modules/character-data';
 
 class ArmorList extends DataList<ArmorID, IArmorData> {
 	public filter(char: ICharacterData) {
-		const arch = (ArchetypeID as any)[char.primary + char.secondary];
-		return super.filterFn((id, arm) => this.check(arch, arm));
+		return super.filterFn((id, arm) => this.check(char.archetype, arm));
 	}
 
 	private check(arch: ArchetypeID, arm: IArmorData): boolean {

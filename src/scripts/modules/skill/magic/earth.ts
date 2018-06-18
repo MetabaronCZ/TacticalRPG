@@ -1,9 +1,9 @@
 import { ISkillset } from 'modules/skillset';
-import { JobSkillID, IEarthMagicJobSkillList } from 'modules/skill/job/types';
+import { MagicSkillID, IEarthMagicSkillList } from 'modules/skill/magic/types';
 import { SkillType, SkillRange, SkillArea, SkillElement, SkillTarget, SkillStatus } from 'modules/skill/attributes';
 
-const earthMagic: IEarthMagicJobSkillList = {
-	[JobSkillID.EARTH_MAGIC_BOULDER]: {
+const earthMagic: IEarthMagicSkillList = {
+	[MagicSkillID.EARTH_MAGIC_BOULDER]: {
 		title: 'Boulder',
 		cost: 2,
 		type: SkillType.ACTIVE,
@@ -16,7 +16,7 @@ const earthMagic: IEarthMagicJobSkillList = {
 		elementalDamage: 1,
 		status: []
 	},
-	[JobSkillID.EARTH_MAGIC_EARTH_SPIKE]: {
+	[MagicSkillID.EARTH_MAGIC_EARTH_SPIKE]: {
 		title: 'Earth Spike',
 		cost: 2,
 		type: SkillType.ACTIVE,
@@ -29,7 +29,7 @@ const earthMagic: IEarthMagicJobSkillList = {
 		elementalDamage: 0.25,
 		status: [SkillStatus.STUN]
 	},
-	[JobSkillID.EARTH_MAGIC_EARTHQUAKE]: {
+	[MagicSkillID.EARTH_MAGIC_EARTHQUAKE]: {
 		title: 'Earthquake',
 		cost: 4,
 		type: SkillType.ACTIVE,
@@ -42,7 +42,7 @@ const earthMagic: IEarthMagicJobSkillList = {
 		elementalDamage: 5,
 		status: []
 	},
-	[JobSkillID.EARTH_MAGIC_STONE_SKIN]: {
+	[MagicSkillID.EARTH_MAGIC_STONE_SKIN]: {
 		title: 'Stone Skin',
 		cost: 0,
 		type: SkillType.PASSIVE,
@@ -60,7 +60,7 @@ const earthMagic: IEarthMagicJobSkillList = {
 export const earthMagicSkillset: ISkillset = {
 	title: 'Earth Magic',
 	description: '',
-	skills: Object.keys(earthMagic) as JobSkillID[]
+	skills: Object.keys(earthMagic) as MagicSkillID[]
 };
 
 export default earthMagic;

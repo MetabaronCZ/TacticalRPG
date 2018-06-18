@@ -4,7 +4,6 @@ import * as ArrayUtils from 'core/array';
 import nameSamples from 'data/names';
 import { IIndexable } from 'modules/indexable';
 
-import { Jobs } from 'modules/job';
 import RandomNameGenerator from 'core/random-name-generator';
 import { ICharacterData, CharacterData } from 'modules/character-data';
 
@@ -46,9 +45,7 @@ const getCharacterById = (id: string, characters: ICharacterData[]): ICharacterD
 // returns random character party array
 const getRandomCharacters = (count: number): ICharacterData[] => {
 	const characters = RandomNameGenerator.get(nameSamples, count, maxNameLength);
-	const jobs = ArrayUtils.getRandomItems(Jobs.keys(), count);
-
-	return characters.map((char, i) => CharacterData.random(char, jobs[i]));
+	return characters.map((char, i) => CharacterData.random(char));
 };
 
 const removeCharacter = (partyList: IParty[], char?: ICharacterData): IParty[] => {
@@ -89,29 +86,6 @@ const validate = (party: ICharacterData[] = []): string|true => {
 
 	if (idErrs.length) {
 		return `Party contains same character multiple times: ${idErrs.join(', ')}`;
-	}
-	const jobs = party.map(char => char.job);
-	const jobErrs: { [job: string]: string[] } = {};
-	let hasJobErrors = false;
-
-	jobs.forEach((job, i) => {
-		if (i !== jobs.lastIndexOf(job) && !jobErrs[job]) {
-			const names = party
-				.filter(char => job === char.job)
-				.map(char => char.name);
-
-			jobErrs[job] = names;
-			hasJobErrors = true;
-		}
-	});
-
-	if (hasJobErrors) {
-		const msg = [];
-
-		for (const err in jobErrs) {
-			msg.push(`${err} (${jobErrs[err].join(', ')})`);
-		}
-		return `Party contains same job multiple times: ${msg.join(', ')}`;
 	}
 
 	// party is valid

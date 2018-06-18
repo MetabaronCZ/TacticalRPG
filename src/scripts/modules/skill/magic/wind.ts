@@ -1,9 +1,9 @@
 import { ISkillset } from 'modules/skillset';
-import { JobSkillID, IWindMagicJobSkillList } from 'modules/skill/job/types';
+import { MagicSkillID, IWindMagicSkillList } from 'modules/skill/magic/types';
 import { SkillType, SkillRange, SkillArea, SkillElement, SkillTarget, SkillStatus } from 'modules/skill/attributes';
 
-const windMagic: IWindMagicJobSkillList = {
-	[JobSkillID.WIND_MAGIC_AIR_BLAST]: {
+const windMagic: IWindMagicSkillList = {
+	[MagicSkillID.WIND_MAGIC_AIR_BLAST]: {
 		title: 'Air Blast',
 		cost: 2,
 		type: SkillType.ACTIVE,
@@ -16,7 +16,7 @@ const windMagic: IWindMagicJobSkillList = {
 		elementalDamage: 1,
 		status: []
 	},
-	[JobSkillID.WIND_MAGIC_JET_STREAM]: {
+	[MagicSkillID.WIND_MAGIC_JET_STREAM]: {
 		title: 'Jet Stream',
 		cost: 2,
 		type: SkillType.ACTIVE,
@@ -29,7 +29,7 @@ const windMagic: IWindMagicJobSkillList = {
 		elementalDamage: 0.25,
 		status: [] // ??? replace enemy
 	},
-	[JobSkillID.WIND_MAGIC_TORNADO]: {
+	[MagicSkillID.WIND_MAGIC_TORNADO]: {
 		title: 'Tornado',
 		cost: 4,
 		type: SkillType.ACTIVE,
@@ -42,7 +42,7 @@ const windMagic: IWindMagicJobSkillList = {
 		elementalDamage: 0.5,
 		status: []
 	},
-	[JobSkillID.WIND_MAGIC_FLOAT]: {
+	[MagicSkillID.WIND_MAGIC_FLOAT]: {
 		title: 'Float',
 		cost: 2,
 		type: SkillType.ACTIVE,
@@ -55,7 +55,7 @@ const windMagic: IWindMagicJobSkillList = {
 		elementalDamage: 0,
 		status: [SkillStatus.FLOAT]
 	},
-	[JobSkillID.WIND_MAGIC_WIND_AURA]: {
+	[MagicSkillID.WIND_MAGIC_WIND_AURA]: {
 		title: 'Wind Aura',
 		cost: 0,
 		type: SkillType.PASSIVE,
@@ -73,7 +73,7 @@ const windMagic: IWindMagicJobSkillList = {
 export const windMagicSkillset: ISkillset = {
 	title: 'Wind Magic',
 	description: '',
-	skills: Object.keys(windMagic) as JobSkillID[]
+	skills: Object.keys(windMagic) as MagicSkillID[]
 };
 
 export default windMagic;

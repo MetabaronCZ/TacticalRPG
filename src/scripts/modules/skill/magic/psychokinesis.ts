@@ -1,9 +1,9 @@
 import { ISkillset } from 'modules/skillset';
-import { JobSkillID, IPsychokinesisJobSkillList } from 'modules/skill/job/types';
+import { MagicSkillID, IPsychokinesisSkillList } from 'modules/skill/magic/types';
 import { SkillType, SkillRange, SkillArea, SkillElement, SkillTarget, SkillStatus } from 'modules/skill/attributes';
 
-const psychokinesis: IPsychokinesisJobSkillList = {
-	[JobSkillID.PSYCHOKINESIS_KINETIC_STRIKE]: {
+const psychokinesis: IPsychokinesisSkillList = {
+	[MagicSkillID.PSYCHOKINESIS_KINETIC_STRIKE]: {
 		title: 'Kinetic Strike',
 		cost: 2,
 		type: SkillType.ACTIVE,
@@ -16,7 +16,7 @@ const psychokinesis: IPsychokinesisJobSkillList = {
 		elementalDamage: 1,
 		status: []
 	},
-	[JobSkillID.PSYCHOKINESIS_FORGET]: {
+	[MagicSkillID.PSYCHOKINESIS_FORGET]: {
 		title: 'Forget',
 		cost: 2,
 		type: SkillType.ACTIVE,
@@ -29,7 +29,7 @@ const psychokinesis: IPsychokinesisJobSkillList = {
 		elementalDamage: 0,
 		status: [SkillStatus.FORGET]
 	},
-	[JobSkillID.PSYCHOKINESIS_PSYCHODOME]: {
+	[MagicSkillID.PSYCHOKINESIS_PSYCHODOME]: {
 		title: 'Psychodome',
 		cost: 0,
 		type: SkillType.PASSIVE,
@@ -47,7 +47,7 @@ const psychokinesis: IPsychokinesisJobSkillList = {
 export const psychokinesisSkillset: ISkillset = {
 	title: 'Psychokinesis',
 	description: '',
-	skills: Object.keys(psychokinesis) as JobSkillID[]
+	skills: Object.keys(psychokinesis) as MagicSkillID[]
 };
 
 export default psychokinesis;

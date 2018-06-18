@@ -1,5 +1,12 @@
-import { ArchetypeID as ArchID } from 'modules/archetype';
+import { ArchetypeID } from 'modules/archetype';
 import ArmorList from 'modules/armor/list';
+
+const PP = ArchetypeID.PP;
+const PS = ArchetypeID.PS;
+const PM = ArchetypeID.PM;
+const SS = ArchetypeID.SS;
+const SM = ArchetypeID.SM;
+const MM = ArchetypeID.MM;
 
 export enum ArmorID {
 	NONE = 'NONE',
@@ -11,7 +18,7 @@ export enum ArmorID {
 export interface IArmorData {
 	readonly title: string;
 	readonly description: string;
-	readonly archetype: ArchID[];
+	readonly archetype: ArchetypeID[];
 }
 
 export const Armors = new ArmorList({
@@ -23,16 +30,16 @@ export const Armors = new ArmorList({
 	[ArmorID.ROBE]: {
 		title: 'Robe',
 		description: '',
-		archetype: [ArchID.PM, ArchID.SM, ArchID.MP, ArchID.MS, ArchID.MM]
+		archetype: [PM, SM, MM]
 	},
 	[ArmorID.LIGHT]: {
 		title: 'Light Armor',
 		description: '',
-		archetype: [ArchID.PS, ArchID.SP, ArchID.SS, ArchID.SM, ArchID.MS]
+		archetype: [PS, SS, SM]
 	},
 	[ArmorID.HEAVY]: {
 		title: 'Heavy Armor',
 		description: '',
-		archetype: [ArchID.PP, ArchID.PS, ArchID.PM, ArchID.SP, ArchID.MP]
+		archetype: [PP, PS, PM]
 	}
 });

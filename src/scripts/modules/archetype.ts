@@ -1,35 +1,42 @@
 import DataList from 'core/data-list';
 
-export enum ArchCharID {
-	P = 'P',
-	S = 'S',
-	M = 'M'
-}
-
 export enum ArchetypeID {
 	PP = 'PP',
 	PS = 'PS',
 	PM = 'PM',
-	SP = 'SP',
 	SS = 'SS',
 	SM = 'SM',
-	MP = 'MP',
-	MS = 'MS',
 	MM = 'MM'
 }
 
 export interface IArchetypeData {
 	readonly title: string;
+	readonly description: string;
 }
 
-export const Archetypes = new DataList<ArchCharID, IArchetypeData>({
-	[ArchCharID.P]: {
-		title: 'Power'
+export const Archetypes = new DataList<ArchetypeID, IArchetypeData>({
+	[ArchetypeID.PP]: {
+		title: 'Warrior',
+		description: 'Physically strong, durable warrior'
 	},
-	[ArchCharID.S]: {
-		title: 'Speed'
+	[ArchetypeID.PS]: {
+		title: 'Fighter',
+		description: 'Balanced melee fighter'
 	},
-	[ArchCharID.M]: {
-		title: 'Magic'
+	[ArchetypeID.PM]: {
+		title: 'Magi-knight',
+		description: 'Magic using fighter'
+	},
+	[ArchetypeID.SS]: {
+		title: 'Rogue',
+		description: 'Agile melee fighter'
+	},
+	[ArchetypeID.SM]: {
+		title: 'Spellblade',
+		description: 'Agile mage fighter'
+	},
+	[ArchetypeID.MM]: {
+		title: 'Mage',
+		description: 'Strong magical user'
 	}
 });

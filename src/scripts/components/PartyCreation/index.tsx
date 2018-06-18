@@ -13,8 +13,8 @@ import Separator from 'components/Separator';
 import { Sexes } from 'modules/sex';
 import { Armors } from 'modules/armor';
 import { Weapons } from 'modules/weapon';
-import { JobID, Jobs } from 'modules/job';
 import { IParty, Party } from 'modules/party';
+import { Archetypes } from 'modules/archetype';
 import { ICharacterData, CharacterData } from 'modules/character-data';
 
 import { validateField, validateForm } from 'utils/validation';
@@ -183,22 +183,9 @@ class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationS
 		}
 
 		// filter unselected characters (keep character itself)
-		let filtered = characters.filter(char => {
+		return characters.filter(char => {
 			return (character && char.id === character.id) || -1 === selected.indexOf(char.id);
 		});
-
-		// get selected jobs
-		const selectedJobs = selected.map(id => {
-			const char = Party.getCharacterById(id, characters);
-			return char ? char.job : JobID.NONE;
-		});
-
-		// filter characters with job not in selection (keep character itself and unused characters with same job)
-		filtered = filtered.filter(char => {
-			return (character && char.id === character.id) || (character && char.job === character.job) || -1 === selectedJobs.indexOf(char.job);
-		});
-
-		return filtered;
 	}
 
 	private renderPartyItem(i: number) {
@@ -213,7 +200,7 @@ class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationS
 			const off = Weapons.get(selected.off);
 			const arm = Armors.get(selected.armor);
 			const sex = Sexes.get(selected.sex);
-			const job = Jobs.get(selected.job);
+			const arch = Archetypes.get(selected.archetype);
 			let weapons = '';
 
 			if (CharacterData.isBothWielding(selected)) {
@@ -223,7 +210,7 @@ class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationS
 			} else {
 				weapons = `${main.title} + ${off.title}`;
 			}
-			info = `${sex.title} ${job.title} | ${weapons} | ${arm.title}`;
+			info = `${sex.title} ${arch.title} | ${weapons} | ${arm.title}`;
 		}
 
 		const fieldId = `f-character-${i}`;

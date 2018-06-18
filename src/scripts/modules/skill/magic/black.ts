@@ -1,9 +1,9 @@
 import { ISkillset } from 'modules/skillset';
-import { JobSkillID, IBlackMagicJobSkillList } from 'modules/skill/job/types';
+import { MagicSkillID, IBlackMagicSkillList } from 'modules/skill/magic/types';
 import { SkillType, SkillRange, SkillArea, SkillElement, SkillTarget } from 'modules/skill/attributes';
 
-const blackMagic: IBlackMagicJobSkillList = {
-	[JobSkillID.BLACK_MAGIC_DARK_AURA]: {
+const blackMagic: IBlackMagicSkillList = {
+	[MagicSkillID.BLACK_MAGIC_DARK_AURA]: {
 		title: 'Dark Aura',
 		cost: 0,
 		type: SkillType.PASSIVE,
@@ -21,7 +21,7 @@ const blackMagic: IBlackMagicJobSkillList = {
 export const blackMagicSkillset: ISkillset = {
 	title: 'Black Magic',
 	description: '',
-	skills: Object.keys(blackMagic) as JobSkillID[]
+	skills: Object.keys(blackMagic) as MagicSkillID[]
 };
 
 export default blackMagic;

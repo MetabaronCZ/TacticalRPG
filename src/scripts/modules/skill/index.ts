@@ -1,10 +1,10 @@
-import { SkillType, SkillRange, SkillArea, SkillTarget, SkillElement, SkillStatus } from 'modules/skill/attributes';
-import { JobSkills } from 'modules/skill/job';
-import { JobSkillID } from 'modules/skill/job/types';
+import { MagicSkills } from 'modules/skill/magic';
+import { MagicSkillID } from 'modules/skill/magic/types';
 import { WeaponSkills } from 'modules/skill/weapon';
 import { WeaponSkillID } from 'modules/skill/weapon/types';
 import { IPosition, Position } from 'modules/position';
 import { ICharacter, Character } from 'modules/character';
+import { SkillType, SkillRange, SkillArea, SkillTarget, SkillElement, SkillStatus } from 'modules/skill/attributes';
 
 export interface ISkill {
 	readonly title: string;
@@ -187,7 +187,7 @@ const getEffectTargets = (actor: ICharacter, skill: ISkill, effectArea: IPositio
 	return targets;
 };
 
-const getByID = (ids: WeaponSkillID[]|JobSkillID[]): ISkill[] => {
+const getByID = (ids: WeaponSkillID[]|MagicSkillID[]): ISkill[] => {
 	if (!ids.length) {
 		return [];
 	}
@@ -195,8 +195,8 @@ const getByID = (ids: WeaponSkillID[]|JobSkillID[]): ISkill[] => {
 		ids = ids as WeaponSkillID[];
 		return ids.map(id => WeaponSkills.get(id));
 	} else {
-		ids = ids as JobSkillID[];
-		return ids.map(id => JobSkills.get(id));
+		ids = ids as MagicSkillID[];
+		return ids.map(id => MagicSkills.get(id));
 	}
 };
 

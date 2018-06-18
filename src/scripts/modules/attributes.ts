@@ -1,4 +1,4 @@
-import { ArchCharID } from 'modules/archetype';
+import { ArchetypeID } from 'modules/archetype';
 
 interface IBaseAttributes {
 	STR: number; // strength
@@ -56,19 +56,29 @@ const SecondaryAttrFormula: ISecondaryAttrFormulas = {
 
 export type IAttributes = IBaseAttributes & ISecondaryAttributes;
 
-const getPrimary = (primary: ArchCharID, secondary: ArchCharID): IBaseAttributes => {
+type IArch2AttrTable = {
+	[id in ArchetypeID]: {
+		P: number;
+		S: number;
+		M: number;
+	};
+};
+
+const Arch2AttTable: IArch2AttrTable = {
+	[ArchetypeID.PP]: { P: 1.5, S: 0.0, M: 0.0 },
+	[ArchetypeID.PS]: { P: 1.0, S: 1.0, M: 0.0 },
+	[ArchetypeID.PM]: { P: 1.0, S: 0.0, M: 1.0 },
+	[ArchetypeID.SS]: { P: 0.0, S: 1.5, M: 0.0 },
+	[ArchetypeID.SM]: { P: 0.0, S: 1.0, M: 1.0 },
+	[ArchetypeID.MM]: { P: 0.0, S: 0.0, M: 1.5 }
+};
+
+const getPrimary = (archetype: ArchetypeID): IBaseAttributes => {
 	const attributes = Object.assign({}, BaseAttributes);
-	let P = 0;
-	let S = 0;
-	let M = 0;
 
-	P += ( ArchCharID.P === primary ? 1 : 0 );
-	S += ( ArchCharID.S === primary ? 1 : 0 );
-	M += ( ArchCharID.M === primary ? 1 : 0 );
-
-	P += ( ArchCharID.P === secondary ? 0.5 : 0 );
-	S += ( ArchCharID.S === secondary ? 0.5 : 0 );
-	M += ( ArchCharID.M === secondary ? 0.5 : 0 );
+	const P = Arch2AttTable[archetype].P;
+	const S = Arch2AttTable[archetype].S;
+	const M = Arch2AttTable[archetype].M;
 
 	attributes.STR += BaseAttrFormula.STR(P, S, M);
 	attributes.VIT += BaseAttrFormula.VIT(P, S, M);
@@ -85,11 +95,11 @@ const getSecondary = (attrs: IBaseAttributes): ISecondaryAttributes => ({
 	CT: SecondaryAttrFormula.CT(attrs)
 });
 
-const create = (primary: ArchCharID, secondary: ArchCharID): IAttributes => {
-	const pAttrs = getPrimary(primary, secondary);
-	const sAttrs = getSecondary(pAttrs);
+const create = (archetype: ArchetypeID): IAttributes => {
+	const primaryAttrs = getPrimary(archetype);
+	const secondaryAttrs = getSecondary(primaryAttrs);
 
-	return { ...pAttrs, ...sAttrs };
+	return { ...primaryAttrs, ...secondaryAttrs };
 };
 
 export const Attributes = {

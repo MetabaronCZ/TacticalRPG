@@ -1,7 +1,6 @@
 import React from 'react';
 
 import Icos from 'data/icos';
-import { Jobs } from 'modules/job';
 import { IOnTileSelect, IGameState, IOnActionSelect } from 'modules/game';
 
 import Bar from 'components/Game/components/Bar';
@@ -55,11 +54,9 @@ const GameUI: React.SFC<IGameUIProps> = props => {
 						<div className="Paragraph">
 							{actor.data.name}
 							{' '}
-							<ArchetypeIco primary={actor.data.primary} secondary={actor.data.secondary} />
+							<ArchetypeIco archetype={actor.data.archetype} />
 							{' '}
 							{Icos[actor.data.sex.toLowerCase()]}
-							{' '}
-							{Jobs.get(actor.data.job).title}
 						</div>
 
 						<Bar

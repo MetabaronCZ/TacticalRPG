@@ -1,66 +1,66 @@
 import { ISkillset } from 'modules/skillset';
-import { JobSkillID, IThunderMagicJobSkillList } from 'modules/skill/job/types';
+import { MagicSkillID, IWaterMagicSkillList } from 'modules/skill/magic/types';
 import { SkillType, SkillRange, SkillArea, SkillElement, SkillTarget, SkillStatus } from 'modules/skill/attributes';
 
-const thunderMagic: IThunderMagicJobSkillList = {
-	[JobSkillID.THUNDER_MAGIC_THUNDERBOLT]: {
-		title: 'Thunderbolt',
+const waterMagic: IWaterMagicSkillList = {
+	[MagicSkillID.WATER_MAGIC_SPLASH]: {
+		title: 'Splash',
 		cost: 2,
 		type: SkillType.ACTIVE,
 		range: SkillRange.R4,
 		area: SkillArea.SINGLE,
 		target: SkillTarget.ENEMY,
 		isAreaEffect: false,
-		element: SkillElement.THUNDER,
+		element: SkillElement.WATER,
 		physicalDamage: 0.5,
 		elementalDamage: 1,
 		status: []
 	},
-	[JobSkillID.THUNDER_MAGIC_SHOCK]: {
-		title: 'Shock',
+	[MagicSkillID.WATER_MAGIC_SILENCE]: {
+		title: 'Silence',
 		cost: 2,
 		type: SkillType.ACTIVE,
 		range: SkillRange.R4,
 		area: SkillArea.SINGLE,
 		target: SkillTarget.ENEMY,
 		isAreaEffect: false,
-		element: SkillElement.THUNDER,
+		element: SkillElement.WATER,
 		physicalDamage: 0.25,
 		elementalDamage: 0.25,
-		status: [SkillStatus.SHOCK]
+		status: [SkillStatus.SILENCE]
 	},
-	[JobSkillID.THUNDER_MAGIC_THUNDERSTORM]: {
-		title: 'Thunderstorm',
+	[MagicSkillID.WATER_MAGIC_FLOOD]: {
+		title: 'Flood',
 		cost: 4,
 		type: SkillType.ACTIVE,
 		range: SkillRange.R4,
 		area: SkillArea.AOE3x3,
 		target: SkillTarget.ENEMY,
 		isAreaEffect: true,
-		element: SkillElement.THUNDER,
+		element: SkillElement.WATER,
 		physicalDamage: 0.25,
 		elementalDamage: 0.5,
 		status: []
 	},
-	[JobSkillID.THUNDER_MAGIC_THUNDER_AURA]: {
-		title: 'Thunder Aura',
+	[MagicSkillID.WATER_MAGIC_WATER_AURA]: {
+		title: 'Water Aura',
 		cost: 0,
 		type: SkillType.PASSIVE,
 		range: SkillRange.R0,
 		area: SkillArea.AOE3x3,
 		target: SkillTarget.SELF,
 		isAreaEffect: true,
-		element: SkillElement.THUNDER,
+		element: SkillElement.WATER,
 		physicalDamage: 0,
 		elementalDamage: 0.25,
-		status: [SkillStatus.SHOCK]
+		status: [SkillStatus.SILENCE]
 	}
 };
 
-export const thunderMagicSkillset: ISkillset = {
-	title: 'Thunder Magic',
+export const waterMagicSkillset: ISkillset = {
+	title: 'Water Magic',
 	description: '',
-	skills: Object.keys(thunderMagic) as JobSkillID[]
+	skills: Object.keys(waterMagic) as MagicSkillID[]
 };
 
-export default thunderMagic;
+export default waterMagic;

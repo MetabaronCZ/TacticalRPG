@@ -1,7 +1,6 @@
 import React from 'react';
 
 import icos from 'data/icos';
-import { Jobs } from 'modules/job';
 import { PlayerType } from 'modules/player';
 import { ICharacter } from 'modules/character';
 
@@ -21,28 +20,22 @@ const Party: React.SFC<IPartyProps> = ({ characters }) => {
 				Party
 			</h2>
 
-			{ally.map((char, i) => {
-				const job = Jobs.get(char.data.job);
+			{ally.map((char, i) => (
+				<div className="Party-item" key={i}>
+					{char.data.name}
+					{' '}
+					<ArchetypeIco archetype={char.data.archetype} />
+					{' '}
+					{icos[char.data.sex.toLowerCase()]}
 
-				return (
-					<div className="Party-item" key={i}>
-						{char.data.name}
-						{' '}
-						<ArchetypeIco primary={char.data.primary} secondary={char.data.secondary} />
-						{' '}
-						{icos[char.data.sex.toLowerCase()]}
-						{' '}
-						{job.title}
-
-						<Bar
-							hp={char.currAttributes.HP}
-							hpMax={char.baseAttributes.HP}
-							ap={char.currAttributes.AP}
-							apMax={char.baseAttributes.AP}
-						/>
-					</div>
-				);
-			})}
+					<Bar
+						hp={char.currAttributes.HP}
+						hpMax={char.baseAttributes.HP}
+						ap={char.currAttributes.AP}
+						apMax={char.baseAttributes.AP}
+					/>
+				</div>
+			))}
 		</div>
 	);
 };
