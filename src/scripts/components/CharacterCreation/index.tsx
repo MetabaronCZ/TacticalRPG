@@ -16,6 +16,7 @@ import Separator from 'components/Separator';
 
 import { Sexes } from 'modules/sex';
 import { WieldID } from 'modules/wield';
+import { Equipment } from 'modules/equipment';
 import { Archetypes } from 'modules/archetype';
 import { ArmorID, Armors } from 'modules/armor';
 import { WeaponID, Weapons } from 'modules/weapon';
@@ -59,7 +60,7 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 		const off = Weapons.get(fields.off);
 
 		const isMagicUser = CharacterData.isMagicUser(fields);
-		const hasNoOffHand = CharacterData.isBothWielding(fields) || CharacterData.isDualWielding(fields);
+		const hasNoOffHand = Equipment.isBothWielding(fields.main) || Equipment.isDualWielding(fields.main);
 
 		return (
 			<Form onSubmit={this.onSubmit}>
@@ -164,22 +165,23 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 		const curr = this.state.fields;
 		const prev = prevState.fields;
 		const newData = { ...curr };
+		const arch = newData.archetype;
 		let shouldUpdate = false;
 
 		// reset character data on archetype change
-		if (prev.archetype !== newData.archetype) {
+		if (prev.archetype !== arch) {
 			if (CharacterData.isMagicUser(newData)) {
 				newData.skillset = newData.skillset || SkillsetID.NONE;
 			}
-			newData.main = (CharacterData.canWieldWeapon(newData, newData.main, WieldID.MAIN) ? newData.main : WeaponID.NONE);
-			newData.off = (CharacterData.canWieldWeapon(newData, newData.off, WieldID.OFF) ? newData.off : WeaponID.NONE);
-			newData.armor = (CharacterData.canWieldArmor(newData, newData.armor) ? newData.armor : ArmorID.NONE);
+			newData.main = (Equipment.checkMainHand(newData.main, arch) ? newData.main : WeaponID.NONE);
+			newData.off = (Equipment.checkOffHand(newData.off, arch, newData.main) ? newData.off : WeaponID.NONE);
+			newData.armor = (Equipment.checkArmor(newData.armor, arch) ? newData.armor : ArmorID.NONE);
 			shouldUpdate = true;
 		}
 
 		// reset character off hand weapon on main hand change
 		if (prev.main !== newData.main) {
-			newData.off = (CharacterData.canWieldWeapon(newData, newData.off, WieldID.OFF) ? newData.off : WeaponID.NONE);
+			newData.off = (Equipment.checkOffHand(newData.off, arch, newData.main) ? newData.off : WeaponID.NONE);
 			shouldUpdate = true;
 		}
 

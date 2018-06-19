@@ -40,7 +40,7 @@ const create = (data: ICharacterData, position: IPosition, direction: Direction,
 };
 
 const isEqual = (charA: ICharacter, charB: ICharacter): boolean => {
-	return charA && charB && charA.data.id === charB.data.id;
+	return charA.data.id === charB.data.id;
 };
 
 const tick = (char: ICharacter): ICharacter => {
@@ -54,21 +54,19 @@ const getActions = (actor: ICharacter): IActions => {
 	const off = Weapons.get(actor.data.off);
 	const skillset = Skillsets.get(actor.data.skillset);
 	const attackActionSkills = WeaponSkills.filterAttack(main, off);
-	const attributes = actor.currAttributes;
+	const AP = actor.currAttributes.AP;
 	const actions: IActionItem[] = [];
-	const AP = attributes.AP;
 
 	// ATTACK actions
 	for (const [id, wpn] of attackActionSkills) {
 		const skill = WeaponSkills.get(id);
-		const active = (AP >= skill.cost);
 
 		actions.push({
 			id: ActionID.ATTACK,
 			cost: skill.cost,
 			title: `Attack (${wpn.title})`,
 			skills: [id],
-			active
+			active: (AP >= skill.cost)
 		});
 	}
 
@@ -76,35 +74,32 @@ const getActions = (actor: ICharacter): IActions => {
 	if (attackActionSkills.length > 1) {
 		const costs = attackActionSkills.map(([id, wpn]) => WeaponSkills.get(id).cost);
 		const cost = costs.reduce((a, b) => a + b);
-		const active = (AP >= cost);
 
 		actions.push({
 			id: ActionID.DOUBLE_ATTACK,
 			cost,
 			title: 'Double Attack',
 			skills: attackActionSkills.map(([id, wpn]) => id),
-			active
+			active: (AP >= cost)
 		});
 	}
 
 	// WEAPON actions
 	for (const [id, wpn] of WeaponSkills.filterSpecial(main, off)) {
 		const skill = WeaponSkills.get(id);
-		const active = (AP >= skill.cost);
 
 		actions.push({
 			id: ActionID.WEAPON,
 			cost: skill.cost,
 			title: `${skill.title} (${wpn.title})`,
 			skills: [id],
-			active
+			active: (AP >= skill.cost)
 		});
 	}
 
 	// MAGIC actions
 	for (const id of skillset.skills) {
 		const skill = MagicSkills.get(id);
-		const active = (AP >= skill.cost);
 
 		if (SkillType.ACTIVE === skill.type) {
 			actions.push({
@@ -112,7 +107,7 @@ const getActions = (actor: ICharacter): IActions => {
 				cost: skill.cost,
 				title: `${skill.title} (${skillset.title})`,
 				skills: [id],
-				active
+				active: (AP >= skill.cost)
 			});
 		}
 	}

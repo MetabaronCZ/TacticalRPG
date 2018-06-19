@@ -4,10 +4,11 @@ import * as ArrayUtils from 'core/array';
 
 import { WieldID } from 'modules/wield';
 import { SexID, Sexes } from 'modules/sex';
-import { SkillsetID, Skillsets } from 'modules/skillset';
+import { Equipment } from 'modules/equipment';
 import { IIndexable } from 'modules/indexable';
 import { ArmorID, Armors } from 'modules/armor';
 import { WeaponID, Weapons } from 'modules/weapon';
+import { SkillsetID, Skillsets } from 'modules/skillset';
 import { ArchetypeID, Archetypes } from 'modules/archetype';
 
 // character name maximum length
@@ -17,7 +18,7 @@ export interface ICharacterData extends IIndexable {
 	readonly name: string;
 	readonly sex: SexID;
 	readonly archetype: ArchetypeID;
-	readonly skillset: SkillsetID;
+	skillset: SkillsetID;
 	main: WeaponID;
 	off: WeaponID;
 	armor: ArmorID;
@@ -48,20 +49,16 @@ const init = (conf = {}): ICharacterData => {
 
 // returns random character properties
 const random = (name: string): ICharacterData => {
-	const sex = ArrayUtils.getRandomItem(Sexes.keys());
-	const archetype = ArrayUtils.getRandomItem(Archetypes.keys());
-	let skillset = SkillsetID.NONE;
-
-	if (-1 !== [ArchetypeID.PM].indexOf(archetype)) {
-		skillset = ArrayUtils.getRandomItem(Skillsets.keys());
-	}
 	const character = init({
 		name,
-		skillset,
-		sex,
-		archetype
+		sex: ArrayUtils.getRandomItem(Sexes.keys()),
+		archetype: ArrayUtils.getRandomItem(Archetypes.keys()),
+		skillset: SkillsetID.NONE
 	});
 
+	if (isMagicUser(character)) {
+		character.skillset = ArrayUtils.getRandomItem(Skillsets.keys());
+	}
 	let main = Weapons.filter(character, WieldID.MAIN);
 
 	if (main.length > 1) {
@@ -69,13 +66,20 @@ const random = (name: string): ICharacterData => {
 	}
 	character.main = ArrayUtils.getRandomItem(main)[0] || WeaponID.NONE;
 
-	let off = Weapons.filter(character, WieldID.OFF);
+	if (
+		!Equipment.isBothWielding(character.main) &&
+		!Equipment.isDualWielding(character.main)
+	) {
+		let off = Weapons.filter(character, WieldID.OFF);
 
-	if (off.length > 1) {
-		off = off.filter(([id, data]) => id !== WeaponID.NONE);
+		if (off.length > 1) {
+			off = off.filter(([id, data]) => id !== WeaponID.NONE);
+		}
+		character.off = ArrayUtils.getRandomItem(off)[0] || WeaponID.NONE;
+
+	} else {
+		character.off = WeaponID.NONE;
 	}
-	character.off = ArrayUtils.getRandomItem(off)[0] || WeaponID.NONE;
-
 	let arm = Armors.filter(character);
 
 	if (arm.length > 1) {
@@ -87,34 +91,12 @@ const random = (name: string): ICharacterData => {
 };
 
 const isMagicUser = (char: ICharacterData) => {
-	return (-1 !== [ArchetypeID.PM, ArchetypeID.SM, ArchetypeID.MM].indexOf(char.archetype));
-};
-
-const isBothWielding = (char: ICharacterData): boolean => {
-	const main = Weapons.get(char.main);
-	return main && -1 !== main.wield.indexOf(WieldID.BOTH);
-};
-
-const isDualWielding = (char: ICharacterData): boolean => {
-	const main = Weapons.get(char.main);
-	return main && -1 !== main.wield.indexOf(WieldID.DUAL);
-};
-
-const canWieldWeapon = (char: ICharacterData, weapon: WeaponID, wield: WieldID): boolean => {
-	return Weapons.filter(char, wield).filter(([id]) => id === weapon).length > 0;
-};
-
-const canWieldArmor = (char: ICharacterData, armor: ArmorID): boolean => {
-	return Armors.filter(char).filter(([id]) => id === armor).length > 0;
+	return -1 !== char.archetype.indexOf('M');
 };
 
 export const CharacterData = {
 	maxNameLength,
 	init,
 	random,
-	isMagicUser,
-	isBothWielding,
-	isDualWielding,
-	canWieldWeapon,
-	canWieldArmor
+	isMagicUser
 };

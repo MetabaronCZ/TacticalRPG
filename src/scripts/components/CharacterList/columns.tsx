@@ -9,9 +9,10 @@ import ArchetypeIco from 'components/ArchetypeIco';
 
 import { Armors } from 'modules/armor';
 import { Weapons } from 'modules/weapon';
-import { CharacterData, ICharacterData, IOnMoveDown, IOnMoveUp, IOnDelete } from 'modules/character-data';
-import { Archetypes } from 'modules/archetype';
 import { Skillsets } from 'modules/skillset';
+import { Equipment } from 'modules/equipment';
+import { Archetypes } from 'modules/archetype';
+import { CharacterData, ICharacterData, IOnMoveDown, IOnMoveUp, IOnDelete } from 'modules/character-data';
 
 const renderArchetype = (char: ICharacterData) => (
 	<ArchetypeIco archetype={char.archetype} />
@@ -54,9 +55,9 @@ const getColumns = (editable: boolean = false, onMoveDown?: IOnMoveDown, onMoveU
 		const main = Weapons.get(char.main);
 		const off = Weapons.get(char.off);
 
-		if (CharacterData.isBothWielding(char)) {
+		if (Equipment.isBothWielding(char.main)) {
 			return renderOffHandBothWield(main.title);
-		} else if (CharacterData.isDualWielding(char)) {
+		} else if (Equipment.isDualWielding(char.main)) {
 			return main ? main.title : '';
 		} else {
 			return off ? off.title : '';

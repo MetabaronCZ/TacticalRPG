@@ -11,13 +11,11 @@ export interface IPlayer {
 	type: PlayerType;
 }
 
-const create = (name: string, type: PlayerType) => {
-	return {
-		name,
-		type,
-		score: Score.getDefault()
-	};
-};
+const create = (name: string, type: PlayerType) => ({
+	name,
+	type,
+	score: Score.getDefault()
+});
 
 export const Player = {
 	create

@@ -79,3 +79,4 @@ MAGICAL 	  |  .   .   x   .   x   x  |  3
 	WIND
 	THUNDER
 	EARTH
+

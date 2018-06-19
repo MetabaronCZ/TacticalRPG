@@ -13,11 +13,12 @@ import Separator from 'components/Separator';
 import { Sexes } from 'modules/sex';
 import { Armors } from 'modules/armor';
 import { Weapons } from 'modules/weapon';
-import { IParty, Party } from 'modules/party';
 import { Archetypes } from 'modules/archetype';
-import { ICharacterData, CharacterData } from 'modules/character-data';
+import { IParty, Party } from 'modules/party';
+import { ICharacterData } from 'modules/character-data';
 
 import { validateField, validateForm } from 'utils/validation';
+import { Equipment } from 'modules/equipment';
 
 const errNoCharacter = 'Party contains no character';
 
@@ -203,9 +204,9 @@ class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationS
 			const arch = Archetypes.get(selected.archetype);
 			let weapons = '';
 
-			if (CharacterData.isBothWielding(selected)) {
+			if (Equipment.isBothWielding(selected.main)) {
 				weapons = main.title;
-			} else if (CharacterData.isDualWielding(selected)) {
+			} else if (Equipment.isDualWielding(selected.main)) {
 				weapons = `${main.title} + ${main.title}`;
 			} else {
 				weapons = `${main.title} + ${off.title}`;
