@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface IPageProps {
-	heading: string;
+	readonly heading: string;
 }
 
 const Page: React.SFC<IPageProps> = ({ heading, children }) => (

@@ -1,5 +1,5 @@
 // return array of random items from given array
-export const getRandomItems = <T>(arr: T[], count: number = 1): T[] => {
+export const getRandomItems = <T>(arr: T[], count = 1): T[] => {
 	const res = [];
 	arr = arr.slice(0);
 

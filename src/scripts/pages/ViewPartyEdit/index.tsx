@@ -16,12 +16,12 @@ import { IParty } from 'modules/party';
 import { ICharacterData } from 'modules/character-data';
 
 interface IStateToProps {
-	parties?: IParty[];
-	characters?: ICharacterData[];
+	readonly parties?: IParty[];
+	readonly characters?: ICharacterData[];
 }
 
 interface IViewPartyEditContainerProps extends RouteComponentProps<any> {
-	onSubmit: (history: History) => any;
+	readonly onSubmit: (history: History) => (party: IParty) => void;
 }
 
 const mapStateToProps = (state: IStore): IStateToProps => ({

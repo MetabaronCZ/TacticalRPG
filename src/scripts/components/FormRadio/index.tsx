@@ -1,12 +1,12 @@
 import React from 'react';
 
 interface IFormRadioProps {
-	id: string;
-	label: string;
-	name: string;
-	value: string;
-	isChecked: boolean;
-	onChange?: () => void;
+	readonly id: string;
+	readonly label: string;
+	readonly name: string;
+	readonly value: string;
+	readonly isChecked: boolean;
+	readonly onChange?: () => void;
 }
 
 const FormRadio: React.SFC<IFormRadioProps> = ({ id, label, name, value, isChecked, onChange }) => (

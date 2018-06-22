@@ -1,7 +1,7 @@
 import React, { SyntheticEvent } from 'react';
 
 interface IFormProps {
-	onSubmit: (e: SyntheticEvent<HTMLFormElement>) => void;
+	readonly onSubmit: (e: SyntheticEvent<HTMLFormElement>) => void;
 }
 
 const Form: React.SFC<IFormProps> = ({ children, onSubmit }) => (

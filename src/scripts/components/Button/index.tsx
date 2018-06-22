@@ -17,12 +17,12 @@ export enum ButtonSize {
 }
 
 interface IButtonContainerProps {
-	type?: string;
-	ico?: string;
-	size?: string;
-	color?: string;
-	text: string;
-	onClick?: (e: SyntheticEvent<any>) => void;
+	readonly type?: string;
+	readonly ico?: string;
+	readonly size?: string;
+	readonly color?: string;
+	readonly text: string;
+	readonly onClick?: (e: SyntheticEvent<any>) => void;
 }
 
 const Button: React.SFC<IButtonContainerProps> = props => {

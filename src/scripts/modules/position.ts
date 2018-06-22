@@ -2,10 +2,10 @@ import { gridSize } from 'data/game-config';
 import { Direction } from 'modules/direction';
 
 export interface IPosition {
-	x: number;
-	y: number;
-	id: string;
-	cost: number;
+	readonly x: number;
+	readonly y: number;
+	readonly id: string;
+	readonly cost: number;
 }
 
 type IByDirectionTable = {
@@ -19,14 +19,12 @@ const byDirectionTable: IByDirectionTable = {
 	[Direction.RIGHT]:  (pos: IPosition) => create(pos.x + 1, pos.y),
 };
 
-const create = (x: number = 0, y: number = 0): IPosition => {
-	return {
-		x,
-		y,
-		id: x + '|' + y,
-		cost: 1
-	};
-};
+const create = (x: number = 0, y: number = 0): IPosition => ({
+	x,
+	y,
+	id: x + '|' + y,
+	cost: 1
+});
 
 const isEqual = (a?: IPosition, b?: IPosition) => {
 	return a && b && a.id === b.id;
@@ -45,20 +43,19 @@ const isOnStraightLine = (pos: IPosition, ref: IPosition): boolean => {
 	return (pos.x === ref.x || pos.y === ref.y || 0 === (Math.abs(pos.x - ref.x) - Math.abs(pos.y - ref.y)));
 };
 
-const getSideTiles = (pos: IPosition, obstacles: IPosition[] = []): IPosition[] => {
-	const neighbours: IPosition[] = [];
-
-	neighbours.push(create(pos.x - 1, pos.y));
-	neighbours.push(create(pos.x + 1, pos.y));
-	neighbours.push(create(pos.x, pos.y - 1));
-	neighbours.push(create(pos.x, pos.y + 1));
-
+const getSideTiles = (pos: IPosition, obstacles?: IPosition[]): IPosition[] => {
+	const neighbours: IPosition[] = [
+		create(pos.x - 1, pos.y),
+		create(pos.x + 1, pos.y),
+		create(pos.x, pos.y - 1),
+		create(pos.x, pos.y + 1)
+	];
 	return neighbours.filter(n => {
 		return isInGrid(n) && !isContained(n, obstacles);
 	});
 };
 
-const getNeighbours = (pos: IPosition, obstacles: IPosition[] = []): IPosition[] => {
+const getNeighbours = (pos: IPosition, obstacles?: IPosition[]): IPosition[] => {
 	const neighbours: IPosition[] = [];
 
 	for (let x = -1; x <= 1; x++) {

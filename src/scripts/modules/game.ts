@@ -29,45 +29,45 @@ export type IOnActionSelect = (action: IActionItem) => void;
 export type IOnTileSelect = (pos: IPosition) => void;
 
 interface IGameStateAct {
-	phase: ActPhase;
-	action?: IActionItem;
-	actionMenu?: IActions;
-	initAP?: number; // actor's AP on turn start
+	readonly phase: ActPhase;
+	readonly action?: IActionItem;
+	readonly actionMenu?: IActions;
+	readonly initAP?: number; // actor's AP on turn start
 }
 
 interface IGameStateMove {
-	origin?: IPosition; // actor start position
-	costMap?: IMoveCostMap; // movable area cost map
-	target?: IPosition; // target position
-	area?: IPosition[]; // movable tiles
-	path?: IPosition[]; // move path
+	readonly origin?: IPosition; // actor start position
+	readonly costMap?: IMoveCostMap; // movable area cost map
+	readonly target?: IPosition; // target position
+	readonly area?: IPosition[]; // movable tiles
+	readonly path?: IPosition[]; // move path
 }
 
 interface IGameStateSkill {
-	targetArea?: IPosition[]; // skill range tiles
-	targets?: IPosition[]; // targetable tiles
-	effectArea?: IPosition[]; // effect area
-	effectTarget?: IPosition; // selected skill target
-	effectTargets?: IPosition[]; // affected targets
+	readonly targetArea?: IPosition[]; // skill range tiles
+	readonly targets?: IPosition[]; // targetable tiles
+	readonly effectArea?: IPosition[]; // effect area
+	readonly effectTarget?: IPosition; // selected skill target
+	readonly effectTargets?: IPosition[]; // affected targets
 }
 
 interface IGameStateDirect {
-	area?: IPosition[]; // positions character can be aligned to
-	target?: IPosition; // position character is directed to
+	readonly area?: IPosition[]; // positions character can be aligned to
+	readonly target?: IPosition; // position character is directed to
 }
 
 export interface IGameState {
-	phase: GamePhase;
-	act: IGameStateAct;
-	move: IGameStateMove;
-	skill: IGameStateSkill;
-	direct: IGameStateDirect;
-	characters: ICharacter[];
-	ally: IPlayer;
-	enemy: IPlayer;
-	order: IOrder;
-	tick: number;
-	actors: string[]; // character ID array
+	readonly phase: GamePhase;
+	readonly act: IGameStateAct;
+	readonly move: IGameStateMove;
+	readonly skill: IGameStateSkill;
+	readonly direct: IGameStateDirect;
+	readonly characters: ICharacter[];
+	readonly ally: IPlayer;
+	readonly enemy: IPlayer;
+	readonly order: IOrder;
+	readonly tick: number;
+	readonly actors: string[]; // character ID array
 }
 
 export const getInitialState = (charIds: string[], chars: ICharacterData[], initiative: PlayerType): IGameState => {

@@ -5,8 +5,8 @@ import { PlayerType } from 'modules/player';
 import { ICharacter } from 'modules/character';
 
 interface ICharacterBlockProps {
-	char: ICharacter;
-	isActor: boolean;
+	readonly char: ICharacter;
+	readonly isActor: boolean;
 }
 
 class CharacterBlock extends React.Component<ICharacterBlockProps, {}> {

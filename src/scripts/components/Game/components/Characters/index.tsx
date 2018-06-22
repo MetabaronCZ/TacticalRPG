@@ -5,8 +5,8 @@ import { ICharacter } from 'modules/character';
 import CharacterBlock from 'components/Game/components/Character';
 
 interface ICharacters {
-	actor?: ICharacter;
-	characters: ICharacter[];
+	readonly actor?: ICharacter;
+	readonly characters: ICharacter[];
 }
 
 const renderCharacter = (char: ICharacter, isActor: boolean, i: number) => {

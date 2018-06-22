@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface IFormSelectItemProps {
-	value?: string;
+	readonly value?: string;
 }
 
 const FormSelectItem: React.SFC<IFormSelectItemProps> = ({ value, children }) => (

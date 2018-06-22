@@ -1,11 +1,11 @@
 import React, { SyntheticEvent } from 'react';
 
 interface IFormSelect {
-	id?: string;
-	name?: string;
-	value?: string;
-	disabled?: boolean;
-	onChange?: (e: SyntheticEvent<any>) => void;
+	readonly id?: string;
+	readonly name?: string;
+	readonly value?: string;
+	readonly disabled?: boolean;
+	readonly onChange?: (e: SyntheticEvent<any>) => void;
 }
 
 const FormSelect: React.SFC<IFormSelect> = ({ id, name, value = '', disabled, onChange, children }) => (

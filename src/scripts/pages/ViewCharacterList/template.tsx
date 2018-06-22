@@ -14,12 +14,12 @@ const NoCharacters = () => (
 );
 
 interface IViewCharacterListProps {
-	characters?: ICharacterData[];
-	onBack?: () => void;
-	onCreate?: () => void;
-	onDelete?: IOnDelete;
-	onMoveDown?: IOnMoveDown;
-	onMoveUp?: IOnMoveUp;
+	readonly characters?: ICharacterData[];
+	readonly onBack?: () => void;
+	readonly onCreate?: () => void;
+	readonly onDelete?: IOnDelete;
+	readonly onMoveDown?: IOnMoveDown;
+	readonly onMoveUp?: IOnMoveUp;
 }
 
 const ViewCharacterList: React.SFC<IViewCharacterListProps> = props => {

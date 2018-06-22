@@ -11,9 +11,6 @@ import { WeaponID, Weapons } from 'modules/weapon';
 import { SkillsetID, Skillsets } from 'modules/skillset';
 import { ArchetypeID, Archetypes } from 'modules/archetype';
 
-// character name maximum length
-const maxNameLength = 16;
-
 export interface ICharacterData extends IIndexable {
 	readonly name: string;
 	readonly sex: SexID;
@@ -95,7 +92,6 @@ const isMagicUser = (char: ICharacterData) => {
 };
 
 export const CharacterData = {
-	maxNameLength,
 	init,
 	random,
 	isMagicUser

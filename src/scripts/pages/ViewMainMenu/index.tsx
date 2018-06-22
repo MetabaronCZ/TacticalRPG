@@ -5,10 +5,10 @@ import Button, { ButtonSize } from 'components/Button';
 import { gotoFn } from 'utils/nav';
 
 interface IMenuItem {
-	title: string;
-	ico?: string;
-	size?: string;
-	url: string;
+	readonly title: string;
+	readonly ico?: string;
+	readonly size?: string;
+	readonly url: string;
 }
 
 const menuItems: IMenuItem[] = [

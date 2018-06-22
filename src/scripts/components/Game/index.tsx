@@ -3,7 +3,7 @@ import React from 'react';
 import Animation from 'core/animation';
 import * as ArrayUtils from 'core/array';
 
-import { gridSize, moveAnimDuration, tickDelay } from 'data/game-config';
+import { gridSize, moveAnimDuration, tickDelay, characterCTLimit } from 'data/game-config';
 import GameUI from 'components/Game/template';
 
 import { Order } from 'modules/order';
@@ -19,10 +19,10 @@ import { IGameState, GamePhase, ActPhase, getInitialState } from 'modules/game';
 import { IActions, ActionID, IActionItem, directAction } from 'modules/character-action';
 
 interface IGameUIContainerProps {
-	party: IParty;
-	characters: ICharacterData[];
-	onSummary: () => any;
-	onExit: () => any;
+	readonly party: IParty;
+	readonly characters: ICharacterData[];
+	readonly onSummary: () => void;
+	readonly onExit: () => void;
 }
 
 class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState> {
@@ -77,7 +77,7 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 					const updated = Character.tick(char);
 
 					// collect acting characters
-					if (updated.currAttributes.CT >= Character.ctLimit) {
+					if (updated.currAttributes.CT >= characterCTLimit) {
 						actors.push(updated.data.id);
 					}
 					return updated;
@@ -87,20 +87,19 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 				const order = Order.get(characters, this.initiative);
 
 				// order actors
-				let orderedActors: any[] = [];
+				let orderedActors: Array<[string, number]> = [];
 
 				for (const a of actors) {
 					orderedActors.push([a, order.indexOf(a)]);
 				}
 				orderedActors = orderedActors.sort((a, b) => a[1] - b[1]);
-				orderedActors = orderedActors.map(a => a[0]);
 
 				this.setState(
 					{
 						characters,
 						order,
 						tick,
-						actors: orderedActors
+						actors: orderedActors.map(a => a[0])
 					},
 					() => actors.length ? this.startTurn() : this.tick()
 				);
@@ -176,7 +175,7 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 
 		const characters = this.state.characters.map(char => {
 			if (actorId === char.data.id) {
-				char.currAttributes.CT %= Character.ctLimit;
+				char.currAttributes.CT %= characterCTLimit;
 			}
 			return char;
 		});

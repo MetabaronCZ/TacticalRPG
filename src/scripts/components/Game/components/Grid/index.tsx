@@ -5,17 +5,17 @@ import { Position, IPosition } from 'modules/position';
 import { IOnTileSelect, ActPhase } from 'modules/game';
 
 interface IGridProps {
-	phase: ActPhase;
-	onSelect: IOnTileSelect;
-	movePath?: IPosition[];
-	moveArea?: IPosition[];
-	moveTarget?: IPosition;
-	skillTargetArea?: IPosition[];
-	skillTargets?: IPosition[];
-	skillEffectArea?: IPosition[];
-	skillEffectTargets?: IPosition[];
-	directArea?: IPosition[];
-	directTarget?: IPosition;
+	readonly phase: ActPhase;
+	readonly onSelect: IOnTileSelect;
+	readonly movePath?: IPosition[];
+	readonly moveArea?: IPosition[];
+	readonly moveTarget?: IPosition;
+	readonly skillTargetArea?: IPosition[];
+	readonly skillTargets?: IPosition[];
+	readonly skillEffectArea?: IPosition[];
+	readonly skillEffectTargets?: IPosition[];
+	readonly directArea?: IPosition[];
+	readonly directTarget?: IPosition;
 }
 
 enum BlockType {

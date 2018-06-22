@@ -8,7 +8,7 @@ import Bar from 'components/Game/components/Bar';
 import ArchetypeIco from 'components/ArchetypeIco';
 
 interface IPartyProps {
-	characters: ICharacter[];
+	readonly characters: ICharacter[];
 }
 
 const Party: React.SFC<IPartyProps> = ({ characters }) => {

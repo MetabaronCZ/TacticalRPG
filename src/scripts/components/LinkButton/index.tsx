@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface ILinkButtonProps {
-	onClick?: () => void;
+	readonly onClick?: () => void;
 }
 
 const LinkButton: React.SFC<ILinkButtonProps> = ({ onClick, children }) => (

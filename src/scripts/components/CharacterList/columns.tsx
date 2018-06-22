@@ -39,31 +39,13 @@ const renderOffHandBothWield = (title: string) => (
 );
 
 interface IColumn {
-	title: string;
-	name: string;
-	value: any;
-	editable?: boolean;
+	readonly title: string;
+	readonly name: string;
+	readonly value: (char: ICharacterData, i: number) => React.ReactNode;
+	readonly editable?: boolean;
 }
 
-const getColumns = (editable: boolean = false, onMoveDown?: IOnMoveDown, onMoveUp?: IOnMoveUp, onDelete?: IOnDelete): IColumn[] => {
-	const mainValue = (char: ICharacterData): string => {
-		const main = Weapons.get(char.main);
-		return main ? main.title : '';
-	};
-
-	const offValue = (char: ICharacterData) => {
-		const main = Weapons.get(char.main);
-		const off = Weapons.get(char.off);
-
-		if (Equipment.isBothWielding(char.main)) {
-			return renderOffHandBothWield(main.title);
-		} else if (Equipment.isDualWielding(char.main)) {
-			return main ? main.title : '';
-		} else {
-			return off ? off.title : '';
-		}
-	};
-
+const getColumns = (editable = false, onMoveDown?: IOnMoveDown, onMoveUp?: IOnMoveUp, onDelete?: IOnDelete): IColumn[] => {
 	let columns: IColumn[] = [
 		{
 			title: '',
@@ -92,18 +74,26 @@ const getColumns = (editable: boolean = false, onMoveDown?: IOnMoveDown, onMoveU
 		}, {
 			title: 'Main hand',
 			name: 'mainHand',
-			value: mainValue
+			value: (char: ICharacterData) => Weapons.get(char.main).title
 		}, {
 			title: 'Off hand',
 			name: 'offHand',
-			value: offValue
+			value: (char: ICharacterData) => {
+				const main = Weapons.get(char.main);
+				const off = Weapons.get(char.off);
+
+				if (Equipment.isBothWielding(char.main)) {
+					return renderOffHandBothWield(main.title);
+				} else if (Equipment.isDualWielding(char.main)) {
+					return main.title;
+				} else {
+					return off.title;
+				}
+			}
 		}, {
 			title: 'Armor',
 			name: 'armor',
-			value: (char: ICharacterData) => {
-				const armor = Armors.get(char.armor);
-				return armor ? armor.title : '';
-			}
+			value: (char: ICharacterData) => Armors.get(char.armor).title
 		}, {
 			title: '',
 			name: 'moveDown',

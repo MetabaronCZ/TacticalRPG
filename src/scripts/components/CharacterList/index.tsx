@@ -4,11 +4,11 @@ import getColumns from 'components/CharacterList/columns';
 import { ICharacterData, IOnMoveDown, IOnMoveUp, IOnDelete } from 'modules/character-data';
 
 interface ICharacterListProps {
-	editable?: boolean;
-	characters: ICharacterData[];
-	onMoveDown?: IOnMoveDown;
-	onMoveUp?: IOnMoveUp;
-	onDelete?: IOnDelete;
+	readonly editable?: boolean;
+	readonly characters: ICharacterData[];
+	readonly onMoveDown?: IOnMoveDown;
+	readonly onMoveUp?: IOnMoveUp;
+	readonly onDelete?: IOnDelete;
 }
 
 const CharacterList: React.SFC<ICharacterListProps> = props => {

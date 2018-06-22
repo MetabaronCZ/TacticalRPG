@@ -15,8 +15,8 @@ import GameUIContainer from 'components/Game';
 const txtExitConfirm = 'Do you realy want to exit and lost your game progress?';
 
 interface IStateToProps {
-	characters: ICharacterData[];
-	parties: IParty[];
+	readonly characters: ICharacterData[];
+	readonly parties: IParty[];
 }
 
 const exit = (history: History) => () => {

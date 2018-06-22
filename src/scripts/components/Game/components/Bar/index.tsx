@@ -1,10 +1,10 @@
 import React from 'react';
 
 interface IBarProps {
-	hp: number;
-	hpMax: number;
-	ap: number;
-	apMax: number;
+	readonly hp: number;
+	readonly hpMax: number;
+	readonly ap: number;
+	readonly apMax: number;
 }
 
 const renderItem = (type: string, value: number, max: number) => {

@@ -1,5 +1,8 @@
 import React, { SyntheticEvent } from 'react';
 
+import { validateField, validateForm } from 'utils/validation';
+import { maxPartyNameLength, maxPartySize } from 'data/game-config';
+
 import Link from 'components/Link';
 import Form from 'components/Form';
 import FormField from 'components/FormField';
@@ -13,26 +16,24 @@ import Separator from 'components/Separator';
 import { Sexes } from 'modules/sex';
 import { Armors } from 'modules/armor';
 import { Weapons } from 'modules/weapon';
-import { Archetypes } from 'modules/archetype';
-import { IParty, Party } from 'modules/party';
-import { ICharacterData } from 'modules/character-data';
-
-import { validateField, validateForm } from 'utils/validation';
 import { Equipment } from 'modules/equipment';
+import { IParty, Party } from 'modules/party';
+import { Archetypes } from 'modules/archetype';
+import { ICharacterData } from 'modules/character-data';
 
 const errNoCharacter = 'Party contains no character';
 
 interface IPartyCreationProps {
-	party?: IParty;
-	characters?: ICharacterData[];
-	onBack?: () => void;
-	onSubmit: (party: IParty) => void;
+	readonly party?: IParty;
+	readonly characters?: ICharacterData[];
+	readonly onBack?: () => void;
+	readonly onSubmit: (party: IParty) => void;
 }
 
 interface IPartyCreationState {
-	fields: IParty;
-	errors: {
-		[field: string]: string|undefined;
+	readonly fields: IParty;
+	readonly errors: {
+		readonly [field: string]: string|undefined;
 	};
 }
 
@@ -80,13 +81,13 @@ class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationS
 									value={fields.name}
 									placeholder="Type party name ..."
 									name="name"
-									maxLength={Party.maxNameLength}
+									maxLength={maxPartyNameLength}
 									isInvalid={!!errors.name}
 									onChange={this.onChange}
 								/>
 							</FormField>
 
-							{Array(Party.characterCount).fill('').map((x, i) => this.renderPartyItem(i))}
+							{Array(maxPartySize).fill('').map((x, i) => this.renderPartyItem(i))}
 						</React.Fragment>
 					)
 					: this.renderNoCharacter()
@@ -147,17 +148,15 @@ class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationS
 		if (!isValidForm) {
 			return;
 		}
-		let ids = fields.characters;
-		ids = ids.filter(id => !!id);
+		const ids = fields.characters.filter(id => !!id);
 
 		if (!ids.length) {
-			this.setState({
+			return this.setState({
 				errors: {
 					...errors,
 					noCharError: errNoCharacter
 				}
 			});
-			return;
 		}
 
 		// submit data from all steps

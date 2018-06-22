@@ -1,25 +1,19 @@
 import uuid from 'uuid/v1';
 
-import * as ArrayUtils from 'core/array';
 import nameSamples from 'data/names';
-import { IIndexable } from 'modules/indexable';
-
+import { maxPartyNameLength } from 'data/game-config';
 import RandomNameGenerator from 'core/random-name-generator';
+
+import { IIndexable } from 'modules/indexable';
 import { ICharacterData, CharacterData } from 'modules/character-data';
-
-// maximum character count in one party
-const characterCount = 8;
-
-// maximum character count of party name
-const maxNameLength = 16;
 
 export interface IParty extends IIndexable {
 	readonly name: string;
 	readonly characters: string[];  // list of character IDs
 }
 
-export type IOnMoveDown = (party: IParty) => () => void;
-export type IOnMoveUp = (party: IParty) => () => void;
+export type IOnMoveDown = (partyId: string) => () => void;
+export type IOnMoveUp = (partyId: string) => () => void;
 export type IOnDelete = (party: IParty) => () => void;
 
 const create = (conf = {}): IParty => {
@@ -44,7 +38,7 @@ const getCharacterById = (id: string, characters: ICharacterData[]): ICharacterD
 
 // returns random character party array
 const getRandomCharacters = (count: number): ICharacterData[] => {
-	const characters = RandomNameGenerator.get(nameSamples, count, maxNameLength);
+	const characters = RandomNameGenerator.get(nameSamples, count, maxPartyNameLength);
 	return characters.map((char, i) => CharacterData.random(char));
 };
 
@@ -93,8 +87,6 @@ const validate = (party: ICharacterData[] = []): string|true => {
 };
 
 export const Party = {
-	characterCount,
-	maxNameLength,
 	create,
 	getCharacterById,
 	getRandomCharacters,

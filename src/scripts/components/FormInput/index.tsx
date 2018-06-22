@@ -1,15 +1,15 @@
 import React, { SyntheticEvent } from 'react';
 
 interface IInputProps {
-	id: string;
-	type: string;
-	value: string;
-	placeholder: string;
-	name: string;
-	maxLength: number;
-	disabled?: boolean;
-	isInvalid: boolean;
-	onChange: (e: SyntheticEvent<any>) => void;
+	readonly id: string;
+	readonly type: string;
+	readonly value: string;
+	readonly placeholder: string;
+	readonly name: string;
+	readonly maxLength: number;
+	readonly disabled?: boolean;
+	readonly isInvalid: boolean;
+	readonly onChange: (e: SyntheticEvent<any>) => void;
 }
 
 const Input: React.SFC<IInputProps> = ({ id, type, value, placeholder, name, maxLength, disabled, isInvalid, onChange }) => (

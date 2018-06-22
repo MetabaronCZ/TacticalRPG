@@ -5,8 +5,8 @@ import { PlayerType } from 'modules/player';
 import { ICharacter } from 'modules/character';
 
 interface IOrderProps {
-	order: IOrder;
-	characters: ICharacter[];
+	readonly order: IOrder;
+	readonly characters: ICharacter[];
 }
 
 const Order: React.SFC<IOrderProps> = ({ order, characters }) => {

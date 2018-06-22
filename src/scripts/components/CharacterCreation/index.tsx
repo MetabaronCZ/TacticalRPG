@@ -1,6 +1,7 @@
 import React, { SyntheticEvent } from 'react';
 
 import Icos from 'data/icos';
+import { characterMaxNameLength } from 'data/game-config';
 import { validateField, validateForm } from 'utils/validation';
 
 import Form from 'components/Form';
@@ -24,15 +25,15 @@ import { Skillsets, SkillsetID } from 'modules/skillset';
 import { ICharacterData, CharacterData } from 'modules/character-data';
 
 interface ICharacterCreationProps {
-	character?: ICharacterData;
-	onBack?: () => void;
-	onSubmit?: (data: ICharacterData) => void;
+	readonly character?: ICharacterData;
+	readonly onBack?: () => void;
+	readonly onSubmit?: (data: ICharacterData) => void;
 }
 
 interface ICharacterCreationState {
-	fields: ICharacterData;
-	errors: {
-		[field: string]: string|undefined;
+	readonly fields: ICharacterData;
+	readonly errors: {
+		readonly [field: string]: string|undefined;
 	};
 }
 
@@ -71,7 +72,7 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 						value={fields.name}
 						placeholder="Type character name ..."
 						name="name"
-						maxLength={CharacterData.maxNameLength}
+						maxLength={characterMaxNameLength}
 						isInvalid={!!errors.name}
 						onChange={onChange}
 					/>
@@ -122,22 +123,21 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 				</FormField>
 
 				<FormField fieldId="f-off" label="Off hand" info={!hasNoOffHand ? off.description : undefined}>
-					{
-						!hasNoOffHand
-							? (
-								<FormSelect id="f-off" name="off" value={fields.off} onChange={onChange}>
-									{Weapons.filter(fields, WieldID.OFF).map(([id, item], i) => (
-										<FormSelectItem value={id} key={i}>
-											{item.title}
-										</FormSelectItem>
-									))}
-								</FormSelect>
-							)
-							: (
-								<FormSelect disabled={true}>
-									<FormSelectItem>{main.title}</FormSelectItem>
-								</FormSelect>
-							)
+					{!hasNoOffHand
+						? (
+							<FormSelect id="f-off" name="off" value={fields.off} onChange={onChange}>
+								{Weapons.filter(fields, WieldID.OFF).map(([id, item], i) => (
+									<FormSelectItem value={id} key={i}>
+										{item.title}
+									</FormSelectItem>
+								))}
+							</FormSelect>
+						)
+						: (
+							<FormSelect disabled={true}>
+								<FormSelectItem>{main.title}</FormSelectItem>
+							</FormSelect>
+						)
 					}
 				</FormField>
 
@@ -219,8 +219,7 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 		const { fields } = this.state;
 		const onSubmit = this.props.onSubmit;
 
-		if ('function' === typeof onSubmit) {
-			// submit data from all steps
+		if (onSubmit) {
 			onSubmit(fields);
 		}
 	}

@@ -1,10 +1,10 @@
 import React from 'react';
 
 interface IFormFieldProps {
-	label: string;
-	info?: string;
-	fieldId: string;
-	error?: string;
+	readonly label: string;
+	readonly info?: string;
+	readonly fieldId: string;
+	readonly error?: string;
 }
 
 const FormField: React.SFC<IFormFieldProps> = ({ label, info, fieldId, children, error }) => (
@@ -21,7 +21,9 @@ const FormField: React.SFC<IFormFieldProps> = ({ label, info, fieldId, children,
 			<em>{info || '\u00A0'}</em>
 		</span>
 
-		{error ? (<span className="FormField-error">{error}</span>) : ''}
+		{error && (
+			<span className="FormField-error">{error}</span>
+		)}
 	</fieldset>
 );
 

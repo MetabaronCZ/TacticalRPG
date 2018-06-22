@@ -12,8 +12,8 @@ import Actions from 'actions/characters';
 import { ICharacterData } from 'modules/character-data';
 
 interface IViewCharacterCreateContainerProps extends RouteComponentProps<any> {
-	onSubmit: (history: History) => any;
-	onBack: () => void;
+	readonly onSubmit: (history: History) => (data: ICharacterData) => void;
+	readonly onBack: () => void;
 }
 
 const mapDispatchToProps = (dispatch: Dispatch<Action<ICharacterData>>) => ({

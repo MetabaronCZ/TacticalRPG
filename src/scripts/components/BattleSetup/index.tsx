@@ -14,15 +14,15 @@ import { IParty, Party } from 'modules/party';
 import { ICharacterData } from 'modules/character-data';
 
 interface IBattleSetupProps {
-	parties?: IParty[];
-	characters?: ICharacterData[];
-	onStart: (fields: any) => void;
-	onBack: (e: SyntheticEvent<any>) => void;
+	readonly parties?: IParty[];
+	readonly characters?: ICharacterData[];
+	readonly onStart: (partyID: string|null) => void;
+	readonly onBack: (e: SyntheticEvent<any>) => void;
 }
 
 interface IBattleSetupState {
-	fields: {
-		party: string|null;
+	readonly fields: {
+		readonly party: string|null;
 	};
 }
 
@@ -37,14 +37,13 @@ class BattleSetup extends React.Component<IBattleSetupProps, IBattleSetupState> 
 				party: defaultParty
 			}
 		};
-
 		this.onChange = this.onChange.bind(this);
 		this.onSubmit = this.onSubmit.bind(this);
 	}
 
 	public render() {
 		const { characters, parties } = this.props;
-		const fields: any = this.state.fields;
+		const fields = this.state.fields;
 
 		if (!characters || !characters.length || !parties || !parties.length) {
 			return this.renderNoParty();
@@ -62,7 +61,7 @@ class BattleSetup extends React.Component<IBattleSetupProps, IBattleSetupState> 
 			<Form onSubmit={this.onSubmit}>
 				{/* party selection */}
 				<FormField fieldId="f-party" label="Select party">
-					<FormSelect id="f-party" name="party" value={fields.party} onChange={this.onChange}>
+					<FormSelect id="f-party" name="party" value={fields.party || ''} onChange={this.onChange}>
 						{parties.map((party, i) => (
 							<FormSelectItem value={party.id} key={i}>
 								{party.name}
@@ -72,12 +71,10 @@ class BattleSetup extends React.Component<IBattleSetupProps, IBattleSetupState> 
 				</FormField>
 
 				{/* selected party characters */}
-				{
-					isValidParty
+				{isValidParty
 					? <CharacterList characters={chars} />
 					: this.renderPartyInvalid(partyValidation)
 				}
-
 				<Separator />
 
 				<ButtonRow>
@@ -107,7 +104,7 @@ class BattleSetup extends React.Component<IBattleSetupProps, IBattleSetupState> 
 		e.preventDefault();
 
 		if (this.props.onStart) {
-			this.props.onStart(this.state.fields);
+			this.props.onStart(this.state.fields.party);
 		}
 	}
 

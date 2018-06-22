@@ -3,7 +3,7 @@ import { Switch, MemoryRouter, Route } from 'react-router';
 
 import routes from 'components/Router/routes';
 
-const Router = () => (
+const Router: React.SFC<{}> = () => (
 	<MemoryRouter>
 		<Switch>
 			{routes.map((route, key) => (

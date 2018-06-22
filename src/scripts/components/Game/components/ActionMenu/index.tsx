@@ -1,12 +1,13 @@
 import React from 'react';
 
-import { IOnActionSelect } from 'modules/game';
-import { IActions, IActionItem, ActionID } from 'modules/character-action';
 import Button, { ButtonColor } from 'components/Button';
 
+import { IOnActionSelect } from 'modules/game';
+import { IActions, IActionItem, ActionID } from 'modules/character-action';
+
 interface ICharacterMenuProps {
-	actions: IActions;
-	onSelect: IOnActionSelect;
+	readonly actions: IActions;
+	readonly onSelect: IOnActionSelect;
 }
 
 const selectMenu = (action: IActionItem, onSelect: IOnActionSelect ) => () => action.active && onSelect(action);

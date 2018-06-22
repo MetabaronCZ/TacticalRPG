@@ -31,15 +31,19 @@ export const swap = <T extends IIndexable>(state: T[], dir: number, value?: IInd
 };
 
 // add item to state array
-export const add = <T extends IIndexable>(state: T[], item: any): T[] => {
+export const add = <T extends IIndexable, U extends T>(state: T[], item?: U): T[] => {
+	if (!item) {
+		return state;
+	}
 	const now = Date.now();
 
-	return state.concat({
-		...item,
+	const newItem = Object.assign({}, item, {
 		id: uuid(),
 		creationDate: now,
 		lastUpdate: now
 	});
+
+	return state.concat(newItem);
 };
 
 // remove item from state array
@@ -51,19 +55,15 @@ export const remove = <T extends IIndexable>(state: T[], value?: IIndexable): T[
 };
 
 // edit item in state array
-export const edit = <T extends IIndexable>(state: T[], value?: any): T[] => {
+export const edit = <T extends IIndexable, U extends T>(state: T[], value?: U): T[] => {
 	if (!value) {
 		return state;
 	}
 	const now = Date.now();
 
-	return state.map((item: any) => {
+	return state.map(item => {
 		if (value.id === item.id) {
-			return {
-				...item,
-				...value,
-				lastUpdate: now
-			};
+			return Object.assign({}, item, value, { lastUpdate: now });
 		}
 		return item;
 	});

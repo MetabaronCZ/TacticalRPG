@@ -10,7 +10,7 @@ class WeaponList extends DataList<WeaponID, IWeaponData> {
 		return super.filterFn((id, wpn) => this.check(id, char, slot));
 	}
 
-	public check(weapon: WeaponID, char: ICharacterData, slot: IEquipSlot): boolean {
+	private check(weapon: WeaponID, char: ICharacterData, slot: IEquipSlot): boolean {
 		switch (slot) {
 			case WieldID.MAIN:
 				return Equipment.checkMainHand(weapon, char.archetype);

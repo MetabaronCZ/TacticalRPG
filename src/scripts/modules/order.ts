@@ -1,8 +1,7 @@
-import { ICharacter, Character } from 'modules/character';
-import { PlayerType } from 'modules/player';
+import { maxOrderSize, characterCTLimit } from 'data/game-config';
 
-// maximum size of ordered character array
-const maxCapacity = 20;
+import { PlayerType } from 'modules/player';
+import { ICharacter } from 'modules/character';
 
 export type IOrder = string[];
 
@@ -28,14 +27,14 @@ const get = (characters: ICharacter[], initiative: PlayerType): IOrder => {
 		SPD: char.currAttributes.SPD
 	}));
 
-	while (o.length < maxCapacity) {
+	while (o.length < maxOrderSize) {
 		let act = [];
 
 		// get characters who can act
 		for (const char of chars) {
-			if (char.CT >= Character.ctLimit) {
+			if (char.CT >= characterCTLimit) {
 				act.push(char);
-				char.CT %= Character.ctLimit;
+				char.CT %= characterCTLimit;
 			}
 			char.CT += char.SPD;
 		}

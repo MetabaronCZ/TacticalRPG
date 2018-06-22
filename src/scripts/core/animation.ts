@@ -1,8 +1,8 @@
 interface IAnimationStep {
-	number: number;
-	duration: number;
-	isLast: boolean;
-	isFirst: boolean;
+	readonly number: number;
+	readonly duration: number;
+	readonly isLast: boolean;
+	readonly isFirst: boolean;
 }
 
 type AnimationTiming = number[]; // step time intervals (in ms)

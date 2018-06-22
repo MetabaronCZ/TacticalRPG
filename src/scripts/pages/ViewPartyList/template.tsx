@@ -13,12 +13,12 @@ const NoParties = () => (
 );
 
 interface IViewPartyList {
-	parties?: IParty[];
-	onBack?: () => void;
-	onCreate?: () => void;
-	onMoveDown?: IOnMoveDown;
-	onMoveUp?: IOnMoveUp;
-	onDelete?: IOnDelete;
+	readonly parties?: IParty[];
+	readonly onBack?: () => void;
+	readonly onCreate?: () => void;
+	readonly onMoveDown: IOnMoveDown;
+	readonly onMoveUp: IOnMoveUp;
+	readonly onDelete: IOnDelete;
 }
 
 const ViewPartyList: React.SFC<IViewPartyList> = props => {

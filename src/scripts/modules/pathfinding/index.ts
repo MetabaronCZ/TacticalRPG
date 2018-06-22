@@ -4,6 +4,10 @@ export interface IGraph {
 	[id: string]: IPosition;
 }
 
+export interface ICostMap {
+	[id: string]: number;
+}
+
 export const getPriority = (a: IPosition, b: IPosition): number => {
 	return Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
 };

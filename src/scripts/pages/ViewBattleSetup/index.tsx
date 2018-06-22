@@ -13,13 +13,9 @@ import BattleSetup from 'components/BattleSetup';
 import { IParty } from 'modules/party';
 import { ICharacterData } from 'modules/character-data';
 
-interface IOnStartParams {
-	party?: string;
-}
-
 interface IStateToProps {
-	characters: ICharacterData[];
-	parties: IParty[];
+	readonly characters: ICharacterData[];
+	readonly parties: IParty[];
 }
 
 const mapStateToProps = (state: IStore): IStateToProps => ({
@@ -27,8 +23,8 @@ const mapStateToProps = (state: IStore): IStateToProps => ({
 	parties: Selector.getParties(state)
 });
 
-const onStart = (history: History) => (params: IOnStartParams = {}) => {
-	goto(history, `/battle/${params.party}`);
+const onStart = (history: History) => (partyId: string|null) => {
+	goto(history, `/battle/${partyId}`);
 };
 
 const ViewBattleSetupContainer: React.SFC<IStateToProps & RouteComponentProps<any>> = ({ characters, parties, history }) => (

@@ -1,5 +1,5 @@
 // return array of random items from given array
-export const getRandomMapItems = <T, K>(map: Map<T, K>, count: number = 1): T[] => {
+export const getRandomMapItems = <T, K>(map: Map<T, K>, count = 1): T[] => {
 	const res = [];
 	const temp = new Map<T, K>(map);
 

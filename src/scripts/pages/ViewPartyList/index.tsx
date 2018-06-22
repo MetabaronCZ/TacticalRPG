@@ -12,13 +12,13 @@ import { IParty, IOnMoveDown, IOnMoveUp, IOnDelete } from 'modules/party';
 import ViewPartyList from 'pages/ViewPartyList/template';
 
 interface IStateToProps {
-	parties: IParty[];
+	readonly parties: IParty[];
 }
 
 interface IViewPartyListContainerProps extends RouteComponentProps<any> {
-	onMoveDown: IOnMoveDown;
-	onMoveUp: IOnMoveUp;
-	onDelete: IOnDelete;
+	readonly onMoveDown: IOnMoveDown;
+	readonly onMoveUp: IOnMoveUp;
+	readonly onDelete: IOnDelete;
 }
 
 const mapStateToProps = (state: IStore): IStateToProps => ({

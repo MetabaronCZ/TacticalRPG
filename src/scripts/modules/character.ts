@@ -1,3 +1,5 @@
+import { characterCTLimit } from 'data/game-config';
+
 import { Weapons } from 'modules/weapon';
 import { PlayerType } from 'modules/player';
 import { Skillsets } from 'modules/skillset';
@@ -19,23 +21,20 @@ export interface ICharacter {
 	direction: Direction;
 }
 
-// maximum point of CT of every character
-const ctLimit = 100;
-
 const create = (data: ICharacterData, position: IPosition, direction: Direction, player: PlayerType): ICharacter => {
-	const baseAttrs = Attributes.create(data.archetype);
-	const currAttrs = Attributes.create(data.archetype);
+	const baseAttributes = Attributes.create(data.archetype);
+	const currAttributes = Attributes.create(data.archetype);
 
 	// set small random initial CP
-	currAttrs.CT = Math.floor((ctLimit / 10) * Math.random());
+	currAttributes.CT = Math.floor((characterCTLimit / 10) * Math.random());
 
 	return {
 		data,
 		player,
 		position,
 		direction,
-		baseAttributes: baseAttrs,
-		currAttributes: currAttrs
+		baseAttributes,
+		currAttributes
 	};
 };
 
@@ -43,11 +42,13 @@ const isEqual = (charA: ICharacter, charB: ICharacter): boolean => {
 	return charA.data.id === charB.data.id;
 };
 
-const tick = (char: ICharacter): ICharacter => {
-	const updated = JSON.parse(JSON.stringify(char)) as ICharacter;
-	updated.currAttributes.CT += updated.currAttributes.SPD;
-	return updated;
-};
+const tick = (char: ICharacter): ICharacter => ({
+	...char,
+	currAttributes: {
+		...char.currAttributes,
+		CT: (char.currAttributes.CT + char.currAttributes.SPD)
+	}
+});
 
 const getActions = (actor: ICharacter): IActions => {
 	const main = Weapons.get(actor.data.main);
@@ -146,7 +147,6 @@ const startTurn = (actor: ICharacter): ICharacter => {
 };
 
 export const Character = {
-	ctLimit,
 	create,
 	isEqual,
 	tick,

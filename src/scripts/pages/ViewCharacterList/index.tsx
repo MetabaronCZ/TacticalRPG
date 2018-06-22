@@ -11,13 +11,13 @@ import ViewCharacterList from 'pages/ViewCharacterList/template';
 import { ICharacterData, IOnMoveDown, IOnMoveUp, IOnDelete } from 'modules/character-data';
 
 interface IStateToProps {
-	characters: ICharacterData[];
+	readonly characters: ICharacterData[];
 }
 
 interface IViewCharacterListContainerProps extends RouteComponentProps<any> {
-	onMoveDown: IOnMoveDown;
-	onMoveUp: IOnMoveUp;
-	onDelete: IOnDelete;
+	readonly onMoveDown: IOnMoveDown;
+	readonly onMoveUp: IOnMoveUp;
+	readonly onDelete: IOnDelete;
 }
 
 const mapStateToProps = (state: IStore): IStateToProps => ({

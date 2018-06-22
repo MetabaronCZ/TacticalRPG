@@ -22,13 +22,13 @@ export const validateField = (fieldName: string, value: string, cb?: IValidation
 	}
 	const isValid = rules[fieldName].rule(value);
 
-	if ('function' === typeof cb) {
+	if (cb) {
 		cb(fieldName, isValid ? null : rules[fieldName].text);
 	}
 	return isValid;
 };
 
-export const validateForm = (fields: any, cb: IValidationCallback): boolean => {
+export const validateForm = (fields: { [key: string]: any }, cb: IValidationCallback): boolean => {
 	let isValidForm = true;
 
 	for (const field in fields) {

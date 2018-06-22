@@ -2,7 +2,7 @@ import * as ArrayUtils from 'core/array';
 import PriorityQueue from 'core/priority-queue';
 
 import { Position, IPosition } from 'modules/position';
-import { getPriority, constructPath, IGraph } from 'modules/pathfinding';
+import { getPriority, constructPath, IGraph, ICostMap } from 'modules/pathfinding';
 
 // A* algorithm (get shortest path according to movement cost)
 export const getShortestPath = (start: IPosition, target: IPosition, obstacles: IPosition[]): IPosition[] => {
@@ -12,7 +12,7 @@ export const getShortestPath = (start: IPosition, target: IPosition, obstacles: 
 	const visited: IGraph = {};
 	visited[start.id] = Position.NULL_POSITION;
 
-	const cost: { [id: string]: number } = {};
+	const cost: ICostMap = {};
 	cost[start.id] = 0;
 
 	while (frontier.size()) {

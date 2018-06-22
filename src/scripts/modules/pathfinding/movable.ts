@@ -6,8 +6,8 @@ export interface IMoveCostMap {
 }
 
 interface IMovable {
-	movable: IPosition[];
-	cost: IMoveCostMap;
+	readonly movable: IPosition[];
+	readonly cost: IMoveCostMap;
 }
 
 // Dijkstra algorithm (movement cost based search)

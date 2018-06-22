@@ -3,10 +3,10 @@ import { Position, IPosition } from 'modules/position';
 
 // Breadth first (shortest path at uniform maovement cost)
 export const getShortestPath = (start: IPosition, target: IPosition, obstacles: IPosition[]) => {
+	const graph: IGraph = {
+		[start.id]: Position.NULL_POSITION
+	};
 	const frontier: IPosition[] = [start];
-
-	const graph: IGraph = {};
-	graph[start.id] = Position.NULL_POSITION;
 
 	while (frontier.length) {
 		const curr = frontier.shift();

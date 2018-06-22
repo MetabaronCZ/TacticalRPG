@@ -13,9 +13,9 @@ import Characters from 'components/Game/components/Characters';
 import ActionrMenu from 'components/Game/components/ActionMenu';
 
 interface IGameUIProps {
-	game: IGameState;
-	onTileSelect: IOnTileSelect;
-	onActionSelect: IOnActionSelect;
+	readonly game: IGameState;
+	readonly onTileSelect: IOnTileSelect;
+	readonly onActionSelect: IOnActionSelect;
 }
 
 const GameUI: React.SFC<IGameUIProps> = props => {
@@ -68,7 +68,7 @@ const GameUI: React.SFC<IGameUIProps> = props => {
 					</div>
 				)}
 
-				{act.actionMenu && act.actionMenu.length && (
+				{(act.actionMenu && act.actionMenu.length) && (
 					<ActionrMenu
 						actions={act.actionMenu}
 						onSelect={props.onActionSelect}

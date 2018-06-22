@@ -14,11 +14,11 @@ import Page from 'components/Page';
 import CharacterCreation from 'components/CharacterCreation';
 
 interface IStateToProps {
-	characters: ICharacterData[];
+	readonly characters: ICharacterData[];
 }
 
 interface IViewCharacterEditContainerProps extends RouteComponentProps<any> {
-	onSubmit: (history: History) => any;
+	readonly onSubmit: (history: History) => (data: ICharacterData) => void;
 }
 
 const mapStateToProps = (state: IStore): IStateToProps => ({
