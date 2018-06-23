@@ -6,9 +6,9 @@ import { withRouter, RouteComponentProps } from 'react-router';
 
 import { IStore } from 'store';
 import * as Selector from 'selectors';
-import { goto, gotoFn } from 'utils/nav';
 import Actions from 'actions/characters';
-import { ICharacterData } from 'modules/character-data';
+import { goto, gotoFn } from 'utils/nav';
+import { ICharacterData } from 'modules/character-data/types';
 
 import Page from 'components/Page';
 import CharacterCreation from 'components/CharacterCreation';

@@ -1,4 +1,5 @@
-import { IPosition, Position } from 'modules/position';
+import Position from 'modules/position';
+import { IPosition } from 'modules/position/types';
 
 export interface IGraph {
 	[id: string]: IPosition;

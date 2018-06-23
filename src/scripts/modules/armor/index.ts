@@ -1,18 +1,7 @@
 import ArmorList from 'modules/armor/list';
+import { ArmorID } from 'modules/armor/types';
 
-export enum ArmorID {
-	NONE = 'NONE',
-	ROBE = 'ROBE',
-	LIGHT = 'LIGHT',
-	HEAVY = 'HEAVY'
-}
-
-export interface IArmorData {
-	readonly title: string;
-	readonly description: string;
-}
-
-export const Armors = new ArmorList({
+const Armors = new ArmorList({
 	[ArmorID.NONE]: {
 		title: 'none',
 		description: 'No armor equipped'
@@ -30,3 +19,5 @@ export const Armors = new ArmorList({
 		description: ''
 	}
 });
+
+export default Armors;

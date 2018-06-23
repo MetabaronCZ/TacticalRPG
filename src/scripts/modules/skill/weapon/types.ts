@@ -1,4 +1,4 @@
-import { ISkill } from 'modules/skill';
+import { ISkill } from 'modules/skill/types';
 
 type IPartialWeaponSkillList<T extends WeaponSkillID> = {
 	[id in T]: ISkill;

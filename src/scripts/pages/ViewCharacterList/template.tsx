@@ -5,9 +5,8 @@ import Button from 'components/Button';
 import ButtonRow from 'components/ButtonRow';
 import Separator from 'components/Separator';
 import CharacterList from 'components/CharacterList';
-import { IOnMoveDown, IOnMoveUp, IOnDelete } from 'modules/character-data';
 
-import { ICharacterData } from 'modules/character-data';
+import { IOnMoveDown, IOnMoveUp, IOnDelete, ICharacterData } from 'modules/character-data/types';
 
 const NoCharacters = () => (
 	<p className="Paragraph">There are no characters.</p>

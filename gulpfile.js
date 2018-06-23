@@ -4,7 +4,6 @@ const less = require('gulp-less');
 const webpack = require('webpack');
 const postcss = require('gulp-postcss');
 const stylelint = require('gulp-stylelint');
-
 const webpackStream = require('webpack-stream');
 const runSequence = require('run-sequence');
 const cssnano = require('cssnano');

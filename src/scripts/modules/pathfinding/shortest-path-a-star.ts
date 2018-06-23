@@ -1,7 +1,8 @@
 import * as ArrayUtils from 'core/array';
 import PriorityQueue from 'core/priority-queue';
 
-import { Position, IPosition } from 'modules/position';
+import Position from 'modules/position';
+import { IPosition } from 'modules/position/types';
 import { getPriority, constructPath, IGraph, ICostMap } from 'modules/pathfinding';
 
 // A* algorithm (get shortest path according to movement cost)

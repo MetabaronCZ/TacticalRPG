@@ -1,8 +1,10 @@
 import React from 'react';
 
 import { blockSize, gridSize } from 'data/game-config';
-import { Position, IPosition } from 'modules/position';
-import { IOnTileSelect, ActPhase } from 'modules/game';
+
+import Position from 'modules/position';
+import { IPosition } from 'modules/position/types';
+import { IOnTileSelect, ActPhase } from 'modules/game/types';
 
 interface IGridProps {
 	readonly phase: ActPhase;

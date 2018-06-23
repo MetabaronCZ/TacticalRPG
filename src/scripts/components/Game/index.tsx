@@ -6,17 +6,25 @@ import * as ArrayUtils from 'core/array';
 import { gridSize, moveAnimDuration, tickDelay, characterCTLimit } from 'data/game-config';
 import GameUI from 'components/Game/template';
 
-import { Order } from 'modules/order';
-import { IParty } from 'modules/party';
-import { PlayerType } from 'modules/player';
-import { Skill, ISkill } from 'modules/skill';
+import Game from 'modules/game';
+import Order from 'modules/order';
+import Skill from 'modules/skill';
+import Position from 'modules/position';
+import Character from 'modules/character';
+import CharacterActions from 'modules/character-action';
+
+import { ISkill } from 'modules/skill/types';
+import { IParty } from 'modules/party/types';
+import { PlayerType } from 'modules/player/types';
+import { IPosition } from 'modules/position/types';
+import { ICharacter } from 'modules/character/types';
 import { SkillTarget } from 'modules/skill/attributes';
-import { Position, IPosition } from 'modules/position';
-import { ICharacterData } from 'modules/character-data';
-import { ICharacter, Character } from 'modules/character';
+import { ICharacterData } from 'modules/character-data/types';
+import { IGameState, GamePhase, ActPhase } from 'modules/game/types';
 import { getShortestPath, getMovableTiles } from 'modules/pathfinding';
-import { IGameState, GamePhase, ActPhase, getInitialState } from 'modules/game';
-import { IActions, ActionID, IActionItem, directAction } from 'modules/character-action';
+import { IActions, ActionID, IActionItem } from 'modules/character-action/types';
+
+const directAction = CharacterActions.get(ActionID.DIRECT);
 
 interface IGameUIContainerProps {
 	readonly party: IParty;
@@ -26,16 +34,11 @@ interface IGameUIContainerProps {
 }
 
 class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState> {
-	private initiative: PlayerType;
+	private initiative = (Math.random() < 0.5 ? PlayerType.ALLY : PlayerType.ENEMY);
 
 	constructor(props: IGameUIContainerProps) {
 		super(props);
-
-		this.onTileSelect = this.onTileSelect.bind(this);
-		this.onActionSelect = this.onActionSelect.bind(this);
-
-		this.initiative = (Math.random() < 0.5 ? PlayerType.ALLY : PlayerType.ENEMY);
-		this.state = getInitialState(props.party.characters, props.characters, this.initiative);
+		this.state = Game.getInitialState(props.party.characters, props.characters, this.initiative);
 	}
 
 	public componentDidMount() {
@@ -392,7 +395,7 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 				act: {
 					...state.act,
 					phase: ActPhase.DIRECT,
-					action: directAction,
+					action: directAction(),
 					actionMenu: undefined
 				},
 				direct: {
@@ -518,7 +521,7 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 		);
 	}
 
-	private onTileSelect(position: IPosition) {
+	private onTileSelect = (position: IPosition) => {
 		switch (this.state.act.phase) {
 			case ActPhase.MOVE:
 				// go to given position
@@ -542,7 +545,7 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 		}
 	}
 
-	private onActionSelect(action: IActionItem) {
+	private onActionSelect = (action: IActionItem) => {
 		switch (action.id) {
 			case ActionID.ATTACK:
 			case ActionID.DOUBLE_ATTACK:

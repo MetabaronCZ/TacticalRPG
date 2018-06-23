@@ -8,7 +8,7 @@ import { gotoFn } from 'utils/nav';
 import * as Selector from 'selectors';
 import Actions from 'actions/characters';
 import ViewCharacterList from 'pages/ViewCharacterList/template';
-import { ICharacterData, IOnMoveDown, IOnMoveUp, IOnDelete } from 'modules/character-data';
+import { ICharacterData, IOnMoveDown, IOnMoveUp, IOnDelete } from 'modules/character-data/types';
 
 interface IStateToProps {
 	readonly characters: ICharacterData[];

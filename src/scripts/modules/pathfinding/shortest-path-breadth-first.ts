@@ -1,5 +1,6 @@
 import { constructPath, IGraph } from 'modules/pathfinding';
-import { Position, IPosition } from 'modules/position';
+import { IPosition } from 'modules/position/types';
+import Position from 'modules/position';
 
 // Breadth first (shortest path at uniform maovement cost)
 export const getShortestPath = (start: IPosition, target: IPosition, obstacles: IPosition[]) => {

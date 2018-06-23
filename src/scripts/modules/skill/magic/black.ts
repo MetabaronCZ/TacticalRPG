@@ -1,4 +1,4 @@
-import { ISkillset } from 'modules/skillset';
+import { ISkillset } from 'modules/skillset/types';
 import { MagicSkillID, IBlackMagicSkillList } from 'modules/skill/magic/types';
 import { SkillType, SkillRange, SkillArea, SkillElement, SkillTarget } from 'modules/skill/attributes';
 

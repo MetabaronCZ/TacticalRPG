@@ -15,14 +15,19 @@ import Button from 'components/Button';
 import ButtonRow from 'components/ButtonRow';
 import Separator from 'components/Separator';
 
-import { Sexes } from 'modules/sex';
-import { WieldID } from 'modules/wield';
-import { Equipment } from 'modules/equipment';
-import { Archetypes } from 'modules/archetype';
-import { ArmorID, Armors } from 'modules/armor';
-import { WeaponID, Weapons } from 'modules/weapon';
-import { Skillsets, SkillsetID } from 'modules/skillset';
-import { ICharacterData, CharacterData } from 'modules/character-data';
+import Sexes from 'modules/sex';
+import Armors from 'modules/armor';
+import Weapons from 'modules/weapon';
+import Skillsets from 'modules/skillset';
+import Equipment from 'modules/equipment';
+import Archetypes from 'modules/archetype';
+import CharacterData from 'modules/character-data';
+
+import { WieldID } from 'modules/wield/types';
+import { ArmorID } from 'modules/armor/types';
+import { WeaponID } from 'modules/weapon/types';
+import { SkillsetID } from 'modules/skillset/types';
+import { ICharacterData } from 'modules/character-data/types';
 
 interface ICharacterCreationProps {
 	readonly character?: ICharacterData;
@@ -45,9 +50,6 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 			fields: CharacterData.init(props.character || {}),
 			errors: {}
 		};
-		this.onChange = this.onChange.bind(this);
-		this.onSubmit = this.onSubmit.bind(this);
-		this.handleValidationError = this.handleValidationError.bind(this);
 	}
 
 	public render() {
@@ -193,7 +195,7 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 		}
 	}
 
-	private onChange(e?: SyntheticEvent<any>) {
+	private onChange = (e?: SyntheticEvent<any>) => {
 		if (!e) {
 			return;
 		}
@@ -208,7 +210,7 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 		}));
 	}
 
-	private onSubmit(e: SyntheticEvent<any>) {
+	private onSubmit = (e: SyntheticEvent<any>) => {
 		e.preventDefault();
 
 		const isValidForm = validateForm(this.state.fields, this.handleValidationError);
@@ -224,7 +226,7 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 		}
 	}
 
-	private handleValidationError(field: string, error: string|null) {
+	private handleValidationError = (field: string, error: string|null) => {
 		this.setState(state => ({
 			errors: {
 				...state.errors,

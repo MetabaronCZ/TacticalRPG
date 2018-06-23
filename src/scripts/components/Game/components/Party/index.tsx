@@ -1,8 +1,8 @@
 import React from 'react';
 
 import icos from 'data/icos';
-import { PlayerType } from 'modules/player';
-import { ICharacter } from 'modules/character';
+import { PlayerType } from 'modules/player/types';
+import { ICharacter } from 'modules/character/types';
 
 import Bar from 'components/Game/components/Bar';
 import ArchetypeIco from 'components/ArchetypeIco';

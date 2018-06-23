@@ -1,4 +1,4 @@
-import { ISkill } from 'modules/skill';
+import { ISkill } from 'modules/skill/types';
 
 type IPartialSkillList<T extends MagicSkillID> = {
 	[id in T]: ISkill;

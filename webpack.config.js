@@ -1,4 +1,3 @@
-const webpack = require('webpack');
 const path = require('path');
 
 const pathSrc = './src/scripts';
@@ -24,6 +23,7 @@ module.exports = env => {
 			path: path.resolve(__dirname, pathDist),
 			filename: '[name].js'
 		},
+		target: 'web',
 		mode,
 		watch,
 		devtool,

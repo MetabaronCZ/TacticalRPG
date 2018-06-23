@@ -1,9 +1,10 @@
 import DataList from 'core/data-list';
 
-import { WieldID } from 'modules/wield';
-import { WeaponID, IWeaponData } from 'modules/weapon';
-import { ICharacterData } from 'modules/character-data';
-import { Equipment, IEquipSlot } from 'modules/equipment';
+import Equipment from 'modules/equipment';
+import { WieldID } from 'modules/wield/types';
+import { IEquipSlot } from 'modules/equipment/types';
+import { WeaponID, IWeaponData } from 'modules/weapon/types';
+import { ICharacterData } from 'modules/character-data/types';
 
 class WeaponList extends DataList<WeaponID, IWeaponData> {
 	public filter(char: ICharacterData, slot: IEquipSlot) {

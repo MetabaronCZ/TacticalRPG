@@ -1,7 +1,7 @@
 import React from 'react';
 
 import getColumns from 'components/CharacterList/columns';
-import { ICharacterData, IOnMoveDown, IOnMoveUp, IOnDelete } from 'modules/character-data';
+import { ICharacterData, IOnMoveDown, IOnMoveUp, IOnDelete } from 'modules/character-data/types';
 
 interface ICharacterListProps {
 	readonly editable?: boolean;

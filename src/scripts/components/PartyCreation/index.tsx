@@ -13,15 +13,29 @@ import Button from 'components/Button';
 import ButtonRow from 'components/ButtonRow';
 import Separator from 'components/Separator';
 
-import { Sexes } from 'modules/sex';
-import { Armors } from 'modules/armor';
-import { Weapons } from 'modules/weapon';
-import { Equipment } from 'modules/equipment';
-import { IParty, Party } from 'modules/party';
-import { Archetypes } from 'modules/archetype';
-import { ICharacterData } from 'modules/character-data';
+import Party from 'modules/party';
+import Sexes from 'modules/sex';
+import Armors from 'modules/armor';
+import Weapons from 'modules/weapon';
+import Equipment from 'modules/equipment';
+import Archetypes from 'modules/archetype';
+
+import { IParty } from 'modules/party/types';
+import { ICharacterData } from 'modules/character-data/types';
 
 const errNoCharacter = 'Party contains no character';
+
+const NoCharacter: React.SFC<{}> = () => (
+	<p className="Paragraph">
+		You must <Link href="/character-create">create a character</Link> to form a party.
+	</p>
+);
+
+const InvalidParty: React.SFC<{ msg: string|true }> = ({ msg }) => (
+	<p className="ErrorBox">
+		Party is Invalid: {msg}
+	</p>
+);
 
 interface IPartyCreationProps {
 	readonly party?: IParty;
@@ -50,12 +64,6 @@ class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationS
 				noCharError: (props.party && !chars.length ? errNoCharacter : undefined)
 			}
 		};
-
-		this.onChange = this.onChange.bind(this);
-		this.onSubmit = this.onSubmit.bind(this);
-		this.filterCharacters = this.filterCharacters.bind(this);
-		this.renderPartyItem = this.renderPartyItem.bind(this);
-		this.handleValidationError = this.handleValidationError.bind(this);
 	}
 
 	public render() {
@@ -69,7 +77,9 @@ class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationS
 
 		return (
 			<Form onSubmit={this.onSubmit}>
-				{true !== partyValidation ? this.renderInvalidParty(partyValidation) : ''}
+				{true !== partyValidation && (
+					<InvalidParty msg={partyValidation} />
+				)}
 
 				{partyExists
 					? (
@@ -90,7 +100,7 @@ class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationS
 							{Array(maxPartySize).fill('').map((x, i) => this.renderPartyItem(i))}
 						</React.Fragment>
 					)
-					: this.renderNoCharacter()
+					: <NoCharacter />
 				}
 				<Separator />
 
@@ -106,7 +116,7 @@ class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationS
 		);
 	}
 
-	private onChange(e: SyntheticEvent<any>) {
+	private onChange = (e: SyntheticEvent<any>) => {
 		const { fields, errors } = this.state;
 		let field = e.currentTarget.name;
 		let value = e.currentTarget.value;
@@ -139,7 +149,7 @@ class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationS
 		});
 	}
 
-	private onSubmit(e: SyntheticEvent<any>) {
+	private onSubmit = (e: SyntheticEvent<any>) => {
 		e.preventDefault();
 
 		const { fields, errors } = this.state;
@@ -165,7 +175,7 @@ class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationS
 		}
 	}
 
-	private handleValidationError(field: string, error: string|null) {
+	private handleValidationError = (field: string, error: string|null) => {
 		this.setState(state => ({
 			errors: {
 				...state.errors,
@@ -174,7 +184,7 @@ class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationS
 		}));
 	}
 
-	private filterCharacters(character?: ICharacterData): ICharacterData[] {
+	private filterCharacters = (character?: ICharacterData): ICharacterData[] => {
 		const selected = this.state.fields.characters;
 		const characters = this.props.characters;
 
@@ -188,7 +198,7 @@ class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationS
 		});
 	}
 
-	private renderPartyItem(i: number) {
+	private renderPartyItem = (i: number) => {
 		const id = this.state.fields.characters[i] || '';
 		const characters = this.props.characters;
 		const selected = (characters ? Party.getCharacterById(id, characters) : undefined);
@@ -229,22 +239,6 @@ class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationS
 					))}
 				</FormSelect>
 			</FormField>
-		);
-	}
-
-	private renderNoCharacter() {
-		return (
-			<p className="Paragraph">
-				You must <Link href="/character-create">create a character</Link> to form a party.
-			</p>
-		);
-	}
-
-	private renderInvalidParty(msg: string|true) {
-		return (
-			<p className="ErrorBox">
-				Party is Invalid: {msg}
-			</p>
 		);
 	}
 }

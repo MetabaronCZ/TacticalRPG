@@ -10,8 +10,21 @@ import ButtonRow from 'components/ButtonRow';
 import Separator from 'components/Separator';
 import CharacterList from 'components/CharacterList';
 
-import { IParty, Party } from 'modules/party';
-import { ICharacterData } from 'modules/character-data';
+import Party from 'modules/party';
+import { IParty } from 'modules/party/types';
+import { ICharacterData } from 'modules/character-data/types';
+
+const NoParty: React.SFC<{}> = () => (
+	<p className="Paragraph">
+		You must <Link href="/party-create">form a party</Link> to start a battle.
+	</p>
+);
+
+const InvalidParty: React.SFC<{ msg: string|true }> = ({ msg }) => (
+	<p className="ErrorBox">
+		Invalid Party: {msg}
+	</p>
+);
 
 interface IBattleSetupProps {
 	readonly parties?: IParty[];
@@ -37,8 +50,6 @@ class BattleSetup extends React.Component<IBattleSetupProps, IBattleSetupState> 
 				party: defaultParty
 			}
 		};
-		this.onChange = this.onChange.bind(this);
-		this.onSubmit = this.onSubmit.bind(this);
 	}
 
 	public render() {
@@ -46,7 +57,7 @@ class BattleSetup extends React.Component<IBattleSetupProps, IBattleSetupState> 
 		const fields = this.state.fields;
 
 		if (!characters || !characters.length || !parties || !parties.length) {
-			return this.renderNoParty();
+			return <NoParty />;
 		}
 		const selectedParty = parties.filter(p => p.id === fields.party)[0];
 
@@ -73,7 +84,7 @@ class BattleSetup extends React.Component<IBattleSetupProps, IBattleSetupState> 
 				{/* selected party characters */}
 				{isValidParty
 					? <CharacterList characters={chars} />
-					: this.renderPartyInvalid(partyValidation)
+					: <InvalidParty msg={partyValidation} />
 				}
 				<Separator />
 
@@ -89,7 +100,7 @@ class BattleSetup extends React.Component<IBattleSetupProps, IBattleSetupState> 
 		);
 	}
 
-	private onChange(e: SyntheticEvent<any>) {
+	private onChange = (e: SyntheticEvent<any>) => {
 		const { name, value } = e.currentTarget;
 
 		this.setState(state => ({
@@ -100,28 +111,12 @@ class BattleSetup extends React.Component<IBattleSetupProps, IBattleSetupState> 
 		}));
 	}
 
-	private onSubmit(e: SyntheticEvent<any>) {
+	private onSubmit = (e: SyntheticEvent<any>) => {
 		e.preventDefault();
 
 		if (this.props.onStart) {
 			this.props.onStart(this.state.fields.party);
 		}
-	}
-
-	private renderNoParty() {
-		return (
-			<p className="Paragraph">
-				You must <Link href="/party-create">form a party</Link> to start a battle.
-			</p>
-		);
-	}
-
-	private renderPartyInvalid(msg: string|true) {
-		return (
-			<p className="ErrorBox">
-				Invalid Party: {msg}
-			</p>
-		);
 	}
 }
 

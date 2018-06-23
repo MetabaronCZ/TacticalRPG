@@ -1,5 +1,7 @@
 import PriorityQueue from 'core/priority-queue';
-import { Position, IPosition } from 'modules/position';
+
+import Position from 'modules/position';
+import { IPosition } from 'modules/position/types';
 
 export interface IMoveCostMap {
 	[id: string]: number;

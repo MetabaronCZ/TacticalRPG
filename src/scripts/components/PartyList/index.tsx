@@ -4,7 +4,7 @@ import Link from 'components/Link';
 import LinkIco from 'components/LinkIco';
 import LinkButton from 'components/LinkButton';
 
-import { IParty, IOnMoveDown, IOnMoveUp, IOnDelete } from 'modules/party';
+import { IParty, IOnMoveDown, IOnMoveUp, IOnDelete } from 'modules/party/types';
 
 const renderMoveDown = (party: IParty, onMoveDown: IOnMoveDown) => (
 	<LinkIco ico="down" title="Move down" onClick={onMoveDown && onMoveDown(party.id)} />

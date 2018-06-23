@@ -1,41 +1,15 @@
-import { MagicSkills } from 'modules/skill/magic';
+import Position from 'modules/position';
+import Character from 'modules/character';
+import MagicSkills from 'modules/skill/magic';
+import WeaponSkills from 'modules/skill/weapon';
+
+import { ISkill } from 'modules/skill/types';
+import { IPosition } from 'modules/position/types';
+import { ICharacter } from 'modules/character/types';
 import { MagicSkillID } from 'modules/skill/magic/types';
-import { WeaponSkills } from 'modules/skill/weapon';
 import { WeaponSkillID } from 'modules/skill/weapon/types';
-import { IPosition, Position } from 'modules/position';
-import { ICharacter, Character } from 'modules/character';
-import { SkillType, SkillRange, SkillArea, SkillTarget, SkillElement, SkillStatus } from 'modules/skill/attributes';
-
-export interface ISkill {
-	readonly title: string;
-	readonly cost: number; // AP cost
-	readonly type: SkillType;
-	readonly range: SkillRange;
-	readonly area: SkillArea;
-	readonly target: SkillTarget; // character target type
-	readonly isAreaEffect: boolean; // pierces through enemies (takes whole skill area)
-	readonly element: SkillElement; // fire, water, ...
-	readonly physicalDamage: number; // damage modifier [%]
-	readonly elementalDamage: number; // elemental damage modifier [%]
-	readonly status: SkillStatus[]; // status effects added to attack
-}
-
-type IElementAffinityTable = {
-	[E in SkillElement]: SkillElement|null;
-};
-
-const ElementAffinityTable: IElementAffinityTable = {
-	[SkillElement.NONE]: null,
-	[SkillElement.FIRE]: SkillElement.ICE,
-	[SkillElement.ICE]: SkillElement.WIND,
-	[SkillElement.WIND]: SkillElement.EARTH,
-	[SkillElement.EARTH]: SkillElement.THUNDER,
-	[SkillElement.THUNDER]: SkillElement.WATER,
-	[SkillElement.WATER]: SkillElement.FIRE,
-	[SkillElement.DARK]: SkillElement.HOLY,
-	[SkillElement.HOLY]: SkillElement.DARK,
-	[SkillElement.PSYCHIC]: SkillElement.PSYCHIC
-};
+import { ElementAffinityTable } from 'modules/skill/affinity';
+import { SkillArea, SkillTarget, SkillElement } from 'modules/skill/attributes';
 
 const getElementModifier = (offensiveElm: SkillElement, defensiveElm: SkillElement): number => {
 	if (ElementAffinityTable[offensiveElm] === defensiveElm) {
@@ -200,7 +174,7 @@ const getByID = (ids: WeaponSkillID[]|MagicSkillID[]): ISkill[] => {
 	}
 };
 
-export const Skill = {
+const Skill = {
 	getElementModifier,
 	getTargetableArea,
 	getTargets,
@@ -208,3 +182,5 @@ export const Skill = {
 	getEffectTargets,
 	getByID
 };
+
+export default Skill;

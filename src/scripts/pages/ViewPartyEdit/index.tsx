@@ -12,8 +12,8 @@ import Actions from 'actions/parties';
 import * as Selector from 'selectors';
 import { goto, gotoFn } from 'utils/nav';
 
-import { IParty } from 'modules/party';
-import { ICharacterData } from 'modules/character-data';
+import { IParty } from 'modules/party/types';
+import { ICharacterData } from 'modules/character-data/types';
 
 interface IStateToProps {
 	readonly parties?: IParty[];

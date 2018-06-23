@@ -7,12 +7,14 @@ import LinkIco from 'components/LinkIco';
 import LinkButton from 'components/LinkButton';
 import ArchetypeIco from 'components/ArchetypeIco';
 
-import { Armors } from 'modules/armor';
-import { Weapons } from 'modules/weapon';
-import { Skillsets } from 'modules/skillset';
-import { Equipment } from 'modules/equipment';
-import { Archetypes } from 'modules/archetype';
-import { CharacterData, ICharacterData, IOnMoveDown, IOnMoveUp, IOnDelete } from 'modules/character-data';
+import Armors from 'modules/armor';
+import Weapons from 'modules/weapon';
+import Skillsets from 'modules/skillset';
+import Equipment from 'modules/equipment';
+import Archetypes from 'modules/archetype';
+import CharacterData from 'modules/character-data';
+
+import { ICharacterData, IOnMoveDown, IOnMoveUp, IOnDelete } from 'modules/character-data/types';
 
 const renderArchetype = (char: ICharacterData) => (
 	<ArchetypeIco archetype={char.archetype} />

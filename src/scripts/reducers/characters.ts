@@ -1,8 +1,8 @@
 import { handleActions } from 'redux-actions';
 
+import Indexable from 'modules/indexable';
 import { ActionID } from 'actions/characters';
-import * as Indexable from 'modules/indexable';
-import { ICharacterData } from 'modules/character-data';
+import { ICharacterData } from 'modules/character-data/types';
 
 const defaultState: ICharacterData[] = [];
 

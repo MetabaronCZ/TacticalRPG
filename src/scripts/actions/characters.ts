@@ -1,5 +1,5 @@
 import { createAction } from 'redux-actions';
-import { ICharacterData } from 'modules/character-data';
+import { ICharacterData } from 'modules/character-data/types';
 
 export enum ActionID {
 	ADD = 'CHARACTER_ADD',

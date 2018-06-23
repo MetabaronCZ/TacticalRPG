@@ -1,7 +1,5 @@
 import DataList from 'core/data-list';
 
-import { ISkill } from 'modules/skill';
-import { MagicSkillID } from 'modules/skill/magic/types';
 import psychokinesis from 'modules/skill/magic/psychokinesis';
 import whiteMagic from 'modules/skill/magic/white';
 import blackMagic from 'modules/skill/magic/black';
@@ -11,11 +9,14 @@ import windMagic from 'modules/skill/magic/wind';
 import earthMagic from 'modules/skill/magic/earth';
 import iceMagic from 'modules/skill/magic/ice';
 import thunderMagic from 'modules/skill/magic/thunder';
+
+import { ISkill } from 'modules/skill/types';
+import { MagicSkillID } from 'modules/skill/magic/types';
 import { SkillType, SkillRange, SkillArea, SkillElement, SkillTarget } from 'modules/skill/attributes';
 
-export class MagicSkillList extends DataList<MagicSkillID, ISkill> {}
+class MagicSkillList extends DataList<MagicSkillID, ISkill> {}
 
-export const MagicSkills = new MagicSkillList({
+const MagicSkills = new MagicSkillList({
 	[MagicSkillID.NONE]: {
 		title: 'Magic Skill',
 		cost: 0,
@@ -39,3 +40,5 @@ export const MagicSkills = new MagicSkillList({
 	...iceMagic,
 	...thunderMagic
 });
+
+export default MagicSkills;

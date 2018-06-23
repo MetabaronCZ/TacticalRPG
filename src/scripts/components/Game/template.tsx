@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Icos from 'data/icos';
-import { IOnTileSelect, IGameState, IOnActionSelect } from 'modules/game';
+import { IOnTileSelect, IGameState, IOnActionSelect } from 'modules/game/types';
 
 import Bar from 'components/Game/components/Bar';
 import ArchetypeIco from 'components/ArchetypeIco';

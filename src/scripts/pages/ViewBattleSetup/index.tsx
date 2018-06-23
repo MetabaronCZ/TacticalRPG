@@ -10,8 +10,8 @@ import { goto, gotoFn } from 'utils/nav';
 import Page from 'components/Page';
 import BattleSetup from 'components/BattleSetup';
 
-import { IParty } from 'modules/party';
-import { ICharacterData } from 'modules/character-data';
+import { IParty } from 'modules/party/types';
+import { ICharacterData } from 'modules/character-data/types';
 
 interface IStateToProps {
 	readonly characters: ICharacterData[];

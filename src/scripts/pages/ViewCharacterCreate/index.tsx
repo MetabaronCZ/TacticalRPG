@@ -9,7 +9,7 @@ import CharacterCreation from 'components/CharacterCreation';
 
 import { goto, gotoFn } from 'utils/nav';
 import Actions from 'actions/characters';
-import { ICharacterData } from 'modules/character-data';
+import { ICharacterData } from 'modules/character-data/types';
 
 interface IViewCharacterCreateContainerProps extends RouteComponentProps<any> {
 	readonly onSubmit: (history: History) => (data: ICharacterData) => void;

@@ -7,7 +7,7 @@ import { IStore } from 'store';
 import { gotoFn } from 'utils/nav';
 import * as Selector from 'selectors';
 import Actions from 'actions/parties';
-import { IParty, IOnMoveDown, IOnMoveUp, IOnDelete } from 'modules/party';
+import { IParty, IOnMoveDown, IOnMoveUp, IOnDelete } from 'modules/party/types';
 
 import ViewPartyList from 'pages/ViewPartyList/template';
 

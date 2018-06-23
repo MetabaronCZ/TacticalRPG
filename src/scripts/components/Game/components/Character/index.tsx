@@ -1,8 +1,8 @@
 import React from 'react';
 
 import { blockSize } from 'data/game-config';
-import { PlayerType } from 'modules/player';
-import { ICharacter } from 'modules/character';
+import { PlayerType } from 'modules/player/types';
+import { ICharacter } from 'modules/character/types';
 
 interface ICharacterBlockProps {
 	readonly char: ICharacter;
@@ -10,10 +10,6 @@ interface ICharacterBlockProps {
 }
 
 class CharacterBlock extends React.Component<ICharacterBlockProps, {}> {
-	constructor(props: ICharacterBlockProps) {
-		super(props);
-	}
-
 	public render() {
 		const { char, isActor } = this.props;
 		const player = this.props.char.player;

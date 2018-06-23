@@ -1,14 +1,15 @@
 import DataList from 'core/data-list';
 
-import { ISkill } from 'modules/skill';
-import { IWeaponData } from 'modules/weapon';
-import { SkillType } from 'modules/skill/attributes';
 import smallSkills from 'modules/skill/weapon/small';
 import wield1HSkills from 'modules/skill/weapon/wield1h';
 import wield2HSkills from 'modules/skill/weapon/wield2h';
 import magicalSkills from 'modules/skill/weapon/magical';
 import rangedSkills from 'modules/skill/weapon/ranged';
 import shieldSkills from 'modules/skill/weapon/shield';
+
+import { ISkill } from 'modules/skill/types';
+import { IWeaponData } from 'modules/weapon/types';
+import { SkillType } from 'modules/skill/attributes';
 import { WeaponSkillID, attackSkills } from 'modules/skill/weapon/types';
 
 const isAttackSkill = (id: WeaponSkillID): boolean => -1 !== attackSkills.indexOf(id);
@@ -47,7 +48,7 @@ class WeaponSkillList extends DataList<WeaponSkillID, ISkill> {
 	}
 }
 
-export const WeaponSkills = new WeaponSkillList({
+const WeaponSkills = new WeaponSkillList({
 	...smallSkills,
 	...wield1HSkills,
 	...wield2HSkills,
@@ -55,3 +56,5 @@ export const WeaponSkills = new WeaponSkillList({
 	...rangedSkills,
 	...shieldSkills
 });
+
+export default WeaponSkills;

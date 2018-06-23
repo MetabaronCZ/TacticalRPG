@@ -1,4 +1,4 @@
-import { ISkillset } from 'modules/skillset';
+import { ISkillset } from 'modules/skillset/types';
 import { MagicSkillID, IPsychokinesisSkillList } from 'modules/skill/magic/types';
 import { SkillType, SkillRange, SkillArea, SkillElement, SkillTarget, SkillStatus } from 'modules/skill/attributes';
 
