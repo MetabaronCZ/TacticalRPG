@@ -1,3 +1,6 @@
 TODO
 -----------------------------------------------------------
-...
+--	COUNTER reaction
+--	refaktorovat vsude pole tak, aby vzdy byl default [] (zbavit se arr?: x[])
+--	po vyberu cile skillu, nechat zvyraznewne targety a pri kliku na jiny target nez zvoleny, target zmenit
+

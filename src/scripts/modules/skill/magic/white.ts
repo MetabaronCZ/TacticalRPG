@@ -1,6 +1,7 @@
 import { ISkillset } from 'modules/skillset/types';
+import { StatusEffectID } from 'modules/status-effect/types';
 import { MagicSkillID, IWhiteMagicSkillList } from 'modules/skill/magic/types';
-import { SkillType, SkillRange, SkillArea, SkillElement, SkillTarget, SkillStatus } from 'modules/skill/attributes';
+import { SkillType, SkillRange, SkillArea, SkillElement, SkillTarget } from 'modules/skill/attributes';
 
 const whiteMagic: IWhiteMagicSkillList = {
 	[MagicSkillID.WHITE_MAGIC_HEAL]: {
@@ -10,7 +11,6 @@ const whiteMagic: IWhiteMagicSkillList = {
 		range: SkillRange.R4,
 		area: SkillArea.SINGLE,
 		target: SkillTarget.ALLY,
-		isAreaEffect: false,
 		element: SkillElement.HOLY,
 		physicalDamage: 0,
 		elementalDamage: 1,
@@ -23,7 +23,6 @@ const whiteMagic: IWhiteMagicSkillList = {
 		range: SkillRange.R4,
 		area: SkillArea.SINGLE,
 		target: SkillTarget.ALLY,
-		isAreaEffect: false,
 		element: SkillElement.HOLY,
 		physicalDamage: 0,
 		elementalDamage: 0,
@@ -36,11 +35,10 @@ const whiteMagic: IWhiteMagicSkillList = {
 		range: SkillRange.R4,
 		area: SkillArea.SINGLE,
 		target: SkillTarget.ALLY,
-		isAreaEffect: false,
 		element: SkillElement.HOLY,
 		physicalDamage: 0,
 		elementalDamage: 0.5,
-		status: [SkillStatus.REGEN]
+		status: [StatusEffectID.REGEN]
 	},
 	[MagicSkillID.WHITE_MAGIC_GROUP_HEAL]: {
 		title: 'Group Heal',
@@ -49,7 +47,6 @@ const whiteMagic: IWhiteMagicSkillList = {
 		range: SkillRange.R4,
 		area: SkillArea.AOE3x3,
 		target: SkillTarget.ALLY,
-		isAreaEffect: true,
 		element: SkillElement.HOLY,
 		physicalDamage: 0,
 		elementalDamage: 0.5,
@@ -62,7 +59,6 @@ const whiteMagic: IWhiteMagicSkillList = {
 		range: SkillRange.R0,
 		area: SkillArea.AOE3x3,
 		target: SkillTarget.ALLY,
-		isAreaEffect: true,
 		element: SkillElement.HOLY,
 		physicalDamage: 0,
 		elementalDamage: 0.25,
@@ -75,7 +71,6 @@ const whiteMagic: IWhiteMagicSkillList = {
 		range: SkillRange.R4,
 		area: SkillArea.SINGLE,
 		target: SkillTarget.ALLY,
-		isAreaEffect: false,
 		element: SkillElement.HOLY,
 		physicalDamage: 0,
 		elementalDamage: 0,
@@ -86,6 +81,7 @@ const whiteMagic: IWhiteMagicSkillList = {
 export const whiteMagicSkillset: ISkillset = {
 	title: 'White Magic',
 	description: '',
+	element: SkillElement.HOLY,
 	skills: Object.keys(whiteMagic) as MagicSkillID[]
 };
 

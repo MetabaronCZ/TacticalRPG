@@ -9,6 +9,7 @@ interface IBaseAttrFormulas {
 	readonly SPD: IBaseAttrFormula;
 	readonly MOV: IBaseAttrFormula;
 	readonly MAG: IBaseAttrFormula;
+	readonly SPR: IBaseAttrFormula;
 }
 
 type ISecondaryAttrFormula = (attrs: IBaseAttributes) => number;
@@ -41,7 +42,8 @@ export const getBaseAttributes = (): IBaseAttributes => ({
 	VIT: 10,
 	SPD: 3,
 	MOV: 3,
-	MAG: 0
+	MAG: 0,
+	SPR: 0
 });
 
 export const getMutiplier = (arch: ArchetypeID) => Arch2AttTable[arch];
@@ -51,7 +53,8 @@ export const BaseAttrFormula: IBaseAttrFormulas = {
 	VIT: (P, S, M) => 10 * P,
 	SPD: (P, S, M) => 2 * S,
 	MOV: (P, S, M) => 2 * S,
-	MAG: (P, S, M) => 10 * M
+	MAG: (P, S, M) => 10 * M,
+	SPR: (P, S, M) => 10 * M
 };
 
 export const SecondaryAttrFormula: ISecondaryAttrFormulas = {

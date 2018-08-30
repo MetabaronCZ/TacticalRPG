@@ -71,7 +71,7 @@ const getColumns = (editable = false, onMoveDown?: IOnMoveDown, onMoveUp?: IOnMo
 			value: (char: ICharacterData) => {
 				const archetype = Archetypes.get(char.archetype);
 				const skillset = Skillsets.get(char.skillset);
-				return `${archetype.title}${CharacterData.isMagicUser(char) ? ' (' + skillset.title + ')' : ''}`;
+				return `${archetype.title}${CharacterData.isMagicType(char) ? ' (' + skillset.title + ')' : ''}`;
 			}
 		}, {
 			title: 'Main hand',

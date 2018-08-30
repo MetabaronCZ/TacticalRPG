@@ -32,24 +32,6 @@ export enum SkillElement {
 	PSYCHIC = 'PSYCHIC'
 }
 
-export enum SkillStatus {
-	CRIPPLE = 'CRIPPLE',
-	DISARM = 'DISARM',
-	BLEED = 'BLEED',
-	STUN = 'STUN',
-	BURN = 'BURN',
-	SHOCK = 'SHOCK',
-	FREEZE = 'FREEZE',
-	FORGET = 'FORGET',
-	SILENCE = 'SILENCE',
-
-	FLOAT = 'FLOAT',
-	REGEN = 'REGEN',
-	BERSERK = 'BERSERK',
-	IRON_SKIN = 'IRON_SKIN',
-	ULTIMATE_DEFENSE = 'ULTIMATE_DEFENSE'
-}
-
 export enum SkillTarget {
 	NONE = 'NONE',
 	ANY = 'ANY',

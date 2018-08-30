@@ -15,6 +15,7 @@ const getPrimary = (archetype: ArchetypeID): IBaseAttributes => {
 	attributes.SPD += BaseAttrFormula.SPD(P, S, M);
 	attributes.MOV += BaseAttrFormula.MOV(P, S, M);
 	attributes.MAG += BaseAttrFormula.MAG(P, S, M);
+	attributes.SPR += BaseAttrFormula.SPR(P, S, M);
 
 	return attributes;
 };

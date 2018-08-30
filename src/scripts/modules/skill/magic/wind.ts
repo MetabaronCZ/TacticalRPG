@@ -1,6 +1,6 @@
 import { ISkillset } from 'modules/skillset/types';
 import { MagicSkillID, IWindMagicSkillList } from 'modules/skill/magic/types';
-import { SkillType, SkillRange, SkillArea, SkillElement, SkillTarget, SkillStatus } from 'modules/skill/attributes';
+import { SkillType, SkillRange, SkillArea, SkillElement, SkillTarget } from 'modules/skill/attributes';
 
 const windMagic: IWindMagicSkillList = {
 	[MagicSkillID.WIND_MAGIC_AIR_BLAST]: {
@@ -10,7 +10,6 @@ const windMagic: IWindMagicSkillList = {
 		range: SkillRange.R4,
 		area: SkillArea.SINGLE,
 		target: SkillTarget.ENEMY,
-		isAreaEffect: false,
 		element: SkillElement.WIND,
 		physicalDamage: 0.5,
 		elementalDamage: 1,
@@ -23,7 +22,6 @@ const windMagic: IWindMagicSkillList = {
 		range: SkillRange.R4,
 		area: SkillArea.SINGLE,
 		target: SkillTarget.ENEMY,
-		isAreaEffect: false,
 		element: SkillElement.WIND,
 		physicalDamage: 0.25,
 		elementalDamage: 0.25,
@@ -36,24 +34,10 @@ const windMagic: IWindMagicSkillList = {
 		range: SkillRange.R4,
 		area: SkillArea.AOE3x3,
 		target: SkillTarget.ENEMY,
-		isAreaEffect: true,
 		element: SkillElement.WIND,
 		physicalDamage: 0.25,
 		elementalDamage: 0.5,
 		status: []
-	},
-	[MagicSkillID.WIND_MAGIC_FLOAT]: {
-		title: 'Float',
-		cost: 2,
-		type: SkillType.ACTIVE,
-		range: SkillRange.R4,
-		area: SkillArea.SINGLE,
-		target: SkillTarget.ANY,
-		isAreaEffect: false,
-		element: SkillElement.WIND,
-		physicalDamage: 0,
-		elementalDamage: 0,
-		status: [SkillStatus.FLOAT]
 	},
 	[MagicSkillID.WIND_MAGIC_WIND_AURA]: {
 		title: 'Wind Aura',
@@ -62,7 +46,6 @@ const windMagic: IWindMagicSkillList = {
 		range: SkillRange.R0,
 		area: SkillArea.AOE3x3,
 		target: SkillTarget.SELF,
-		isAreaEffect: true,
 		element: SkillElement.WIND,
 		physicalDamage: 0,
 		elementalDamage: 0.25,
@@ -73,6 +56,7 @@ const windMagic: IWindMagicSkillList = {
 export const windMagicSkillset: ISkillset = {
 	title: 'Wind Magic',
 	description: '',
+	element: SkillElement.WIND,
 	skills: Object.keys(windMagic) as MagicSkillID[]
 };
 

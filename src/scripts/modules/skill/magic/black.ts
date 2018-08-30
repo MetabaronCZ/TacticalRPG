@@ -10,7 +10,6 @@ const blackMagic: IBlackMagicSkillList = {
 		range: SkillRange.R0,
 		area: SkillArea.AOE3x3,
 		target: SkillTarget.SELF,
-		isAreaEffect: true,
 		element: SkillElement.DARK,
 		physicalDamage: 0,
 		elementalDamage: 0,
@@ -21,6 +20,7 @@ const blackMagic: IBlackMagicSkillList = {
 export const blackMagicSkillset: ISkillset = {
 	title: 'Black Magic',
 	description: '',
+	element: SkillElement.DARK,
 	skills: Object.keys(blackMagic) as MagicSkillID[]
 };
 

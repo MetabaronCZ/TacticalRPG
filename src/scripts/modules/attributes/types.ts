@@ -4,6 +4,7 @@ export interface IBaseAttributes {
 	SPD: number; // speed
 	MOV: number; // movement
 	MAG: number; // magic
+	SPR: number; // spirit
 }
 
 export interface ISecondaryAttributes {

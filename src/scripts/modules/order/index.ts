@@ -1,5 +1,6 @@
 import { maxOrderSize, characterCTLimit } from 'data/game-config';
 
+import Character from 'modules/character';
 import { IOrder } from 'modules/order/types';
 import { PlayerType } from 'modules/player/types';
 import { ICharacter } from 'modules/character/types';
@@ -9,6 +10,9 @@ const getDefault = (): IOrder => {
 };
 
 const get = (characters: ICharacter[], initiative: PlayerType): IOrder => {
+	// dont include dead characters
+	characters = characters.filter(char => !Character.isDead(char));
+
 	if (0 === characters.length || !initiative) {
 		return [];
 	}

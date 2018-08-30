@@ -1,6 +1,7 @@
 import React from 'react';
+import { Dispatch } from 'redux';
 import { Action } from 'redux-actions';
-import { connect, Dispatch } from 'react-redux';
+import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router';
 
 import { IStore } from 'store';

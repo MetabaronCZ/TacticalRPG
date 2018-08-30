@@ -62,7 +62,7 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 		const main = Weapons.get(fields.main);
 		const off = Weapons.get(fields.off);
 
-		const isMagicUser = CharacterData.isMagicUser(fields);
+		const isMagicUser = CharacterData.isMagicType(fields);
 		const hasNoOffHand = Equipment.isBothWielding(fields.main) || Equipment.isDualWielding(fields.main);
 
 		return (
@@ -172,7 +172,7 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 
 		// reset character data on archetype change
 		if (prev.archetype !== arch) {
-			if (CharacterData.isMagicUser(newData)) {
+			if (CharacterData.isMagicType(newData)) {
 				newData.skillset = newData.skillset || SkillsetID.NONE;
 			}
 			newData.main = (Equipment.checkMainHand(newData.main, arch) ? newData.main : WeaponID.NONE);

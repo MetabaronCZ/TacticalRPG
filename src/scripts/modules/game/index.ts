@@ -44,7 +44,9 @@ const getInitialState = (charIds: string[], chars: ICharacterData[], initiative:
 		},
 		move: {},
 		skill: {},
-		direct: {}
+		react: {},
+		direct: {},
+		skillInfo: []
 	};
 };
 

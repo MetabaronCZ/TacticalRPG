@@ -1,6 +1,7 @@
 import { ISkillset } from 'modules/skillset/types';
+import { StatusEffectID } from 'modules/status-effect/types';
 import { MagicSkillID, IPsychokinesisSkillList } from 'modules/skill/magic/types';
-import { SkillType, SkillRange, SkillArea, SkillElement, SkillTarget, SkillStatus } from 'modules/skill/attributes';
+import { SkillType, SkillRange, SkillArea, SkillElement, SkillTarget } from 'modules/skill/attributes';
 
 const psychokinesis: IPsychokinesisSkillList = {
 	[MagicSkillID.PSYCHOKINESIS_KINETIC_STRIKE]: {
@@ -10,7 +11,6 @@ const psychokinesis: IPsychokinesisSkillList = {
 		range: SkillRange.R4,
 		area: SkillArea.SINGLE,
 		target: SkillTarget.ENEMY,
-		isAreaEffect: false,
 		element: SkillElement.PSYCHIC,
 		physicalDamage: 0.5,
 		elementalDamage: 1,
@@ -23,11 +23,10 @@ const psychokinesis: IPsychokinesisSkillList = {
 		range: SkillRange.R4,
 		area: SkillArea.SINGLE,
 		target: SkillTarget.ENEMY,
-		isAreaEffect: false,
 		element: SkillElement.PSYCHIC,
 		physicalDamage: 0,
 		elementalDamage: 0,
-		status: [SkillStatus.FORGET]
+		status: [StatusEffectID.FORGET]
 	},
 	[MagicSkillID.PSYCHOKINESIS_PSYCHODOME]: {
 		title: 'Psychodome',
@@ -36,7 +35,6 @@ const psychokinesis: IPsychokinesisSkillList = {
 		range: SkillRange.R0,
 		area: SkillArea.AOE3x3,
 		target: SkillTarget.ENEMY,
-		isAreaEffect: true,
 		element: SkillElement.PSYCHIC,
 		physicalDamage: 0,
 		elementalDamage: 0,
@@ -47,6 +45,7 @@ const psychokinesis: IPsychokinesisSkillList = {
 export const psychokinesisSkillset: ISkillset = {
 	title: 'Psychokinesis',
 	description: '',
+	element: SkillElement.PSYCHIC,
 	skills: Object.keys(psychokinesis) as MagicSkillID[]
 };
 

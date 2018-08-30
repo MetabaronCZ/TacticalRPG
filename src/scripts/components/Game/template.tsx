@@ -1,7 +1,8 @@
 import React from 'react';
 
 import Icos from 'data/icos';
-import { IOnTileSelect, IGameState, IOnActionSelect } from 'modules/game/types';
+import { IPosition } from 'modules/position/types';
+import { IOnTileSelect, IGameState, IOnActionSelect, ActPhase } from 'modules/game/types';
 
 import Bar from 'components/Game/components/Bar';
 import ArchetypeIco from 'components/ArchetypeIco';
@@ -9,6 +10,7 @@ import Grid from 'components/Game/components/Grid';
 import Order from 'components/Game/components/Order';
 import Party from 'components/Game/components/Party';
 import Layers from 'components/Game/components/Layers';
+import SkillInfo from 'components/Game/components/SkillInfo';
 import Characters from 'components/Game/components/Characters';
 import ActionrMenu from 'components/Game/components/ActionMenu';
 
@@ -19,9 +21,25 @@ interface IGameUIProps {
 }
 
 const GameUI: React.SFC<IGameUIProps> = props => {
-	const { order, characters, actors, act, move, skill, direct, tick } = props.game;
+	const { order, characters, actors, act, move, skill, react, direct } = props.game;
 	const acts = actors.map(id => characters.find(char => char.data.id === id));
 	const actor = acts[0];
+	let charInfo = actor;
+
+	if (-1 !== [ActPhase.REACTION, ActPhase.EVASION].indexOf(act.phase)) {
+		charInfo = characters.find(char => char.data.id === (react.targets && react.targets[0]));
+	}
+	const skillEffectTargetIds = skill.effectTargets || [];
+	const skillEffectTargets: IPosition[] = [];
+
+	for (const id of skillEffectTargetIds) {
+		const char = characters.find(ch => ch.data.id === id);
+
+		if (!char) {
+			continue;
+		}
+		skillEffectTargets.push(char.position);
+	}
 
 	return (
 		<div className="GameUI">
@@ -31,6 +49,7 @@ const GameUI: React.SFC<IGameUIProps> = props => {
 
 			<div className="GameUI-column GameUI-column--main">
 				<Layers>
+					<SkillInfo items={props.game.skillInfo} />
 					<Characters actor={actor} characters={characters} />
 					<Grid
 						phase={act.phase}
@@ -40,7 +59,9 @@ const GameUI: React.SFC<IGameUIProps> = props => {
 						skillTargetArea={skill.targetArea}
 						skillTargets={skill.targets}
 						skillEffectArea={skill.effectArea}
-						skillEffectTargets={skill.effectTargets}
+						skillEffectTargets={skillEffectTargets}
+						reactEvasionArea={react.evasionArea}
+						reactEvasionTarget={react.evasionTarget}
 						directArea={direct.area}
 						directTarget={direct.target}
 						onSelect={props.onTileSelect}
@@ -49,21 +70,21 @@ const GameUI: React.SFC<IGameUIProps> = props => {
 			</div>
 
 			<div className="GameUI-column GameUI-column--info">
-				{actor && (
+				{charInfo && (
 					<div className="u-mb-2">
 						<div className="Paragraph">
-							{actor.data.name}
+							{charInfo.data.name}
 							{' '}
-							<ArchetypeIco archetype={actor.data.archetype} />
+							<ArchetypeIco archetype={charInfo.data.archetype} />
 							{' '}
-							{Icos[actor.data.sex.toLowerCase()]}
+							{Icos[charInfo.data.sex.toLowerCase()]}
 						</div>
 
 						<Bar
-							hp={actor.currAttributes.HP}
-							hpMax={actor.baseAttributes.HP}
-							ap={actor.currAttributes.AP}
-							apMax={actor.baseAttributes.AP}
+							hp={charInfo.currAttributes.HP}
+							hpMax={charInfo.baseAttributes.HP}
+							ap={charInfo.currAttributes.AP}
+							apMax={charInfo.baseAttributes.AP}
 						/>
 					</div>
 				)}

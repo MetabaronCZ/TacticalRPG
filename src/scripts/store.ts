@@ -1,5 +1,4 @@
-import { createStore } from 'redux';
-import { Store } from 'react-redux';
+import { createStore, Store } from 'redux';
 
 import reducers from 'reducers';
 import { IParty } from 'modules/party/types';
@@ -35,9 +34,9 @@ const save = (store: Store<IStore>) => {
 	localStorage.setItem(KEY, JSON.stringify(state));
 };
 
-const initStore = (): Store<IStore> => {
+const initStore = () => {
 	const saved = load();
-	const store = createStore(reducers, saved) as Store<IStore>;
+	const store = createStore(reducers, saved);
 
 	// save on store changes
 	store.subscribe(() => save(store));

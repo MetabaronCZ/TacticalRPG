@@ -15,6 +15,8 @@ export enum GamePhase {
 export enum ActPhase {
 	MOVE = 'MOVE',
 	ACTION = 'ACTION',
+	REACTION = 'REACTION',
+	EVASION = 'EVASION',
 	DIRECT = 'DIRECT',
 	MOVE_ANIM = 'MOVE_ANIM',
 	ACTION_ANIM = 'ACTION_ANIM'
@@ -22,6 +24,12 @@ export enum ActPhase {
 
 export type IOnActionSelect = (action: IActionItem) => void;
 export type IOnTileSelect = (pos: IPosition) => void;
+
+export interface ISkillInfo {
+	id: number;
+	text: string;
+	position: IPosition;
+}
 
 interface IGameStateAct {
 	readonly phase: ActPhase;
@@ -43,7 +51,13 @@ interface IGameStateSkill {
 	readonly targets?: IPosition[]; // targetable tiles
 	readonly effectArea?: IPosition[]; // effect area
 	readonly effectTarget?: IPosition; // selected skill target
-	readonly effectTargets?: IPosition[]; // affected targets
+	readonly effectTargets?: string[]; // affected character IDs
+}
+
+interface IGameStateReact {
+	readonly targets?: string[]; // reacting character IDs
+	readonly evasionTarget?: IPosition; // selected evasion tile position
+	readonly evasionArea?: IPosition[]; // possible evasion positions of reacting character
 }
 
 interface IGameStateDirect {
@@ -56,6 +70,7 @@ export interface IGameState {
 	readonly act: IGameStateAct;
 	readonly move: IGameStateMove;
 	readonly skill: IGameStateSkill;
+	readonly react: IGameStateReact;
 	readonly direct: IGameStateDirect;
 	readonly characters: ICharacter[];
 	readonly ally: IPlayer;
@@ -63,4 +78,5 @@ export interface IGameState {
 	readonly order: IOrder;
 	readonly tick: number;
 	readonly actors: string[]; // character ID array
+	readonly skillInfo: ISkillInfo[];
 }

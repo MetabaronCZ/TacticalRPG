@@ -1,6 +1,8 @@
 import React from 'react';
 
 import { blockSize } from 'data/game-config';
+
+import Character from 'modules/character';
 import { PlayerType } from 'modules/player/types';
 import { ICharacter } from 'modules/character/types';
 
@@ -15,6 +17,7 @@ class CharacterBlock extends React.Component<ICharacterBlockProps, {}> {
 		const player = this.props.char.player;
 		const type = (PlayerType.ENEMY === player ? 'enemy' : 'ally');
 		const direction = 'looking-' + char.direction.toLowerCase();
+		const isDead = Character.isDead(char);
 
 		const style: React.CSSProperties = {
 			width: blockSize + 'px',
@@ -22,7 +25,7 @@ class CharacterBlock extends React.Component<ICharacterBlockProps, {}> {
 		};
 
 		return (
-			<div className={`Character Character--${type} Character--${direction} ${isActor ? 'is-actor' : ''}`} style={style}>
+			<div className={`Character Character--${type} Character--${direction} ${isActor ? 'is-actor' : ''} ${isDead ? 'is-dead' : ''}`} style={style}>
 				<span className="Character-title">
 					{char.data.name}
 				</span>

@@ -1,5 +1,6 @@
-import { SkillType, SkillRange, SkillArea, SkillElement, SkillTarget, SkillStatus } from 'modules/skill/attributes';
+import { SkillType, SkillRange, SkillArea, SkillElement, SkillTarget } from 'modules/skill/attributes';
 import { WeaponSkillID, IRangedWeaponSkillList } from 'modules/skill/weapon/types';
+import { StatusEffectID } from 'modules/status-effect/types';
 
 const rangedSkills: IRangedWeaponSkillList = {
 	[WeaponSkillID.BOW_ATTACK]: {
@@ -9,7 +10,6 @@ const rangedSkills: IRangedWeaponSkillList = {
 		range: SkillRange.R4,
 		area: SkillArea.SINGLE,
 		target: SkillTarget.ENEMY,
-		isAreaEffect: false,
 		element: SkillElement.NONE,
 		physicalDamage: 1,
 		elementalDamage: 0,
@@ -22,7 +22,6 @@ const rangedSkills: IRangedWeaponSkillList = {
 		range: SkillRange.R4,
 		area: SkillArea.SINGLE,
 		target: SkillTarget.ENEMY,
-		isAreaEffect: false,
 		element: SkillElement.NONE,
 		physicalDamage: 1.5,
 		elementalDamage: 0,
@@ -35,9 +34,9 @@ const rangedSkills: IRangedWeaponSkillList = {
 		range: SkillRange.R4,
 		area: SkillArea.SINGLE,
 		target: SkillTarget.ENEMY,
-		isAreaEffect: false,
 		element: SkillElement.NONE,
-		physicalDamage: 1,
+		isFixedPhysicalDamage: true,
+		physicalDamage: 100,
 		elementalDamage: 0,
 		status: []
 	},
@@ -48,11 +47,11 @@ const rangedSkills: IRangedWeaponSkillList = {
 		range: SkillRange.R4,
 		area: SkillArea.SINGLE,
 		target: SkillTarget.ENEMY,
-		isAreaEffect: false,
 		element: SkillElement.NONE,
-		physicalDamage: 0.5,
+		isFixedPhysicalDamage: true,
+		physicalDamage: 50,
 		elementalDamage: 0,
-		status: [SkillStatus.CRIPPLE]
+		status: [StatusEffectID.CRIPPLE]
 	},
 	[WeaponSkillID.GUN_2H_ATTACK]: {
 		title: 'Attack',
@@ -61,9 +60,9 @@ const rangedSkills: IRangedWeaponSkillList = {
 		range: SkillRange.R4,
 		area: SkillArea.SINGLE,
 		target: SkillTarget.ENEMY,
-		isAreaEffect: false,
 		element: SkillElement.NONE,
-		physicalDamage: 1,
+		isFixedPhysicalDamage: true,
+		physicalDamage: 200,
 		elementalDamage: 0,
 		status: []
 	},
@@ -74,9 +73,9 @@ const rangedSkills: IRangedWeaponSkillList = {
 		range: SkillRange.R1,
 		area: SkillArea.LINE,
 		target: SkillTarget.ENEMY,
-		isAreaEffect: true,
 		element: SkillElement.NONE,
-		physicalDamage: 0.5,
+		isFixedPhysicalDamage: true,
+		physicalDamage: 100,
 		elementalDamage: 0,
 		status: []
 	}

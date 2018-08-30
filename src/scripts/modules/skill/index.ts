@@ -2,20 +2,22 @@ import Position from 'modules/position';
 import Character from 'modules/character';
 import MagicSkills from 'modules/skill/magic';
 import WeaponSkills from 'modules/skill/weapon';
+import ArchetypeSkills from 'modules/skill/archetype';
 
-import { ISkill } from 'modules/skill/types';
 import { IPosition } from 'modules/position/types';
 import { ICharacter } from 'modules/character/types';
+import { ISkill, SkillID } from 'modules/skill/types';
 import { MagicSkillID } from 'modules/skill/magic/types';
 import { WeaponSkillID } from 'modules/skill/weapon/types';
 import { ElementAffinityTable } from 'modules/skill/affinity';
+import { ArchetypeSkillID } from 'modules/skill/archetype/types';
 import { SkillArea, SkillTarget, SkillElement } from 'modules/skill/attributes';
 
-const getElementModifier = (offensiveElm: SkillElement, defensiveElm: SkillElement): number => {
-	if (ElementAffinityTable[offensiveElm] === defensiveElm) {
+const getElementModifier = (attacker: SkillElement, defender: SkillElement): number => {
+	if (ElementAffinityTable[attacker] === defender) {
 		return 2;
 	}
-	if (ElementAffinityTable[defensiveElm] === offensiveElm) {
+	if (ElementAffinityTable[defender] === attacker) {
 		return 0.5;
 	}
 	return 1;
@@ -55,10 +57,14 @@ const getTargets = (actor: ICharacter, skill: ISkill, characters: ICharacter[], 
 	if (!targetable.length) {
 		return [];
 	}
+
 	if (SkillTarget.SELF === skill.target) {
 		return [actor.position];
 	}
-	let targets: ICharacter[];
+	let targets: ICharacter[] = [];
+
+	// remove dead characters
+	characters = characters.filter(char => !Character.isDead(char));
 
 	// get possible targets
 	switch (skill.target) {
@@ -75,7 +81,11 @@ const getTargets = (actor: ICharacter, skill: ISkill, characters: ICharacter[], 
 			break;
 	}
 
-	return targetable.filter(pos => Position.isContained(pos, targets.map(char => char.position)));
+	if (!targets.length) {
+		return [];
+	}
+	const targetPositions = targets.map(char => char.position);
+	return targetable.filter(pos => Position.isContained(pos, targetPositions));
 };
 
 const getEffectArea = (skill: ISkill, source: IPosition, target: IPosition): IPosition[] => {
@@ -118,13 +128,17 @@ const getEffectArea = (skill: ISkill, source: IPosition, target: IPosition): IPo
 	return effect.filter(pos => Position.isInGrid(pos));
 };
 
-const getEffectTargets = (actor: ICharacter, skill: ISkill, effectArea: IPosition[], characters: ICharacter[]): IPosition[] => {
+const getEffectTargets = (actor: ICharacter, skill: ISkill, effectArea: IPosition[], characters: ICharacter[]): string[] => {
 	if (SkillTarget.NONE === skill.target) {
 		return [];
 	}
-	const targets: IPosition[] = [];
+	const targets: string[] = [];
+
+	// remove dead characters
+	characters = characters.filter(char => !Character.isDead(char));
 
 	for (const char of characters) {
+		const id = char.data.id;
 		const pos = char.position;
 		const isInArea = Position.isContained(pos, effectArea);
 
@@ -134,24 +148,24 @@ const getEffectTargets = (actor: ICharacter, skill: ISkill, effectArea: IPositio
 		switch (skill.target) {
 			case SkillTarget.SELF:
 				if (Character.isEqual(actor, char)) {
-					targets.push(pos);
+					targets.push(id);
 				}
 				break;
 
 			case SkillTarget.ALLY:
 				if (actor.player === char.player) {
-					targets.push(pos);
+					targets.push(id);
 				}
 				break;
 
 			case SkillTarget.ENEMY:
 				if (actor.player !== char.player) {
-					targets.push(pos);
+					targets.push(id);
 				}
 				break;
 
 			case SkillTarget.ANY:
-				targets.push(pos);
+				targets.push(id);
 				break;
 
 			default:
@@ -161,16 +175,16 @@ const getEffectTargets = (actor: ICharacter, skill: ISkill, effectArea: IPositio
 	return targets;
 };
 
-const getByID = (ids: WeaponSkillID[]|MagicSkillID[]): ISkill[] => {
+const getByID = (ids: SkillID[]): ISkill[] => {
 	if (!ids.length) {
 		return [];
 	}
-	if (WeaponSkills.get(ids[0] as WeaponSkillID)) {
-		ids = ids as WeaponSkillID[];
-		return ids.map(id => WeaponSkills.get(id));
+	if (ids[0] in WeaponSkillID) {
+		return (ids as WeaponSkillID[]).map(id => WeaponSkills.get(id));
+	} else if (ids[0] in MagicSkillID) {
+		return (ids as MagicSkillID[]).map(id => MagicSkills.get(id));
 	} else {
-		ids = ids as MagicSkillID[];
-		return ids.map(id => MagicSkills.get(id));
+		return (ids as ArchetypeSkillID[]).map(id => ArchetypeSkills.get(id));
 	}
 };
 

@@ -16,6 +16,8 @@ interface IGridProps {
 	readonly skillTargets?: IPosition[];
 	readonly skillEffectArea?: IPosition[];
 	readonly skillEffectTargets?: IPosition[];
+	readonly reactEvasionArea?: IPosition[];
+	readonly reactEvasionTarget?: IPosition;
 	readonly directArea?: IPosition[];
 	readonly directTarget?: IPosition;
 }
@@ -51,6 +53,7 @@ const getBlockType = (pos: IPosition, props: IGridProps) => {
 			break;
 
 		case ActPhase.ACTION:
+		case ActPhase.REACTION:
 		case ActPhase.ACTION_ANIM:
 			const isSkillArea = Position.isContained(pos, props.skillTargetArea);
 			const isSkillTarget = Position.isContained(pos, props.skillTargets);
@@ -64,6 +67,17 @@ const getBlockType = (pos: IPosition, props: IGridProps) => {
 			} else if (isSkillTarget) {
 				return BlockType.TARGETABLE;
 			} else if (isSkillArea) {
+				return BlockType.TARGET_AREA;
+			}
+			break;
+
+		case ActPhase.EVASION:
+			const isEvasionArea = Position.isContained(pos, props.reactEvasionArea);
+			const isEvasionTarget = Position.isEqual(pos, props.reactEvasionTarget);
+
+			if (isEvasionTarget) {
+				return BlockType.SELECTED;
+			} else if (isEvasionArea) {
 				return BlockType.TARGET_AREA;
 			}
 			break;

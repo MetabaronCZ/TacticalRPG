@@ -12,7 +12,7 @@
         "quotemark": [true, "single", "jsx-double"],
         "indent": [true, "tabs", 4],
         "trailing-comma": [true, { "esSpecCompliant": true }],
-        "member-ordering": [true, {"order": "fields-first"}],
+        "member-ordering": [true, { "order": "fields-first" }],
         "jsx-no-multiline-js": false
     }
 }

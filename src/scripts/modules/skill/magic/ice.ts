@@ -1,6 +1,7 @@
 import { ISkillset } from 'modules/skillset/types';
+import { StatusEffectID } from 'modules/status-effect/types';
 import { MagicSkillID, IIceMagicSkillList } from 'modules/skill/magic/types';
-import { SkillType, SkillRange, SkillArea, SkillElement, SkillTarget, SkillStatus } from 'modules/skill/attributes';
+import { SkillType, SkillRange, SkillArea, SkillElement, SkillTarget } from 'modules/skill/attributes';
 
 const iceMagic: IIceMagicSkillList = {
 	[MagicSkillID.ICE_MAGIC_ICE_SPEAR]: {
@@ -10,7 +11,6 @@ const iceMagic: IIceMagicSkillList = {
 		range: SkillRange.R4,
 		area: SkillArea.SINGLE,
 		target: SkillTarget.ENEMY,
-		isAreaEffect: false,
 		element: SkillElement.ICE,
 		physicalDamage: 0.5,
 		elementalDamage: 1,
@@ -23,11 +23,10 @@ const iceMagic: IIceMagicSkillList = {
 		range: SkillRange.R4,
 		area: SkillArea.SINGLE,
 		target: SkillTarget.ENEMY,
-		isAreaEffect: false,
 		element: SkillElement.ICE,
 		physicalDamage: 0.25,
 		elementalDamage: 0.25,
-		status: [SkillStatus.FREEZE]
+		status: [StatusEffectID.FREEZE]
 	},
 	[MagicSkillID.ICE_MAGIC_BLIZZARD]: {
 		title: 'Blizzard',
@@ -36,7 +35,6 @@ const iceMagic: IIceMagicSkillList = {
 		range: SkillRange.R4,
 		area: SkillArea.AOE3x3,
 		target: SkillTarget.ENEMY,
-		isAreaEffect: true,
 		element: SkillElement.ICE,
 		physicalDamage: 0.25,
 		elementalDamage: 0.5,
@@ -49,17 +47,17 @@ const iceMagic: IIceMagicSkillList = {
 		range: SkillRange.R1,
 		area: SkillArea.AOE3x3,
 		target: SkillTarget.ENEMY,
-		isAreaEffect: true,
 		element: SkillElement.ICE,
 		physicalDamage: 0,
 		elementalDamage: 0.25,
-		status: [SkillStatus.FREEZE]
+		status: [StatusEffectID.FREEZE]
 	}
 };
 
 export const iceMagicSkillset: ISkillset = {
 	title: 'Ice Magic',
 	description: '',
+	element: SkillElement.ICE,
 	skills: Object.keys(iceMagic) as MagicSkillID[]
 };
 

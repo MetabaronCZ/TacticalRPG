@@ -20,7 +20,7 @@ class DataList<T extends string, U> {
 	}
 
 	public values(): U[] {
-		return this.keys().map(this.get);
+		return this.keys().map(id => this.get(id));
 	}
 
 	public entries(): Array<[T, U]> {

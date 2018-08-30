@@ -10,11 +10,13 @@ import { windMagicSkillset } from 'modules/skill/magic/wind';
 import { earthMagicSkillset } from 'modules/skill/magic/earth';
 import { iceMagicSkillset } from 'modules/skill/magic/ice';
 import { thunderMagicSkillset } from 'modules/skill/magic/thunder';
+import { SkillElement } from 'modules/skill/attributes';
 
 const Skillsets = new DataList<SkillsetID, ISkillset>({
 	[SkillsetID.NONE]: {
 		title: 'none',
 		description: '',
+		element: SkillElement.NONE,
 		skills: []
 	},
 	[SkillsetID.PSYCHOKINESIS]: psychokinesisSkillset,

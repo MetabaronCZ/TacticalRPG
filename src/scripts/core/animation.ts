@@ -35,7 +35,7 @@ class Animation {
 		const duration = this.timing[step];
 
 		this.handler({
-			number: step + 1,
+			number: step,
 			duration,
 			isFirst: (0 === step),
 			isLast: (max === step)

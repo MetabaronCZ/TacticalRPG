@@ -1,6 +1,7 @@
 import { ISkillset } from 'modules/skillset/types';
+import { StatusEffectID } from 'modules/status-effect/types';
 import { MagicSkillID, IWaterMagicSkillList } from 'modules/skill/magic/types';
-import { SkillType, SkillRange, SkillArea, SkillElement, SkillTarget, SkillStatus } from 'modules/skill/attributes';
+import { SkillType, SkillRange, SkillArea, SkillElement, SkillTarget } from 'modules/skill/attributes';
 
 const waterMagic: IWaterMagicSkillList = {
 	[MagicSkillID.WATER_MAGIC_SPLASH]: {
@@ -10,7 +11,6 @@ const waterMagic: IWaterMagicSkillList = {
 		range: SkillRange.R4,
 		area: SkillArea.SINGLE,
 		target: SkillTarget.ENEMY,
-		isAreaEffect: false,
 		element: SkillElement.WATER,
 		physicalDamage: 0.5,
 		elementalDamage: 1,
@@ -23,11 +23,10 @@ const waterMagic: IWaterMagicSkillList = {
 		range: SkillRange.R4,
 		area: SkillArea.SINGLE,
 		target: SkillTarget.ENEMY,
-		isAreaEffect: false,
 		element: SkillElement.WATER,
 		physicalDamage: 0.25,
 		elementalDamage: 0.25,
-		status: [SkillStatus.SILENCE]
+		status: [StatusEffectID.SILENCE]
 	},
 	[MagicSkillID.WATER_MAGIC_FLOOD]: {
 		title: 'Flood',
@@ -36,7 +35,6 @@ const waterMagic: IWaterMagicSkillList = {
 		range: SkillRange.R4,
 		area: SkillArea.AOE3x3,
 		target: SkillTarget.ENEMY,
-		isAreaEffect: true,
 		element: SkillElement.WATER,
 		physicalDamage: 0.25,
 		elementalDamage: 0.5,
@@ -49,17 +47,17 @@ const waterMagic: IWaterMagicSkillList = {
 		range: SkillRange.R0,
 		area: SkillArea.AOE3x3,
 		target: SkillTarget.SELF,
-		isAreaEffect: true,
 		element: SkillElement.WATER,
 		physicalDamage: 0,
 		elementalDamage: 0.25,
-		status: [SkillStatus.SILENCE]
+		status: [StatusEffectID.SILENCE]
 	}
 };
 
 export const waterMagicSkillset: ISkillset = {
 	title: 'Water Magic',
 	description: '',
+	element: SkillElement.WATER,
 	skills: Object.keys(waterMagic) as MagicSkillID[]
 };
 

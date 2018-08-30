@@ -20,8 +20,8 @@ const create = (x: number = 0, y: number = 0): IPosition => ({
 	cost: 1
 });
 
-const isEqual = (a?: IPosition, b?: IPosition) => {
-	return a && b && a.id === b.id;
+const isEqual = (a?: IPosition, b?: IPosition): boolean => {
+	return !!a && !!b && a.id === b.id;
 };
 
 const isContained = (pos: IPosition, arr: IPosition[] = []): boolean => {

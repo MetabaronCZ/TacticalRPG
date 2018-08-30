@@ -29,6 +29,7 @@ const ActionrMenu: React.SFC<ICharacterMenuProps> = ({ actions, onSelect }) => {
 					switch (type) {
 						case ActionID.PASS:
 						case ActionID.CONFIRM:
+						case ActionID.DONT_REACT:
 							color = ButtonColor.GREEN;
 							break;
 

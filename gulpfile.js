@@ -2,11 +2,10 @@ const del = require('del');
 const gulp = require('gulp');
 const less = require('gulp-less');
 const webpack = require('webpack');
+const cssnano = require('cssnano');
 const postcss = require('gulp-postcss');
 const stylelint = require('gulp-stylelint');
-const webpackStream = require('webpack-stream');
 const runSequence = require('run-sequence');
-const cssnano = require('cssnano');
 const autoprefixer = require('autoprefixer');
 
 const webpackConfig = require('./webpack.config.js');
@@ -83,12 +82,34 @@ gulp.task('index', () => {
 });
 
 // build JS
-gulp.task('scripts', () => {
-	let conf = webpackConfig(env);
+gulp.task('scripts', cb => {
+	const conf = webpackConfig(env);
+	let isFirstRun = true;
 
-	return gulp.src(paths.scripts.src)
-		.pipe(webpackStream(conf, webpack))
-		.pipe(gulp.dest(paths.scripts.dist));
+	webpack(conf, (err, stats) => {
+		if (err) {
+			console.error(err.stack || err);
+
+			if (err.details) {
+				console.error(err.details);
+			}
+			return (firstRun ? cb() : undefined);
+		}
+		console.log(
+			stats.toString({
+				colors: true,
+				hash: false,
+				modules: false
+			})
+		);
+		console.log('-----------------------------------');
+		console.log('✓  Build finished\n');
+
+		if (isFirstRun) {
+			isFirstRun = false;
+			cb();
+		}
+	});
 });
 
 // watch files and perform given tasks

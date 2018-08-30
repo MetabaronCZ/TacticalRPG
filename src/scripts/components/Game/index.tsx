@@ -2,29 +2,33 @@ import React from 'react';
 
 import Animation from 'core/animation';
 import * as ArrayUtils from 'core/array';
+import * as NumberUtils from 'core/number';
 
-import { gridSize, moveAnimDuration, tickDelay, characterCTLimit } from 'data/game-config';
+import { gridSize, moveAnimDuration, tickDelay, characterCTLimit, skillAnimDuration, smallShieldBlock } from 'data/game-config';
 import GameUI from 'components/Game/template';
 
 import Game from 'modules/game';
 import Order from 'modules/order';
 import Skill from 'modules/skill';
+import Damage from 'modules/damage';
 import Position from 'modules/position';
 import Character from 'modules/character';
 import CharacterActions from 'modules/character-action';
 
-import { ISkill } from 'modules/skill/types';
 import { IParty } from 'modules/party/types';
 import { PlayerType } from 'modules/player/types';
 import { IPosition } from 'modules/position/types';
-import { ICharacter } from 'modules/character/types';
 import { SkillTarget } from 'modules/skill/attributes';
+import { WeaponSkillID } from 'modules/skill/weapon/types';
+import { StatusEffectID } from 'modules/status-effect/types';
 import { ICharacterData } from 'modules/character-data/types';
+import { ArchetypeSkillID } from 'modules/skill/archetype/types';
 import { IGameState, GamePhase, ActPhase } from 'modules/game/types';
 import { getShortestPath, getMovableTiles } from 'modules/pathfinding';
 import { IActions, ActionID, IActionItem } from 'modules/character-action/types';
+import StatusEffects from 'modules/status-effect';
 
-const directAction = CharacterActions.get(ActionID.DIRECT);
+const directAction = CharacterActions.directAction;
 
 interface IGameUIContainerProps {
 	readonly party: IParty;
@@ -55,9 +59,16 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 		);
 	}
 
+	private getCharacter(id?: string) {
+		if (!id) {
+			return;
+		}
+		return this.state.characters.find(char => id === char.data.id);
+	}
+
 	private getActor() {
 		const actorId = this.state.actors[0];
-		return this.state.characters.find(char => actorId === char.data.id);
+		return this.getCharacter(actorId);
 	}
 
 	private tick() {
@@ -110,11 +121,21 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 		);
 	}
 
-	private startTurn() {
+	private startTurn(): void {
 		const actor = this.getActor();
 
 		if (!actor) {
-			return;
+			throw new Error('Cannot start turn of non-existent actor');
+		}
+
+		if (Character.isDead(actor)) {
+			// remove dead character from actors
+			return this.setState(
+				state => ({
+					actors: state.actors.filter(id => actor.data.id)
+				}),
+				() => this.state.actors.length ? this.startTurn() : this.tick()
+			);
 		}
 		const actorPos = actor.position;
 		const obstacles = this.state.characters.map(char => char.position);
@@ -228,7 +249,7 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 					if (!actor || !moveCostMap || ('undefined' === typeof initAP)) {
 						throw new Error('Could not MOVE - actor does not exist');
 					}
-					const tile = movePath[step.number - 1];
+					const tile = movePath[step.number];
 					const dir = Position.getDirection(actor.position, tile);
 
 					this.setState(
@@ -280,11 +301,12 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 		);
 	}
 
-	private startSkill(action: IActionItem, skills: ISkill[]) {
+	private startSkill(action: IActionItem) {
+		const skills = Skill.getByID(action.skills || []);
 		const actor = this.getActor();
 
 		if (!actor || !action.active || !skills.length) {
-			return;
+			throw new Error('Could not start skill - no actor');
 		}
 		const skillAreas = skills.map(skill => Skill.getTargetableArea(skill, actor.position));
 		const targetable = ArrayUtils.getIntersection(skillAreas, pos => pos.id);
@@ -314,56 +336,37 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 	}
 
 	private runSkill() {
+		const { skill } = this.state;
 		const actor = this.getActor();
-		const { skill, characters } = this.state;
 		const action = this.state.act.action;
 		const targetTile = skill.effectTarget;
-		const targetTiles = skill.effectTargets;
+		const targets = skill.effectTargets;
 
 		if (!actor || !action || !targetTile) {
 			throw new Error('Could not run skill - invalid ACT data');
 		}
-		if (!targetTiles || !targetTiles.length) {
-			this.endSkill();
+		if (!targets || !targets.length) {
+			return this.endSkill();
 		}
 		const dir = Position.getDirection(actor.position, targetTile);
-		const skills = Skill.getByID(action.skills || []);
-		const targets: ICharacter[] = [];
-
-		// collect skill target characters
-		for (const char of characters) {
-			if (Position.isContained(char.position, targetTiles)) {
-				targets.push(char);
-			}
-		}
 
 		this.setState(
 			state => ({
-				act: {
-					...state.act,
-					phase: ActPhase.ACTION_ANIM,
-					actionMenu: undefined
+				react: {
+					...state.react,
+					targets
 				},
 				characters: state.characters.map(char => {
 					if (Character.isEqual(actor, char)) {
-						// face character to skill target tile
 						return {
 							...char,
-							direction: dir
+							direction: dir // face character to skill target tile
 						};
-					} else {
-						return char;
 					}
+					return char;
 				})
 			}),
-			() => {
-				// TODO
-				console.log('actor:', actor.data.name);
-				console.log('skill:', skills.map(s => s.title));
-				console.log('targets:', targets.map(char => char.data.name));
-
-				this.endSkill();
-			}
+			() => this.startReact()
 		);
 	}
 
@@ -376,13 +379,252 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 		);
 	}
 
+	private startReact() {
+		const targets = this.state.react.targets || [];
+
+		if (!targets.length) {
+			this.startAction();
+			return;
+		}
+		const target = this.getCharacter(targets[0]);
+
+		if (!target) {
+			// goto reaction of next target character
+			return this.endReact();
+		}
+		const actions = Character.getReactiveActions(target);
+
+		// show target character reaction menu
+		this.setState(state => ({
+			act: {
+				...state.act,
+				phase: ActPhase.REACTION,
+				actionMenu: actions
+			}
+		}));
+	}
+
+	private react(action: IActionItem) {
+		const targets = this.state.react.targets || [];
+
+		if (!targets.length) {
+			throw new Error('Could not react - no reacting character');
+		}
+		const targetId = targets[0];
+		const target = this.getCharacter(targetId);
+
+		if (!target) {
+			throw new Error('Could not react - invalid reacting character');
+		}
+		if (!action.skills || !action.skills.length) {
+			throw new Error('Could not react - no action skill');
+		}
+		const skillId = action.skills[0];
+
+		switch (skillId) {
+			case ArchetypeSkillID.EVADE:
+				const obstacles = this.state.characters.map(char => char.position);
+				const evasionArea = Position.getSideTiles(target.position, obstacles);
+				const actions = Character.getEvasionActions();
+
+				// start evasion
+				return this.setState(
+					state => ({
+						act: {
+							...state.act,
+							phase: ActPhase.EVASION,
+							actionMenu: actions
+						},
+						react: {
+							...state.react,
+							evasionArea
+						}
+					})
+				);
+
+			case WeaponSkillID.SHIELD_SMALL_BLOCK:
+				// apply shield block small
+				return this.setState(
+					state => ({
+						characters: state.characters.map(char => {
+							if (targetId === char.data.id) {
+								return Character.applyStatus(char, StatusEffectID.BLOCK_SMALL);
+							}
+							return char;
+						})
+					}),
+					() => this.endReact()
+				);
+
+			case WeaponSkillID.SHIELD_LARGE_BLOCK:
+				// apply shield block large
+				return this.setState(
+					state => ({
+						characters: state.characters.map(char => {
+							if (targetId === char.data.id) {
+								return Character.applyStatus(char, StatusEffectID.BLOCK_LARGE);
+							}
+							return char;
+						})
+					}),
+					() => this.endReact()
+				);
+
+			default:
+				throw new Error('Invalid reaction skill');
+		}
+	}
+
+	private endReact() {
+		this.setState(
+			state => ({
+				react: {
+					...state.react,
+					targets: state.react.targets ? state.react.targets.slice(1) : undefined
+				}
+			}),
+			() => this.startReact()
+		);
+	}
+
+	private startAction() {
+		this.setState(state => ({
+				act: {
+					...state.act,
+					actionMenu: undefined,
+					phase: ActPhase.ACTION_ANIM
+				},
+				react: {}
+			}),
+			() => {
+				const skillEffectArea = this.state.skill.effectArea;
+				const targetIds = this.state.skill.effectTargets || [];
+				const targets = targetIds.map(id => this.getCharacter(id));
+				const action = this.state.act.action;
+
+				if (!targets.length || !action || !action.skills || !action.skills.length) {
+					return this.endSkill();
+				}
+				const timing = Array(targets.length).fill(skillAnimDuration);
+
+				// animate skill action
+				const skillAnim = new Animation(timing, step => {
+					const actor = this.getActor();
+					let target = targets[step.number];
+
+					if (!actor || !target) {
+						throw new Error('Could not run skill action');
+					}
+
+					if (!Character.isDead(target)) {
+						if (Position.isContained(target.position, skillEffectArea)) {
+							if (target.status.find(status => StatusEffectID.BLOCK_LARGE === status.id)) {
+								// target blocked attack with shield
+								target = Character.removeStatus(target, StatusEffectID.BLOCK_LARGE);
+								this.showSkillInfo('Blocked', target.position);
+
+							} else {
+								// caclulate character changes
+								const targetPos = target.position;
+								let info: string[] = [];
+
+								for (const skill of action.skills) {
+									const skillData = Skill.getByID([skill])[0];
+									let phyDmg = 0;
+									let elmDmg = 0;
+
+									// physical damage
+									phyDmg = Damage.getPhysical(actor, target, skill);
+									info.push(NumberUtils.format(phyDmg));
+
+									// elemental damage
+									if (skillData.elementalDamage) {
+										elmDmg = Damage.getElemental(actor, target, skill);
+										info.push(NumberUtils.format(elmDmg));
+									}
+
+									// status effects
+									const effects = Damage.getStatusEffects(actor, target, skill);
+									const statuses = effects.map(id => StatusEffects.get(id)());
+
+									// apply skill damage / statuses to target
+									target = Character.applySkill(target, phyDmg + elmDmg, effects);
+
+									if (Character.isDead(target)) {
+										info.push('Dead');
+										break;
+
+									} else if (skillData.status) {
+										info = [...info, ...statuses.map(status => status.title)];
+									}
+
+									// show small shield block info
+									if (-1 !== effects.indexOf(StatusEffectID.BLOCK_SMALL)) {
+										target = Character.removeStatus(target, StatusEffectID.BLOCK_SMALL);
+										info.unshift(`Blocked (${smallShieldBlock})`);
+									}
+								}
+								let infoTiming = Array(info.length).fill(0);
+								infoTiming = infoTiming.map(i => NumberUtils.randomBetween(250, 350));
+
+								const infoAnim = new Animation(infoTiming, infoStep => {
+									this.showSkillInfo(info[infoStep.number], targetPos);
+								});
+
+								infoAnim.start();
+							}
+
+						} else {
+							// target evaded skill action
+							this.showSkillInfo('Evaded', target.position);
+						}
+					}
+
+					// apply skill to a target
+					this.setState(
+						state => ({
+							characters: state.characters.map(char => {
+								if (!target) {
+									throw new Error('Invalid target during skill animation');
+								}
+								if (Character.isEqual(target, char)) {
+									return target;
+								}
+								return char;
+							})
+						}),
+						() => {
+							// skill end
+							if (step.isLast) {
+								// reduce actor AP
+								this.setState(
+									state => ({
+										characters: state.characters.map(char => {
+											if (Character.isEqual(actor, char)) {
+												return Character.reduceAP(char, action.cost);
+											}
+											return char;
+										})
+									}),
+									() => this.endSkill()
+								);
+							}
+						}
+					);
+				});
+
+				// start animation
+				skillAnim.start();
+			}
+		);
+	}
+
 	private startDirect() {
 		const actor = this.getActor();
 
 		if (!actor) {
 			return;
 		}
-		const characters = this.state.characters.map(char => char.position);
 		const directions = Position.getSideTiles(actor.position);
 
 		if (!directions.length) {
@@ -417,9 +659,8 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 			case ActionID.MAGIC:
 				return this.runSkill();
 
-			case ActionID.DIRECT:
 			default:
-				throw new Error(`Action is not comfirmable: ${action.id}`);
+				throw new Error('Action is not comfirmable: ' + action.id);
 		}
 	}
 
@@ -504,6 +745,8 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 		if (!actor || !Position.isContained(position, direct.area)) {
 			return;
 		}
+		const direction = Position.getDirection(actor.position, position);
+
 		this.setState(
 			state => ({
 				direct: {},
@@ -511,7 +754,7 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 					if (Character.isEqual(actor, char)) {
 						return {
 							...char,
-							direction: Position.getDirection(actor.position, position)
+							direction
 						};
 					}
 					return char;
@@ -521,8 +764,45 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 		);
 	}
 
+	private selectEvasionTarget(position: IPosition) {
+		const action = this.state.act.action;
+		const targets = this.state.react.targets || [];
+		const evasible = this.state.react.evasionArea;
+		const targetId = targets[0];
+
+		if (!Position.isContained(position, evasible)) {
+			return;
+		}
+		if (!action || !action.skills || !action.skills.length || !targetId) {
+			throw new Error('Could not evade');
+		}
+		const skills = Skill.getByID(action.skills);
+		const cost = skills[0].cost;
+
+		this.setState(
+			state => ({
+				characters: state.characters.map(char => {
+					if (targetId === char.data.id) {
+						return {
+							...char,
+							position,
+							currAttributes: {
+								...char.currAttributes,
+								AP: char.currAttributes.AP - cost
+							}
+						};
+					}
+					return char;
+				})
+			}),
+			() => this.endReact()
+		);
+	}
+
 	private onTileSelect = (position: IPosition) => {
-		switch (this.state.act.phase) {
+		const phase = this.state.act.phase;
+
+		switch (phase) {
 			case ActPhase.MOVE:
 				// go to given position
 				return this.selectMoveTarget(position);
@@ -535,39 +815,86 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 				// select actor direction
 				return this.selectDirectTarget(position);
 
+			case ActPhase.EVASION:
+				// select evesion tartget
+				return this.selectEvasionTarget(position);
+
+			case ActPhase.REACTION:
 			case ActPhase.MOVE_ANIM:
 			case ActPhase.ACTION_ANIM:
-				// do nothing during animation
+				// do nothing
 				return;
 
 			default:
-				throw new Error('Unsupported act phase');
+				throw new Error('Unsupported act phase: ' + phase);
 		}
 	}
 
 	private onActionSelect = (action: IActionItem) => {
+		const phase = this.state.act.phase;
+
 		switch (action.id) {
 			case ActionID.ATTACK:
 			case ActionID.DOUBLE_ATTACK:
 			case ActionID.WEAPON:
 			case ActionID.MAGIC:
-				return this.startSkill(action, Skill.getByID(action.skills || []));
+				return this.startSkill(action);
 
 			case ActionID.PASS:
 				// end character turn
 				return this.startDirect();
+
+			case ActionID.REACTION:
+				// apply reaction skill
+				return this.react(action);
+
+			case ActionID.DONT_REACT:
+				// goto next reacting character
+				return this.endReact();
 
 			case ActionID.CONFIRM:
 				// handle confirm action
 				return this.confirm(this.state.act.action);
 
 			case ActionID.BACK:
-				// cancel current action > show menu
-				return this.act();
+				switch (phase) {
+					case ActPhase.EVASION:
+						// cancel evasion reaction
+						return this.startReact();
+
+					case ActPhase.ACTION:
+						// cancel current action > show menu
+						return this.act();
+
+					default:
+						throw new Error('Cant go back during phase: ' + phase);
+				}
 
 			default:
-				throw new Error('Unsupported action ID');
+				throw new Error('Unsupported action ID: ' + action.id);
 		}
+	}
+
+	private showSkillInfo(text: string, position: IPosition, duration = 3000) {
+		const infoId = performance.now();
+
+		// set skill info item
+		this.setState(
+			state => ({
+				skillInfo: [
+					...state.skillInfo,
+					{ id: infoId, text, position }
+				]
+			}),
+			() => {
+				// end skill info item
+				setTimeout(() => {
+					this.setState(state => ({
+						skillInfo: state.skillInfo.filter(item => item.id !== infoId)
+					}));
+				}, duration);
+			}
+		);
 	}
 }
 

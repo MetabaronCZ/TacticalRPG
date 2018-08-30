@@ -49,7 +49,7 @@ const random = (name: string): ICharacterData => {
 		skillset: SkillsetID.NONE
 	});
 
-	if (isMagicUser(character)) {
+	if (isMagicType(character)) {
 		character.skillset = ArrayUtils.getRandomItem(Skillsets.keys());
 	}
 	let main = Weapons.filter(character, WieldID.MAIN);
@@ -83,14 +83,16 @@ const random = (name: string): ICharacterData => {
 	return character;
 };
 
-const isMagicUser = (char: ICharacterData) => {
-	return -1 !== char.archetype.indexOf('M');
-};
+const isPowerType = (char: ICharacterData) => -1 !== char.archetype.indexOf('P');
+const isSpeedType = (char: ICharacterData) => -1 !== char.archetype.indexOf('S');
+const isMagicType = (char: ICharacterData) => -1 !== char.archetype.indexOf('M');
 
 const CharacterData = {
 	init,
 	random,
-	isMagicUser
+	isPowerType,
+	isSpeedType,
+	isMagicType
 };
 
 export default CharacterData;

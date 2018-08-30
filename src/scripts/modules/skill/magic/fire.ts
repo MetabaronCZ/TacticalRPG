@@ -1,6 +1,7 @@
 import { ISkillset } from 'modules/skillset/types';
+import { StatusEffectID } from 'modules/status-effect/types';
 import { MagicSkillID, IFireMagicSkillList } from 'modules/skill/magic/types';
-import { SkillType, SkillRange, SkillArea, SkillElement, SkillTarget, SkillStatus } from 'modules/skill/attributes';
+import { SkillType, SkillRange, SkillArea, SkillElement, SkillTarget } from 'modules/skill/attributes';
 
 const fireMagic: IFireMagicSkillList = {
 	[MagicSkillID.FIRE_MAGIC_FIREBALL]: {
@@ -10,7 +11,6 @@ const fireMagic: IFireMagicSkillList = {
 		range: SkillRange.R4,
 		area: SkillArea.SINGLE,
 		target: SkillTarget.ENEMY,
-		isAreaEffect: false,
 		element: SkillElement.FIRE,
 		physicalDamage: 0.5,
 		elementalDamage: 1,
@@ -23,11 +23,10 @@ const fireMagic: IFireMagicSkillList = {
 		range: SkillRange.R4,
 		area: SkillArea.SINGLE,
 		target: SkillTarget.ENEMY,
-		isAreaEffect: false,
 		element: SkillElement.FIRE,
 		physicalDamage: 0.25,
 		elementalDamage: 0.25,
-		status: [SkillStatus.BURN]
+		status: [StatusEffectID.BURN]
 	},
 	[MagicSkillID.FIRE_MAGIC_FIRESTORM]: {
 		title: 'Firestorm',
@@ -36,7 +35,6 @@ const fireMagic: IFireMagicSkillList = {
 		range: SkillRange.R4,
 		area: SkillArea.AOE3x3,
 		target: SkillTarget.ENEMY,
-		isAreaEffect: true,
 		element: SkillElement.FIRE,
 		physicalDamage: 0.25,
 		elementalDamage: 0.5,
@@ -49,17 +47,17 @@ const fireMagic: IFireMagicSkillList = {
 		range: SkillRange.R0,
 		area: SkillArea.AOE3x3,
 		target: SkillTarget.SELF,
-		isAreaEffect: false,
 		element: SkillElement.FIRE,
 		physicalDamage: 0,
 		elementalDamage: 0.25,
-		status: [SkillStatus.BURN]
+		status: [StatusEffectID.BURN]
 	}
 };
 
 export const fireMagicSkillset: ISkillset = {
 	title: 'Fire Magic',
 	description: '',
+	element: SkillElement.FIRE,
 	skills: Object.keys(fireMagic) as MagicSkillID[]
 };
 

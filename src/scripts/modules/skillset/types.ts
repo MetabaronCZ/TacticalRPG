@@ -1,3 +1,4 @@
+import { SkillElement } from 'modules/skill/attributes';
 import { MagicSkillID } from 'modules/skill/magic/types';
 
 export enum SkillsetID {
@@ -16,5 +17,6 @@ export enum SkillsetID {
 export interface ISkillset {
 	readonly title: string;
 	readonly description: string;
+	readonly element: SkillElement;
 	readonly skills: MagicSkillID[];
 }

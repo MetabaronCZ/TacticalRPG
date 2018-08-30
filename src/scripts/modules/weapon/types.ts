@@ -35,4 +35,6 @@ export interface IWeaponData {
 	readonly description: string;
 	readonly type: WeaponTypeID;
 	readonly skills: WeaponSkillID[];
+	readonly damage: number;
+	readonly magic: number;
 }

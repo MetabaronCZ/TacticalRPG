@@ -1,6 +1,7 @@
 import { ISkillset } from 'modules/skillset/types';
+import { StatusEffectID } from 'modules/status-effect/types';
 import { MagicSkillID, IThunderMagicSkillList } from 'modules/skill/magic/types';
-import { SkillType, SkillRange, SkillArea, SkillElement, SkillTarget, SkillStatus } from 'modules/skill/attributes';
+import { SkillType, SkillRange, SkillArea, SkillElement, SkillTarget } from 'modules/skill/attributes';
 
 const thunderMagic: IThunderMagicSkillList = {
 	[MagicSkillID.THUNDER_MAGIC_THUNDERBOLT]: {
@@ -10,7 +11,6 @@ const thunderMagic: IThunderMagicSkillList = {
 		range: SkillRange.R4,
 		area: SkillArea.SINGLE,
 		target: SkillTarget.ENEMY,
-		isAreaEffect: false,
 		element: SkillElement.THUNDER,
 		physicalDamage: 0.5,
 		elementalDamage: 1,
@@ -23,11 +23,10 @@ const thunderMagic: IThunderMagicSkillList = {
 		range: SkillRange.R4,
 		area: SkillArea.SINGLE,
 		target: SkillTarget.ENEMY,
-		isAreaEffect: false,
 		element: SkillElement.THUNDER,
 		physicalDamage: 0.25,
 		elementalDamage: 0.25,
-		status: [SkillStatus.SHOCK]
+		status: [StatusEffectID.SHOCK]
 	},
 	[MagicSkillID.THUNDER_MAGIC_THUNDERSTORM]: {
 		title: 'Thunderstorm',
@@ -36,7 +35,6 @@ const thunderMagic: IThunderMagicSkillList = {
 		range: SkillRange.R4,
 		area: SkillArea.AOE3x3,
 		target: SkillTarget.ENEMY,
-		isAreaEffect: true,
 		element: SkillElement.THUNDER,
 		physicalDamage: 0.25,
 		elementalDamage: 0.5,
@@ -49,17 +47,17 @@ const thunderMagic: IThunderMagicSkillList = {
 		range: SkillRange.R0,
 		area: SkillArea.AOE3x3,
 		target: SkillTarget.SELF,
-		isAreaEffect: true,
 		element: SkillElement.THUNDER,
 		physicalDamage: 0,
 		elementalDamage: 0.25,
-		status: [SkillStatus.SHOCK]
+		status: [StatusEffectID.SHOCK]
 	}
 };
 
 export const thunderMagicSkillset: ISkillset = {
 	title: 'Thunder Magic',
 	description: '',
+	element: SkillElement.THUNDER,
 	skills: Object.keys(thunderMagic) as MagicSkillID[]
 };
 

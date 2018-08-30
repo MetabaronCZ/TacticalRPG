@@ -24,7 +24,6 @@ const MagicSkills = new MagicSkillList({
 		range: SkillRange.R1,
 		area: SkillArea.SINGLE,
 		target: SkillTarget.NONE,
-		isAreaEffect: false,
 		element: SkillElement.NONE,
 		physicalDamage: 0,
 		elementalDamage: 0,
