@@ -3,7 +3,6 @@ import Direction from 'engine/direction';
 import Position from 'engine/position';
 
 export type DirectPhaseState = 'INIT' | 'IDLE';
-export type IDirectCallback = (position: Position|null) => void;
 
 class GamePhaseDirect {
 	private readonly actor: Character;
@@ -43,7 +42,7 @@ class GamePhaseDirect {
 		this.target = Direction.findPositionFrom(pos, dir); // set initial direction
 	}
 
-	public select(position: Position, cb: IDirectCallback) {
+	public select(position: Position) {
 		const { state, actor, targets } = this;
 
 		if ('IDLE' !== state) {
@@ -52,7 +51,6 @@ class GamePhaseDirect {
 
 		if (!position.isContained(targets)) {
 			// non-directable position selected
-			cb(null);
 			return;
 		}
 		const pos = actor.getPosition();
@@ -61,8 +59,6 @@ class GamePhaseDirect {
 		// update character direction
 		const newDirection = Direction.resolve(pos, this.target);
 		actor.setDirection(newDirection);
-
-		cb(this.target);
 	}
 }
 

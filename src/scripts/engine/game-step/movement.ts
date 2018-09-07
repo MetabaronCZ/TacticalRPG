@@ -8,7 +8,7 @@ import CostMap from 'engine/pathfinding/cost-map';
 import { getMovableTiles, getShortestPath } from 'engine/pathfinding';
 
 export type MovePhaseState = 'INIT' | 'IDLE' | 'SELECTED' | 'ANIMATION';
-export type IMoveCallback = (step: IAnimationStep|null) => void;
+export type IMoveCallback = (step: IAnimationStep) => void;
 
 class GamePhaseMove {
 	private readonly actor: Character;

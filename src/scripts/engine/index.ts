@@ -1,5 +1,5 @@
 import { randomize } from 'core/array';
-import * as config from 'data/game-config';
+import { characterCTLimit, gridSize } from 'data/game-config';
 
 import Order from 'engine/order';
 import Position from 'engine/position';
@@ -42,7 +42,7 @@ class Engine {
 
 		// get actors
 		const actors = characters.filter(char => {
-			return char.getAttribute('CT') >= config.characterCTLimit || !char.isDead();
+			return char.getAttribute('CT') >= characterCTLimit || !char.isDead();
 		});
 
 		// if no actor present, continue updating characters
@@ -51,13 +51,13 @@ class Engine {
 			return;
 		}
 		// order actor
-		this.actors = order.getCharacters().filter(char => -1 !== actors.indexOf(char));
+		this.actors = order.get().filter(char => -1 !== actors.indexOf(char));
 
 		// start actor turns
-		this.runStep();
+		this.startStep();
 	}
 
-	private runStep() {
+	private startStep() {
 		const { actors, characters, order } = this;
 		const actor = actors[0];
 		this.actors.shift();
@@ -73,11 +73,14 @@ class Engine {
 			// on step end run step for other actors
 			this.step = null;
 			order.update();
-			this.runStep();
+			this.startStep();
 		});
 	}
 
 	private getPlayers(playerData: IPlayerData[]): Player[] {
+		if (2 !== playerData.length) {
+			throw new Error('Game has to have exactly two players');
+		}
 		const players = playerData.map((data, p) => {
 			const player = new Player(data);
 
@@ -85,17 +88,15 @@ class Engine {
 				// set position / orientation
 				switch (p) {
 					case 0:
-						char.setPosition(new Position(i + 2, config.gridSize - 1));
+						char.setPosition(new Position(i + 2, gridSize - 1));
 						char.setDirection('TOP');
 					case 1:
 						char.setPosition(new Position(i + 2, 0));
 						char.setDirection('BOTTOM');
-					default:
-						throw new Error('Only two players per game available');
 				}
 
 				// set small random initial CP
-				const ct = Math.floor((config.characterCTLimit / 10) * Math.random());
+				const ct = Math.floor((characterCTLimit / 10) * Math.random());
 				char.setAttribute('CT', ct);
 			});
 

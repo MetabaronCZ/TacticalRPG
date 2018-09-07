@@ -14,7 +14,7 @@ import GamePhaseReact from 'engine/game-step/reaction';
 
 export type ActionPhaseState = 'INIT' | 'IDLE' | 'SELECTED' | 'REACTION' | 'ANIMATION';
 export type IActionCallback = (step: IAnimationStep|null) => void;
-export type IActionInfoCallback = (text: string, position: Position) => void;
+export type IOnActionInfo = (text: string, position: Position) => void;
 
 class GamePhaseAct {
 	private readonly actor: Character;
@@ -123,7 +123,7 @@ class GamePhaseAct {
 		this.effectTargets = effectTargets;
 	}
 
-	public confirm(onInfo: IActionInfoCallback, cb: IActionCallback) {
+	public confirm(onInfo: IOnActionInfo, cb: IActionCallback) {
 		const { state, action, characters, effectTarget, effectTargets } = this;
 
 		if ('SELECTED' !== state) {
@@ -136,8 +136,7 @@ class GamePhaseAct {
 
 		if (!effectTargets.length) {
 			// action has no targets
-			cb(null);
-			return;
+			return cb(null);
 		}
 		this.state = 'REACTION';
 
@@ -179,7 +178,7 @@ class GamePhaseAct {
 		this.reaction = this.reactions[index];
 	}
 
-	private animate(onInfo: IActionInfoCallback, cb: IActionCallback) {
+	private animate(onInfo: IOnActionInfo, cb: IActionCallback) {
 		const { state, action, actor, effectArea, effectTargets } = this;
 
 		if ('REACTION' !== state) {

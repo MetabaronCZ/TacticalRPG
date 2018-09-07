@@ -7,7 +7,7 @@ export type StatusEffectID =
 	'REGEN' | 'IRON_SKIN' | 'BLOCK_SMALL' | 'BLOCK_LARGE';
 
 export type StatusEffectType = 'PHYSICAL' | 'MAGICAL' | 'SUPPORT';
-export type StatusEffectFun = () => IStatusEffect;
+type StatusEffectFun = () => IStatusEffect;
 
 export interface IStatusEffect {
 	id: StatusEffectID;

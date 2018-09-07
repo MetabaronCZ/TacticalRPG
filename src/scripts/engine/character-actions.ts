@@ -1,16 +1,14 @@
+import Position from 'engine/position';
 import Character from 'engine/character';
+import Skillsets from 'engine/skillset';
+import MagicSkills from 'engine/skill/magic';
+import WeaponSkills from 'engine/skill/weapon';
 import CharacterAction from 'engine/character-action';
+import { WeaponSkillID } from 'engine/skill/weapon/types';
+import ArchetypeSkills, { ArchetypeSkillID } from 'engine/skill/archetype';
 
 import Weapons from 'modules/weapon';
-import Position from 'engine/position';
-import Skillsets from 'modules/skillset';
-import MagicSkills from 'modules/skill/magic';
-import WeaponSkills from 'modules/skill/weapon';
-import { SkillType } from 'modules/skill/attributes';
-import ArchetypeSkills from 'modules/skill/archetype';
-import { WeaponSkillID } from 'modules/skill/weapon/types';
 import { WeaponTypeID, WeaponID } from 'modules/weapon/types';
-import { ArchetypeSkillID } from 'modules/skill/archetype/types';
 
 class CharacterActions {
 	public static readonly dontReactAction = new CharacterAction('DONT_REACT', 'Pass', 0, true, []);
@@ -59,7 +57,7 @@ class CharacterActions {
 		for (const id of charSkillset.skills) {
 			const { type, title, cost } = MagicSkills.get(id);
 
-			if (SkillType.ACTIVE !== type) {
+			if ('ACTIVE' !== type) {
 				continue;
 			}
 			const action = new CharacterAction('MAGIC', `${title} (${charSkillset.title})`, cost, AP >= cost, [id]);
@@ -99,7 +97,7 @@ class CharacterActions {
 
 		// EVADE action
 		if (character.isSpeedType()) {
-			const id = ArchetypeSkillID.EVADE;
+			const id: ArchetypeSkillID = 'EVADE';
 			const { cost, title } = ArchetypeSkills.get(id);
 
 			if (AP >= cost) {
@@ -113,9 +111,9 @@ class CharacterActions {
 			let id: WeaponSkillID;
 
 			if (WeaponID.SHIELD_LARGE === off) {
-				id = WeaponSkillID.SHIELD_LARGE_BLOCK;
+				id = 'SHIELD_LARGE_BLOCK';
 			} else {
-				id = WeaponSkillID.SHIELD_SMALL_BLOCK;
+				id = 'SHIELD_SMALL_BLOCK';
 			}
 			const { title, cost } = WeaponSkills.get(id);
 

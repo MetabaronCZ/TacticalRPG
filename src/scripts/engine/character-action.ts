@@ -1,4 +1,4 @@
-import { SkillID } from 'modules/skill/types';
+import { SkillID } from 'engine/skill';
 
 export type CharacterActionID =
 	'ATTACK' | 'DOUBLE_ATTACK' | 'WEAPON' | 'MAGIC' |

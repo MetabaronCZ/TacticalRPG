@@ -4,22 +4,22 @@ import CharacterAction from 'engine/character-action';
 import SkillUtils from 'engine/skill/utils';
 
 export type ReactionPhaseState = 'IDLE' | 'SELECTED' | 'EVASION' | 'BLOCK';
-export type IReactionCallback = () => void;
+export type IOnReactEnd = () => void;
 
 class GamePhaseReact {
 	private readonly reactor: Character;
 	private readonly obstacles: Position[] = [];
 	private state: ReactionPhaseState = 'IDLE';
-	private onEnd: IReactionCallback;
+	private onEnd: IOnReactEnd;
 
 	private action: CharacterAction|null = null;
 	private evasionTarget: Position|null = null; // selected evasion tile position
 	private evasionTargets: Position[] = []; // possible evasion positions of reacting character
 
-	constructor(reactor: Character, obstacles: Position[], cb: IReactionCallback) {
+	constructor(reactor: Character, obstacles: Position[], onEnd: IOnReactEnd) {
 		this.reactor = reactor;
-		this.onEnd = cb;
 		this.obstacles = obstacles;
+		this.onEnd = onEnd;
 	}
 
 	public getState(): ReactionPhaseState {

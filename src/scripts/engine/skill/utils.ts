@@ -158,7 +158,7 @@ class SkillUtils {
 					break;
 
 				case 'ENEMY':
-					if (actor.getPlayer() === char.getPlayer()) {
+					if (actor.getPlayer() !== char.getPlayer()) {
 						targets.push(char);
 					}
 					break;

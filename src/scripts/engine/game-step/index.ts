@@ -35,11 +35,11 @@ class GameStep {
 	private readonly actor: Actor;
 	private readonly onEnd: () => void;
 
-	private phase: GameStepPhase = 'IDLE';
-
 	private readonly move: GamePhaseMove;
 	private readonly act: GamePhaseAct;
 	private readonly direct: GamePhaseDirect;
+
+	private phase: GameStepPhase = 'IDLE';
 
 	private reactors: Reactor[] = [];
 	private reactor: Reactor|null = null;
@@ -65,8 +65,8 @@ class GameStep {
 		return this.actions;
 	}
 
-	public updateActions(): CharacterAction[] {
-		const { phase, actor, reactor} = this;
+	public updateActions() {
+		const { phase, actor, action, reactor} = this;
 
 		switch (phase) {
 			case 'IDLE':
@@ -74,27 +74,33 @@ class GameStep {
 			case 'SKILL:ANIMATION':
 			case 'DIRECT:START':
 				this.actions = [];
+				break;
 
 			case 'MOVE:IDLE':
 				this.actions = CharacterActions.getIdleActions(actor.getCharacter());
+				break;
 
 			case 'SKILL:IDLE':
 				this.actions = CharacterActions.getSkillActions();
+				break;
 
 			case 'SKILL:SELECTED':
-				if (!this.action) {
+				if (!action) {
 					throw new Error('Could not set actions: no action');
 				}
-				this.actions = CharacterActions.getSkillConfirmActions(this.action, actor.getSkillTargets());
+				this.actions = CharacterActions.getSkillConfirmActions(action, actor.getSkillTargets());
+				break;
 
 			case 'REACT:IDLE':
 				if (null === reactor) {
 					throw new Error('Could not set actions: no reactor');
 				}
 				this.actions = CharacterActions.getReactiveActions(reactor.getCharacter());
+				break;
 
 			case 'REACT:EVASION':
 				this.actions = CharacterActions.getEvasiveActions();
+				break;
 
 			default:
 				throw new Error('Could not set actions: invalid game phase ' + phase);

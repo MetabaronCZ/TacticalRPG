@@ -18,7 +18,7 @@ class Order {
 		this.update();
 	}
 
-	public getCharacters(): Character[] {
+	public get(): Character[] {
 		return this.characters;
 	}
 
