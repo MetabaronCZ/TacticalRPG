@@ -1,4 +1,7 @@
-import { gridSize, enemyPlayerName, allyPlayerName } from 'data/game-config';
+import nameSamples from 'data/names';
+import { gridSize, maxPartyNameLength } from 'data/game-config';
+
+import RandomNameGenerator from 'core/random-name-generator';
 
 import Order from 'modules/order';
 import Party from 'modules/party';
@@ -8,6 +11,7 @@ import Character from 'modules/character';
 
 import { ActPhase, GamePhase, IGameState } from 'modules/game/types';
 import { ICharacterData } from 'modules/character-data/types';
+import CharacterData from 'modules/character-data';
 import { PlayerType } from 'modules/player/types';
 import { Direction } from 'modules/direction';
 
@@ -16,17 +20,19 @@ const getInitialState = (charIds: string[], chars: ICharacterData[], initiative:
 		.filter(id => !!id)
 		.map(id => Party.getCharacterById(id, chars));
 
-	const ally = Player.create(allyPlayerName, PlayerType.ALLY);
-	const enemy = Player.create(enemyPlayerName, PlayerType.ENEMY);
+	const ally = Player.create(PlayerType.ALLY);
+	const enemy = Player.create(PlayerType.ENEMY);
 
 	const allies = party.map((char, i) => {
 		return Character.create(char, Position.create(i + 2, gridSize - 1), Direction.TOP, PlayerType.ALLY);
 	});
 
-	const enemies = Party.getRandomCharacters(party.length)
-		.map((char, i) => {
-			return Character.create(char, Position.create(i + 2, 0), Direction.BOTTOM, PlayerType.ENEMY);
-		});
+	const enemyNames = RandomNameGenerator.get(nameSamples, allies.length, maxPartyNameLength);
+
+	const enemies = enemyNames.map((name, i) => {
+		const charData = CharacterData.random(name);
+		return Character.create(charData, Position.create(i + 2, 0), Direction.BOTTOM, PlayerType.ENEMY);
+	});
 
 	const characters = allies.concat(enemies);
 	const order = Order.get(characters, initiative);

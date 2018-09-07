@@ -4,6 +4,5 @@ export enum PlayerType {
 }
 
 export interface IPlayer {
-	readonly name: string;
 	readonly type: PlayerType;
 }

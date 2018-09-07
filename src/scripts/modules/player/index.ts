@@ -1,7 +1,6 @@
-import { PlayerType } from 'modules/player/types';
+import { PlayerType, IPlayer } from 'modules/player/types';
 
-const create = (name: string, type: PlayerType) => ({
-	name,
+const create = (type: PlayerType): IPlayer => ({
 	type
 });
 

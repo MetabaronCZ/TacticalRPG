@@ -1,4 +1,4 @@
-interface IAnimationStep {
+export interface IAnimationStep {
 	readonly number: number;
 	readonly duration: number;
 	readonly isLast: boolean;

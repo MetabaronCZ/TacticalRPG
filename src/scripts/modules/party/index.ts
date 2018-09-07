@@ -1,11 +1,5 @@
 import uuid from 'uuid/v1';
 
-import nameSamples from 'data/names';
-import { maxPartyNameLength } from 'data/game-config';
-import RandomNameGenerator from 'core/random-name-generator';
-
-import CharacterData from 'modules/character-data';
-
 import { IParty } from 'modules/party/types';
 import { ICharacterData } from 'modules/character-data/types';
 
@@ -27,12 +21,6 @@ const create = (conf = {}): IParty => {
 // return character object from character list by its ID
 const getCharacterById = (id: string, characters: ICharacterData[]): ICharacterData => {
 	return characters.filter(char => char.id === id)[0];
-};
-
-// returns random character party array
-const getRandomCharacters = (count: number): ICharacterData[] => {
-	const characters = RandomNameGenerator.get(nameSamples, count, maxPartyNameLength);
-	return characters.map((char, i) => CharacterData.random(char));
 };
 
 const removeCharacter = (partyList: IParty[], char?: ICharacterData): IParty[] => {
@@ -82,7 +70,6 @@ const validate = (party: ICharacterData[] = []): string|true => {
 const Party = {
 	create,
 	getCharacterById,
-	getRandomCharacters,
 	removeCharacter,
 	validate
 };

@@ -4,7 +4,7 @@ import Animation from 'core/animation';
 import * as ArrayUtils from 'core/array';
 import * as NumberUtils from 'core/number';
 
-import { gridSize, moveAnimDuration, tickDelay, characterCTLimit, skillAnimDuration, smallShieldBlock } from 'data/game-config';
+import * as config from 'data/game-config';
 import GameUI from 'components/Game/template';
 
 import Game from 'modules/game';
@@ -28,6 +28,8 @@ import { getShortestPath, getMovableTiles } from 'modules/pathfinding';
 import { IActions, ActionID, IActionItem } from 'modules/character-action/types';
 import StatusEffects from 'modules/status-effect';
 
+import Engine from 'engine';
+
 const directAction = CharacterActions.directAction;
 
 interface IGameUIContainerProps {
@@ -39,14 +41,24 @@ interface IGameUIContainerProps {
 
 class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState> {
 	private initiative = (Math.random() < 0.5 ? PlayerType.ALLY : PlayerType.ENEMY);
+	private engine: Engine;
 
 	constructor(props: IGameUIContainerProps) {
 		super(props);
 		this.state = Game.getInitialState(props.party.characters, props.characters, this.initiative);
+
+		this.engine = new Engine({
+			players: [
+				{ control: 'HUMAN', characters: props.characters, party: props.party },
+				{ control: 'HUMAN' }
+			]
+		});
+
+		console.log(this.engine);
 	}
 
 	public componentDidMount() {
-		this.tick();
+		this.step();
 	}
 
 	public render() {
@@ -71,7 +83,7 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 		return this.getCharacter(actorId);
 	}
 
-	private tick() {
+	private step() {
 		const phase = this.state.phase;
 
 		if (GamePhase.IDLE !== phase && GamePhase.TICK !== phase) {
@@ -91,7 +103,7 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 					const updated = Character.tick(char);
 
 					// collect acting characters
-					if (updated.currAttributes.CT >= characterCTLimit) {
+					if (updated.currAttributes.CT >= config.characterCTLimit) {
 						actors.push(updated.data.id);
 					}
 					return updated;
@@ -115,9 +127,9 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 						tick,
 						actors: orderedActors.map(a => a[0])
 					},
-					() => actors.length ? this.startTurn() : this.tick()
+					() => actors.length ? this.startTurn() : this.step()
 				);
-			}, tickDelay)
+			}, config.tickDelay)
 		);
 	}
 
@@ -134,7 +146,7 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 				state => ({
 					actors: state.actors.filter(id => actor.data.id)
 				}),
-				() => this.state.actors.length ? this.startTurn() : this.tick()
+				() => this.state.actors.length ? this.startTurn() : this.step()
 			);
 		}
 		const actorPos = actor.position;
@@ -199,7 +211,7 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 
 		const characters = this.state.characters.map(char => {
 			if (actorId === char.data.id) {
-				char.currAttributes.CT %= characterCTLimit;
+				char.currAttributes.CT %= config.characterCTLimit;
 			}
 			return char;
 		});
@@ -213,7 +225,7 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 				characters,
 				order
 			},
-			() => actors.length ? this.startTurn() : this.tick()
+			() => actors.length ? this.startTurn() : this.step()
 		);
 	}
 
@@ -229,7 +241,7 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 		if (!movePath.length) {
 			return this.endMove();
 		}
-		const timing = Array(movePath.length).fill(moveAnimDuration);
+		const timing = Array(movePath.length).fill(config.moveAnimDuration);
 
 		this.setState(
 			state => ({
@@ -505,7 +517,7 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 				if (!targets.length || !action || !action.skills || !action.skills.length) {
 					return this.endSkill();
 				}
-				const timing = Array(targets.length).fill(skillAnimDuration);
+				const timing = Array(targets.length).fill(config.skillAnimDuration);
 
 				// animate skill action
 				const skillAnim = new Animation(timing, step => {
@@ -561,7 +573,7 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 									// show small shield block info
 									if (-1 !== effects.indexOf(StatusEffectID.BLOCK_SMALL)) {
 										target = Character.removeStatus(target, StatusEffectID.BLOCK_SMALL);
-										info.unshift(`Blocked (${smallShieldBlock})`);
+										info.unshift(`Blocked (${config.smallShieldBlock})`);
 									}
 								}
 								let infoTiming = Array(info.length).fill(0);
@@ -675,8 +687,8 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState>
 		const obstacles = characters.map(char => char.position);
 
 		// add non-moveArea positions in obstacles
-		for (let x = 0; x < gridSize; x++) {
-			for (let y = 0; y < gridSize; y++) {
+		for (let x = 0; x < config.gridSize; x++) {
+			for (let y = 0; y < config.gridSize; y++) {
 				const pos = Position.create(x, y);
 
 				if (Position.isContained(pos, moveArea) || Position.isContained(pos, obstacles)) {
