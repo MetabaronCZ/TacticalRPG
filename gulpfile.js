@@ -93,7 +93,7 @@ gulp.task('scripts', cb => {
 			if (err.details) {
 				console.error(err.details);
 			}
-			return (firstRun ? cb() : undefined);
+			return (isFirstRun ? cb() : undefined);
 		}
 		console.log(
 			stats.toString({

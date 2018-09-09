@@ -1,4 +1,5 @@
 const path = require('path');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 const pathSrc = './src/scripts';
 const pathDist = './dist/scripts';
@@ -31,7 +32,15 @@ module.exports = env => {
 			rules: [
 				{
 					test: /\.tsx?$/,
-					use: ['babel-loader','ts-loader'],
+					use: [
+						{
+							loader: 'babel-loader',
+							options: {
+								cacheDirectory: true
+							}
+						},
+						{ loader: 'ts-loader' }
+					],
 					include: path.resolve(pathSrc)
 				},
 				{
@@ -52,7 +61,13 @@ module.exports = env => {
 			splitChunks: {
 				name: 'libs',
 				chunks: 'all'
-			}
+			},
+			minimizer: [
+				new UglifyJsPlugin({
+					cache: true,
+					parallel: true
+				})
+			]
 		},
 		performance: {
 			hints: false
