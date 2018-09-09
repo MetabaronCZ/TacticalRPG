@@ -12,7 +12,7 @@ import ActReaction from 'engine/act/reaction';
 import StatusEffects from 'engine/status-effect';
 import CharacterAction from 'engine/character-action';
 
-export type ActActionState = 'INIT' | 'IDLE' | 'SELECTED' | 'REACTION' | 'ANIMATION';
+export type ActActionState = 'INIT' | 'IDLE' | 'SELECTED' | 'REACTION' | 'ANIMATION' | 'DONE';
 export type IOnActionInfo = (text: string, position: Position) => void;
 
 class ActAction {
@@ -96,7 +96,7 @@ class ActAction {
 	public selectTarget(target: Position, cb: () => void) {
 		const { state, actor, action, targets, characters } = this;
 
-		if ('IDLE' !== state) {
+		if ('IDLE' !== state && 'SELECTED' !== state) {
 			throw new Error('Could not select action target: invalid state ' + state);
 		}
 
@@ -128,7 +128,7 @@ class ActAction {
 		cb();
 	}
 
-	public confirm(onInfo: IOnActionInfo, cb: (step: IAnimationStep) => void) {
+	public confirm(onInfo: IOnActionInfo, onUpdate: () => void, onActionAnimation: (step: IAnimationStep) => void) {
 		const { state, action, characters, effectTarget, effectTargets } = this;
 
 		if ('SELECTED' !== state) {
@@ -146,21 +146,33 @@ class ActAction {
 			return new ActReaction(id, reactor, obstacles, () => {
 				if (id + 1 >= this.reactions.length) {
 					// go to skill animation
-					this.animate(onInfo, cb);
+					this.animate(onInfo, step => {
+						if (step.isLast) {
+							this.state = 'DONE';
+						}
+						onActionAnimation(step);
+					});
 
 				} else {
 					// go to next reaction phase
 					this.reaction = this.reactions[id + 1];
 					this.startReact();
 				}
+				onUpdate();
 			});
 		});
 
 		this.reaction = this.reactions[0];
 		this.startReact();
+		onUpdate();
 	}
 
-	public passReaction() {
+	public pass(action: CharacterAction) {
+		this.state = 'DONE';
+		this.action = action;
+	}
+
+	public passReaction(action: CharacterAction) {
 		const { state, reaction } = this;
 
 		if ('REACTION' !== state) {
@@ -170,7 +182,7 @@ class ActAction {
 		if (!reaction) {
 			throw new Error('Could not cancel reaction: invalid reaction');
 		}
-		reaction.cancel();
+		reaction.pass(action);
 	}
 
 	private startReact() {

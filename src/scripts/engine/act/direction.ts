@@ -2,7 +2,7 @@ import Position from 'engine/position';
 import Direction from 'engine/direction';
 import Character from 'engine/character';
 
-export type ActDirectState = 'INIT' | 'IDLE';
+export type ActDirectState = 'INIT' | 'IDLE' | 'DONE';
 
 class ActDirect {
 	private readonly actor: Character;
@@ -53,6 +53,8 @@ class ActDirect {
 			// non-directable position selected
 			return;
 		}
+		this.state = 'DONE';
+
 		const pos = actor.getPosition();
 		this.target = position;
 

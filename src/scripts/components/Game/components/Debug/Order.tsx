@@ -11,7 +11,7 @@ interface IOrderProps {
 const getcolor = (act: Act|null, char: Character) => {
 	const isDead = char.isDead();
 	const isActive = !!(act && act.getActor() === char);
-	return (isDead ? 'red' : (isActive ? 'black' : ''));
+	return (isDead ? 'darkred' : (isActive ? 'black' : ''));
 };
 
 const Order: React.SFC<IOrderProps> = ({ act, characters }) => (

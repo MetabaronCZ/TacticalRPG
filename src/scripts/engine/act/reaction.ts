@@ -3,7 +3,7 @@ import Character from 'engine/character';
 import CharacterAction from 'engine/character-action';
 import SkillUtils from 'engine/skill/utils';
 
-export type ActReactionState = 'IDLE' | 'SELECTED' | 'EVASION' | 'BLOCK' | 'CANCELLED';
+export type ActReactionState = 'IDLE' | 'SELECTED' | 'EVASION' | 'BLOCK' | 'DONE';
 export type IOnReactEnd = () => void;
 
 class ActReaction {
@@ -67,19 +67,22 @@ class ActReaction {
 		switch (skillId) {
 			case 'EVADE':
 				this.evasionStart();
+				break;
 
 			case 'SHIELD_SMALL_BLOCK':
 				this.block('BLOCK_SMALL');
+				break;
 
 			case 'SHIELD_LARGE_BLOCK':
 				this.block('BLOCK_LARGE');
+				break;
 
 			default:
 				throw new Error('Invalid reaction skill');
 		}
 	}
 
-	public selectEvasionTarget(target: Position, cb: () => void) {
+	public selectEvasionTarget(target: Position) {
 		const { state, action, reactor, evasionTargets } = this;
 
 		if ('EVASION' !== state) {
@@ -94,6 +97,7 @@ class ActReaction {
 			// non-evasible position selected
 			return;
 		}
+		this.state = 'DONE';
 		this.evasionTarget = target;
 
 		const skills = SkillUtils.getByID(action.getSkills());
@@ -104,18 +108,17 @@ class ActReaction {
 		reactor.setPosition(target);
 		reactor.setAttribute('AP', AP - cost);
 
-		cb();
 		this.onEnd();
 	}
 
-	public cancel() {
+	public pass(action: CharacterAction) {
 		const { state} = this;
 
 		if ('IDLE' !== state) {
-			throw new Error('Could not cancel reaction: invalid state ' + state);
+			throw new Error('Could not pass reaction: invalid state ' + state);
 		}
-		this.state = 'CANCELLED';
-
+		this.state = 'DONE';
+		this.action = action;
 		this.onEnd();
 	}
 
@@ -146,7 +149,7 @@ class ActReaction {
 		if ('SELECTED' !== state) {
 			throw new Error('Could not start to evade: invalid state ' + state);
 		}
-		this.state = 'BLOCK';
+		this.state = 'DONE';
 
 		reactor.applyStatus(block);
 		this.onEnd();

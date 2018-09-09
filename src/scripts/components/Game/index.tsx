@@ -65,7 +65,18 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState 
 			],
 			events: {
 				onUpdate: engineState => {
-					this.setState({ engineState, engineUpdate: new Date() });
+					const now = new Date();
+					this.setState({ engineState, engineUpdate: now });
+				},
+				onGameOver: engineState => {
+					const now = new Date();
+
+					throw new Error('TODO: Game Over');
+
+					this.setState(
+						{ engineState, engineUpdate: now },
+						() => props.onExit()
+					);
 				}
 			}
 		});

@@ -13,8 +13,7 @@ class Order {
 
 		this.characters = players
 			.map(pl => pl.getCharacters()) // get player characters
-			.reduce((a, b) => a.concat(b)) // merge all characters
-			.filter(char => !char.isDead()); // filter out dead characters
+			.reduce((a, b) => a.concat(b)); // merge all characters
 
 		this.update();
 	}
@@ -25,6 +24,7 @@ class Order {
 
 	public update() {
 		const { players, characters } = this;
+		const liveChars = characters.filter(char => !char.isDead());
 
 		if (characters.length < 2) {
 			this.order = characters;
@@ -33,7 +33,7 @@ class Order {
 		let order: Character[] = [];
 
 		// serialize characters
-		const chars = characters.map(char => {
+		const chars = liveChars.map(char => {
 			const SPD = char.getAttribute('SPD');
 			const CT = char.getAttribute('CT');
 			const id = char.getData().id;

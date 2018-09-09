@@ -1,10 +1,8 @@
 TODO
 -----------------------------------------------------------
---	COUNTER reaction
 --	refaktorovat vsude pole tak, aby vzdy byl default [] (zbavit se arr?: x[])
---	po vyberu cile skillu, nechat zvyraznewne targety a pri kliku na jiny target nez zvoleny, target zmenit
 
---	pri vyberu party pred soubojem tam pridat do vyberu party i "Random generated party"
+--	pri vyberu party pred soubojem pridat do vyberu i "Random party"
 	- az po implementaci Engine
 
 --	prolinkovat PlayerData, aby chodila uz z BattleStart
@@ -26,3 +24,7 @@ TODO
 --	Position zmenit na pregenerovany seznam umisteni s ID
 	- prirazovat PositionID
 	- pri vygenerovani pozic predvypocitat i sousedy
+
+--	trackovat rozhodnuti
+	- pripravit replay (ulozeni na konci souboje + moznost krokovani)
+	- pripravit moznost jit o krok (Act) zpet primo ve hre (udelat konfigurovatelne - pro single play)

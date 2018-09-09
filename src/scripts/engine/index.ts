@@ -18,6 +18,7 @@ export interface IEngineState {
 
 interface IEngineEvents {
 	onUpdate: (state: IEngineState) => void;
+	onGameOver: (state: IEngineState) => void;
 }
 
 interface IEngineProps {
@@ -64,27 +65,31 @@ class Engine {
 		if (null !== this.act) {
 			throw new Error('Could not update engine: a act is in progress');
 		}
+		if (this.checkWinConditions()) {
+			this.events.onGameOver(this.getState());
+			return;
+		}
 		const { characters, order } = this;
+		const liveChars = characters.filter(char => !char.isDead());
 
 		// update game tick counter
 		this.tick++;
 
 		// update characters
-		characters.forEach(char => char.update());
+		liveChars.forEach(char => char.update());
 
 		// update order
 		order.update();
 
 		// get actors
-		const actors = characters.filter(char => {
-			return char.getAttribute('CT') >= characterCTLimit && !char.isDead();
-		});
+		const actors = liveChars.filter(char => char.getAttribute('CT') >= characterCTLimit);
 
 		// if no actor present, continue updating
 		if (!actors.length) {
 			this.update();
 			return;
 		}
+
 		// order actors
 		const orderChars = order.get();
 		this.actors = actors.sort((a, b) => orderChars.indexOf(a) - orderChars.indexOf(b));
@@ -104,13 +109,15 @@ class Engine {
 		}
 		this.actNumber++;
 
+		// update order
+		order.update();
+
 		// create new character act
 		this.act = new Act(this.actNumber, actor, characters, {
 			onUpdate: () => events.onUpdate(this.getState()),
 			onEnd: () => {
 				// run next act
 				this.act = null;
-				order.update();
 				this.startAct();
 			}
 		});
@@ -144,6 +151,19 @@ class Engine {
 		});
 
 		return randomize(players);
+	}
+
+	private checkWinConditions(): boolean {
+		const { players } = this;
+
+		for (const pl of players) {
+			const liveChars = pl.getCharacters().filter(char => !char.isDead());
+
+			if (0 === liveChars.length) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private getState(): IEngineState {

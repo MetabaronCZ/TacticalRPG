@@ -87,6 +87,7 @@ class Act {
 
 				switch (actionState) {
 					case 'IDLE':
+					case 'SELECTED':
 						this.selectActionTarget(position);
 						return;
 
@@ -96,10 +97,9 @@ class Act {
 						if (null === reaction) {
 							throw new Error('Could not select reaction target: invalid reaction');
 						}
-						reaction.selectEvasionTarget(position, () => {
-							this.updateActions();
-							events.onUpdate();
-						});
+						if ('EVASION' === reaction.getState()) {
+							reaction.selectEvasionTarget(position);
+						}
 						return;
 
 					default:
@@ -148,6 +148,7 @@ class Act {
 				}
 				this.phase = 'DIRECTION';
 
+				actionPhase.pass(action);
 				directPhase.start();
 				this.updateActions();
 				events.onUpdate();
@@ -175,7 +176,7 @@ class Act {
 				if ('ACTION' !== phase) {
 					throw new Error('Could not cancel reaction: invalid phase ' + phase);
 				}
-				actionPhase.passReaction();
+				actionPhase.passReaction(action);
 				this.updateActions();
 				events.onUpdate();
 				return;
@@ -195,6 +196,7 @@ class Act {
 				const actionState = actionPhase.getState();
 
 				switch (actionState) {
+					case 'IDLE':
 					case 'SELECTED':
 						// remove current action >> goto move phase
 						this.actionPhase = new ActAction(actor, characters);
@@ -301,15 +303,22 @@ class Act {
 	private confirmAction() {
 		const { actionPhase, directPhase, events } = this;
 
-		actionPhase.confirm(this.setBattleInfo, step => {
-			events.onUpdate();
-
-			if (step.isLast) {
-				// start direct phase
-				directPhase.start();
+		actionPhase.confirm(
+			this.setBattleInfo.bind(this),
+			() => {
 				this.updateActions();
+				events.onUpdate();
+			},
+			step => {
+				if (step.isLast) {
+					// start direct phase
+					this.phase = 'DIRECTION';
+					directPhase.start();
+					this.updateActions();
+				}
+				events.onUpdate();
 			}
-		});
+		);
 
 		this.updateActions();
 		events.onUpdate();
@@ -364,12 +373,12 @@ class Act {
 								break;
 
 							default:
-								break; // do nothing
+								this.actions = [];
 						}
 						break;
 
 					default:
-						break; // do nothing
+						this.actions = [];
 				}
 				break;
 			}

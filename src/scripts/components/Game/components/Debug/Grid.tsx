@@ -33,7 +33,7 @@ const Grid: React.SFC<IGridProps> = ({ act, players, characters, onTileSelect })
 	const actor = act ? act.getActor() : null;
 
 	return (
-		<div style={{ position: 'relative', width: gridWidth + 'px', height: gridWidth + 'px', }}>
+		<div style={{ position: 'relative', width: gridWidth + 'px', height: gridWidth + 'px', cursor: 'pointer', }}>
 			<GridBase act={act} onSelect={onTileSelect} />
 			<GridCharacters actor={actor} characters={characters} colors={playerColors} />
 		</div>

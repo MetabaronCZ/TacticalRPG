@@ -6,7 +6,7 @@ import Direction from 'engine/direction';
 import Character from 'engine/character';
 import { getMovableTiles, getShortestPath, ICostMap } from 'engine/pathfinding';
 
-export type ActMoveState = 'INIT' | 'IDLE' | 'ANIMATION';
+export type ActMoveState = 'INIT' | 'IDLE' | 'ANIMATION' | 'DONE';
 
 class ActMove {
 	private readonly actor: Character;
@@ -16,7 +16,7 @@ class ActMove {
 	private state: ActMoveState = 'INIT';
 
 	private area: Position[] = []; // movable tiles
-	private target: Position|null = null; // target position
+	private target: Position; // target position
 	private path: Position[] = []; // move path
 	private costMap: ICostMap = {}; // movable area cost map
 
@@ -25,6 +25,7 @@ class ActMove {
 		this.initialAP = actor.getAttribute('AP');
 		this.initialPosition = actor.getPosition();
 		this.obstacles = characters.filter(char => char !== actor).map(char => char.getPosition());
+		this.target = this.initialPosition;
 		this.init();
 	}
 

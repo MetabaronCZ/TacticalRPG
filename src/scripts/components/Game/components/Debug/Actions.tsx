@@ -13,7 +13,10 @@ const Actions: React.SFC<IActionsProps> = ({ actions, onSelect }) => {
 				const color = action.isActive() ? '' : 'grey';
 				const onClick = (e: SyntheticEvent) => {
 					e.preventDefault();
-					onSelect(action);
+
+					if (action.isActive()) {
+						onSelect(action);
+					}
 				};
 
 				return (

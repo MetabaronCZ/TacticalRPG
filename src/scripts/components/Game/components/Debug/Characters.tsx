@@ -36,7 +36,7 @@ const Characters: React.SFC<ICharactersProps> = ({ act, players }) => (
 							const AP = char.getAttribute('AP');
 							const baseHP = char.getBaseAttribute('HP');
 							const baseAP = char.getBaseAttribute('AP');
-							const color = (isDead ? 'red' : (isActive ? 'black' : ''));
+							const color = (isDead ? 'darkred' : (isActive ? 'black' : ''));
 
 							return (
 								<tr key={c} style={{ backgroundColor: color, }}>
