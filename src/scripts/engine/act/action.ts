@@ -12,15 +12,22 @@ import ActReaction from 'engine/act/reaction';
 import StatusEffects from 'engine/status-effect';
 import CharacterAction from 'engine/character-action';
 
+interface IActActionEvents {
+	onStart: (action: ActAction) => void;
+	onReset: (action: ActAction) => void;
+	onSelect: (action: ActAction) => void;
+}
+
 export type ActActionState = 'INIT' | 'IDLE' | 'SELECTED' | 'REACTION' | 'ANIMATION' | 'DONE';
 export type IOnActionInfo = (text: string, position: Position) => void;
 
 class ActAction {
 	private readonly actor: Character;
 	private readonly characters: Character[] = [];
+	private readonly events: IActActionEvents;
+
 	private state: ActActionState = 'INIT';
 	private action: CharacterAction|null = null;
-
 	private reaction: ActReaction|null = null; // current reaction phase
 	private reactions: ActReaction[] = []; // action reactor phases
 	private area: Position[] = []; // skill range tiles
@@ -29,9 +36,10 @@ class ActAction {
 	private effectTarget: Position|null = null; // selected skill target
 	private effectTargets: Character[] = []; // targeted skill affected characters
 
-	constructor(actor: Character, characters: Character[]) {
+	constructor(actor: Character, characters: Character[], events: IActActionEvents) {
 		this.actor = actor;
 		this.characters = characters;
+		this.events = events;
 	}
 
 	public getState(): ActActionState {
@@ -91,9 +99,11 @@ class ActAction {
 
 		this.area = targetable;
 		this.targets = targets;
+
+		this.events.onStart(this);
 	}
 
-	public selectTarget(target: Position, cb: () => void) {
+	public selectTarget(target: Position) {
 		const { state, actor, action, targets, characters } = this;
 
 		if ('IDLE' !== state && 'SELECTED' !== state) {
@@ -125,7 +135,7 @@ class ActAction {
 		this.effectArea = effectArea;
 		this.effectTargets = effectTargets;
 
-		cb();
+		this.events.onSelect(this);
 	}
 
 	public confirm(onInfo: IOnActionInfo, onUpdate: () => void, onActionAnimation: (step: IAnimationStep) => void) {
@@ -183,6 +193,20 @@ class ActAction {
 			throw new Error('Could not cancel reaction: invalid reaction');
 		}
 		reaction.pass(action);
+	}
+
+	public reset() {
+		this.state = 'INIT';
+		this.action = null;
+		this.reaction = null;
+		this.reactions = [];
+		this.area = [];
+		this.targets = [];
+		this.effectArea = [];
+		this.effectTarget = null;
+		this.effectTargets = [];
+
+		this.events.onReset(this);
 	}
 
 	private startReact() {

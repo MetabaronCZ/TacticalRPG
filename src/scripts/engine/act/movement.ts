@@ -6,27 +6,34 @@ import Direction from 'engine/direction';
 import Character from 'engine/character';
 import { getMovableTiles, getShortestPath, ICostMap } from 'engine/pathfinding';
 
-export type ActMoveState = 'INIT' | 'IDLE' | 'ANIMATION' | 'DONE';
+interface IActMoveEvents {
+	onStart: (move: ActMove) => void;
+	onSelect: (move: ActMove) => void;
+	onAnimation: (move: ActMove, step: IAnimationStep) => void;
+}
+
+export type ActMoveState = 'INIT' | 'IDLE' | 'SELECTED' | 'ANIMATION';
 
 class ActMove {
 	private readonly actor: Character;
 	private readonly initialAP: number;
 	private readonly initialPosition: Position;
 	private readonly obstacles: Position[] = [];
-	private state: ActMoveState = 'INIT';
+	private readonly events: IActMoveEvents;
 
+	private state: ActMoveState = 'INIT';
 	private area: Position[] = []; // movable tiles
 	private target: Position; // target position
 	private path: Position[] = []; // move path
 	private costMap: ICostMap = {}; // movable area cost map
 
-	constructor(actor: Character, characters: Character[]) {
+	constructor(actor: Character, characters: Character[], events: IActMoveEvents) {
 		this.actor = actor;
 		this.initialAP = actor.getAttribute('AP');
 		this.initialPosition = actor.getPosition();
 		this.obstacles = characters.filter(char => char !== actor).map(char => char.getPosition());
+		this.events = events;
 		this.target = this.initialPosition;
-		this.init();
 	}
 
 	public getState(): ActMoveState {
@@ -49,16 +56,32 @@ class ActMove {
 		return this.initialPosition;
 	}
 
-	public selectTarget(target: Position, cb: (step: IAnimationStep) => void): Animation|null {
-		const { state, actor, obstacles, area, costMap } = this;
+	public start() {
+		const { state, actor, obstacles } = this;
 
-		if ('IDLE' !== state) {
-			return null;
+		if ('INIT' !== state) {
+			throw new Error('Could not init movement: invalid state ' + state);
 		}
+		this.state = 'IDLE';
 
-		if (!target.isContained(area)) {
-			// non-movable position selected
-			return null;
+		const MOV = actor.getAttribute('MOV');
+		const AP = actor.getAttribute('AP');
+		const pos = actor.getPosition();
+
+		const range = Math.min(MOV, AP);
+		const movable = getMovableTiles(pos, obstacles, range);
+
+		this.area = movable.positions;
+		this.costMap = movable.costMap;
+
+		this.events.onStart(this);
+	}
+
+	public selectTarget(target: Position) {
+		const { state, actor, obstacles, area } = this;
+
+		if ('IDLE' !== state || !target.isContained(area)) {
+			return;
 		}
 		const obst = obstacles.slice(0);
 
@@ -76,16 +99,28 @@ class ActMove {
 		const path = getShortestPath(actor.getPosition(), target, obst);
 
 		if (path.length < 2) {
-			// no possible movement path
-			return null;
+			return;
 		}
-		this.state = 'ANIMATION';
+		this.state = 'SELECTED';
 		this.target = target;
 		this.path = path;
 
+		this.events.onSelect(this);
+
+		this.animate();
+	}
+
+	private animate() {
+		const { state, actor, path, costMap, events } = this;
+
+		if ('SELECTED' !== state) {
+			throw new Error('Could not animate movement: invalid state ' + state);
+		}
+		this.state = 'ANIMATION';
+
 		const timing = Array(path.length).fill(moveAnimDuration);
 
-		return new Animation(timing, step => {
+		const anim = new Animation(timing, step => {
 			const tile = path[step.number];
 			const dir = Direction.resolve(actor.getPosition(), tile);
 
@@ -97,37 +132,10 @@ class ActMove {
 			if (step.isLast) {
 				this.state = 'IDLE';
 			}
-			cb(step);
+			events.onAnimation(this, step);
 		});
-	}
 
-	public reset() {
-		const { state, actor } = this;
-
-		if ('IDLE' !== state) {
-			throw new Error('Could not reset position: invalid state ' + state);
-		}
-		actor.setPosition(this.initialPosition);
-		actor.setAttribute('AP', this.initialAP);
-	}
-
-	private init() {
-		const { state, actor, obstacles } = this;
-
-		if ('INIT' !== state) {
-			throw new Error('Could not init movement: invalid state ' + state);
-		}
-		this.state = 'IDLE';
-
-		const MOV = actor.getAttribute('MOV');
-		const AP = actor.getAttribute('AP');
-		const pos = actor.getPosition();
-
-		const range = Math.min(MOV, AP);
-		const movable = getMovableTiles(pos, obstacles, range);
-
-		this.area = movable.positions;
-		this.costMap = movable.costMap;
+		anim.start();
 	}
 }
 

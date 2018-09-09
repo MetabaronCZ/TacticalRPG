@@ -2,17 +2,24 @@ import Position from 'engine/position';
 import Direction from 'engine/direction';
 import Character from 'engine/character';
 
+interface IActDirectEvents {
+	onStart: (direct: ActDirect) => void;
+	onSelect: (direct: ActDirect) => void;
+}
+
 export type ActDirectState = 'INIT' | 'IDLE' | 'DONE';
 
 class ActDirect {
 	private readonly actor: Character;
-	private state: ActDirectState = 'INIT';
+	private readonly events: IActDirectEvents;
 
+	private state: ActDirectState = 'INIT';
 	private targets: Position[] = []; // positions character can be directed to
 	private target: Position|null = null; // position character is directed to
 
-	constructor(actor: Character) {
+	constructor(actor: Character, events: IActDirectEvents) {
 		this.actor = actor;
+		this.events = events;
 	}
 
 	public getState(): ActDirectState {
@@ -40,9 +47,11 @@ class ActDirect {
 
 		this.targets = pos.getSideTiles(), // directable positions
 		this.target = Direction.findPositionFrom(pos, dir); // set initial direction
+
+		this.events.onStart(this);
 	}
 
-	public select(position: Position, cb: () => void) {
+	public select(position: Position) {
 		const { state, actor, targets } = this;
 
 		if ('IDLE' !== state) {
@@ -62,7 +71,7 @@ class ActDirect {
 		const newDirection = Direction.resolve(pos, this.target);
 		actor.setDirection(newDirection);
 
-		cb();
+		this.events.onSelect(this);
 	}
 }
 

@@ -10,7 +10,7 @@ import ActMove from 'engine/act/movement';
 import ActAction from 'engine/act/action';
 import ActDirect from 'engine/act/direction';
 
-type ActPhase = 'INIT' | 'MOVEMENT' | 'ACTION' | 'DIRECTION';
+type ActPhase = 'INIT' | 'IDLE' | 'MOVEMENT' | 'ACTION' | 'DIRECTION';
 
 export interface IActEvents {
 	onUpdate: () => void;
@@ -20,7 +20,6 @@ export interface IActEvents {
 class Act {
 	private readonly id: number;
 	private readonly actor: Character;
-	private readonly characters: Character[] = [];
 	private readonly events: IActEvents;
 
 	private readonly movePhase: ActMove;
@@ -34,14 +33,48 @@ class Act {
 	constructor(id: number, actor: Character, characters: Character[], events: IActEvents) {
 		this.id = id;
 		this.actor = actor;
-		this.characters = characters;
 		this.events = events;
 
-		this.movePhase = new ActMove(actor, characters);
-		this.actionPhase = new ActAction(actor, characters);
-		this.directPhase = new ActDirect(actor);
+		this.movePhase = new ActMove(actor, characters, {
+			onStart: move => {
+				this.phase = 'MOVEMENT';
+				this.update();
+
+			},
+			onSelect: move => {
+				this.update();
+			},
+			onAnimation: (move, step) => {
+				this.update();
+			}
+		});
+
+		this.directPhase = new ActDirect(actor, {
+			onStart: direct => {
+				this.phase = 'DIRECTION';
+				this.update();
+			},
+			onSelect: direct => {
+				this.update();
+				this.end();
+			}
+		});
+
+		this.actionPhase = new ActAction(actor, characters, {
+			onStart: action => {
+				this.phase = 'ACTION';
+				this.update();
+			},
+			onReset: action => {
+				this.update();
+			},
+			onSelect: action => {
+				this.update();
+			}
+		});
 
 		this.init();
+		this.movePhase.start();
 	}
 
 	public getId(): number {
@@ -73,12 +106,12 @@ class Act {
 	}
 
 	public selectTile(position: Position) {
-		const { phase, actionPhase, events } = this;
+		const { phase, actionPhase, movePhase } = this;
 
 		switch (phase) {
 			case 'MOVEMENT':
 				// select movement target
-				this.selectMoveTarget(position);
+				movePhase.selectTarget(position);
 				return;
 
 			case 'ACTION':
@@ -87,9 +120,17 @@ class Act {
 
 				switch (actionState) {
 					case 'IDLE':
-					case 'SELECTED':
-						this.selectActionTarget(position);
+					case 'SELECTED': {
+						const prevTarget = actionPhase.getEffectTarget();
+
+						// confirm target on double selection
+						if (prevTarget && Position.isEqual(prevTarget, position)) {
+							this.confirmAction();
+							return;
+						}
+						actionPhase.selectTarget(position);
 						return;
+					}
 
 					case 'REACTION':
 						const reaction = actionPhase.getReaction();
@@ -108,11 +149,7 @@ class Act {
 
 			case 'DIRECTION':
 				// select direction
-				this.directPhase.select(position, () => {
-					this.updateActions();
-					events.onUpdate();
-					this.end();
-				});
+				this.directPhase.select(position);
 				return;
 
 			default:
@@ -121,7 +158,7 @@ class Act {
 	}
 
 	public selectAction(action: CharacterAction) {
-		const { phase, actor, characters, actionPhase, directPhase, events } = this;
+		const { phase, actionPhase, directPhase, events } = this;
 		const actionId = action.getId();
 
 		switch (actionId) {
@@ -133,11 +170,7 @@ class Act {
 				if ('MOVEMENT' !== phase) {
 					throw new Error('Could not select action: invalid phase ' + phase);
 				}
-				this.phase = 'ACTION';
-
 				actionPhase.start(action);
-				this.updateActions();
-				events.onUpdate();
 				return;
 			}
 
@@ -146,12 +179,8 @@ class Act {
 				if ('MOVEMENT' !== phase) {
 					throw new Error('Could not pass act: invalid phase ' + phase);
 				}
-				this.phase = 'DIRECTION';
-
 				actionPhase.pass(action);
 				directPhase.start();
-				this.updateActions();
-				events.onUpdate();
 				return;
 			}
 
@@ -199,10 +228,9 @@ class Act {
 					case 'IDLE':
 					case 'SELECTED':
 						// remove current action >> goto move phase
-						this.actionPhase = new ActAction(actor, characters);
+						this.actionPhase.reset();
 						this.phase = 'MOVEMENT';
-						this.updateActions();
-						events.onUpdate();
+						this.update();
 						return;
 
 					case 'REACTION':
@@ -233,13 +261,13 @@ class Act {
 		if ('INIT' !== phase) {
 			throw new Error('Could not init act: invalid phase ' + phase);
 		}
-		this.phase = 'MOVEMENT';
+		this.phase = 'IDLE';
 
 		// regenerate actor AP
 		const baseAP = actor.getBaseAttribute('AP');
 		actor.setAttribute('AP', baseAP);
 
-		this.updateActions();
+		this.update();
 	}
 
 	private end() {
@@ -252,57 +280,19 @@ class Act {
 			// update character CT
 			const CT = actor.getAttribute('CT');
 			actor.setAttribute('CT', CT % characterCTLimit);
+
+			this.update();
 		}
+
 		events.onEnd();
 	}
 
-	private selectMoveTarget(target: Position) {
-		const { phase, movePhase, events } = this;
-
-		if ('MOVEMENT' !== phase) {
-			throw new Error('Could not select move target: invalid phase ' + phase);
-		}
-		const animation = movePhase.selectTarget(target, step => {
-			if (step.isLast) {
-				this.phase = 'MOVEMENT';
-				this.updateActions();
-			}
-			events.onUpdate();
-		});
-
-		if (null === animation) {
-			return;
-		}
-		this.updateActions();
-		events.onUpdate();
-
-		animation.start();
-	}
-
-	private selectActionTarget(target: Position) {
-		const { phase, actionPhase, events } = this;
+	private confirmAction() {
+		const { phase, actionPhase, directPhase, events } = this;
 
 		if ('ACTION' !== phase) {
-			throw new Error('Could not select action target: invalid phase ' + phase);
+			throw new Error('Could not confirm action: invalid phase ' + phase);
 		}
-		const prevTarget = actionPhase.getEffectTarget();
-
-		// confirm target on double selection
-		if (prevTarget && Position.isEqual(prevTarget, target)) {
-			this.confirmAction();
-			return;
-		}
-
-		// select action target
-		actionPhase.selectTarget(target, () => {
-			this.updateActions();
-			events.onUpdate();
-		});
-	}
-
-	private confirmAction() {
-		const { actionPhase, directPhase, events } = this;
-
 		actionPhase.confirm(
 			this.setBattleInfo.bind(this),
 			() => {
@@ -311,10 +301,7 @@ class Act {
 			},
 			step => {
 				if (step.isLast) {
-					// start direct phase
-					this.phase = 'DIRECTION';
 					directPhase.start();
-					this.updateActions();
 				}
 				events.onUpdate();
 			}
@@ -328,11 +315,6 @@ class Act {
 		const { phase, actionPhase, movePhase, actor } = this;
 
 		switch (phase) {
-			case 'INIT':
-			case 'DIRECTION':
-				this.actions = [];
-				break;
-
 			case 'MOVEMENT':
 				if ('IDLE' === movePhase.getState()) {
 					this.actions = CharacterActions.getIdleActions(actor);
@@ -346,15 +328,15 @@ class Act {
 				const action = actionPhase.getAction();
 				const reaction = actionPhase.getReaction();
 
-				if (null === action) {
-					throw new Error('Could not update actions: no action');
-				}
 				switch (state) {
 					case 'IDLE':
 						this.actions = CharacterActions.getSkillActions();
 						break;
 
 					case 'SELECTED':
+						if (null === action) {
+							throw new Error('Could not update actions: no action');
+						}
 						this.actions = CharacterActions.getSkillConfirmActions(action, actionPhase.getEffectTargets());
 						break;
 
@@ -384,8 +366,13 @@ class Act {
 			}
 
 			default:
-				throw new Error('Could not set actions: invalid game phase ' + phase);
+				this.actions = [];
 		}
+	}
+
+	private update() {
+		this.updateActions();
+		this.events.onUpdate();
 	}
 
 	private setBattleInfo(text: string, position: Position, duration = 3000) {
