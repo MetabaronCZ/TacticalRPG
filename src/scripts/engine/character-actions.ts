@@ -1,4 +1,3 @@
-import Position from 'engine/position';
 import Character from 'engine/character';
 import Skillsets from 'engine/skillset';
 import MagicSkills from 'engine/skill/magic';
@@ -74,7 +73,7 @@ class CharacterActions {
 		return [CharacterActions.backAction];
 	}
 
-	public static getSkillConfirmActions(action: CharacterAction, targets: Position[] = []): CharacterAction[] {
+	public static getSkillConfirmActions(action: CharacterAction, targets: Character[] = []): CharacterAction[] {
 		const actions: CharacterAction[] = [];
 
 		// confirm skill action

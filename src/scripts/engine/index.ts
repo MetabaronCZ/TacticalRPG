@@ -1,38 +1,73 @@
 import { randomize } from 'core/array';
 import { characterCTLimit, gridSize } from 'data/game-config';
 
+import Act from 'engine/act';
 import Order from 'engine/order';
 import Position from 'engine/position';
 import Character from 'engine/character';
-import GameStep from 'engine/game-step';
 import Player, { IPlayerData } from 'engine/player';
+import CharacterAction from 'engine/character-action';
 
-interface IEngine {
+export interface IEngineState {
+	tick: number;
+	act: Act|null;
+	players: Player[];
+	characters: Character[];
+	order: Character[];
+}
+
+interface IEngineEvents {
+	onUpdate: (state: IEngineState) => void;
+}
+
+interface IEngineProps {
 	readonly players: IPlayerData[];
+	readonly events: IEngineEvents;
 }
 
 class Engine {
-	private step: GameStep|null = null;
-	private order: Order;
-	private players: Player[] = [];
-	private characters: Character[] = [];
-	private actors: Character[] = [];
+	private readonly players: Player[] = [];
+	private readonly characters: Character[] = [];
+	private readonly events: IEngineEvents;
 
-	constructor(conf: IEngine) {
-		this.players = this.getPlayers(conf.players);
+	private tick = 0; // game update counter
+	private actNumber = 0; // act ID
+	private actors: Character[] = [];
+	private act: Act|null = null;
+	private order: Order;
+
+	constructor(conf: IEngineProps) {
+		this.players = this.createPlayers(conf.players);
 		this.characters = this.players.map(pl => pl.getCharacters()).reduce((a, b) => a.concat(b));
 		this.order = new Order(this.players);
+		this.events = conf.events;
 
 		// init engine
-		this.cycle();
+		this.update();
 	}
 
-	// start new game step
-	private cycle() {
-		if (null !== this.step) {
-			throw new Error('Could not start new step if another is in progress');
+	public selectTile(position: Position) {
+		if (null === this.act) {
+			throw new Error('Could not select tile: invalid act');
+		}
+		this.act.selectTile(position);
+	}
+
+	public selectAction(action: CharacterAction) {
+		if (null === this.act) {
+			throw new Error('Could not select action: invalid act');
+		}
+		this.act.selectAction(action);
+	}
+
+	private update() {
+		if (null !== this.act) {
+			throw new Error('Could not update engine: a act is in progress');
 		}
 		const { characters, order } = this;
+
+		// update game tick counter
+		this.tick++;
 
 		// update characters
 		characters.forEach(char => char.update());
@@ -42,42 +77,48 @@ class Engine {
 
 		// get actors
 		const actors = characters.filter(char => {
-			return char.getAttribute('CT') >= characterCTLimit || !char.isDead();
+			return char.getAttribute('CT') >= characterCTLimit && !char.isDead();
 		});
 
-		// if no actor present, continue updating characters
+		// if no actor present, continue updating
 		if (!actors.length) {
-			this.cycle();
+			this.update();
 			return;
 		}
-		// order actor
-		this.actors = order.get().filter(char => -1 !== actors.indexOf(char));
+		// order actors
+		const orderChars = order.get();
+		this.actors = actors.sort((a, b) => orderChars.indexOf(a) - orderChars.indexOf(b));
 
-		// start actor turns
-		this.startStep();
+		this.startAct();
 	}
 
-	private startStep() {
-		const { actors, characters, order } = this;
+	private startAct() {
+		const { actors, characters, order, events } = this;
 		const actor = actors[0];
 		this.actors.shift();
 
 		if (!actor) {
 			// start new cycle
-			this.cycle();
+			this.update();
 			return;
 		}
+		this.actNumber++;
 
-		// create new game step
-		this.step = new GameStep(actor, characters, () => {
-			// on step end run step for other actors
-			this.step = null;
-			order.update();
-			this.startStep();
+		// create new character act
+		this.act = new Act(this.actNumber, actor, characters, {
+			onUpdate: () => events.onUpdate(this.getState()),
+			onEnd: () => {
+				// run next act
+				this.act = null;
+				order.update();
+				this.startAct();
+			}
 		});
+
+		events.onUpdate(this.getState());
 	}
 
-	private getPlayers(playerData: IPlayerData[]): Player[] {
+	private createPlayers(playerData: IPlayerData[]): Player[] {
 		if (2 !== playerData.length) {
 			throw new Error('Game has to have exactly two players');
 		}
@@ -86,13 +127,12 @@ class Engine {
 
 			player.getCharacters().forEach((char, i) => {
 				// set position / orientation
-				switch (p) {
-					case 0:
-						char.setPosition(new Position(i + 2, gridSize - 1));
-						char.setDirection('TOP');
-					case 1:
-						char.setPosition(new Position(i + 2, 0));
-						char.setDirection('BOTTOM');
+				if (0 === p) {
+					char.setPosition(new Position(i + 2, gridSize - 1));
+					char.setDirection('TOP');
+				} else if (1 === p) {
+					char.setPosition(new Position(i + 2, 0));
+					char.setDirection('BOTTOM');
 				}
 
 				// set small random initial CP
@@ -104,6 +144,16 @@ class Engine {
 		});
 
 		return randomize(players);
+	}
+
+	private getState(): IEngineState {
+		return {
+			tick: this.tick,
+			act: this.act,
+			players: this.players,
+			characters: this.characters,
+			order: this.order.get()
+		};
 	}
 }
 

@@ -87,7 +87,7 @@ class Character {
 		return this.equipment;
 	}
 
-	// updates on every engine step
+	// updates on every game tick
 	public update() {
 		if (this.isDead()) {
 			return;

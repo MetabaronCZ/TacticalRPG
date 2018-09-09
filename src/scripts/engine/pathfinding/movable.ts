@@ -1,21 +1,24 @@
 import PriorityQueue from 'core/priority-queue';
 
 import Position from 'engine/position';
-import CostMap from 'engine/pathfinding/cost-map';
+
+export interface IMoveCostMap {
+	[id: string]: number;
+}
 
 interface IMovable {
 	readonly positions: Position[];
-	readonly costMap: CostMap;
+	readonly costMap: IMoveCostMap;
 }
 
 // Dijkstra algorithm (movement cost based search)
 export const getMovableTiles = (start: Position, obstacles: Position[], max: number): IMovable => {
-	const movable: Position[] = [start];
+	const movable: Position[] = [];
 	const frontier = new PriorityQueue<Position>();
 	frontier.push(start, 0);
 
-	const costMap = new CostMap();
-	costMap.set(start, 0);
+	const costMap: IMoveCostMap = {};
+	costMap[start.getId()] = 0;
 
 	while (frontier.size()) {
 		const curr = frontier.get();
@@ -26,14 +29,14 @@ export const getMovableTiles = (start: Position, obstacles: Position[], max: num
 		const neighbours = curr.getSideTiles(obstacles);
 
 		for (const n of neighbours) {
-			const newCost = costMap.get(curr) + n.getCost();
+			const newCost = costMap[curr.getId()] + n.getCost();
 
 			if (newCost > max) {
 				continue;
 			}
 
-			if (null === costMap.indexOf(n) || newCost < costMap.get(n)) {
-				costMap.set(n, newCost);
+			if (!(n.getId() in costMap) || newCost < costMap[n.getId()]) {
+				costMap[n.getId()] = newCost;
 				frontier.push(n, newCost);
 			}
 		}

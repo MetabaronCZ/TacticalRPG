@@ -3,18 +3,20 @@ import { gridSize } from 'data/game-config';
 class Position {
 	public static NULL_POSITION = new Position(-1, -1);
 
-	private x: number;
-	private y: number;
-	private cost: number;
+	private readonly id: string;
+	private readonly x: number;
+	private readonly y: number;
+	private readonly cost: number;
 
 	constructor(x: number, y: number, cost = 1) {
+		this.id = x + '|' + y;
 		this.x = x;
 		this.y = y;
 		this.cost = 1;
 	}
 
-	public static isEqual(a: Position, b: Position): boolean {
-		return a.getX() === b.getX() && a.getY() === b.getY();
+	public static isEqual(a?: Position, b?: Position): boolean {
+		return !!a && !!b && a.getId() === b.getId();
 	}
 
 	public isInGrid(): boolean {
@@ -38,15 +40,18 @@ class Position {
 		return (x === posX || y === posY || 0 === (Math.abs(x - posX) - Math.abs(y - posY)));
 	}
 
-	public getX() {
+	public getId(): string {
+		return this.id;
+	}
+	public getX(): number {
 		return this.x;
 	}
 
-	public getY() {
+	public getY(): number {
 		return this.y;
 	}
 
-	public getCost() {
+	public getCost(): number {
 		return this.cost;
 	}
 

@@ -1,11 +1,18 @@
-import Graph from 'engine/pathfinding/graph';
 import Position from 'engine/position';
+
+export interface IGraph {
+	[id: string]: Position;
+}
+
+export interface ICostMap {
+	[id: string]: number;
+}
 
 export const getPriority = (a: Position, b: Position): number => {
 	return Math.abs(a.getX() - b.getX()) + Math.abs(a.getY() - b.getY());
 };
 
-export const constructPath = (start: Position, target: Position, graph: Graph): Position[] => {
+export const constructPath = (start: Position, target: Position, graph: IGraph): Position[] => {
 	let curr = target;
 	const path: Position[] = [];
 
@@ -14,14 +21,7 @@ export const constructPath = (start: Position, target: Position, graph: Graph): 
 			break;
 		}
 		path.push(curr);
-
-		const next = graph.get(curr);
-
-		if (null !== next) {
-			curr = next;
-		} else {
-			break;
-		}
+		curr = graph[curr.getId()];
 	}
 	path.push(start);
 	return path.reverse();

@@ -6,6 +6,7 @@ import Character from 'engine/character';
 class Order {
 	private players: Player[] = [];
 	private characters: Character[] = [];
+	private order: Character[] = [];
 
 	constructor(players: Player[]) {
 		this.players = players;
@@ -19,31 +20,32 @@ class Order {
 	}
 
 	public get(): Character[] {
-		return this.characters;
+		return this.order;
 	}
 
 	public update() {
 		const { players, characters } = this;
 
 		if (characters.length < 2) {
+			this.order = characters;
 			return;
 		}
 		let order: Character[] = [];
 
 		// serialize characters
-		const chars = characters.map(character => {
-			const SPD = character.getAttribute('SPD');
-			const CT = character.getAttribute('CT');
-			const id = character.getData().id;
+		const chars = characters.map(char => {
+			const SPD = char.getAttribute('SPD');
+			const CT = char.getAttribute('CT');
+			const id = char.getData().id;
 			let playerOrder = -1;
 
 			for (let p = 0, pmax = players.length; p < pmax; p++) {
-				if (-1 !== players[p].getCharacters().indexOf(character)) {
+				if (-1 !== players[p].getCharacters().indexOf(char)) {
 					playerOrder = p;
 					break;
 				}
 			}
-			return { id, CT, SPD, playerOrder, character };
+			return { id, CT, SPD, playerOrder, char };
 		});
 
 		while (order.length < maxOrderSize) {
@@ -58,10 +60,12 @@ class Order {
 				char.CT += char.SPD;
 			}
 
+			if (!act.length) {
+				continue;
+			}
+
 			// sort by character player initiative (+ sign converts boolean to number)
-			act = act.sort((a, b) => {
-				return b.playerOrder - a.playerOrder;
-			});
+			act = act.sort((a, b) => b.playerOrder - a.playerOrder);
 
 			// sort by SPD
 			act = act.sort((a, b) => b.SPD - a.SPD);
@@ -70,10 +74,10 @@ class Order {
 			act = act.sort((a, b) => b.CT - a.CT);
 
 			// add acting characters to ordered array
-			order = order.concat(act.map(a => a.character));
+			order = [...order, ...act.map(a => a.char)];
 		}
 
-		this.characters = order;
+		this.order = order;
 	}
 }
 

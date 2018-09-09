@@ -28,7 +28,9 @@ import { getShortestPath, getMovableTiles } from 'modules/pathfinding';
 import { IActions, ActionID, IActionItem } from 'modules/character-action/types';
 import StatusEffects from 'modules/status-effect';
 
-import Engine from 'engine';
+import Debug from 'components/Game/components/Debug';
+import Engine, { IEngineState } from 'engine';
+const debug = true;
 
 const directAction = CharacterActions.directAction;
 
@@ -39,29 +41,56 @@ interface IGameUIContainerProps {
 	readonly onExit: () => void;
 }
 
-class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState> {
+interface IGEngineState {
+	engineState?: IEngineState;
+	engineUpdate?: Date;
+}
+
+class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState & IGEngineState> {
 	private initiative = (Math.random() < 0.5 ? PlayerType.ALLY : PlayerType.ENEMY);
-	private engine: Engine;
+	private engine: Engine|null = null;
 
 	constructor(props: IGameUIContainerProps) {
 		super(props);
 		this.state = Game.getInitialState(props.party.characters, props.characters, this.initiative);
+	}
+
+	public componentDidMount() {
+		const { props } = this;
 
 		this.engine = new Engine({
 			players: [
 				{ control: 'HUMAN', characters: props.characters, party: props.party },
 				{ control: 'HUMAN' }
-			]
+			],
+			events: {
+				onUpdate: engineState => {
+					this.setState({ engineState, engineUpdate: new Date() });
+				}
+			}
 		});
 
-		console.log(this.engine);
-	}
-
-	public componentDidMount() {
 		this.step();
 	}
 
 	public render() {
+		if (debug) {
+			if (null === this.engine) {
+				return 'Loading ...';
+			}
+			const { engineState, engineUpdate } = this.state;
+			const onTileSelect = this.engine.selectTile.bind(this.engine);
+			const onActionSelect = this.engine.selectAction.bind(this.engine);
+
+			return (
+				<Debug
+					engineState={engineState}
+					engineUpdate={engineUpdate}
+					onTileSelect={onTileSelect}
+					onActionSelect={onActionSelect}
+				/>
+			);
+		}
 		return (
 			<GameUI
 				game={this.state}

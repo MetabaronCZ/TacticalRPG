@@ -1,12 +1,11 @@
 import Position from 'engine/position';
-import Graph from 'engine/pathfinding/graph';
-import { constructPath } from 'engine/pathfinding';
+import { constructPath, IGraph } from 'engine/pathfinding';
 
 // Breadth first (shortest path at uniform maovement cost)
 export const getShortestPath = (start: Position, target: Position, obstacles: Position[]) => {
-	const graph = new Graph();
-	graph.set(start, Position.NULL_POSITION);
-
+	const graph: IGraph = {
+		[start.getId()]: Position.NULL_POSITION
+	};
 	const frontier: Position[] = [start];
 
 	while (frontier.length) {
@@ -21,9 +20,9 @@ export const getShortestPath = (start: Position, target: Position, obstacles: Po
 		const neighbours = curr.getSideTiles(obstacles);
 
 		for (const n of neighbours) {
-			if (null === graph.indexOf(n)) {
+			if (!graph[n.getId()]) {
 				frontier.push(n);
-				graph.set(n, curr);
+				graph[n.getId()] = curr;
 			}
 		}
 	}

@@ -100,10 +100,7 @@ const getBlockType = (pos: IPosition, props: IGridProps) => {
 };
 
 const Grid: React.SFC<IGridProps> = (props: IGridProps) => {
-	const itemStyle: React.CSSProperties = {
-		width: `${blockSize}px`,
-		height: `${blockSize}px`
-	};
+	const itemStyle: React.CSSProperties = { width: `${blockSize}px`, height: `${blockSize}px`, };
 	const grid: IPosition[] = [];
 
 	// generate grid item coordinates

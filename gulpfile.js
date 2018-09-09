@@ -121,7 +121,7 @@ gulp.task('watch', () => {
 
 // build app
 gulp.task('build', cb => {
-	runSequence('clear', ['index', 'fonts', 'styles', 'scripts'], cb);
+	runSequence('clear', 'index', 'fonts', 'styles', 'scripts', cb);
 });
 
 // develop app
