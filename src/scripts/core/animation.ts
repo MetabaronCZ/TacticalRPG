@@ -1,5 +1,6 @@
 export interface IAnimationStep {
 	readonly number: number;
+	readonly max: number;
 	readonly duration: number;
 	readonly isLast: boolean;
 	readonly isFirst: boolean;
@@ -11,6 +12,7 @@ type AnimationHandler = (step: IAnimationStep) => void;
 class Animation {
 	private readonly timing: AnimationTiming;
 	private readonly handler: AnimationHandler;
+	private readonly stepsCount: number;
 	private currentStep = 0;
 
 	constructor(timing: AnimationTiming, handler: AnimationHandler) {
@@ -19,6 +21,7 @@ class Animation {
 		}
 		this.timing = timing;
 		this.handler = handler;
+		this.stepsCount = timing.length;
 	}
 
 	public duration() {
@@ -36,6 +39,7 @@ class Animation {
 
 		this.handler({
 			number: step,
+			max: this.stepsCount,
 			duration,
 			isFirst: (0 === step),
 			isLast: (max === step)

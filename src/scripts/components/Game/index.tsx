@@ -30,7 +30,6 @@ import StatusEffects from 'modules/status-effect';
 
 import Debug from 'components/Game/components/Debug';
 import Engine, { IEngineState } from 'engine';
-const debug = true;
 
 const directAction = CharacterActions.directAction;
 
@@ -48,15 +47,11 @@ interface IGEngineState {
 
 class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState & IGEngineState> {
 	private initiative = (Math.random() < 0.5 ? PlayerType.ALLY : PlayerType.ENEMY);
-	private engine: Engine|null = null;
+	private engine: Engine;
 
 	constructor(props: IGameUIContainerProps) {
 		super(props);
 		this.state = Game.getInitialState(props.party.characters, props.characters, this.initiative);
-	}
-
-	public componentDidMount() {
-		const { props } = this;
 
 		this.engine = new Engine({
 			players: [
@@ -64,9 +59,13 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState 
 				{ control: 'HUMAN' }
 			],
 			events: {
+				onStart: engineState => {
+					const now = new Date();
+					this.setState(state => ({ engineState, engineUpdate: now }));
+				},
 				onUpdate: engineState => {
 					const now = new Date();
-					this.setState({ engineState, engineUpdate: now });
+					this.setState(state => ({ engineState, engineUpdate: now }));
 				},
 				onGameOver: engineState => {
 					const now = new Date();
@@ -74,24 +73,25 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState 
 					throw new Error('TODO: Game Over');
 
 					this.setState(
-						{ engineState, engineUpdate: now },
+						state => ({ engineState, engineUpdate: now }),
 						() => props.onExit()
 					);
 				}
 			}
 		});
+	}
 
+	public componentDidMount() {
+		this.engine.start();
 		this.step();
 	}
 
 	public render() {
-		if (debug) {
-			if (null === this.engine) {
-				return 'Loading ...';
-			}
+		if (config.isDebug) {
+			const engine = this.engine;
 			const { engineState, engineUpdate } = this.state;
-			const onTileSelect = this.engine.selectTile.bind(this.engine);
-			const onActionSelect = this.engine.selectAction.bind(this.engine);
+			const onTileSelect = engine.selectTile.bind(engine);
+			const onActionSelect = engine.selectAction.bind(engine);
 
 			return (
 				<Debug

@@ -3,6 +3,7 @@ import * as NumberUtils from 'core/number';
 import Animation, { IAnimationStep } from 'core/animation';
 import { skillAnimDuration, smallShieldBlock } from 'data/game-config';
 
+import Logger from 'engine/logger';
 import Damage from 'engine/damage';
 import Position from 'engine/position';
 import Direction from 'engine/direction';
@@ -16,9 +17,23 @@ interface IActActionEvents {
 	onStart: (action: ActAction) => void;
 	onReset: (action: ActAction) => void;
 	onSelect: (action: ActAction) => void;
+	onConfirm: (action: ActAction) => void;
+	onPass: (action: ActAction) => void;
+	onAnimation: (action: ActAction, step: IAnimationStep) => void;
+
+	onReactionStart: (reaction: ActReaction) => void;
+	onReactionSelected: (reaction: ActReaction) => void;
+	onReactionBlock: (reaction: ActReaction) => void;
+	onReactionEvasionStart: (reaction: ActReaction) => void;
+	onReactionEvasionEnd: (reaction: ActReaction) => void;
+	onReactionPass: (reaction: ActReaction) => void;
+	onReactionReset: (reaction: ActReaction) => void;
+	onReactionEnd: (reaction: ActReaction) => void;
+
+	onBattleInfo: (text: string, position: Position) => void;
 }
 
-export type ActActionState = 'INIT' | 'IDLE' | 'SELECTED' | 'REACTION' | 'ANIMATION' | 'DONE';
+export type ActActionState = 'INIT' | 'IDLE' | 'SELECTED' | 'CONFIRMED' | 'REACTION' | 'ANIMATION' | 'DONE';
 export type IOnActionInfo = (text: string, position: Position) => void;
 
 class ActAction {
@@ -39,7 +54,7 @@ class ActAction {
 	constructor(actor: Character, characters: Character[], events: IActActionEvents) {
 		this.actor = actor;
 		this.characters = characters;
-		this.events = events;
+		this.events = this.prepareEvents(events);
 	}
 
 	public getState(): ActActionState {
@@ -138,8 +153,8 @@ class ActAction {
 		this.events.onSelect(this);
 	}
 
-	public confirm(onInfo: IOnActionInfo, onUpdate: () => void, onActionAnimation: (step: IAnimationStep) => void) {
-		const { state, action, characters, effectTarget, effectTargets } = this;
+	public confirm() {
+		const { state, action, characters, effectTarget, effectTargets, events } = this;
 
 		if ('SELECTED' !== state) {
 			throw new Error('Could not confirm action: invalid state ' + state);
@@ -148,38 +163,43 @@ class ActAction {
 		if (null === action || null === effectTarget || !effectTargets.length) {
 			throw new Error('Could not confirm action: invalid action data');
 		}
-		this.state = 'REACTION';
+		this.state = 'CONFIRMED';
 
 		const obstacles = characters.map(char => char.getPosition());
 
 		this.reactions = effectTargets.map((reactor, id) => {
-			return new ActReaction(id, reactor, obstacles, () => {
-				if (id + 1 >= this.reactions.length) {
-					// go to skill animation
-					this.animate(onInfo, step => {
-						if (step.isLast) {
-							this.state = 'DONE';
-						}
-						onActionAnimation(step);
-					});
+			return new ActReaction(id, reactor, obstacles, {
+				onStart:			reaction => events.onReactionStart(reaction),
+				onReactionSelected:	reaction => events.onReactionSelected(reaction),
+				onBlock:			reaction => events.onReactionBlock(reaction),
+				onEvasionStart:		reaction => events.onReactionEvasionStart(reaction),
+				onEvasionEnd:		reaction => events.onReactionEvasionEnd(reaction),
+				onPass:				reaction => events.onReactionPass(reaction),
+				onReset:			reaction => events.onReactionReset(reaction),
+				onEnd: reaction => {
+					events.onReactionEnd(reaction);
 
-				} else {
-					// go to next reaction phase
-					this.reaction = this.reactions[id + 1];
-					this.startReact();
+					if (id + 1 >= this.reactions.length) {
+						// go to skill animation
+						this.animate();
+					} else {
+						// go to next reaction
+						this.startReact(id + 1);
+					}
 				}
-				onUpdate();
 			});
 		});
 
-		this.reaction = this.reactions[0];
-		this.startReact();
-		onUpdate();
+		this.events.onConfirm(this);
+
+		this.state = 'REACTION';
+		this.startReact(0);
 	}
 
 	public pass(action: CharacterAction) {
 		this.state = 'DONE';
 		this.action = action;
+		this.events.onPass(this);
 	}
 
 	public passReaction(action: CharacterAction) {
@@ -209,24 +229,28 @@ class ActAction {
 		this.events.onReset(this);
 	}
 
-	private startReact() {
-		const { state, actor, reaction } = this;
+	private startReact(id: number) {
+		const { state, actor } = this;
 
 		if ('REACTION' !== state) {
 			throw new Error('Could not start reaction: invalid state ' + state);
 		}
+		const reaction = this.reactions[id];
 
 		if (null === reaction) {
 			throw new Error('Could not start reaction: invalid reaction');
 		}
-		const reactor = reaction.getReactor();
+		this.reaction = reaction;
 
 		// face character to skill target tile
+		const reactor = reaction.getReactor();
 		const dir = Direction.resolve(actor.getPosition(), reactor.getPosition());
 		actor.setDirection(dir);
+
+		reaction.start();
 	}
 
-	private animate(onInfo: IOnActionInfo, cb: (step: IAnimationStep) => void) {
+	private animate() {
 		const { state, action, actor, effectArea, effectTargets } = this;
 
 		if ('REACTION' !== state) {
@@ -250,7 +274,7 @@ class ActAction {
 					if (target.getStatus().find(status => 'BLOCK_LARGE' === status.id)) {
 						// target blocked attack with shield
 						target.removeStatus('BLOCK_LARGE');
-						onInfo('Blocked', targetPos);
+						this.events.onBattleInfo('Blocked', targetPos);
 
 					} else {
 						// caclulate character changes
@@ -297,7 +321,7 @@ class ActAction {
 						infoTiming = infoTiming.map(i => NumberUtils.randomBetween(250, 350));
 
 						const infoAnim = new Animation(infoTiming, infoStep => {
-							onInfo(info[infoStep.number], targetPos);
+							this.events.onBattleInfo(info[infoStep.number], targetPos);
 						});
 
 						infoAnim.start();
@@ -305,19 +329,64 @@ class ActAction {
 
 				} else {
 					// target evaded skill action
-					onInfo('Evaded', targetPos);
+					this.events.onBattleInfo('Evaded', targetPos);
 				}
 			}
 
 			if (step.isLast) {
+				this.state = 'DONE';
 				actor.skillReduceAP(action.getCost());
 			}
 
-			cb(step);
+			this.events.onAnimation(this, step);
 		});
 
 		// start animation
 		skillAnim.start();
+	}
+
+	private prepareEvents(events: IActActionEvents): IActActionEvents {
+		return {
+			onStart: (action: ActAction) => {
+				const actionItem = action.action;
+				Logger.log(`ActAction onStart: "${actionItem ? actionItem.getTitle() : '-'}"`);
+				events.onStart(action);
+			},
+			onReset: (action: ActAction) => {
+				Logger.log('ActAction onReset');
+				events.onReset(action);
+			},
+			onSelect: (action: ActAction) => {
+				const tgt = action.getEffectTarget();
+				Logger.log(`ActMove onSelect: "${tgt ? `(${tgt.getX()}, ${tgt.getY()})` : '-'}"`);
+				events.onSelect(action);
+			},
+			onConfirm: (action: ActAction) => {
+				const actionItem = action.getAction();
+				Logger.log(`ActMove onConfirm: "${actionItem ? actionItem.getTitle() : '-'}"`);
+				events.onConfirm(action);
+			},
+			onPass: (action: ActAction) => {
+				Logger.log('ActAction onPass');
+				events.onPass(action);
+			},
+			onAnimation: (action: ActAction, step: IAnimationStep) => {
+				Logger.log(`ActAction onAnimation: "${step.number + 1}/${step.max}"`);
+				events.onAnimation(action, step);
+			},
+			onReactionStart: events.onReactionStart,
+			onReactionSelected: events.onReactionSelected,
+			onReactionBlock: events.onReactionBlock,
+			onReactionEvasionStart: events.onReactionEvasionStart,
+			onReactionEvasionEnd: events.onReactionEvasionEnd,
+			onReactionPass: events.onReactionPass,
+			onReactionReset: events.onReactionReset,
+			onReactionEnd: events.onReactionEnd,
+			onBattleInfo: (text: string, position: Position) => {
+				Logger.log(`ActAction onBattleInfo: "${text}" (${position.getX()}, ${position.getY()})`);
+				events.onBattleInfo(text, position);
+			}
+		};
 	}
 }
 

@@ -1,3 +1,4 @@
+import Logger from 'engine/logger';
 import Position from 'engine/position';
 import Direction from 'engine/direction';
 import Character from 'engine/character';
@@ -19,7 +20,7 @@ class ActDirect {
 
 	constructor(actor: Character, events: IActDirectEvents) {
 		this.actor = actor;
-		this.events = events;
+		this.events = this.prepareEvents(events);
 	}
 
 	public getState(): ActDirectState {
@@ -72,6 +73,20 @@ class ActDirect {
 		actor.setDirection(newDirection);
 
 		this.events.onSelect(this);
+	}
+
+	private prepareEvents(events: IActDirectEvents): IActDirectEvents {
+		return {
+			onStart: direct => {
+				Logger.log('ActDirect onStart');
+				events.onStart(direct);
+			},
+			onSelect: direct => {
+				const tgt = direct.target;
+				Logger.log(`ActDirect onSelect: "${tgt ? `(${tgt.getX()}, ${tgt.getY()})` : '-'}"`);
+				events.onSelect(direct);
+			}
+		};
 	}
 }
 

@@ -1,3 +1,7 @@
+// debug
+export const isDebug = true;
+export const isLoggingEnabled = true;
+
 // grid
 export const gridSize = 12;
 export const blockSize = 64;

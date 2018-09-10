@@ -1,5 +1,6 @@
 import { characterCTLimit } from 'data/game-config';
 
+import Logger from 'engine/logger';
 import Position from 'engine/position';
 import Character from 'engine/character';
 import BattleInfo from 'engine/battle-info';
@@ -13,8 +14,9 @@ import ActDirect from 'engine/act/direction';
 type ActPhase = 'INIT' | 'IDLE' | 'MOVEMENT' | 'ACTION' | 'DIRECTION';
 
 export interface IActEvents {
-	onUpdate: () => void;
-	onEnd: () => void;
+	onStart: (act: Act) => void;
+	onUpdate: (act: Act) => void;
+	onEnd: (act: Act) => void;
 }
 
 class Act {
@@ -33,20 +35,15 @@ class Act {
 	constructor(id: number, actor: Character, characters: Character[], events: IActEvents) {
 		this.id = id;
 		this.actor = actor;
-		this.events = events;
+		this.events = this.prepareEvents(events);
 
 		this.movePhase = new ActMove(actor, characters, {
 			onStart: move => {
 				this.phase = 'MOVEMENT';
 				this.update();
-
 			},
-			onSelect: move => {
-				this.update();
-			},
-			onAnimation: (move, step) => {
-				this.update();
-			}
+			onSelect:		move => this.update(),
+			onAnimation:	(move, step) => this.update()
 		});
 
 		this.directPhase = new ActDirect(actor, {
@@ -65,16 +62,29 @@ class Act {
 				this.phase = 'ACTION';
 				this.update();
 			},
-			onReset: action => {
+			onReset:	action => this.update(),
+			onSelect:	action => this.update(),
+			onConfirm:	action => this.update(),
+			onPass:		action => this.update(),
+			onAnimation: (action, step) => {
 				this.update();
-			},
-			onSelect: action => {
-				this.update();
-			}
-		});
 
-		this.init();
-		this.movePhase.start();
+				if (step.isLast) {
+					this.directPhase.start();
+				}
+			},
+			onReactionStart:		reaction => this.update(),
+			onReactionSelected:		reaction => this.update(),
+			onReactionBlock:		reaction => this.update(),
+			onReactionEvasionStart:	reaction => this.update(),
+			onReactionEvasionEnd:	reaction => this.update(),
+			onReactionPass:			reaction => this.update(),
+			onReactionReset:		reaction => this.update(),
+			onReactionEnd:			reaction => this.update(),
+			onBattleInfo: (text, position) => {
+				this.setBattleInfo(text, position);
+			},
+		});
 	}
 
 	public getId(): number {
@@ -105,6 +115,22 @@ class Act {
 		return this.directPhase;
 	}
 
+	public start() {
+		const { phase, actor } = this;
+
+		if ('INIT' !== phase) {
+			throw new Error('Could not init act: invalid phase ' + phase);
+		}
+		this.phase = 'IDLE';
+
+		// regenerate actor AP
+		const baseAP = actor.getBaseAttribute('AP');
+		actor.setAttribute('AP', baseAP);
+
+		this.events.onStart(this);
+		this.movePhase.start();
+	}
+
 	public selectTile(position: Position) {
 		const { phase, actionPhase, movePhase } = this;
 
@@ -125,10 +151,10 @@ class Act {
 
 						// confirm target on double selection
 						if (prevTarget && Position.isEqual(prevTarget, position)) {
-							this.confirmAction();
-							return;
+							actionPhase.confirm();
+						} else {
+							actionPhase.selectTarget(position);
 						}
-						actionPhase.selectTarget(position);
 						return;
 					}
 
@@ -196,7 +222,7 @@ class Act {
 				}
 				reaction.selectAction(action);
 				this.updateActions();
-				events.onUpdate();
+				events.onUpdate(this);
 				return;
 			}
 
@@ -207,13 +233,16 @@ class Act {
 				}
 				actionPhase.passReaction(action);
 				this.updateActions();
-				events.onUpdate();
+				events.onUpdate(this);
 				return;
 			}
 
 			case 'CONFIRM': {
 				// confirm selected action
-				this.confirmAction();
+				if ('ACTION' !== phase) {
+					throw new Error('Could not confirm action: invalid phase ' + phase);
+				}
+				actionPhase.confirm();
 				return;
 			}
 
@@ -242,7 +271,7 @@ class Act {
 						}
 						reaction.reset();
 						this.updateActions();
-						events.onUpdate();
+						events.onUpdate(this);
 						return;
 
 					default:
@@ -253,21 +282,6 @@ class Act {
 			default:
 				throw new Error('Unsupported action: ' + actionId);
 		}
-	}
-
-	private init() {
-		const { phase, actor } = this;
-
-		if ('INIT' !== phase) {
-			throw new Error('Could not init act: invalid phase ' + phase);
-		}
-		this.phase = 'IDLE';
-
-		// regenerate actor AP
-		const baseAP = actor.getBaseAttribute('AP');
-		actor.setAttribute('AP', baseAP);
-
-		this.update();
 	}
 
 	private end() {
@@ -284,31 +298,7 @@ class Act {
 			this.update();
 		}
 
-		events.onEnd();
-	}
-
-	private confirmAction() {
-		const { phase, actionPhase, directPhase, events } = this;
-
-		if ('ACTION' !== phase) {
-			throw new Error('Could not confirm action: invalid phase ' + phase);
-		}
-		actionPhase.confirm(
-			this.setBattleInfo.bind(this),
-			() => {
-				this.updateActions();
-				events.onUpdate();
-			},
-			step => {
-				if (step.isLast) {
-					directPhase.start();
-				}
-				events.onUpdate();
-			}
-		);
-
-		this.updateActions();
-		events.onUpdate();
+		events.onEnd(this);
 	}
 
 	private updateActions() {
@@ -372,7 +362,7 @@ class Act {
 
 	private update() {
 		this.updateActions();
-		this.events.onUpdate();
+		this.events.onUpdate(this);
 	}
 
 	private setBattleInfo(text: string, position: Position, duration = 3000) {
@@ -380,15 +370,32 @@ class Act {
 		const item = new BattleInfo(text, position);
 		this.battleInfo.push(item);
 
+		this.update();
+
 		// remove battle info item after fixed amount of time
 		setTimeout(() => {
 			for (let i = 0, imax = this.battleInfo.length; i < imax; i++) {
 				if (this.battleInfo[i] === item) {
 					this.battleInfo.splice(i, 1);
+					this.update();
 					break;
 				}
 			}
 		}, duration);
+	}
+
+	private prepareEvents(events: IActEvents): IActEvents {
+		return {
+			onStart: act => {
+				Logger.log(`Act onStart: "${act.getActor().getData().name}"`);
+				events.onStart(act);
+			},
+			onUpdate: events.onUpdate,
+			onEnd: act => {
+				Logger.log('Act onEnd');
+				events.onEnd(act);
+			}
+		};
 	}
 }
 

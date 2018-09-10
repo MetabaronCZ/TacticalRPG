@@ -1,5 +1,5 @@
 TODO
------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------
 --	refaktorovat vsude pole tak, aby vzdy byl default [] (zbavit se arr?: x[])
 
 --	pri vyberu party pred soubojem pridat do vyberu i "Random party"

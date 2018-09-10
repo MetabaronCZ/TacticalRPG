@@ -1,6 +1,7 @@
 import Animation, { IAnimationStep } from 'core/animation';
 import { gridSize, moveAnimDuration } from 'data/game-config';
 
+import Logger from 'engine/logger';
 import Position from 'engine/position';
 import Direction from 'engine/direction';
 import Character from 'engine/character';
@@ -32,8 +33,8 @@ class ActMove {
 		this.initialAP = actor.getAttribute('AP');
 		this.initialPosition = actor.getPosition();
 		this.obstacles = characters.filter(char => char !== actor).map(char => char.getPosition());
-		this.events = events;
 		this.target = this.initialPosition;
+		this.events = this.prepareEvents(events);
 	}
 
 	public getState(): ActMoveState {
@@ -136,6 +137,24 @@ class ActMove {
 		});
 
 		anim.start();
+	}
+
+	private prepareEvents(events: IActMoveEvents): IActMoveEvents {
+		return {
+			onStart: move => {
+				Logger.log('ActMove onStart');
+				events.onStart(move);
+			},
+			onSelect: move => {
+				const tgt = move.target;
+				Logger.log(`ActMove onSelect: "${tgt ? `(${tgt.getX()}, ${tgt.getY()})` : '-'}"`);
+				events.onSelect(move);
+			},
+			onAnimation: (move, step) => {
+				Logger.log(`ActMove onAnimation: "${step.number + 1}/${step.max}"`);
+				events.onSelect(move);
+			}
+		};
 	}
 }
 

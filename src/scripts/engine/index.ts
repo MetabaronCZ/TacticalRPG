@@ -7,6 +7,7 @@ import Position from 'engine/position';
 import Character from 'engine/character';
 import Player, { IPlayerData } from 'engine/player';
 import CharacterAction from 'engine/character-action';
+import Logger from 'engine/logger';
 
 export interface IEngineState {
 	tick: number;
@@ -17,6 +18,7 @@ export interface IEngineState {
 }
 
 interface IEngineEvents {
+	onStart: (state: IEngineState) => void;
 	onUpdate: (state: IEngineState) => void;
 	onGameOver: (state: IEngineState) => void;
 }
@@ -41,9 +43,11 @@ class Engine {
 		this.players = this.createPlayers(conf.players);
 		this.characters = this.players.map(pl => pl.getCharacters()).reduce((a, b) => a.concat(b));
 		this.order = new Order(this.players);
-		this.events = conf.events;
+		this.events = this.prepareEvents(conf.events);
+	}
 
-		// init engine
+	public start() {
+		this.events.onStart(this.getState());
 		this.update();
 	}
 
@@ -114,15 +118,16 @@ class Engine {
 
 		// create new character act
 		this.act = new Act(this.actNumber, actor, characters, {
-			onUpdate: () => events.onUpdate(this.getState()),
-			onEnd: () => {
+			onStart: act => events.onUpdate(this.getState()),
+			onUpdate: act => events.onUpdate(this.getState()),
+			onEnd: act => {
 				// run next act
 				this.act = null;
 				this.startAct();
 			}
 		});
 
-		events.onUpdate(this.getState());
+		this.act.start();
 	}
 
 	private createPlayers(playerData: IPlayerData[]): Player[] {
@@ -173,6 +178,20 @@ class Engine {
 			players: this.players,
 			characters: this.characters,
 			order: this.order.get()
+		};
+	}
+
+	private prepareEvents(events: IEngineEvents): IEngineEvents {
+		return {
+			onStart: state => {
+				Logger.log('Engine onStart');
+				events.onStart(state);
+			},
+			onUpdate: events.onUpdate,
+			onGameOver: state => {
+				Logger.log('Engine onGameOver');
+				events.onGameOver(state);
+			}
 		};
 	}
 }
