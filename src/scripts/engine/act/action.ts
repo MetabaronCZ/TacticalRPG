@@ -196,13 +196,13 @@ class ActAction {
 		this.startReact(0);
 	}
 
-	public pass(action: CharacterAction) {
+	public pass(passAction: CharacterAction) {
 		this.state = 'DONE';
-		this.action = action;
+		this.action = passAction;
 		this.events.onPass(this);
 	}
 
-	public passReaction(action: CharacterAction) {
+	public passReaction(passAction: CharacterAction) {
 		const { state, reaction } = this;
 
 		if ('REACTION' !== state) {
@@ -212,7 +212,7 @@ class ActAction {
 		if (!reaction) {
 			throw new Error('Could not cancel reaction: invalid reaction');
 		}
-		reaction.pass(action);
+		reaction.pass(passAction);
 	}
 
 	public reset() {
@@ -271,7 +271,7 @@ class ActAction {
 				const targetPos = target.getPosition();
 
 				if (targetPos.isContained(effectArea)) {
-					if (target.getStatus().find(status => 'BLOCK_LARGE' === status.id)) {
+					if (target.hasStatus('BLOCK_LARGE')) {
 						// target blocked attack with shield
 						target.removeStatus('BLOCK_LARGE');
 						this.events.onBattleInfo('Blocked', targetPos);

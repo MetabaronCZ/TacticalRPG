@@ -7,6 +7,7 @@ import Equipment from 'engine/character/equipment';
 import Attributes, { AttributeID } from 'engine/attributes';
 import { IStatusEffect, StatusEffectID } from 'engine/status-effect';
 
+import { characterCTLimit } from 'data/game-config';
 import { ICharacterData } from 'modules/character-data/types';
 
 class Character {
@@ -41,6 +42,10 @@ class Character {
 
 	public isDead(): boolean {
 		return this.getAttribute('HP') <= 0;
+	}
+
+	public hasStatus(status: StatusEffectID): boolean {
+		return !!this.status.get().find(st => status === st.id);
 	}
 
 	public getData(): ICharacterData {
@@ -96,6 +101,26 @@ class Character {
 		const SPD = this.getAttribute('SPD');
 		const CT = this.getAttribute('CT');
 		this.setAttribute('CT', CT + SPD);
+	}
+
+	// update on character act start
+	public startAct() {
+		if (this.isDead()) {
+			throw new Error('Character cannot start act: dead state');
+		}
+		// regenerate actor AP
+		const baseAP = this.getBaseAttribute('AP');
+		this.setAttribute('AP', baseAP);
+	}
+
+	// update on character act end
+	public endAct() {
+		if (this.isDead()) {
+			throw new Error('Character cannot end act: dead state');
+		}
+		// update character CT
+		const CT = this.getAttribute('CT');
+		this.setAttribute('CT', CT % characterCTLimit);
 	}
 
 	public applyStatus(status: StatusEffectID) {

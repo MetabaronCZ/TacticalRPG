@@ -66,7 +66,6 @@ class ActReaction {
 			throw new Error('Could not start reaction: invalid state ' + state);
 		}
 		this.state = 'IDLE';
-
 		this.events.onStart(this);
 	}
 
@@ -136,14 +135,14 @@ class ActReaction {
 		this.events.onEnd(this);
 	}
 
-	public pass(action: CharacterAction) {
+	public pass(passAction: CharacterAction) {
 		const { state} = this;
 
 		if ('IDLE' !== state) {
 			throw new Error('Could not pass reaction: invalid state ' + state);
 		}
 		this.state = 'DONE';
-		this.action = action;
+		this.action = passAction;
 
 		this.events.onPass(this);
 		this.events.onEnd(this);
@@ -174,13 +173,13 @@ class ActReaction {
 	}
 
 	private block(block: 'BLOCK_SMALL' | 'BLOCK_LARGE') {
-		const { state, reactor } = this;
+		const { state } = this;
 
 		if ('SELECTED' !== state) {
 			throw new Error('Could not start to evade: invalid state ' + state);
 		}
 		this.state = 'DONE';
-		reactor.applyStatus(block);
+		this.reactor.applyStatus(block);
 
 		this.events.onBlock(this);
 		this.events.onEnd(this);

@@ -27,7 +27,7 @@ class Damage {
 			attack = attacker.getAttribute('STR') * attWeaponDamage * skill.getPhysicalDamage();
 		}
 		const defHasShield = (WeaponTypeID.SHIELD === defOffHand.getType());
-		const defHasBlocked = (-1 !== defender.getStatus().map(status => status.id).indexOf('BLOCK_SMALL'));
+		const defHasBlocked = defender.hasStatus('BLOCK_SMALL');
 		let defBlock = 0;
 
 		// small shield block

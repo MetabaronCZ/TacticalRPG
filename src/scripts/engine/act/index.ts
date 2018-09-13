@@ -1,5 +1,3 @@
-import { characterCTLimit } from 'data/game-config';
-
 import Logger from 'engine/logger';
 import Position from 'engine/position';
 import Character from 'engine/character';
@@ -42,8 +40,8 @@ class Act {
 				this.phase = 'MOVEMENT';
 				this.update();
 			},
-			onSelect:		move => this.update(),
-			onAnimation:	(move, step) => this.update()
+			onSelect: move => this.update(),
+			onAnimation: (move, step) => this.update()
 		});
 
 		this.directPhase = new ActDirect(actor, {
@@ -62,10 +60,15 @@ class Act {
 				this.phase = 'ACTION';
 				this.update();
 			},
-			onReset:	action => this.update(),
-			onSelect:	action => this.update(),
-			onConfirm:	action => this.update(),
-			onPass:		action => this.update(),
+			onReset: action => {
+				this.phase = 'MOVEMENT';
+				this.update();
+			},
+			onSelect: action => this.update(),
+			onConfirm: action => this.update(),
+			onPass: action => {
+				this.directPhase.start();
+			},
 			onAnimation: (action, step) => {
 				this.update();
 
@@ -73,14 +76,14 @@ class Act {
 					this.directPhase.start();
 				}
 			},
-			onReactionStart:		reaction => this.update(),
-			onReactionSelected:		reaction => this.update(),
-			onReactionBlock:		reaction => this.update(),
-			onReactionEvasionStart:	reaction => this.update(),
-			onReactionEvasionEnd:	reaction => this.update(),
-			onReactionPass:			reaction => this.update(),
-			onReactionReset:		reaction => this.update(),
-			onReactionEnd:			reaction => this.update(),
+			onReactionStart: reaction => this.update(),
+			onReactionSelected: reaction => this.update(),
+			onReactionBlock: reaction => this.update(),
+			onReactionEvasionStart: reaction => this.update(),
+			onReactionEvasionEnd: reaction => this.update(),
+			onReactionPass: reaction => this.update(),
+			onReactionReset: reaction => this.update(),
+			onReactionEnd: reaction => this.update(),
 			onBattleInfo: (text, position) => {
 				this.setBattleInfo(text, position);
 			},
@@ -123,16 +126,13 @@ class Act {
 		}
 		this.phase = 'IDLE';
 
-		// regenerate actor AP
-		const baseAP = actor.getBaseAttribute('AP');
-		actor.setAttribute('AP', baseAP);
-
+		actor.startAct();
 		this.events.onStart(this);
 		this.movePhase.start();
 	}
 
 	public selectTile(position: Position) {
-		const { phase, actionPhase, movePhase } = this;
+		const { phase, actionPhase, movePhase, directPhase } = this;
 
 		switch (phase) {
 			case 'MOVEMENT':
@@ -175,7 +175,7 @@ class Act {
 
 			case 'DIRECTION':
 				// select direction
-				this.directPhase.select(position);
+				directPhase.select(position);
 				return;
 
 			default:
@@ -184,7 +184,7 @@ class Act {
 	}
 
 	public selectAction(action: CharacterAction) {
-		const { phase, actionPhase, directPhase, events } = this;
+		const { phase, actionPhase } = this;
 		const actionId = action.getId();
 
 		switch (actionId) {
@@ -206,7 +206,6 @@ class Act {
 					throw new Error('Could not pass act: invalid phase ' + phase);
 				}
 				actionPhase.pass(action);
-				directPhase.start();
 				return;
 			}
 
@@ -221,8 +220,6 @@ class Act {
 					throw new Error('Could not select reaction: invalid reaction');
 				}
 				reaction.selectAction(action);
-				this.updateActions();
-				events.onUpdate(this);
 				return;
 			}
 
@@ -232,8 +229,6 @@ class Act {
 					throw new Error('Could not cancel reaction: invalid phase ' + phase);
 				}
 				actionPhase.passReaction(action);
-				this.updateActions();
-				events.onUpdate(this);
 				return;
 			}
 
@@ -258,8 +253,6 @@ class Act {
 					case 'SELECTED':
 						// remove current action >> goto move phase
 						this.actionPhase.reset();
-						this.phase = 'MOVEMENT';
-						this.update();
 						return;
 
 					case 'REACTION':
@@ -270,8 +263,6 @@ class Act {
 							throw new Error('Could not reset reaction: invalid reaction');
 						}
 						reaction.reset();
-						this.updateActions();
-						events.onUpdate(this);
 						return;
 
 					default:
@@ -285,52 +276,52 @@ class Act {
 	}
 
 	private end() {
-		const { phase, actor, events } = this;
+		const { phase, actor } = this;
 
 		if ('DIRECTION' !== phase) {
 			throw new Error('Could not end act: invalid phase ' + phase);
 		}
-		if (!actor.isDead()) {
-			// update character CT
-			const CT = actor.getAttribute('CT');
-			actor.setAttribute('CT', CT % characterCTLimit);
 
+		if (!actor.isDead()) {
+			actor.endAct();
 			this.update();
 		}
-
-		events.onEnd(this);
+		this.events.onEnd(this);
 	}
 
 	private updateActions() {
-		const { phase, actionPhase, movePhase, actor } = this;
-
-		switch (phase) {
-			case 'MOVEMENT':
-				if ('IDLE' === movePhase.getState()) {
-					this.actions = CharacterActions.getIdleActions(actor);
+		switch (this.phase) {
+			case 'MOVEMENT': {
+				if ('IDLE' === this.movePhase.getState()) {
+					this.actions = CharacterActions.getIdleActions(this.actor);
 				} else {
 					this.actions = [];
 				}
 				break;
+			}
 
 			case 'ACTION': {
+				const actionPhase = this.actionPhase;
 				const state = actionPhase.getState();
-				const action = actionPhase.getAction();
-				const reaction = actionPhase.getReaction();
 
 				switch (state) {
 					case 'IDLE':
 						this.actions = CharacterActions.getSkillActions();
 						break;
 
-					case 'SELECTED':
+					case 'SELECTED': {
+						const action = actionPhase.getAction();
+
 						if (null === action) {
 							throw new Error('Could not update actions: no action');
 						}
 						this.actions = CharacterActions.getSkillConfirmActions(action, actionPhase.getEffectTargets());
 						break;
+					}
 
-					case 'REACTION':
+					case 'REACTION': {
+						const reaction = actionPhase.getReaction();
+
 						if (null === reaction) {
 							throw new Error('Could not set react actions: invalid reaction');
 						}
@@ -348,6 +339,7 @@ class Act {
 								this.actions = [];
 						}
 						break;
+					}
 
 					default:
 						this.actions = [];
@@ -366,17 +358,19 @@ class Act {
 	}
 
 	private setBattleInfo(text: string, position: Position, duration = 3000) {
+		const infos = this.battleInfo;
+
 		// set battle info item
 		const item = new BattleInfo(text, position);
-		this.battleInfo.push(item);
+		infos.push(item);
 
 		this.update();
 
 		// remove battle info item after fixed amount of time
 		setTimeout(() => {
-			for (let i = 0, imax = this.battleInfo.length; i < imax; i++) {
-				if (this.battleInfo[i] === item) {
-					this.battleInfo.splice(i, 1);
+			for (let i = 0, imax = infos.length; i < imax; i++) {
+				if (infos[i] === item) {
+					infos.splice(i, 1);
 					this.update();
 					break;
 				}
