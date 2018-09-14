@@ -21,10 +21,6 @@ TODO
 
 --	pracovat s AI Player, ne s AI Character (kooperace postav)
 
---	Position zmenit na pregenerovany seznam umisteni s ID
-	- prirazovat PositionID
-	- pri vygenerovani pozic predvypocitat i sousedy
-
 --	trackovat rozhodnuti
 	- pripravit replay (ulozeni na konci souboje + moznost krokovani)
 	- pripravit moznost jit o krok (Act) zpet primo ve hre (udelat konfigurovatelne - pro single play)

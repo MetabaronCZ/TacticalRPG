@@ -5,6 +5,7 @@ import Logger from 'engine/logger';
 import Position from 'engine/position';
 import Direction from 'engine/direction';
 import Character from 'engine/character';
+import { getPosition } from 'engine/positions';
 import { getMovableTiles, getShortestPath, ICostMap } from 'engine/pathfinding';
 
 interface IActMoveEvents {
@@ -89,9 +90,9 @@ class ActMove {
 		// add non-moveArea positions in obstacles
 		for (let x = 0; x < gridSize; x++) {
 			for (let y = 0; y < gridSize; y++) {
-				const pos = new Position(x, y);
+				const pos = getPosition(x, y);
 
-				if (pos.isContained(area) || pos.isContained(obst)) {
+				if (null === pos || pos.isContained(area) || pos.isContained(obst)) {
 					continue;
 				}
 				obst.push(pos);

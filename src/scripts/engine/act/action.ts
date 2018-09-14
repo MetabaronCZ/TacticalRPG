@@ -109,7 +109,7 @@ class ActAction {
 		// update actor values
 		const skills = SkillUtils.getByID(action.getSkills());
 		const skillAreas = skills.map(skill => SkillUtils.getTargetableArea(skill, actor.getPosition()));
-		const targetable = ArrayUtils.getIntersection(skillAreas, pos => pos.getX() + '|' + pos.getY());
+		const targetable = ArrayUtils.getIntersection(skillAreas, pos => pos.getId());
 		const targets = SkillUtils.getTargets(actor, skills[0], characters, targetable);
 
 		this.area = targetable;
@@ -143,7 +143,7 @@ class ActAction {
 		this.state = 'SELECTED';
 
 		const effectAreas = skills.map(s => SkillUtils.getEffectArea(s, actor.getPosition(), target));
-		const effectArea = ArrayUtils.getIntersection(effectAreas, pos => pos.getX() + '|' + pos.getY());
+		const effectArea = ArrayUtils.getIntersection(effectAreas, pos => pos.getId());
 		const effectTargets = SkillUtils.getEffectTargets(actor, skills[0], effectArea, characters);
 
 		this.effectTarget = target;

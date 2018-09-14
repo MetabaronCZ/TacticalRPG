@@ -1,16 +1,17 @@
 import Position from 'engine/position';
+import { getPosition } from 'engine/positions';
 
 export type DirectionID = 'TOP' | 'LEFT' | 'RIGHT' | 'BOTTOM';
 
 type IByDirectionTable = {
-	[T in DirectionID]: (pos: Position) => Position;
+	[T in DirectionID]: (pos: Position) => Position|null;
 };
 
 const byDirectionTable: IByDirectionTable = {
-	TOP:    (pos: Position) => new Position(pos.getX(), pos.getY() - 1),
-	BOTTOM: (pos: Position) => new Position(pos.getX(), pos.getY() + 1),
-	LEFT:   (pos: Position) => new Position(pos.getX() - 1, pos.getY()),
-	RIGHT:  (pos: Position) => new Position(pos.getX() + 1, pos.getY())
+	TOP:    pos => getPosition(pos.getX(), pos.getY() - 1),
+	BOTTOM: pos => getPosition(pos.getX(), pos.getY() + 1),
+	LEFT:   pos => getPosition(pos.getX() - 1, pos.getY()),
+	RIGHT:  pos => getPosition(pos.getX() + 1, pos.getY())
 };
 
 class Direction {
@@ -29,8 +30,7 @@ class Direction {
 	}
 
 	public static findPositionFrom(source: Position, dir: DirectionID): Position|null {
-		const pos = byDirectionTable[dir](source);
-		return pos.isInGrid() ? pos : null;
+		return byDirectionTable[dir](source);
 	}
 }
 

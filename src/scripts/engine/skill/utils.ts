@@ -2,6 +2,7 @@ import Position from 'engine/position';
 import Character from 'engine/character';
 import MagicSkills from 'engine/skill/magic';
 import WeaponSkills from 'engine/skill/weapon';
+import { getPosition } from 'engine/positions';
 import ArchetypeSkills from 'engine/skill/archetype';
 import { MagicSkillID } from 'engine/skill/magic/types';
 import { WeaponSkillID } from 'engine/skill/weapon/types';
@@ -33,9 +34,9 @@ class SkillUtils {
 		// get all tiles in range
 		for (let x = -range; x <= range; x++) {
 			for (let y = -range; y <= range; y++) {
-				const pos = new Position(source.getX() + x, source.getY() + y);
+				const pos = getPosition(source.getX() + x, source.getY() + y);
 
-				if (!pos.isInGrid()) {
+				if (null === pos) {
 					continue;
 				}
 				targetable.push(pos);
@@ -103,8 +104,11 @@ class SkillUtils {
 				const dirY = (diffY / absDiffY) || 0;
 
 				for (let i = 1; i <= skill.getRange(); i++ ) {
-					const pos = new Position(source.getX() + i * dirX, source.getY() + i * dirY);
-					effect.push(pos);
+					const pos = getPosition(source.getX() + i * dirX, source.getY() + i * dirY);
+
+					if (null !== pos) {
+						effect.push(pos);
+					}
 				}
 				break;
 
@@ -124,7 +128,7 @@ class SkillUtils {
 				throw new Error(`Unsupported skill area: ${area}`);
 		}
 
-		return effect.filter(pos => pos.isInGrid());
+		return effect;
 	}
 
 	public static getEffectTargets(actor: Character, skill: Skill, effectArea: Position[], characters: Character[]): Character[] {

@@ -150,7 +150,7 @@ class Act {
 						const prevTarget = actionPhase.getEffectTarget();
 
 						// confirm target on double selection
-						if (prevTarget && Position.isEqual(prevTarget, position)) {
+						if (prevTarget === position) {
 							actionPhase.confirm();
 						} else {
 							actionPhase.selectTarget(position);

@@ -22,7 +22,7 @@ export const getShortestPath = (start: Position, target: Position, obstacles: Po
 			continue;
 		}
 
-		if (Position.isEqual(curr, target)) {
+		if (curr === target) {
 			break;
 		}
 		let neighbours = curr.getSideTiles(obstacles);

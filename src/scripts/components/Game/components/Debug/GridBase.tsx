@@ -4,6 +4,7 @@ import { gridSize } from 'data/game-config';
 
 import Act from 'engine/act';
 import Position from 'engine/position';
+import { getPositions } from 'engine/positions';
 
 const itemSize = 100 / gridSize;
 
@@ -29,7 +30,7 @@ const getColor = (pos: Position, act: Act|null) => {
 			if (pos.isContained(move.getPath())) {
 				color = 'blue';
 			}
-			if (tgt && Position.isEqual(pos, tgt)) {
+			if (pos === tgt) {
 				color = 'yellow';
 			}
 			break;
@@ -58,7 +59,7 @@ const getColor = (pos: Position, act: Act|null) => {
 					if (pos.isContained(actionPhase.getEffectTargets().map(char => char.getPosition()))) {
 						color = 'blue';
 					}
-					if (tgt && Position.isEqual(pos, tgt)) {
+					if (pos === tgt) {
 						color = 'yellow';
 					}
 					break;
@@ -71,7 +72,7 @@ const getColor = (pos: Position, act: Act|null) => {
 						if (pos.isContained(reactionPhase.getEvasionTargets())) {
 							color = 'blue';
 						}
-						if (tgt && Position.isEqual(pos, tgt)) {
+						if (pos === tgt) {
 							color = 'yellow';
 						}
 					}
@@ -87,7 +88,7 @@ const getColor = (pos: Position, act: Act|null) => {
 			if (pos.isContained(direct.getDirectable())) {
 				color = 'green';
 			}
-			if (tgt && Position.isEqual(pos, tgt)) {
+			if (pos === tgt) {
 				color = 'yellow';
 			}
 			break;
@@ -98,15 +99,9 @@ const getColor = (pos: Position, act: Act|null) => {
 };
 
 const GridBase: React.SFC<IGridBaseProps> = ({ act, onSelect }) => {
-	const tiles: Array<[Position, string]> = [];
-
-	for (let x = 0; x < gridSize; x++) {
-		for (let y = 0; y < gridSize; y++) {
-			const pos = new Position(y, x);
-			const color = getColor(pos, act);
-			tiles.push([pos, color]);
-		}
-	}
+	const tiles = getPositions().map(pos => {
+		return [pos, getColor(pos, act)] as [Position, string];
+	});
 
 	return (
 		<div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', }}>
@@ -117,16 +112,18 @@ const GridBase: React.SFC<IGridBaseProps> = ({ act, onSelect }) => {
 
 				return (
 					<div
-						style={{
-							position: 'absolute',
-							top: y * itemSize + '%',
-							left: x * itemSize + '%',
-							width: itemSize + '%',
-							height: itemSize + '%',
-							border: '1px solid grey',
-							background: color,
-							boxSizing: 'border-box',
-						}}
+						style={
+							{
+								position: 'absolute',
+								top: y * itemSize + '%',
+								left: x * itemSize + '%',
+								width: itemSize + '%',
+								height: itemSize + '%',
+								border: '1px solid grey',
+								background: color,
+								boxSizing: 'border-box',
+							}
+						}
 						onClick={onClick}
 						key={i}
 					/>

@@ -1,6 +1,6 @@
 import PriorityQueue from 'core/priority-queue';
-
 import Position from 'engine/position';
+import { getPositionByID } from 'engine/positions';
 
 export interface IMoveCostMap {
 	[id: string]: number;
@@ -44,10 +44,12 @@ export const getMovableTiles = (start: Position, obstacles: Position[], max: num
 
 	// get movable tiles
 	for (const id in costMap) {
-		const pos = id.split('|');
-		const x = parseInt(pos[0], 10);
-		const y = parseInt(pos[1], 10);
-		movable.push(new Position(x, y));
+		const pos = getPositionByID(id);
+
+		if (null === pos) {
+			throw new Error('Position lost during movable computation');
+		}
+		movable.push(pos);
 	}
 
 	return { positions: movable, costMap };

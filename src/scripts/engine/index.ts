@@ -9,6 +9,7 @@ import Logger from 'engine/logger';
 import Position from 'engine/position';
 import Character from 'engine/character';
 import { DirectionID } from 'engine/direction';
+import { getPosition } from 'engine/positions';
 import CharacterData from 'modules/character-data';
 import Player, { IPlayerData } from 'engine/player';
 import CharacterAction from 'engine/character-action';
@@ -158,16 +159,20 @@ class Engine {
 
 			// create characters
 			const chars = charData.map((data, i) => {
-				let pos: Position;
+				let pos: Position|null;
 				let dir: DirectionID;
 
 				// set position / orientation
 				if (0 === p) {
-					pos = new Position(i + 2, gridSize - 1);
+					pos = getPosition(i + 2, gridSize - 1);
 					dir = 'TOP';
 				} else {
-					pos = new Position(i + 2, 0);
+					pos = getPosition(i + 2, 0);
 					dir = 'BOTTOM';
+				}
+
+				if (null === pos) {
+					throw new Error('Invalid position given');
 				}
 				const char = new Character(data, pos, dir, p);
 
