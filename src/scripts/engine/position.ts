@@ -1,8 +1,6 @@
 import { gridSize } from 'data/game-config';
 
 class Position {
-	public static NULL_POSITION = new Position(-1, -1);
-
 	private readonly id: string;
 	private readonly x: number;
 	private readonly y: number;

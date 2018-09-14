@@ -2,8 +2,13 @@ import Position from 'engine/position';
 import { DirectionID } from 'engine/direction';
 
 class Movement {
-	private position = Position.NULL_POSITION;
-	private direction: DirectionID = 'RIGHT';
+	private position: Position;
+	private direction: DirectionID;
+
+	constructor(position: Position, direction: DirectionID) {
+		this.position = position;
+		this.direction = direction;
+	}
 
 	public getPosition(): Position {
 		return this.position;

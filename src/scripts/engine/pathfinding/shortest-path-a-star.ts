@@ -10,7 +10,7 @@ export const getShortestPath = (start: Position, target: Position, obstacles: Po
 	frontier.push(start, 0);
 
 	const visited: IGraph = {};
-	visited[start.getId()] = Position.NULL_POSITION;
+	visited[start.getId()] = null;
 
 	const cost: ICostMap = {};
 	cost[start.getId()] = 0;

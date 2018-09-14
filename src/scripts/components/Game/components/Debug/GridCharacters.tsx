@@ -38,42 +38,48 @@ const GridCharacters: React.SFC<IGridChactersProps> = ({ actor, characters, colo
 			}
 			return (
 				<div
-					style={{
-						position: 'absolute',
-						top: y * itemSize + '%',
-						left: x * itemSize + '%',
-						width: itemSize + '%',
-						height: itemSize + '%',
-					}}
+					style={
+						{
+							position: 'absolute',
+							top: y * itemSize + '%',
+							left: x * itemSize + '%',
+							width: itemSize + '%',
+							height: itemSize + '%',
+						}
+					}
 					title={char.getData().name}
 					key={i}
 				>
 					<div
-						style={{
-							width: '100%',
-							height: '100%',
-							border: '4px solid ' + (color ? color.colorA : 'grey'),
-							background: (color ? color.colorB : 'black'),
-							borderRadius: '100%',
-							fontSize: '9px',
-							color: 'black',
-							textAlign: 'center',
-						}}
+						style={
+							{
+								width: '100%',
+								height: '100%',
+								border: '4px solid ' + (color ? color.colorA : 'grey'),
+								background: (color ? color.colorB : 'black'),
+								borderRadius: '100%',
+								fontSize: '9px',
+								color: 'black',
+								textAlign: 'center',
+							}
+						}
 					>
 						{char.getData().name.substring(0, 4).toUpperCase()}
 
 						<div
-							style={{
-								position: 'absolute',
-								top: dir.top,
-								bottom: dir.bottom,
-								left: dir.left,
-								right: dir.right,
-								width: 0,
-								height: 0,
-								borderRadius: '4px',
-								border: dirIcoSize + 'px solid white',
-							}}
+							style={
+								{
+									position: 'absolute',
+									top: dir.top,
+									bottom: dir.bottom,
+									left: dir.left,
+									right: dir.right,
+									width: 0,
+									height: 0,
+									borderRadius: '4px',
+									border: dirIcoSize + 'px solid white',
+								}
+							}
 						/>
 					</div>
 				</div>

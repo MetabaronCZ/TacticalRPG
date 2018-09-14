@@ -1,13 +1,19 @@
 import { randomize } from 'core/array';
-import { characterCTLimit, gridSize } from 'data/game-config';
+
+import nameSamples from 'data/names';
+import { characterCTLimit, gridSize, characterCount, maxPartyNameLength } from 'data/game-config';
 
 import Act from 'engine/act';
 import Order from 'engine/order';
+import Logger from 'engine/logger';
 import Position from 'engine/position';
 import Character from 'engine/character';
+import { DirectionID } from 'engine/direction';
+import CharacterData from 'modules/character-data';
 import Player, { IPlayerData } from 'engine/player';
 import CharacterAction from 'engine/character-action';
-import Logger from 'engine/logger';
+import { ICharacterData } from 'modules/character-data/types';
+import RandomNameGenerator from 'core/random-name-generator';
 
 export interface IEngineState {
 	tick: number;
@@ -134,25 +140,45 @@ class Engine {
 		if (2 !== playerData.length) {
 			throw new Error('Game has to have exactly two players');
 		}
-		const players = playerData.map((data, p) => {
-			const player = new Player(data);
+		const players = playerData.map(({ characters, party, control }, p) => {
+			let charData: ICharacterData[];
 
-			player.getCharacters().forEach((char, i) => {
+			// get character data
+			if (party && characters) {
+				// user created party
+				charData = party.characters
+					.map(id => characters.filter(char => char.id === id)[0]) // convert party character IDs to character data
+					.filter(char => !!char); // filter empty slots
+
+			} else {
+				// random generated party
+				const charNames = RandomNameGenerator.get(nameSamples, characterCount, maxPartyNameLength);
+				charData = charNames.map(name => CharacterData.random(name));
+			}
+
+			// create characters
+			const chars = charData.map((data, i) => {
+				let pos: Position;
+				let dir: DirectionID;
+
 				// set position / orientation
 				if (0 === p) {
-					char.setPosition(new Position(i + 2, gridSize - 1));
-					char.setDirection('TOP');
-				} else if (1 === p) {
-					char.setPosition(new Position(i + 2, 0));
-					char.setDirection('BOTTOM');
+					pos = new Position(i + 2, gridSize - 1);
+					dir = 'TOP';
+				} else {
+					pos = new Position(i + 2, 0);
+					dir = 'BOTTOM';
 				}
+				const char = new Character(data, pos, dir, p);
 
 				// set small random initial CP
 				const ct = Math.floor((characterCTLimit / 10) * Math.random());
 				char.setAttribute('CT', ct);
+
+				return char;
 			});
 
-			return player;
+			return new Player(chars, control);
 		});
 
 		return randomize(players);

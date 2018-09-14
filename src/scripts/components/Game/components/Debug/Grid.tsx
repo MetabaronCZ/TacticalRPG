@@ -11,7 +11,7 @@ import GridCharacters from 'components/Game/components/Debug/GridCharacters';
 const gridWidth = 400;
 
 export interface IPlayerColors {
-	player: Player;
+	player: number;
 	colorA: string;
 	colorB: string;
 }
@@ -24,10 +24,10 @@ interface IGridProps {
 }
 
 const Grid: React.SFC<IGridProps> = ({ act, players, characters, onTileSelect }) => {
-	const playerColors: IPlayerColors[] = players.map((pl, i) => ({
-		player: pl,
-		colorA: 0 === i ? 'darkorchid' : 'salmon',
-		colorB: 0 === i ? 'darkviolet' : 'tomato'
+	const playerColors: IPlayerColors[] = players.map((pl, p) => ({
+		player: p,
+		colorA: 0 === p ? 'darkorchid' : 'salmon',
+		colorB: 0 === p ? 'darkviolet' : 'tomato'
 	}));
 
 	const actor = act ? act.getActor() : null;

@@ -4,7 +4,7 @@ import { constructPath, IGraph } from 'engine/pathfinding';
 // Breadth first (shortest path at uniform maovement cost)
 export const getShortestPath = (start: Position, target: Position, obstacles: Position[]) => {
 	const graph: IGraph = {
-		[start.getId()]: Position.NULL_POSITION
+		[start.getId()]: null
 	};
 	const frontier: Position[] = [start];
 

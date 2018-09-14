@@ -1,4 +1,3 @@
-import Player from 'engine/player';
 import Position from 'engine/position';
 import Status from 'engine/character/status';
 import { DirectionID } from 'engine/direction';
@@ -11,7 +10,7 @@ import { characterCTLimit } from 'data/game-config';
 import { ICharacterData } from 'modules/character-data/types';
 
 class Character {
-	private readonly player: Player;
+	private readonly player: number;
 	private readonly data: ICharacterData;
 	private readonly attributes: Attributes;
 
@@ -19,10 +18,10 @@ class Character {
 	private readonly movable: Movement;
 	private readonly equipment: Equipment;
 
-	constructor(data: ICharacterData, player: Player) {
+	constructor(data: ICharacterData, position: Position, direction: DirectionID, player: number) {
 		this.data = data;
 		this.player = player;
-		this.movable = new Movement();
+		this.movable = new Movement(position, direction);
 		this.equipment = new Equipment(data);
 		this.attributes = new Attributes(data.archetype);
 		this.status = new Status();
@@ -52,7 +51,7 @@ class Character {
 		return this.data;
 	}
 
-	public getPlayer() {
+	public getPlayer(): number {
 		return this.player;
 	}
 

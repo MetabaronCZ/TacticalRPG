@@ -1,7 +1,7 @@
 import Position from 'engine/position';
 
 export interface IGraph {
-	[id: string]: Position;
+	[id: string]: Position|null;
 }
 
 export interface ICostMap {
@@ -13,11 +13,11 @@ export const getPriority = (a: Position, b: Position): number => {
 };
 
 export const constructPath = (start: Position, target: Position, graph: IGraph): Position[] => {
-	let curr = target;
+	let curr: Position|null = target;
 	const path: Position[] = [];
 
-	while (!Position.isEqual(curr, start)) {
-		if (Position.isEqual(curr, Position.NULL_POSITION)) {
+	while (curr !== start) {
+		if (null === curr) {
 			break;
 		}
 		path.push(curr);
