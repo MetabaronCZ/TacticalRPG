@@ -1,7 +1,7 @@
 import { randomize } from 'core/array';
 
 import nameSamples from 'data/names';
-import { characterCTLimit, gridSize, characterCount, maxPartyNameLength } from 'data/game-config';
+import { characterCTLimit, gridSize, characterCount, maxPartyNameLength, maxPlayers, randomPartyID } from 'data/game-config';
 
 import Act from 'engine/act';
 import Order from 'engine/order';
@@ -138,23 +138,29 @@ class Engine {
 	}
 
 	private createPlayers(playerData: IPlayerData[]): Player[] {
-		if (2 !== playerData.length) {
-			throw new Error('Game has to have exactly two players');
+		if (maxPlayers !== playerData.length) {
+			throw new Error(`Game has to have exactly ${maxPlayers} players`);
 		}
-		const players = playerData.map(({ characters, party, control }, p) => {
+		const players = playerData.map((conf, p) => {
+			const { name, control, party, parties, characters } = conf;
 			let charData: ICharacterData[];
 
 			// get character data
-			if (party && characters) {
-				// user created party
-				charData = party.characters
-					.map(id => characters.filter(char => char.id === id)[0]) // convert party character IDs to character data
-					.filter(char => !!char); // filter empty slots
-
-			} else {
+			if (randomPartyID === party) {
 				// random generated party
 				const charNames = RandomNameGenerator.get(nameSamples, characterCount, maxPartyNameLength);
-				charData = charNames.map(name => CharacterData.random(name));
+				charData = charNames.map(n => CharacterData.random(n));
+
+			} else {
+				// user created party
+				const selectedParty = parties.find(pt => party === pt.id);
+
+				if (!selectedParty) {
+					throw new Error(`Could not create player "${name}": Invalid party selected`);
+				}
+				charData = selectedParty.characters
+					.map(id => characters.filter(char => char.id === id)[0]) // convert party character IDs to character data
+					.filter(char => !!char); // filter empty slots
 			}
 
 			// create characters
@@ -183,7 +189,7 @@ class Engine {
 				return char;
 			});
 
-			return new Player(chars, control);
+			return new Player(name, control, chars);
 		});
 
 		return randomize(players);

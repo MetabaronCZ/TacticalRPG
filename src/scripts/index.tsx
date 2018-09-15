@@ -6,7 +6,7 @@ import initStore from 'store';
 import Router from 'components/Router';
 import PageWrapper from 'components/PageWrapper';
 
-const store = initStore();
+export const store = initStore();
 
 ReactDOM.render(
 	<PageWrapper>

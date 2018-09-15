@@ -8,6 +8,7 @@ import * as Selector from 'selectors';
 import { goto, gotoFn } from 'utils/nav';
 
 import { IParty } from 'modules/party/types';
+import { IBattleConfig } from 'modules/battle-config';
 import { ICharacterData } from 'modules/character-data/types';
 
 import GameUIContainer from 'components/Game';
@@ -15,6 +16,7 @@ import GameUIContainer from 'components/Game';
 const txtExitConfirm = 'Do you realy want to exit and lost your game progress?';
 
 interface IStateToProps {
+	readonly battleConfig: IBattleConfig;
 	readonly characters: ICharacterData[];
 	readonly parties: IParty[];
 }
@@ -27,24 +29,20 @@ const exit = (history: History) => () => {
 };
 
 const mapStateToProps = (state: IStore): IStateToProps => ({
+	battleConfig: Selector.getBattleConfig(state),
 	characters: Selector.getCharacters(state),
 	parties: Selector.getParties(state)
 });
 
 const ViewCharacterEditContainer: React.SFC<IStateToProps & RouteComponentProps<any>> = props => {
-	const { characters, parties, history, match } = props;
-	const partyID = match.params.party;
-	const party = (parties ? parties.find(p => p.id === partyID) : undefined);
-	const onExit = exit(history);
+	const { characters, parties, battleConfig, history } = props;
 
-	if (!party || !characters) {
-		throw new Error('Game started with invalid arguments');
-	}
 	return (
 		<GameUIContainer
-			party={party}
+			parties={parties}
 			characters={characters}
-			onExit={onExit}
+			config={battleConfig}
+			onExit={exit(history)}
 			onSummary={gotoFn(history, '/battle-summary')}
 		/>
 	);

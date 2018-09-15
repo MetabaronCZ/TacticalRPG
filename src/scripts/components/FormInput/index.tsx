@@ -4,7 +4,7 @@ interface IInputProps {
 	readonly id: string;
 	readonly type: string;
 	readonly value: string;
-	readonly placeholder: string;
+	readonly placeholder?: string;
 	readonly name: string;
 	readonly maxLength: number;
 	readonly disabled?: boolean;

@@ -28,8 +28,8 @@ const ActUI: React.SFC<IActUIProps> = ({ act, onActionSelect }) => {
 		<table style={{ width: '100%', }}>
 			<tbody>
 				<tr>
-					<td style={{ verticalAlign: 'top', width: '80%', }}>
-						<h3>Character act</h3>
+					<td style={{ verticalAlign: 'top', width: '70%', paddingRight: '40px', }}>
+						<h3 className="Heading">Character act</h3>
 						<div>Phase: <strong>{act.getPhase()}</strong></div>
 						<div>Actor: <strong>{actor.getData().name}</strong> {formatPosition(actor.getPosition())}</div>
 
@@ -53,7 +53,7 @@ const ActUI: React.SFC<IActUIProps> = ({ act, onActionSelect }) => {
 					</td>
 
 					<td style={{ verticalAlign: 'top', }}>
-						<h3>Character Actions:</h3>
+						<h3 className="Heading">Character Actions</h3>
 						<Actions actions={actions} onSelect={onActionSelect} />
 					</td>
 				</tr>

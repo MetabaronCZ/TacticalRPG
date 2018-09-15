@@ -1,41 +1,42 @@
 import React, { SyntheticEvent } from 'react';
 
-import Link from 'components/Link';
+import { validateField } from 'utils/validation';
+import { playerMaxNameLength, maxPlayers, randomPartyID } from 'data/game-config';
+
 import Form from 'components/Form';
-import FormField from 'components/FormField';
-import FormSelect from 'components/FormSelect';
-import FormSelectItem from 'components/FormSelectItem';
 import Button from 'components/Button';
 import ButtonRow from 'components/ButtonRow';
 import Separator from 'components/Separator';
+import FormField from 'components/FormField';
+import FormInput from 'components/FormInput';
+import FormSelect from 'components/FormSelect';
 import CharacterList from 'components/CharacterList';
+import FormSelectItem from 'components/FormSelectItem';
 
 import Party from 'modules/party';
 import { IParty } from 'modules/party/types';
 import { ICharacterData } from 'modules/character-data/types';
+import { IBattleConfig, IBattleConfigPlayer } from 'modules/battle-config';
 
-const NoParty: React.SFC<{}> = () => (
-	<p className="Paragraph">
-		You must <Link href="/party-create">form a party</Link> to start a battle.
-	</p>
-);
+import PlayerControl from 'engine/player-control';
 
-const InvalidParty: React.SFC<{ msg: string|true }> = ({ msg }) => (
-	<p className="ErrorBox">
-		Invalid Party: {msg}
-	</p>
-);
+// empty array to map player data / states
+const playerPool = Array(maxPlayers).fill(0);
 
 interface IBattleSetupProps {
-	readonly parties?: IParty[];
-	readonly characters?: ICharacterData[];
-	readonly onStart: (partyID: string|null) => void;
+	readonly config: IBattleConfig;
+	readonly parties: IParty[];
+	readonly characters: ICharacterData[];
+	readonly onStart: (config: IBattleConfig) => void;
 	readonly onBack: (e: SyntheticEvent<any>) => void;
 }
 
+type IBattleSetupPlayerError = Partial<Record<keyof IBattleConfigPlayer, string|undefined>>;
+
 interface IBattleSetupState {
-	readonly fields: {
-		readonly party: string|null;
+	readonly fields: IBattleConfig;
+	readonly errors: {
+		players: IBattleSetupPlayerError[];
 	};
 }
 
@@ -43,70 +44,154 @@ class BattleSetup extends React.Component<IBattleSetupProps, IBattleSetupState> 
 	constructor(props: IBattleSetupProps) {
 		super(props);
 
-		const defaultParty = (this.props.parties && this.props.parties.length) ? this.props.parties[0].id : null;
+		const { config, parties } = this.props;
+		const defaultParty = parties.length ? parties[0].id : randomPartyID;
+		const partyIDs = [...parties.map(({ id }) => id), randomPartyID];
 
 		this.state = {
 			fields: {
-				party: defaultParty
+				players: playerPool.map((_, p) => {
+					const conf = config.players[p];
+					let party = defaultParty;
+
+					if (conf && -1 !== partyIDs.indexOf(conf.party)) {
+						party = conf.party;
+					}
+					return {
+						name: (conf ? conf.name : `Player ${p + 1}`),
+						control: (conf ? conf.control : 'HUMAN'),
+						party
+					};
+				})
+			},
+			errors: {
+				players: playerPool.map(() => ({}))
 			}
 		};
 	}
 
 	public render() {
 		const { characters, parties } = this.props;
-		const fields = this.state.fields;
+		const players = this.state.fields.players;
+		const errors = this.state.errors.players;
+		let isValidSelection = true;
 
-		if (!characters || !characters.length || !parties || !parties.length) {
-			return <NoParty />;
+		// validate errors
+		main: for (const err of errors) {
+			for (const e in err) {
+				if ((err as any)[e]) {
+					isValidSelection = false;
+					break main;
+				}
+			}
 		}
-		const selectedParty = parties.filter(p => p.id === fields.party)[0];
-
-		const chars = selectedParty.characters
-			.map(id => Party.getCharacterById(id, characters))
-			.filter(char => !!char);
-
-		const partyValidation = Party.validate(chars);
-		const isValidParty = (true === partyValidation && chars.length);
 
 		return (
 			<Form onSubmit={this.onSubmit}>
-				{/* party selection */}
-				<FormField fieldId="f-party" label="Select party">
-					<FormSelect id="f-party" name="party" value={fields.party || ''} onChange={this.onChange}>
-						{parties.map((party, i) => (
-							<FormSelectItem value={party.id} key={i}>
-								{party.name}
-							</FormSelectItem>
-						))}
-					</FormSelect>
-				</FormField>
+				{playerPool.map((_, p) => {
+					const selectedParty = parties.filter(party => party.id === players[p].party)[0];
+					let chars: ICharacterData[] = [];
 
-				{/* selected party characters */}
-				{isValidParty
-					? <CharacterList characters={chars} />
-					: <InvalidParty msg={partyValidation} />
-				}
-				<Separator />
+					if (selectedParty) {
+						chars = selectedParty.characters
+							.map(id => Party.getCharacterById(id, characters))
+							.filter(char => !!char);
+					}
+					const partyValidation = Party.validate(chars);
+					const isValidParty = (randomPartyID === players[p].party || (true === partyValidation && chars.length));
+
+					if (!isValidParty) {
+						isValidSelection = false;
+					}
+					const onChange = (name: string) => (e: SyntheticEvent) => this.onChange(e, name, p);
+
+					return (
+						<React.Fragment key={p}>
+							<h2 className="Heading">Player {p + 1}</h2>
+
+							<FormField fieldId={`f-player-${p}-name`} label="Name" error={errors[p].name}>
+								<FormInput
+									id={`f-player-${p}-name`}
+									type="text"
+									value={players[p].name}
+									name={`player-${p}-name`}
+									maxLength={playerMaxNameLength}
+									isInvalid={!!errors[p].name}
+									onChange={onChange('name')}
+								/>
+							</FormField>
+
+							<FormField fieldId={`f-player-${p}-control`} label="Control">
+								<FormSelect id={`f-player-${p}-control`} name={`player-${p}-control`} value={players[p].control} onChange={onChange('control')}>
+									{PlayerControl.map((id, control, i) => (
+										<FormSelectItem value={id} key={i}>
+											{control.title}
+										</FormSelectItem>
+									))}
+								</FormSelect>
+							</FormField>
+
+							<FormField fieldId={`f-player-${p}-party`} label="Party">
+								<FormSelect id={`f-player-${p}-party`} name={`f-player-${p}-party`} value={players[p].party} onChange={onChange('party')}>
+									{parties && parties.map((party, i) => (
+										<FormSelectItem value={party.id} key={i}>
+											{party.name}
+										</FormSelectItem>
+									))}
+
+									<FormSelectItem value={randomPartyID}>
+										Random characters
+									</FormSelectItem>
+								</FormSelect>
+							</FormField>
+
+							{chars.length > 0 && (
+								isValidParty
+									? <CharacterList characters={chars} />
+									: <p className="ErrorBox">Invalid Party: {partyValidation}</p>
+							)}
+
+							<br />
+							<Separator />
+						</React.Fragment>
+					);
+				})}
 
 				<ButtonRow>
 					<Button ico="back" text="Back" onClick={this.props.onBack} />
-
-					{isValidParty
-						? <Button ico="fight" text="Start" color="green" type="submit" />
-						: <span />
-					}
+					{isValidSelection && <Button ico="fight" text="Start" color="green" type="submit" />}
 				</ButtonRow>
 			</Form>
 		);
 	}
 
-	private onChange = (e: SyntheticEvent<any>) => {
-		const { name, value } = e.currentTarget;
+	private onChange = (e: SyntheticEvent<any>, name: string, player: number) => {
+		const value = e.currentTarget.value;
+		validateField(name, value, (field, error) => this.handleValidationError(field, error, player));
 
 		this.setState(state => ({
 			fields: {
 				...state.fields,
-				[name]: value
+				players: state.fields.players.map((item, i) => {
+					if (player === i) {
+						return Object.assign({}, item, { [name]: value });
+					}
+					return item;
+				})
+			}
+		}));
+	}
+
+	private handleValidationError = (field: string, error: string|null, player: number) => {
+		this.setState(state => ({
+			errors: {
+				...state.errors,
+				players: state.errors.players.map((item, i) => {
+					if (player === i) {
+						return Object.assign({}, item, { [field]: error || undefined });
+					}
+					return item;
+				})
 			}
 		}));
 	}
@@ -115,7 +200,7 @@ class BattleSetup extends React.Component<IBattleSetupProps, IBattleSetupState> 
 		e.preventDefault();
 
 		if (this.props.onStart) {
-			this.props.onStart(this.state.fields.party);
+			this.props.onStart(this.state.fields);
 		}
 	}
 }

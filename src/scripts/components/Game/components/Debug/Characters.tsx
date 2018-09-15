@@ -15,8 +15,10 @@ interface ICharactersProps {
 const Characters: React.SFC<ICharactersProps> = ({ act, players }) => (
 	<div>
 		{players.map((pl, p) => (
-			<div style={{ marginBottom: '10px', }} key={p}>
-				<h3>Player {p} ({pl.getControl()})</h3>
+			<div style={{ marginBottom: '20px', }} key={p}>
+				<h3 className="Heading">
+					{pl.getName()} ({pl.getControl()} Player)
+				</h3>
 
 				<table style={{ width: '100%', borderCollapse: 'collapse', }}>
 					<thead>

@@ -28,7 +28,9 @@ const Debug: React.SFC<IDebugProps> = ({ engineState, engineUpdate, onTileSelect
 	return (
 		<div className="Paragraph" style={{ textAlign: 'left', padding: '40px', }}>
 			<br/>
-			<h2>ACT {act.getId()} ({engineUpdate.toLocaleTimeString()}) [Tick {tick}]</h2>
+			<h2>
+				ACT {act.getId()} ({engineUpdate.toLocaleTimeString()}) [Tick {tick}]
+			</h2>
 			<br/>
 
 			<table style={{ width: '100%', }}>

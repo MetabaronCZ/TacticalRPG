@@ -2,25 +2,8 @@ TODO
 ----------------------------------------------------------------------------------------------------------
 --	refaktorovat vsude pole tak, aby vzdy byl default [] (zbavit se arr?: x[])
 
---	pri vyberu party pred soubojem pridat do vyberu i "Random party"
-	- az po implementaci Engine
-
---	prolinkovat PlayerData, aby chodila uz z BattleStart
-	- v BattleStart:
-		- udelat vyber pro partu pro PlayerA a PlayerB (vcetne Random party)
-		- udelat input pro vyber jmena playera
-		- udelat input pro vyber PlayerControl
-		- v pripade PlayerControl AI pridat vyber obtiznosti
-		- defaultni jmena jsou "Player A", "Player B" a pro AI "Computer"
-	- v Debugu pak zobrazovat, ktery hrac je na rade
-	- do Player pridat i "name"
-	- do metod selectTile a seletAction pridat logiku na rozliseni mezi AI a HUMAN
-		- akce vidi jen HUMAN
-		- na onUpdate by mel reagovat AI Player
-	- v localStorage pamatovat posledni vybranou konfiguraci
-
---	pracovat s AI Player, ne s AI Character (kooperace postav)
-
 --	trackovat rozhodnuti
 	- pripravit replay (ulozeni na konci souboje + moznost krokovani)
 	- pripravit moznost jit o krok (Act) zpet primo ve hre (udelat konfigurovatelne - pro single play)
+
+--	pracovat s AI Player, ne s AI Character (kooperace postav)

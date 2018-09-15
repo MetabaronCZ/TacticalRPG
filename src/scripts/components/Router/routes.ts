@@ -17,7 +17,7 @@ interface IRoute {
 const routes: IRoute[] = [
 	{ path: '/', component: MainMenu },
 	{ path: '/battle-setup', component: BattleSetup },
-	{ path: '/battle/:party', component: Battle },
+	{ path: '/battle', component: Battle },
 	{ path: '/battle-summary', component: BattleSummary },
 	{ path: '/party-list', component: PartyList },
 	{ path: '/party-edit/:id', component: PartyEdit },

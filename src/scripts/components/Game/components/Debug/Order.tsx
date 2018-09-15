@@ -16,7 +16,7 @@ const getcolor = (act: Act|null, char: Character) => {
 
 const Order: React.SFC<IOrderProps> = ({ act, characters }) => (
 	<div>
-		<h3>Order</h3>
+		<h3 className="Heading">Order</h3>
 
 		<table style={{ width: '100%', borderCollapse: 'collapse', }}>
 			<thead>

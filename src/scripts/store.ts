@@ -2,16 +2,21 @@ import { createStore, Store } from 'redux';
 
 import reducers from 'reducers';
 import { IParty } from 'modules/party/types';
+import { IBattleConfig } from 'modules/battle-config';
 import { ICharacterData } from 'modules/character-data/types';
 
 const KEY = 'game'; // storage key
 
 export interface IStore {
+	readonly battleConfig: IBattleConfig;
 	readonly characters: ICharacterData[];
 	readonly parties: IParty[];
 }
 
 const getDefaultState = (): IStore => ({
+	battleConfig: {
+		players: []
+	},
 	characters: [],
 	parties: []
 });

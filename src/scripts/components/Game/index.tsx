@@ -18,6 +18,7 @@ import CharacterActions from 'modules/character-action';
 import { IParty } from 'modules/party/types';
 import { PlayerType } from 'modules/player/types';
 import { IPosition } from 'modules/position/types';
+import { IBattleConfig } from 'modules/battle-config';
 import { SkillTarget } from 'modules/skill/attributes';
 import { WeaponSkillID } from 'modules/skill/weapon/types';
 import { StatusEffectID } from 'modules/status-effect/types';
@@ -34,8 +35,9 @@ import Engine, { IEngineState } from 'engine';
 const directAction = CharacterActions.directAction;
 
 interface IGameUIContainerProps {
-	readonly party: IParty;
+	readonly parties: IParty[];
 	readonly characters: ICharacterData[];
+	readonly config: IBattleConfig;
 	readonly onSummary: () => void;
 	readonly onExit: () => void;
 }
@@ -51,13 +53,16 @@ class GameUIContainer extends React.Component<IGameUIContainerProps, IGameState 
 
 	constructor(props: IGameUIContainerProps) {
 		super(props);
-		this.state = Game.getInitialState(props.party.characters, props.characters, this.initiative);
+		this.state = Game.getInitialState(props.config.players, props.characters, props.parties, this.initiative);
 
 		this.engine = new Engine({
-			players: [
-				{ control: 'HUMAN', characters: props.characters, party: props.party },
-				{ control: 'HUMAN' }
-			],
+			players: props.config.players.map(conf => ({
+				name: conf.name,
+				control: conf.control,
+				party: conf.party,
+				parties: props.parties,
+				characters: props.characters
+			})),
 			events: {
 				onStart: engineState => {
 					const now = new Date();
