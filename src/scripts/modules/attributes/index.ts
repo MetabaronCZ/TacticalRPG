@@ -1,6 +1,7 @@
-import { ArchetypeID } from 'modules/archetype/types';
 import { IBaseAttributes, ISecondaryAttributes, IAttributes } from 'modules/attributes/types';
 import { getBaseAttributes, BaseAttrFormula, SecondaryAttrFormula, getMutiplier } from 'modules/attributes/formula';
+
+import { ArchetypeID } from 'engine/character/archetype';
 
 const getPrimary = (archetype: ArchetypeID): IBaseAttributes => {
 	const attributes = getBaseAttributes();

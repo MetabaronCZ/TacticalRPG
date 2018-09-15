@@ -1,5 +1,5 @@
-import { ArchetypeID } from 'modules/archetype/types';
 import { IBaseAttributes } from 'modules/attributes/types';
+import { ArchetypeID } from 'engine/character/archetype';
 
 type IBaseAttrFormula = (P: number, S: number, M: number) => number;
 
@@ -29,12 +29,12 @@ type IArch2AttrTable = {
 };
 
 const Arch2AttTable: IArch2AttrTable = {
-	[ArchetypeID.PP]: { P: 1.5, S: 0.0, M: 0.0 },
-	[ArchetypeID.PS]: { P: 1.0, S: 1.0, M: 0.0 },
-	[ArchetypeID.PM]: { P: 1.0, S: 0.0, M: 1.0 },
-	[ArchetypeID.SS]: { P: 0.0, S: 1.5, M: 0.0 },
-	[ArchetypeID.SM]: { P: 0.0, S: 1.0, M: 1.0 },
-	[ArchetypeID.MM]: { P: 0.0, S: 0.0, M: 1.5 }
+	PP: { P: 1.5, S: 0.0, M: 0.0 },
+	PS: { P: 1.0, S: 1.0, M: 0.0 },
+	PM: { P: 1.0, S: 0.0, M: 1.0 },
+	SS: { P: 0.0, S: 1.5, M: 0.0 },
+	SM: { P: 0.0, S: 1.0, M: 1.0 },
+	MM: { P: 0.0, S: 0.0, M: 1.5 }
 };
 
 export const getBaseAttributes = (): IBaseAttributes => ({

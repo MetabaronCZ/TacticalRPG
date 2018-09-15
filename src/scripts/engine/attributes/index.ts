@@ -1,5 +1,5 @@
 import { getBaseAttributes, BaseAttrFormula, SecondaryAttrFormula, getMutiplier } from 'engine/attributes/formula';
-import { ArchetypeID } from 'modules/archetype/types';
+import { ArchetypeID } from 'engine/character/archetype';
 
 export type BaseAttributeID =
 	'STR' | // strength

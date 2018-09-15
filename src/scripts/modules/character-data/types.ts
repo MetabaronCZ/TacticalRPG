@@ -2,9 +2,9 @@ import { ArmorID } from 'modules/armor/types';
 import { WeaponID } from 'modules/weapon/types';
 import { SkillsetID } from 'modules/skillset/types';
 import { IIndexable } from 'modules/indexable/types';
-import { ArchetypeID } from 'modules/archetype/types';
 
 import { SexID } from 'engine/character/sex';
+import { ArchetypeID } from 'engine/character/archetype';
 
 export interface ICharacterData extends IIndexable {
 	readonly name: string;

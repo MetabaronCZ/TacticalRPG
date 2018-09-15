@@ -1,6 +1,7 @@
 import React, { SyntheticEvent } from 'react';
 
 import Sexes from 'data/sexes';
+import Archetypes from 'data/archetypes';
 import { maxPartyNameLength, maxPartySize } from 'data/game-config';
 
 import { validateField, validateForm } from 'utils/validation';
@@ -19,7 +20,6 @@ import Party from 'modules/party';
 import Armors from 'modules/armor';
 import Weapons from 'modules/weapon';
 import Equipment from 'modules/equipment';
-import Archetypes from 'modules/archetype';
 import { IParty } from 'modules/party/types';
 import { ICharacterData } from 'modules/character-data/types';
 

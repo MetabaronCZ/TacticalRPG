@@ -1,6 +1,7 @@
 import React from 'react';
 
 import icos from 'data/icos';
+import Archetypes from 'data/archetypes';
 
 import Link from 'ui/common/Link';
 import LinkIco from 'ui/common/LinkIco';
@@ -11,7 +12,6 @@ import Armors from 'modules/armor';
 import Weapons from 'modules/weapon';
 import Skillsets from 'modules/skillset';
 import Equipment from 'modules/equipment';
-import Archetypes from 'modules/archetype';
 import CharacterData from 'modules/character-data';
 
 import { ICharacterData, IOnMoveDown, IOnMoveUp, IOnDelete } from 'modules/character-data/types';

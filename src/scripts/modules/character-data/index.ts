@@ -3,17 +3,16 @@ import uuid from 'uuid/v1';
 import * as ArrayUtils from 'core/array';
 
 import Sexes from 'data/sexes';
+import Archetypes from 'data/archetypes';
 
 import Armors from 'modules/armor';
 import Weapons from 'modules/weapon';
 import Skillsets from 'modules/skillset';
 import Equipment from 'modules/equipment';
-import Archetypes from 'modules/archetype';
 
 import { ArmorID } from 'modules/armor/types';
 import { WeaponID } from 'modules/weapon/types';
 import { SkillsetID } from 'modules/skillset/types';
-import { ArchetypeID } from 'modules/archetype/types';
 import { ICharacterData } from 'modules/character-data/types';
 
 type ICharacterConfig = {
@@ -30,7 +29,7 @@ const init = (conf: ICharacterConfig = {}): ICharacterData => {
 		creationDate: now,
 		lastUpdate: now,
 		sex: 'MALE',
-		archetype: ArchetypeID.PP,
+		archetype: 'PP',
 		skillset: SkillsetID.NONE,
 		main: WeaponID.NONE,
 		off: WeaponID.NONE,

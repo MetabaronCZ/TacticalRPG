@@ -1,28 +1,28 @@
 import DataList from 'core/data-list';
-import { ArchetypeID, IArchetypeData } from 'modules/archetype/types';
+import { ArchetypeID, IArchetypeData } from 'engine/character/archetype';
 
 const Archetypes = new DataList<ArchetypeID, IArchetypeData>({
-	[ArchetypeID.PP]: {
+	PP: {
 		title: 'Warrior',
 		description: 'Physically strong, durable warrior'
 	},
-	[ArchetypeID.PS]: {
+	PS: {
 		title: 'Fighter',
 		description: 'Balanced melee fighter'
 	},
-	[ArchetypeID.PM]: {
+	PM: {
 		title: 'Magi-knight',
 		description: 'Magic using fighter'
 	},
-	[ArchetypeID.SS]: {
+	SS: {
 		title: 'Rogue',
 		description: 'Agile melee fighter'
 	},
-	[ArchetypeID.SM]: {
+	SM: {
 		title: 'Spellblade',
 		description: 'Agile mage fighter'
 	},
-	[ArchetypeID.MM]: {
+	MM: {
 		title: 'Mage',
 		description: 'Strong magical user'
 	}

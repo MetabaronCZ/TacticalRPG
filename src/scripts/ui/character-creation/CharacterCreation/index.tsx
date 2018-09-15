@@ -2,6 +2,7 @@ import React, { SyntheticEvent } from 'react';
 
 import Icos from 'data/icos';
 import Sexes from 'data/sexes';
+import Archetypes from 'data/archetypes';
 import { characterMaxNameLength } from 'data/game-config';
 
 import { validateField, validateForm } from 'utils/validation';
@@ -21,7 +22,6 @@ import Armors from 'modules/armor';
 import Weapons from 'modules/weapon';
 import Skillsets from 'modules/skillset';
 import Equipment from 'modules/equipment';
-import Archetypes from 'modules/archetype';
 import CharacterData from 'modules/character-data';
 
 import { ArmorID } from 'modules/armor/types';

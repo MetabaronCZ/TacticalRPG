@@ -1,7 +1,7 @@
 import React from 'react';
 
-import Archetypes from 'modules/archetype';
-import { ArchetypeID } from 'modules/archetype/types';
+import Archetypes from 'data/archetypes';
+import { ArchetypeID } from 'engine/character/archetype';
 import ArchetypeIcoSizes, { SizeID } from 'ui/common/ArchetypeIco/sizes';
 
 interface IArchetypeIcoProps {
@@ -10,7 +10,7 @@ interface IArchetypeIcoProps {
 }
 
 const ArchetypeIco: React.SFC<IArchetypeIcoProps> = props => {
-	const { size = SizeID.default, archetype = ArchetypeID.PP } = props;
+	const { size = SizeID.default, archetype = 'PP' } = props;
 	const sizeData = ArchetypeIcoSizes[size];
 	const archData = Archetypes.get(archetype);
 	const cls = [

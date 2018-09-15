@@ -1,8 +1,8 @@
-import { ArchetypeID } from 'modules/archetype/types';
 import { WeaponID } from 'modules/weapon/types';
 import { ArmorID } from 'modules/armor/types';
 
 import { WieldID } from 'engine/wield';
+import { ArchetypeID } from 'engine/character/archetype';
 
 type IArchetypeIndexTable = {
 	[id in ArchetypeID]: number;
@@ -28,12 +28,12 @@ type IArmorEquipTable = {
 };
 
 const ArchetypeIndexTable: IArchetypeIndexTable = {
-	[ArchetypeID.PP]: 0,
-	[ArchetypeID.PS]: 1,
-	[ArchetypeID.PM]: 2,
-	[ArchetypeID.SS]: 3,
-	[ArchetypeID.SM]: 4,
-	[ArchetypeID.MM]: 5
+	PP: 0,
+	PS: 1,
+	PM: 2,
+	SS: 3,
+	SM: 4,
+	MM: 5
 };
 
 const WieldIndexTable: IWieldIndexTable = {

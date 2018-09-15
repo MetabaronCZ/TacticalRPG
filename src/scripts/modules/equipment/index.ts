@@ -1,7 +1,8 @@
-import { ArchetypeID } from 'modules/archetype/types';
-import { WeaponID } from 'modules/weapon/types';
 import { ArmorID } from 'modules/armor/types';
+import { WeaponID } from 'modules/weapon/types';
 import { checkWeaponArch, checkWeaponWield, checkArmorArch } from 'modules/equipment/equipable';
+
+import { ArchetypeID } from 'engine/character/archetype';
 
 const checkMainHand = (weapon: WeaponID, archetype: ArchetypeID) => {
 	return (
