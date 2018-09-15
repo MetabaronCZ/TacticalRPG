@@ -1,4 +1,4 @@
-import { IBaseAttributes, BaseAttributeID, SecondaryAttributeID } from 'engine/attributes';
+import { IBaseAttributes, BaseAttributeID, SecondaryAttributeID } from 'engine/character/attributes';
 import { ArchetypeID } from 'engine/character/archetype';
 
 type IBaseAttrFormula = (P: number, S: number, M: number) => number;

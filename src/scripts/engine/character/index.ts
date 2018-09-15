@@ -3,8 +3,8 @@ import Status from 'engine/character/status';
 import { DirectionID } from 'engine/direction';
 import Movement from 'engine/character/movement';
 import Equipment from 'engine/character/equipment';
-import Attributes, { AttributeID } from 'engine/attributes';
 import { IStatusEffect, StatusEffectID } from 'engine/status-effect';
+import Attributes, { AttributeID } from 'engine/character/attributes';
 
 import { characterCTLimit } from 'data/game-config';
 import { ICharacterData } from 'modules/character-data/types';
