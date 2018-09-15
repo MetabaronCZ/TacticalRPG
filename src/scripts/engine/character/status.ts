@@ -1,4 +1,5 @@
-import StatusEffects, { StatusEffectID, IStatusEffect } from 'engine/status-effect';
+import StatusEffects from 'data/status-effects';
+import { IStatusEffect, StatusEffectID } from 'engine/status-effect';
 
 class Status {
 	private items: IStatusEffect[] = [];

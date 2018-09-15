@@ -1,6 +1,5 @@
 import { SkillType, SkillRange, SkillArea, SkillElement, SkillTarget } from 'modules/skill/attributes';
 import { WeaponSkillID, IRangedWeaponSkillList } from 'modules/skill/weapon/types';
-import { StatusEffectID } from 'modules/status-effect/types';
 
 const rangedSkills: IRangedWeaponSkillList = {
 	[WeaponSkillID.BOW_ATTACK]: {
@@ -51,7 +50,7 @@ const rangedSkills: IRangedWeaponSkillList = {
 		isFixedPhysicalDamage: true,
 		physicalDamage: 50,
 		elementalDamage: 0,
-		status: [StatusEffectID.CRIPPLE]
+		status: ['CRIPPLE']
 	},
 	[WeaponSkillID.GUN_2H_ATTACK]: {
 		title: 'Attack',

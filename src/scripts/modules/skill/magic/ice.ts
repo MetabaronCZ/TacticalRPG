@@ -1,5 +1,4 @@
 import { ISkillset } from 'modules/skillset/types';
-import { StatusEffectID } from 'modules/status-effect/types';
 import { MagicSkillID, IIceMagicSkillList } from 'modules/skill/magic/types';
 import { SkillType, SkillRange, SkillArea, SkillElement, SkillTarget } from 'modules/skill/attributes';
 
@@ -26,7 +25,7 @@ const iceMagic: IIceMagicSkillList = {
 		element: SkillElement.ICE,
 		physicalDamage: 0.25,
 		elementalDamage: 0.25,
-		status: [StatusEffectID.FREEZE]
+		status: ['FREEZE']
 	},
 	[MagicSkillID.ICE_MAGIC_BLIZZARD]: {
 		title: 'Blizzard',
@@ -50,7 +49,7 @@ const iceMagic: IIceMagicSkillList = {
 		element: SkillElement.ICE,
 		physicalDamage: 0,
 		elementalDamage: 0.25,
-		status: [StatusEffectID.FREEZE]
+		status: ['FREEZE']
 	}
 };
 

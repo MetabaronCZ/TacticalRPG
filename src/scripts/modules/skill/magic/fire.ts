@@ -1,5 +1,4 @@
 import { ISkillset } from 'modules/skillset/types';
-import { StatusEffectID } from 'modules/status-effect/types';
 import { MagicSkillID, IFireMagicSkillList } from 'modules/skill/magic/types';
 import { SkillType, SkillRange, SkillArea, SkillElement, SkillTarget } from 'modules/skill/attributes';
 
@@ -26,7 +25,7 @@ const fireMagic: IFireMagicSkillList = {
 		element: SkillElement.FIRE,
 		physicalDamage: 0.25,
 		elementalDamage: 0.25,
-		status: [StatusEffectID.BURN]
+		status: ['BURN']
 	},
 	[MagicSkillID.FIRE_MAGIC_FIRESTORM]: {
 		title: 'Firestorm',
@@ -50,7 +49,7 @@ const fireMagic: IFireMagicSkillList = {
 		element: SkillElement.FIRE,
 		physicalDamage: 0,
 		elementalDamage: 0.25,
-		status: [StatusEffectID.BURN]
+		status: ['BURN']
 	}
 };
 

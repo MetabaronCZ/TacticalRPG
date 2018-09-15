@@ -1,5 +1,4 @@
 import { ISkillset } from 'modules/skillset/types';
-import { StatusEffectID } from 'modules/status-effect/types';
 import { MagicSkillID, IWaterMagicSkillList } from 'modules/skill/magic/types';
 import { SkillType, SkillRange, SkillArea, SkillElement, SkillTarget } from 'modules/skill/attributes';
 
@@ -26,7 +25,7 @@ const waterMagic: IWaterMagicSkillList = {
 		element: SkillElement.WATER,
 		physicalDamage: 0.25,
 		elementalDamage: 0.25,
-		status: [StatusEffectID.SILENCE]
+		status: ['SILENCE']
 	},
 	[MagicSkillID.WATER_MAGIC_FLOOD]: {
 		title: 'Flood',
@@ -50,7 +49,7 @@ const waterMagic: IWaterMagicSkillList = {
 		element: SkillElement.WATER,
 		physicalDamage: 0,
 		elementalDamage: 0.25,
-		status: [StatusEffectID.SILENCE]
+		status: ['SILENCE']
 	}
 };
 

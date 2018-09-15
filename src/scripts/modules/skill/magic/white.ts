@@ -1,5 +1,4 @@
 import { ISkillset } from 'modules/skillset/types';
-import { StatusEffectID } from 'modules/status-effect/types';
 import { MagicSkillID, IWhiteMagicSkillList } from 'modules/skill/magic/types';
 import { SkillType, SkillRange, SkillArea, SkillElement, SkillTarget } from 'modules/skill/attributes';
 
@@ -38,7 +37,7 @@ const whiteMagic: IWhiteMagicSkillList = {
 		element: SkillElement.HOLY,
 		physicalDamage: 0,
 		elementalDamage: 0.5,
-		status: [StatusEffectID.REGEN]
+		status: ['REGEN']
 	},
 	[MagicSkillID.WHITE_MAGIC_GROUP_HEAL]: {
 		title: 'Group Heal',

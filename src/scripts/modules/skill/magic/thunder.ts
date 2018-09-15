@@ -1,5 +1,4 @@
 import { ISkillset } from 'modules/skillset/types';
-import { StatusEffectID } from 'modules/status-effect/types';
 import { MagicSkillID, IThunderMagicSkillList } from 'modules/skill/magic/types';
 import { SkillType, SkillRange, SkillArea, SkillElement, SkillTarget } from 'modules/skill/attributes';
 
@@ -26,7 +25,7 @@ const thunderMagic: IThunderMagicSkillList = {
 		element: SkillElement.THUNDER,
 		physicalDamage: 0.25,
 		elementalDamage: 0.25,
-		status: [StatusEffectID.SHOCK]
+		status: ['SHOCK']
 	},
 	[MagicSkillID.THUNDER_MAGIC_THUNDERSTORM]: {
 		title: 'Thunderstorm',
@@ -50,7 +49,7 @@ const thunderMagic: IThunderMagicSkillList = {
 		element: SkillElement.THUNDER,
 		physicalDamage: 0,
 		elementalDamage: 0.25,
-		status: [StatusEffectID.SHOCK]
+		status: ['SHOCK']
 	}
 };
 

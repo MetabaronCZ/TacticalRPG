@@ -3,7 +3,9 @@ import React from 'react';
 import Animation from 'core/animation';
 import * as ArrayUtils from 'core/array';
 import * as NumberUtils from 'core/number';
+
 import * as config from 'data/game-config';
+import StatusEffects from 'data/status-effects';
 
 import Game from 'modules/game';
 import Order from 'modules/order';
@@ -18,13 +20,11 @@ import { PlayerType } from 'modules/player/types';
 import { IPosition } from 'modules/position/types';
 import { SkillTarget } from 'modules/skill/attributes';
 import { WeaponSkillID } from 'modules/skill/weapon/types';
-import { StatusEffectID } from 'modules/status-effect/types';
 import { ICharacterData } from 'modules/character-data/types';
 import { ArchetypeSkillID } from 'modules/skill/archetype/types';
 import { IGameState, GamePhase, ActPhase } from 'modules/game/types';
 import { getShortestPath, getMovableTiles } from 'modules/pathfinding';
 import { IActions, ActionID, IActionItem } from 'modules/character-action/types';
-import StatusEffects from 'modules/status-effect';
 
 import { IBattleConfig } from 'engine/battle-config';
 
@@ -451,7 +451,7 @@ class BattleUIContainer extends React.Component<IBattleUIContainerProps, IGameSt
 					state => ({
 						characters: state.characters.map(char => {
 							if (targetId === char.data.id) {
-								return Character.applyStatus(char, StatusEffectID.BLOCK_SMALL);
+								return Character.applyStatus(char, 'BLOCK_SMALL');
 							}
 							return char;
 						})
@@ -465,7 +465,7 @@ class BattleUIContainer extends React.Component<IBattleUIContainerProps, IGameSt
 					state => ({
 						characters: state.characters.map(char => {
 							if (targetId === char.data.id) {
-								return Character.applyStatus(char, StatusEffectID.BLOCK_LARGE);
+								return Character.applyStatus(char, 'BLOCK_LARGE');
 							}
 							return char;
 						})
@@ -521,9 +521,9 @@ class BattleUIContainer extends React.Component<IBattleUIContainerProps, IGameSt
 
 					if (!Character.isDead(target)) {
 						if (Position.isContained(target.position, skillEffectArea)) {
-							if (target.status.find(status => StatusEffectID.BLOCK_LARGE === status.id)) {
+							if (target.status.find(status => 'BLOCK_LARGE' === status.id)) {
 								// target blocked attack with shield
-								target = Character.removeStatus(target, StatusEffectID.BLOCK_LARGE);
+								target = Character.removeStatus(target, 'BLOCK_LARGE');
 								this.showSkillInfo('Blocked', target.position);
 
 							} else {
@@ -562,8 +562,8 @@ class BattleUIContainer extends React.Component<IBattleUIContainerProps, IGameSt
 									}
 
 									// show small shield block info
-									if (-1 !== effects.indexOf(StatusEffectID.BLOCK_SMALL)) {
-										target = Character.removeStatus(target, StatusEffectID.BLOCK_SMALL);
+									if (-1 !== effects.indexOf('BLOCK_SMALL')) {
+										target = Character.removeStatus(target, 'BLOCK_SMALL');
 										info.unshift(`Blocked (${config.smallShieldBlock})`);
 									}
 								}

@@ -1,6 +1,5 @@
 import { SkillType, SkillRange, SkillArea, SkillElement, SkillTarget } from 'modules/skill/attributes';
 import { WeaponSkillID, IWield1HWeaponSkillList } from 'modules/skill/weapon/types';
-import { StatusEffectID } from 'modules/status-effect/types';
 
 const wield1HSkills: IWield1HWeaponSkillList = {
 	[WeaponSkillID.SWORD_1H_ATTACK]: {
@@ -25,7 +24,7 @@ const wield1HSkills: IWield1HWeaponSkillList = {
 		element: SkillElement.NONE,
 		physicalDamage: 0.5,
 		elementalDamage: 0,
-		status: [StatusEffectID.BLEED]
+		status: ['BLEED']
 	},
 	[WeaponSkillID.AXE_1H_ATTACK]: {
 		title: 'Attack',
@@ -73,7 +72,7 @@ const wield1HSkills: IWield1HWeaponSkillList = {
 		element: SkillElement.NONE,
 		physicalDamage: 0.5,
 		elementalDamage: 0,
-		status: [StatusEffectID.STUN]
+		status: ['STUN']
 	}
 };
 

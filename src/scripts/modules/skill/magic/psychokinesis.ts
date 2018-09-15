@@ -1,5 +1,4 @@
 import { ISkillset } from 'modules/skillset/types';
-import { StatusEffectID } from 'modules/status-effect/types';
 import { MagicSkillID, IPsychokinesisSkillList } from 'modules/skill/magic/types';
 import { SkillType, SkillRange, SkillArea, SkillElement, SkillTarget } from 'modules/skill/attributes';
 
@@ -26,7 +25,7 @@ const psychokinesis: IPsychokinesisSkillList = {
 		element: SkillElement.PSYCHIC,
 		physicalDamage: 0,
 		elementalDamage: 0,
-		status: [StatusEffectID.FORGET]
+		status: ['FORGET']
 	},
 	[MagicSkillID.PSYCHOKINESIS_PSYCHODOME]: {
 		title: 'Psychodome',

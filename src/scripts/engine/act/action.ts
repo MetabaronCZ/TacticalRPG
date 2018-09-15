@@ -1,6 +1,8 @@
 import * as ArrayUtils from 'core/array';
 import * as NumberUtils from 'core/number';
 import Animation, { IAnimationStep } from 'core/animation';
+
+import StatusEffects from 'data/status-effects';
 import { skillAnimDuration, smallShieldBlock } from 'data/game-config';
 
 import Logger from 'engine/logger';
@@ -10,7 +12,6 @@ import Direction from 'engine/direction';
 import Character from 'engine/character';
 import SkillUtils from 'engine/skill/utils';
 import ActReaction from 'engine/act/reaction';
-import StatusEffects from 'engine/status-effect';
 import CharacterAction from 'engine/character-action';
 
 interface IActActionEvents {

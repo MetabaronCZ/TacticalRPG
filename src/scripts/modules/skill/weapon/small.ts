@@ -1,6 +1,5 @@
 import { SkillType, SkillRange, SkillArea, SkillElement, SkillTarget } from 'modules/skill/attributes';
 import { WeaponSkillID, ISmallWeaponSkillList } from 'modules/skill/weapon/types';
-import { StatusEffectID } from 'modules/status-effect/types';
 
 const smallSkills: ISmallWeaponSkillList = {
 	[WeaponSkillID.FISTS_ATTACK]: {
@@ -25,7 +24,7 @@ const smallSkills: ISmallWeaponSkillList = {
 		element: SkillElement.NONE,
 		physicalDamage: 0.5,
 		elementalDamage: 0,
-		status: [StatusEffectID.DISARM]
+		status: ['DISARM']
 	},
 	[WeaponSkillID.DAGGER_ATTACK]: {
 		title: 'Attack',

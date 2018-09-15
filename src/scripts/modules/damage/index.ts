@@ -1,16 +1,16 @@
+import StatusEffects from 'data/status-effects';
 import { smallShieldBlock } from 'data/game-config';
 
 import Skill from 'modules/skill';
 import Armors from 'modules/armor';
 import Weapons from 'modules/weapon';
 import Skillsets from 'modules/skillset';
-import StatusEffects from 'modules/status-effect';
-
 import { SkillID } from 'modules/skill/types';
 import { WeaponTypeID } from 'modules/weapon/types';
 import { ICharacter } from 'modules/character/types';
 import { WeaponSkillID } from 'modules/skill/weapon/types';
-import { StatusEffectID, StatusEffectType } from 'modules/status-effect/types';
+
+import { StatusEffectID } from 'engine/status-effect';
 
 const getPhysical = (attacker: ICharacter, defender: ICharacter, skillId: SkillID): number => {
 	const skill = Skill.getByID([skillId])[0];
@@ -29,7 +29,7 @@ const getPhysical = (attacker: ICharacter, defender: ICharacter, skillId: SkillI
 		attack = attacker.currAttributes.STR * attWeaponDamage * skill.physicalDamage;
 	}
 	const defHasShield = (WeaponTypeID.SHIELD === defOffHand.type);
-	const defHasBlocked = (-1 !== defender.status.map(status => status.id).indexOf(StatusEffectID.BLOCK_SMALL));
+	const defHasBlocked = (-1 !== defender.status.map(status => status.id).indexOf('BLOCK_SMALL'));
 	let defBlock = 0;
 
 	// small shield block
@@ -65,19 +65,19 @@ const getStatusEffects = (attacker: ICharacter, defender: ICharacter, skillId: S
 
 	for (const status of statuses) {
 		switch (status.type) {
-			case StatusEffectType.PHYSICAL:
+			case 'PHYSICAL':
 				if (attacker.currAttributes.STR >= defender.currAttributes.VIT) {
 					effects.push(status.id);
 				}
 				break;
 
-			case StatusEffectType.MAGICAL:
+			case 'MAGICAL':
 				if (attacker.currAttributes.MAG >= defender.currAttributes.SPR) {
 					effects.push(status.id);
 				}
 				break;
 
-			case StatusEffectType.SUPPORT:
+			case 'SUPPORT':
 				effects.push(status.id);
 				break;
 

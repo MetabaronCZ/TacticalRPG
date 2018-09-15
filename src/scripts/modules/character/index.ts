@@ -1,3 +1,4 @@
+import StatusEffects from 'data/status-effects';
 import { characterCTLimit } from 'data/game-config';
 
 import Weapons from 'modules/weapon';
@@ -5,7 +6,6 @@ import Skillsets from 'modules/skillset';
 import Attributes from 'modules/attributes';
 import MagicSkills from 'modules/skill/magic';
 import WeaponSkills from 'modules/skill/weapon';
-import StatusEffects from 'modules/status-effect';
 import CharacterData from 'modules/character-data';
 import ArchetypeSkills from 'modules/skill/archetype';
 import CharacterAction from 'modules/character-action';
@@ -15,13 +15,13 @@ import { IPosition } from 'modules/position/types';
 import { SkillType } from 'modules/skill/attributes';
 import { ICharacter } from 'modules/character/types';
 import { WeaponSkillID } from 'modules/skill/weapon/types';
-import { StatusEffectID } from 'modules/status-effect/types';
 import { ICharacterData } from 'modules/character-data/types';
 import { WeaponID, WeaponTypeID } from 'modules/weapon/types';
 import { ArchetypeSkillID } from 'modules/skill/archetype/types';
 import { IActionItem, ActionID, IActions } from 'modules/character-action/types';
 
 import { DirectionID } from 'engine/direction';
+import { StatusEffectID } from 'engine/status-effect';
 
 const dontReactAction = CharacterAction.dontReactAction;
 const confirmAction = CharacterAction.confirmAction;

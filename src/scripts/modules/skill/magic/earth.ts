@@ -1,5 +1,4 @@
 import { ISkillset } from 'modules/skillset/types';
-import { StatusEffectID } from 'modules/status-effect/types';
 import { MagicSkillID, IEarthMagicSkillList } from 'modules/skill/magic/types';
 import { SkillType, SkillRange, SkillArea, SkillElement, SkillTarget } from 'modules/skill/attributes';
 
@@ -26,7 +25,7 @@ const earthMagic: IEarthMagicSkillList = {
 		element: SkillElement.EARTH,
 		physicalDamage: 0.25,
 		elementalDamage: 0.25,
-		status: [StatusEffectID.STUN]
+		status: ['STUN']
 	},
 	[MagicSkillID.EARTH_MAGIC_EARTHQUAKE]: {
 		title: 'Earthquake',
@@ -50,7 +49,7 @@ const earthMagic: IEarthMagicSkillList = {
 		element: SkillElement.EARTH,
 		physicalDamage: 0,
 		elementalDamage: 0,
-		status: [StatusEffectID.IRON_SKIN]
+		status: ['IRON_SKIN']
 	}
 };
 
