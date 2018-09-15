@@ -1,7 +1,9 @@
 import React, { SyntheticEvent } from 'react';
 
 import Icos from 'data/icos';
+import Sexes from 'data/sexes';
 import { characterMaxNameLength } from 'data/game-config';
+
 import { validateField, validateForm } from 'utils/validation';
 
 import Form from 'ui/common/Form';
@@ -15,7 +17,6 @@ import Button from 'ui/common/Button';
 import ButtonRow from 'ui/common/ButtonRow';
 import Separator from 'ui/common/Separator';
 
-import Sexes from 'modules/sex';
 import Armors from 'modules/armor';
 import Weapons from 'modules/weapon';
 import Skillsets from 'modules/skillset';

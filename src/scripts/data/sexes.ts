@@ -1,11 +1,11 @@
 import DataList from 'core/data-list';
-import { SexID, ISexData } from 'modules/sex/types';
+import { SexID, ISexData } from 'engine/character/sex';
 
 const Sexes = new DataList<SexID, ISexData>({
-	[SexID.MALE]: {
+	MALE: {
 		title: 'Male'
 	},
-	[SexID.FEMALE]: {
+	FEMALE: {
 		title: 'Female'
 	}
 });

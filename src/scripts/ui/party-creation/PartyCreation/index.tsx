@@ -1,7 +1,9 @@
 import React, { SyntheticEvent } from 'react';
 
-import { validateField, validateForm } from 'utils/validation';
+import Sexes from 'data/sexes';
 import { maxPartyNameLength, maxPartySize } from 'data/game-config';
+
+import { validateField, validateForm } from 'utils/validation';
 
 import Link from 'ui/common/Link';
 import Form from 'ui/common/Form';
@@ -14,7 +16,6 @@ import ButtonRow from 'ui/common/ButtonRow';
 import Separator from 'ui/common/Separator';
 
 import Party from 'modules/party';
-import Sexes from 'modules/sex';
 import Armors from 'modules/armor';
 import Weapons from 'modules/weapon';
 import Equipment from 'modules/equipment';

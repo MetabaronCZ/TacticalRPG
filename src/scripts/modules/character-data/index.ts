@@ -2,14 +2,14 @@ import uuid from 'uuid/v1';
 
 import * as ArrayUtils from 'core/array';
 
-import Sexes from 'modules/sex';
+import Sexes from 'data/sexes';
+
 import Armors from 'modules/armor';
 import Weapons from 'modules/weapon';
 import Skillsets from 'modules/skillset';
 import Equipment from 'modules/equipment';
 import Archetypes from 'modules/archetype';
 
-import { SexID } from 'modules/sex/types';
 import { WieldID } from 'modules/wield/types';
 import { ArmorID } from 'modules/armor/types';
 import { WeaponID } from 'modules/weapon/types';
@@ -30,7 +30,7 @@ const init = (conf: ICharacterConfig = {}): ICharacterData => {
 		id: uuid(),
 		creationDate: now,
 		lastUpdate: now,
-		sex: SexID.MALE,
+		sex: 'MALE',
 		archetype: ArchetypeID.PP,
 		skillset: SkillsetID.NONE,
 		main: WeaponID.NONE,
