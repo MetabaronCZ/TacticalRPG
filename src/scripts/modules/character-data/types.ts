@@ -1,8 +1,8 @@
-import { ArmorID } from 'modules/armor/types';
 import { WeaponID } from 'modules/weapon/types';
 import { SkillsetID } from 'modules/skillset/types';
 import { IIndexable } from 'modules/indexable/types';
 
+import { ArmorID } from 'engine/armor-data';
 import { SexID } from 'engine/character/sex';
 import { ArchetypeID } from 'engine/character/archetype';
 

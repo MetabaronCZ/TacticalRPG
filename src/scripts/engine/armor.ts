@@ -1,4 +1,4 @@
-import { IArmorData } from 'modules/armor/types';
+import { IArmorData } from 'engine/armor-data';
 
 class Armor {
 	private readonly title: string;

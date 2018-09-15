@@ -1,7 +1,7 @@
 import { WeaponID } from 'modules/weapon/types';
-import { ArmorID } from 'modules/armor/types';
 
 import { WieldID } from 'engine/wield';
+import { ArmorID } from 'engine/armor-data';
 import { ArchetypeID } from 'engine/character/archetype';
 
 type IArchetypeIndexTable = {
@@ -86,11 +86,11 @@ const WeaponEquipTableWield: IWeaponEquipWieldTable = {
 };
 
 const ArmorEquipTableArch: IArmorEquipTable = {
-	//                PP PS PM SS SM MM
-	[ArmorID.NONE]:  [1, 1, 1, 1, 1, 1],
-	[ArmorID.ROBE]:  [0, 0, 1, 0, 1, 1],
-	[ArmorID.LIGHT]: [0, 1, 0, 1, 1, 0],
-	[ArmorID.HEAVY]: [1, 1, 1, 0, 0, 0]
+	//      PP PS PM SS SM MM
+	NONE:  [1, 1, 1, 1, 1, 1],
+	ROBE:  [0, 0, 1, 0, 1, 1],
+	LIGHT: [0, 1, 0, 1, 1, 0],
+	HEAVY: [1, 1, 1, 0, 0, 0]
 };
 
 const getArchetypeIndex = (arch: ArchetypeID) => ArchetypeIndexTable[arch];

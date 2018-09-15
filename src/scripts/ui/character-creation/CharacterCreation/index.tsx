@@ -2,6 +2,7 @@ import React, { SyntheticEvent } from 'react';
 
 import Icos from 'data/icos';
 import Sexes from 'data/sexes';
+import Armors from 'data/armors';
 import Archetypes from 'data/archetypes';
 import { characterMaxNameLength } from 'data/game-config';
 
@@ -18,13 +19,11 @@ import Button from 'ui/common/Button';
 import ButtonRow from 'ui/common/ButtonRow';
 import Separator from 'ui/common/Separator';
 
-import Armors from 'modules/armor';
 import Weapons from 'modules/weapon';
 import Skillsets from 'modules/skillset';
 import Equipment from 'modules/equipment';
 import CharacterData from 'modules/character-data';
 
-import { ArmorID } from 'modules/armor/types';
 import { WeaponID } from 'modules/weapon/types';
 import { SkillsetID } from 'modules/skillset/types';
 import { ICharacterData } from 'modules/character-data/types';
@@ -177,7 +176,7 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 			}
 			newData.main = (Equipment.checkMainHand(newData.main, arch) ? newData.main : WeaponID.NONE);
 			newData.off = (Equipment.checkOffHand(newData.off, arch, newData.main) ? newData.off : WeaponID.NONE);
-			newData.armor = (Equipment.checkArmor(newData.armor, arch) ? newData.armor : ArmorID.NONE);
+			newData.armor = (Equipment.checkArmor(newData.armor, arch) ? newData.armor : 'NONE');
 			shouldUpdate = true;
 		}
 

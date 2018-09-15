@@ -1,6 +1,7 @@
 import React from 'react';
 
 import icos from 'data/icos';
+import Armors from 'data/armors';
 import Archetypes from 'data/archetypes';
 
 import Link from 'ui/common/Link';
@@ -8,7 +9,6 @@ import LinkIco from 'ui/common/LinkIco';
 import LinkButton from 'ui/common/LinkButton';
 import ArchetypeIco from 'ui/common/ArchetypeIco';
 
-import Armors from 'modules/armor';
 import Weapons from 'modules/weapon';
 import Skillsets from 'modules/skillset';
 import Equipment from 'modules/equipment';

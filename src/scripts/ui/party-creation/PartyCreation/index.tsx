@@ -1,6 +1,7 @@
 import React, { SyntheticEvent } from 'react';
 
 import Sexes from 'data/sexes';
+import Armors from 'data/armors';
 import Archetypes from 'data/archetypes';
 import { maxPartyNameLength, maxPartySize } from 'data/game-config';
 
@@ -17,7 +18,6 @@ import ButtonRow from 'ui/common/ButtonRow';
 import Separator from 'ui/common/Separator';
 
 import Party from 'modules/party';
-import Armors from 'modules/armor';
 import Weapons from 'modules/weapon';
 import Equipment from 'modules/equipment';
 import { IParty } from 'modules/party/types';

@@ -3,14 +3,12 @@ import uuid from 'uuid/v1';
 import * as ArrayUtils from 'core/array';
 
 import Sexes from 'data/sexes';
+import Armors from 'data/armors';
 import Archetypes from 'data/archetypes';
 
-import Armors from 'modules/armor';
 import Weapons from 'modules/weapon';
 import Skillsets from 'modules/skillset';
 import Equipment from 'modules/equipment';
-
-import { ArmorID } from 'modules/armor/types';
 import { WeaponID } from 'modules/weapon/types';
 import { SkillsetID } from 'modules/skillset/types';
 import { ICharacterData } from 'modules/character-data/types';
@@ -33,7 +31,7 @@ const init = (conf: ICharacterConfig = {}): ICharacterData => {
 		skillset: SkillsetID.NONE,
 		main: WeaponID.NONE,
 		off: WeaponID.NONE,
-		armor: ArmorID.NONE
+		armor: 'NONE'
 	};
 	return Object.assign({}, defaultCharacterData, conf);
 };
@@ -74,7 +72,7 @@ const random = (name: string): ICharacterData => {
 	let arm = Armors.filter(character);
 
 	if (arm.length > 1) {
-		arm = arm.filter(([id, data]) => id !== ArmorID.NONE);
+		arm = arm.filter(([id, data]) => id !== 'NONE');
 	}
 	character.armor = ArrayUtils.getRandomItem(arm)[0];
 

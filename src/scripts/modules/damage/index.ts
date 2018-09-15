@@ -1,8 +1,8 @@
+import Armors from 'data/armors';
 import StatusEffects from 'data/status-effects';
 import { smallShieldBlock } from 'data/game-config';
 
 import Skill from 'modules/skill';
-import Armors from 'modules/armor';
 import Weapons from 'modules/weapon';
 import Skillsets from 'modules/skillset';
 import { SkillID } from 'modules/skill/types';

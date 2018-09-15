@@ -1,9 +1,10 @@
-import Armor from 'engine/armor';
-import Weapon from 'engine/weapon';
+import Armors from 'data/armors';
 
 import { ICharacterData } from 'modules/character-data/types';
 import Weapons from 'modules/weapon';
-import Armors from 'modules/armor';
+
+import Armor from 'engine/armor';
+import Weapon from 'engine/weapon';
 
 class Equipment {
 	private readonly mainHand: Weapon;
