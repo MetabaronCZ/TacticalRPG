@@ -1,5 +1,5 @@
 import DataList from 'core/data-list';
-import { WieldID, IWieldData } from 'modules/wield/types';
+import { WieldID, IWieldData } from 'engine/wield';
 
 const Wields = new DataList<WieldID, IWieldData>({
 	[WieldID.MAIN]: {

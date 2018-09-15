@@ -24,7 +24,6 @@ import Equipment from 'modules/equipment';
 import Archetypes from 'modules/archetype';
 import CharacterData from 'modules/character-data';
 
-import { WieldID } from 'modules/wield/types';
 import { ArmorID } from 'modules/armor/types';
 import { WeaponID } from 'modules/weapon/types';
 import { SkillsetID } from 'modules/skillset/types';
@@ -117,7 +116,7 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 
 				<FormField fieldId="f-main" label="Main hand" info={main.description}>
 					<FormSelect id="f-main" name="main" value={fields.main} onChange={onChange}>
-						{Weapons.filter(fields, WieldID.MAIN).map(([id, item], i) => (
+						{Weapons.filter(fields, 'MAIN').map(([id, item], i) => (
 							<FormSelectItem value={id} key={i}>
 								{item.title}
 							</FormSelectItem>
@@ -129,7 +128,7 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 					{!hasNoOffHand
 						? (
 							<FormSelect id="f-off" name="off" value={fields.off} onChange={onChange}>
-								{Weapons.filter(fields, WieldID.OFF).map(([id, item], i) => (
+								{Weapons.filter(fields, 'OFF').map(([id, item], i) => (
 									<FormSelectItem value={id} key={i}>
 										{item.title}
 									</FormSelectItem>

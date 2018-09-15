@@ -10,7 +10,6 @@ import Skillsets from 'modules/skillset';
 import Equipment from 'modules/equipment';
 import Archetypes from 'modules/archetype';
 
-import { WieldID } from 'modules/wield/types';
 import { ArmorID } from 'modules/armor/types';
 import { WeaponID } from 'modules/weapon/types';
 import { SkillsetID } from 'modules/skillset/types';
@@ -52,7 +51,7 @@ const random = (name: string): ICharacterData => {
 	if (isMagicType(character)) {
 		character.skillset = ArrayUtils.getRandomItem(Skillsets.keys());
 	}
-	let main = Weapons.filter(character, WieldID.MAIN);
+	let main = Weapons.filter(character, 'MAIN');
 
 	if (main.length > 1) {
 		main = main.filter(([id, data]) => id !== WeaponID.NONE);
@@ -63,7 +62,7 @@ const random = (name: string): ICharacterData => {
 		!Equipment.isBothWielding(character.main) &&
 		!Equipment.isDualWielding(character.main)
 	) {
-		let off = Weapons.filter(character, WieldID.OFF);
+		let off = Weapons.filter(character, 'OFF');
 
 		if (off.length > 1) {
 			off = off.filter(([id, data]) => id !== WeaponID.NONE);
