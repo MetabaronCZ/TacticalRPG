@@ -9,13 +9,13 @@ import { goto, gotoFn } from 'utils/nav';
 import { isDebug } from 'data/game-config';
 
 import { IParty } from 'modules/party/types';
-import { IBattleConfig } from 'modules/battle-config';
 import { ICharacterData } from 'modules/character-data/types';
 
 import Debug from 'ui/battle/Debug';
 import BattleUIContainer from 'ui/battle/BattleUI';
 
 import Engine, { IEngineState } from 'engine';
+import { IBattleConfig } from 'engine/battle-config';
 
 const txtExitConfirm = 'Do you realy want to exit and lost your game progress?';
 

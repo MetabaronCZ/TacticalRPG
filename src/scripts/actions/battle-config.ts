@@ -1,5 +1,5 @@
 import { createAction } from 'redux-actions';
-import { IBattleConfig } from 'modules/battle-config';
+import { IBattleConfig } from 'engine/battle-config';
 
 export enum ActionID {
 	SAVE_SETUP = 'BATTLE_SAVE_SETUP',

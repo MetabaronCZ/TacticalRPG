@@ -16,7 +16,6 @@ import CharacterActions from 'modules/character-action';
 import { IParty } from 'modules/party/types';
 import { PlayerType } from 'modules/player/types';
 import { IPosition } from 'modules/position/types';
-import { IBattleConfig } from 'modules/battle-config';
 import { SkillTarget } from 'modules/skill/attributes';
 import { WeaponSkillID } from 'modules/skill/weapon/types';
 import { StatusEffectID } from 'modules/status-effect/types';
@@ -26,6 +25,8 @@ import { IGameState, GamePhase, ActPhase } from 'modules/game/types';
 import { getShortestPath, getMovableTiles } from 'modules/pathfinding';
 import { IActions, ActionID, IActionItem } from 'modules/character-action/types';
 import StatusEffects from 'modules/status-effect';
+
+import { IBattleConfig } from 'engine/battle-config';
 
 import BattleUI from 'ui/battle/BattleUI/template';
 

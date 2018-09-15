@@ -11,12 +11,13 @@ import Character from 'modules/character';
 
 import { ActPhase, GamePhase, IGameState } from 'modules/game/types';
 import { ICharacterData } from 'modules/character-data/types';
-import { IBattleConfigPlayer } from 'modules/battle-config';
 import CharacterData from 'modules/character-data';
 import { PlayerType } from 'modules/player/types';
 import { Direction } from 'modules/direction';
 import { IParty } from 'modules/party/types';
 import { IPosition } from 'modules/position/types';
+
+import { IBattleConfigPlayer } from 'engine/battle-config';
 
 const getInitialState = (players: IBattleConfigPlayer[], characters: ICharacterData[], parties: IParty[], initiative: PlayerType): IGameState => {
 	const ally = Player.create(PlayerType.ALLY);

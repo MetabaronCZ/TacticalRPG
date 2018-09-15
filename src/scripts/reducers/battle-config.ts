@@ -1,7 +1,7 @@
 import { handleActions } from 'redux-actions';
 
 import { ActionID } from 'actions/battle-config';
-import { IBattleConfig } from 'modules/battle-config';
+import { IBattleConfig } from 'engine/battle-config';
 
 const defaultState: IBattleConfig = {
 	players: []

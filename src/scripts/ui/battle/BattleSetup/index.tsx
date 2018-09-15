@@ -16,9 +16,9 @@ import CharacterList from 'ui/character-creation/CharacterList';
 import Party from 'modules/party';
 import { IParty } from 'modules/party/types';
 import { ICharacterData } from 'modules/character-data/types';
-import { IBattleConfig, IBattleConfigPlayer } from 'modules/battle-config';
 
 import PlayerControl from 'engine/player-control';
+import { IBattleConfig, IBattleConfigPlayer } from 'engine/battle-config';
 
 // empty array to map player data / states
 const playerPool = Array(maxPlayers).fill(0);

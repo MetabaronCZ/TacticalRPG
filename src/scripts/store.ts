@@ -1,9 +1,11 @@
 import { createStore, Store } from 'redux';
 
 import reducers from 'reducers';
+
 import { IParty } from 'modules/party/types';
-import { IBattleConfig } from 'modules/battle-config';
 import { ICharacterData } from 'modules/character-data/types';
+
+import { IBattleConfig } from 'engine/battle-config';
 
 const KEY = 'game'; // storage key
 
