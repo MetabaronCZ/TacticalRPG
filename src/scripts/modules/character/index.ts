@@ -10,7 +10,6 @@ import CharacterData from 'modules/character-data';
 import ArchetypeSkills from 'modules/skill/archetype';
 import CharacterAction from 'modules/character-action';
 
-import { Direction } from 'modules/direction';
 import { PlayerType } from 'modules/player/types';
 import { IPosition } from 'modules/position/types';
 import { SkillType } from 'modules/skill/attributes';
@@ -22,12 +21,14 @@ import { WeaponID, WeaponTypeID } from 'modules/weapon/types';
 import { ArchetypeSkillID } from 'modules/skill/archetype/types';
 import { IActionItem, ActionID, IActions } from 'modules/character-action/types';
 
+import { DirectionID } from 'engine/direction';
+
 const dontReactAction = CharacterAction.dontReactAction;
 const confirmAction = CharacterAction.confirmAction;
 const backAction = CharacterAction.backAction;
 const passAction = CharacterAction.passAction;
 
-const create = (data: ICharacterData, position: IPosition, direction: Direction, player: PlayerType): ICharacter => {
+const create = (data: ICharacterData, position: IPosition, direction: DirectionID, player: PlayerType): ICharacter => {
 	const baseAttributes = Attributes.create(data.archetype);
 	const currAttributes = Attributes.create(data.archetype);
 

@@ -1,16 +1,16 @@
 import { gridSize } from 'data/game-config';
-import { Direction } from 'modules/direction';
 import { IPosition } from 'modules/position/types';
+import { DirectionID } from 'engine/direction';
 
 type IByDirectionTable = {
-	[T in Direction]: (pos: IPosition) => IPosition;
+	[T in DirectionID]: (pos: IPosition) => IPosition;
 };
 
 const byDirectionTable: IByDirectionTable = {
-	[Direction.TOP]:    (pos: IPosition) => create(pos.x, pos.y - 1),
-	[Direction.BOTTOM]: (pos: IPosition) => create(pos.x, pos.y + 1),
-	[Direction.LEFT]:   (pos: IPosition) => create(pos.x - 1, pos.y),
-	[Direction.RIGHT]:  (pos: IPosition) => create(pos.x + 1, pos.y),
+	TOP:    (pos: IPosition) => create(pos.x, pos.y - 1),
+	BOTTOM: (pos: IPosition) => create(pos.x, pos.y + 1),
+	LEFT:   (pos: IPosition) => create(pos.x - 1, pos.y),
+	RIGHT:  (pos: IPosition) => create(pos.x + 1, pos.y),
 };
 
 const create = (x: number = 0, y: number = 0): IPosition => ({
@@ -70,22 +70,22 @@ const isInGrid = (pos: IPosition): boolean => {
 	return pos.x >= 0 && pos.y >= 0 && pos.x < gridSize && pos.y < gridSize;
 };
 
-const getByDirection = (source: IPosition, dir: Direction) => {
+const getByDirection = (source: IPosition, dir: DirectionID) => {
 	const pos = byDirectionTable[dir](source);
 	return isInGrid(pos) ? pos : undefined;
 };
 
-const getDirection = (source: IPosition, target: IPosition): Direction => {
+const getDirection = (source: IPosition, target: IPosition): DirectionID => {
 	const diffX = target.x - source.x;
 	const diffY = target.y - source.y;
 
 	if (Math.abs(diffX) > Math.abs(diffY)) {
 		// horizontal direction
-		return diffX < 0 ? Direction.LEFT : Direction.RIGHT;
+		return diffX < 0 ? 'LEFT' : 'RIGHT';
 
 	} else {
 		// vertical direction
-		return diffY < 0 ? Direction.TOP : Direction.BOTTOM;
+		return diffY < 0 ? 'TOP' : 'BOTTOM';
 	}
 };
 

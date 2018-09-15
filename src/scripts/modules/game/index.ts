@@ -13,10 +13,10 @@ import { ActPhase, GamePhase, IGameState } from 'modules/game/types';
 import { ICharacterData } from 'modules/character-data/types';
 import CharacterData from 'modules/character-data';
 import { PlayerType } from 'modules/player/types';
-import { Direction } from 'modules/direction';
 import { IParty } from 'modules/party/types';
 import { IPosition } from 'modules/position/types';
 
+import { DirectionID } from 'engine/direction';
 import { IBattleConfigPlayer } from 'engine/battle-config';
 
 const getInitialState = (players: IBattleConfigPlayer[], characters: ICharacterData[], parties: IParty[], initiative: PlayerType): IGameState => {
@@ -43,16 +43,16 @@ const getInitialState = (players: IBattleConfigPlayer[], characters: ICharacterD
 
 		return charData.map((char, c) => {
 			let pos: IPosition;
-			let dir: Direction;
+			let dir: DirectionID;
 			let type: PlayerType;
 
 			if (1 === i) {
 				pos = Position.create(c + 2, 0);
-				dir = Direction.BOTTOM;
+				dir = 'BOTTOM';
 				type = PlayerType.ENEMY;
 			} else {
 				pos = Position.create(c + 2, gridSize - 1);
-				dir = Direction.TOP;
+				dir = 'TOP';
 				type = PlayerType.ALLY;
 			}
 
