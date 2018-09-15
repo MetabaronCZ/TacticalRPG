@@ -1,0 +1,69 @@
+.Bar {
+	@border-size: 3px;
+	@border-radius: 5px;
+	@skew: -10deg;
+	@label-width: 40px;
+
+	background: @color-grey;
+	border: @border-size solid @color-grey;
+	border-left-width: @label-width;
+	border-radius: @border-radius;
+	margin-bottom: @vu;
+	transform: skew(@skew);
+
+	&-item {
+		position: relative;
+		height: (@line-height-default - 2*@border-size);
+		background: @color-grey-darker;
+		border: 1px solid @color-grey-dark;
+		border-radius: (@border-radius - @border-size);
+		margin-top: @border-size;
+
+		&:first-child {
+			margin-top: 0;
+		}
+
+		&-loss,
+		&-value,
+		&-text {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+		}
+
+		&-loss {
+			background: @color-red;
+			transition: width linear @anim-slow @anim-default;
+		}
+
+		&-value {
+			background: @color-white;
+			transition: width linear @anim-default;
+		}
+
+		&-text {
+			@color: @color-white;
+			@shadow-color: @color-black;
+
+			.u-text-small;
+			.u-weight-regular;
+
+			padding: 0 @vu;
+			color: @color;
+			text-align: right;
+			line-height: (@line-height-default - 2*@border-size - 2);
+			text-shadow: 1px 1px 0 @shadow-color, -1px 1px 0 @shadow-color, 1px -1px 0 @shadow-color, -1px -1px 0 @shadow-color, 0 0 3px @shadow-color;
+			transform: skew(-@skew);
+		}
+
+		&&--HP {
+			.mx-bar-color-variant('Hp', @color-green);
+		}
+
+		&&--AP {
+			.mx-bar-color-variant('Ap', @color-blue);
+		}
+	}
+}

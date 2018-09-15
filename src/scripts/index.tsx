@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 
 import initStore from 'store';
-import Router from 'components/Router';
-import PageWrapper from 'components/PageWrapper';
+import Router from 'ui/common/Router';
+import PageWrapper from 'ui/common/PageWrapper';
 
 export const store = initStore();
 

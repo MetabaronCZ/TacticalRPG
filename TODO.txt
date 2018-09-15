@@ -1,6 +1,7 @@
 TODO
 ----------------------------------------------------------------------------------------------------------
 --	refaktorovat vsude pole tak, aby vzdy byl default [] (zbavit se arr?: x[])
+--	refaktorovat Enumy na type
 
 --	trackovat rozhodnuti
 	- pripravit replay (ulozeni na konci souboje + moznost krokovani)

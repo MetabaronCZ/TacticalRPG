@@ -1,0 +1,62 @@
+.Grid {
+	@item-padding: 2px;
+
+	display: flex;
+	flex-wrap: wrap;
+	width: 100%;
+	height: 100%;
+
+	&-item {
+		position: relative;
+		text-align: center;
+		padding: @item-padding;
+		flex-grow: 1;
+
+		&-block {
+			position: relative;
+			display: block;
+			width: 100%;
+			height: 100%;
+			cursor: pointer;
+			background: @color-grey-darker;
+			border: 1px solid @color-black;
+			border-radius: @border-radius-default;
+			transition: border linear @anim-default;
+
+			&::before {
+				position: absolute;
+				top: 0;
+				left: 0;
+				display: block;
+				content: ' ';
+				width: 100%;
+				height: 100%;
+				transition: background-color linear @anim-default;
+			}
+
+			&:hover {
+				border-color: @color-grey;
+
+				&::before {
+					background-color: fade(@color-white, 10%);
+				}
+			}
+
+			&.is-targetArea {
+				.mx-grid-block-variant(@color-blue);
+			}
+
+			&.is-targetable {
+				.mx-grid-block-variant(@color-red);
+			}
+
+			&.is-effectArea {
+				.mx-grid-block-variant(@color-green);
+			}
+
+			&.is-selected {
+				.mx-grid-block-variant(@color-yellow);
+			}
+		}
+	}
+}
