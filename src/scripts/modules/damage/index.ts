@@ -1,12 +1,11 @@
 import Armors from 'data/armors';
+import Weapons from 'data/weapons';
 import StatusEffects from 'data/status-effects';
 import { smallShieldBlock } from 'data/game-config';
 
 import Skill from 'modules/skill';
-import Weapons from 'modules/weapon';
 import Skillsets from 'modules/skillset';
 import { SkillID } from 'modules/skill/types';
-import { WeaponTypeID } from 'modules/weapon/types';
 import { ICharacter } from 'modules/character/types';
 import { WeaponSkillID } from 'modules/skill/weapon/types';
 
@@ -28,7 +27,7 @@ const getPhysical = (attacker: ICharacter, defender: ICharacter, skillId: SkillI
 	} else {
 		attack = attacker.currAttributes.STR * attWeaponDamage * skill.physicalDamage;
 	}
-	const defHasShield = (WeaponTypeID.SHIELD === defOffHand.type);
+	const defHasShield = ('SHIELD' === defOffHand.type);
 	const defHasBlocked = (-1 !== defender.status.map(status => status.id).indexOf('BLOCK_SMALL'));
 	let defBlock = 0;
 

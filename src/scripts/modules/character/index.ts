@@ -1,7 +1,7 @@
+import Weapons from 'data/weapons';
 import StatusEffects from 'data/status-effects';
 import { characterCTLimit } from 'data/game-config';
 
-import Weapons from 'modules/weapon';
 import Skillsets from 'modules/skillset';
 import Attributes from 'modules/attributes';
 import MagicSkills from 'modules/skill/magic';
@@ -16,7 +16,6 @@ import { SkillType } from 'modules/skill/attributes';
 import { ICharacter } from 'modules/character/types';
 import { WeaponSkillID } from 'modules/skill/weapon/types';
 import { ICharacterData } from 'modules/character-data/types';
-import { WeaponID, WeaponTypeID } from 'modules/weapon/types';
 import { ArchetypeSkillID } from 'modules/skill/archetype/types';
 import { IActionItem, ActionID, IActions } from 'modules/character-action/types';
 
@@ -168,10 +167,10 @@ const getReactiveActions = (char: ICharacter): IActions => {
 	}
 
 	// BLOCK action
-	if (WeaponTypeID.SHIELD === offHand.type) {
+	if ('SHIELD' === offHand.type) {
 		let id: WeaponSkillID;
 
-		if (WeaponID.SHIELD_LARGE === char.data.off) {
+		if ('SHIELD_LARGE' === char.data.off) {
 			id = WeaponSkillID.SHIELD_LARGE_BLOCK;
 		} else {
 			id = WeaponSkillID.SHIELD_SMALL_BLOCK;

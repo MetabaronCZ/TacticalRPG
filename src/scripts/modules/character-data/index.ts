@@ -4,12 +4,11 @@ import * as ArrayUtils from 'core/array';
 
 import Sexes from 'data/sexes';
 import Armors from 'data/armors';
+import Weapons from 'data/weapons';
 import Archetypes from 'data/archetypes';
 
-import Weapons from 'modules/weapon';
 import Skillsets from 'modules/skillset';
 import Equipment from 'modules/equipment';
-import { WeaponID } from 'modules/weapon/types';
 import { SkillsetID } from 'modules/skillset/types';
 import { ICharacterData } from 'modules/character-data/types';
 
@@ -29,8 +28,8 @@ const init = (conf: ICharacterConfig = {}): ICharacterData => {
 		sex: 'MALE',
 		archetype: 'PP',
 		skillset: SkillsetID.NONE,
-		main: WeaponID.NONE,
-		off: WeaponID.NONE,
+		main: 'NONE',
+		off: 'NONE',
 		armor: 'NONE'
 	};
 	return Object.assign({}, defaultCharacterData, conf);
@@ -51,7 +50,7 @@ const random = (name: string): ICharacterData => {
 	let main = Weapons.filter(character, 'MAIN');
 
 	if (main.length > 1) {
-		main = main.filter(([id, data]) => id !== WeaponID.NONE);
+		main = main.filter(([id, data]) => id !== 'NONE');
 	}
 	character.main = ArrayUtils.getRandomItem(main)[0];
 
@@ -62,12 +61,12 @@ const random = (name: string): ICharacterData => {
 		let off = Weapons.filter(character, 'OFF');
 
 		if (off.length > 1) {
-			off = off.filter(([id, data]) => id !== WeaponID.NONE);
+			off = off.filter(([id, data]) => id !== 'NONE');
 		}
 		character.off = ArrayUtils.getRandomItem(off)[0];
 
 	} else {
-		character.off = WeaponID.NONE;
+		character.off = 'NONE';
 	}
 	let arm = Armors.filter(character);
 

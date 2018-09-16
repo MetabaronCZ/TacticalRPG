@@ -8,9 +8,10 @@ import rangedSkills from 'modules/skill/weapon/ranged';
 import shieldSkills from 'modules/skill/weapon/shield';
 
 import { ISkill } from 'modules/skill/types';
-import { IWeaponData } from 'modules/weapon/types';
 import { SkillType } from 'modules/skill/attributes';
 import { WeaponSkillID, attackSkills } from 'modules/skill/weapon/types';
+
+import { IWeaponData } from 'engine/weapon-data';
 
 const isAttackSkill = (id: WeaponSkillID): boolean => -1 !== attackSkills.indexOf(id);
 

@@ -3,6 +3,7 @@ import React, { SyntheticEvent } from 'react';
 import Icos from 'data/icos';
 import Sexes from 'data/sexes';
 import Armors from 'data/armors';
+import Weapons from 'data/weapons';
 import Archetypes from 'data/archetypes';
 import { characterMaxNameLength } from 'data/game-config';
 
@@ -19,12 +20,10 @@ import Button from 'ui/common/Button';
 import ButtonRow from 'ui/common/ButtonRow';
 import Separator from 'ui/common/Separator';
 
-import Weapons from 'modules/weapon';
 import Skillsets from 'modules/skillset';
 import Equipment from 'modules/equipment';
 import CharacterData from 'modules/character-data';
 
-import { WeaponID } from 'modules/weapon/types';
 import { SkillsetID } from 'modules/skillset/types';
 import { ICharacterData } from 'modules/character-data/types';
 
@@ -174,15 +173,15 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 			if (CharacterData.isMagicType(newData)) {
 				newData.skillset = newData.skillset || SkillsetID.NONE;
 			}
-			newData.main = (Equipment.checkMainHand(newData.main, arch) ? newData.main : WeaponID.NONE);
-			newData.off = (Equipment.checkOffHand(newData.off, arch, newData.main) ? newData.off : WeaponID.NONE);
+			newData.main = (Equipment.checkMainHand(newData.main, arch) ? newData.main : 'NONE');
+			newData.off = (Equipment.checkOffHand(newData.off, arch, newData.main) ? newData.off : 'NONE');
 			newData.armor = (Equipment.checkArmor(newData.armor, arch) ? newData.armor : 'NONE');
 			shouldUpdate = true;
 		}
 
 		// reset character off hand weapon on main hand change
 		if (prev.main !== newData.main) {
-			newData.off = (Equipment.checkOffHand(newData.off, arch, newData.main) ? newData.off : WeaponID.NONE);
+			newData.off = (Equipment.checkOffHand(newData.off, arch, newData.main) ? newData.off : 'NONE');
 			shouldUpdate = true;
 		}
 

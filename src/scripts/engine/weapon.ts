@@ -1,5 +1,5 @@
 import { WeaponSkillID } from 'engine/skill/weapon/types';
-import { IWeaponData, WeaponTypeID } from 'modules/weapon/types';
+import { IWeaponData, WeaponTypeID } from 'engine/weapon-data';
 
 class Weapon {
 	private readonly title: string;

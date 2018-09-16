@@ -1,3 +1,5 @@
+import Weapons from 'data/weapons';
+
 import Character from 'engine/character';
 import Skillsets from 'engine/skillset';
 import MagicSkills from 'engine/skill/magic';
@@ -5,9 +7,6 @@ import WeaponSkills from 'engine/skill/weapon';
 import CharacterAction from 'engine/character-action';
 import { WeaponSkillID } from 'engine/skill/weapon/types';
 import ArchetypeSkills, { ArchetypeSkillID } from 'engine/skill/archetype';
-
-import Weapons from 'modules/weapon';
-import { WeaponTypeID, WeaponID } from 'modules/weapon/types';
 
 class CharacterActions {
 	public static readonly dontReactAction = new CharacterAction('DONT_REACT', 'Pass', 0, true, []);
@@ -106,10 +105,10 @@ class CharacterActions {
 		}
 
 		// BLOCK action
-		if (WeaponTypeID.SHIELD === offHand.type) {
+		if ('SHIELD' === offHand.type) {
 			let id: WeaponSkillID;
 
-			if (WeaponID.SHIELD_LARGE === off) {
+			if ('SHIELD_LARGE' === off) {
 				id = 'SHIELD_LARGE_BLOCK';
 			} else {
 				id = 'SHIELD_SMALL_BLOCK';

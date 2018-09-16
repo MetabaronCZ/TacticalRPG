@@ -1,3 +1,4 @@
+import Weapons from 'data/weapons';
 import StatusEffects from 'data/status-effects';
 import { smallShieldBlock } from 'data/game-config';
 
@@ -6,9 +7,6 @@ import Skillsets from 'engine/skillset';
 import Character from 'engine/character';
 import SkillUtils from 'engine/skill/utils';
 import { StatusEffectID } from 'engine/status-effect';
-
-import Weapons from 'modules/weapon';
-import { WeaponTypeID } from 'modules/weapon/types';
 
 class Damage {
 	public static getPhysical(attacker: Character, defender: Character, skillId: SkillID): number {
@@ -27,7 +25,7 @@ class Damage {
 		} else {
 			attack = attacker.getAttribute('STR') * attWeaponDamage * skill.getPhysicalDamage();
 		}
-		const defHasShield = (WeaponTypeID.SHIELD === defOffHand.getType());
+		const defHasShield = ('SHIELD' === defOffHand.getType());
 		const defHasBlocked = defender.hasStatus('BLOCK_SMALL');
 		let defBlock = 0;
 

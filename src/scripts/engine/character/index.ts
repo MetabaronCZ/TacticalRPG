@@ -22,7 +22,7 @@ class Character {
 		this.data = data;
 		this.player = player;
 		this.movable = new Movement(position, direction);
-		this.equipment = new Equipment(data);
+		this.equipment = new Equipment(data.main, data.off, data.armor);
 		this.attributes = new Attributes(data.archetype);
 		this.status = new Status();
 	}
