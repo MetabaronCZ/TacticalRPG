@@ -4,7 +4,6 @@ import { gridSize, maxPartyNameLength, randomPartyID, maxPartySize } from 'data/
 import RandomNameGenerator from 'core/random-name-generator';
 
 import Order from 'modules/order';
-import Party from 'modules/party';
 import Player from 'modules/player';
 import Position from 'modules/position';
 import Character from 'modules/character';
@@ -13,13 +12,13 @@ import { ActPhase, GamePhase, IGameState } from 'modules/game/types';
 import { ICharacterData } from 'modules/character-data/types';
 import CharacterData from 'modules/character-data';
 import { PlayerType } from 'modules/player/types';
-import { IParty } from 'modules/party/types';
 import { IPosition } from 'modules/position/types';
 
 import { DirectionID } from 'engine/direction';
+import PartyUtils, { IPartyData } from 'engine/party-data';
 import { IBattleConfigPlayer } from 'engine/battle-config';
 
-const getInitialState = (players: IBattleConfigPlayer[], characters: ICharacterData[], parties: IParty[], initiative: PlayerType): IGameState => {
+const getInitialState = (players: IBattleConfigPlayer[], characters: ICharacterData[], parties: IPartyData[], initiative: PlayerType): IGameState => {
 	const ally = Player.create(PlayerType.ALLY);
 	const enemy = Player.create(PlayerType.ENEMY);
 
@@ -38,7 +37,7 @@ const getInitialState = (players: IBattleConfigPlayer[], characters: ICharacterD
 			if (!party) {
 				throw new Error('Could not create player charaters: Invalid party');
 			}
-			charData = party.characters.filter(id => !!id).map(id => Party.getCharacterById(id, characters));
+			charData = party.characters.filter(id => !!id).map(id => PartyUtils.getCharacterById(id, characters));
 		}
 
 		return charData.map((char, c) => {

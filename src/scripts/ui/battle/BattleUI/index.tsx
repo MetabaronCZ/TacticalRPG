@@ -15,7 +15,6 @@ import Position from 'modules/position';
 import Character from 'modules/character';
 import CharacterActions from 'modules/character-action';
 
-import { IParty } from 'modules/party/types';
 import { PlayerType } from 'modules/player/types';
 import { IPosition } from 'modules/position/types';
 import { SkillTarget } from 'modules/skill/attributes';
@@ -26,6 +25,7 @@ import { IGameState, GamePhase, ActPhase } from 'modules/game/types';
 import { getShortestPath, getMovableTiles } from 'modules/pathfinding';
 import { IActions, ActionID, IActionItem } from 'modules/character-action/types';
 
+import { IPartyData } from 'engine/party-data';
 import { IBattleConfig } from 'engine/battle-config';
 
 import BattleUI from 'ui/battle/BattleUI/template';
@@ -33,7 +33,7 @@ import BattleUI from 'ui/battle/BattleUI/template';
 const directAction = CharacterActions.directAction;
 
 interface IBattleUIContainerProps {
-	readonly parties: IParty[];
+	readonly parties: IPartyData[];
 	readonly characters: ICharacterData[];
 	readonly config: IBattleConfig;
 	readonly onSummary: () => void;

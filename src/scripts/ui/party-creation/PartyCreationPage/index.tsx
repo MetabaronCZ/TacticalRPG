@@ -5,15 +5,15 @@ import { Action } from 'redux-actions';
 import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router';
 
-import Page from 'ui/common/Page';
-import PartyCreation from 'ui/party-creation/PartyCreation';
-
 import { IStore } from 'store';
 import Actions from 'actions/parties';
 import * as Selector from 'selectors';
 import { goto, gotoFn } from 'utils/nav';
 
-import { IParty } from 'modules/party/types';
+import Page from 'ui/common/Page';
+import PartyCreation from 'ui/party-creation/PartyCreation';
+
+import { IPartyData } from 'engine/party-data';
 import { ICharacterData } from 'modules/character-data/types';
 
 interface IStateToProps {
@@ -21,15 +21,15 @@ interface IStateToProps {
 }
 
 interface IPartyCreationPageContainerProps extends RouteComponentProps<any> {
-	readonly onSubmit: (history: History) => (party: IParty) => void;
+	readonly onSubmit: (history: History) => (party: IPartyData) => void;
 }
 
 const mapStateToProps = (state: IStore): IStateToProps => ({
 	characters: Selector.getCharacters(state)
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<Action<IParty>>) => ({
-	onSubmit: (history: History) => (value: IParty): void => {
+const mapDispatchToProps = (dispatch: Dispatch<Action<IPartyData>>) => ({
+	onSubmit: (history: History) => (value: IPartyData): void => {
 		dispatch(Actions.addParty(value));
 		goto(history, '/party-list');
 	}

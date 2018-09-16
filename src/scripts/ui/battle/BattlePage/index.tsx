@@ -8,21 +8,21 @@ import * as Selector from 'selectors';
 import { goto, gotoFn } from 'utils/nav';
 import { isDebug } from 'data/game-config';
 
-import { IParty } from 'modules/party/types';
-import { ICharacterData } from 'modules/character-data/types';
-
 import Debug from 'ui/battle/Debug';
 import BattleUIContainer from 'ui/battle/BattleUI';
 
+import { IPartyData } from 'engine/party-data';
 import Engine, { IEngineState } from 'engine';
 import { IBattleConfig } from 'engine/battle-config';
+
+import { ICharacterData } from 'modules/character-data/types';
 
 const txtExitConfirm = 'Do you realy want to exit and lost your game progress?';
 
 interface IStateToProps {
 	readonly battleConfig: IBattleConfig;
 	readonly characters: ICharacterData[];
-	readonly parties: IParty[];
+	readonly parties: IPartyData[];
 }
 
 const exit = (history: History) => () => {

@@ -1,14 +1,14 @@
 import Character from 'engine/character';
+import { IPartyData } from 'engine/party-data';
 import { PlayerControlID } from 'engine/player-control';
 
-import { IParty } from 'modules/party/types';
 import { ICharacterData } from 'modules/character-data/types';
 
 export interface IPlayerData {
 	readonly name: string;
 	readonly control: PlayerControlID;
 	readonly party: string;
-	readonly parties: IParty[];
+	readonly parties: IPartyData[];
 	readonly characters: ICharacterData[];
 }
 

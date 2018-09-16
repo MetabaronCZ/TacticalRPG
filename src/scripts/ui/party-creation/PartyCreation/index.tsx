@@ -18,10 +18,10 @@ import Button from 'ui/common/Button';
 import ButtonRow from 'ui/common/ButtonRow';
 import Separator from 'ui/common/Separator';
 
-import Party from 'modules/party';
 import Equipment from 'modules/equipment';
-import { IParty } from 'modules/party/types';
 import { ICharacterData } from 'modules/character-data/types';
+
+import PartyUtils, { IPartyData } from 'engine/party-data';
 
 const errNoCharacter = 'Party contains no character';
 
@@ -38,14 +38,14 @@ const InvalidParty: React.SFC<{ msg: string|true }> = ({ msg }) => (
 );
 
 interface IPartyCreationProps {
-	readonly party?: IParty;
+	readonly party?: IPartyData;
 	readonly characters?: ICharacterData[];
 	readonly onBack?: () => void;
-	readonly onSubmit: (party: IParty) => void;
+	readonly onSubmit: (party: IPartyData) => void;
 }
 
 interface IPartyCreationState {
-	readonly fields: IParty;
+	readonly fields: IPartyData;
 	readonly errors: {
 		readonly [field: string]: string|undefined;
 	};
@@ -59,7 +59,7 @@ class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationS
 		chars = chars.filter(id => !!id);
 
 		this.state = {
-			fields: Party.create(props.party || {}),
+			fields: PartyUtils.create(props.party || {}),
 			errors: {
 				noCharError: (props.party && !chars.length ? errNoCharacter : undefined)
 			}
@@ -73,7 +73,7 @@ class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationS
 
 		const partyValidation = errors.noCharError
 			? errors.noCharError
-			: Party.validate(chars ? fields.characters.map(id => Party.getCharacterById(id, chars)) : undefined);
+			: PartyUtils.validate(chars ? fields.characters.map(id => PartyUtils.getCharacterById(id, chars)) : undefined);
 
 		return (
 			<Form onSubmit={this.onSubmit}>
@@ -201,7 +201,7 @@ class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationS
 	private renderPartyItem = (i: number) => {
 		const id = this.state.fields.characters[i] || '';
 		const characters = this.props.characters;
-		const selected = (characters ? Party.getCharacterById(id, characters) : undefined);
+		const selected = (characters ? PartyUtils.getCharacterById(id, characters) : undefined);
 		const filtered = this.filterCharacters(selected);
 		let info = '';
 

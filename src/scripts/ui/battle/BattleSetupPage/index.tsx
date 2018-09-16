@@ -12,15 +12,15 @@ import Actions from 'actions/battle-config';
 import Page from 'ui/common/Page';
 import BattleSetup from 'ui/battle/BattleSetup';
 
-import { IParty } from 'modules/party/types';
-import { ICharacterData } from 'modules/character-data/types';
-
+import { IPartyData } from 'engine/party-data';
 import { IBattleConfig } from 'engine/battle-config';
+
+import { ICharacterData } from 'modules/character-data/types';
 
 interface IStateToProps {
 	readonly battleConfig: IBattleConfig;
 	readonly characters: ICharacterData[];
-	readonly parties: IParty[];
+	readonly parties: IPartyData[];
 }
 
 const mapStateToProps = (state: IStore): IStateToProps => ({
