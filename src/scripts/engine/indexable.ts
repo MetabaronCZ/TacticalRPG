@@ -1,5 +1,10 @@
 import uuid from 'uuid/v1';
-import { IIndexable } from 'modules/indexable/types';
+
+export interface IIndexable {
+	readonly id: string;
+	readonly creationDate: number;
+	readonly lastUpdate: number;
+}
 
 // swap state array positions
 const swap = <T extends IIndexable>(state: T[], dir: number, value?: IIndexable): T[] => {

@@ -3,8 +3,25 @@ TODO
 --	refaktorovat vsude pole tak, aby vzdy byl default [] (zbavit se arr?: x[])
 --	refaktorovat Enumy na type
 
---	trackovat rozhodnuti
-	- pripravit replay (ulozeni na konci souboje + moznost krokovani)
-	- pripravit moznost jit o krok (Act) zpet primo ve hre (udelat konfigurovatelne - pro single play)
+LONG TERM
+----------------------------------------------------------------------------------------------------------
+--	graficky design
+	- HUD
+	- ilustrace postav
+	- textury Gridu
 
---	pracovat s AI Player, ne s AI Character (kooperace postav)
+--	vyrovnani atributu
+	- postavy, zbrane, brneni, skilly
+
+--	AI
+	- pracovat s AI Playera, ne s Characteru (kooperace postav)
+
+--	Skore
+	- co pocitat?
+	- je to treba?
+	- na konci souboje zobrazovat minimalne statistiky
+
+--	Chronox
+	- trackovat rozhodnuti
+	- pripravit replay (ulozeni na konci souboje + moznost krokovani, jako u sachu)
+	- pripravit moznost jit o krok (Act) zpet primo ve hre (udelat konfigurovatelne - pro single play)

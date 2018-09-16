@@ -1,6 +1,7 @@
 import { handleActions } from 'redux-actions';
 
-import Indexable from 'modules/indexable';
+import Indexable from 'engine/indexable';
+
 import { ActionID } from 'actions/characters';
 import { ICharacterData } from 'modules/character-data/types';
 

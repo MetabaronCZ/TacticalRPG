@@ -4,9 +4,10 @@ import { ActionID as PartyActionID } from 'actions/parties';
 import { ActionID as CharacterActionID } from 'actions/characters';
 
 import Party from 'modules/party';
-import Indexable from 'modules/indexable';
 import { IParty } from 'modules/party/types';
 import { ICharacterData } from 'modules/character-data/types';
+
+import Indexable from 'engine/indexable';
 
 const defaultState: IParty[] = [];
 

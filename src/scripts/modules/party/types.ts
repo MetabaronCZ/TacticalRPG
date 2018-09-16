@@ -1,4 +1,4 @@
-import { IIndexable } from 'modules/indexable/types';
+import { IIndexable } from 'engine/indexable';
 
 export interface IParty extends IIndexable {
 	readonly name: string;

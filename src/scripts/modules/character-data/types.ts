@@ -1,9 +1,9 @@
 import { SkillsetID } from 'modules/skillset/types';
-import { IIndexable } from 'modules/indexable/types';
 
 import { ArmorID } from 'engine/armor-data';
 import { SexID } from 'engine/character/sex';
 import { WeaponID } from 'engine/weapon-data';
+import { IIndexable } from 'engine/indexable';
 import { ArchetypeID } from 'engine/character/archetype';
 
 export interface ICharacterData extends IIndexable {
