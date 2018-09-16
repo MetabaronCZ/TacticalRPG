@@ -19,9 +19,9 @@ import ButtonRow from 'ui/common/ButtonRow';
 import Separator from 'ui/common/Separator';
 
 import Equipment from 'modules/equipment';
-import { ICharacterData } from 'modules/character-data/types';
 
-import PartyUtils, { IPartyData } from 'engine/party-data';
+import { ICharacterData } from 'engine/character-data';
+import PartyDataUtils, { IPartyData } from 'engine/party-data';
 
 const errNoCharacter = 'Party contains no character';
 
@@ -59,7 +59,7 @@ class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationS
 		chars = chars.filter(id => !!id);
 
 		this.state = {
-			fields: PartyUtils.create(props.party || {}),
+			fields: PartyDataUtils.create(props.party || {}),
 			errors: {
 				noCharError: (props.party && !chars.length ? errNoCharacter : undefined)
 			}
@@ -73,7 +73,7 @@ class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationS
 
 		const partyValidation = errors.noCharError
 			? errors.noCharError
-			: PartyUtils.validate(chars ? fields.characters.map(id => PartyUtils.getCharacterById(id, chars)) : undefined);
+			: PartyDataUtils.validate(chars ? fields.characters.map(id => PartyDataUtils.getCharacterById(id, chars)) : undefined);
 
 		return (
 			<Form onSubmit={this.onSubmit}>
@@ -201,7 +201,7 @@ class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationS
 	private renderPartyItem = (i: number) => {
 		const id = this.state.fields.characters[i] || '';
 		const characters = this.props.characters;
-		const selected = (characters ? PartyUtils.getCharacterById(id, characters) : undefined);
+		const selected = (characters ? PartyDataUtils.getCharacterById(id, characters) : undefined);
 		const filtered = this.filterCharacters(selected);
 		let info = '';
 

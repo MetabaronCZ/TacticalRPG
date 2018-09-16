@@ -1,7 +1,7 @@
 import DataList from 'core/data-list';
 
 import Equipment from 'modules/equipment';
-import { ICharacterData } from 'modules/character-data/types';
+import { ICharacterData } from 'engine/character-data';
 
 export type ArmorID = 'NONE' | 'ROBE' | 'LIGHT' | 'HEAVY';
 

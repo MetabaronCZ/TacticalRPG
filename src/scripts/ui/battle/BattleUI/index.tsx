@@ -19,7 +19,6 @@ import { PlayerType } from 'modules/player/types';
 import { IPosition } from 'modules/position/types';
 import { SkillTarget } from 'modules/skill/attributes';
 import { WeaponSkillID } from 'modules/skill/weapon/types';
-import { ICharacterData } from 'modules/character-data/types';
 import { ArchetypeSkillID } from 'modules/skill/archetype/types';
 import { IGameState, GamePhase, ActPhase } from 'modules/game/types';
 import { getShortestPath, getMovableTiles } from 'modules/pathfinding';
@@ -27,6 +26,7 @@ import { IActions, ActionID, IActionItem } from 'modules/character-action/types'
 
 import { IPartyData } from 'engine/party-data';
 import { IBattleConfig } from 'engine/battle-config';
+import { ICharacterData } from 'engine/character-data';
 
 import BattleUI from 'ui/battle/BattleUI/template';
 

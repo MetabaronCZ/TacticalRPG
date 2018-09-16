@@ -1,12 +1,12 @@
 import React from 'react';
 
+import { ICharacterData } from 'engine/character-data';
+
 import Page from 'ui/common/Page';
 import Button from 'ui/common/Button';
 import ButtonRow from 'ui/common/ButtonRow';
 import Separator from 'ui/common/Separator';
-import CharacterList from 'ui/character-creation/CharacterList';
-
-import { IOnMoveDown, IOnMoveUp, IOnDelete, ICharacterData } from 'modules/character-data/types';
+import CharacterList, { IOnDelete, IOnMoveDown, IOnMoveUp } from 'ui/character-creation/CharacterList';
 
 const NoCharacters = () => (
 	<p className="Paragraph">There are no characters.</p>

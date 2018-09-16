@@ -1,8 +1,7 @@
 import Character from 'engine/character';
 import { IPartyData } from 'engine/party-data';
+import { ICharacterData } from 'engine/character-data';
 import { PlayerControlID } from 'engine/player-control';
-
-import { ICharacterData } from 'modules/character-data/types';
 
 export interface IPlayerData {
 	readonly name: string;

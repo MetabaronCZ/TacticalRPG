@@ -1,13 +1,13 @@
+import { characterCTLimit } from 'data/game-config';
+
 import Position from 'engine/position';
 import Status from 'engine/character/status';
 import { DirectionID } from 'engine/direction';
 import Movement from 'engine/character/movement';
 import Equipment from 'engine/character/equipment';
+import { ICharacterData } from 'engine/character-data';
 import { IStatusEffect, StatusEffectID } from 'engine/status-effect';
 import Attributes, { AttributeID } from 'engine/character/attributes';
-
-import { characterCTLimit } from 'data/game-config';
-import { ICharacterData } from 'modules/character-data/types';
 
 class Character {
 	private readonly player: number;

@@ -9,7 +9,7 @@ import { IStore } from 'store';
 import * as Selector from 'selectors';
 import Actions from 'actions/characters';
 import { goto, gotoFn } from 'utils/nav';
-import { ICharacterData } from 'modules/character-data/types';
+import { ICharacterData } from 'engine/character-data';
 
 import Page from 'ui/common/Page';
 import CharacterCreation from 'ui/character-creation/CharacterCreation';

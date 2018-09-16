@@ -13,10 +13,9 @@ import FormSelect from 'ui/common/FormSelect';
 import FormSelectItem from 'ui/common/FormSelectItem';
 import CharacterList from 'ui/character-creation/CharacterList';
 
-import { ICharacterData } from 'modules/character-data/types';
-
 import PlayerControl from 'engine/player-control';
-import PartyUtils, { IPartyData } from 'engine/party-data';
+import { ICharacterData } from 'engine/character-data';
+import PartyDataUtils, { IPartyData } from 'engine/party-data';
 import { IBattleConfig, IBattleConfigPlayer } from 'engine/battle-config';
 
 // empty array to map player data / states
@@ -93,10 +92,10 @@ class BattleSetup extends React.Component<IBattleSetupProps, IBattleSetupState> 
 
 					if (selectedParty) {
 						chars = selectedParty.characters
-							.map(id => PartyUtils.getCharacterById(id, characters))
+							.map(id => PartyDataUtils.getCharacterById(id, characters))
 							.filter(char => !!char);
 					}
-					const partyValidation = PartyUtils.validate(chars);
+					const partyValidation = PartyDataUtils.validate(chars);
 					const isValidParty = (randomPartyID === players[p].party || (true === partyValidation && chars.length));
 
 					if (!isValidParty) {

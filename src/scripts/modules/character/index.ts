@@ -6,7 +6,6 @@ import Skillsets from 'modules/skillset';
 import Attributes from 'modules/attributes';
 import MagicSkills from 'modules/skill/magic';
 import WeaponSkills from 'modules/skill/weapon';
-import CharacterData from 'modules/character-data';
 import ArchetypeSkills from 'modules/skill/archetype';
 import CharacterAction from 'modules/character-action';
 
@@ -15,12 +14,12 @@ import { IPosition } from 'modules/position/types';
 import { SkillType } from 'modules/skill/attributes';
 import { ICharacter } from 'modules/character/types';
 import { WeaponSkillID } from 'modules/skill/weapon/types';
-import { ICharacterData } from 'modules/character-data/types';
 import { ArchetypeSkillID } from 'modules/skill/archetype/types';
 import { IActionItem, ActionID, IActions } from 'modules/character-action/types';
 
 import { DirectionID } from 'engine/direction';
 import { StatusEffectID } from 'engine/status-effect';
+import CharacterDataUtils, { ICharacterData } from 'engine/character-data';
 
 const dontReactAction = CharacterAction.dontReactAction;
 const confirmAction = CharacterAction.confirmAction;
@@ -151,7 +150,7 @@ const getReactiveActions = (char: ICharacter): IActions => {
 	const charAP = char.currAttributes.AP;
 
 	// EVADE action
-	if (CharacterData.isSpeedType(char.data)) {
+	if (CharacterDataUtils.isSpeedType(char.data)) {
 		const id = ArchetypeSkillID.EVADE;
 		const skill = ArchetypeSkills.get(id);
 

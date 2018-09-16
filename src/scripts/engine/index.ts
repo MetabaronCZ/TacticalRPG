@@ -10,11 +10,10 @@ import Position from 'engine/position';
 import Character from 'engine/character';
 import { DirectionID } from 'engine/direction';
 import { getPosition } from 'engine/positions';
-import CharacterData from 'modules/character-data';
 import Player, { IPlayerData } from 'engine/player';
 import CharacterAction from 'engine/character-action';
-import { ICharacterData } from 'modules/character-data/types';
 import RandomNameGenerator from 'core/random-name-generator';
+import CharacterDataUtils, { ICharacterData } from 'engine/character-data';
 
 export interface IEngineState {
 	tick: number;
@@ -149,7 +148,7 @@ class Engine {
 			if (randomPartyID === party) {
 				// random generated party
 				const charNames = RandomNameGenerator.get(nameSamples, characterCount, maxPartyNameLength);
-				charData = charNames.map(n => CharacterData.random(n));
+				charData = charNames.map(n => CharacterDataUtils.random(n));
 
 			} else {
 				// user created party

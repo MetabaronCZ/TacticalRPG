@@ -8,8 +8,10 @@ import { IStore } from 'store';
 import { gotoFn } from 'utils/nav';
 import * as Selector from 'selectors';
 import Actions from 'actions/characters';
+import { ICharacterData } from 'engine/character-data';
+
 import CharacterListPage from 'ui/character-creation/CharacterListPage/template';
-import { ICharacterData, IOnMoveDown, IOnMoveUp, IOnDelete } from 'modules/character-data/types';
+import { IOnDelete, IOnMoveUp, IOnMoveDown } from 'ui/character-creation/CharacterList';
 
 interface IStateToProps {
 	readonly characters: ICharacterData[];

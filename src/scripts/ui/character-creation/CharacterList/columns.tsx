@@ -9,12 +9,12 @@ import Link from 'ui/common/Link';
 import LinkIco from 'ui/common/LinkIco';
 import LinkButton from 'ui/common/LinkButton';
 import ArchetypeIco from 'ui/common/ArchetypeIco';
+import { IOnMoveDown, IOnMoveUp, IOnDelete } from 'ui/character-creation/CharacterList';
 
 import Skillsets from 'modules/skillset';
 import Equipment from 'modules/equipment';
-import CharacterData from 'modules/character-data';
 
-import { ICharacterData, IOnMoveDown, IOnMoveUp, IOnDelete } from 'modules/character-data/types';
+import CharacterDataUtils, { ICharacterData } from 'engine/character-data';
 
 const renderArchetype = (char: ICharacterData) => (
 	<ArchetypeIco archetype={char.archetype} />
@@ -71,7 +71,7 @@ const getColumns = (editable = false, onMoveDown?: IOnMoveDown, onMoveUp?: IOnMo
 			value: (char: ICharacterData) => {
 				const archetype = Archetypes.get(char.archetype);
 				const skillset = Skillsets.get(char.skillset);
-				return `${archetype.title}${CharacterData.isMagicType(char) ? ' (' + skillset.title + ')' : ''}`;
+				return `${archetype.title}${CharacterDataUtils.isMagicType(char) ? ' (' + skillset.title + ')' : ''}`;
 			}
 		}, {
 			title: 'Main hand',

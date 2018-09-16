@@ -11,11 +11,10 @@ import { isDebug } from 'data/game-config';
 import Debug from 'ui/battle/Debug';
 import BattleUIContainer from 'ui/battle/BattleUI';
 
-import { IPartyData } from 'engine/party-data';
 import Engine, { IEngineState } from 'engine';
+import { IPartyData } from 'engine/party-data';
 import { IBattleConfig } from 'engine/battle-config';
-
-import { ICharacterData } from 'modules/character-data/types';
+import { ICharacterData } from 'engine/character-data';
 
 const txtExitConfirm = 'Do you realy want to exit and lost your game progress?';
 

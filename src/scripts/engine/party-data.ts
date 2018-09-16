@@ -1,14 +1,14 @@
 import uuid from 'uuid/v1';
 
 import { IIndexable } from 'engine/indexable';
-import { ICharacterData } from 'modules/character-data/types';
+import { ICharacterData } from 'engine/character-data';
 
 export interface IPartyData extends IIndexable {
 	readonly name: string;
 	readonly characters: string[];  // list of character IDs
 }
 
-class PartyUtils {
+class PartyDataUtils {
 	public static create(conf = {}): IPartyData {
 		const now = Date.now();
 		const chars: string[] = [];
@@ -74,4 +74,4 @@ class PartyUtils {
 	}
 }
 
-export default PartyUtils;
+export default PartyDataUtils;

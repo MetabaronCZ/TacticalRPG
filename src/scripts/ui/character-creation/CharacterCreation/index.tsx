@@ -22,10 +22,9 @@ import Separator from 'ui/common/Separator';
 
 import Skillsets from 'modules/skillset';
 import Equipment from 'modules/equipment';
-import CharacterData from 'modules/character-data';
-
 import { SkillsetID } from 'modules/skillset/types';
-import { ICharacterData } from 'modules/character-data/types';
+
+import CharacterDataUtils, { ICharacterData } from 'engine/character-data';
 
 interface ICharacterCreationProps {
 	readonly character?: ICharacterData;
@@ -45,7 +44,7 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 		super(props);
 
 		this.state = {
-			fields: CharacterData.init(props.character || {}),
+			fields: CharacterDataUtils.init(props.character || {}),
 			errors: {}
 		};
 	}
@@ -60,7 +59,7 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 		const main = Weapons.get(fields.main);
 		const off = Weapons.get(fields.off);
 
-		const isMagicUser = CharacterData.isMagicType(fields);
+		const isMagicUser = CharacterDataUtils.isMagicType(fields);
 		const hasNoOffHand = Equipment.isBothWielding(fields.main) || Equipment.isDualWielding(fields.main);
 
 		return (
@@ -170,7 +169,7 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 
 		// reset character data on archetype change
 		if (prev.archetype !== arch) {
-			if (CharacterData.isMagicType(newData)) {
+			if (CharacterDataUtils.isMagicType(newData)) {
 				newData.skillset = newData.skillset || SkillsetID.NONE;
 			}
 			newData.main = (Equipment.checkMainHand(newData.main, arch) ? newData.main : 'NONE');

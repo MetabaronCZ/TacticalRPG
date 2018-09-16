@@ -9,13 +9,12 @@ import * as Selector from 'selectors';
 import { goto, gotoFn } from 'utils/nav';
 import Actions from 'actions/battle-config';
 
-import Page from 'ui/common/Page';
-import BattleSetup from 'ui/battle/BattleSetup';
-
 import { IPartyData } from 'engine/party-data';
 import { IBattleConfig } from 'engine/battle-config';
+import { ICharacterData } from 'engine/character-data';
 
-import { ICharacterData } from 'modules/character-data/types';
+import Page from 'ui/common/Page';
+import BattleSetup from 'ui/battle/BattleSetup';
 
 interface IStateToProps {
 	readonly battleConfig: IBattleConfig;

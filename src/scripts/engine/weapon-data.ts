@@ -3,7 +3,8 @@ import DataList from 'core/data-list';
 import Equipment from 'modules/equipment';
 import { IEquipSlot } from 'modules/equipment/types';
 import { WeaponSkillID } from 'modules/skill/weapon/types';
-import { ICharacterData } from 'modules/character-data/types';
+
+import { ICharacterData } from 'engine/character-data';
 
 export type WeaponID =
 	'NONE' |

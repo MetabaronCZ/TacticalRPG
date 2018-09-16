@@ -5,16 +5,16 @@ import { Action } from 'redux-actions';
 import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router';
 
-import Page from 'ui/common/Page';
-import PartyCreation from 'ui/party-creation/PartyCreation';
-
 import { IStore } from 'store';
 import Actions from 'actions/parties';
 import * as Selector from 'selectors';
 import { goto, gotoFn } from 'utils/nav';
 
 import { IPartyData } from 'engine/party-data';
-import { ICharacterData } from 'modules/character-data/types';
+import { ICharacterData } from 'engine/character-data';
+
+import Page from 'ui/common/Page';
+import PartyCreation from 'ui/party-creation/PartyCreation';
 
 interface IStateToProps {
 	readonly parties?: IPartyData[];

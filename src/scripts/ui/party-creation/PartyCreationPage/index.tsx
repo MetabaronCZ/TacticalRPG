@@ -10,11 +10,11 @@ import Actions from 'actions/parties';
 import * as Selector from 'selectors';
 import { goto, gotoFn } from 'utils/nav';
 
+import { IPartyData } from 'engine/party-data';
+import { ICharacterData } from 'engine/character-data';
+
 import Page from 'ui/common/Page';
 import PartyCreation from 'ui/party-creation/PartyCreation';
-
-import { IPartyData } from 'engine/party-data';
-import { ICharacterData } from 'modules/character-data/types';
 
 interface IStateToProps {
 	readonly characters?: ICharacterData[];

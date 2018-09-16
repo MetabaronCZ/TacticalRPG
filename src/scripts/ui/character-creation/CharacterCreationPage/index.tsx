@@ -5,12 +5,12 @@ import { Action } from 'redux-actions';
 import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router';
 
-import Page from 'ui/common/Page';
-import CharacterCreation from 'ui/character-creation/CharacterCreation';
-
 import { goto, gotoFn } from 'utils/nav';
 import Actions from 'actions/characters';
-import { ICharacterData } from 'modules/character-data/types';
+import { ICharacterData } from 'engine/character-data';
+
+import Page from 'ui/common/Page';
+import CharacterCreation from 'ui/character-creation/CharacterCreation';
 
 interface ICharacterCreationPageContainerProps extends RouteComponentProps<any> {
 	readonly onSubmit: (history: History) => (data: ICharacterData) => void;
