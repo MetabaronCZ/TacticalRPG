@@ -1,5 +1,4 @@
 // debug
-export const isDebug = true;
 export const isLoggingEnabled = true;
 
 // grid

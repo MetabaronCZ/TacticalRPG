@@ -1,7 +1,7 @@
 import React from 'react';
 
 import ActReaction from 'engine/act/reaction';
-import { formatPositions, formatPosition } from 'ui/battle/Debug/utils';
+import { formatPositions, formatPosition } from 'ui/battle/BattleUI/utils';
 
 interface IActReactUIProps {
 	isActive: boolean;

@@ -1,5 +1,4 @@
-import { WeaponList } from 'engine/weapon-data';
-import { WeaponSkillID as SKillID } from 'modules/skill/weapon/types';
+import { WeaponList } from 'engine/equipment/weapon-data';
 
 const Weapons = new WeaponList({
 	NONE: {
@@ -14,7 +13,7 @@ const Weapons = new WeaponList({
 		title: 'Fists',
 		description: '',
 		type: 'DUAL',
-		skills: [SKillID.FISTS_ATTACK, SKillID.FISTS_DISARM],
+		skills: ['FISTS_ATTACK', 'FISTS_DISARM'],
 		damage: 5,
 		magic: 0
 	},
@@ -22,7 +21,7 @@ const Weapons = new WeaponList({
 		title: 'Dagger',
 		description: '',
 		type: 'ONE_HANDED',
-		skills: [SKillID.DAGGER_ATTACK, SKillID.DAGGER_STAB],
+		skills: ['DAGGER_ATTACK', 'DAGGER_STAB'],
 		damage: 5,
 		magic: 0
 	},
@@ -30,7 +29,7 @@ const Weapons = new WeaponList({
 		title: '1H Sword',
 		description: '',
 		type: 'ONE_HANDED',
-		skills: [SKillID.SWORD_1H_ATTACK, SKillID.SWORD_1H_BLEED],
+		skills: ['SWORD_1H_ATTACK', 'SWORD_1H_BLEED'],
 		damage: 10,
 		magic: 0
 	},
@@ -38,7 +37,7 @@ const Weapons = new WeaponList({
 		title: '1H Axe',
 		description: '',
 		type: 'ONE_HANDED',
-		skills: [SKillID.AXE_1H_ATTACK, SKillID.AXE_1H_SMASH],
+		skills: ['AXE_1H_ATTACK', 'AXE_1H_SMASH'],
 		damage: 10,
 		magic: 0
 	},
@@ -46,7 +45,7 @@ const Weapons = new WeaponList({
 		title: '1H Hammer',
 		description: '',
 		type: 'ONE_HANDED',
-		skills: [SKillID.HAMMER_1H_ATTACK, SKillID.HAMMER_1H_STUN],
+		skills: ['HAMMER_1H_ATTACK', 'HAMMER_1H_STUN'],
 		damage: 10,
 		magic: 0
 	},
@@ -54,7 +53,7 @@ const Weapons = new WeaponList({
 		title: 'Spear',
 		description: '',
 		type: 'TWO_HANDED',
-		skills: [SKillID.SPEAR_ATTACK, SKillID.SPEAR_THRUST],
+		skills: ['SPEAR_ATTACK', 'SPEAR_THRUST'],
 		damage: 20,
 		magic: 0
 	},
@@ -62,7 +61,7 @@ const Weapons = new WeaponList({
 		title: '2H Sword',
 		description: '',
 		type: 'TWO_HANDED',
-		skills: [SKillID.SWORD_2H_ATTACK, SKillID.SWORD_2H_CLEAVE],
+		skills: ['SWORD_2H_ATTACK', 'SWORD_2H_CLEAVE'],
 		damage: 20,
 		magic: 0
 	},
@@ -70,7 +69,7 @@ const Weapons = new WeaponList({
 		title: '2H Axe',
 		description: '',
 		type: 'TWO_HANDED',
-		skills: [SKillID.AXE_2H_ATTACK, SKillID.AXE_2H_WHIRLWIND],
+		skills: ['AXE_2H_ATTACK', 'AXE_2H_WHIRLWIND'],
 		damage: 20,
 		magic: 0
 	},
@@ -78,7 +77,7 @@ const Weapons = new WeaponList({
 		title: '2H Hammer',
 		description: '',
 		type: 'TWO_HANDED',
-		skills: [SKillID.HAMMER_2H_ATTACK, SKillID.HAMMER_2H_SHOCKWAVE],
+		skills: ['HAMMER_2H_ATTACK', 'HAMMER_2H_SHOCKWAVE'],
 		damage: 20,
 		magic: 0
 	},
@@ -86,7 +85,7 @@ const Weapons = new WeaponList({
 		title: 'Mace',
 		description: '',
 		type: 'MAGICAL',
-		skills: [SKillID.MACE_ATTACK],
+		skills: ['MACE_ATTACK'],
 		damage: 1,
 		magic: 50
 	},
@@ -94,7 +93,7 @@ const Weapons = new WeaponList({
 		title: 'Staff',
 		description: '',
 		type: 'MAGICAL',
-		skills: [SKillID.STAFF_ATTACK],
+		skills: ['STAFF_ATTACK'],
 		damage: 5,
 		magic: 100
 	},
@@ -102,7 +101,7 @@ const Weapons = new WeaponList({
 		title: 'Bow',
 		description: '',
 		type: 'RANGED',
-		skills: [SKillID.BOW_ATTACK, SKillID.BOW_CHARGE],
+		skills: ['BOW_ATTACK', 'BOW_CHARGE'],
 		damage: 20,
 		magic: 0
 	},
@@ -110,7 +109,7 @@ const Weapons = new WeaponList({
 		title: '1H Gun',
 		description: '',
 		type: 'RANGED',
-		skills: [SKillID.GUN_1H_ATTACK, SKillID.GUN_1H_CRIPPLE],
+		skills: ['GUN_1H_ATTACK', 'GUN_1H_CRIPPLE'],
 		damage: 1,
 		magic: 0
 	},
@@ -118,7 +117,7 @@ const Weapons = new WeaponList({
 		title: '2H Gun',
 		description: '',
 		type: 'RANGED',
-		skills: [SKillID.GUN_2H_ATTACK, SKillID.GUN_2H_PIERCE],
+		skills: ['GUN_2H_ATTACK', 'GUN_2H_PIERCE'],
 		damage: 1,
 		magic: 0
 	},
@@ -126,7 +125,7 @@ const Weapons = new WeaponList({
 		title: 'Small Shield',
 		description: '',
 		type: 'SHIELD',
-		skills: [SKillID.SHIELD_SMALL_BLOCK],
+		skills: ['SHIELD_SMALL_BLOCK'],
 		damage: 1,
 		magic: 0
 	},
@@ -134,7 +133,7 @@ const Weapons = new WeaponList({
 		title: 'Large Shield',
 		description: '',
 		type: 'SHIELD',
-		skills: [SKillID.SHIELD_LARGE_BLOCK],
+		skills: ['SHIELD_LARGE_BLOCK'],
 		damage: 1,
 		magic: 0
 	}

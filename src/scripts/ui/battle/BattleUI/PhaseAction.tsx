@@ -1,8 +1,8 @@
 import React from 'react';
 
 import ActAction from 'engine/act/action';
-import ActReactUI from 'ui/battle/Debug/PhaseReaction';
-import { formatPositions, formatPosition } from 'ui/battle/Debug/utils';
+import ActReactUI from 'ui/battle/BattleUI/PhaseReaction';
+import { formatPositions, formatPosition } from 'ui/battle/BattleUI/utils';
 
 interface IActActionUIProps {
 	act: ActAction;

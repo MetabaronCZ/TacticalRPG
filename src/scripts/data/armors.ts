@@ -1,4 +1,4 @@
-import { ArmorList } from 'engine/armor-data';
+import { ArmorList } from 'engine/equipment/armor-data';
 
 const Armors = new ArmorList({
 	NONE: {

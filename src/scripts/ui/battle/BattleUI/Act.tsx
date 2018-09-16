@@ -3,11 +3,11 @@ import React from 'react';
 import Act from 'engine/act';
 import CharacterAction from 'engine/character-action';
 
-import Actions from 'ui/battle/Debug/Actions';
-import ActMoveUI from 'ui/battle/Debug/PhaseMove';
-import ActActionUI from 'ui/battle/Debug/PhaseAction';
-import ActDirectUI from 'ui/battle/Debug/PhaseDirect';
-import { formatPosition } from 'ui/battle/Debug/utils';
+import Actions from 'ui/battle/BattleUI/Actions';
+import ActMoveUI from 'ui/battle/BattleUI/PhaseMove';
+import ActActionUI from 'ui/battle/BattleUI/PhaseAction';
+import ActDirectUI from 'ui/battle/BattleUI/PhaseDirect';
+import { formatPosition } from 'ui/battle/BattleUI/utils';
 
 interface IActUIProps {
 	act: Act|null;

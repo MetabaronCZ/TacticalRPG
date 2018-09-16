@@ -10,20 +10,17 @@ import { characterMaxNameLength } from 'data/game-config';
 import { validateField, validateForm } from 'utils/validation';
 
 import Form from 'ui/common/Form';
+import Button from 'ui/common/Button';
+import ButtonRow from 'ui/common/ButtonRow';
+import Separator from 'ui/common/Separator';
 import FormField from 'ui/common/FormField';
 import FormInput from 'ui/common/FormInput';
 import FormRadio from 'ui/common/FormRadio';
 import FormSelect from 'ui/common/FormSelect';
 import FormSelectItem from 'ui/common/FormSelectItem';
 
-import Button from 'ui/common/Button';
-import ButtonRow from 'ui/common/ButtonRow';
-import Separator from 'ui/common/Separator';
-
-import Skillsets from 'modules/skillset';
-import Equipment from 'modules/equipment';
-import { SkillsetID } from 'modules/skillset/types';
-
+import Skillsets from 'engine/skillset';
+import { EquipmentUtils } from 'engine/equipment/utils';
 import CharacterDataUtils, { ICharacterData } from 'engine/character-data';
 
 interface ICharacterCreationProps {
@@ -60,7 +57,7 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 		const off = Weapons.get(fields.off);
 
 		const isMagicUser = CharacterDataUtils.isMagicType(fields);
-		const hasNoOffHand = Equipment.isBothWielding(fields.main) || Equipment.isDualWielding(fields.main);
+		const hasNoOffHand = EquipmentUtils.isBothWielding(fields.main) || EquipmentUtils.isDualWielding(fields.main);
 
 		return (
 			<Form onSubmit={this.onSubmit}>
@@ -102,7 +99,7 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 				</FormField>
 
 				<FormField fieldId="f-skillset" label="Magic" info={skillset.description}>
-					<FormSelect id="f-skillset" name="skillset" value={isMagicUser ? fields.skillset : SkillsetID.NONE} disabled={!isMagicUser} onChange={onChange}>
+					<FormSelect id="f-skillset" name="skillset" value={isMagicUser ? fields.skillset : 'NONE'} disabled={!isMagicUser} onChange={onChange}>
 						{Skillsets.map((id, set, i) => (
 							<FormSelectItem value={id} key={i}>
 								{set.title}
@@ -170,17 +167,17 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 		// reset character data on archetype change
 		if (prev.archetype !== arch) {
 			if (CharacterDataUtils.isMagicType(newData)) {
-				newData.skillset = newData.skillset || SkillsetID.NONE;
+				newData.skillset = newData.skillset || 'NONE';
 			}
-			newData.main = (Equipment.checkMainHand(newData.main, arch) ? newData.main : 'NONE');
-			newData.off = (Equipment.checkOffHand(newData.off, arch, newData.main) ? newData.off : 'NONE');
-			newData.armor = (Equipment.checkArmor(newData.armor, arch) ? newData.armor : 'NONE');
+			newData.main = (EquipmentUtils.checkMainHand(newData.main, arch) ? newData.main : 'NONE');
+			newData.off = (EquipmentUtils.checkOffHand(newData.off, arch, newData.main) ? newData.off : 'NONE');
+			newData.armor = (EquipmentUtils.checkArmor(newData.armor, arch) ? newData.armor : 'NONE');
 			shouldUpdate = true;
 		}
 
 		// reset character off hand weapon on main hand change
 		if (prev.main !== newData.main) {
-			newData.off = (Equipment.checkOffHand(newData.off, arch, newData.main) ? newData.off : 'NONE');
+			newData.off = (EquipmentUtils.checkOffHand(newData.off, arch, newData.main) ? newData.off : 'NONE');
 			shouldUpdate = true;
 		}
 

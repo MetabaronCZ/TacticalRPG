@@ -1,5 +1,7 @@
 import { randomize } from 'core/array';
 
+import RandomNameGenerator from 'core/random-name-generator';
+
 import nameSamples from 'data/names';
 import { characterCTLimit, gridSize, characterCount, maxPartyNameLength, maxPlayers, randomPartyID } from 'data/game-config';
 
@@ -12,7 +14,6 @@ import { DirectionID } from 'engine/direction';
 import { getPosition } from 'engine/positions';
 import Player, { IPlayerData } from 'engine/player';
 import CharacterAction from 'engine/character-action';
-import RandomNameGenerator from 'core/random-name-generator';
 import CharacterDataUtils, { ICharacterData } from 'engine/character-data';
 
 export interface IEngineState {

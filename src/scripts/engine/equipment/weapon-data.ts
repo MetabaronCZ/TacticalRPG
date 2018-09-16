@@ -1,10 +1,9 @@
 import DataList from 'core/data-list';
 
-import Equipment from 'modules/equipment';
-import { IEquipSlot } from 'modules/equipment/types';
-import { WeaponSkillID } from 'modules/skill/weapon/types';
-
 import { ICharacterData } from 'engine/character-data';
+import { IEquipSlot } from 'engine/equipment/equipable';
+import { EquipmentUtils } from 'engine/equipment/utils';
+import { WeaponSkillID } from 'engine/skill/weapon/types';
 
 export type WeaponID =
 	'NONE' |
@@ -34,10 +33,10 @@ export class WeaponList extends DataList<WeaponID, IWeaponData> {
 	private check(weapon: WeaponID, char: ICharacterData, slot: IEquipSlot): boolean {
 		switch (slot) {
 			case 'MAIN':
-				return Equipment.checkMainHand(weapon, char.archetype);
+				return EquipmentUtils.checkMainHand(weapon, char.archetype);
 
 			case 'OFF':
-				return Equipment.checkOffHand(weapon, char.archetype, char.main);
+				return EquipmentUtils.checkOffHand(weapon, char.archetype, char.main);
 
 			default:
 				throw new Error(`Invalid equip slot: ${slot}`);

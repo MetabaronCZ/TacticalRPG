@@ -1,7 +1,7 @@
 import DataList from 'core/data-list';
 
-import Equipment from 'modules/equipment';
 import { ICharacterData } from 'engine/character-data';
+import { EquipmentUtils } from 'engine/equipment/utils';
 
 export type ArmorID = 'NONE' | 'ROBE' | 'LIGHT' | 'HEAVY';
 
@@ -18,6 +18,6 @@ export class ArmorList extends DataList<ArmorID, IArmorData> {
 	}
 
 	private check(armor: ArmorID, char: ICharacterData): boolean {
-		return Equipment.checkArmor(armor, char.archetype);
+		return EquipmentUtils.checkArmor(armor, char.archetype);
 	}
 }

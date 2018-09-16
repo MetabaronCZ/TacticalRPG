@@ -1,10 +1,10 @@
 import Armors from 'data/armors';
 import Weapons from 'data/weapons';
 
-import Armor from 'engine/armor';
-import Weapon from 'engine/weapon';
-import { ArmorID } from 'engine/armor-data';
-import { WeaponID } from 'engine/weapon-data';
+import Armor from 'engine/equipment/armor';
+import Weapon from 'engine/equipment/weapon';
+import { ArmorID } from 'engine/equipment/armor-data';
+import { WeaponID } from 'engine/equipment/weapon-data';
 
 class Equipment {
 	private readonly mainHand: Weapon;

@@ -8,7 +8,7 @@ import rangedSkills from 'engine/skill/weapon/ranged';
 import shieldSkills from 'engine/skill/weapon/shield';
 
 import { ISkillData } from 'engine/skill';
-import { IWeaponData } from 'engine/weapon-data';
+import { IWeaponData } from 'engine/equipment/weapon-data';
 import { WeaponSkillID, attackSkills } from 'engine/skill/weapon/types';
 
 const isAttackSkill = (id: WeaponSkillID): boolean => -1 !== attackSkills.indexOf(id);

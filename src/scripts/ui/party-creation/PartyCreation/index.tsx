@@ -18,9 +18,8 @@ import Button from 'ui/common/Button';
 import ButtonRow from 'ui/common/ButtonRow';
 import Separator from 'ui/common/Separator';
 
-import Equipment from 'modules/equipment';
-
 import { ICharacterData } from 'engine/character-data';
+import { EquipmentUtils } from 'engine/equipment/utils';
 import PartyDataUtils, { IPartyData } from 'engine/party-data';
 
 const errNoCharacter = 'Party contains no character';
@@ -213,9 +212,9 @@ class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationS
 			const arch = Archetypes.get(selected.archetype);
 			let weapons = '';
 
-			if (Equipment.isBothWielding(selected.main)) {
+			if (EquipmentUtils.isBothWielding(selected.main)) {
 				weapons = main.title;
-			} else if (Equipment.isDualWielding(selected.main)) {
+			} else if (EquipmentUtils.isDualWielding(selected.main)) {
 				weapons = `${main.title} + ${main.title}`;
 			} else {
 				weapons = `${main.title} + ${off.title}`;

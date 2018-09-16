@@ -1,7 +1,9 @@
-import { WieldID } from 'engine/wield';
-import { ArmorID } from 'engine/armor-data';
-import { WeaponID } from 'engine/weapon-data';
+import { WieldID } from 'engine/equipment/wield';
+import { ArmorID } from 'engine/equipment/armor-data';
+import { WeaponID } from 'engine/equipment/weapon-data';
 import { ArchetypeID } from 'engine/character/archetype';
+
+export type IEquipSlot = 'MAIN' | 'OFF';
 
 type IArchetypeIndexTable = {
 	[id in ArchetypeID]: number;
@@ -26,7 +28,7 @@ type IArmorEquipTable = {
 	[id in ArmorID]: IArchetypeEquipRow;
 };
 
-const ArchetypeIndexTable: IArchetypeIndexTable = {
+export const ArchetypeIndexTable: IArchetypeIndexTable = {
 	PP: 0,
 	PS: 1,
 	PM: 2,
@@ -35,14 +37,14 @@ const ArchetypeIndexTable: IArchetypeIndexTable = {
 	MM: 5
 };
 
-const WieldIndexTable: IWieldIndexTable = {
+export const WieldIndexTable: IWieldIndexTable = {
 	MAIN: 0,
 	BOTH: 1,
 	OFF:  2,
 	DUAL: 3
 };
 
-const WeaponEquipTableArch: IWeaponEquipArchTable = {
+export const WeaponEquipTableArch: IWeaponEquipArchTable = {
 	//             PP PS PM SS SM MM
 	NONE:         [1, 1, 1, 1, 1, 1],
 	FISTS:        [0, 1, 0, 1, 1, 0],
@@ -63,7 +65,7 @@ const WeaponEquipTableArch: IWeaponEquipArchTable = {
 	SHIELD_LARGE: [1, 1, 1, 0, 0, 0]
 };
 
-const WeaponEquipTableWield: IWeaponEquipWieldTable = {
+export const WeaponEquipTableWield: IWeaponEquipWieldTable = {
 	//             MAIN BOTH OFF  DUAL
 	NONE:         [1,   0,   1,   0],
 	FISTS:        [0,   0,   0,   1],
@@ -84,17 +86,10 @@ const WeaponEquipTableWield: IWeaponEquipWieldTable = {
 	SHIELD_LARGE: [0,   0,   1,   0]
 };
 
-const ArmorEquipTableArch: IArmorEquipTable = {
+export const ArmorEquipTableArch: IArmorEquipTable = {
 	//      PP PS PM SS SM MM
 	NONE:  [1, 1, 1, 1, 1, 1],
 	ROBE:  [0, 0, 1, 0, 1, 1],
 	LIGHT: [0, 1, 0, 1, 1, 0],
 	HEAVY: [1, 1, 1, 0, 0, 0]
 };
-
-const getArchetypeIndex = (arch: ArchetypeID) => ArchetypeIndexTable[arch];
-const getWieldIndex = (wield: WieldID) => WieldIndexTable[wield];
-
-export const checkWeaponArch = (weapon: WeaponID, arch: ArchetypeID) => 1 === WeaponEquipTableArch[weapon][getArchetypeIndex(arch)];
-export const checkWeaponWield = (weapon: WeaponID, wield: WieldID) => 1 === WeaponEquipTableWield[weapon][getWieldIndex(wield)];
-export const checkArmorArch = (armor: ArmorID, arch: ArchetypeID) => 1 === ArmorEquipTableArch[armor][getArchetypeIndex(arch)];

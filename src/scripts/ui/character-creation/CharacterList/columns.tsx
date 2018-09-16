@@ -11,9 +11,8 @@ import LinkButton from 'ui/common/LinkButton';
 import ArchetypeIco from 'ui/common/ArchetypeIco';
 import { IOnMoveDown, IOnMoveUp, IOnDelete } from 'ui/character-creation/CharacterList';
 
-import Skillsets from 'modules/skillset';
-import Equipment from 'modules/equipment';
-
+import Skillsets from 'engine/skillset';
+import { EquipmentUtils } from 'engine/equipment/utils';
 import CharacterDataUtils, { ICharacterData } from 'engine/character-data';
 
 const renderArchetype = (char: ICharacterData) => (
@@ -84,9 +83,9 @@ const getColumns = (editable = false, onMoveDown?: IOnMoveDown, onMoveUp?: IOnMo
 				const main = Weapons.get(char.main);
 				const off = Weapons.get(char.off);
 
-				if (Equipment.isBothWielding(char.main)) {
+				if (EquipmentUtils.isBothWielding(char.main)) {
 					return renderOffHandBothWield(main.title);
-				} else if (Equipment.isDualWielding(char.main)) {
+				} else if (EquipmentUtils.isDualWielding(char.main)) {
 					return main.title;
 				} else {
 					return off.title;

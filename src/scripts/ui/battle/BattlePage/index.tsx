@@ -5,16 +5,14 @@ import { withRouter, RouteComponentProps } from 'react-router';
 
 import { IStore } from 'store';
 import * as Selector from 'selectors';
-import { goto, gotoFn } from 'utils/nav';
-import { isDebug } from 'data/game-config';
-
-import Debug from 'ui/battle/Debug';
-import BattleUIContainer from 'ui/battle/BattleUI';
+import { goto } from 'utils/nav';
 
 import Engine, { IEngineState } from 'engine';
 import { IPartyData } from 'engine/party-data';
 import { IBattleConfig } from 'engine/battle-config';
 import { ICharacterData } from 'engine/character-data';
+
+import BattleUI from 'ui/battle/BattleUI';
 
 const txtExitConfirm = 'Do you realy want to exit and lost your game progress?';
 
@@ -88,30 +86,17 @@ class BattlePageContainer extends React.Component<IBattlePageContainerProps, IBa
 	}
 
 	public render() {
-		const { characters, parties, battleConfig, history } = this.props;
+		const { state, engine } = this;
+		const { engineState, engineUpdate } = state;
+		const onTileSelect = engine.selectTile.bind(engine);
+		const onActionSelect = engine.selectAction.bind(engine);
 
-		if (isDebug) {
-			const engine = this.engine;
-			const { engineState, engineUpdate } = this.state;
-			const onTileSelect = engine.selectTile.bind(engine);
-			const onActionSelect = engine.selectAction.bind(engine);
-
-			return (
-				<Debug
-					engineState={engineState}
-					engineUpdate={engineUpdate}
-					onTileSelect={onTileSelect}
-					onActionSelect={onActionSelect}
-				/>
-			);
-		}
 		return (
-			<BattleUIContainer
-				parties={parties}
-				characters={characters}
-				config={battleConfig}
-				onExit={exit(history)}
-				onSummary={gotoFn(history, '/battle-summary')}
+			<BattleUI
+				engineState={engineState}
+				engineUpdate={engineUpdate}
+				onTileSelect={onTileSelect}
+				onActionSelect={onActionSelect}
 			/>
 		);
 	}

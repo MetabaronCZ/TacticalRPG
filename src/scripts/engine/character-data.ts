@@ -7,14 +7,12 @@ import Armors from 'data/armors';
 import Weapons from 'data/weapons';
 import Archetypes from 'data/archetypes';
 
-import Skillsets from 'modules/skillset';
-import Equipment from 'modules/equipment';
-import { SkillsetID } from 'modules/skillset/types';
-
-import { ArmorID } from 'engine/armor-data';
 import { SexID } from 'engine/character/sex';
-import { WeaponID } from 'engine/weapon-data';
 import { IIndexable } from 'engine/indexable';
+import { ArmorID } from 'engine/equipment/armor-data';
+import { EquipmentUtils } from 'engine/equipment/utils';
+import { WeaponID } from 'engine/equipment/weapon-data';
+import Skillsets, { SkillsetID } from 'engine/skillset';
 import { ArchetypeID } from 'engine/character/archetype';
 
 export interface ICharacterData extends IIndexable {
@@ -43,7 +41,7 @@ class CharacterDataUtils {
 			lastUpdate: now,
 			sex: 'MALE',
 			archetype: 'PP',
-			skillset: SkillsetID.NONE,
+			skillset: 'NONE',
 			main: 'NONE',
 			off: 'NONE',
 			armor: 'NONE'
@@ -57,7 +55,7 @@ class CharacterDataUtils {
 			name,
 			sex: ArrayUtils.getRandomItem(Sexes.keys()),
 			archetype: ArrayUtils.getRandomItem(Archetypes.keys()),
-			skillset: SkillsetID.NONE
+			skillset: 'NONE'
 		});
 
 		if (CharacterDataUtils.isMagicType(character)) {
@@ -71,8 +69,8 @@ class CharacterDataUtils {
 		character.main = ArrayUtils.getRandomItem(main)[0];
 
 		if (
-			!Equipment.isBothWielding(character.main) &&
-			!Equipment.isDualWielding(character.main)
+			!EquipmentUtils.isBothWielding(character.main) &&
+			!EquipmentUtils.isDualWielding(character.main)
 		) {
 			let off = Weapons.filter(character, 'OFF');
 

@@ -5,8 +5,8 @@ import Player from 'engine/player';
 import Position from 'engine/position';
 import Character from 'engine/character';
 
-import GridBase from 'ui/battle/Debug/GridBase';
-import GridCharacters from 'ui/battle/Debug/GridCharacters';
+import GridBase from 'ui/battle/BattleUI/GridBase';
+import GridCharacters from 'ui/battle/BattleUI/GridCharacters';
 
 const gridWidth = 400;
 
