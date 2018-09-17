@@ -1,3 +1,5 @@
+import * as ArrayUtils from 'core/array';
+
 type DataListIterator<T, U> = (key: T, value: U, i: number) => void;
 
 type IDataList<T extends string, U> = {
@@ -13,6 +15,14 @@ class DataList<T extends string, U> {
 
 	public get(item: T): U {
 		return this.data[item];
+	}
+
+	public getRandomID(): T {
+		return ArrayUtils.getRandomItem(this.keys());
+	}
+
+	public getRandomItem(): U {
+		return ArrayUtils.getRandomItem(this.values());
 	}
 
 	public keys(): T[] {

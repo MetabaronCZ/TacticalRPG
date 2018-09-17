@@ -1,7 +1,7 @@
 import uuid from 'uuid/v1';
 
 import { IPartyData } from 'engine/party-data';
-import { ICharacterData } from 'engine/character-data';
+import { CharacterData } from 'engine/character-data';
 
 export const createParty = (conf = {}): IPartyData => {
 	const now = Date.now();
@@ -19,11 +19,11 @@ export const createParty = (conf = {}): IPartyData => {
 };
 
 // return character object from character list by its ID
-export const getCharacterById = (id: string, characters: ICharacterData[]): ICharacterData => {
+export const getCharacterById = (id: string, characters: CharacterData[]): CharacterData => {
 	return characters.filter(char => char.id === id)[0];
 };
 
-export const removeCharacter = (partyList: IPartyData[], char?: ICharacterData): IPartyData[] => {
+export const removeCharacter = (partyList: IPartyData[], char?: CharacterData): IPartyData[] => {
 	if (!char || !partyList.length) {
 		return partyList;
 	}
@@ -42,7 +42,7 @@ export const removeCharacter = (partyList: IPartyData[], char?: ICharacterData):
 	return newPartyList;
 };
 
-export const validateParty = (party: ICharacterData[] = []): string|true => {
+export const validateParty = (party: CharacterData[] = []): string|true => {
 	party = party.filter(char => !!char);
 
 	if (!party.length) {
@@ -52,7 +52,7 @@ export const validateParty = (party: ICharacterData[] = []): string|true => {
 	const idErrs: string[] = [];
 
 	ids.forEach((id, i) => {
-		const name = party[i].name;
+		const name = party[i].getName();
 
 		if (i !== ids.lastIndexOf(id) && -1 === idErrs.indexOf(name)) {
 			idErrs.push(name);

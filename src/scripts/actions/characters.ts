@@ -1,5 +1,5 @@
 import { createAction } from 'redux-actions';
-import { ICharacterData } from 'engine/character-data';
+import { CharacterData } from 'engine/character-data';
 
 export enum ActionID {
 	ADD = 'CHARACTER_ADD',
@@ -10,9 +10,9 @@ export enum ActionID {
 }
 
 export default {
-	addCharacter: createAction(ActionID.ADD, (char: ICharacterData) => char),
-	editCharacter: createAction(ActionID.EDIT, (char: ICharacterData) => char),
-	removeCharacter: createAction(ActionID.REMOVE, (char: ICharacterData) => char),
-	moveDownList: createAction(ActionID.MOVE_DOWN_LIST, (char: ICharacterData) => char),
-	moveUpList: createAction(ActionID.MOVE_UP_LIST, (char: ICharacterData) => char)
+	addCharacter: createAction(ActionID.ADD, (char: CharacterData) => char),
+	editCharacter: createAction(ActionID.EDIT, (char: CharacterData) => char),
+	removeCharacter: createAction(ActionID.REMOVE, (char: CharacterData) => char),
+	moveDownList: createAction(ActionID.MOVE_DOWN_LIST, (char: CharacterData) => char),
+	moveUpList: createAction(ActionID.MOVE_UP_LIST, (char: CharacterData) => char)
 };

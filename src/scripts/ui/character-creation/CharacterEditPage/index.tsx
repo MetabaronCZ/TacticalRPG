@@ -9,25 +9,25 @@ import { IStore } from 'store';
 import * as Selector from 'selectors';
 import Actions from 'actions/characters';
 import { goto, gotoFn } from 'utils/nav';
-import { ICharacterData } from 'engine/character-data';
+import { CharacterData } from 'engine/character-data';
 
 import Page from 'ui/common/Page';
 import CharacterCreation from 'ui/character-creation/CharacterCreation';
 
 interface IStateToProps {
-	readonly characters: ICharacterData[];
+	readonly characters: CharacterData[];
 }
 
 interface ICharacterEditPageContainerProps extends RouteComponentProps<any> {
-	readonly onSubmit: (history: History) => (data: ICharacterData) => void;
+	readonly onSubmit: (history: History) => (data: CharacterData) => void;
 }
 
 const mapStateToProps = (state: IStore): IStateToProps => ({
 	characters: Selector.getCharacters(state)
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<Action<ICharacterData>>) => ({
-	onSubmit: (history: History) => (char: ICharacterData) => {
+const mapDispatchToProps = (dispatch: Dispatch<Action<CharacterData>>) => ({
+	onSubmit: (history: History) => (char: CharacterData) => {
 		dispatch(Actions.editCharacter(char));
 		goto(history, '/character-list');
 	}

@@ -1,6 +1,7 @@
-import { WeaponList } from 'engine/equipment/weapon-data';
+import DataList from 'core/data-list';
+import { WeaponID, IWeaponData } from 'engine/equipment/weapon-data';
 
-const Weapons = new WeaponList({
+const Weapons = new DataList<WeaponID, IWeaponData>({
 	NONE: {
 		title: 'none',
 		description: 'No weapon equipped',

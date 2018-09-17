@@ -15,7 +15,7 @@ import DirectionID from 'engine/direction';
 import { getPosition } from 'engine/positions';
 import { IPlayerData } from 'engine/player-data';
 import CharacterAction from 'engine/character-action';
-import { ICharacterData } from 'engine/character-data';
+import { CharacterData } from 'engine/character-data';
 import { getRandomCharacterData } from 'engine/utils/character-data';
 
 export interface IEngineState {
@@ -145,7 +145,7 @@ class Engine {
 		}
 		const players = playerData.map((conf, p) => {
 			const { name, control, party, parties, characters } = conf;
-			let charData: ICharacterData[];
+			let charData: CharacterData[];
 
 			// get character data
 			if (config.randomPartyID === party) {

@@ -13,28 +13,27 @@ import LinkButton from 'ui/common/LinkButton';
 import ArchetypeIco from 'ui/common/ArchetypeIco';
 import { IOnMoveDown, IOnMoveUp, IOnDelete } from 'ui/character-creation/CharacterList';
 
-import { ICharacterData } from 'engine/character-data';
-import { isMagicType } from 'engine/utils/character-data';
+import { CharacterData } from 'engine/character-data';
 import { isBothWielding, isDualWielding } from 'engine/utils/equipment';
 
-const renderArchetype = (char: ICharacterData) => (
-	<ArchetypeIco archetype={char.archetype} />
+const renderArchetype = (char: CharacterData) => (
+	<ArchetypeIco archetype={char.getArchetype()} />
 );
 
-const renderMoveDown = (char: ICharacterData, onMoveDown?: IOnMoveDown) => (
+const renderMoveDown = (char: CharacterData, onMoveDown?: IOnMoveDown) => (
 	<LinkIco ico="down" title="Move down" onClick={onMoveDown && onMoveDown(char)} />
 );
 
-const renderMoveUp = (char: ICharacterData, onMoveUp?: IOnMoveUp) => (
+const renderMoveUp = (char: CharacterData, onMoveUp?: IOnMoveUp) => (
 	<LinkIco ico="up" title="Move up" onClick={onMoveUp && onMoveUp(char)} />
 );
 
-const renderEdit = (char: ICharacterData) => (
+const renderEdit = (char: CharacterData) => (
 	<Link href={`/character-edit/${char.id}`}>Edit</Link>
 );
 
-const renderDelete = (char: ICharacterData, onDelete?: IOnDelete) => (
-	<LinkButton onClick={onDelete ? onDelete(char, char.name) : undefined}>Delete</LinkButton>
+const renderDelete = (char: CharacterData, onDelete?: IOnDelete) => (
+	<LinkButton onClick={onDelete ? onDelete(char, char.getName()) : undefined}>Delete</LinkButton>
 );
 
 const renderOffHandBothWield = (title: string) => (
@@ -44,7 +43,7 @@ const renderOffHandBothWield = (title: string) => (
 interface IColumn {
 	readonly title: string;
 	readonly name: string;
-	readonly value: (char: ICharacterData, i: number) => React.ReactNode;
+	readonly value: (char: CharacterData, i: number) => React.ReactNode;
 	readonly editable?: boolean;
 }
 
@@ -53,7 +52,7 @@ const getColumns = (editable = false, onMoveDown?: IOnMoveDown, onMoveUp?: IOnMo
 		{
 			title: '',
 			name: 'order',
-			value: (char: ICharacterData, i: number) => i + 1
+			value: (char: CharacterData, i: number) => i + 1
 		}, {
 			title: '',
 			name: 'ico',
@@ -61,33 +60,33 @@ const getColumns = (editable = false, onMoveDown?: IOnMoveDown, onMoveUp?: IOnMo
 		}, {
 			title: '',
 			name: 'sex',
-			value: (char: ICharacterData) => icos[char.sex.toLowerCase()]
+			value: char => icos[char.getSex().toLowerCase()]
 		}, {
 			title: 'Name',
 			name: 'name',
-			value: (char: ICharacterData) => char.name
+			value: char => char.getName()
 		}, {
 			title: 'Archetype',
 			name: 'archetype',
-			value: (char: ICharacterData) => {
-				const archetype = Archetypes.get(char.archetype);
-				const skillset = Skillsets.get(char.skillset);
-				return `${archetype.title}${isMagicType(char) ? ' (' + skillset.title + ')' : ''}`;
+			value: char => {
+				const archetype = Archetypes.get(char.getArchetype());
+				const skillset = Skillsets.get(char.getSkillset());
+				return `${archetype.title}${char.isMagicType() ? ' (' + skillset.title + ')' : ''}`;
 			}
 		}, {
 			title: Wields.get('MAIN').title,
 			name: 'mainHand',
-			value: (char: ICharacterData) => Weapons.get(char.main).title
+			value: char => Weapons.get(char.getMainHand()).title
 		}, {
 			title: Wields.get('OFF').title,
 			name: 'offHand',
-			value: (char: ICharacterData) => {
-				const main = Weapons.get(char.main);
-				const off = Weapons.get(char.off);
+			value: char => {
+				const main = Weapons.get(char.getMainHand());
+				const off = Weapons.get(char.getOffHand());
 
-				if (isBothWielding(char.main)) {
+				if (isBothWielding(char.getMainHand())) {
 					return renderOffHandBothWield(main.title);
-				} else if (isDualWielding(char.main)) {
+				} else if (isDualWielding(char.getMainHand())) {
 					return main.title;
 				} else {
 					return off.title;
@@ -96,17 +95,17 @@ const getColumns = (editable = false, onMoveDown?: IOnMoveDown, onMoveUp?: IOnMo
 		}, {
 			title: 'Armor',
 			name: 'armor',
-			value: (char: ICharacterData) => Armors.get(char.armor).title
+			value: char => Armors.get(char.getArmor()).title
 		}, {
 			title: '',
 			name: 'moveDown',
 			editable: true,
-			value: (char: ICharacterData) => renderMoveDown(char, onMoveDown)
+			value: char => renderMoveDown(char, onMoveDown)
 		}, {
 			title: '',
 			name: 'moveUp',
 			editable: true,
-			value: (char: ICharacterData) => renderMoveUp(char, onMoveUp)
+			value: char => renderMoveUp(char, onMoveUp)
 		}, {
 			title: '',
 			name: 'edit',
@@ -116,7 +115,7 @@ const getColumns = (editable = false, onMoveDown?: IOnMoveDown, onMoveUp?: IOnMo
 			title: '',
 			name: 'delete',
 			editable: true,
-			value: (char: ICharacterData) => renderDelete(char, onDelete)
+			value: char => renderDelete(char, onDelete)
 		}
 	];
 

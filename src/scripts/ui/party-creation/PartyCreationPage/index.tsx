@@ -11,13 +11,13 @@ import * as Selector from 'selectors';
 import { goto, gotoFn } from 'utils/nav';
 
 import { IPartyData } from 'engine/party-data';
-import { ICharacterData } from 'engine/character-data';
+import { CharacterData } from 'engine/character-data';
 
 import Page from 'ui/common/Page';
 import PartyCreation from 'ui/party-creation/PartyCreation';
 
 interface IStateToProps {
-	readonly characters?: ICharacterData[];
+	readonly characters: CharacterData[];
 }
 
 interface IPartyCreationPageContainerProps extends RouteComponentProps<any> {

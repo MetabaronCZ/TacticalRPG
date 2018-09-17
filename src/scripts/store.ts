@@ -4,13 +4,19 @@ import reducers from 'reducers';
 
 import { IPartyData } from 'engine/party-data';
 import { IBattleConfig } from 'engine/battle-config';
-import { ICharacterData } from 'engine/character-data';
+import { ICharacterData, CharacterData } from 'engine/character-data';
 
 const KEY = 'game'; // storage key
 
-export interface IStore {
+interface ISaveState {
 	readonly battleConfig: IBattleConfig;
 	readonly characters: ICharacterData[];
+	readonly parties: IPartyData[];
+}
+
+export interface IStore {
+	readonly battleConfig: IBattleConfig;
+	readonly characters: CharacterData[];
 	readonly parties: IPartyData[];
 }
 
@@ -29,7 +35,12 @@ const load = (): IStore => {
 		return getDefaultState();
 	}
 	try {
-		return JSON.parse(state) as IStore;
+		const data = JSON.parse(state) as ISaveState;
+		return {
+			...data,
+			characters: data.characters.map((char: ICharacterData) => new CharacterData(char))
+		} as IStore;
+
 	} catch (err) {
 		return getDefaultState();
 	}
@@ -37,7 +48,11 @@ const load = (): IStore => {
 
 const save = (store: Store<IStore>) => {
 	const state = store.getState() || getDefaultState();
-	localStorage.setItem(KEY, JSON.stringify(state));
+	const data: ISaveState = {
+		...state,
+		characters: state.characters.map(char => char.serialize())
+	};
+	localStorage.setItem(KEY, JSON.stringify(data));
 };
 
 const initStore = () => {

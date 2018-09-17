@@ -8,7 +8,7 @@ import Status from 'engine/character/status';
 import Skillset from 'engine/character/skillset';
 import Attributes from 'engine/character/attributes';
 import { StatusEffectID } from 'engine/status-effect';
-import { ICharacterData } from 'engine/character-data';
+import { CharacterData } from 'engine/character-data';
 import { ArchetypeID } from 'engine/character/archetype';
 import BaseAttributes from 'engine/character/base-attributes';
 
@@ -30,7 +30,9 @@ class Character {
 	public position: Position;
 	public direction: DirectionID;
 
-	constructor(data: ICharacterData, position: Position, direction: DirectionID, player: number) {
+	constructor(character: CharacterData, position: Position, direction: DirectionID, player: number) {
+		const data = character.serialize();
+
 		this.name = data.name;
 		this.sex = data.sex;
 		this.archetype = data.archetype;

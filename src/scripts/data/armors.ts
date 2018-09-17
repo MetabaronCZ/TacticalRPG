@@ -1,6 +1,7 @@
-import { ArmorList } from 'engine/equipment/armor-data';
+import DataList from 'core/data-list';
+import { ArmorID, IArmorData } from 'engine/equipment/armor-data';
 
-const Armors = new ArmorList({
+const Armors = new DataList<ArmorID, IArmorData>({
 	NONE: {
 		title: 'none',
 		description: 'No armor equipped',

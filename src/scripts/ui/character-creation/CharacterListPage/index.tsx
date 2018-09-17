@@ -8,13 +8,13 @@ import { IStore } from 'store';
 import { gotoFn } from 'utils/nav';
 import * as Selector from 'selectors';
 import Actions from 'actions/characters';
-import { ICharacterData } from 'engine/character-data';
+import { CharacterData } from 'engine/character-data';
 
 import CharacterListPage from 'ui/character-creation/CharacterListPage/template';
 import { IOnDelete, IOnMoveUp, IOnMoveDown } from 'ui/character-creation/CharacterList';
 
 interface IStateToProps {
-	readonly characters: ICharacterData[];
+	readonly characters: CharacterData[];
 }
 
 interface ICharacterListPageContainerProps extends RouteComponentProps<any> {
@@ -27,14 +27,14 @@ const mapStateToProps = (state: IStore): IStateToProps => ({
 	characters: Selector.getCharacters(state)
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<Action<ICharacterData>>) => ({
-	onMoveDown: (char: ICharacterData) => () => {
+const mapDispatchToProps = (dispatch: Dispatch<Action<CharacterData>>) => ({
+	onMoveDown: (char: CharacterData) => () => {
 		dispatch(Actions.moveDownList(char));
 	},
-	onMoveUp: (char: ICharacterData) => () => {
+	onMoveUp: (char: CharacterData) => () => {
 		dispatch(Actions.moveUpList(char));
 	},
-	onDelete: (char: ICharacterData, name: string) => () => {
+	onDelete: (char: CharacterData, name: string) => () => {
 		if (confirm(`Do you realy want to delete "${name}"?`)) {
 			dispatch(Actions.removeCharacter(char));
 		}

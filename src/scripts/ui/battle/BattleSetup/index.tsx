@@ -16,7 +16,7 @@ import FormSelectItem from 'ui/common/FormSelectItem';
 import CharacterList from 'ui/character-creation/CharacterList';
 
 import { IPartyData } from 'engine/party-data';
-import { ICharacterData } from 'engine/character-data';
+import { CharacterData } from 'engine/character-data';
 import { validateParty, getCharacterById } from 'engine/utils/party';
 import { IBattleConfig, IBattleConfigPlayer } from 'engine/battle-config';
 
@@ -26,7 +26,7 @@ const playerPool = Array(maxPlayers).fill(0);
 interface IBattleSetupProps {
 	readonly config: IBattleConfig;
 	readonly parties: IPartyData[];
-	readonly characters: ICharacterData[];
+	readonly characters: CharacterData[];
 	readonly onStart: (config: IBattleConfig) => void;
 	readonly onBack: (e: SyntheticEvent<any>) => void;
 }
@@ -90,7 +90,7 @@ class BattleSetup extends React.Component<IBattleSetupProps, IBattleSetupState> 
 			<Form onSubmit={this.onSubmit}>
 				{playerPool.map((_, p) => {
 					const selectedParty = parties.filter(party => party.id === players[p].party)[0];
-					let chars: ICharacterData[] = [];
+					let chars: CharacterData[] = [];
 
 					if (selectedParty) {
 						chars = selectedParty.characters

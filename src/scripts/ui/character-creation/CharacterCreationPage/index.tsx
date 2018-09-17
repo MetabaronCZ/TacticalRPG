@@ -7,18 +7,18 @@ import { withRouter, RouteComponentProps } from 'react-router';
 
 import { goto, gotoFn } from 'utils/nav';
 import Actions from 'actions/characters';
-import { ICharacterData } from 'engine/character-data';
+import { CharacterData } from 'engine/character-data';
 
 import Page from 'ui/common/Page';
 import CharacterCreation from 'ui/character-creation/CharacterCreation';
 
 interface ICharacterCreationPageContainerProps extends RouteComponentProps<any> {
-	readonly onSubmit: (history: History) => (data: ICharacterData) => void;
+	readonly onSubmit: (history: History) => (data: CharacterData) => void;
 	readonly onBack: () => void;
 }
 
-const mapDispatchToProps = (dispatch: Dispatch<Action<ICharacterData>>) => ({
-	onSubmit: (history: History) => (value: ICharacterData): void => {
+const mapDispatchToProps = (dispatch: Dispatch<Action<CharacterData>>) => ({
+	onSubmit: (history: History) => (value: CharacterData): void => {
 		dispatch(Actions.addCharacter(value));
 		goto(history, '/character-list');
 	}

@@ -21,18 +21,21 @@ import FormRadio from 'ui/common/FormRadio';
 import FormSelect from 'ui/common/FormSelect';
 import FormSelectItem from 'ui/common/FormSelectItem';
 
-import { ICharacterData } from 'engine/character-data';
-import { createCharacterData, isMagicType } from 'engine/utils/character-data';
-import { isDualWielding, isBothWielding, checkArmorArchetype, checkMainHand, checkOffHand } from 'engine/utils/equipment';
+import { ArmorID, IArmorData } from 'engine/equipment/armor-data';
+import { IWeaponData, WeaponID } from 'engine/equipment/weapon-data';
+import { CharacterData, ICharacterData } from 'engine/character-data';
+import { checkArmorArchetype, checkMainHand, checkOffHand } from 'engine/utils/equipment';
 
 interface ICharacterCreationProps {
-	readonly character?: ICharacterData;
+	readonly character?: CharacterData;
 	readonly onBack?: () => void;
-	readonly onSubmit?: (data: ICharacterData) => void;
+	readonly onSubmit?: (data: CharacterData) => void;
 }
 
 interface ICharacterCreationState {
-	readonly fields: ICharacterData;
+	readonly fields: {
+		character: CharacterData;
+	};
 	readonly errors: {
 		readonly [field: string]: string|undefined;
 	};
@@ -43,7 +46,9 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 		super(props);
 
 		this.state = {
-			fields: createCharacterData(props.character || {}),
+			fields: {
+				character: props.character || new CharacterData()
+			},
 			errors: {}
 		};
 	}
@@ -51,17 +56,23 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 	public render() {
 		const onChange = this.onChange;
 		const { fields, errors } = this.state;
+		const char = fields.character;
+		const data = char.serialize();
 
-		const archetype = Archetypes.get(fields.archetype);
-		const skillset = Skillsets.get(fields.skillset);
-		const armor = Armors.get(fields.armor);
-		const main = Weapons.get(fields.main);
-		const off = Weapons.get(fields.off);
+		const archetype = Archetypes.get(data.archetype);
+		const skillset = Skillsets.get(data.skillset);
+		const armor = Armors.get(data.armor);
+		const main = Weapons.get(data.main);
+		const off = Weapons.get(data.off);
 		const mainHandWield = Wields.get('MAIN');
 		const offHandWield = Wields.get('OFF');
 
-		const isMagicUser = isMagicType(fields);
-		const hasNoOffHand = isBothWielding(fields.main) || isDualWielding(fields.main);
+		const isMagicUser = char.isMagicType();
+		const hasNoOffHand = char.isBothWielding() || char.isDualWielding();
+
+		const mainWeapons = char.filterWeapons('MAIN').map(id => [id, Weapons.get(id)] as [WeaponID, IWeaponData]);
+		const offWeapons = char.filterWeapons('OFF').map(id => [id, Weapons.get(id)] as [WeaponID, IWeaponData]);
+		const armors = char.filterArmors().map(id => [id, Armors.get(id)] as [ArmorID, IArmorData]);
 
 		return (
 			<Form onSubmit={this.onSubmit}>
@@ -69,7 +80,7 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 					<FormInput
 						id="f-name"
 						type="text"
-						value={fields.name}
+						value={data.name}
 						placeholder="Type character name ..."
 						name="name"
 						maxLength={characterMaxNameLength}
@@ -85,7 +96,7 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 							label={`${Icos[id.toLocaleLowerCase()]} ${sex ? sex.title : ''}`}
 							name="sex"
 							value={id}
-							isChecked={id === fields.sex}
+							isChecked={id === data.sex}
 							key={i}
 							onChange={onChange}
 						/>
@@ -93,7 +104,7 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 				</FormField>
 
 				<FormField fieldId="f-archetype" label="Archetype" info={archetype.description}>
-					<FormSelect id="f-archetype" name="archetype" value={fields.archetype} onChange={onChange}>
+					<FormSelect id="f-archetype" name="archetype" value={data.archetype} onChange={onChange}>
 						{Archetypes.map((id, value, i) => (
 							<FormSelectItem value={id} key={i}>
 								{value.title}
@@ -103,7 +114,7 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 				</FormField>
 
 				<FormField fieldId="f-skillset" label="Magic" info={skillset.description}>
-					<FormSelect id="f-skillset" name="skillset" value={isMagicUser ? fields.skillset : 'NONE'} disabled={!isMagicUser} onChange={onChange}>
+					<FormSelect id="f-skillset" name="skillset" value={isMagicUser ? data.skillset : 'NONE'} disabled={!isMagicUser} onChange={onChange}>
 						{Skillsets.map((id, set, i) => (
 							<FormSelectItem value={id} key={i}>
 								{set.title}
@@ -113,8 +124,8 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 				</FormField>
 
 				<FormField fieldId="f-main" label={mainHandWield.title} info={main.description}>
-					<FormSelect id="f-main" name="main" value={fields.main} onChange={onChange}>
-						{Weapons.filter(fields, 'MAIN').map(([id, item], i) => (
+					<FormSelect id="f-main" name="main" value={data.main} onChange={onChange}>
+						{mainWeapons.map(([id, item], i) => (
 							<FormSelectItem value={id} key={i}>
 								{item.title}
 							</FormSelectItem>
@@ -125,8 +136,8 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 				<FormField fieldId="f-off" label={offHandWield.title} info={!hasNoOffHand ? off.description : undefined}>
 					{!hasNoOffHand
 						? (
-							<FormSelect id="f-off" name="off" value={fields.off} onChange={onChange}>
-								{Weapons.filter(fields, 'OFF').map(([id, item], i) => (
+							<FormSelect id="f-off" name="off" value={data.off} onChange={onChange}>
+								{offWeapons.map(([id, item], i) => (
 									<FormSelectItem value={id} key={i}>
 										{item.title}
 									</FormSelectItem>
@@ -142,8 +153,8 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 				</FormField>
 
 				<FormField fieldId="f-armor" label="Armor" info={armor.description}>
-					<FormSelect id="f-armor" name="armor" value={fields.armor} onChange={onChange}>
-						{Armors.filter(fields).map(([id, item], i) => (
+					<FormSelect id="f-armor" name="armor" value={data.armor} onChange={onChange}>
+						{armors.map(([id, item], i) => (
 							<FormSelectItem value={id} key={i}>
 								{item.title}
 							</FormSelectItem>
@@ -162,34 +173,36 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 	}
 
 	public componentDidUpdate(prevProps: ICharacterCreationProps, prevState: ICharacterCreationState) {
-		const curr = this.state.fields;
-		const prev = prevState.fields;
-		const newData = { ...curr };
+		const curr = this.state.fields.character;
+		const prevData = prevState.fields.character.serialize();
+		const newChar = new CharacterData(curr.serialize());
+		let newData = newChar.serialize();
 		const arch = newData.archetype;
 		let shouldUpdate = false;
 
 		// reset character data on archetype change
-		if (prev.archetype !== arch) {
-			if (isMagicType(newData)) {
-				newData.skillset = newData.skillset || 'NONE';
+		if (prevData.archetype !== arch) {
+			newChar.setSkillset('NONE');
+
+			if (newChar.isMagicType()) {
+				newChar.setSkillset(newData.skillset);
 			}
-			newData.main = (checkMainHand(newData.main, arch) ? newData.main : 'NONE');
-			newData.off = (checkOffHand(newData.off, arch, newData.main) ? newData.off : 'NONE');
-			newData.armor = (checkArmorArchetype(newData.armor, arch) ? newData.armor : 'NONE');
+			newChar.setMainHand(checkMainHand(newData.main, arch) ? newData.main : 'NONE');
+			newChar.setOffHand(checkOffHand(newData.off, arch, newData.main) ? newData.off : 'NONE');
+			newChar.setArmor(checkArmorArchetype(newData.armor, arch) ? newData.armor : 'NONE');
 			shouldUpdate = true;
 		}
+		newData = newChar.serialize();
 
 		// reset character off hand weapon on main hand change
-		if (prev.main !== newData.main) {
-			newData.off = (checkOffHand(newData.off, arch, newData.main) ? newData.off : 'NONE');
+		if (prevData.main !== newData.main) {
+			newChar.setOffHand(checkOffHand(newData.off, arch, newData.main) ? newData.off : 'NONE');
 			shouldUpdate = true;
 		}
 
 		// update character data
 		if (shouldUpdate) {
-			this.setState({
-				fields: { ...newData }
-			});
+			this.setState({ fields: { character: newChar } });
 		}
 	}
 
@@ -203,7 +216,10 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 		this.setState(state => ({
 			fields: {
 				...state.fields,
-				[name]: value
+				character: new CharacterData({
+					...state.fields.character.serialize(),
+					[name]: value
+				})
 			}
 		}));
 	}
@@ -211,20 +227,18 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 	private onSubmit = (e: SyntheticEvent<any>) => {
 		e.preventDefault();
 
-		const isValidForm = validateForm(this.state.fields, this.handleValidationError);
+		const isValidForm = validateForm(this.state.fields.character.serialize(), this.handleValidationError);
 
 		if (!isValidForm) {
 			return;
 		}
-		const { fields } = this.state;
-		const onSubmit = this.props.onSubmit;
 
-		if (onSubmit) {
-			onSubmit(fields);
+		if (this.props.onSubmit) {
+			this.props.onSubmit(this.state.fields.character);
 		}
 	}
 
-	private handleValidationError = (field: string, error: string|null) => {
+	private handleValidationError = (field: keyof ICharacterData, error: string|null) => {
 		this.setState(state => ({
 			errors: {
 				...state.errors,

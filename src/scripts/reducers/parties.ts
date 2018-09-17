@@ -5,12 +5,12 @@ import { ActionID as CharacterActionID } from 'actions/characters';
 
 import { IPartyData } from 'engine/party-data';
 import { removeCharacter } from 'engine/utils/party';
-import { ICharacterData } from 'engine/character-data';
+import { CharacterData } from 'engine/character-data';
 import { add, edit, remove, swap } from 'engine/utils/indexable';
 
 const defaultState: IPartyData[] = [];
 
-export default handleActions<IPartyData[], IPartyData & ICharacterData>(
+export default handleActions<IPartyData[], IPartyData & CharacterData>(
 	{
 		[PartyActionID.ADD]: (state, { payload }) => add(state, payload),
 		[PartyActionID.EDIT]: (state, { payload }) => edit(state, payload),

@@ -11,14 +11,14 @@ import Actions from 'actions/battle-config';
 
 import { IPartyData } from 'engine/party-data';
 import { IBattleConfig } from 'engine/battle-config';
-import { ICharacterData } from 'engine/character-data';
+import { CharacterData } from 'engine/character-data';
 
 import Page from 'ui/common/Page';
 import BattleSetup from 'ui/battle/BattleSetup';
 
 interface IStateToProps {
 	readonly battleConfig: IBattleConfig;
-	readonly characters: ICharacterData[];
+	readonly characters: CharacterData[];
 	readonly parties: IPartyData[];
 }
 

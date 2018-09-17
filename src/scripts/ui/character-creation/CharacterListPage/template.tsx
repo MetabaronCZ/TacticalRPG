@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ICharacterData } from 'engine/character-data';
+import { CharacterData } from 'engine/character-data';
 
 import Page from 'ui/common/Page';
 import Button from 'ui/common/Button';
@@ -13,7 +13,7 @@ const NoCharacters = () => (
 );
 
 interface ICharacterListPageProps {
-	readonly characters?: ICharacterData[];
+	readonly characters: CharacterData[];
 	readonly onBack?: () => void;
 	readonly onCreate?: () => void;
 	readonly onDelete?: IOnDelete;

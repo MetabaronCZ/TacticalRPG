@@ -19,7 +19,7 @@ import FormSelect from 'ui/common/FormSelect';
 import FormSelectItem from 'ui/common/FormSelectItem';
 
 import { IPartyData } from 'engine/party-data';
-import { ICharacterData } from 'engine/character-data';
+import { CharacterData } from 'engine/character-data';
 import { isBothWielding, isDualWielding } from 'engine/utils/equipment';
 import { createParty, validateParty, getCharacterById } from 'engine/utils/party';
 
@@ -39,7 +39,7 @@ const InvalidParty: React.SFC<{ msg: string|true }> = ({ msg }) => (
 
 interface IPartyCreationProps {
 	readonly party?: IPartyData;
-	readonly characters?: ICharacterData[];
+	readonly characters: CharacterData[];
 	readonly onBack?: () => void;
 	readonly onSubmit: (party: IPartyData) => void;
 }
@@ -184,7 +184,7 @@ class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationS
 		}));
 	}
 
-	private filterCharacters = (character?: ICharacterData): ICharacterData[] => {
+	private filterCharacters = (character?: CharacterData): CharacterData[] => {
 		const selected = this.state.fields.characters;
 		const characters = this.props.characters;
 
@@ -206,16 +206,17 @@ class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationS
 		let info = '';
 
 		if (selected) {
-			const main = Weapons.get(selected.main);
-			const off = Weapons.get(selected.off);
-			const arm = Armors.get(selected.armor);
-			const sex = Sexes.get(selected.sex);
-			const arch = Archetypes.get(selected.archetype);
+			const data = selected.serialize();
+			const main = Weapons.get(data.main);
+			const off = Weapons.get(data.off);
+			const arm = Armors.get(data.armor);
+			const sex = Sexes.get(data.sex);
+			const arch = Archetypes.get(data.archetype);
 			let weapons = '';
 
-			if (isBothWielding(selected.main)) {
+			if (isBothWielding(data.main)) {
 				weapons = main.title;
-			} else if (isDualWielding(selected.main)) {
+			} else if (isDualWielding(data.main)) {
 				weapons = `${main.title} + ${main.title}`;
 			} else {
 				weapons = `${main.title} + ${off.title}`;
@@ -234,7 +235,7 @@ class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationS
 
 					{filtered.map((char, j) => (
 						<FormSelectItem value={char.id} key={j}>
-							{char.name}
+							{char.getName()}
 						</FormSelectItem>
 					))}
 				</FormSelect>
