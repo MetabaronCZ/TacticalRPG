@@ -21,8 +21,9 @@ import FormRadio from 'ui/common/FormRadio';
 import FormSelect from 'ui/common/FormSelect';
 import FormSelectItem from 'ui/common/FormSelectItem';
 
-import { EquipmentUtils } from 'engine/equipment/utils';
-import CharacterDataUtils, { ICharacterData } from 'engine/character-data';
+import { ICharacterData } from 'engine/character-data';
+import { createCharacterData, isMagicType } from 'engine/utils/character-data';
+import { isDualWielding, isBothWielding, checkArmorArchetype, checkMainHand, checkOffHand } from 'engine/utils/equipment';
 
 interface ICharacterCreationProps {
 	readonly character?: ICharacterData;
@@ -42,7 +43,7 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 		super(props);
 
 		this.state = {
-			fields: CharacterDataUtils.init(props.character || {}),
+			fields: createCharacterData(props.character || {}),
 			errors: {}
 		};
 	}
@@ -59,8 +60,8 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 		const mainHandWield = Wields.get('MAIN');
 		const offHandWield = Wields.get('OFF');
 
-		const isMagicUser = CharacterDataUtils.isMagicType(fields);
-		const hasNoOffHand = EquipmentUtils.isBothWielding(fields.main) || EquipmentUtils.isDualWielding(fields.main);
+		const isMagicUser = isMagicType(fields);
+		const hasNoOffHand = isBothWielding(fields.main) || isDualWielding(fields.main);
 
 		return (
 			<Form onSubmit={this.onSubmit}>
@@ -169,18 +170,18 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 
 		// reset character data on archetype change
 		if (prev.archetype !== arch) {
-			if (CharacterDataUtils.isMagicType(newData)) {
+			if (isMagicType(newData)) {
 				newData.skillset = newData.skillset || 'NONE';
 			}
-			newData.main = (EquipmentUtils.checkMainHand(newData.main, arch) ? newData.main : 'NONE');
-			newData.off = (EquipmentUtils.checkOffHand(newData.off, arch, newData.main) ? newData.off : 'NONE');
-			newData.armor = (EquipmentUtils.checkArmor(newData.armor, arch) ? newData.armor : 'NONE');
+			newData.main = (checkMainHand(newData.main, arch) ? newData.main : 'NONE');
+			newData.off = (checkOffHand(newData.off, arch, newData.main) ? newData.off : 'NONE');
+			newData.armor = (checkArmorArchetype(newData.armor, arch) ? newData.armor : 'NONE');
 			shouldUpdate = true;
 		}
 
 		// reset character off hand weapon on main hand change
 		if (prev.main !== newData.main) {
-			newData.off = (EquipmentUtils.checkOffHand(newData.off, arch, newData.main) ? newData.off : 'NONE');
+			newData.off = (checkOffHand(newData.off, arch, newData.main) ? newData.off : 'NONE');
 			shouldUpdate = true;
 		}
 

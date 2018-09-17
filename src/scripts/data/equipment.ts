@@ -3,8 +3,6 @@ import { ArmorID } from 'engine/equipment/armor-data';
 import { WeaponID } from 'engine/equipment/weapon-data';
 import { ArchetypeID } from 'engine/character/archetype';
 
-export type IEquipSlot = 'MAIN' | 'OFF';
-
 type IArchetypeIndexTable = {
 	[id in ArchetypeID]: number;
 };

@@ -3,20 +3,21 @@ import { handleActions } from 'redux-actions';
 import { ActionID as PartyActionID } from 'actions/parties';
 import { ActionID as CharacterActionID } from 'actions/characters';
 
-import { IndexableUtils } from 'engine/indexable';
+import { IPartyData } from 'engine/party-data';
+import { removeCharacter } from 'engine/utils/party';
 import { ICharacterData } from 'engine/character-data';
-import PartyDataUtils, { IPartyData } from 'engine/party-data';
+import { add, edit, remove, swap } from 'engine/utils/indexable';
 
 const defaultState: IPartyData[] = [];
 
 export default handleActions<IPartyData[], IPartyData & ICharacterData>(
 	{
-		[PartyActionID.ADD]: (state, { payload }) => IndexableUtils.add(state, payload),
-		[PartyActionID.EDIT]: (state, { payload }) => IndexableUtils.edit(state, payload),
-		[PartyActionID.REMOVE]: (state, { payload }) => IndexableUtils.remove(state, payload),
-		[PartyActionID.MOVE_DOWN_LIST]: (state, { payload }) => IndexableUtils.swap(state, +1, payload),
-		[PartyActionID.MOVE_UP_LIST]: (state, { payload }) => IndexableUtils.swap(state, -1, payload),
-		[CharacterActionID.REMOVE]: (state, { payload }) => PartyDataUtils.removeCharacter(state, payload)
+		[PartyActionID.ADD]: (state, { payload }) => add(state, payload),
+		[PartyActionID.EDIT]: (state, { payload }) => edit(state, payload),
+		[PartyActionID.REMOVE]: (state, { payload }) => remove(state, payload),
+		[PartyActionID.MOVE_DOWN_LIST]: (state, { payload }) => swap(state, +1, payload),
+		[PartyActionID.MOVE_UP_LIST]: (state, { payload }) => swap(state, -1, payload),
+		[CharacterActionID.REMOVE]: (state, { payload }) => removeCharacter(state, payload)
 	},
 	defaultState
 );

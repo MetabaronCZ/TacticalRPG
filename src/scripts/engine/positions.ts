@@ -9,7 +9,7 @@ const positions: IPositions = {};
 // convert coords to position ID
 const toID = (x: number, y: number): string => `(${x}, ${y}})`;
 
-// initialize game tile positions
+// initialize game tile positions pool
 const init = () => {
 	// generate positions
 	for (let x = 0; x < gridSize; x++) {

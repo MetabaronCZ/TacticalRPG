@@ -3,7 +3,7 @@ import Position from 'engine/position';
 import Character from 'engine/character';
 import { IBattleInfo } from 'engine/battle-info';
 import CharacterAction from 'engine/character-action';
-import CharacterActions from 'engine/character-actions';
+import { getIdleActions, getSkillActions, getSkillConfirmActions, getReactiveActions, getEvasiveActions } from 'engine/utils/character-action';
 
 import ActMove from 'engine/act/movement';
 import ActAction from 'engine/act/action';
@@ -293,7 +293,7 @@ class Act {
 		switch (this.phase) {
 			case 'MOVEMENT': {
 				if ('IDLE' === this.movePhase.getState()) {
-					this.actions = CharacterActions.getIdleActions(this.actor);
+					this.actions = getIdleActions(this.actor);
 				} else {
 					this.actions = [];
 				}
@@ -306,7 +306,7 @@ class Act {
 
 				switch (state) {
 					case 'IDLE':
-						this.actions = CharacterActions.getSkillActions();
+						this.actions = getSkillActions();
 						break;
 
 					case 'SELECTED': {
@@ -315,7 +315,7 @@ class Act {
 						if (null === action) {
 							throw new Error('Could not update actions: no action');
 						}
-						this.actions = CharacterActions.getSkillConfirmActions(action, actionPhase.getEffectTargets());
+						this.actions = getSkillConfirmActions(action, actionPhase.getEffectTargets());
 						break;
 					}
 
@@ -329,10 +329,10 @@ class Act {
 
 						switch (reactionState) {
 							case 'IDLE':
-								this.actions = CharacterActions.getReactiveActions(reaction.getReactor());
+								this.actions = getReactiveActions(reaction.getReactor());
 								break;
 							case 'EVASION':
-								this.actions = CharacterActions.getEvasiveActions();
+								this.actions = getEvasiveActions();
 								break;
 
 							default:

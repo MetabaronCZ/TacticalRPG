@@ -3,9 +3,9 @@ import { gridSize, moveAnimDuration } from 'data/game-config';
 
 import Logger from 'engine/logger';
 import Position from 'engine/position';
-import Direction from 'engine/direction';
 import Character from 'engine/character';
 import { getPosition } from 'engine/positions';
+import { resolveDirection } from 'engine/utils/direction';
 import { getMovableTiles, getShortestPath, ICostMap } from 'engine/pathfinding';
 
 interface IActMoveEvents {
@@ -124,7 +124,7 @@ class ActMove {
 
 		const anim = new Animation(timing, step => {
 			const tile = path[step.number];
-			const dir = Direction.resolve(actor.position, tile);
+			const dir = resolveDirection(actor.position, tile);
 
 			// update actor
 			actor.position = tile;

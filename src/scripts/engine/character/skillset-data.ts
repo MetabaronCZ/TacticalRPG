@@ -1,5 +1,3 @@
-import DataList from 'core/data-list';
-
 import { SkillElement } from 'engine/skill/skill-data';
 import { MagicSkillID } from 'engine/skill/magic';
 
@@ -16,5 +14,3 @@ export interface ISkillsetData {
 	readonly element: SkillElement;
 	readonly skills: MagicSkillID[];
 }
-
-export class SkillsetList extends DataList<SkillsetID, ISkillsetData> {}

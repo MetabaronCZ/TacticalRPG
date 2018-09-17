@@ -1,5 +1,6 @@
+import { getAttributes } from 'engine/utils/attributes';
 import { ArchetypeID } from 'engine/character/archetype';
-import { AttributeID, IAttributes, getAttributes } from 'engine/character/attributes';
+import { IAttributes, AttributeID } from 'engine/character/attributes-data';
 
 class Attributes {
 	private values: IAttributes;

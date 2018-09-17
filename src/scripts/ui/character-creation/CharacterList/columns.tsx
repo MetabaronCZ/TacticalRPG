@@ -1,6 +1,7 @@
 import React from 'react';
 
 import icos from 'data/icos';
+import Wields from 'data/wields';
 import Armors from 'data/armors';
 import Weapons from 'data/weapons';
 import Skillsets from 'data/skillsets';
@@ -12,9 +13,9 @@ import LinkButton from 'ui/common/LinkButton';
 import ArchetypeIco from 'ui/common/ArchetypeIco';
 import { IOnMoveDown, IOnMoveUp, IOnDelete } from 'ui/character-creation/CharacterList';
 
-import { EquipmentUtils } from 'engine/equipment/utils';
-import CharacterDataUtils, { ICharacterData } from 'engine/character-data';
-import Wields from 'data/wields';
+import { ICharacterData } from 'engine/character-data';
+import { isMagicType } from 'engine/utils/character-data';
+import { isBothWielding, isDualWielding } from 'engine/utils/equipment';
 
 const renderArchetype = (char: ICharacterData) => (
 	<ArchetypeIco archetype={char.archetype} />
@@ -71,7 +72,7 @@ const getColumns = (editable = false, onMoveDown?: IOnMoveDown, onMoveUp?: IOnMo
 			value: (char: ICharacterData) => {
 				const archetype = Archetypes.get(char.archetype);
 				const skillset = Skillsets.get(char.skillset);
-				return `${archetype.title}${CharacterDataUtils.isMagicType(char) ? ' (' + skillset.title + ')' : ''}`;
+				return `${archetype.title}${isMagicType(char) ? ' (' + skillset.title + ')' : ''}`;
 			}
 		}, {
 			title: Wields.get('MAIN').title,
@@ -84,9 +85,9 @@ const getColumns = (editable = false, onMoveDown?: IOnMoveDown, onMoveUp?: IOnMo
 				const main = Weapons.get(char.main);
 				const off = Weapons.get(char.off);
 
-				if (EquipmentUtils.isBothWielding(char.main)) {
+				if (isBothWielding(char.main)) {
 					return renderOffHandBothWield(main.title);
-				} else if (EquipmentUtils.isDualWielding(char.main)) {
+				} else if (isDualWielding(char.main)) {
 					return main.title;
 				} else {
 					return off.title;

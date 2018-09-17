@@ -10,17 +10,18 @@ import { validateField, validateForm } from 'utils/validation';
 
 import Link from 'ui/common/Link';
 import Form from 'ui/common/Form';
+import Button from 'ui/common/Button';
+import ButtonRow from 'ui/common/ButtonRow';
+import Separator from 'ui/common/Separator';
 import FormField from 'ui/common/FormField';
 import FormInput from 'ui/common/FormInput';
 import FormSelect from 'ui/common/FormSelect';
 import FormSelectItem from 'ui/common/FormSelectItem';
-import Button from 'ui/common/Button';
-import ButtonRow from 'ui/common/ButtonRow';
-import Separator from 'ui/common/Separator';
 
+import { IPartyData } from 'engine/party-data';
 import { ICharacterData } from 'engine/character-data';
-import { EquipmentUtils } from 'engine/equipment/utils';
-import PartyDataUtils, { IPartyData } from 'engine/party-data';
+import { isBothWielding, isDualWielding } from 'engine/utils/equipment';
+import { createParty, validateParty, getCharacterById } from 'engine/utils/party';
 
 const errNoCharacter = 'Party contains no character';
 
@@ -58,7 +59,7 @@ class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationS
 		chars = chars.filter(id => !!id);
 
 		this.state = {
-			fields: PartyDataUtils.create(props.party || {}),
+			fields: createParty(props.party || {}),
 			errors: {
 				noCharError: (props.party && !chars.length ? errNoCharacter : undefined)
 			}
@@ -72,7 +73,7 @@ class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationS
 
 		const partyValidation = errors.noCharError
 			? errors.noCharError
-			: PartyDataUtils.validate(chars ? fields.characters.map(id => PartyDataUtils.getCharacterById(id, chars)) : undefined);
+			: validateParty(chars ? fields.characters.map(id => getCharacterById(id, chars)) : undefined);
 
 		return (
 			<Form onSubmit={this.onSubmit}>
@@ -200,7 +201,7 @@ class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationS
 	private renderPartyItem = (i: number) => {
 		const id = this.state.fields.characters[i] || '';
 		const characters = this.props.characters;
-		const selected = (characters ? PartyDataUtils.getCharacterById(id, characters) : undefined);
+		const selected = (characters ? getCharacterById(id, characters) : undefined);
 		const filtered = this.filterCharacters(selected);
 		let info = '';
 
@@ -212,9 +213,9 @@ class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationS
 			const arch = Archetypes.get(selected.archetype);
 			let weapons = '';
 
-			if (EquipmentUtils.isBothWielding(selected.main)) {
+			if (isBothWielding(selected.main)) {
 				weapons = main.title;
-			} else if (EquipmentUtils.isDualWielding(selected.main)) {
+			} else if (isDualWielding(selected.main)) {
 				weapons = `${main.title} + ${main.title}`;
 			} else {
 				weapons = `${main.title} + ${off.title}`;

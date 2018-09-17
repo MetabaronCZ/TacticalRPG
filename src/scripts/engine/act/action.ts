@@ -6,13 +6,12 @@ import StatusEffects from 'data/status-effects';
 import { skillAnimDuration, smallShieldBlock } from 'data/game-config';
 
 import Logger from 'engine/logger';
-import Damage from 'engine/damage';
 import Position from 'engine/position';
-import Direction from 'engine/direction';
 import Character from 'engine/character';
-import SkillUtils from 'engine/skill/utils';
 import ActReaction from 'engine/act/reaction';
 import CharacterAction from 'engine/character-action';
+import { resolveDirection } from 'engine/utils/direction';
+import { getPhysicalDamage, getElementalDamage, getStatusEffects } from 'engine/damage';
 
 interface IActActionEvents {
 	onStart: (action: ActAction) => void;
@@ -109,9 +108,9 @@ class ActAction {
 
 		// update actor values
 		const skills = action.getSkills();
-		const skillAreas = skills.map(skill => SkillUtils.getTargetableArea(skill, actor.position));
+		const skillAreas = skills.map(skill => skill.getTargetable(actor.position));
 		const targetable = ArrayUtils.getIntersection(skillAreas, pos => pos.id);
-		const targets = SkillUtils.getTargets(actor, skills[0], characters, targetable);
+		const targets = skills[0].getTargets(actor, characters, targetable);
 
 		this.area = targetable;
 		this.targets = targets;
@@ -143,9 +142,9 @@ class ActAction {
 		}
 		this.state = 'SELECTED';
 
-		const effectAreas = skills.map(s => SkillUtils.getEffectArea(s, actor.position, target));
+		const effectAreas = skills.map(s => s.getEffectArea(actor.position, target));
 		const effectArea = ArrayUtils.getIntersection(effectAreas, pos => pos.id);
-		const effectTargets = SkillUtils.getEffectTargets(actor, skills[0], effectArea, characters);
+		const effectTargets = skills[0].getEffectTargets(actor, effectArea, characters);
 
 		this.effectTarget = target;
 		this.effectArea = effectArea;
@@ -245,7 +244,7 @@ class ActAction {
 
 		// face character to skill target tile
 		const reactor = reaction.getReactor();
-		actor.direction = Direction.resolve(actor.position, reactor.position);
+		actor.direction = resolveDirection(actor.position, reactor.position);
 
 		reaction.start();
 	}
@@ -286,17 +285,17 @@ class ActAction {
 							let elmDmg = 0;
 
 							// physical damage
-							phyDmg = Damage.getPhysical(actor, target, skill);
+							phyDmg = getPhysicalDamage(actor, target, skill);
 							info.push(NumberUtils.format(phyDmg));
 
 							// elemental damage
 							if (skill.elementalDamage) {
-								elmDmg = Damage.getElemental(actor, target, skill);
+								elmDmg = getElementalDamage(actor, target, skill);
 								info.push(NumberUtils.format(elmDmg));
 							}
 
 							// status effects
-							const effects = Damage.getStatusEffects(actor, target, skill);
+							const effects = getStatusEffects(actor, target, skill);
 
 							// apply skill damage / statuses to target
 							target.applySkill(phyDmg + elmDmg, effects);

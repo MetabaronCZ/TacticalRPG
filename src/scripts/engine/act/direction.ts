@@ -1,7 +1,7 @@
 import Logger from 'engine/logger';
 import Position from 'engine/position';
-import Direction from 'engine/direction';
 import Character from 'engine/character';
+import { resolveDirection, findPositionFrom } from 'engine/utils/direction';
 
 interface IActDirectEvents {
 	onStart: (direct: ActDirect) => void;
@@ -47,7 +47,7 @@ class ActDirect {
 		const dir = actor.direction;
 
 		this.targets = pos.getSideTiles(), // directable positions
-		this.target = Direction.findPositionFrom(pos, dir); // set initial direction
+		this.target = findPositionFrom(pos, dir); // set initial direction
 
 		this.events.onStart(this);
 	}
@@ -69,7 +69,7 @@ class ActDirect {
 		this.target = position;
 
 		// update character direction
-		const newDirection = Direction.resolve(pos, this.target);
+		const newDirection = resolveDirection(pos, this.target);
 		actor.direction = newDirection;
 
 		this.events.onSelect(this);

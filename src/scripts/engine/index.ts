@@ -3,18 +3,20 @@ import { randomize } from 'core/array';
 import RandomNameGenerator from 'core/random-name-generator';
 
 import nameSamples from 'data/names';
-import { characterCTLimit, gridSize, characterCount, maxPartyNameLength, maxPlayers, randomPartyID } from 'data/game-config';
+import * as config from 'data/game-config';
 
 import Act from 'engine/act';
 import Order from 'engine/order';
 import Logger from 'engine/logger';
+import Player from 'engine/player';
 import Position from 'engine/position';
 import Character from 'engine/character';
-import { DirectionID } from 'engine/direction';
+import DirectionID from 'engine/direction';
 import { getPosition } from 'engine/positions';
-import Player, { IPlayerData } from 'engine/player';
+import { IPlayerData } from 'engine/player-data';
 import CharacterAction from 'engine/character-action';
-import CharacterDataUtils, { ICharacterData } from 'engine/character-data';
+import { ICharacterData } from 'engine/character-data';
+import { getRandomCharacterData } from 'engine/utils/character-data';
 
 export interface IEngineState {
 	tick: number;
@@ -93,7 +95,7 @@ class Engine {
 		order.update();
 
 		// get actors
-		const actors = liveChars.filter(char => char.attributes.get('CT') >= characterCTLimit);
+		const actors = liveChars.filter(char => char.attributes.get('CT') >= config.characterCTLimit);
 
 		// if no actor present, continue updating
 		if (!actors.length) {
@@ -138,18 +140,18 @@ class Engine {
 	}
 
 	private createPlayers(playerData: IPlayerData[]): Player[] {
-		if (maxPlayers !== playerData.length) {
-			throw new Error(`Game has to have exactly ${maxPlayers} players`);
+		if (config.maxPlayers !== playerData.length) {
+			throw new Error(`Game has to have exactly ${config.maxPlayers} players`);
 		}
 		const players = playerData.map((conf, p) => {
 			const { name, control, party, parties, characters } = conf;
 			let charData: ICharacterData[];
 
 			// get character data
-			if (randomPartyID === party) {
+			if (config.randomPartyID === party) {
 				// random generated party
-				const charNames = RandomNameGenerator.get(nameSamples, characterCount, maxPartyNameLength);
-				charData = charNames.map(n => CharacterDataUtils.random(n));
+				const charNames = RandomNameGenerator.get(nameSamples, config.characterCount, config.maxPartyNameLength);
+				charData = charNames.map(n => getRandomCharacterData(n));
 
 			} else {
 				// user created party
@@ -170,7 +172,7 @@ class Engine {
 
 				// set position / orientation
 				if (0 === p) {
-					pos = getPosition(i + 2, gridSize - 1);
+					pos = getPosition(i + 2, config.gridSize - 1);
 					dir = 'TOP';
 				} else {
 					pos = getPosition(i + 2, 0);
@@ -183,7 +185,7 @@ class Engine {
 				const char = new Character(data, pos, dir, p);
 
 				// set small random initial CP
-				const ct = Math.floor((characterCTLimit / 10) * Math.random());
+				const ct = Math.floor((config.characterCTLimit / 10) * Math.random());
 				char.attributes.set('CT', ct);
 
 				return char;

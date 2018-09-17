@@ -1,8 +1,8 @@
 import Skillsets from 'data/skillsets';
 
 import Skill from 'engine/skill';
-import { SkillsetID } from 'engine/character/skillset-data';
 import { SkillElement } from 'engine/skill/skill-data';
+import { SkillsetID } from 'engine/character/skillset-data';
 
 class Skillset {
 	public readonly id: SkillsetID;

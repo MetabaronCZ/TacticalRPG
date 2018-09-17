@@ -1,3 +1,5 @@
+import DataList from 'core/data-list';
+
 import psychokinesis from 'data/skills/magic/psychokinesis';
 import whiteMagic from 'data/skills/magic/white';
 import blackMagic from 'data/skills/magic/black';
@@ -9,9 +11,9 @@ import iceMagic from 'data/skills/magic/ice';
 import thunderMagic from 'data/skills/magic/thunder';
 
 import { MagicSkillID } from 'engine/skill/magic';
-import { SkillsetList } from 'engine/character/skillset-data';
+import { SkillsetID, ISkillsetData } from 'engine/character/skillset-data';
 
-const Skillsets = new SkillsetList({
+const Skillsets = new DataList<SkillsetID, ISkillsetData>({
 	NONE: {
 		title: 'none',
 		description: '',
