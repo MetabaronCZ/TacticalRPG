@@ -21,7 +21,7 @@ type IArch2AttrTable = {
 	};
 };
 
-const Arch2AttTable: IArch2AttrTable = {
+export const Arch2AttTable: IArch2AttrTable = {
 	PP: { P: 1.5, S: 0.0, M: 0.0 },
 	PS: { P: 1.0, S: 1.0, M: 0.0 },
 	PM: { P: 1.0, S: 0.0, M: 1.0 },
@@ -30,16 +30,14 @@ const Arch2AttTable: IArch2AttrTable = {
 	MM: { P: 0.0, S: 0.0, M: 1.5 }
 };
 
-export const getDefaultBaseAttributes = (): IBaseAttributes => ({
+export const defaultBaseAttributes: IBaseAttributes = {
 	STR: 10,
 	VIT: 10,
 	SPD: 3,
 	MOV: 3,
 	MAG: 0,
 	SPR: 0
-});
-
-export const getMutiplier = (arch: ArchetypeID) => Arch2AttTable[arch];
+};
 
 export const BaseAttrFormula: IBaseAttrFormulas = {
 	STR: (P, S, M) => 10 * P,

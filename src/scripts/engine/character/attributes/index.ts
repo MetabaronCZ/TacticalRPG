@@ -1,4 +1,4 @@
-import { getDefaultBaseAttributes, BaseAttrFormula, SecondaryAttrFormula, getMutiplier } from 'engine/character/attributes/formula';
+import { defaultBaseAttributes, BaseAttrFormula, SecondaryAttrFormula, Arch2AttTable } from 'data/attributes';
 import { ArchetypeID } from 'engine/character/archetype';
 
 export type BaseAttributeID =
@@ -27,16 +27,16 @@ export type ISecondaryAttributes = {
 export type IAttributes = IBaseAttributes & ISecondaryAttributes;
 
 const getBaseAttributes = (archetype: ArchetypeID): IBaseAttributes => {
-	const { P, S, M } = getMutiplier(archetype);
-	const base = getDefaultBaseAttributes();
+	const { STR, VIT, SPD, MOV, MAG, SPR } = defaultBaseAttributes;
+	const { P, S, M } = Arch2AttTable[archetype];
 
 	return {
-		STR: base.STR + BaseAttrFormula.STR(P, S, M),
-		VIT: base.VIT + BaseAttrFormula.VIT(P, S, M),
-		SPD: base.SPD + BaseAttrFormula.SPD(P, S, M),
-		MOV: base.MOV + BaseAttrFormula.MOV(P, S, M),
-		MAG: base.MAG + BaseAttrFormula.MAG(P, S, M),
-		SPR: base.SPR + BaseAttrFormula.SPR(P, S, M)
+		STR: STR + BaseAttrFormula.STR(P, S, M),
+		VIT: VIT + BaseAttrFormula.VIT(P, S, M),
+		SPD: SPD + BaseAttrFormula.SPD(P, S, M),
+		MOV: MOV + BaseAttrFormula.MOV(P, S, M),
+		MAG: MAG + BaseAttrFormula.MAG(P, S, M),
+		SPR: SPR + BaseAttrFormula.SPR(P, S, M)
 	};
 };
 
