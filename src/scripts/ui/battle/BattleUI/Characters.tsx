@@ -31,7 +31,6 @@ const Characters: React.SFC<ICharactersProps> = ({ act, players }) => (
 
 					<tbody>
 						{pl.getCharacters().map((char, c) => {
-							const { name, sex, archetype } = char.getData();
 							const isActive = !!(act && act.getActor() === char);
 							const isDead = char.isDead();
 							const HP = char.getAttribute('HP');
@@ -43,9 +42,9 @@ const Characters: React.SFC<ICharactersProps> = ({ act, players }) => (
 							return (
 								<tr key={c} style={{ backgroundColor: color, }}>
 									<td>
-										<strong>{name}</strong>
-										{' '}{Icos[sex.toLowerCase()]}
-										{' '}<ArchetypeIco archetype={archetype} />
+										<strong>{char.getName()}</strong>
+										{' '}{Icos[char.getSex().toLowerCase()]}
+										{' '}<ArchetypeIco archetype={char.getArchetype()} />
 									</td>
 									<td style={{ textAlign: 'right', paddingLeft: '10px', }}>
 										{HP} <span style={{ color: 'grey', }}>/ {baseHP}</span>

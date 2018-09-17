@@ -33,7 +33,7 @@ const Order: React.SFC<IOrderProps> = ({ act, characters }) => (
 					<tr key={c} style={{ backgroundColor: getcolor(act, char), }}>
 						<td style={{ textAlign: 'right', }}>{c}.</td>
 						<td style={{ paddingLeft: '10px', }}>
-							<strong>{char.getData().name}</strong>
+							<strong>{char.getName()}</strong>
 						</td>
 						<td style={{ textAlign: 'right', paddingLeft: '10px', }}>{char.getAttribute('CT')}</td>
 						<td style={{ textAlign: 'right', paddingLeft: '10px', }}>{char.getAttribute('SPD')}</td>

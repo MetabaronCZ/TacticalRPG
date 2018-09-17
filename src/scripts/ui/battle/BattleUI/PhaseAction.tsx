@@ -20,7 +20,7 @@ const ActActionUI: React.SFC<IActActionUIProps> = ({ act }) => {
 			<div>Targetable: {formatPositions(act.getTargetable())}</div>
 			<div>Selected target: {formatPosition(act.getEffectTarget())}</div>
 			<div>Action effect area: {formatPositions(act.getEffectArea())}</div>
-			<div>Action effect targets: [ {act.getEffectTargets().map(char => char.getData().name).join(', ')} ]</div>
+			<div>Action effect targets: [ {act.getEffectTargets().map(char => char.getName()).join(', ')} ]</div>
 			<br/>
 
 			{act.getReactions().map((reaction, i) => {

@@ -1,5 +1,3 @@
-import Skillsets from 'data/skillsets';
-
 import Skill from 'engine/skill';
 import Character from 'engine/character';
 import SkillUtils from 'engine/skill/utils';
@@ -17,12 +15,11 @@ class CharacterActions {
 	}
 
 	public static getIdleActions(character: Character): CharacterAction[] {
-		const { skillset } = character.getData();
+		const skillset = character.getSkillset();
 		const AP = character.getAttribute('AP');
 
 		const mainHand = character.getEquipment().getMainHand();
 		const offHand = character.getEquipment().getOffHand();
-		const charSkillset = Skillsets.get(skillset);
 		const actions: CharacterAction[] = [];
 		const attackSkillList: Skill[] = [];
 
@@ -56,15 +53,13 @@ class CharacterActions {
 		}
 
 		// MAGIC actions
-		for (const id of charSkillset.skills) {
-			const skill = new Skill(id);
-
+		for (const skill of skillset.getSkills()) {
 			if ('ACTIVE' !== skill.getType()) {
 				continue;
 			}
 			const cost = skill.getCost();
 			const title = skill.getTitle();
-			const action = new CharacterAction('MAGIC', `${title} (${charSkillset.title})`, cost, AP >= cost, [skill]);
+			const action = new CharacterAction('MAGIC', `${title} (${skillset.getTitle()})`, cost, AP >= cost, [skill]);
 			actions.push(action);
 		}
 
@@ -94,7 +89,6 @@ class CharacterActions {
 	}
 
 	public static getReactiveActions(character: Character): CharacterAction[] {
-		const { off } = character.getData();
 		const AP = character.getAttribute('AP');
 		const offHand = character.getEquipment().getOffHand();
 		const actions: CharacterAction[] = [];
@@ -115,7 +109,7 @@ class CharacterActions {
 		if (offHand.isType('SHIELD')) {
 			let id: WeaponSkillID;
 
-			if ('SHIELD_LARGE' === off) {
+			if ('SHIELD_LARGE' === offHand.getId()) {
 				id = 'SHIELD_LARGE_BLOCK';
 			} else {
 				id = 'SHIELD_SMALL_BLOCK';

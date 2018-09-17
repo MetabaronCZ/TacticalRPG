@@ -4,16 +4,18 @@ import Position from 'engine/position';
 import Status from 'engine/character/status';
 import { DirectionID } from 'engine/direction';
 import Movement from 'engine/character/movement';
+import Skillset from 'engine/character/skillset';
 import Equipment from 'engine/character/equipment';
 import { ICharacterData } from 'engine/character-data';
+import { ArchetypeID } from 'engine/character/archetype';
 import { IStatusEffect, StatusEffectID } from 'engine/status-effect';
 import Attributes, { AttributeID } from 'engine/character/attributes';
 
 class Character {
 	private readonly player: number;
 	private readonly data: ICharacterData;
+	private	readonly skillset: Skillset;
 	private readonly attributes: Attributes;
-
 	private readonly status: Status;
 	private readonly movable: Movement;
 	private readonly equipment: Equipment;
@@ -21,6 +23,7 @@ class Character {
 	constructor(data: ICharacterData, position: Position, direction: DirectionID, player: number) {
 		this.data = data;
 		this.player = player;
+		this.skillset = new Skillset(data.skillset);
 		this.movable = new Movement(position, direction);
 		this.equipment = new Equipment(data.main, data.off, data.armor);
 		this.attributes = new Attributes(data.archetype);
@@ -47,12 +50,23 @@ class Character {
 		return !!this.status.get().find(st => status === st.id);
 	}
 
-	public getData(): ICharacterData {
-		return this.data;
+	public getName(): string {
+		return this.data.name;
+	}
+
+	public getSex(): string {
+		return this.data.sex; }
+
+	public getArchetype(): ArchetypeID {
+		return this.data.archetype;
 	}
 
 	public getPlayer(): number {
 		return this.player;
+	}
+
+	public getSkillset(): Skillset {
+		return this.skillset;
 	}
 
 	public getAttribute(attr: AttributeID): number {

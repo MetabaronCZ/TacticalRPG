@@ -36,7 +36,6 @@ class Order {
 		const chars = liveChars.map(char => {
 			const SPD = char.getAttribute('SPD');
 			const CT = char.getAttribute('CT');
-			const id = char.getData().id;
 			let playerOrder = -1;
 
 			for (let p = 0, pmax = players.length; p < pmax; p++) {
@@ -45,7 +44,7 @@ class Order {
 					break;
 				}
 			}
-			return { id, CT, SPD, playerOrder, char };
+			return { CT, SPD, playerOrder, char };
 		});
 
 		while (order.length < maxOrderSize) {

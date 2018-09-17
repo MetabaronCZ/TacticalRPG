@@ -187,7 +187,7 @@ class ActReaction {
 	private prepareEvents(events: IActReactionEvents): IActReactionEvents {
 		return {
 			onStart: reaction => {
-				Logger.log(`ActReaction onStart: "${reaction.getReactor().getData().name}"`);
+				Logger.log(`ActReaction onStart: "${reaction.getReactor().getName()}"`);
 				events.onStart(reaction);
 			},
 			onReactionSelected: reaction => {

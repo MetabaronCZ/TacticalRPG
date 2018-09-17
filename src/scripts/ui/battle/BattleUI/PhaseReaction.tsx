@@ -14,7 +14,7 @@ const ActReactUI: React.SFC<IActReactUIProps> = ({ reaction, isActive }) => {
 
 	return (
 		<div style={{ backgroundColor: (isActive ? 'black' : ''), marginBottom: '10px', }}>
-			<h4>Reactor: {reactor.getData().name}</h4>
+			<h4>Reactor: {reactor.getName()}</h4>
 			<div>State: {reaction.getState()}</div>
 			<div>Action: {action ? `${action.getTitle()} (${action.getSkills().join(', ')})` : '-'}</div>
 			<div>Evasible: {formatPositions(reaction.getEvasionTargets())}</div>

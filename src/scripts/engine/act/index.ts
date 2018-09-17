@@ -381,7 +381,7 @@ class Act {
 	private prepareEvents(events: IActEvents): IActEvents {
 		return {
 			onStart: act => {
-				Logger.log(`Act onStart: "${act.getActor().getData().name}"`);
+				Logger.log(`Act onStart: "${act.getActor().getName()}"`);
 				events.onStart(act);
 			},
 			onUpdate: events.onUpdate,

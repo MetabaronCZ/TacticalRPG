@@ -47,7 +47,7 @@ const GridCharacters: React.SFC<IGridChactersProps> = ({ actor, characters, colo
 							height: itemSize + '%',
 						}
 					}
-					title={char.getData().name}
+					title={char.getName()}
 					key={i}
 				>
 					<div
@@ -64,7 +64,7 @@ const GridCharacters: React.SFC<IGridChactersProps> = ({ actor, characters, colo
 							}
 						}
 					>
-						{char.getData().name.substring(0, 4).toUpperCase()}
+						{char.getName().substring(0, 4).toUpperCase()}
 
 						<div
 							style={

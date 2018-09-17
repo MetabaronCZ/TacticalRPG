@@ -1,5 +1,4 @@
 import Weapons from 'data/weapons';
-import Skillsets from 'data/skillsets';
 import StatusEffects from 'data/status-effects';
 import { smallShieldBlock } from 'data/game-config';
 
@@ -44,8 +43,8 @@ class Damage {
 		const armor = defender.getEquipment().getArmor();
 		const armorDefense = armor.getMagicalDefense();
 		const magBonus = main.getMagic() + off.getMagic();
-		const skillset = Skillsets.get(defender.getData().skillset);
-		const modifier = SkillUtils.getElementModifier(skill.getElement(), skillset.element);
+		const skillset = defender.getSkillset();
+		const modifier = SkillUtils.getElementModifier(skill.getElement(), skillset.getElement());
 
 		const attack = (attacker.getAttribute('MAG') + magBonus) * skill.getElementalDamage();
 		const defense = (1 - defender.getAttribute('SPR') / 100) * (1 - armorDefense / 100);

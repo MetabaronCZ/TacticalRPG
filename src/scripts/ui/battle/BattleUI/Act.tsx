@@ -31,7 +31,7 @@ const ActUI: React.SFC<IActUIProps> = ({ act, onActionSelect }) => {
 					<td style={{ verticalAlign: 'top', width: '70%', paddingRight: '40px', }}>
 						<h3 className="Heading">Character act</h3>
 						<div>Phase: <strong>{act.getPhase()}</strong></div>
-						<div>Actor: <strong>{actor.getData().name}</strong> {formatPosition(actor.getPosition())}</div>
+						<div>Actor: <strong>{actor.getName()}</strong> {formatPosition(actor.getPosition())}</div>
 
 						<br/>
 
