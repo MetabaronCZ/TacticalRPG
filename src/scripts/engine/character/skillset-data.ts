@@ -10,11 +10,11 @@ export type SkillsetID =
 	'WIND_MAGIC' | 'EARTH_MAGIC' |
 	'ICE_MAGIC' | 'THUNDER_MAGIC';
 
-export interface ISkillset {
+export interface ISkillsetData {
 	readonly title: string;
 	readonly description: string;
 	readonly element: SkillElement;
 	readonly skills: MagicSkillID[];
 }
 
-export class SkillsetList extends DataList<SkillsetID, ISkillset> {}
+export class SkillsetList extends DataList<SkillsetID, ISkillsetData> {}

@@ -2,8 +2,10 @@ import React, { SyntheticEvent } from 'react';
 
 import Icos from 'data/icos';
 import Sexes from 'data/sexes';
+import Wields from 'data/wields';
 import Armors from 'data/armors';
 import Weapons from 'data/weapons';
+import Skillsets from 'data/skillsets';
 import Archetypes from 'data/archetypes';
 import { characterMaxNameLength } from 'data/game-config';
 
@@ -21,7 +23,6 @@ import FormSelectItem from 'ui/common/FormSelectItem';
 
 import { EquipmentUtils } from 'engine/equipment/utils';
 import CharacterDataUtils, { ICharacterData } from 'engine/character-data';
-import Skillsets from 'data/skillsets';
 
 interface ICharacterCreationProps {
 	readonly character?: ICharacterData;
@@ -55,6 +56,8 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 		const armor = Armors.get(fields.armor);
 		const main = Weapons.get(fields.main);
 		const off = Weapons.get(fields.off);
+		const mainHandWield = Wields.get('MAIN');
+		const offHandWield = Wields.get('OFF');
 
 		const isMagicUser = CharacterDataUtils.isMagicType(fields);
 		const hasNoOffHand = EquipmentUtils.isBothWielding(fields.main) || EquipmentUtils.isDualWielding(fields.main);
@@ -108,7 +111,7 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 					</FormSelect>
 				</FormField>
 
-				<FormField fieldId="f-main" label="Main hand" info={main.description}>
+				<FormField fieldId="f-main" label={mainHandWield.title} info={main.description}>
 					<FormSelect id="f-main" name="main" value={fields.main} onChange={onChange}>
 						{Weapons.filter(fields, 'MAIN').map(([id, item], i) => (
 							<FormSelectItem value={id} key={i}>
@@ -118,7 +121,7 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 					</FormSelect>
 				</FormField>
 
-				<FormField fieldId="f-off" label="Off hand" info={!hasNoOffHand ? off.description : undefined}>
+				<FormField fieldId="f-off" label={offHandWield.title} info={!hasNoOffHand ? off.description : undefined}>
 					{!hasNoOffHand
 						? (
 							<FormSelect id="f-off" name="off" value={fields.off} onChange={onChange}>

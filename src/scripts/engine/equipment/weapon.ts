@@ -1,7 +1,10 @@
+import Weapons from 'data/weapons';
+
 import { WeaponSkillID } from 'engine/skill/weapon';
-import { IWeaponData, WeaponTypeID } from 'engine/equipment/weapon-data';
+import { WeaponTypeID, WeaponID } from 'engine/equipment/weapon-data';
 
 class Weapon {
+	private readonly id: WeaponID;
 	private readonly title: string;
 	private readonly description: string;
 	private readonly type: WeaponTypeID;
@@ -9,13 +12,23 @@ class Weapon {
 	private readonly damage: number;
 	private readonly magic: number;
 
-	constructor(data: IWeaponData) {
+	constructor(id: WeaponID) {
+		const data = Weapons.get(id);
+		this.id = id;
 		this.title = data.title;
 		this.description = data.description;
 		this.type = data.type;
 		this.skills = data.skills;
 		this.damage = data.damage;
 		this.magic = data.magic;
+	}
+
+	public isType(type: WeaponTypeID): boolean {
+		return type === this.type;
+	}
+
+	public getId(): WeaponID {
+		return this.id;
 	}
 
 	public getTitle(): string {

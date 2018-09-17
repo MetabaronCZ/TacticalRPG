@@ -6,74 +6,67 @@ export interface IIndexable {
 	readonly lastUpdate: number;
 }
 
-// swap state array positions
-const swap = <T extends IIndexable>(state: T[], dir: number, value?: IIndexable): T[] => {
-	if (!value) {
-		return state;
-	}
-	const index = state.findIndex(item => value.id === item.id);
+export class IndexableUtils {
+	// swap state array positions
+	public static swap<T extends IIndexable>(state: T[], dir: number, value?: IIndexable): T[] {
+		if (!value) {
+			return state;
+		}
+		const index = state.findIndex(item => value.id === item.id);
 
-	if (index + dir < 0 || index + dir > state.length - 1) {
-		return state;
-	}
-	const curr = state[index];
-	const next = state[index + dir];
+		if (index + dir < 0 || index + dir > state.length - 1) {
+			return state;
+		}
+		const curr = state[index];
+		const next = state[index + dir];
 
-	return state.map((item, i) => {
-		if (i === index) {
-			return next;
-		} else if (i === index + dir) {
-			return curr;
-		} else {
+		return state.map((item, i) => {
+			if (i === index) {
+				return next;
+			} else if (i === index + dir) {
+				return curr;
+			} else {
+				return item;
+			}
+		});
+	}
+
+	// add item to state array
+	public static add<T extends IIndexable, U extends T>(state: T[], item?: U): T[] {
+		if (!item) {
+			return state;
+		}
+		const now = Date.now();
+
+		const newItem = Object.assign({}, item, {
+			id: uuid(),
+			creationDate: now,
+			lastUpdate: now
+		});
+
+		return state.concat(newItem);
+	}
+
+	// remove item from state array
+	public static remove<T extends IIndexable>(state: T[], value?: IIndexable): T[] {
+		if (!value) {
+			return state;
+		}
+		return state.filter(item => value.id !== item.id);
+	}
+
+	// edit item in state array
+	public static edit<T extends IIndexable, U extends T>(state: T[], value?: U): T[] {
+		if (!value) {
+			return state;
+		}
+		const now = Date.now();
+
+		return state.map(item => {
+			if (value.id === item.id) {
+				return Object.assign({}, item, value, { lastUpdate: now });
+			}
 			return item;
-		}
-	});
-};
-
-// add item to state array
-const add = <T extends IIndexable, U extends T>(state: T[], item?: U): T[] => {
-	if (!item) {
-		return state;
+		});
 	}
-	const now = Date.now();
-
-	const newItem = Object.assign({}, item, {
-		id: uuid(),
-		creationDate: now,
-		lastUpdate: now
-	});
-
-	return state.concat(newItem);
-};
-
-// remove item from state array
-const remove = <T extends IIndexable>(state: T[], value?: IIndexable): T[] => {
-	if (!value) {
-		return state;
-	}
-	return state.filter(item => value.id !== item.id);
-};
-
-// edit item in state array
-const edit = <T extends IIndexable, U extends T>(state: T[], value?: U): T[] => {
-	if (!value) {
-		return state;
-	}
-	const now = Date.now();
-
-	return state.map(item => {
-		if (value.id === item.id) {
-			return Object.assign({}, item, value, { lastUpdate: now });
-		}
-		return item;
-	});
-};
-
-const Indexable = {
-	swap,
-	add,
-	remove,
-	edit
-};
-
-export default Indexable;
+}

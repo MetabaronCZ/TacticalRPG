@@ -11,10 +11,10 @@ import Archetypes from 'data/archetypes';
 import { SexID } from 'engine/character/sex';
 import { IIndexable } from 'engine/indexable';
 import { ArmorID } from 'engine/equipment/armor-data';
-import { SkillsetID } from 'engine/character/skillset';
-import { EquipmentUtils } from 'engine/equipment/utils';
 import { WeaponID } from 'engine/equipment/weapon-data';
+import { EquipmentUtils } from 'engine/equipment/utils';
 import { ArchetypeID } from 'engine/character/archetype';
+import { SkillsetID } from 'engine/character/skillset-data';
 
 export interface ICharacterData extends IIndexable {
 	readonly name: string;

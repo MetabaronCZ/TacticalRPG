@@ -1,16 +1,24 @@
-import { IArmorData } from 'engine/equipment/armor-data';
+import Armors from 'data/armors';
+import { ArmorID } from 'engine/equipment/armor-data';
 
 class Armor {
+	private readonly id: ArmorID;
 	private readonly title: string;
 	private readonly description: string;
 	private readonly physicalDefense: number;
 	private readonly magicalDefense: number;
 
-	constructor(data: IArmorData) {
+	constructor(id: ArmorID) {
+		const data = Armors.get(id);
+		this.id = id;
 		this.title = data.title;
 		this.description = data.description;
 		this.physicalDefense = data.physicalDefense;
 		this.magicalDefense = data.magicalDefense;
+	}
+
+	public getId(): ArmorID {
+		return this.id;
 	}
 
 	public getTitle(): string {

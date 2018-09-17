@@ -14,6 +14,7 @@ import { IOnMoveDown, IOnMoveUp, IOnDelete } from 'ui/character-creation/Charact
 
 import { EquipmentUtils } from 'engine/equipment/utils';
 import CharacterDataUtils, { ICharacterData } from 'engine/character-data';
+import Wields from 'data/wields';
 
 const renderArchetype = (char: ICharacterData) => (
 	<ArchetypeIco archetype={char.archetype} />
@@ -73,11 +74,11 @@ const getColumns = (editable = false, onMoveDown?: IOnMoveDown, onMoveUp?: IOnMo
 				return `${archetype.title}${CharacterDataUtils.isMagicType(char) ? ' (' + skillset.title + ')' : ''}`;
 			}
 		}, {
-			title: 'Main hand',
+			title: Wields.get('MAIN').title,
 			name: 'mainHand',
 			value: (char: ICharacterData) => Weapons.get(char.main).title
 		}, {
-			title: 'Off hand',
+			title: Wields.get('OFF').title,
 			name: 'offHand',
 			value: (char: ICharacterData) => {
 				const main = Weapons.get(char.main);

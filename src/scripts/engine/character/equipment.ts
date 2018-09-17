@@ -1,6 +1,3 @@
-import Armors from 'data/armors';
-import Weapons from 'data/weapons';
-
 import Armor from 'engine/equipment/armor';
 import Weapon from 'engine/equipment/weapon';
 import { ArmorID } from 'engine/equipment/armor-data';
@@ -12,9 +9,9 @@ class Equipment {
 	private readonly armor: Armor;
 
 	constructor(main: WeaponID, off: WeaponID, armor: ArmorID) {
-		this.mainHand = new Weapon(Weapons.get(main));
-		this.offHand = new Weapon(Weapons.get(off));
-		this.armor = new Armor(Armors.get(armor));
+		this.mainHand = new Weapon(main);
+		this.offHand = new Weapon(off);
+		this.armor = new Armor(armor);
 	}
 
 	public getMainHand(): Weapon {

@@ -1,4 +1,3 @@
-import Weapons from 'data/weapons';
 import Skillsets from 'data/skillsets';
 
 import Skill from 'engine/skill';
@@ -18,22 +17,22 @@ class CharacterActions {
 	}
 
 	public static getIdleActions(character: Character): CharacterAction[] {
-		const { main, off, skillset } = character.getData();
+		const { skillset } = character.getData();
 		const AP = character.getAttribute('AP');
 
-		const mainHand = Weapons.get(main);
-		const offHand = Weapons.get(off);
+		const mainHand = character.getEquipment().getMainHand();
+		const offHand = character.getEquipment().getOffHand();
 		const charSkillset = Skillsets.get(skillset);
 		const actions: CharacterAction[] = [];
 		const attackSkillList: Skill[] = [];
 
 		// ATTACK actions
 		for (const wpn of [mainHand, offHand]) {
-			const attackSkills = SkillUtils.filterAttack(wpn.skills);
+			const attackSkills = SkillUtils.filterAttack(wpn.getSkills());
 
 			for (const skill of attackSkills) {
 				const cost = skill.getCost();
-				const action = new CharacterAction('ATTACK', `Attack (${wpn.title})`, cost, AP >= cost, [skill]);
+				const action = new CharacterAction('ATTACK', `Attack (${wpn.getTitle()})`, cost, AP >= cost, [skill]);
 				attackSkillList.push(skill);
 				actions.push(action);
 			}
@@ -48,10 +47,10 @@ class CharacterActions {
 
 		// WEAPON actions
 		for (const wpn of [mainHand, offHand]) {
-			for (const skill of SkillUtils.filterSpecial(wpn.skills)) {
+			for (const skill of SkillUtils.filterSpecial(wpn.getSkills())) {
 				const cost = skill.getCost();
 				const title = skill.getTitle();
-				const action = new CharacterAction('WEAPON', `${title} (${wpn.title})`, cost, AP >= cost, [skill]);
+				const action = new CharacterAction('WEAPON', `${title} (${wpn.getTitle()})`, cost, AP >= cost, [skill]);
 				actions.push(action);
 			}
 		}
@@ -97,7 +96,7 @@ class CharacterActions {
 	public static getReactiveActions(character: Character): CharacterAction[] {
 		const { off } = character.getData();
 		const AP = character.getAttribute('AP');
-		const offHand = Weapons.get(off);
+		const offHand = character.getEquipment().getOffHand();
 		const actions: CharacterAction[] = [];
 
 		// EVADE action
@@ -113,7 +112,7 @@ class CharacterActions {
 		}
 
 		// BLOCK action
-		if ('SHIELD' === offHand.type) {
+		if (offHand.isType('SHIELD')) {
 			let id: WeaponSkillID;
 
 			if ('SHIELD_LARGE' === off) {
