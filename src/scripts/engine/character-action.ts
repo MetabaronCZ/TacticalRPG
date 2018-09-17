@@ -1,4 +1,4 @@
-import { SkillID } from 'engine/skill';
+import Skill from 'engine/skill';
 
 export type CharacterActionID =
 	'ATTACK' | 'DOUBLE_ATTACK' | 'WEAPON' | 'MAGIC' |
@@ -9,9 +9,9 @@ class CharacterAction {
 	private readonly cost: number;
 	private readonly title: string;
 	private readonly active: boolean;
-	private readonly skills: SkillID[];
+	private readonly skills: Skill[];
 
-	constructor(id: CharacterActionID, title: string, cost: number, isActive = true, skills: SkillID[] = []) {
+	constructor(id: CharacterActionID, title: string, cost: number, isActive = true, skills: Skill[] = []) {
 		this.id = id;
 		this.cost = cost;
 		this.title = title;

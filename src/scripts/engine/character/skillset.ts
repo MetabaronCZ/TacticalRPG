@@ -1,7 +1,7 @@
 import DataList from 'core/data-list';
 
-import { SkillElement } from 'engine/skill';
-import { MagicSkillID } from 'engine/skill/magic/types';
+import { SkillElement } from 'engine/skill/skill-data';
+import { MagicSkillID } from 'engine/skill/magic';
 
 export type SkillsetID =
 	'NONE' | 'PSYCHOKINESIS' |

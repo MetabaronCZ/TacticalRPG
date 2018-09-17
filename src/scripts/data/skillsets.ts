@@ -1,15 +1,15 @@
+import { MagicSkillID } from 'engine/skill/magic';
 import { SkillsetList } from 'engine/character/skillset';
-import { MagicSkillID } from 'engine/skill/magic/types';
 
-import psychokinesis from 'engine/skill/magic/psychokinesis';
-import whiteMagic from 'engine/skill/magic/white';
-import blackMagic from 'engine/skill/magic/black';
-import fireMagic from 'engine/skill/magic/fire';
-import waterMagic from 'engine/skill/magic/water';
-import windMagic from 'engine/skill/magic/wind';
-import earthMagic from 'engine/skill/magic/earth';
-import iceMagic from 'engine/skill/magic/ice';
-import thunderMagic from 'engine/skill/magic/thunder';
+import psychokinesis from 'data/skills/magic/psychokinesis';
+import whiteMagic from 'data/skills/magic/white';
+import blackMagic from 'data/skills/magic/black';
+import fireMagic from 'data/skills/magic/fire';
+import waterMagic from 'data/skills/magic/water';
+import windMagic from 'data/skills/magic/wind';
+import earthMagic from 'data/skills/magic/earth';
+import iceMagic from 'data/skills/magic/ice';
+import thunderMagic from 'data/skills/magic/thunder';
 
 const Skillsets = new SkillsetList({
 	NONE: {

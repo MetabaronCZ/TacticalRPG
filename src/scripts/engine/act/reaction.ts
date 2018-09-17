@@ -1,7 +1,6 @@
 import Logger from 'engine/logger';
 import Position from 'engine/position';
 import Character from 'engine/character';
-import SkillUtils from 'engine/skill/utils';
 import CharacterAction from 'engine/character-action';
 
 interface IActReactionEvents {
@@ -85,7 +84,7 @@ class ActReaction {
 
 		this.events.onReactionSelected(this);
 
-		const skillId = skills[0];
+		const skillId = skills[0].getId();
 
 		switch (skillId) {
 			case 'EVADE':
@@ -123,7 +122,7 @@ class ActReaction {
 		this.state = 'DONE';
 		this.evasionTarget = target;
 
-		const skills = SkillUtils.getByID(action.getSkills());
+		const skills = action.getSkills();
 		const cost = skills[0].getCost();
 
 		// update reacting character

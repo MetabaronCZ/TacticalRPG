@@ -1,12 +1,11 @@
 import Weapons from 'data/weapons';
 import Skillsets from 'data/skillsets';
 
+import Skill from 'engine/skill';
 import Character from 'engine/character';
-import MagicSkills from 'engine/skill/magic';
-import WeaponSkills from 'engine/skill/weapon';
+import SkillUtils from 'engine/skill/utils';
+import { WeaponSkillID } from 'engine/skill/weapon';
 import CharacterAction from 'engine/character-action';
-import { WeaponSkillID } from 'engine/skill/weapon/types';
-import ArchetypeSkills, { ArchetypeSkillID } from 'engine/skill/archetype';
 
 class CharacterActions {
 	public static readonly dontReactAction = new CharacterAction('DONT_REACT', 'Pass', 0, true, []);
@@ -25,40 +24,48 @@ class CharacterActions {
 		const mainHand = Weapons.get(main);
 		const offHand = Weapons.get(off);
 		const charSkillset = Skillsets.get(skillset);
-		const attackActionSkills = WeaponSkills.filterAttack(mainHand, offHand);
 		const actions: CharacterAction[] = [];
+		const attackSkillList: Skill[] = [];
 
 		// ATTACK actions
-		for (const [id, wpn] of attackActionSkills) {
-			const { cost } = WeaponSkills.get(id);
-			const action = new CharacterAction('ATTACK', `Attack (${wpn.title})`, cost, AP >= cost, [id]);
-			actions.push(action);
+		for (const wpn of [mainHand, offHand]) {
+			const attackSkills = SkillUtils.filterAttack(wpn.skills);
+
+			for (const skill of attackSkills) {
+				const cost = skill.getCost();
+				const action = new CharacterAction('ATTACK', `Attack (${wpn.title})`, cost, AP >= cost, [skill]);
+				attackSkillList.push(skill);
+				actions.push(action);
+			}
 		}
 
 		// DOUBLE ATTACK action
-		if (attackActionSkills.length > 1) {
-			const costs = attackActionSkills.map(([id, wpn]) => WeaponSkills.get(id).cost);
-			const cost = costs.reduce((a, b) => a + b);
-			const skills = attackActionSkills.map(([id, wpn]) => id);
-			const action = new CharacterAction('DOUBLE_ATTACK', 'Double Attack', cost, AP >= cost, skills);
+		if (attackSkillList.length > 1) {
+			const cost = attackSkillList.map(skill => skill.getCost()).reduce((a, b) => a + b);
+			const action = new CharacterAction('DOUBLE_ATTACK', 'Double Attack', cost, AP >= cost, attackSkillList);
 			actions.push(action);
 		}
 
 		// WEAPON actions
-		for (const [id, wpn] of WeaponSkills.filterSpecial(mainHand, offHand)) {
-			const { cost, title } = WeaponSkills.get(id);
-			const action = new CharacterAction('WEAPON', `${title} (${wpn.title})`, cost, AP >= cost, [id]);
-			actions.push(action);
+		for (const wpn of [mainHand, offHand]) {
+			for (const skill of SkillUtils.filterSpecial(wpn.skills)) {
+				const cost = skill.getCost();
+				const title = skill.getTitle();
+				const action = new CharacterAction('WEAPON', `${title} (${wpn.title})`, cost, AP >= cost, [skill]);
+				actions.push(action);
+			}
 		}
 
 		// MAGIC actions
 		for (const id of charSkillset.skills) {
-			const { type, title, cost } = MagicSkills.get(id);
+			const skill = new Skill(id);
 
-			if ('ACTIVE' !== type) {
+			if ('ACTIVE' !== skill.getType()) {
 				continue;
 			}
-			const action = new CharacterAction('MAGIC', `${title} (${charSkillset.title})`, cost, AP >= cost, [id]);
+			const cost = skill.getCost();
+			const title = skill.getTitle();
+			const action = new CharacterAction('MAGIC', `${title} (${charSkillset.title})`, cost, AP >= cost, [skill]);
 			actions.push(action);
 		}
 
@@ -95,11 +102,12 @@ class CharacterActions {
 
 		// EVADE action
 		if (character.isSpeedType()) {
-			const id: ArchetypeSkillID = 'EVADE';
-			const { cost, title } = ArchetypeSkills.get(id);
+			const skill = new Skill('EVADE');
+			const cost = skill.getCost();
 
 			if (AP >= cost) {
-				const action = new CharacterAction('REACTION', title, cost, true, [id]);
+				const title = skill.getTitle();
+				const action = new CharacterAction('REACTION', title, cost, true, [skill]);
 				actions.push(action);
 			}
 		}
@@ -113,10 +121,12 @@ class CharacterActions {
 			} else {
 				id = 'SHIELD_SMALL_BLOCK';
 			}
-			const { title, cost } = WeaponSkills.get(id);
+			const skill = new Skill(id);
+			const cost = skill.getCost();
 
 			if (AP >= cost) {
-				const action = new CharacterAction('REACTION', title, cost, true, [id]);
+				const title = skill.getTitle();
+				const action = new CharacterAction('REACTION', title, cost, true, [skill]);
 				actions.push(action);
 			}
 		}

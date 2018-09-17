@@ -1,9 +1,9 @@
 import DataList from 'core/data-list';
 
+import { WeaponSkillID } from 'engine/skill/weapon';
 import { ICharacterData } from 'engine/character-data';
 import { IEquipSlot } from 'engine/equipment/equipable';
 import { EquipmentUtils } from 'engine/equipment/utils';
-import { WeaponSkillID } from 'engine/skill/weapon/types';
 
 export type WeaponID =
 	'NONE' |

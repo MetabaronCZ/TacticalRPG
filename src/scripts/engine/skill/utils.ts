@@ -1,16 +1,43 @@
+import { attackSkills } from 'data/skills';
+
+import Skill from 'engine/skill';
 import Position from 'engine/position';
 import Character from 'engine/character';
-import MagicSkills from 'engine/skill/magic';
-import WeaponSkills from 'engine/skill/weapon';
 import { getPosition } from 'engine/positions';
-import ArchetypeSkills from 'engine/skill/archetype';
-import { MagicSkillID } from 'engine/skill/magic/types';
-import { WeaponSkillID } from 'engine/skill/weapon/types';
-import { ArchetypeSkillID } from 'engine/skill/archetype';
 import { ElementAffinityTable } from 'engine/skill/affinity';
-import Skill, { SkillID, SkillElement } from 'engine/skill';
+import { SkillID, SkillElement } from 'engine/skill/skill-data';
+
+const isAttackSkill = (id: SkillID): boolean => -1 !== attackSkills.indexOf(id);
 
 class SkillUtils {
+	public static filterAttack(ids: SkillID[]): Skill[] {
+		const skills: Skill[] = [];
+
+		for (const id of ids) {
+			const skill = new Skill(id);
+
+			if (skill.isType('ACTIVE') && isAttackSkill(id)) {
+				skills.push(skill);
+			}
+		}
+		return skills;
+	}
+
+	public static filterSpecial(ids: SkillID[]): Skill[] {
+		const skills: Skill[] = [];
+		const uniqueSkills: SkillID[] = [];
+
+		for (const id of ids) {
+			const skill = new Skill(id);
+
+			if (skill.isType('ACTIVE') && !isAttackSkill(id) && -1 === uniqueSkills.indexOf(id)) {
+				uniqueSkills.push(id);
+				skills.push(skill);
+			}
+		}
+		return skills;
+	}
+
 	public static getElementModifier(attacker: SkillElement, defender: SkillElement): number {
 		if (ElementAffinityTable[attacker] === defender) {
 			return 2;
@@ -176,32 +203,6 @@ class SkillUtils {
 			}
 		}
 		return targets;
-	}
-
-	public static getByID(ids: SkillID[]): Skill[] {
-		if (!ids.length) {
-			return [];
-		}
-		if (this.isWeaponSkillID(ids[0])) {
-			return (ids as WeaponSkillID[]).map(id => new Skill(WeaponSkills.get(id)));
-		} else if (this.isMagicSkillID(ids[0])) {
-			return (ids as MagicSkillID[]).map(id => new Skill(MagicSkills.get(id)));
-		} else if (this.isArchetypeSkillID(ids[0])) {
-			return (ids as ArchetypeSkillID[]).map(id => new Skill(ArchetypeSkills.get(id)));
-		}
-		throw new Error('Unsupported skill ID ' + ids[0]);
-	}
-
-	private static isWeaponSkillID(id: any): id is WeaponSkillID {
-		return !!WeaponSkills.get(id);
-	}
-
-	private static isMagicSkillID(id: any): id is MagicSkillID {
-		return !!MagicSkills.get(id);
-	}
-
-	private static isArchetypeSkillID(id: any): id is ArchetypeSkillID {
-		return !!ArchetypeSkills.get(id);
 	}
 }
 

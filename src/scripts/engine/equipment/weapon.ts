@@ -1,4 +1,4 @@
-import { WeaponSkillID } from 'engine/skill/weapon/types';
+import { WeaponSkillID } from 'engine/skill/weapon';
 import { IWeaponData, WeaponTypeID } from 'engine/equipment/weapon-data';
 
 class Weapon {

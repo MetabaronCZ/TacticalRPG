@@ -1,31 +1,10 @@
+import Skills from 'data/skills';
+
 import { StatusEffectID } from 'engine/status-effect';
-import { MagicSkillID } from 'engine/skill/magic/types';
-import { WeaponSkillID } from 'engine/skill/weapon/types';
-import { ArchetypeSkillID } from 'engine/skill/archetype';
-
-export type SkillID = ArchetypeSkillID | WeaponSkillID | MagicSkillID;
-
-export type SkillType = 'ACTIVE' | 'REACTIVE' | 'PASSIVE';
-export type SkillArea = 'SINGLE' | 'LINE' | 'CROSS' | 'AOE3x3' | 'NEIGHBOURS';
-export type SkillElement = 'NONE' | 'FIRE' | 'ICE' | 'WIND' | 'EARTH' | 'THUNDER' | 'WATER' | 'DARK' | 'HOLY' | 'PSYCHIC';
-export type SkillTarget = 'NONE' | 'ANY' | 'SELF' | 'ALLY' | 'ENEMY';
-export type SkillRange = 0 | 1 | 2 | 4;
-
-export interface ISkillData {
-	readonly title: string;
-	readonly cost: number;
-	readonly type: SkillType;
-	readonly range: SkillRange;
-	readonly area: SkillArea;
-	readonly target?: SkillTarget;
-	readonly element?: SkillElement;
-	readonly isFixedPhysicalDamage?: boolean;
-	readonly physicalDamage?: number;
-	readonly elementalDamage?: number;
-	readonly status?: StatusEffectID[];
-}
+import { SkillID, SkillType, SkillRange, SkillArea, SkillElement, SkillTarget } from 'engine/skill/skill-data';
 
 class Skill {
+	private readonly id: SkillID;
 	private readonly title: string;
 	private readonly cost: number; // AP cost
 	private readonly type: SkillType;
@@ -38,7 +17,9 @@ class Skill {
 	private readonly elementalDamage: number; // elemental damage modifier [%]
 	private readonly status: StatusEffectID[]; // status effects added to attack
 
-	constructor(data: ISkillData) {
+	constructor(id: SkillID) {
+		const data = Skills.get(id);
+		this.id = id;
 		this.title = data.title;
 		this.cost = data.cost;
 		this.type = data.type;
@@ -56,12 +37,20 @@ class Skill {
 		return this.fixedPhysicalDamage;
 	}
 
+	public isType(type: SkillType): boolean {
+		return type === this.type;
+	}
+
 	public isTarget(id: SkillTarget): boolean {
 		return id === this.target;
 	}
 
 	public isArea(id: SkillArea): boolean {
 		return id === this.area;
+	}
+
+	public getId(): SkillID {
+		return this.id;
 	}
 
 	public getTitle() {

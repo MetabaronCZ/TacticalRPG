@@ -1,4 +1,4 @@
-import { SkillElement } from 'engine/skill';
+import { SkillElement } from 'engine/skill/skill-data';
 
 type IElementAffinityTable = {
 	[E in SkillElement]: SkillElement|null;

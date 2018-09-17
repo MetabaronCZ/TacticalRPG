@@ -3,16 +3,16 @@ import Skillsets from 'data/skillsets';
 import StatusEffects from 'data/status-effects';
 import { smallShieldBlock } from 'data/game-config';
 
-import { SkillID } from 'engine/skill';
+import Skill from 'engine/skill';
 import Character from 'engine/character';
 import SkillUtils from 'engine/skill/utils';
+import { SkillID } from 'engine/skill/skill-data';
 import { StatusEffectID } from 'engine/status-effect';
 
 class Damage {
-	public static getPhysical(attacker: Character, defender: Character, skillId: SkillID): number {
-		const skill = SkillUtils.getByID([skillId])[0];
+	public static getPhysical(attacker: Character, defender: Character, skill: Skill): number {
 		const defArmor = defender.getEquipment().getArmor();
-		const attWeapon = Weapons.values().find(wpn => -1 !== (wpn.skills as string[]).indexOf(skillId as string));
+		const attWeapon = Weapons.values().find(wpn => -1 !== (wpn.skills as SkillID[]).indexOf(skill.getId()));
 		const defOffHand = defender.getEquipment().getOffHand();
 		const defArmorDefense = defArmor.getPhysicalDefense();
 		const attWeaponDamage = (attWeapon ? attWeapon.damage : 1);
@@ -38,8 +38,7 @@ class Damage {
 		return damage > 0 ? damage : 0;
 	}
 
-	public static getElemental(attacker: Character, defender: Character, skillId: SkillID): number {
-		const skill = SkillUtils.getByID([skillId])[0];
+	public static getElemental(attacker: Character, defender: Character, skill: Skill): number {
 		const main = attacker.getEquipment().getMainHand();
 		const off = attacker.getEquipment().getOffHand();
 		const armor = defender.getEquipment().getArmor();
@@ -55,8 +54,7 @@ class Damage {
 		return damage > 0 ? damage : 0;
 	}
 
-	public static getStatusEffects(attacker: Character, defender: Character, skillId: SkillID): StatusEffectID[] {
-		const skill = SkillUtils.getByID([skillId])[0];
+	public static getStatusEffects(attacker: Character, defender: Character, skill: Skill): StatusEffectID[] {
 		const statuses = skill.getStatus().map(id => StatusEffects.get(id)());
 		const attackSTR = attacker.getAttribute('STR');
 		const attackMAG = attacker.getAttribute('MAG');

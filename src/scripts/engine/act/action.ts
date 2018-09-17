@@ -108,7 +108,7 @@ class ActAction {
 		this.state = 'IDLE';
 
 		// update actor values
-		const skills = SkillUtils.getByID(action.getSkills());
+		const skills = action.getSkills();
 		const skillAreas = skills.map(skill => SkillUtils.getTargetableArea(skill, actor.getPosition()));
 		const targetable = ArrayUtils.getIntersection(skillAreas, pos => pos.getId());
 		const targets = SkillUtils.getTargets(actor, skills[0], characters, targetable);
@@ -136,9 +136,9 @@ class ActAction {
 		}
 
 		// get skill effect area
-		const skills = SkillUtils.getByID(action.getSkills());
+		const skills = action.getSkills();
 
-		if (!skills) {
+		if (!skills.length) {
 			return;
 		}
 		this.state = 'SELECTED';
@@ -282,8 +282,7 @@ class ActAction {
 						let info: string[] = [];
 
 						for (const skill of action.getSkills()) {
-							const skillData = SkillUtils.getByID([skill])[0];
-							const skillStatus = skillData.getStatus();
+							const skillStatus = skill.getStatus();
 							let phyDmg = 0;
 							let elmDmg = 0;
 
@@ -292,7 +291,7 @@ class ActAction {
 							info.push(NumberUtils.format(phyDmg));
 
 							// elemental damage
-							if (skillData.getElementalDamage()) {
+							if (skill.getElementalDamage()) {
 								elmDmg = Damage.getElemental(actor, target, skill);
 								info.push(NumberUtils.format(elmDmg));
 							}
