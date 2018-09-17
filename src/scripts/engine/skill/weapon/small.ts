@@ -1,12 +1,11 @@
 import { ISmallWeaponSkillList } from 'engine/skill/weapon/types';
-import { SkillRange } from 'engine/skill';
 
 const smallSkills: ISmallWeaponSkillList = {
 	FISTS_ATTACK: {
 		title: 'Attack',
 		cost: 1,
 		type: 'ACTIVE',
-		range: SkillRange.R1,
+		range: 1,
 		area: 'SINGLE',
 		target: 'ENEMY',
 		physicalDamage: 1
@@ -15,7 +14,7 @@ const smallSkills: ISmallWeaponSkillList = {
 		title: 'Disarm',
 		cost: 2,
 		type: 'ACTIVE',
-		range: SkillRange.R1,
+		range: 1,
 		area: 'SINGLE',
 		target: 'ENEMY',
 		physicalDamage: 0.5,
@@ -25,7 +24,7 @@ const smallSkills: ISmallWeaponSkillList = {
 		title: 'Attack',
 		cost: 1,
 		type: 'ACTIVE',
-		range: SkillRange.R1,
+		range: 1,
 		area: 'SINGLE',
 		target: 'ENEMY',
 		physicalDamage: 1
@@ -34,7 +33,7 @@ const smallSkills: ISmallWeaponSkillList = {
 		title: 'Stab',
 		cost: 2,
 		type: 'ACTIVE',
-		range: SkillRange.R1,
+		range: 1,
 		area: 'SINGLE',
 		target: 'ENEMY',
 		physicalDamage: 2

@@ -1,12 +1,11 @@
 import { IWield2HWeaponSkillList } from 'engine/skill/weapon/types';
-import { SkillRange } from 'engine/skill';
 
 const sword2HSkills: IWield2HWeaponSkillList = {
 	SPEAR_ATTACK: {
 		title: 'Attack',
 		cost: 2,
 		type: 'ACTIVE',
-		range: SkillRange.R2,
+		range: 2,
 		area: 'LINE',
 		target: 'ENEMY',
 		physicalDamage: 1
@@ -15,7 +14,7 @@ const sword2HSkills: IWield2HWeaponSkillList = {
 		title: 'Thrust',
 		cost: 4,
 		type: 'ACTIVE',
-		range: SkillRange.R2,
+		range: 2,
 		area: 'LINE',
 		target: 'ENEMY',
 		physicalDamage: 1
@@ -24,7 +23,7 @@ const sword2HSkills: IWield2HWeaponSkillList = {
 		title: 'Attack',
 		cost: 2,
 		type: 'ACTIVE',
-		range: SkillRange.R1,
+		range: 1,
 		area: 'SINGLE',
 		target: 'ENEMY',
 		physicalDamage: 1
@@ -33,7 +32,7 @@ const sword2HSkills: IWield2HWeaponSkillList = {
 		title: 'Cleave',
 		cost: 4,
 		type: 'ACTIVE',
-		range: SkillRange.R1,
+		range: 1,
 		area: 'NEIGHBOURS',
 		target: 'ENEMY',
 		physicalDamage: 0.5
@@ -42,7 +41,7 @@ const sword2HSkills: IWield2HWeaponSkillList = {
 		title: 'Attack',
 		cost: 2,
 		type: 'ACTIVE',
-		range: SkillRange.R1,
+		range: 1,
 		area: 'SINGLE',
 		target: 'ENEMY',
 		physicalDamage: 1
@@ -51,7 +50,7 @@ const sword2HSkills: IWield2HWeaponSkillList = {
 		title: 'Whirlwind',
 		cost: 4,
 		type: 'ACTIVE',
-		range: SkillRange.R1,
+		range: 1,
 		area: 'NEIGHBOURS',
 		target: 'ENEMY',
 		physicalDamage: 0.5
@@ -60,7 +59,7 @@ const sword2HSkills: IWield2HWeaponSkillList = {
 		title: 'Attack',
 		cost: 2,
 		type: 'ACTIVE',
-		range: SkillRange.R1,
+		range: 1,
 		area: 'SINGLE',
 		target: 'ENEMY',
 		physicalDamage: 1
@@ -69,7 +68,7 @@ const sword2HSkills: IWield2HWeaponSkillList = {
 		title: 'Shockwave',
 		cost: 4,
 		type: 'ACTIVE',
-		range: SkillRange.R1,
+		range: 1,
 		area: 'CROSS',
 		target: 'ENEMY',
 		physicalDamage: 0.5

@@ -9,7 +9,7 @@ export type SkillType = 'ACTIVE' | 'REACTIVE' | 'PASSIVE';
 export type SkillArea = 'SINGLE' | 'LINE' | 'CROSS' | 'AOE3x3' | 'NEIGHBOURS';
 export type SkillElement = 'NONE' | 'FIRE' | 'ICE' | 'WIND' | 'EARTH' | 'THUNDER' | 'WATER' | 'DARK' | 'HOLY' | 'PSYCHIC';
 export type SkillTarget = 'NONE' | 'ANY' | 'SELF' | 'ALLY' | 'ENEMY';
-export enum SkillRange { R0 = 0, R1 = 1, R2 = 2, R4 = 4 }
+export type SkillRange = 0 | 1 | 2 | 4;
 
 export interface ISkillData {
 	readonly title: string;

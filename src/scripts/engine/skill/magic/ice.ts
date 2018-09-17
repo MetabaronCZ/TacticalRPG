@@ -1,12 +1,11 @@
 import { IIceMagicSkillList } from 'engine/skill/magic/types';
-import { SkillRange } from 'engine/skill';
 
 const iceMagic: IIceMagicSkillList = {
 	ICE_MAGIC_ICE_SPEAR: {
 		title: 'Ice Spear',
 		cost: 2,
 		type: 'ACTIVE',
-		range: SkillRange.R4,
+		range: 4,
 		area: 'SINGLE',
 		target: 'ENEMY',
 		element: 'ICE',
@@ -17,7 +16,7 @@ const iceMagic: IIceMagicSkillList = {
 		title: 'Freeze',
 		cost: 2,
 		type: 'ACTIVE',
-		range: SkillRange.R4,
+		range: 4,
 		area: 'SINGLE',
 		target: 'ENEMY',
 		element: 'ICE',
@@ -29,7 +28,7 @@ const iceMagic: IIceMagicSkillList = {
 		title: 'Blizzard',
 		cost: 4,
 		type: 'ACTIVE',
-		range: SkillRange.R4,
+		range: 4,
 		area: 'AOE3x3',
 		target: 'ENEMY',
 		element: 'ICE',
@@ -40,7 +39,7 @@ const iceMagic: IIceMagicSkillList = {
 		title: 'Frost Aura',
 		cost: 0,
 		type: 'PASSIVE',
-		range: SkillRange.R1,
+		range: 1,
 		area: 'AOE3x3',
 		target: 'ENEMY',
 		element: 'ICE',

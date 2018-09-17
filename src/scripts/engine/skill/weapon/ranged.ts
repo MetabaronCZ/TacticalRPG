@@ -1,12 +1,11 @@
 import { IRangedWeaponSkillList } from 'engine/skill/weapon/types';
-import { SkillRange } from 'engine/skill';
 
 const rangedSkills: IRangedWeaponSkillList = {
 	BOW_ATTACK: {
 		title: 'Attack',
 		cost: 2,
 		type: 'ACTIVE',
-		range: SkillRange.R4,
+		range: 4,
 		area: 'SINGLE',
 		target: 'ENEMY',
 		physicalDamage: 1
@@ -15,7 +14,7 @@ const rangedSkills: IRangedWeaponSkillList = {
 		title: 'Charge',
 		cost: 4,
 		type: 'ACTIVE',
-		range: SkillRange.R4,
+		range: 4,
 		area: 'SINGLE',
 		target: 'ENEMY',
 		physicalDamage: 1.5
@@ -24,7 +23,7 @@ const rangedSkills: IRangedWeaponSkillList = {
 		title: 'Attack',
 		cost: 1,
 		type: 'ACTIVE',
-		range: SkillRange.R4,
+		range: 4,
 		area: 'SINGLE',
 		target: 'ENEMY',
 		isFixedPhysicalDamage: true,
@@ -34,7 +33,7 @@ const rangedSkills: IRangedWeaponSkillList = {
 		title: 'Cripple',
 		cost: 2,
 		type: 'ACTIVE',
-		range: SkillRange.R4,
+		range: 4,
 		area: 'SINGLE',
 		target: 'ENEMY',
 		isFixedPhysicalDamage: true,
@@ -45,7 +44,7 @@ const rangedSkills: IRangedWeaponSkillList = {
 		title: 'Attack',
 		cost: 2,
 		type: 'ACTIVE',
-		range: SkillRange.R4,
+		range: 4,
 		area: 'SINGLE',
 		target: 'ENEMY',
 		isFixedPhysicalDamage: true,
@@ -55,7 +54,7 @@ const rangedSkills: IRangedWeaponSkillList = {
 		title: 'Pierce',
 		cost: 4,
 		type: 'ACTIVE',
-		range: SkillRange.R1,
+		range: 1,
 		area: 'LINE',
 		target: 'ENEMY',
 		isFixedPhysicalDamage: true,

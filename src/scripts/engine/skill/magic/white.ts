@@ -1,12 +1,11 @@
 import { IWhiteMagicSkillList } from 'engine/skill/magic/types';
-import { SkillRange } from 'engine/skill';
 
 const whiteMagic: IWhiteMagicSkillList = {
 	WHITE_MAGIC_HEAL: {
 		title: 'Heal',
 		cost: 2,
 		type: 'ACTIVE',
-		range: SkillRange.R4,
+		range: 4,
 		area: 'SINGLE',
 		target: 'ALLY',
 		element: 'HOLY',
@@ -16,7 +15,7 @@ const whiteMagic: IWhiteMagicSkillList = {
 		title: 'Remedy',
 		cost: 2,
 		type: 'ACTIVE',
-		range: SkillRange.R4,
+		range: 4,
 		area: 'SINGLE',
 		target: 'ALLY',
 		element: 'HOLY'
@@ -25,7 +24,7 @@ const whiteMagic: IWhiteMagicSkillList = {
 		title: 'Regenerate',
 		cost: 2,
 		type: 'ACTIVE',
-		range: SkillRange.R4,
+		range: 4,
 		area: 'SINGLE',
 		target: 'ALLY',
 		element: 'HOLY',
@@ -36,7 +35,7 @@ const whiteMagic: IWhiteMagicSkillList = {
 		title: 'Group Heal',
 		cost: 4,
 		type: 'ACTIVE',
-		range: SkillRange.R4,
+		range: 4,
 		area: 'AOE3x3',
 		target: 'ALLY',
 		element: 'HOLY',
@@ -46,7 +45,7 @@ const whiteMagic: IWhiteMagicSkillList = {
 		title: 'Holy Aura',
 		cost: 0,
 		type: 'PASSIVE',
-		range: SkillRange.R0,
+		range: 0,
 		area: 'AOE3x3',
 		target: 'ALLY',
 		element: 'HOLY',
@@ -56,7 +55,7 @@ const whiteMagic: IWhiteMagicSkillList = {
 		title: 'Revive',
 		cost: 2,
 		type: 'ACTIVE',
-		range: SkillRange.R4,
+		range: 4,
 		area: 'SINGLE',
 		target: 'ALLY',
 		element: 'HOLY'

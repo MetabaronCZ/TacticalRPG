@@ -1,12 +1,11 @@
 import { IWield1HWeaponSkillList } from 'engine/skill/weapon/types';
-import { SkillRange } from 'engine/skill';
 
 const wield1HSkills: IWield1HWeaponSkillList = {
 	SWORD_1H_ATTACK: {
 		title: 'Attack',
 		cost: 1,
 		type: 'ACTIVE',
-		range: SkillRange.R1,
+		range: 1,
 		area: 'SINGLE',
 		target: 'ENEMY',
 		physicalDamage: 1
@@ -15,7 +14,7 @@ const wield1HSkills: IWield1HWeaponSkillList = {
 		title: 'Bleed',
 		cost: 2,
 		type: 'ACTIVE',
-		range: SkillRange.R1,
+		range: 1,
 		area: 'SINGLE',
 		target: 'ENEMY',
 		physicalDamage: 0.5,
@@ -25,7 +24,7 @@ const wield1HSkills: IWield1HWeaponSkillList = {
 		title: 'Attack',
 		cost: 1,
 		type: 'ACTIVE',
-		range: SkillRange.R1,
+		range: 1,
 		area: 'SINGLE',
 		target: 'ENEMY',
 		physicalDamage: 1
@@ -34,7 +33,7 @@ const wield1HSkills: IWield1HWeaponSkillList = {
 		title: 'Smash',
 		cost: 2,
 		type: 'ACTIVE',
-		range: SkillRange.R1,
+		range: 1,
 		area: 'SINGLE',
 		target: 'ENEMY',
 		physicalDamage: 1.5
@@ -43,7 +42,7 @@ const wield1HSkills: IWield1HWeaponSkillList = {
 		title: 'Attack',
 		cost: 1,
 		type: 'ACTIVE',
-		range: SkillRange.R1,
+		range: 1,
 		area: 'SINGLE',
 		target: 'ENEMY',
 		physicalDamage: 1
@@ -52,7 +51,7 @@ const wield1HSkills: IWield1HWeaponSkillList = {
 		title: 'Stun',
 		cost: 2,
 		type: 'ACTIVE',
-		range: SkillRange.R1,
+		range: 1,
 		area: 'SINGLE',
 		target: 'ENEMY',
 		physicalDamage: 0.5,

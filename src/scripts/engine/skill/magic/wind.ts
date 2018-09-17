@@ -1,12 +1,11 @@
 import { IWindMagicSkillList } from 'engine/skill/magic/types';
-import { SkillRange } from 'engine/skill';
 
 const windMagic: IWindMagicSkillList = {
 	WIND_MAGIC_AIR_BLAST: {
 		title: 'Air Blast',
 		cost: 2,
 		type: 'ACTIVE',
-		range: SkillRange.R4,
+		range: 4,
 		area: 'SINGLE',
 		target: 'ENEMY',
 		element: 'WIND',
@@ -17,7 +16,7 @@ const windMagic: IWindMagicSkillList = {
 		title: 'Jet Stream',
 		cost: 2,
 		type: 'ACTIVE',
-		range: SkillRange.R4,
+		range: 4,
 		area: 'SINGLE',
 		target: 'ENEMY',
 		element: 'WIND',
@@ -28,7 +27,7 @@ const windMagic: IWindMagicSkillList = {
 		title: 'Tornado',
 		cost: 4,
 		type: 'ACTIVE',
-		range: SkillRange.R4,
+		range: 4,
 		area: 'AOE3x3',
 		target: 'ENEMY',
 		element: 'WIND',
@@ -39,7 +38,7 @@ const windMagic: IWindMagicSkillList = {
 		title: 'Wind Aura',
 		cost: 0,
 		type: 'PASSIVE',
-		range: SkillRange.R0,
+		range: 0,
 		area: 'AOE3x3',
 		target: 'SELF',
 		element: 'WIND',

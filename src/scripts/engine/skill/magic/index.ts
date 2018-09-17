@@ -1,5 +1,8 @@
 import DataList from 'core/data-list';
 
+import { ISkillData } from 'engine/skill';
+import { MagicSkillID } from 'engine/skill/magic/types';
+
 import psychokinesis from 'engine/skill/magic/psychokinesis';
 import whiteMagic from 'engine/skill/magic/white';
 import blackMagic from 'engine/skill/magic/black';
@@ -10,9 +13,6 @@ import earthMagic from 'engine/skill/magic/earth';
 import iceMagic from 'engine/skill/magic/ice';
 import thunderMagic from 'engine/skill/magic/thunder';
 
-import { MagicSkillID } from 'engine/skill/magic/types';
-import { ISkillData, SkillRange } from 'engine/skill';
-
 class MagicSkillList extends DataList<MagicSkillID, ISkillData> {}
 
 const MagicSkills = new MagicSkillList({
@@ -20,7 +20,7 @@ const MagicSkills = new MagicSkillList({
 		title: 'Magic Skill',
 		cost: 0,
 		type: 'ACTIVE',
-		range: SkillRange.R1,
+		range: 1,
 		area: 'SINGLE'
 	},
 	...psychokinesis,

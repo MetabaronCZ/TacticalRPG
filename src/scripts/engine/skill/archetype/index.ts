@@ -1,5 +1,5 @@
 import DataList from 'core/data-list';
-import { ISkillData, SkillRange } from 'engine/skill';
+import { ISkillData } from 'engine/skill';
 
 export type ArchetypeSkillID = 'EVADE';
 
@@ -10,7 +10,7 @@ const ArchetypeSkills = new ArchetypeSkillList({
 		title: 'Evade',
 		cost: 2,
 		type: 'REACTIVE',
-		range: SkillRange.R1,
+		range: 1,
 		area: 'SINGLE'
 	}
 });

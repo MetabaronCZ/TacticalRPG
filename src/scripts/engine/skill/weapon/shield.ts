@@ -1,6 +1,4 @@
 import { smallShieldBlock } from 'data/game-config';
-
-import { SkillRange } from 'engine/skill';
 import { IShieldWeaponSkillList } from 'engine/skill/weapon/types';
 
 const shieldSkills: IShieldWeaponSkillList = {
@@ -8,7 +6,7 @@ const shieldSkills: IShieldWeaponSkillList = {
 		title: `Block (${smallShieldBlock * 100}%)`,
 		cost: 1,
 		type: 'REACTIVE',
-		range: SkillRange.R0,
+		range: 0,
 		area: 'SINGLE',
 		target: 'SELF'
 	},
@@ -16,7 +14,7 @@ const shieldSkills: IShieldWeaponSkillList = {
 		title: 'Block',
 		cost: 2,
 		type: 'REACTIVE',
-		range: SkillRange.R0,
+		range: 0,
 		area: 'SINGLE',
 		target: 'SELF'
 	}

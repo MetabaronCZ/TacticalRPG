@@ -1,12 +1,11 @@
 import { IThunderMagicSkillList } from 'engine/skill/magic/types';
-import { SkillRange } from 'engine/skill';
 
 const thunderMagic: IThunderMagicSkillList = {
 	THUNDER_MAGIC_THUNDERBOLT: {
 		title: 'Thunderbolt',
 		cost: 2,
 		type: 'ACTIVE',
-		range: SkillRange.R4,
+		range: 4,
 		area: 'SINGLE',
 		target: 'ENEMY',
 		element: 'THUNDER',
@@ -17,7 +16,7 @@ const thunderMagic: IThunderMagicSkillList = {
 		title: 'Shock',
 		cost: 2,
 		type: 'ACTIVE',
-		range: SkillRange.R4,
+		range: 4,
 		area: 'SINGLE',
 		target: 'ENEMY',
 		element: 'THUNDER',
@@ -29,7 +28,7 @@ const thunderMagic: IThunderMagicSkillList = {
 		title: 'Thunderstorm',
 		cost: 4,
 		type: 'ACTIVE',
-		range: SkillRange.R4,
+		range: 4,
 		area: 'AOE3x3',
 		target: 'ENEMY',
 		element: 'THUNDER',
@@ -40,7 +39,7 @@ const thunderMagic: IThunderMagicSkillList = {
 		title: 'Thunder Aura',
 		cost: 0,
 		type: 'PASSIVE',
-		range: SkillRange.R0,
+		range: 0,
 		area: 'AOE3x3',
 		target: 'SELF',
 		element: 'THUNDER',

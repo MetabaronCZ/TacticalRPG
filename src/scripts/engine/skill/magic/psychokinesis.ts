@@ -1,12 +1,11 @@
 import { IPsychokinesisSkillList } from 'engine/skill/magic/types';
-import { SkillRange } from 'engine/skill';
 
 const psychokinesis: IPsychokinesisSkillList = {
 	PSYCHOKINESIS_KINETIC_STRIKE: {
 		title: 'Kinetic Strike',
 		cost: 2,
 		type: 'ACTIVE',
-		range: SkillRange.R4,
+		range: 4,
 		area: 'SINGLE',
 		target: 'ENEMY',
 		element: 'PSYCHIC',
@@ -17,7 +16,7 @@ const psychokinesis: IPsychokinesisSkillList = {
 		title: 'Forget',
 		cost: 2,
 		type: 'ACTIVE',
-		range: SkillRange.R4,
+		range: 4,
 		area: 'SINGLE',
 		target: 'ENEMY',
 		element: 'PSYCHIC',
@@ -27,7 +26,7 @@ const psychokinesis: IPsychokinesisSkillList = {
 		title: 'Psychodome',
 		cost: 0,
 		type: 'PASSIVE',
-		range: SkillRange.R0,
+		range: 0,
 		area: 'AOE3x3',
 		target: 'ENEMY',
 		element: 'PSYCHIC'

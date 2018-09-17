@@ -1,12 +1,11 @@
 import { IFireMagicSkillList } from 'engine/skill/magic/types';
-import { SkillRange } from 'engine/skill';
 
 const fireMagic: IFireMagicSkillList = {
 	FIRE_MAGIC_FIREBALL: {
 		title: 'Fireball',
 		cost: 2,
 		type: 'ACTIVE',
-		range: SkillRange.R4,
+		range: 4,
 		area: 'SINGLE',
 		target: 'ENEMY',
 		element: 'FIRE',
@@ -17,7 +16,7 @@ const fireMagic: IFireMagicSkillList = {
 		title: 'Burn',
 		cost: 2,
 		type: 'ACTIVE',
-		range: SkillRange.R4,
+		range: 4,
 		area: 'SINGLE',
 		target: 'ENEMY',
 		element: 'FIRE',
@@ -29,7 +28,7 @@ const fireMagic: IFireMagicSkillList = {
 		title: 'Firestorm',
 		cost: 4,
 		type: 'ACTIVE',
-		range: SkillRange.R4,
+		range: 4,
 		area: 'AOE3x3',
 		target: 'ENEMY',
 		element: 'FIRE',
@@ -40,7 +39,7 @@ const fireMagic: IFireMagicSkillList = {
 		title: 'Fire Aura',
 		cost: 0,
 		type: 'PASSIVE',
-		range: SkillRange.R0,
+		range: 0,
 		area: 'AOE3x3',
 		target: 'SELF',
 		element: 'FIRE',

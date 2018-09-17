@@ -1,12 +1,11 @@
 import { IEarthMagicSkillList } from 'engine/skill/magic/types';
-import { SkillRange } from 'engine/skill';
 
 const earthMagic: IEarthMagicSkillList = {
 	EARTH_MAGIC_BOULDER: {
 		title: 'Boulder',
 		cost: 2,
 		type: 'ACTIVE',
-		range: SkillRange.R4,
+		range: 4,
 		area: 'SINGLE',
 		target: 'ENEMY',
 		element: 'EARTH',
@@ -17,7 +16,7 @@ const earthMagic: IEarthMagicSkillList = {
 		title: 'Earth Spike',
 		cost: 2,
 		type: 'ACTIVE',
-		range: SkillRange.R4,
+		range: 4,
 		area: 'SINGLE',
 		target: 'ENEMY',
 		element: 'EARTH',
@@ -29,7 +28,7 @@ const earthMagic: IEarthMagicSkillList = {
 		title: 'Earthquake',
 		cost: 4,
 		type: 'ACTIVE',
-		range: SkillRange.R4,
+		range: 4,
 		area: 'AOE3x3',
 		target: 'ENEMY',
 		element: 'EARTH',
@@ -41,7 +40,7 @@ const earthMagic: IEarthMagicSkillList = {
 		title: 'Stone Skin',
 		cost: 0,
 		type: 'PASSIVE',
-		range: SkillRange.R0,
+		range: 0,
 		area: 'SINGLE',
 		target: 'SELF',
 		element: 'EARTH',
