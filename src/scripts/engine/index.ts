@@ -48,7 +48,7 @@ class Engine {
 
 	constructor(conf: IEngineProps) {
 		this.players = this.createPlayers(conf.players);
-		this.characters = this.players.map(pl => pl.getCharacters()).reduce((a, b) => a.concat(b));
+		this.characters = this.players.map(pl => pl.characters).reduce((a, b) => a.concat(b));
 		this.order = new Order(this.players);
 		this.events = this.prepareEvents(conf.events);
 	}
@@ -93,7 +93,7 @@ class Engine {
 		order.update();
 
 		// get actors
-		const actors = liveChars.filter(char => char.getAttribute('CT') >= characterCTLimit);
+		const actors = liveChars.filter(char => char.attributes.get('CT') >= characterCTLimit);
 
 		// if no actor present, continue updating
 		if (!actors.length) {
@@ -184,7 +184,7 @@ class Engine {
 
 				// set small random initial CP
 				const ct = Math.floor((characterCTLimit / 10) * Math.random());
-				char.setAttribute('CT', ct);
+				char.attributes.set('CT', ct);
 
 				return char;
 			});
@@ -199,7 +199,7 @@ class Engine {
 		const { players } = this;
 
 		for (const pl of players) {
-			const liveChars = pl.getCharacters().filter(char => !char.isDead());
+			const liveChars = pl.characters.filter(char => !char.isDead());
 
 			if (0 === liveChars.length) {
 				return true;

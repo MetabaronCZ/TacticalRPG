@@ -19,7 +19,7 @@ export const getMovableTiles = (start: Position, obstacles: Position[], max: num
 	frontier.push(start, 0);
 
 	const costMap: IMoveCostMap = {};
-	costMap[start.getId()] = 0;
+	costMap[start.id] = 0;
 
 	while (frontier.size()) {
 		const curr = frontier.get();
@@ -30,14 +30,14 @@ export const getMovableTiles = (start: Position, obstacles: Position[], max: num
 		const neighbours = curr.getSideTiles(obstacles);
 
 		for (const n of neighbours) {
-			const newCost = costMap[curr.getId()] + n.getCost();
+			const newCost = costMap[curr.id] + n.cost;
 
 			if (newCost > max) {
 				continue;
 			}
 
-			if (!(n.getId() in costMap) || newCost < costMap[n.getId()]) {
-				costMap[n.getId()] = newCost;
+			if (!(n.id in costMap) || newCost < costMap[n.id]) {
+				costMap[n.id] = newCost;
 				frontier.push(n, newCost);
 			}
 		}

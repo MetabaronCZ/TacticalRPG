@@ -1,4 +1,4 @@
-import { getBaseAttributes, BaseAttrFormula, SecondaryAttrFormula, getMutiplier } from 'engine/character/attributes/formula';
+import { getDefaultBaseAttributes, BaseAttrFormula, SecondaryAttrFormula, getMutiplier } from 'engine/character/attributes/formula';
 import { ArchetypeID } from 'engine/character/archetype';
 
 export type BaseAttributeID =
@@ -26,55 +26,28 @@ export type ISecondaryAttributes = {
 
 export type IAttributes = IBaseAttributes & ISecondaryAttributes;
 
-class Attributes {
-	private base: IAttributes;
-	private current: IAttributes;
+const getBaseAttributes = (archetype: ArchetypeID): IBaseAttributes => {
+	const { P, S, M } = getMutiplier(archetype);
+	const base = getDefaultBaseAttributes();
 
-	constructor(archetype: ArchetypeID) {
-		this.base = this.getAttributes(archetype);
-		this.current = this.getAttributes(archetype);
-	}
+	return {
+		STR: base.STR + BaseAttrFormula.STR(P, S, M),
+		VIT: base.VIT + BaseAttrFormula.VIT(P, S, M),
+		SPD: base.SPD + BaseAttrFormula.SPD(P, S, M),
+		MOV: base.MOV + BaseAttrFormula.MOV(P, S, M),
+		MAG: base.MAG + BaseAttrFormula.MAG(P, S, M),
+		SPR: base.SPR + BaseAttrFormula.SPR(P, S, M)
+	};
+};
 
-	public getBase(): IAttributes {
-		return this.base;
-	}
+const getSecondaryAttributes = (baseAttrs: IBaseAttributes): ISecondaryAttributes => ({
+	HP: SecondaryAttrFormula.HP(baseAttrs),
+	AP: SecondaryAttrFormula.AP(baseAttrs),
+	CT: SecondaryAttrFormula.CT(baseAttrs)
+});
 
-	public getCurrent(): IAttributes {
-		return this.current;
-	}
-
-	// set attribute value
-	public set(attr: AttributeID, value: number) {
-		this.current[attr] = value;
-	}
-
-	private getAttributes(archetype: ArchetypeID): IAttributes {
-		const baseAttrs = this.getBaseAttributes(archetype);
-		const secondaryAttrs = this.getSecondaryAttributes(baseAttrs);
-		return { ...baseAttrs, ...secondaryAttrs };
-	}
-
-	private getBaseAttributes(archetype: ArchetypeID): IBaseAttributes {
-		const { P, S, M } = getMutiplier(archetype);
-		const base = getBaseAttributes();
-
-		return {
-			STR: base.STR + BaseAttrFormula.STR(P, S, M),
-			VIT: base.VIT + BaseAttrFormula.VIT(P, S, M),
-			SPD: base.SPD + BaseAttrFormula.SPD(P, S, M),
-			MOV: base.MOV + BaseAttrFormula.MOV(P, S, M),
-			MAG: base.MAG + BaseAttrFormula.MAG(P, S, M),
-			SPR: base.SPR + BaseAttrFormula.SPR(P, S, M)
-		};
-	}
-
-	private getSecondaryAttributes(baseAttrs: IBaseAttributes): ISecondaryAttributes {
-		return {
-			HP: SecondaryAttrFormula.HP(baseAttrs),
-			AP: SecondaryAttrFormula.AP(baseAttrs),
-			CT: SecondaryAttrFormula.CT(baseAttrs)
-		};
-	}
-}
-
-export default Attributes;
+export const getAttributes = (archetype: ArchetypeID): IAttributes => {
+	const baseAttrs = getBaseAttributes(archetype);
+	const secondaryAttrs = getSecondaryAttributes(baseAttrs);
+	return { ...baseAttrs, ...secondaryAttrs };
+};

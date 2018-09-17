@@ -4,13 +4,13 @@ import { WeaponSkillID } from 'engine/skill/weapon';
 import { WeaponTypeID, WeaponID } from 'engine/equipment/weapon-data';
 
 class Weapon {
-	private readonly id: WeaponID;
-	private readonly title: string;
-	private readonly description: string;
-	private readonly type: WeaponTypeID;
-	private readonly skills: WeaponSkillID[];
-	private readonly damage: number;
-	private readonly magic: number;
+	public readonly id: WeaponID;
+	public readonly title: string;
+	public readonly description: string;
+	public readonly type: WeaponTypeID;
+	public readonly skills: WeaponSkillID[];
+	public readonly damage: number;
+	public readonly magic: number;
 
 	constructor(id: WeaponID) {
 		const data = Weapons.get(id);
@@ -21,38 +21,6 @@ class Weapon {
 		this.skills = data.skills;
 		this.damage = data.damage;
 		this.magic = data.magic;
-	}
-
-	public isType(type: WeaponTypeID): boolean {
-		return type === this.type;
-	}
-
-	public getId(): WeaponID {
-		return this.id;
-	}
-
-	public getTitle(): string {
-		return this.title;
-	}
-
-	public getDescription(): string {
-		return this.description;
-	}
-
-	public getType(): WeaponTypeID {
-		return this.type;
-	}
-
-	public getSkills(): WeaponSkillID[] {
-		return this.skills;
-	}
-
-	public getDamage(): number {
-		return this.damage;
-	}
-
-	public getMagic(): number {
-		return this.magic;
 	}
 }
 

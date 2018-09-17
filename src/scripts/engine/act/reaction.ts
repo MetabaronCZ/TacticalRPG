@@ -84,7 +84,7 @@ class ActReaction {
 
 		this.events.onReactionSelected(this);
 
-		const skillId = skills[0].getId();
+		const skillId = skills[0].id;
 
 		switch (skillId) {
 			case 'EVADE':
@@ -123,12 +123,12 @@ class ActReaction {
 		this.evasionTarget = target;
 
 		const skills = action.getSkills();
-		const cost = skills[0].getCost();
+		const cost = skills[0].cost;
 
 		// update reacting character
-		const AP = reactor.getAttribute('AP');
-		reactor.setPosition(target);
-		reactor.setAttribute('AP', AP - cost);
+		const AP = reactor.attributes.get('AP');
+		reactor.position = target;
+		reactor.attributes.set('AP', AP - cost);
 
 		this.events.onEvasionEnd(this);
 		this.events.onEnd(this);
@@ -165,7 +165,7 @@ class ActReaction {
 		this.state = 'EVASION';
 
 		// update reacting character
-		const evasionArea = reactor.getPosition().getSideTiles(obstacles);
+		const evasionArea = reactor.position.getSideTiles(obstacles);
 		this.evasionTargets = evasionArea;
 
 		this.events.onEvasionStart(this);
@@ -178,7 +178,7 @@ class ActReaction {
 			throw new Error('Could not start to evade: invalid state ' + state);
 		}
 		this.state = 'DONE';
-		this.reactor.applyStatus(block);
+		this.reactor.status.apply(block);
 
 		this.events.onBlock(this);
 		this.events.onEnd(this);
@@ -187,7 +187,7 @@ class ActReaction {
 	private prepareEvents(events: IActReactionEvents): IActReactionEvents {
 		return {
 			onStart: reaction => {
-				Logger.log(`ActReaction onStart: "${reaction.getReactor().getName()}"`);
+				Logger.log(`ActReaction onStart: "${reaction.getReactor().name}"`);
 				events.onStart(reaction);
 			},
 			onReactionSelected: reaction => {
@@ -205,7 +205,7 @@ class ActReaction {
 			},
 			onEvasionEnd: reaction => {
 				const tgt = reaction.getEvasionTarget();
-				Logger.log(`ActReaction onEvasionEnd: ${tgt ? `(${tgt.getX()}, ${tgt.getY()})` : '-'}`);
+				Logger.log(`ActReaction onEvasionEnd: ${tgt ? `(${tgt.x}, ${tgt.y})` : '-'}`);
 				events.onEvasionEnd(reaction);
 			},
 			onReset: reaction => {

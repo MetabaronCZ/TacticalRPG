@@ -10,22 +10,22 @@ import { StatusEffectID } from 'engine/status-effect';
 
 class Damage {
 	public static getPhysical(attacker: Character, defender: Character, skill: Skill): number {
-		const defArmor = defender.getEquipment().getArmor();
-		const attWeapon = Weapons.values().find(wpn => -1 !== (wpn.skills as SkillID[]).indexOf(skill.getId()));
-		const defOffHand = defender.getEquipment().getOffHand();
-		const defArmorDefense = defArmor.getPhysicalDefense();
+		const defArmor = defender.armor;
+		const attWeapon = Weapons.values().find(wpn => -1 !== (wpn.skills as SkillID[]).indexOf(skill.id));
+		const defOffHand = defender.offHand;
+		const defArmorDefense = defArmor.physicalDefense;
 		const attWeaponDamage = (attWeapon ? attWeapon.damage : 1);
 
-		const defense = (1 - defender.getAttribute('VIT') / 100) * (1 - defArmorDefense / 100);
+		const defense = (1 - defender.attributes.get('VIT') / 100) * (1 - defArmorDefense / 100);
 		let attack = 0;
 
 		if (skill.isFixedPhysicalDamage) {
-			attack = skill.getPhysicalDamage();
+			attack = skill.physicalDamage;
 		} else {
-			attack = attacker.getAttribute('STR') * attWeaponDamage * skill.getPhysicalDamage();
+			attack = attacker.attributes.get('STR') * attWeaponDamage * skill.physicalDamage;
 		}
-		const defHasShield = ('SHIELD' === defOffHand.getType());
-		const defHasBlocked = defender.hasStatus('BLOCK_SMALL');
+		const defHasShield = ('SHIELD' === defOffHand.type);
+		const defHasBlocked = defender.status.has('BLOCK_SMALL');
 		let defBlock = 0;
 
 		// small shield block
@@ -38,27 +38,27 @@ class Damage {
 	}
 
 	public static getElemental(attacker: Character, defender: Character, skill: Skill): number {
-		const main = attacker.getEquipment().getMainHand();
-		const off = attacker.getEquipment().getOffHand();
-		const armor = defender.getEquipment().getArmor();
-		const armorDefense = armor.getMagicalDefense();
-		const magBonus = main.getMagic() + off.getMagic();
-		const skillset = defender.getSkillset();
-		const modifier = SkillUtils.getElementModifier(skill.getElement(), skillset.getElement());
+		const main = attacker.mainHand;
+		const off = attacker.offHand;
+		const armor = defender.armor;
+		const armorDefense = armor.magicalDefense;
+		const magBonus = main.magic + off.magic;
+		const skillset = defender.skillset;
+		const modifier = SkillUtils.getElementModifier(skill.element, skillset.element);
 
-		const attack = (attacker.getAttribute('MAG') + magBonus) * skill.getElementalDamage();
-		const defense = (1 - defender.getAttribute('SPR') / 100) * (1 - armorDefense / 100);
+		const attack = (attacker.attributes.get('MAG') + magBonus) * skill.elementalDamage;
+		const defense = (1 - defender.attributes.get('SPR') / 100) * (1 - armorDefense / 100);
 		const damage = Math.round(attack * defense * modifier);
 
 		return damage > 0 ? damage : 0;
 	}
 
 	public static getStatusEffects(attacker: Character, defender: Character, skill: Skill): StatusEffectID[] {
-		const statuses = skill.getStatus().map(id => StatusEffects.get(id)());
-		const attackSTR = attacker.getAttribute('STR');
-		const attackMAG = attacker.getAttribute('MAG');
-		const defendVIT = defender.getAttribute('VIT');
-		const defendSPR = defender.getAttribute('SPR');
+		const statuses = skill.status.map(id => StatusEffects.get(id)());
+		const attackSTR = attacker.attributes.get('STR');
+		const attackMAG = attacker.attributes.get('MAG');
+		const defendVIT = defender.attributes.get('VIT');
+		const defendSPR = defender.attributes.get('SPR');
 		const effects: StatusEffectID[] = [];
 
 		for (const status of statuses) {

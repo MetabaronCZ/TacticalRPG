@@ -16,13 +16,12 @@ interface IGridChactersProps {
 const GridCharacters: React.SFC<IGridChactersProps> = ({ actor, characters, colors }) => (
 	<div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', }}>
 		{characters.map((char, i) => {
-			const x = char.getPosition().getX();
-			const y = char.getPosition().getY();
-			let color = colors.find(c => c.player === char.getPlayer());
+			const { x, y } = char.position;
+			let color = colors.find(c => c.player === char.player);
 			const dir: { [pos: string]: string|0 } = { top: 'auto', bottom: 'auto', left: 'auto', right: 'auto' };
 			const dirIcoSize = 4;
 
-			switch (char.getDirection()) {
+			switch (char.direction) {
 				case 'TOP':		dir.top = 0; dir.left = `calc(50% - ${dirIcoSize}px)`; break;
 				case 'BOTTOM':	dir.bottom = 0; dir.left = `calc(50% - ${dirIcoSize}px)`; break;
 				case 'LEFT':	dir.top = `calc(50% - ${dirIcoSize}px)`; dir.left = 0; break;
@@ -47,7 +46,7 @@ const GridCharacters: React.SFC<IGridChactersProps> = ({ actor, characters, colo
 							height: itemSize + '%',
 						}
 					}
-					title={char.getName()}
+					title={char.name}
 					key={i}
 				>
 					<div
@@ -64,7 +63,7 @@ const GridCharacters: React.SFC<IGridChactersProps> = ({ actor, characters, colo
 							}
 						}
 					>
-						{char.getName().substring(0, 4).toUpperCase()}
+						{char.name.substring(0, 4).toUpperCase()}
 
 						<div
 							style={

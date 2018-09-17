@@ -4,6 +4,10 @@ import { IStatusEffect, StatusEffectID } from 'engine/status-effect';
 class Status {
 	private items: IStatusEffect[] = [];
 
+	public has(effectId: StatusEffectID): boolean {
+		return !!this.items.find(item => effectId === item.id);
+	}
+
 	public get(): IStatusEffect[] {
 		return this.items;
 	}

@@ -9,7 +9,7 @@ export interface ICostMap {
 }
 
 export const getPriority = (a: Position, b: Position): number => {
-	return Math.abs(a.getX() - b.getX()) + Math.abs(a.getY() - b.getY());
+	return Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
 };
 
 export const constructPath = (start: Position, target: Position, graph: IGraph): Position[] => {
@@ -21,7 +21,7 @@ export const constructPath = (start: Position, target: Position, graph: IGraph):
 			break;
 		}
 		path.push(curr);
-		curr = graph[curr.getId()];
+		curr = graph[curr.id];
 	}
 	path.push(start);
 	return path.reverse();

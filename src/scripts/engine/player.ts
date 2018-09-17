@@ -12,26 +12,14 @@ export interface IPlayerData {
 }
 
 class Player {
-	private name: string;
-	private control: PlayerControlID;
-	private characters: Character[] = [];
+	public readonly name: string;
+	public readonly control: PlayerControlID;
+	public readonly characters: Character[] = [];
 
 	constructor(name: string, control: PlayerControlID, characters: Character[]) {
 		this.name = name;
 		this.control = control;
 		this.characters = characters;
-	}
-
-	public getName(): string {
-		return this.name;
-	}
-
-	public getControl(): PlayerControlID {
-		return this.control;
-	}
-
-	public getCharacters(): Character[] {
-		return this.characters;
 	}
 }
 

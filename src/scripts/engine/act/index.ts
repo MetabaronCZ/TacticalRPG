@@ -1,7 +1,7 @@
 import Logger from 'engine/logger';
 import Position from 'engine/position';
 import Character from 'engine/character';
-import BattleInfo from 'engine/battle-info';
+import { IBattleInfo } from 'engine/battle-info';
 import CharacterAction from 'engine/character-action';
 import CharacterActions from 'engine/character-actions';
 
@@ -28,7 +28,7 @@ class Act {
 
 	private phase: ActPhase = 'INIT';
 	private actions: CharacterAction[] = [];
-	private battleInfo: BattleInfo[] = [];
+	private battleInfo: IBattleInfo[] = [];
 
 	constructor(id: number, actor: Character, characters: Character[], events: IActEvents) {
 		this.id = id;
@@ -361,7 +361,7 @@ class Act {
 		const infos = this.battleInfo;
 
 		// set battle info item
-		const item = new BattleInfo(text, position);
+		const item: IBattleInfo = { text, position };
 		infos.push(item);
 
 		this.update();
@@ -381,7 +381,7 @@ class Act {
 	private prepareEvents(events: IActEvents): IActEvents {
 		return {
 			onStart: act => {
-				Logger.log(`Act onStart: "${act.getActor().getName()}"`);
+				Logger.log(`Act onStart: "${act.getActor().name}"`);
 				events.onStart(act);
 			},
 			onUpdate: events.onUpdate,

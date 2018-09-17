@@ -16,7 +16,7 @@ class SkillUtils {
 		for (const id of ids) {
 			const skill = new Skill(id);
 
-			if (skill.isType('ACTIVE') && isAttackSkill(id)) {
+			if ('ACTIVE' === skill.type && isAttackSkill(id)) {
 				skills.push(skill);
 			}
 		}
@@ -30,7 +30,7 @@ class SkillUtils {
 		for (const id of ids) {
 			const skill = new Skill(id);
 
-			if (skill.isType('ACTIVE') && !isAttackSkill(id) && -1 === uniqueSkills.indexOf(id)) {
+			if ('ACTIVE' === skill.type && !isAttackSkill(id) && -1 === uniqueSkills.indexOf(id)) {
 				uniqueSkills.push(id);
 				skills.push(skill);
 			}
@@ -49,19 +49,19 @@ class SkillUtils {
 	}
 
 	public static getTargetableArea(skill: Skill, source: Position): Position[] {
-		if (skill.isTarget('NONE')) {
+		if ('NONE' === skill.target) {
 			return [];
 		}
-		if (skill.isTarget('SELF')) {
+		if ('SELF' === skill.target) {
 			return [source];
 		}
-		const range: number = skill.getRange();
+		const range: number = skill.range;
 		let targetable: Position[] = [];
 
 		// get all tiles in range
 		for (let x = -range; x <= range; x++) {
 			for (let y = -range; y <= range; y++) {
-				const pos = getPosition(source.getX() + x, source.getY() + y);
+				const pos = getPosition(source.x + x, source.y + y);
 
 				if (null === pos) {
 					continue;
@@ -71,7 +71,7 @@ class SkillUtils {
 		}
 
 		// filter diagonals and straight lines for LINE area skill type
-		if (skill.isArea('LINE')) {
+		if ('LINE' === skill.area) {
 			targetable = targetable.filter(pos => pos.isOnStraightLine(source));
 		}
 
@@ -83,8 +83,8 @@ class SkillUtils {
 			return [];
 		}
 
-		if (skill.isTarget('SELF')) {
-			return [actor.getPosition()];
+		if ('SELF' === skill.target) {
+			return [actor.position];
 		}
 		let targets: Character[] = [];
 
@@ -92,29 +92,29 @@ class SkillUtils {
 		characters = characters.filter(char => !char.isDead());
 
 		// get possible targets
-		switch (skill.getTarget()) {
+		switch (skill.target) {
 			case 'ANY':
 				targets = characters;
 				break;
 
 			case 'ALLY':
-				targets = characters.filter(char => char.getPlayer() === actor.getPlayer());
+				targets = characters.filter(char => char.player === actor.player);
 				break;
 
 			case 'ENEMY':
-				targets = characters.filter(char => char.getPlayer() !== actor.getPlayer());
+				targets = characters.filter(char => char.player !== actor.player);
 				break;
 		}
 
 		if (!targets.length) {
 			return [];
 		}
-		const targetPositions = targets.map(char => char.getPosition());
+		const targetPositions = targets.map(char => char.position);
 		return targetable.filter(pos => pos.isContained(targetPositions));
 	}
 
 	public static getEffectArea(skill: Skill, source: Position, target: Position): Position[] {
-		const area = skill.getArea();
+		const area = skill.area;
 		let effect: Position[] = [];
 
 		switch (area) {
@@ -123,15 +123,15 @@ class SkillUtils {
 				break;
 
 			case 'LINE':
-				const diffX = target.getX() - source.getX();
-				const diffY = target.getY() - source.getY();
+				const diffX = target.x - source.x;
+				const diffY = target.y - source.y;
 				const absDiffX = Math.abs(diffX);
 				const absDiffY = Math.abs(diffY);
 				const dirX = (diffX / absDiffX) || 0;
 				const dirY = (diffY / absDiffY) || 0;
 
-				for (let i = 1; i <= skill.getRange(); i++ ) {
-					const pos = getPosition(source.getX() + i * dirX, source.getY() + i * dirY);
+				for (let i = 1; i <= skill.range; i++ ) {
+					const pos = getPosition(source.x + i * dirX, source.y + i * dirY);
 
 					if (null !== pos) {
 						effect.push(pos);
@@ -159,18 +159,17 @@ class SkillUtils {
 	}
 
 	public static getEffectTargets(actor: Character, skill: Skill, effectArea: Position[], characters: Character[]): Character[] {
-		if (skill.isTarget('NONE')) {
+		if ('NONE' === skill.target) {
 			return [];
 		}
-		const target = skill.getTarget();
+		const target = skill.target;
 		const targets: Character[] = [];
 
 		// remove dead characters
 		characters = characters.filter(char => !char.isDead());
 
 		for (const char of characters) {
-			const pos = char.getPosition();
-			const isInArea = pos.isContained(effectArea);
+			const isInArea = char.position.isContained(effectArea);
 
 			if (!isInArea) {
 				continue;
@@ -183,13 +182,13 @@ class SkillUtils {
 					break;
 
 				case 'ALLY':
-					if (actor.getPlayer() === char.getPlayer()) {
+					if (actor.player === char.player) {
 						targets.push(char);
 					}
 					break;
 
 				case 'ENEMY':
-					if (actor.getPlayer() !== char.getPlayer()) {
+					if (actor.player !== char.player) {
 						targets.push(char);
 					}
 					break;

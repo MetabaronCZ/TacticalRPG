@@ -9,12 +9,8 @@ class Order {
 	private order: Character[] = [];
 
 	constructor(players: Player[]) {
+		this.characters = players.map(pl => pl.characters).reduce((a, b) => a.concat(b));
 		this.players = players;
-
-		this.characters = players
-			.map(pl => pl.getCharacters()) // get player characters
-			.reduce((a, b) => a.concat(b)); // merge all characters
-
 		this.update();
 	}
 
@@ -34,12 +30,12 @@ class Order {
 
 		// serialize characters
 		const chars = liveChars.map(char => {
-			const SPD = char.getAttribute('SPD');
-			const CT = char.getAttribute('CT');
+			const SPD = char.attributes.get('SPD');
+			const CT = char.attributes.get('CT');
 			let playerOrder = -1;
 
 			for (let p = 0, pmax = players.length; p < pmax; p++) {
-				if (-1 !== players[p].getCharacters().indexOf(char)) {
+				if (-1 !== players[p].characters.indexOf(char)) {
 					playerOrder = p;
 					break;
 				}

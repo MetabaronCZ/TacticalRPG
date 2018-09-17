@@ -10,10 +10,10 @@ export const getShortestPath = (start: Position, target: Position, obstacles: Po
 	frontier.push(start, 0);
 
 	const visited: IGraph = {};
-	visited[start.getId()] = null;
+	visited[start.id] = null;
 
 	const cost: ICostMap = {};
-	cost[start.getId()] = 0;
+	cost[start.id] = 0;
 
 	while (frontier.size()) {
 		const curr = frontier.get();
@@ -29,13 +29,13 @@ export const getShortestPath = (start: Position, target: Position, obstacles: Po
 		neighbours = ArrayUtils.randomize(neighbours);
 
 		for (const n of neighbours) {
-			const newCost = cost[curr.getId()] + n.getCost();
+			const newCost = cost[curr.id] + n.cost;
 
-			if (!cost[n.getId()] || newCost < cost[n.getId()]) {
+			if (!cost[n.id] || newCost < cost[n.id]) {
 				const priority = newCost + getPriority(target, n);
-				cost[n.getId()] = newCost;
+				cost[n.id] = newCost;
 				frontier.push(n, priority);
-				visited[n.getId()] = curr;
+				visited[n.id] = curr;
 			}
 		}
 	}

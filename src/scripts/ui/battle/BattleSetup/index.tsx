@@ -1,6 +1,8 @@
 import React, { SyntheticEvent } from 'react';
 
 import { validateField } from 'utils/validation';
+
+import PlayerControl from 'data/player-control';
 import { playerMaxNameLength, maxPlayers, randomPartyID } from 'data/game-config';
 
 import Form from 'ui/common/Form';
@@ -13,7 +15,6 @@ import FormSelect from 'ui/common/FormSelect';
 import FormSelectItem from 'ui/common/FormSelectItem';
 import CharacterList from 'ui/character-creation/CharacterList';
 
-import PlayerControl from 'engine/player-control';
 import { ICharacterData } from 'engine/character-data';
 import PartyDataUtils, { IPartyData } from 'engine/party-data';
 import { IBattleConfig, IBattleConfigPlayer } from 'engine/battle-config';

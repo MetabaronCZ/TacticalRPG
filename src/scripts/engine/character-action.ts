@@ -11,7 +11,7 @@ class CharacterAction {
 	private readonly active: boolean;
 	private readonly skills: Skill[];
 
-	constructor(id: CharacterActionID, title: string, cost: number, isActive = true, skills: Skill[] = []) {
+	constructor(id: CharacterActionID, title: string, cost = 0, isActive = true, skills: Skill[] = []) {
 		this.id = id;
 		this.cost = cost;
 		this.title = title;

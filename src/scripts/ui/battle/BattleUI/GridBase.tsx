@@ -56,7 +56,7 @@ const getColor = (pos: Position, act: Act|null) => {
 					if (pos.isContained(actionPhase.getEffectArea())) {
 						color = 'green';
 					}
-					if (pos.isContained(actionPhase.getEffectTargets().map(char => char.getPosition()))) {
+					if (pos.isContained(actionPhase.getEffectTargets().map(char => char.position))) {
 						color = 'blue';
 					}
 					if (pos === tgt) {
@@ -106,8 +106,7 @@ const GridBase: React.SFC<IGridBaseProps> = ({ act, onSelect }) => {
 	return (
 		<div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', }}>
 			{tiles.map(([pos, color], i) => {
-				const x = pos.getX();
-				const y = pos.getY();
+				const { x, y } = pos;
 				const onClick = () => onSelect(pos);
 
 				return (

@@ -17,7 +17,7 @@ const Characters: React.SFC<ICharactersProps> = ({ act, players }) => (
 		{players.map((pl, p) => (
 			<div style={{ marginBottom: '20px', }} key={p}>
 				<h3 className="Heading">
-					{pl.getName()} ({pl.getControl()} Player)
+					{pl.name} ({pl.control} Player)
 				</h3>
 
 				<table style={{ width: '100%', borderCollapse: 'collapse', }}>
@@ -30,21 +30,21 @@ const Characters: React.SFC<ICharactersProps> = ({ act, players }) => (
 					</thead>
 
 					<tbody>
-						{pl.getCharacters().map((char, c) => {
+						{pl.characters.map((char, c) => {
 							const isActive = !!(act && act.getActor() === char);
 							const isDead = char.isDead();
-							const HP = char.getAttribute('HP');
-							const AP = char.getAttribute('AP');
-							const baseHP = char.getBaseAttribute('HP');
-							const baseAP = char.getBaseAttribute('AP');
+							const HP = char.attributes.get('HP');
+							const AP = char.attributes.get('AP');
+							const baseHP = char.baseAttributes.get('HP');
+							const baseAP = char.baseAttributes.get('AP');
 							const color = (isDead ? 'darkred' : (isActive ? 'black' : ''));
 
 							return (
 								<tr key={c} style={{ backgroundColor: color, }}>
 									<td>
-										<strong>{char.getName()}</strong>
-										{' '}{Icos[char.getSex().toLowerCase()]}
-										{' '}<ArchetypeIco archetype={char.getArchetype()} />
+										<strong>{char.name}</strong>
+										{' '}{Icos[char.sex.toLowerCase()]}
+										{' '}<ArchetypeIco archetype={char.archetype} />
 									</td>
 									<td style={{ textAlign: 'right', paddingLeft: '10px', }}>
 										{HP} <span style={{ color: 'grey', }}>/ {baseHP}</span>

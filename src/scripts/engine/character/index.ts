@@ -1,108 +1,68 @@
 import { characterCTLimit } from 'data/game-config';
 
 import Position from 'engine/position';
+import Armor from 'engine/equipment/armor';
+import Weapon from 'engine/equipment/weapon';
 import Status from 'engine/character/status';
 import { DirectionID } from 'engine/direction';
-import Movement from 'engine/character/movement';
 import Skillset from 'engine/character/skillset';
-import Equipment from 'engine/character/equipment';
+import { StatusEffectID } from 'engine/status-effect';
 import { ICharacterData } from 'engine/character-data';
 import { ArchetypeID } from 'engine/character/archetype';
-import { IStatusEffect, StatusEffectID } from 'engine/status-effect';
-import Attributes, { AttributeID } from 'engine/character/attributes';
+import Attributes from 'engine/character/attributes/attributes';
+import BaseAttributes from 'engine/character/attributes/base-attributes';
 
 class Character {
-	private readonly player: number;
-	private readonly data: ICharacterData;
-	private	readonly skillset: Skillset;
-	private readonly attributes: Attributes;
-	private readonly status: Status;
-	private readonly movable: Movement;
-	private readonly equipment: Equipment;
+	public readonly name: string;
+	public readonly sex: string;
+	public readonly archetype: ArchetypeID;
+	public readonly attributes: Attributes;
+	public readonly baseAttributes: BaseAttributes;
+
+	public readonly player: number;
+	public readonly skillset: Skillset;
+	public readonly status: Status;
+
+	public readonly mainHand: Weapon;
+	public readonly offHand: Weapon;
+	public readonly armor: Armor;
+
+	public position: Position;
+	public direction: DirectionID;
 
 	constructor(data: ICharacterData, position: Position, direction: DirectionID, player: number) {
-		this.data = data;
+		this.name = data.name;
+		this.sex = data.sex;
+		this.archetype = data.archetype;
+		this.attributes = new Attributes(data.archetype);
+		this.baseAttributes = new BaseAttributes(data.archetype);
+
 		this.player = player;
 		this.skillset = new Skillset(data.skillset);
-		this.movable = new Movement(position, direction);
-		this.equipment = new Equipment(data.main, data.off, data.armor);
-		this.attributes = new Attributes(data.archetype);
 		this.status = new Status();
+
+		this.mainHand = new Weapon(data.main);
+		this.offHand = new Weapon(data.off);
+		this.armor = new Armor(data.armor);
+
+		this.position = position;
+		this.direction = direction;
 	}
 
 	public isPowerType(): boolean {
-		return -1 !== this.data.archetype.indexOf('P');
+		return -1 !== this.archetype.indexOf('P');
 	}
 
 	public isSpeedType(): boolean {
-		return -1 !== this.data.archetype.indexOf('S');
+		return -1 !== this.archetype.indexOf('S');
 	}
 
 	public isMagicType(): boolean {
-		return -1 !== this.data.archetype.indexOf('M');
+		return -1 !== this.archetype.indexOf('M');
 	}
 
 	public isDead(): boolean {
-		return this.getAttribute('HP') <= 0;
-	}
-
-	public hasStatus(status: StatusEffectID): boolean {
-		return !!this.status.get().find(st => status === st.id);
-	}
-
-	public getName(): string {
-		return this.data.name;
-	}
-
-	public getSex(): string {
-		return this.data.sex; }
-
-	public getArchetype(): ArchetypeID {
-		return this.data.archetype;
-	}
-
-	public getPlayer(): number {
-		return this.player;
-	}
-
-	public getSkillset(): Skillset {
-		return this.skillset;
-	}
-
-	public getAttribute(attr: AttributeID): number {
-		return this.attributes.getCurrent()[attr];
-	}
-
-	public getBaseAttribute(attr: AttributeID): number {
-		return this.attributes.getBase()[attr];
-	}
-
-	public setAttribute(attr: AttributeID, value: number) {
-		this.attributes.set(attr, value);
-	}
-
-	public getStatus(): IStatusEffect[] {
-		return this.status.get();
-	}
-
-	public getPosition(): Position {
-		return this.movable.getPosition();
-	}
-
-	public setPosition(pos: Position) {
-		this.movable.setPosition(pos);
-	}
-
-	public getDirection(): DirectionID {
-		return this.movable.getDirection();
-	}
-
-	public setDirection(dir: DirectionID) {
-		this.movable.setDirection(dir);
-	}
-
-	public getEquipment(): Equipment {
-		return this.equipment;
+		return this.attributes.get('HP') <= 0;
 	}
 
 	// updates on every game tick
@@ -111,9 +71,9 @@ class Character {
 			return;
 		}
 		// update CT
-		const SPD = this.getAttribute('SPD');
-		const CT = this.getAttribute('CT');
-		this.setAttribute('CT', CT + SPD);
+		const SPD = this.attributes.get('SPD');
+		const CT = this.attributes.get('CT');
+		this.attributes.set('CT', CT + SPD);
 	}
 
 	// update on character act start
@@ -122,8 +82,8 @@ class Character {
 			throw new Error('Character cannot start act: dead state');
 		}
 		// regenerate actor AP
-		const baseAP = this.getBaseAttribute('AP');
-		this.setAttribute('AP', baseAP);
+		const baseAP = this.baseAttributes.get('AP');
+		this.attributes.set('AP', baseAP);
 	}
 
 	// update on character act end
@@ -132,22 +92,14 @@ class Character {
 			throw new Error('Character cannot end act: dead state');
 		}
 		// update character CT
-		const CT = this.getAttribute('CT');
-		this.setAttribute('CT', CT % characterCTLimit);
-	}
-
-	public applyStatus(status: StatusEffectID) {
-		this.status.apply(status);
-	}
-
-	public removeStatus(status: StatusEffectID) {
-		this.status.remove(status);
+		const CT = this.attributes.get('CT');
+		this.attributes.set('CT', CT % characterCTLimit);
 	}
 
 	public applySkill(damage: number, effectIds: StatusEffectID[] = []) {
-		const residualHP = this.getAttribute('HP') - damage;
+		const residualHP = this.attributes.get('HP') - damage;
 
-		this.setAttribute('HP', residualHP > 0 ? residualHP : 0);
+		this.attributes.set('HP', residualHP > 0 ? residualHP : 0);
 
 		for (const effect of effectIds) {
 			this.status.apply(effect);
@@ -155,7 +107,7 @@ class Character {
 	}
 
 	public skillReduceAP(cost: number) {
-		this.setAttribute('AP', this.getAttribute('AP') - cost);
+		this.attributes.set('AP', this.attributes.get('AP') - cost);
 	}
 }
 

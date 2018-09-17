@@ -22,8 +22,8 @@ const init = () => {
 	// set position neighbours
 	for (const id in positions) {
 		const pos = positions[id];
-		const posX = pos.getX();
-		const posY = pos.getY();
+		const posX = pos.x;
+		const posY = pos.y;
 		const neighbours: Position[] = [];
 
 		for (let x = -1; x <= 1; x++) {
@@ -39,8 +39,8 @@ const init = () => {
 				}
 			}
 		}
-		const sideTiles = neighbours.filter(n => n.getX() === posX || n.getY() === posY);
 
+		const sideTiles = neighbours.filter(({ x, y }) => x === posX || y === posY);
 		pos.setNeighbours(neighbours);
 		pos.setSideTiles(sideTiles);
 	}

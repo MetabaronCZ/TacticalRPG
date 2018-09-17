@@ -23,7 +23,7 @@ const Actions: React.SFC<IActionsProps> = ({ actions, onSelect }) => {
 					<div style={{ color, marginBottom: '10px', }} key={i}>
 						<div>&rsaquo; <a className="Link" href="#" onClick={onClick}><strong>{action.getTitle()}</strong></a></div>
 						<div className="u-text-small">{action.getId()} ({action.getCost()}AP)</div>
-						<div className="u-text-small">[ {action.getSkills().map(skill => skill.getId()).join(', ')} ]</div>
+						<div className="u-text-small">[ {action.getSkills().map(skill => skill.id).join(', ')} ]</div>
 					</div>
 				);
 			})}

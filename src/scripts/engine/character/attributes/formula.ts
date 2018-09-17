@@ -30,7 +30,7 @@ const Arch2AttTable: IArch2AttrTable = {
 	MM: { P: 0.0, S: 0.0, M: 1.5 }
 };
 
-export const getBaseAttributes = (): IBaseAttributes => ({
+export const getDefaultBaseAttributes = (): IBaseAttributes => ({
 	STR: 10,
 	VIT: 10,
 	SPD: 3,

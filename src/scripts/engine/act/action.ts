@@ -109,8 +109,8 @@ class ActAction {
 
 		// update actor values
 		const skills = action.getSkills();
-		const skillAreas = skills.map(skill => SkillUtils.getTargetableArea(skill, actor.getPosition()));
-		const targetable = ArrayUtils.getIntersection(skillAreas, pos => pos.getId());
+		const skillAreas = skills.map(skill => SkillUtils.getTargetableArea(skill, actor.position));
+		const targetable = ArrayUtils.getIntersection(skillAreas, pos => pos.id);
 		const targets = SkillUtils.getTargets(actor, skills[0], characters, targetable);
 
 		this.area = targetable;
@@ -143,8 +143,8 @@ class ActAction {
 		}
 		this.state = 'SELECTED';
 
-		const effectAreas = skills.map(s => SkillUtils.getEffectArea(s, actor.getPosition(), target));
-		const effectArea = ArrayUtils.getIntersection(effectAreas, pos => pos.getId());
+		const effectAreas = skills.map(s => SkillUtils.getEffectArea(s, actor.position, target));
+		const effectArea = ArrayUtils.getIntersection(effectAreas, pos => pos.id);
 		const effectTargets = SkillUtils.getEffectTargets(actor, skills[0], effectArea, characters);
 
 		this.effectTarget = target;
@@ -166,7 +166,7 @@ class ActAction {
 		}
 		this.state = 'CONFIRMED';
 
-		const obstacles = characters.map(char => char.getPosition());
+		const obstacles = characters.map(char => char.position);
 
 		this.reactions = effectTargets.map((reactor, id) => {
 			return new ActReaction(id, reactor, obstacles, {
@@ -245,8 +245,7 @@ class ActAction {
 
 		// face character to skill target tile
 		const reactor = reaction.getReactor();
-		const dir = Direction.resolve(actor.getPosition(), reactor.getPosition());
-		actor.setDirection(dir);
+		actor.direction = Direction.resolve(actor.position, reactor.position);
 
 		reaction.start();
 	}
@@ -269,12 +268,12 @@ class ActAction {
 			const target = effectTargets[step.number];
 
 			if (!target.isDead()) {
-				const targetPos = target.getPosition();
+				const targetPos = target.position;
 
 				if (targetPos.isContained(effectArea)) {
-					if (target.hasStatus('BLOCK_LARGE')) {
+					if (target.status.has('BLOCK_LARGE')) {
 						// target blocked attack with shield
-						target.removeStatus('BLOCK_LARGE');
+						target.status.remove('BLOCK_LARGE');
 						this.events.onBattleInfo('Blocked', targetPos);
 
 					} else {
@@ -282,7 +281,7 @@ class ActAction {
 						let info: string[] = [];
 
 						for (const skill of action.getSkills()) {
-							const skillStatus = skill.getStatus();
+							const skillStatus = skill.status;
 							let phyDmg = 0;
 							let elmDmg = 0;
 
@@ -291,7 +290,7 @@ class ActAction {
 							info.push(NumberUtils.format(phyDmg));
 
 							// elemental damage
-							if (skill.getElementalDamage()) {
+							if (skill.elementalDamage) {
 								elmDmg = Damage.getElemental(actor, target, skill);
 								info.push(NumberUtils.format(elmDmg));
 							}
@@ -313,7 +312,7 @@ class ActAction {
 
 							// show small shield block info
 							if (-1 !== effects.indexOf('BLOCK_SMALL')) {
-								target.removeStatus('BLOCK_SMALL');
+								target.status.remove('BLOCK_SMALL');
 								info.unshift(`Blocked (${smallShieldBlock})`);
 							}
 						}
@@ -358,7 +357,7 @@ class ActAction {
 			},
 			onSelect: (action: ActAction) => {
 				const tgt = action.getEffectTarget();
-				Logger.log(`ActMove onSelect: "${tgt ? `(${tgt.getX()}, ${tgt.getY()})` : '-'}"`);
+				Logger.log(`ActMove onSelect: "${tgt ? `(${tgt.x}, ${tgt.y})` : '-'}"`);
 				events.onSelect(action);
 			},
 			onConfirm: (action: ActAction) => {
@@ -382,9 +381,9 @@ class ActAction {
 			onReactionPass: events.onReactionPass,
 			onReactionReset: events.onReactionReset,
 			onReactionEnd: events.onReactionEnd,
-			onBattleInfo: (text: string, position: Position) => {
-				Logger.log(`ActAction onBattleInfo: "${text}" (${position.getX()}, ${position.getY()})`);
-				events.onBattleInfo(text, position);
+			onBattleInfo: (text: string, pos: Position) => {
+				Logger.log(`ActAction onBattleInfo: "${text}" (${pos.x}, ${pos.y})`);
+				events.onBattleInfo(text, pos);
 			}
 		};
 	}

@@ -43,8 +43,8 @@ class ActDirect {
 		}
 		this.state = 'IDLE';
 
-		const pos = actor.getPosition();
-		const dir = actor.getDirection();
+		const pos = actor.position;
+		const dir = actor.direction;
 
 		this.targets = pos.getSideTiles(), // directable positions
 		this.target = Direction.findPositionFrom(pos, dir); // set initial direction
@@ -65,12 +65,12 @@ class ActDirect {
 		}
 		this.state = 'DONE';
 
-		const pos = actor.getPosition();
+		const pos = actor.position;
 		this.target = position;
 
 		// update character direction
 		const newDirection = Direction.resolve(pos, this.target);
-		actor.setDirection(newDirection);
+		actor.direction = newDirection;
 
 		this.events.onSelect(this);
 	}
@@ -83,7 +83,7 @@ class ActDirect {
 			},
 			onSelect: direct => {
 				const tgt = direct.target;
-				Logger.log(`ActDirect onSelect: "${tgt ? `(${tgt.getX()}, ${tgt.getY()})` : '-'}"`);
+				Logger.log(`ActDirect onSelect: "${tgt ? `(${tgt.x}, ${tgt.y})` : '-'}"`);
 				events.onSelect(direct);
 			}
 		};

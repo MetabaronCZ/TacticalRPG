@@ -31,9 +31,9 @@ class ActMove {
 
 	constructor(actor: Character, characters: Character[], events: IActMoveEvents) {
 		this.actor = actor;
-		this.initialAP = actor.getAttribute('AP');
-		this.initialPosition = actor.getPosition();
-		this.obstacles = characters.filter(char => char !== actor).map(char => char.getPosition());
+		this.initialAP = actor.attributes.get('AP');
+		this.initialPosition = actor.position;
+		this.obstacles = characters.filter(char => char !== actor).map(char => char.position);
 		this.target = this.initialPosition;
 		this.events = this.prepareEvents(events);
 	}
@@ -66,9 +66,9 @@ class ActMove {
 		}
 		this.state = 'IDLE';
 
-		const MOV = actor.getAttribute('MOV');
-		const AP = actor.getAttribute('AP');
-		const pos = actor.getPosition();
+		const MOV = actor.attributes.get('MOV');
+		const AP = actor.attributes.get('AP');
+		const pos = actor.position;
 
 		const range = Math.min(MOV, AP);
 		const movable = getMovableTiles(pos, obstacles, range);
@@ -98,7 +98,7 @@ class ActMove {
 				obst.push(pos);
 			}
 		}
-		const path = getShortestPath(actor.getPosition(), target, obst);
+		const path = getShortestPath(actor.position, target, obst);
 
 		if (path.length < 2) {
 			return;
@@ -124,12 +124,12 @@ class ActMove {
 
 		const anim = new Animation(timing, step => {
 			const tile = path[step.number];
-			const dir = Direction.resolve(actor.getPosition(), tile);
+			const dir = Direction.resolve(actor.position, tile);
 
 			// update actor
-			actor.setPosition(tile);
-			actor.setDirection(dir);
-			actor.setAttribute('AP', this.initialAP - costMap[tile.getId()]);
+			actor.position = tile;
+			actor.direction = dir;
+			actor.attributes.set('AP', this.initialAP - costMap[tile.id]);
 
 			if (step.isLast) {
 				this.state = 'IDLE';
@@ -148,7 +148,7 @@ class ActMove {
 			},
 			onSelect: move => {
 				const tgt = move.target;
-				Logger.log(`ActMove onSelect: "${tgt ? `(${tgt.getX()}, ${tgt.getY()})` : '-'}"`);
+				Logger.log(`ActMove onSelect: "${tgt ? `(${tgt.x}, ${tgt.y})` : '-'}"`);
 				events.onSelect(move);
 			},
 			onAnimation: (move, step) => {

@@ -8,16 +8,16 @@ type IByDirectionTable = {
 };
 
 const byDirectionTable: IByDirectionTable = {
-	TOP:    pos => getPosition(pos.getX(), pos.getY() - 1),
-	BOTTOM: pos => getPosition(pos.getX(), pos.getY() + 1),
-	LEFT:   pos => getPosition(pos.getX() - 1, pos.getY()),
-	RIGHT:  pos => getPosition(pos.getX() + 1, pos.getY())
+	TOP:    ({ x, y }) => getPosition(x, y - 1),
+	BOTTOM: ({ x, y }) => getPosition(x, y + 1),
+	LEFT:   ({ x, y }) => getPosition(x - 1, y),
+	RIGHT:  ({ x, y }) => getPosition(x + 1, y)
 };
 
 class Direction {
 	public static resolve = (source: Position, target: Position): DirectionID => {
-		const diffX = target.getX() - source.getX();
-		const diffY = target.getY() - source.getY();
+		const diffX = target.x - source.x;
+		const diffY = target.y - source.y;
 
 		if (Math.abs(diffX) > Math.abs(diffY)) {
 			// horizontal direction
