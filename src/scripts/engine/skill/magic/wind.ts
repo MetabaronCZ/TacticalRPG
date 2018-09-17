@@ -1,5 +1,4 @@
-import { IWindMagicSkillList, MagicSkillID } from 'engine/skill/magic/types';
-import { ISkillset } from 'engine/skillset';
+import { IWindMagicSkillList } from 'engine/skill/magic/types';
 import { SkillRange } from 'engine/skill';
 
 const windMagic: IWindMagicSkillList = {
@@ -46,13 +45,6 @@ const windMagic: IWindMagicSkillList = {
 		element: 'WIND',
 		elementalDamage: 0.25
 	}
-};
-
-export const windMagicSkillset: ISkillset = {
-	title: 'Wind Magic',
-	description: '',
-	element: 'WIND',
-	skills: Object.keys(windMagic) as MagicSkillID[]
 };
 
 export default windMagic;

@@ -1,5 +1,4 @@
-import { IBlackMagicSkillList, MagicSkillID } from 'engine/skill/magic/types';
-import { ISkillset } from 'engine/skillset';
+import { IBlackMagicSkillList } from 'engine/skill/magic/types';
 import { SkillRange } from 'engine/skill';
 
 const blackMagic: IBlackMagicSkillList = {
@@ -12,13 +11,6 @@ const blackMagic: IBlackMagicSkillList = {
 		target: 'SELF',
 		element: 'DARK'
 	}
-};
-
-export const blackMagicSkillset: ISkillset = {
-	title: 'Black Magic',
-	description: '',
-	element: 'DARK',
-	skills: Object.keys(blackMagic) as MagicSkillID[]
 };
 
 export default blackMagic;

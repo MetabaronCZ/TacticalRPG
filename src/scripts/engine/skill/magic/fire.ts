@@ -1,5 +1,4 @@
-import { IFireMagicSkillList, MagicSkillID } from 'engine/skill/magic/types';
-import { ISkillset } from 'engine/skillset';
+import { IFireMagicSkillList } from 'engine/skill/magic/types';
 import { SkillRange } from 'engine/skill';
 
 const fireMagic: IFireMagicSkillList = {
@@ -49,13 +48,6 @@ const fireMagic: IFireMagicSkillList = {
 		elementalDamage: 0.25,
 		status: ['BURN']
 	}
-};
-
-export const fireMagicSkillset: ISkillset = {
-	title: 'Fire Magic',
-	description: '',
-	element: 'FIRE',
-	skills: Object.keys(fireMagic) as MagicSkillID[]
 };
 
 export default fireMagic;

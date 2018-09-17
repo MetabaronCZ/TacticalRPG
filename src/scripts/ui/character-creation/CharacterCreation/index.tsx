@@ -19,9 +19,9 @@ import FormRadio from 'ui/common/FormRadio';
 import FormSelect from 'ui/common/FormSelect';
 import FormSelectItem from 'ui/common/FormSelectItem';
 
-import Skillsets from 'engine/skillset';
 import { EquipmentUtils } from 'engine/equipment/utils';
 import CharacterDataUtils, { ICharacterData } from 'engine/character-data';
+import Skillsets from 'data/skillsets';
 
 interface ICharacterCreationProps {
 	readonly character?: ICharacterData;

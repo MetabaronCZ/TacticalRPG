@@ -1,5 +1,4 @@
-import { IEarthMagicSkillList, MagicSkillID } from 'engine/skill/magic/types';
-import { ISkillset } from 'engine/skillset';
+import { IEarthMagicSkillList } from 'engine/skill/magic/types';
 import { SkillRange } from 'engine/skill';
 
 const earthMagic: IEarthMagicSkillList = {
@@ -48,13 +47,6 @@ const earthMagic: IEarthMagicSkillList = {
 		element: 'EARTH',
 		status: ['IRON_SKIN']
 	}
-};
-
-export const earthMagicSkillset: ISkillset = {
-	title: 'Earth Magic',
-	description: '',
-	element: 'EARTH',
-	skills: Object.keys(earthMagic) as MagicSkillID[]
 };
 
 export default earthMagic;

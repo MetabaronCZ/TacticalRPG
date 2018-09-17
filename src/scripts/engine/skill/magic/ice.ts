@@ -1,5 +1,4 @@
-import { IIceMagicSkillList, MagicSkillID } from 'engine/skill/magic/types';
-import { ISkillset } from 'engine/skillset';
+import { IIceMagicSkillList } from 'engine/skill/magic/types';
 import { SkillRange } from 'engine/skill';
 
 const iceMagic: IIceMagicSkillList = {
@@ -48,13 +47,6 @@ const iceMagic: IIceMagicSkillList = {
 		elementalDamage: 0.25,
 		status: ['FREEZE']
 	}
-};
-
-export const iceMagicSkillset: ISkillset = {
-	title: 'Ice Magic',
-	description: '',
-	element: 'ICE',
-	skills: Object.keys(iceMagic) as MagicSkillID[]
 };
 
 export default iceMagic;

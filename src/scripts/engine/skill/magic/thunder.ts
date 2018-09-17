@@ -1,5 +1,4 @@
-import { IThunderMagicSkillList, MagicSkillID } from 'engine/skill/magic/types';
-import { ISkillset } from 'engine/skillset';
+import { IThunderMagicSkillList } from 'engine/skill/magic/types';
 import { SkillRange } from 'engine/skill';
 
 const thunderMagic: IThunderMagicSkillList = {
@@ -48,13 +47,6 @@ const thunderMagic: IThunderMagicSkillList = {
 		elementalDamage: 0.25,
 		status: ['SHOCK']
 	}
-};
-
-export const thunderMagicSkillset: ISkillset = {
-	title: 'Thunder Magic',
-	description: '',
-	element: 'THUNDER',
-	skills: Object.keys(thunderMagic) as MagicSkillID[]
 };
 
 export default thunderMagic;

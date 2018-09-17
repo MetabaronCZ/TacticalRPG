@@ -1,7 +1,7 @@
 import Weapons from 'data/weapons';
+import Skillsets from 'data/skillsets';
 
 import Character from 'engine/character';
-import Skillsets from 'engine/skillset';
 import MagicSkills from 'engine/skill/magic';
 import WeaponSkills from 'engine/skill/weapon';
 import CharacterAction from 'engine/character-action';

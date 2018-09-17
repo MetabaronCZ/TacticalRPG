@@ -1,5 +1,4 @@
-import { IWaterMagicSkillList, MagicSkillID } from 'engine/skill/magic/types';
-import { ISkillset } from 'engine/skillset';
+import { IWaterMagicSkillList } from 'engine/skill/magic/types';
 import { SkillRange } from 'engine/skill';
 
 const waterMagic: IWaterMagicSkillList = {
@@ -48,13 +47,6 @@ const waterMagic: IWaterMagicSkillList = {
 		elementalDamage: 0.25,
 		status: ['SILENCE']
 	}
-};
-
-export const waterMagicSkillset: ISkillset = {
-	title: 'Water Magic',
-	description: '',
-	element: 'WATER',
-	skills: Object.keys(waterMagic) as MagicSkillID[]
 };
 
 export default waterMagic;

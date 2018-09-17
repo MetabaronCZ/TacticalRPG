@@ -5,14 +5,15 @@ import * as ArrayUtils from 'core/array';
 import Sexes from 'data/sexes';
 import Armors from 'data/armors';
 import Weapons from 'data/weapons';
+import Skillsets from 'data/skillsets';
 import Archetypes from 'data/archetypes';
 
 import { SexID } from 'engine/character/sex';
 import { IIndexable } from 'engine/indexable';
 import { ArmorID } from 'engine/equipment/armor-data';
+import { SkillsetID } from 'engine/character/skillset';
 import { EquipmentUtils } from 'engine/equipment/utils';
 import { WeaponID } from 'engine/equipment/weapon-data';
-import Skillsets, { SkillsetID } from 'engine/skillset';
 import { ArchetypeID } from 'engine/character/archetype';
 
 export interface ICharacterData extends IIndexable {

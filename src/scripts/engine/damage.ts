@@ -1,9 +1,9 @@
 import Weapons from 'data/weapons';
+import Skillsets from 'data/skillsets';
 import StatusEffects from 'data/status-effects';
 import { smallShieldBlock } from 'data/game-config';
 
 import { SkillID } from 'engine/skill';
-import Skillsets from 'engine/skillset';
 import Character from 'engine/character';
 import SkillUtils from 'engine/skill/utils';
 import { StatusEffectID } from 'engine/status-effect';

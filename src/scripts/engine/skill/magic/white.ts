@@ -1,5 +1,4 @@
-import { IWhiteMagicSkillList, MagicSkillID } from 'engine/skill/magic/types';
-import { ISkillset } from 'engine/skillset';
+import { IWhiteMagicSkillList } from 'engine/skill/magic/types';
 import { SkillRange } from 'engine/skill';
 
 const whiteMagic: IWhiteMagicSkillList = {
@@ -62,13 +61,6 @@ const whiteMagic: IWhiteMagicSkillList = {
 		target: 'ALLY',
 		element: 'HOLY'
 	}
-};
-
-export const whiteMagicSkillset: ISkillset = {
-	title: 'White Magic',
-	description: '',
-	element: 'HOLY',
-	skills: Object.keys(whiteMagic) as MagicSkillID[]
 };
 
 export default whiteMagic;

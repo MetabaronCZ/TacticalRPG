@@ -1,5 +1,4 @@
-import { IPsychokinesisSkillList, MagicSkillID } from 'engine/skill/magic/types';
-import { ISkillset } from 'engine/skillset';
+import { IPsychokinesisSkillList } from 'engine/skill/magic/types';
 import { SkillRange } from 'engine/skill';
 
 const psychokinesis: IPsychokinesisSkillList = {
@@ -33,13 +32,6 @@ const psychokinesis: IPsychokinesisSkillList = {
 		target: 'ENEMY',
 		element: 'PSYCHIC'
 	}
-};
-
-export const psychokinesisSkillset: ISkillset = {
-	title: 'Psychokinesis',
-	description: '',
-	element: 'PSYCHIC',
-	skills: Object.keys(psychokinesis) as MagicSkillID[]
 };
 
 export default psychokinesis;
