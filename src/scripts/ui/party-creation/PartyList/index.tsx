@@ -6,16 +6,16 @@ import LinkButton from 'ui/common/LinkButton';
 
 import { IPartyData } from 'engine/party-data';
 
-export type IOnMoveDown = (partyId: string) => () => void;
-export type IOnMoveUp = (partyId: string) => () => void;
+export type IOnMoveDown = (partyId: IPartyData) => () => void;
+export type IOnMoveUp = (partyId: IPartyData) => () => void;
 export type IOnDelete = (party: IPartyData) => () => void;
 
 const renderMoveDown = (party: IPartyData, onMoveDown: IOnMoveDown) => (
-	<LinkIco ico="down" title="Move down" onClick={onMoveDown && onMoveDown(party.id)} />
+	<LinkIco ico="down" title="Move down" onClick={onMoveDown && onMoveDown(party)} />
 );
 
 const renderMoveUp = (party: IPartyData, onMoveUp: IOnMoveUp) => (
-	<LinkIco ico="up" title="Move up" onClick={onMoveUp(party.id)} />
+	<LinkIco ico="up" title="Move up" onClick={onMoveUp(party)} />
 );
 
 const renderEdit = (party: IPartyData) => (
