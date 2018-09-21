@@ -7,6 +7,7 @@ import Armors from 'data/armors';
 import Weapons from 'data/weapons';
 import Skillsets from 'data/skillsets';
 import Archetypes from 'data/archetypes';
+import { characterMaxNameLength } from 'data/game-config';
 import {
 	WeaponEquipTableArch, WeaponEquipTableWield,
 	WieldIndexTable, ArmorEquipTableArch,
@@ -112,6 +113,22 @@ export class CharacterData {
 		return character;
 	}
 
+	public isValid(): boolean {
+		console.log('name', this.name, this.name.length);
+		console.log('skillset', this.skillset, this.archetype, this.isMagicType());
+		console.log('main', this.canWieldWeapon(this.main, 'MAIN'));
+		console.log('off', this.canWieldWeapon(this.off, 'OFF'));
+		console.log('armor', this.canWieldArmor(this.armor));
+
+		return (
+			(this.name.length > 0 && this.name.length <= characterMaxNameLength) &&
+			(this.isMagicType() || this.skillset === 'NONE') &&
+			this.canWieldWeapon(this.main, 'MAIN') &&
+			this.canWieldWeapon(this.off, 'OFF') &&
+			this.canWieldArmor(this.armor)
+		);
+	}
+
 	public isPowerType(): boolean {
 		return -1 !== this.archetype.indexOf('P');
 	}
@@ -193,6 +210,9 @@ export class CharacterData {
 	}
 
 	public canWieldWeapon(weapon: WeaponID, slot: IEquipSlot): boolean {
+		if ('NONE' === weapon) {
+			return true;
+		}
 		if (!this.checkWeaponArchetype(weapon)) {
 			return false;
 		}
@@ -217,6 +237,9 @@ export class CharacterData {
 	}
 
 	public canWieldArmor(armor: ArmorID): boolean {
+		if ('NONE' === armor) {
+			return true;
+		}
 		return this.checkArmorArchetype(armor);
 	}
 

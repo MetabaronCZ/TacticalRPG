@@ -222,12 +222,12 @@ class Engine {
 	private prepareEvents(events: IEngineEvents): IEngineEvents {
 		return {
 			onStart: state => {
-				Logger.log('Engine onStart');
+				Logger.info('Engine onStart');
 				events.onStart(state);
 			},
 			onUpdate: events.onUpdate,
 			onGameOver: state => {
-				Logger.log('Engine onGameOver');
+				Logger.info('Engine onGameOver');
 				events.onGameOver(state);
 			}
 		};

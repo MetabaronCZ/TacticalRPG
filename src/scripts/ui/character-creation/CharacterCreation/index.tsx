@@ -113,7 +113,7 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 				</FormField>
 
 				<FormField fieldId="f-skillset" label="Magic" info={skillset.description}>
-					<FormSelect id="f-skillset" name="skillset" value={isMagicUser ? data.skillset : 'NONE'} disabled={!isMagicUser} onChange={onChange}>
+					<FormSelect id="f-skillset" name="skillset" value={data.skillset} disabled={!isMagicUser} onChange={onChange}>
 						{Skillsets.map((id, set, i) => (
 							<FormSelectItem value={id} key={i}>
 								{set.title}
@@ -226,14 +226,16 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 	private onSubmit = (e: SyntheticEvent<any>) => {
 		e.preventDefault();
 
-		const isValidForm = validateForm(this.state.fields.character.serialize(), this.handleValidationError);
+		const { character } = this.state.fields;
+		const { onSubmit } = this.props;
 
-		if (!isValidForm) {
+		if (!character.isValid()) {
+			validateForm(character.serialize(), this.handleValidationError);
 			return;
 		}
 
-		if (this.props.onSubmit) {
-			this.props.onSubmit(this.state.fields.character);
+		if (onSubmit) {
+			onSubmit(character);
 		}
 	}
 

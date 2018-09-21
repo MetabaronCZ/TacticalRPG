@@ -5,6 +5,7 @@ import reducers from 'reducers';
 import { IPartyData } from 'engine/party-data';
 import { IBattleConfig } from 'engine/battle-config';
 import { ICharacterData, CharacterData } from 'engine/character-data';
+import Logger from 'engine/logger';
 
 const KEY = 'game'; // storage key
 
@@ -36,9 +37,21 @@ const load = (): IStore => {
 	}
 	try {
 		const data = JSON.parse(state) as ISaveState;
+		const characters: CharacterData[] = [];
+
+		for (const char of data.characters) {
+			const charData = new CharacterData(char);
+
+			if (charData.isValid()) {
+				characters.push(charData);
+			} else {
+				Logger.error(`Invalid character "${charData.getName()}"`);
+			}
+		}
+
 		return {
 			...data,
-			characters: data.characters.map((char: ICharacterData) => new CharacterData(char))
+			characters
 		} as IStore;
 
 	} catch (err) {

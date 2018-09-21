@@ -143,16 +143,16 @@ class ActMove {
 	private prepareEvents(events: IActMoveEvents): IActMoveEvents {
 		return {
 			onStart: move => {
-				Logger.log('ActMove onStart');
+				Logger.info('ActMove onStart');
 				events.onStart(move);
 			},
 			onSelect: move => {
 				const tgt = move.target;
-				Logger.log(`ActMove onSelect: "${tgt ? `(${tgt.x}, ${tgt.y})` : '-'}"`);
+				Logger.info(`ActMove onSelect: "${tgt ? `(${tgt.x}, ${tgt.y})` : '-'}"`);
 				events.onSelect(move);
 			},
 			onAnimation: (move, step) => {
-				Logger.log(`ActMove onAnimation: "${step.number + 1}/${step.max}"`);
+				Logger.info(`ActMove onAnimation: "${step.number + 1}/${step.max}"`);
 				events.onSelect(move);
 			}
 		};

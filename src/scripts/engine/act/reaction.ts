@@ -187,37 +187,37 @@ class ActReaction {
 	private prepareEvents(events: IActReactionEvents): IActReactionEvents {
 		return {
 			onStart: reaction => {
-				Logger.log(`ActReaction onStart: "${reaction.getReactor().name}"`);
+				Logger.info(`ActReaction onStart: "${reaction.getReactor().name}"`);
 				events.onStart(reaction);
 			},
 			onReactionSelected: reaction => {
 				const action = reaction.getAction();
-				Logger.log(`ActReaction onReactionSelected: "${action ? action.getTitle() : '-'}"`);
+				Logger.info(`ActReaction onReactionSelected: "${action ? action.getTitle() : '-'}"`);
 				events.onReactionSelected(reaction);
 			},
 			onBlock: reaction => {
-				Logger.log('ActReaction onBlock');
+				Logger.info('ActReaction onBlock');
 				events.onBlock(reaction);
 			},
 			onEvasionStart: reaction => {
-				Logger.log('ActReaction onEvasionStart');
+				Logger.info('ActReaction onEvasionStart');
 				events.onEvasionStart(reaction);
 			},
 			onEvasionEnd: reaction => {
 				const tgt = reaction.getEvasionTarget();
-				Logger.log(`ActReaction onEvasionEnd: ${tgt ? `(${tgt.x}, ${tgt.y})` : '-'}`);
+				Logger.info(`ActReaction onEvasionEnd: ${tgt ? `(${tgt.x}, ${tgt.y})` : '-'}`);
 				events.onEvasionEnd(reaction);
 			},
 			onReset: reaction => {
-				Logger.log('ActReaction onReset');
+				Logger.info('ActReaction onReset');
 				events.onReset(reaction);
 			},
 			onPass: reaction => {
-				Logger.log('ActReaction onPass');
+				Logger.info('ActReaction onPass');
 				events.onPass(reaction);
 			},
 			onEnd: reaction => {
-				Logger.log('ActReaction onEnd');
+				Logger.info('ActReaction onEnd');
 				events.onEnd(reaction);
 			}
 		};

@@ -78,12 +78,12 @@ class ActDirect {
 	private prepareEvents(events: IActDirectEvents): IActDirectEvents {
 		return {
 			onStart: direct => {
-				Logger.log('ActDirect onStart');
+				Logger.info('ActDirect onStart');
 				events.onStart(direct);
 			},
 			onSelect: direct => {
 				const tgt = direct.target;
-				Logger.log(`ActDirect onSelect: "${tgt ? `(${tgt.x}, ${tgt.y})` : '-'}"`);
+				Logger.info(`ActDirect onSelect: "${tgt ? `(${tgt.x}, ${tgt.y})` : '-'}"`);
 				events.onSelect(direct);
 			}
 		};

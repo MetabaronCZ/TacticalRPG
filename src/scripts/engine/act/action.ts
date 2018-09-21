@@ -347,29 +347,29 @@ class ActAction {
 		return {
 			onStart: (action: ActAction) => {
 				const actionItem = action.action;
-				Logger.log(`ActAction onStart: "${actionItem ? actionItem.getTitle() : '-'}"`);
+				Logger.info(`ActAction onStart: "${actionItem ? actionItem.getTitle() : '-'}"`);
 				events.onStart(action);
 			},
 			onReset: (action: ActAction) => {
-				Logger.log('ActAction onReset');
+				Logger.info('ActAction onReset');
 				events.onReset(action);
 			},
 			onSelect: (action: ActAction) => {
 				const tgt = action.getEffectTarget();
-				Logger.log(`ActMove onSelect: "${tgt ? `(${tgt.x}, ${tgt.y})` : '-'}"`);
+				Logger.info(`ActMove onSelect: "${tgt ? `(${tgt.x}, ${tgt.y})` : '-'}"`);
 				events.onSelect(action);
 			},
 			onConfirm: (action: ActAction) => {
 				const actionItem = action.getAction();
-				Logger.log(`ActMove onConfirm: "${actionItem ? actionItem.getTitle() : '-'}"`);
+				Logger.info(`ActMove onConfirm: "${actionItem ? actionItem.getTitle() : '-'}"`);
 				events.onConfirm(action);
 			},
 			onPass: (action: ActAction) => {
-				Logger.log('ActAction onPass');
+				Logger.info('ActAction onPass');
 				events.onPass(action);
 			},
 			onAnimation: (action: ActAction, step: IAnimationStep) => {
-				Logger.log(`ActAction onAnimation: "${step.number + 1}/${step.max}"`);
+				Logger.info(`ActAction onAnimation: "${step.number + 1}/${step.max}"`);
 				events.onAnimation(action, step);
 			},
 			onReactionStart: events.onReactionStart,
@@ -381,7 +381,7 @@ class ActAction {
 			onReactionReset: events.onReactionReset,
 			onReactionEnd: events.onReactionEnd,
 			onBattleInfo: (text: string, pos: Position) => {
-				Logger.log(`ActAction onBattleInfo: "${text}" (${pos.x}, ${pos.y})`);
+				Logger.info(`ActAction onBattleInfo: "${text}" (${pos.x}, ${pos.y})`);
 				events.onBattleInfo(text, pos);
 			}
 		};
