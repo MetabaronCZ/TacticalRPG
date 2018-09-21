@@ -1,15 +1,12 @@
-export enum SizeID {
-	'default' = 'default',
-	'large' = 'large'
-}
+export type SizeID = 'default' | 'large';
 
 type IArchetypeIcoSizes = {
 	[size in SizeID]: string;
 };
 
 const ArchetypeIcoSizes: IArchetypeIcoSizes = {
-	[SizeID.default]: 'Default',
-	[SizeID.large]: 'Large'
+	default: 'Default',
+	large: 'Large'
 };
 
 export default ArchetypeIcoSizes;

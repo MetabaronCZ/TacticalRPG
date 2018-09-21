@@ -1,26 +1,16 @@
 import React, { SyntheticEvent } from 'react';
+
 import icos from 'data/icos';
+import { firstLetterToUpper } from 'core/string';
 
-export enum ButtonColor {
-	DEFAULT = 'Default',
-	YELLOW = 'Yellow',
-	RED = 'Red',
-	GREEN = 'Green',
-	BLUE = 'Blue',
-	GREY = 'Grey'
-}
-
-export enum ButtonSize {
-	DEFAULT = 'Default',
-	SMALL = 'Small',
-	LARGE = 'Large'
-}
+export type ButtonColor = 'default' | 'yellow' | 'red' | 'green' | 'blue' | 'grey';
+export type ButtonSize = 'default' | 'small' | 'large';
 
 interface IButtonContainerProps {
-	readonly type?: string;
+	readonly type?: 'button' | 'submit' | 'reset';
 	readonly ico?: string;
-	readonly size?: string;
-	readonly color?: string;
+	readonly size?: ButtonSize;
+	readonly color?: ButtonColor;
 	readonly text: string;
 	readonly onClick?: (e: SyntheticEvent<any>) => void;
 }
@@ -29,11 +19,11 @@ const Button: React.SFC<IButtonContainerProps> = props => {
 	const { type, ico, size, color, text, onClick } = props;
 	const typeName = ('submit' === type ? type : 'button');
 	const icoName = (ico ? icos[ico] : icos.default) || '';
-	const sizeName = size || ButtonSize.DEFAULT;
-	const colorName = color || ButtonColor.DEFAULT;
+	const sizeCls = `Button--size${firstLetterToUpper(size || 'default')}`;
+	const colorCls = `Button--color${firstLetterToUpper(color || 'default')}`;
 
 	return (
-		<button className={`Button Button--size${sizeName} Button--color${colorName}`} type={typeName} onClick={onClick}>
+		<button className={`Button ${sizeCls} ${colorCls}`} type={typeName} onClick={onClick}>
 			{icoName ? <span className="Button-ico">{icoName}</span> : ''}
 			{text}
 		</button>

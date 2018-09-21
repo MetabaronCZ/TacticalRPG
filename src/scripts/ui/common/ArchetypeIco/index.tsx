@@ -10,7 +10,7 @@ interface IArchetypeIcoProps {
 }
 
 const ArchetypeIco: React.SFC<IArchetypeIcoProps> = props => {
-	const { size = SizeID.default, archetype = 'PP' } = props;
+	const { size = 'default', archetype = 'PP' } = props;
 	const sizeData = ArchetypeIcoSizes[size];
 	const archData = Archetypes.get(archetype);
 	const cls = [

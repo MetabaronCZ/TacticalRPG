@@ -1,18 +1,18 @@
 import React from 'react';
 import { withRouter, RouteComponentProps } from 'react-router';
 
-import Button, { ButtonSize } from 'ui/common/Button';
 import { gotoFn } from 'utils/nav';
+import Button, { ButtonSize } from 'ui/common/Button';
 
 interface IMenuItem {
 	readonly title: string;
 	readonly ico?: string;
-	readonly size?: string;
+	readonly size?: ButtonSize;
 	readonly url: string;
 }
 
 const menuItems: IMenuItem[] = [
-	{ title: 'Start Battle', ico: 'fight', size: ButtonSize.LARGE, url: '/battle-setup' },
+	{ title: 'Start Battle', ico: 'fight', size: 'large', url: '/battle-setup' },
 	{ title: 'Edit Party', url: '/party-list' },
 	{ title: 'Edit Characters', url: '/character-list' }
 ];
