@@ -20,7 +20,6 @@ import FormSelectItem from 'ui/common/FormSelectItem';
 
 import { IPartyData } from 'engine/party-data';
 import { CharacterData } from 'engine/character-data';
-import { isBothWielding, isDualWielding } from 'engine/utils/equipment';
 import { createParty, validateParty, getCharacterById } from 'engine/utils/party';
 
 const errNoCharacter = 'Party contains no character';
@@ -206,17 +205,16 @@ class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationS
 		let info = '';
 
 		if (selected) {
-			const data = selected.serialize();
-			const main = Weapons.get(data.main);
-			const off = Weapons.get(data.off);
-			const arm = Armors.get(data.armor);
-			const sex = Sexes.get(data.sex);
-			const arch = Archetypes.get(data.archetype);
+			const main = Weapons.get(selected.getMainHand());
+			const off = Weapons.get(selected.getOffHand());
+			const arm = Armors.get(selected.getArmor());
+			const sex = Sexes.get(selected.getSex());
+			const arch = Archetypes.get(selected.getArchetype());
 			let weapons = '';
 
-			if (isBothWielding(data.main)) {
+			if (selected.isBothWielding()) {
 				weapons = main.title;
-			} else if (isDualWielding(data.main)) {
+			} else if (selected.isDualWielding()) {
 				weapons = `${main.title} + ${main.title}`;
 			} else {
 				weapons = `${main.title} + ${off.title}`;

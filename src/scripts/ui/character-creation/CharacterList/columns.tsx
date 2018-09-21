@@ -14,7 +14,6 @@ import ArchetypeIco from 'ui/common/ArchetypeIco';
 import { IOnMoveDown, IOnMoveUp, IOnDelete } from 'ui/character-creation/CharacterList';
 
 import { CharacterData } from 'engine/character-data';
-import { isBothWielding, isDualWielding } from 'engine/utils/equipment';
 
 const renderArchetype = (char: CharacterData) => (
 	<ArchetypeIco archetype={char.getArchetype()} />
@@ -84,9 +83,9 @@ const getColumns = (editable = false, onMoveDown?: IOnMoveDown, onMoveUp?: IOnMo
 				const main = Weapons.get(char.getMainHand());
 				const off = Weapons.get(char.getOffHand());
 
-				if (isBothWielding(char.getMainHand())) {
+				if (char.isBothWielding()) {
 					return renderOffHandBothWield(main.title);
-				} else if (isDualWielding(char.getMainHand())) {
+				} else if (char.isDualWielding()) {
 					return main.title;
 				} else {
 					return off.title;

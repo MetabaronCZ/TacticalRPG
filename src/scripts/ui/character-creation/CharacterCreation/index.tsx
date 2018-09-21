@@ -24,7 +24,6 @@ import FormSelectItem from 'ui/common/FormSelectItem';
 import { ArmorID, IArmorData } from 'engine/equipment/armor-data';
 import { IWeaponData, WeaponID } from 'engine/equipment/weapon-data';
 import { CharacterData, ICharacterData } from 'engine/character-data';
-import { checkArmorArchetype, checkMainHand, checkOffHand } from 'engine/utils/equipment';
 
 interface ICharacterCreationProps {
 	readonly character?: CharacterData;
@@ -187,16 +186,16 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 			if (newChar.isMagicType()) {
 				newChar.setSkillset(newData.skillset);
 			}
-			newChar.setMainHand(checkMainHand(newData.main, arch) ? newData.main : 'NONE');
-			newChar.setOffHand(checkOffHand(newData.off, arch, newData.main) ? newData.off : 'NONE');
-			newChar.setArmor(checkArmorArchetype(newData.armor, arch) ? newData.armor : 'NONE');
+			newChar.setMainHand(newChar.canWieldWeapon(newData.main, 'MAIN') ? newData.main : 'NONE');
+			newChar.setOffHand(newChar.canWieldWeapon(newData.off, 'OFF') ? newData.off : 'NONE');
+			newChar.setArmor(newChar.canWieldArmor(newData.armor) ? newData.armor : 'NONE');
 			shouldUpdate = true;
 		}
 		newData = newChar.serialize();
 
 		// reset character off hand weapon on main hand change
 		if (prevData.main !== newData.main) {
-			newChar.setOffHand(checkOffHand(newData.off, arch, newData.main) ? newData.off : 'NONE');
+			newChar.setOffHand(newChar.canWieldWeapon(newData.off, 'OFF') ? newData.off : 'NONE');
 			shouldUpdate = true;
 		}
 

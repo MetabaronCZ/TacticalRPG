@@ -45,7 +45,7 @@ class DataList<T extends string, U> {
 		return this.entries().forEach(([key, value], i) => cb(key, value, i));
 	}
 
-	protected filterFn(cb: DataListIterator<T, U>): Array<[T, U]> {
+	public filter(cb: DataListIterator<T, U>): Array<[T, U]> {
 		return this.entries().filter(([key, value], i) => cb(key, value, i));
 	}
 }

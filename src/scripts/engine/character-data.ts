@@ -1,16 +1,25 @@
 import uuid from 'uuid/v1';
 
+import * as ArrayUtils from 'core/array';
+
+import Sexes from 'data/sexes';
+import Armors from 'data/armors';
 import Weapons from 'data/weapons';
+import Skillsets from 'data/skillsets';
+import Archetypes from 'data/archetypes';
+import {
+	WeaponEquipTableArch, WeaponEquipTableWield,
+	WieldIndexTable, ArmorEquipTableArch,
+	ArchetypeIndexTable
+} from 'data/equipment';
 
 import { SexID } from 'engine/character/sex';
-import { IEquipSlot } from 'engine/equipment/wield';
 import { ArmorID } from 'engine/equipment/armor-data';
 import { IIndexableData } from 'engine/indexable-data';
 import { WeaponID } from 'engine/equipment/weapon-data';
 import { ArchetypeID } from 'engine/character/archetype';
 import { SkillsetID } from 'engine/character/skillset-data';
-import { checkMainHand, checkOffHand, checkWeaponWield, checkArmorArchetype } from 'engine/utils/equipment';
-import Armors from 'data/armors';
+import { IEquipSlot, WieldID } from 'engine/equipment/wield';
 
 interface ICharacterConfig {
 	readonly name: string;
@@ -71,6 +80,38 @@ export class CharacterData {
 		this.armor = data.armor;
 	}
 
+	public static getRandom(name: string): CharacterData {
+		const character = new CharacterData({
+			name,
+			sex: Sexes.getRandomID(),
+			archetype: Archetypes.getRandomID(),
+			skillset: 'NONE',
+			main: 'NONE',
+			off: 'NONE',
+			armor: 'NONE'
+		});
+
+		if (character.isMagicType()) {
+			const skillsets = Skillsets.filter(([id, set]) => id !== 'NONE');
+			const skillset = ArrayUtils.getRandomItem(skillsets)[0];
+			character.setSkillset(skillset);
+		}
+		const mainHands = character.filterWeapons('MAIN', id => id !== 'NONE');
+		const mainHand = ArrayUtils.getRandomItem(mainHands);
+		character.setMainHand(mainHand);
+
+		if (!character.isBothWielding() && !character.isDualWielding()) {
+			const offHands = character.filterWeapons('OFF', id => id !== 'NONE');
+			const offHand = ArrayUtils.getRandomItem(offHands);
+			character.setOffHand(offHand || 'NONE');
+		}
+		const armors = character.filterArmors(id => id !== 'NONE');
+		const armor = ArrayUtils.getRandomItem(armors);
+		character.setArmor(armor || 'NONE');
+
+		return character;
+	}
+
 	public isPowerType(): boolean {
 		return -1 !== this.archetype.indexOf('P');
 	}
@@ -84,11 +125,11 @@ export class CharacterData {
 	}
 
 	public isBothWielding = (): boolean => {
-		return checkWeaponWield(this.main, 'BOTH');
+		return this.checkWeaponWield(this.main, 'BOTH');
 	}
 
 	public isDualWielding = (): boolean => {
-		return checkWeaponWield(this.main, 'DUAL');
+		return this.checkWeaponWield(this.main, 'DUAL');
 	}
 
 	public getName(): string {
@@ -136,42 +177,47 @@ export class CharacterData {
 	}
 
 	public filterWeapons(slot: IEquipSlot, cb?: IWeaponFilterCb): WeaponID[] {
-		const { archetype, main } = this;
-		const weapons: WeaponID[] = [];
+		const equipable = Weapons
+			.filter(id => this.canWieldWeapon(id, slot))
+			.map(([id, weapon]) => id);
 
-		Weapons.each(id => {
-			switch (slot) {
-				case 'MAIN':
-					if (checkMainHand(id, archetype)) {
-						weapons.push(id);
-					}
-					return;
-
-				case 'OFF':
-					if (checkOffHand(id, archetype, main)) {
-						weapons.push(id);
-					}
-					return;
-
-				default:
-					throw new Error(`Invalid equip slot: ${slot}`);
-			}
-		});
-
-		return cb ? weapons.filter(cb) : weapons;
+		return cb ? equipable.filter(cb) : equipable;
 	}
 
 	public filterArmors(cb?: IArmorFilterCb): ArmorID[] {
-		const { archetype } = this;
-		const armors: ArmorID[] = [];
+		const equipable = Armors
+			.filter(id => this.canWieldArmor(id))
+			.map(([id, armor]) => id);
 
-		Armors.each(id => {
-			if (checkArmorArchetype(id, archetype)) {
-				armors.push(id);
-			}
-		});
+		return cb ? equipable.filter(cb) : equipable;
+	}
 
-		return cb ? armors.filter(cb) : armors;
+	public canWieldWeapon(weapon: WeaponID, slot: IEquipSlot): boolean {
+		if (!this.checkWeaponArchetype(weapon)) {
+			return false;
+		}
+		switch (slot) {
+			case 'MAIN':
+				return (
+					this.checkWeaponWield(weapon, 'MAIN') ||
+					this.checkWeaponWield(weapon, 'BOTH') ||
+					this.checkWeaponWield(weapon, 'DUAL')
+				);
+
+			case 'OFF':
+				return (
+					this.checkWeaponWield(weapon, 'OFF') &&
+					!this.isBothWielding() &&
+					!this.isDualWielding()
+				);
+
+			default:
+				throw new Error('Invalid equip slot given');
+		}
+	}
+
+	public canWieldArmor(armor: ArmorID): boolean {
+		return this.checkArmorArchetype(armor);
 	}
 
 	public serialize(): ICharacterData {
@@ -187,5 +233,17 @@ export class CharacterData {
 			off: this.off,
 			armor: this.armor
 		};
+	}
+
+	private checkWeaponArchetype(weapon: WeaponID): boolean {
+		return 1 === WeaponEquipTableArch[weapon][ArchetypeIndexTable[this.archetype]];
+	}
+
+	private checkWeaponWield(weapon: WeaponID, wield: WieldID): boolean {
+		return 1 === WeaponEquipTableWield[weapon][WieldIndexTable[wield]];
+	}
+
+	private checkArmorArchetype(armor: ArmorID): boolean {
+		return 1 === ArmorEquipTableArch[armor][ArchetypeIndexTable[this.archetype]];
 	}
 }

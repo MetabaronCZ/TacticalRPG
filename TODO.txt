@@ -4,7 +4,7 @@ TODO
 --	refaktorovat Enumy na type
 --	pridat moznost menit porady v PartyCreation
 --	pridat do Damage pocitani modifikatoru na utok do zad
---	v Engine event metodach vracet jen to, co se zmenilo
+--	v Engine event metodach vracet jen to, co se zmenilo + upravit setState() v UI
 
 
 LONG TERM
