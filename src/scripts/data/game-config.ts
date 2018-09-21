@@ -7,7 +7,6 @@ export const blockSize = 64;
 
 // engine
 export const tickDelay = 0;
-export const characterCount = 8; // number of character to deploy
 
 // animation
 export const moveAnimDuration = 150;

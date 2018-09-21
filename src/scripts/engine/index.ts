@@ -150,7 +150,7 @@ class Engine {
 			// get character data
 			if (config.randomPartyID === party) {
 				// random generated party
-				const charNames = RandomNameGenerator.get(nameSamples, config.characterCount, config.maxPartyNameLength);
+				const charNames = RandomNameGenerator.get(nameSamples, config.maxPartySize, config.maxPartyNameLength);
 				charData = charNames.map(n => getRandomCharacterData(n));
 
 			} else {
