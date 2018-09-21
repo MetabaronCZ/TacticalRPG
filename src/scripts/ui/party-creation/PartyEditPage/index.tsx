@@ -17,7 +17,7 @@ import Page from 'ui/common/Page';
 import PartyCreation from 'ui/party-creation/PartyCreation';
 
 interface IStateToProps {
-	readonly parties?: IPartyData[];
+	readonly parties: IPartyData[];
 	readonly characters: CharacterData[];
 }
 

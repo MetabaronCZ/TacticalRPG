@@ -1,7 +1,6 @@
 TODO
 ----------------------------------------------------------------------------------------------------------
---	refaktorovat vsude pole tak, aby vzdy byl default [] (zbavit se arr?: x[])
---	pridat moznost menit porady v PartyCreation
+--	pridat moznost menit poradi v PartyCreation
 --	pridat do Damage pocitani modifikatoru na utok do zad
 --	v Engine event metodach vracet jen to, co se zmenilo + upravit setState() v UI
 

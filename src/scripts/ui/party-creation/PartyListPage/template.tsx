@@ -13,7 +13,7 @@ const NoParties = () => (
 );
 
 interface IPartyListPage {
-	readonly parties?: IPartyData[];
+	readonly parties: IPartyData[];
 	readonly onBack?: () => void;
 	readonly onCreate?: () => void;
 	readonly onMoveDown: IOnMoveDown;
