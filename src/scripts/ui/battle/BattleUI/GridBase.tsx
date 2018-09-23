@@ -67,12 +67,16 @@ const getColor = (pos: Position, act: Act|null) => {
 
 				case 'REACTION':
 					if (null !== reactionPhase) {
-						const tgt = reactionPhase.getEvasionTarget();
+						const reactor = reactionPhase.getReactor();
+						const reactors = actionPhase.getReactions().map(char => char.getReactor().position);
 
-						if (pos.isContained(reactionPhase.getEvasionTargets())) {
+						if (pos.isContained(reactors)) {
 							color = 'blue';
 						}
-						if (pos === tgt) {
+						if (pos.isContained(reactionPhase.getEvasionTargets())) {
+							color = 'green';
+						}
+						if (pos === reactor.position) {
 							color = 'yellow';
 						}
 					}

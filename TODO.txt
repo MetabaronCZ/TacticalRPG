@@ -1,6 +1,5 @@
 TODO
 ----------------------------------------------------------------------------------------------------------
---	zvyraznovat na Gridu aktivniho reactora
 --	skillum pridat SkillGrade
 	- do Skillsetu dat varianty podle grade (MM = grade 2; PM / SM = grade 1, PP / PS / SS = grade 0)
 	- plosne skilly v grade 2
