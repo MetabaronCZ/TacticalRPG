@@ -2,7 +2,6 @@ import Skill from 'engine/skill';
 import Character from 'engine/character';
 import { WeaponSkillID } from 'engine/skill/weapon';
 import CharacterAction from 'engine/character-action';
-import { filterAttackSkills, filterSpecialSkills } from 'engine/utils/skill';
 
 export const getDontReactAction = () => new CharacterAction('DONT_REACT', 'Pass');
 export const getDirectAction = () => new CharacterAction('DIRECT', 'Direct');
@@ -24,7 +23,7 @@ export const getIdleActions = (character: Character): CharacterAction[] => {
 
 	// ATTACK actions
 	for (const wpn of [mainHand, offHand]) {
-		const attackSkills = filterAttackSkills(wpn.skills);
+		const attackSkills = Skill.filterAttack(wpn.skills);
 
 		for (const skill of attackSkills) {
 			const cost = skill.cost;
@@ -43,7 +42,7 @@ export const getIdleActions = (character: Character): CharacterAction[] => {
 
 	// WEAPON actions
 	for (const wpn of [mainHand, offHand]) {
-		for (const skill of filterSpecialSkills(wpn.skills)) {
+		for (const skill of Skill.filterSpecial(wpn.skills)) {
 			const { title, cost } = skill;
 			const action = new CharacterAction('WEAPON', `${title} (${wpn.title})`, cost, AP >= cost, [skill]);
 			actions.push(action);

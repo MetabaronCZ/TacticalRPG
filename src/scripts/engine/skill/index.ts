@@ -1,10 +1,12 @@
-import Skills from 'data/skills';
+import Skills, { attackSkills } from 'data/skills';
 
 import Position from 'engine/position';
 import Character from 'engine/character';
 import { getPosition } from 'engine/positions';
 import { StatusEffectID } from 'engine/status-effect';
-import { SkillID, SkillType, SkillRange, SkillArea, SkillElement, SkillTarget } from 'engine/skill/skill-data';
+import {
+	SkillID, SkillType, SkillRange, SkillArea, SkillElement, SkillTarget
+} from 'engine/skill/skill-data';
 
 class Skill {
 	public readonly id: SkillID;
@@ -19,6 +21,7 @@ class Skill {
 	public readonly physicalDamage: number; // damage modifier [%]
 	public readonly elementalDamage: number; // elemental damage modifier [%]
 	public readonly status: StatusEffectID[]; // status effects added to attack
+	public readonly isAttackSkill: boolean;
 
 	constructor(id: SkillID) {
 		const data = Skills.get(id);
@@ -34,6 +37,35 @@ class Skill {
 		this.physicalDamage = data.physicalDamage || 0;
 		this.elementalDamage = data.elementalDamage || 0;
 		this.status = data.status || [];
+		this.isAttackSkill = (-1 !== attackSkills.indexOf(this.id));
+	}
+
+	public static filterAttack(ids: SkillID[]): Skill[] {
+		const skills: Skill[] = [];
+
+		for (const id of ids) {
+			const skill = new Skill(id);
+
+			if ('ACTIVE' === skill.type && skill.isAttackSkill) {
+				skills.push(skill);
+			}
+		}
+		return skills;
+	}
+
+	public static filterSpecial(ids: SkillID[]): Skill[] {
+		const skills: Skill[] = [];
+		const uniqueSkills: SkillID[] = [];
+
+		for (const id of ids) {
+			const skill = new Skill(id);
+
+			if ('ACTIVE' === skill.type && !skill.isAttackSkill && -1 === uniqueSkills.indexOf(id)) {
+				uniqueSkills.push(id);
+				skills.push(skill);
+			}
+		}
+		return skills;
 	}
 
 	public getTargetable( source: Position): Position[] {
