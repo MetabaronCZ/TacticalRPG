@@ -32,7 +32,7 @@ const renderEdit = (char: CharacterData) => (
 );
 
 const renderDelete = (char: CharacterData, onDelete?: IOnDelete) => (
-	<LinkButton onClick={onDelete ? onDelete(char, char.getName()) : undefined}>Delete</LinkButton>
+	<LinkButton onClick={onDelete ? onDelete(char) : undefined}>Delete</LinkButton>
 );
 
 const renderOffHandBothWield = (title: string) => (

@@ -12,6 +12,7 @@ import { CharacterData } from 'engine/character-data';
 
 import CharacterListPage from 'ui/character-creation/CharacterListPage/template';
 import { IOnDelete, IOnMoveUp, IOnMoveDown } from 'ui/character-creation/CharacterList';
+import { store } from 'index';
 
 interface IStateToProps {
 	readonly characters: CharacterData[];
@@ -34,8 +35,20 @@ const mapDispatchToProps = (dispatch: Dispatch<Action<CharacterData>>) => ({
 	onMoveUp: (char: CharacterData) => () => {
 		dispatch(Actions.moveUpList(char));
 	},
-	onDelete: (char: CharacterData, name: string) => () => {
-		if (confirm(`Do you realy want to delete "${name}"?`)) {
+	onDelete: (char: CharacterData) => () => {
+		if (confirm(`Do you realy want to delete "${char.getName()}"?`)) {
+			const { parties } = store.getState();
+			const included: string[] = [];
+
+			for (const party of parties) {
+				if (party.getCharacters().find((ch: CharacterData|null) => !!ch && ch.id === char.id)) {
+					included.push(party.getName());
+				}
+			}
+
+			if (included.length) {
+				return alert(`Could not delete "${char.getName()}": character is included in party (${included.join(', ')})`);
+			}
 			dispatch(Actions.removeCharacter(char));
 		}
 	}

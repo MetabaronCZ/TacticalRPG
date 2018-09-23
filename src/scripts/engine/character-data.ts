@@ -10,7 +10,7 @@ import { characterMaxNameLength } from 'data/game-config';
 import {
 	WeaponEquipTableArch, WeaponEquipTableWield,
 	WieldIndexTable, ArmorEquipTableArch,
-	ArchetypeIndexTable
+	ArchetypeIndexTable, safeOffHand
 } from 'data/equipment';
 
 import { SexID } from 'engine/character/sex';
@@ -216,7 +216,8 @@ export class CharacterData extends IndexableData {
 				return (
 					this.checkWeaponWield(weapon, 'OFF') &&
 					!this.isBothWielding() &&
-					!this.isDualWielding()
+					!this.isDualWielding() &&
+					('MM' !== this.archetype || -1 !== safeOffHand.indexOf(weapon))
 				);
 
 			default:

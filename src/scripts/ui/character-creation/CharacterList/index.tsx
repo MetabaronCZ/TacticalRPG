@@ -5,7 +5,7 @@ import getColumns from 'ui/character-creation/CharacterList/columns';
 
 export type IOnMoveDown = (char: CharacterData) => () => void;
 export type IOnMoveUp = (char: CharacterData) => () => void;
-export type IOnDelete = (char: CharacterData, name: string) => () => void;
+export type IOnDelete = (char: CharacterData) => () => void;
 
 interface ICharacterListProps {
 	readonly editable?: boolean;
