@@ -21,9 +21,9 @@ const Actions: React.SFC<IActionsProps> = ({ actions, onSelect }) => {
 
 				return (
 					<div style={{ color, marginBottom: '10px', }} key={i}>
-						<div>&rsaquo; <a className="Link" href="#" onClick={onClick}><strong>{action.getTitle()}</strong></a></div>
-						<div className="u-text-small">{action.getId()} ({action.getCost()}AP)</div>
-						<div className="u-text-small">[ {action.getSkills().map(skill => skill.id).join(', ')} ]</div>
+						<div>&rsaquo; <a className="Link" href="#" onClick={onClick}><strong>{action.title}</strong></a></div>
+						<div className="u-text-small">{action.id} ({action.cost}AP)</div>
+						<div className="u-text-small">[ {action.skills.map(skill => skill.id).join(', ')} ]</div>
 					</div>
 				);
 			})}

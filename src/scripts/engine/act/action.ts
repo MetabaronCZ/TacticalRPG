@@ -100,14 +100,14 @@ class ActAction {
 			throw new Error('Could not start action: invalid state ' + state);
 		}
 
-		if (!action.isActive() || !action.getSkills().length) {
+		if (!action.isActive() || !action.skills.length) {
 			throw new Error('Could not start action: invalid action');
 		}
 		this.action = action;
 		this.state = 'IDLE';
 
 		// update actor values
-		const skills = action.getSkills();
+		const skills = action.skills;
 		const skillAreas = skills.map(skill => skill.getTargetable(actor.position));
 		const targetable = ArrayUtils.getIntersection(skillAreas, pos => pos.id);
 		const targets = skills[0].getTargets(actor, characters, targetable);
@@ -135,7 +135,7 @@ class ActAction {
 		}
 
 		// get skill effect area
-		const skills = action.getSkills();
+		const skills = action.skills;
 
 		if (!skills.length) {
 			return;
@@ -279,7 +279,7 @@ class ActAction {
 						// caclulate character changes
 						let info: string[] = [];
 
-						for (const skill of action.getSkills()) {
+						for (const skill of action.skills) {
 							const skillStatus = skill.status;
 							let phyDmg = 0;
 							let elmDmg = 0;
@@ -333,7 +333,7 @@ class ActAction {
 
 			if (step.isLast) {
 				this.state = 'DONE';
-				actor.skillReduceAP(action.getCost());
+				actor.skillReduceAP(action.cost);
 			}
 
 			this.events.onAnimation(this, step);
@@ -347,7 +347,7 @@ class ActAction {
 		return {
 			onStart: (action: ActAction) => {
 				const actionItem = action.action;
-				Logger.info(`ActAction onStart: "${actionItem ? actionItem.getTitle() : '-'}"`);
+				Logger.info(`ActAction onStart: "${actionItem ? actionItem.title : '-'}"`);
 				events.onStart(action);
 			},
 			onReset: (action: ActAction) => {
@@ -361,7 +361,7 @@ class ActAction {
 			},
 			onConfirm: (action: ActAction) => {
 				const actionItem = action.getAction();
-				Logger.info(`ActMove onConfirm: "${actionItem ? actionItem.getTitle() : '-'}"`);
+				Logger.info(`ActMove onConfirm: "${actionItem ? actionItem.title : '-'}"`);
 				events.onConfirm(action);
 			},
 			onPass: (action: ActAction) => {

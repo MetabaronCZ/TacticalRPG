@@ -74,7 +74,7 @@ class ActReaction {
 		if ('IDLE' !== state) {
 			throw new Error('Could not select reaction: invalid state ' + state);
 		}
-		const skills = action.getSkills();
+		const skills = action.skills;
 
 		if (!skills.length) {
 			throw new Error('Could not select reaction: invalid action');
@@ -111,7 +111,7 @@ class ActReaction {
 			throw new Error('Could not select evasion target: invalid state ' + state);
 		}
 
-		if (null === action || !action.getSkills().length) {
+		if (null === action || !action.skills.length) {
 			throw new Error('Could not select evasion target: invalid action');
 		}
 
@@ -122,7 +122,7 @@ class ActReaction {
 		this.state = 'DONE';
 		this.evasionTarget = target;
 
-		const skills = action.getSkills();
+		const skills = action.skills;
 		const cost = skills[0].cost;
 
 		// update reacting character
@@ -192,7 +192,7 @@ class ActReaction {
 			},
 			onReactionSelected: reaction => {
 				const action = reaction.getAction();
-				Logger.info(`ActReaction onReactionSelected: "${action ? action.getTitle() : '-'}"`);
+				Logger.info(`ActReaction onReactionSelected: "${action ? action.title : '-'}"`);
 				events.onReactionSelected(reaction);
 			},
 			onBlock: reaction => {

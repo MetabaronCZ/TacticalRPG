@@ -5,11 +5,11 @@ export type CharacterActionID =
 	'PASS' | 'REACTION' | 'DONT_REACT' | 'DIRECT' | 'CONFIRM' | 'BACK';
 
 class CharacterAction {
-	private readonly id: CharacterActionID;
-	private readonly cost: number;
-	private readonly title: string;
-	private readonly active: boolean;
-	private readonly skills: Skill[];
+	public readonly id: CharacterActionID;
+	public readonly cost: number;
+	public readonly title: string;
+	public readonly skills: Skill[];
+	private active: boolean;
 
 	constructor(id: CharacterActionID, title: string, cost = 0, isActive = true, skills: Skill[] = []) {
 		this.id = id;
@@ -21,22 +21,6 @@ class CharacterAction {
 
 	public isActive() {
 		return this.active;
-	}
-
-	public getId() {
-		return this.id;
-	}
-
-	public getCost() {
-		return this.cost;
-	}
-
-	public getTitle() {
-		return this.title;
-	}
-
-	public getSkills() {
-		return this.skills;
 	}
 }
 

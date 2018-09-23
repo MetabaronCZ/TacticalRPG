@@ -76,7 +76,7 @@ export const getSkillConfirmActions = (action: CharacterAction, targets: Charact
 
 	// confirm skill action
 	if (targets.length) {
-		const confirmAction = getConfirmAction(action.getTitle(), action.getCost());
+		const confirmAction = getConfirmAction(action.title, action.cost);
 		actions.push(confirmAction);
 	}
 

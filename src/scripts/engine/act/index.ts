@@ -185,7 +185,7 @@ class Act {
 
 	public selectAction(action: CharacterAction) {
 		const { phase, actionPhase } = this;
-		const actionId = action.getId();
+		const actionId = action.id;
 
 		switch (actionId) {
 			case 'ATTACK':
