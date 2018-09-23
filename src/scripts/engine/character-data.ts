@@ -114,12 +114,6 @@ export class CharacterData {
 	}
 
 	public isValid(): boolean {
-		console.log('name', this.name, this.name.length);
-		console.log('skillset', this.skillset, this.archetype, this.isMagicType());
-		console.log('main', this.canWieldWeapon(this.main, 'MAIN'));
-		console.log('off', this.canWieldWeapon(this.off, 'OFF'));
-		console.log('armor', this.canWieldArmor(this.armor));
-
 		return (
 			(this.name.length > 0 && this.name.length <= characterMaxNameLength) &&
 			(this.isMagicType() || this.skillset === 'NONE') &&
