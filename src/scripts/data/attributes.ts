@@ -1,13 +1,15 @@
 import { ArchetypeID } from 'engine/character/archetype';
-import { BaseAttributeID, SecondaryAttributeID, IBaseAttributes } from 'engine/character/attributes-data';
+import {
+	PrimaryAttributeID, SecondaryAttributeID, IPrimaryAttributes
+} from 'engine/character/attributes-data';
 
-type IBaseAttrFormula = (P: number, S: number, M: number) => number;
+type IPrimaryAttrFormula = (P: number, S: number, M: number) => number;
 
-type IBaseAttrFormulas = {
-	readonly [attr in BaseAttributeID]: IBaseAttrFormula;
+type IPrimaryAttrFormulas = {
+	readonly [attr in PrimaryAttributeID]: IPrimaryAttrFormula;
 };
 
-type ISecondaryAttrFormula = (attrs: IBaseAttributes) => number;
+type ISecondaryAttrFormula = (attrs: IPrimaryAttributes) => number;
 
 type ISecondaryAttrFormulas = {
 	readonly [attr in SecondaryAttributeID]: ISecondaryAttrFormula;
@@ -30,7 +32,7 @@ export const Arch2AttTable: IArch2AttrTable = {
 	MM: { P: 0.0, S: 0.0, M: 1.5 }
 };
 
-export const defaultBaseAttributes: IBaseAttributes = {
+export const defaultBaseAttributes: IPrimaryAttributes = {
 	STR: 10,
 	VIT: 10,
 	SPD: 3,
@@ -39,7 +41,7 @@ export const defaultBaseAttributes: IBaseAttributes = {
 	SPR: 0
 };
 
-export const BaseAttrFormula: IBaseAttrFormulas = {
+export const PrimaryAttrFormula: IPrimaryAttrFormulas = {
 	STR: (P, S, M) => 10 * P,
 	VIT: (P, S, M) => 10 * P,
 	SPD: (P, S, M) => 2 * S,

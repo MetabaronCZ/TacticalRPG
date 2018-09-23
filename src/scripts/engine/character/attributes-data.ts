@@ -1,4 +1,4 @@
-export type BaseAttributeID =
+export type PrimaryAttributeID =
 	'STR' | // strength
 	'VIT' | // vitality
 	'SPD' | // speed
@@ -11,14 +11,14 @@ export type SecondaryAttributeID =
 	'AP' | // action points
 	'CT';  // charge time
 
-export type AttributeID = BaseAttributeID | SecondaryAttributeID;
+export type AttributeID = PrimaryAttributeID | SecondaryAttributeID;
 
-export type IBaseAttributes = {
-	[attr in BaseAttributeID]: number;
+export type IPrimaryAttributes = {
+	[attr in PrimaryAttributeID]: number;
 };
 
 export type ISecondaryAttributes = {
 	[attr in SecondaryAttributeID]: number;
 };
 
-export type IAttributes = IBaseAttributes & ISecondaryAttributes;
+export type IAttributes = IPrimaryAttributes & ISecondaryAttributes;
