@@ -1,5 +1,7 @@
 import React, { SyntheticEvent } from 'react';
 
+import { validateField, validateForm } from 'utils/validation';
+
 import Icos from 'data/icos';
 import Sexes from 'data/sexes';
 import Wields from 'data/wields';
@@ -9,7 +11,9 @@ import Skillsets from 'data/skillsets';
 import Archetypes from 'data/archetypes';
 import { characterMaxNameLength } from 'data/game-config';
 
-import { validateField, validateForm } from 'utils/validation';
+import { CharacterData } from 'engine/character-data';
+import { ArmorID, IArmorData } from 'engine/equipment/armor-data';
+import { IWeaponData, WeaponID } from 'engine/equipment/weapon-data';
 
 import Form from 'ui/common/Form';
 import Button from 'ui/common/Button';
@@ -21,10 +25,6 @@ import FormRadio from 'ui/common/FormRadio';
 import FormSelect from 'ui/common/FormSelect';
 import FormSelectItem from 'ui/common/FormSelectItem';
 
-import { ArmorID, IArmorData } from 'engine/equipment/armor-data';
-import { IWeaponData, WeaponID } from 'engine/equipment/weapon-data';
-import { CharacterData, ICharacterData } from 'engine/character-data';
-
 interface ICharacterCreationProps {
 	readonly character?: CharacterData;
 	readonly onBack?: () => void;
@@ -32,31 +32,28 @@ interface ICharacterCreationProps {
 }
 
 interface ICharacterCreationState {
-	readonly fields: {
-		character: CharacterData;
-	};
 	readonly errors: {
-		readonly [field: string]: string|undefined;
+		[field: string]: string|undefined;
 	};
 }
 
 class CharacterCreation extends React.Component<ICharacterCreationProps, ICharacterCreationState> {
+	private character: CharacterData;
+
 	constructor(props: ICharacterCreationProps) {
 		super(props);
+		this.character = props.character || new CharacterData();
 
 		this.state = {
-			fields: {
-				character: props.character || new CharacterData()
-			},
 			errors: {}
 		};
 	}
 
 	public render() {
-		const onChange = this.onChange;
-		const { fields, errors } = this.state;
-		const char = fields.character;
-		const data = char.serialize();
+		const { character, onChange } = this;
+		const { errors } = this.state;
+
+		const data = character.serialize();
 
 		const archetype = Archetypes.get(data.archetype);
 		const skillset = Skillsets.get(data.skillset);
@@ -66,12 +63,12 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 		const mainHandWield = Wields.get('MAIN');
 		const offHandWield = Wields.get('OFF');
 
-		const isMagicUser = char.isMagicType();
-		const hasNoOffHand = char.isBothWielding() || char.isDualWielding();
+		const isMagicUser = character.isMagicType();
+		const hasNoOffHand = character.isBothWielding() || character.isDualWielding();
 
-		const mainWeapons = char.filterWeapons('MAIN').map(id => [id, Weapons.get(id)] as [WeaponID, IWeaponData]);
-		const offWeapons = char.filterWeapons('OFF').map(id => [id, Weapons.get(id)] as [WeaponID, IWeaponData]);
-		const armors = char.filterArmors().map(id => [id, Armors.get(id)] as [ArmorID, IArmorData]);
+		const mainWeapons = character.filterWeapons('MAIN').map(id => [id, Weapons.get(id)] as [WeaponID, IWeaponData]);
+		const offWeapons = character.filterWeapons('OFF').map(id => [id, Weapons.get(id)] as [WeaponID, IWeaponData]);
+		const armors = character.filterArmors().map(id => [id, Armors.get(id)] as [ArmorID, IArmorData]);
 
 		return (
 			<Form onSubmit={this.onSubmit}>
@@ -171,40 +168,6 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 		);
 	}
 
-	public componentDidUpdate(prevProps: ICharacterCreationProps, prevState: ICharacterCreationState) {
-		const curr = this.state.fields.character;
-		const prevData = prevState.fields.character.serialize();
-		const newChar = new CharacterData(curr.serialize());
-		let newData = newChar.serialize();
-		const arch = newData.archetype;
-		let shouldUpdate = false;
-
-		// reset character data on archetype change
-		if (prevData.archetype !== arch) {
-			newChar.setSkillset('NONE');
-
-			if (newChar.isMagicType()) {
-				newChar.setSkillset(newData.skillset);
-			}
-			newChar.setMainHand(newChar.canWieldWeapon(newData.main, 'MAIN') ? newData.main : 'NONE');
-			newChar.setOffHand(newChar.canWieldWeapon(newData.off, 'OFF') ? newData.off : 'NONE');
-			newChar.setArmor(newChar.canWieldArmor(newData.armor) ? newData.armor : 'NONE');
-			shouldUpdate = true;
-		}
-		newData = newChar.serialize();
-
-		// reset character off hand weapon on main hand change
-		if (prevData.main !== newData.main) {
-			newChar.setOffHand(newChar.canWieldWeapon(newData.off, 'OFF') ? newData.off : 'NONE');
-			shouldUpdate = true;
-		}
-
-		// update character data
-		if (shouldUpdate) {
-			this.setState({ fields: { character: newChar } });
-		}
-	}
-
 	private onChange = (e?: SyntheticEvent<any>) => {
 		if (!e) {
 			return;
@@ -212,14 +175,31 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 		const { name, value } = e.currentTarget;
 		const validation = validateField(name, value);
 
+		const character = new CharacterData({
+			...this.character.serialize(),
+			[name]: value
+		});
+
+		if (!character.isValid()) {
+			if (!character.isMagicType() && 'NONE' !== character.getSkillset()) {
+				character.setSkillset('NONE');
+			}
+
+			if (!character.canWieldWeapon(character.getMainHand(), 'MAIN')) {
+				character.setMainHand('NONE');
+			}
+
+			if (!character.canWieldWeapon(character.getOffHand(), 'OFF')) {
+				character.setOffHand('NONE');
+			}
+
+			if (!character.canWieldArmor(character.getArmor())) {
+				character.setArmor('NONE');
+			}
+		}
+		this.character = character;
+
 		this.setState(state => ({
-			fields: {
-				...state.fields,
-				character: new CharacterData({
-					...state.fields.character.serialize(),
-					[name]: value
-				})
-			},
 			errors: {
 				...state.errors,
 				[name]: validation.error || undefined
@@ -230,22 +210,18 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 	private onSubmit = (e: SyntheticEvent<any>) => {
 		e.preventDefault();
 
-		const { character } = this.state.fields;
 		const { onSubmit } = this.props;
+		const { character } = this;
 
 		if (!character.isValid()) {
-			this.validateForm(character.serialize());
+			const validation = validateForm(character.serialize());
+			this.setState({ errors: validation.errors });
 			return;
 		}
 
 		if (onSubmit) {
 			onSubmit(character);
 		}
-	}
-
-	private validateForm(data: ICharacterData) {
-		const result = validateForm(data);
-		this.setState({ errors: result.errors });
 	}
 }
 
