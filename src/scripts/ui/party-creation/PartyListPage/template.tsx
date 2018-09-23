@@ -6,14 +6,14 @@ import ButtonRow from 'ui/common/ButtonRow';
 import Separator from 'ui/common/Separator';
 import PartyList, { IOnMoveDown, IOnMoveUp, IOnDelete } from 'ui/party-creation/PartyList';
 
-import { IPartyData } from 'engine/party-data';
+import { PartyData } from 'engine/party-data';
 
 const NoParties = () => (
 	<p className="Paragraph">There are no character parties.</p>
 );
 
 interface IPartyListPage {
-	readonly parties: IPartyData[];
+	readonly parties: PartyData[];
 	readonly onBack?: () => void;
 	readonly onCreate?: () => void;
 	readonly onMoveDown: IOnMoveDown;

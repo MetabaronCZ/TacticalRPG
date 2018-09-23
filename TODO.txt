@@ -1,5 +1,10 @@
 TODO
 ----------------------------------------------------------------------------------------------------------
+--	zakazat mazani postav, ktere jsou uz obsazeny v nektere PartyData; musi byt nejdrive vyresen konflikt
+--	zvyraznovat na Gridu aktivniho reactora
+--	skillum pridat SkillGrade
+	- do Skillsetu dat varianty podle grade (MM = grade 2; PM / SM = grade 1, PP / PS / SS = grade 0)
+	- plosne skilly v grade 2
 --	pridat moznost menit poradi v PartyCreation
 --	pridat do Damage pocitani modifikatoru na utok do zad
 --	v Engine event metodach vracet jen to, co se zmenilo + upravit setState() v UI

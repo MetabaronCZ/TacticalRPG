@@ -2,10 +2,10 @@ import { createStore, Store } from 'redux';
 
 import reducers from 'reducers';
 
-import { IPartyData } from 'engine/party-data';
-import { IBattleConfig } from 'engine/battle-config';
-import { ICharacterData, CharacterData } from 'engine/character-data';
 import Logger from 'engine/logger';
+import { IBattleConfig } from 'engine/battle-config';
+import { IPartyData, PartyData } from 'engine/party-data';
+import { ICharacterData, CharacterData } from 'engine/character-data';
 
 const KEY = 'game'; // storage key
 
@@ -18,7 +18,7 @@ interface ISaveState {
 export interface IStore {
 	readonly battleConfig: IBattleConfig;
 	readonly characters: CharacterData[];
-	readonly parties: IPartyData[];
+	readonly parties: PartyData[];
 }
 
 const getDefaultState = (): IStore => ({
@@ -37,21 +37,43 @@ const load = (): IStore => {
 	}
 	try {
 		const data = JSON.parse(state) as ISaveState;
+
+		// prepare character data
 		const characters: CharacterData[] = [];
 
 		for (const char of data.characters) {
+			if (!char) {
+				continue;
+			}
 			const charData = new CharacterData(char);
 
 			if (charData.isValid()) {
 				characters.push(charData);
 			} else {
-				Logger.error(`Invalid character "${charData.getName()}"`);
+				Logger.error(`Invalid character "${JSON.stringify(charData.serialize())}"`);
+			}
+		}
+
+		// prepare party data
+		const parties: PartyData[] = [];
+
+		for (const party of data.parties) {
+			if (!party) {
+				continue;
+			}
+			const partyData = new PartyData(party, characters);
+
+			if (partyData.isValid()) {
+				parties.push(partyData);
+			} else {
+				Logger.error(`Invalid party "${JSON.stringify(partyData.serialize())}"`);
 			}
 		}
 
 		return {
 			...data,
-			characters
+			characters,
+			parties
 		} as IStore;
 
 	} catch (err) {
@@ -63,7 +85,8 @@ const save = (store: Store<IStore>) => {
 	const state = store.getState() || getDefaultState();
 	const data: ISaveState = {
 		...state,
-		characters: state.characters.map(char => char.serialize())
+		characters: state.characters.map(char => char.serialize()),
+		parties: state.parties.map(party => party.serialize())
 	};
 	localStorage.setItem(KEY, JSON.stringify(data));
 };

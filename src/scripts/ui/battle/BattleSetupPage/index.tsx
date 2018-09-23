@@ -9,7 +9,7 @@ import * as Selector from 'selectors';
 import { goto, gotoFn } from 'utils/nav';
 import Actions from 'actions/battle-config';
 
-import { IPartyData } from 'engine/party-data';
+import { PartyData } from 'engine/party-data';
 import { IBattleConfig } from 'engine/battle-config';
 import { CharacterData } from 'engine/character-data';
 
@@ -19,7 +19,7 @@ import BattleSetup from 'ui/battle/BattleSetup';
 interface IStateToProps {
 	readonly battleConfig: IBattleConfig;
 	readonly characters: CharacterData[];
-	readonly parties: IPartyData[];
+	readonly parties: PartyData[];
 }
 
 const mapStateToProps = (state: IStore): IStateToProps => ({

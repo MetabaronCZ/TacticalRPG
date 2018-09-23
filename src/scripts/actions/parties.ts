@@ -1,5 +1,5 @@
 import { createAction } from 'redux-actions';
-import { IPartyData } from 'engine/party-data';
+import { PartyData } from 'engine/party-data';
 
 export enum ActionID {
 	ADD = 'PARTY_ADD',
@@ -10,9 +10,9 @@ export enum ActionID {
 }
 
 export default {
-	addParty: createAction(ActionID.ADD, (party: IPartyData) => party),
-	editParty: createAction(ActionID.EDIT, (party: IPartyData) => party),
-	removeParty: createAction(ActionID.REMOVE, (party: IPartyData) => party),
-	moveDownList: createAction(ActionID.MOVE_DOWN_LIST, (party: IPartyData) => party),
-	moveUpList: createAction(ActionID.MOVE_UP_LIST, (party: IPartyData) => party)
+	addParty: createAction(ActionID.ADD, (party: PartyData) => party),
+	editParty: createAction(ActionID.EDIT, (party: PartyData) => party),
+	removeParty: createAction(ActionID.REMOVE, (party: PartyData) => party),
+	moveDownList: createAction(ActionID.MOVE_DOWN_LIST, (party: PartyData) => party),
+	moveUpList: createAction(ActionID.MOVE_UP_LIST, (party: PartyData) => party)
 };

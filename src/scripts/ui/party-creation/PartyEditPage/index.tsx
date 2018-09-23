@@ -10,19 +10,19 @@ import Actions from 'actions/parties';
 import * as Selector from 'selectors';
 import { goto, gotoFn } from 'utils/nav';
 
-import { IPartyData } from 'engine/party-data';
+import { PartyData } from 'engine/party-data';
 import { CharacterData } from 'engine/character-data';
 
 import Page from 'ui/common/Page';
 import PartyCreation from 'ui/party-creation/PartyCreation';
 
 interface IStateToProps {
-	readonly parties: IPartyData[];
+	readonly parties: PartyData[];
 	readonly characters: CharacterData[];
 }
 
 interface IPartyEditPageContainerProps extends RouteComponentProps<any> {
-	readonly onSubmit: (history: History) => (party: IPartyData) => void;
+	readonly onSubmit: (history: History) => (party: PartyData) => void;
 }
 
 const mapStateToProps = (state: IStore): IStateToProps => ({
@@ -30,8 +30,8 @@ const mapStateToProps = (state: IStore): IStateToProps => ({
 	parties: Selector.getParties(state)
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<Action<IPartyData>>) => ({
-	onSubmit: (history: History) => (party: IPartyData) => {
+const mapDispatchToProps = (dispatch: Dispatch<Action<PartyData>>) => ({
+	onSubmit: (history: History) => (party: PartyData) => {
 		dispatch(Actions.editParty(party));
 		goto(history, '/party-list');
 	}

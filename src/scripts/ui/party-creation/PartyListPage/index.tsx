@@ -9,13 +9,13 @@ import { gotoFn } from 'utils/nav';
 import * as Selector from 'selectors';
 import Actions from 'actions/parties';
 
-import { IPartyData } from 'engine/party-data';
+import { PartyData } from 'engine/party-data';
 
 import PartyListPage from 'ui/party-creation/PartyListPage/template';
 import { IOnMoveDown, IOnMoveUp, IOnDelete } from 'ui/party-creation/PartyList';
 
 interface IStateToProps {
-	readonly parties: IPartyData[];
+	readonly parties: PartyData[];
 }
 
 interface IPartyListPageContainerProps extends RouteComponentProps<any> {
@@ -28,15 +28,15 @@ const mapStateToProps = (state: IStore): IStateToProps => ({
 	parties: Selector.getParties(state)
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<Action<IPartyData>>) => ({
-	onMoveDown: (party: IPartyData) => () => {
+const mapDispatchToProps = (dispatch: Dispatch<Action<PartyData>>) => ({
+	onMoveDown: (party: PartyData) => () => {
 		dispatch(Actions.moveDownList(party));
 	},
-	onMoveUp: (party: IPartyData) => () => {
+	onMoveUp: (party: PartyData) => () => {
 		dispatch(Actions.moveUpList(party));
 	},
-	onDelete: (party: IPartyData) => () => {
-		if (confirm(`Do you realy want to delete "${party.name}"?`)) {
+	onDelete: (party: PartyData) => () => {
+		if (confirm(`Do you realy want to delete "${party.getName()}"?`)) {
 			dispatch(Actions.removeParty(party));
 		}
 	}

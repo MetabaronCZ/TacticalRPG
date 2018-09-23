@@ -1,6 +1,5 @@
-import uuid from 'uuid/v1';
-
 import * as ArrayUtils from 'core/array';
+import { validationRules } from 'utils/validation';
 
 import Sexes from 'data/sexes';
 import Armors from 'data/armors';
@@ -16,11 +15,11 @@ import {
 
 import { SexID } from 'engine/character/sex';
 import { ArmorID } from 'engine/equipment/armor-data';
-import { IIndexableData } from 'engine/indexable-data';
 import { WeaponID } from 'engine/equipment/weapon-data';
 import { ArchetypeID } from 'engine/character/archetype';
 import { SkillsetID } from 'engine/character/skillset-data';
 import { IEquipSlot, WieldID } from 'engine/equipment/wield';
+import { IIndexableData, IndexableData } from 'engine/indexable-data';
 
 interface ICharacterConfig {
 	readonly name: string;
@@ -47,10 +46,7 @@ const defaults: ICharacterConfig = {
 	armor: 'NONE'
 };
 
-export class CharacterData {
-	public readonly id: string;
-	public readonly creationDate: number;
-	public readonly lastUpdate: number;
+export class CharacterData extends IndexableData {
 	private name: string;
 	private sex: SexID;
 	private archetype: ArchetypeID;
@@ -60,18 +56,14 @@ export class CharacterData {
 	private armor: ArmorID;
 
 	constructor(conf: Partial<ICharacterData> = {}) {
-		const now = Date.now();
+		super({
+			id: conf.id,
+			creationDate: conf.creationDate,
+			lastUpdate: conf.lastUpdate
+		});
 
-		const indexableDefaults: IIndexableData = {
-			id: uuid(),
-			creationDate: now,
-			lastUpdate: now
-		};
-		const data: ICharacterData = Object.assign({}, defaults, indexableDefaults, conf);
+		const data: ICharacterConfig = Object.assign({}, defaults, conf);
 
-		this.id = data.id;
-		this.creationDate = data.creationDate;
-		this.lastUpdate = data.lastUpdate;
 		this.name = data.name;
 		this.sex = data.sex;
 		this.archetype = data.archetype;
@@ -114,12 +106,14 @@ export class CharacterData {
 	}
 
 	public isValid(): boolean {
+		const { name, skillset, main, off, armor } = this;
 		return (
-			(this.name.length > 0 && this.name.length <= characterMaxNameLength) &&
-			(this.isMagicType() || this.skillset === 'NONE') &&
-			this.canWieldWeapon(this.main, 'MAIN') &&
-			this.canWieldWeapon(this.off, 'OFF') &&
-			this.canWieldArmor(this.armor)
+			(name.length > 0 && name.length <= characterMaxNameLength) &&
+			(!validationRules.name || validationRules.name.test(name)) &&
+			(this.isMagicType() || skillset === 'NONE') &&
+			this.canWieldWeapon(main, 'MAIN') &&
+			this.canWieldWeapon(off, 'OFF') &&
+			this.canWieldArmor(armor)
 		);
 	}
 
@@ -239,9 +233,7 @@ export class CharacterData {
 
 	public serialize(): ICharacterData {
 		return {
-			id: this.id,
-			creationDate: this.creationDate,
-			lastUpdate: this.lastUpdate,
+			...super.serialize(),
 			name: this.name,
 			sex: this.sex,
 			archetype: this.archetype,

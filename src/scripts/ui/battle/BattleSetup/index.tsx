@@ -15,9 +15,8 @@ import FormSelect from 'ui/common/FormSelect';
 import FormSelectItem from 'ui/common/FormSelectItem';
 import CharacterList from 'ui/character-creation/CharacterList';
 
-import { IPartyData } from 'engine/party-data';
+import { PartyData } from 'engine/party-data';
 import { CharacterData } from 'engine/character-data';
-import { validateParty, getCharacterById } from 'engine/utils/party';
 import { IBattleConfig, IBattleConfigPlayer } from 'engine/battle-config';
 
 // empty array to map player data / states
@@ -25,7 +24,7 @@ const playerPool = Array(maxPlayers).fill(0);
 
 interface IBattleSetupProps {
 	readonly config: IBattleConfig;
-	readonly parties: IPartyData[];
+	readonly parties: PartyData[];
 	readonly characters: CharacterData[];
 	readonly onStart: (config: IBattleConfig) => void;
 	readonly onBack: (e: SyntheticEvent<any>) => void;
@@ -71,7 +70,7 @@ class BattleSetup extends React.Component<IBattleSetupProps, IBattleSetupState> 
 	}
 
 	public render() {
-		const { characters, parties } = this.props;
+		const { parties } = this.props;
 		const players = this.state.fields.players;
 		const errors = this.state.errors.players;
 		let isValidSelection = true;
@@ -90,15 +89,18 @@ class BattleSetup extends React.Component<IBattleSetupProps, IBattleSetupState> 
 			<Form onSubmit={this.onSubmit}>
 				{playerPool.map((_, p) => {
 					const selectedParty = parties.filter(party => party.id === players[p].party)[0];
-					let chars: CharacterData[] = [];
+					const chars: CharacterData[] = [];
+					let partyValidation = true;
 
 					if (selectedParty) {
-						chars = selectedParty.characters
-							.map(id => getCharacterById(id, characters))
-							.filter(char => !!char);
+						for (const char of selectedParty.getCharacters()) {
+							if (null !== char) {
+								chars.push(char);
+							}
+						}
+						partyValidation = selectedParty.isValid();
 					}
-					const partyValidation = validateParty(chars);
-					const isValidParty = (randomPartyID === players[p].party || (true === partyValidation && chars.length));
+					const isValidParty = (randomPartyID === players[p].party || true === partyValidation);
 
 					if (!isValidParty) {
 						isValidSelection = false;
@@ -135,7 +137,7 @@ class BattleSetup extends React.Component<IBattleSetupProps, IBattleSetupState> 
 								<FormSelect id={`f-player-${p}-party`} name={`f-player-${p}-party`} value={players[p].party} onChange={onChange('party')}>
 									{parties && parties.map((party, i) => (
 										<FormSelectItem value={party.id} key={i}>
-											{party.name}
+											{party.getName()}
 										</FormSelectItem>
 									))}
 
@@ -167,7 +169,7 @@ class BattleSetup extends React.Component<IBattleSetupProps, IBattleSetupState> 
 
 	private onChange = (e: SyntheticEvent<any>, name: string, player: number) => {
 		const value = e.currentTarget.value;
-		validateField(name, value, (field, error) => this.handleValidationError(field, error, player));
+		const validation = validateField(name, value);
 
 		this.setState(state => ({
 			fields: {
@@ -178,17 +180,12 @@ class BattleSetup extends React.Component<IBattleSetupProps, IBattleSetupState> 
 					}
 					return item;
 				})
-			}
-		}));
-	}
-
-	private handleValidationError = (field: string, error: string|null, player: number) => {
-		this.setState(state => ({
+			},
 			errors: {
 				...state.errors,
 				players: state.errors.players.map((item, i) => {
 					if (player === i) {
-						return Object.assign({}, item, { [field]: error || undefined });
+						return Object.assign({}, item, { [name]: validation.error || undefined });
 					}
 					return item;
 				})

@@ -42,7 +42,7 @@ const renderOffHandBothWield = (title: string) => (
 interface IColumn {
 	readonly title: string;
 	readonly name: string;
-	readonly value: (char: CharacterData, i: number) => React.ReactNode;
+	readonly value: (char: CharacterData|null, i: number) => React.ReactNode;
 	readonly editable?: boolean;
 }
 
@@ -51,23 +51,26 @@ const getColumns = (editable = false, onMoveDown?: IOnMoveDown, onMoveUp?: IOnMo
 		{
 			title: '',
 			name: 'order',
-			value: (char: CharacterData, i: number) => i + 1
+			value: (char, i) => i + 1
 		}, {
 			title: '',
 			name: 'ico',
-			value: renderArchetype
+			value: char => (char ? renderArchetype(char) : '')
 		}, {
 			title: '',
 			name: 'sex',
-			value: char => icos[char.getSex().toLowerCase()]
+			value: char => (char ? icos[char.getSex().toLowerCase()] : '')
 		}, {
 			title: 'Name',
 			name: 'name',
-			value: char => char.getName()
+			value: char => (char ? char.getName() : 'Empty')
 		}, {
 			title: 'Archetype',
 			name: 'archetype',
 			value: char => {
+				if (!char) {
+					return '';
+				}
 				const archetype = Archetypes.get(char.getArchetype());
 				const skillset = Skillsets.get(char.getSkillset());
 				return `${archetype.title}${char.isMagicType() ? ' (' + skillset.title + ')' : ''}`;
@@ -75,11 +78,14 @@ const getColumns = (editable = false, onMoveDown?: IOnMoveDown, onMoveUp?: IOnMo
 		}, {
 			title: Wields.get('MAIN').title,
 			name: 'mainHand',
-			value: char => Weapons.get(char.getMainHand()).title
+			value: char => (char ? Weapons.get(char.getMainHand()).title : '')
 		}, {
 			title: Wields.get('OFF').title,
 			name: 'offHand',
 			value: char => {
+				if (!char) {
+					return '';
+				}
 				const main = Weapons.get(char.getMainHand());
 				const off = Weapons.get(char.getOffHand());
 
@@ -94,27 +100,27 @@ const getColumns = (editable = false, onMoveDown?: IOnMoveDown, onMoveUp?: IOnMo
 		}, {
 			title: 'Armor',
 			name: 'armor',
-			value: char => Armors.get(char.getArmor()).title
+			value: char => (char ? Armors.get(char.getArmor()).title : '')
 		}, {
 			title: '',
 			name: 'moveDown',
 			editable: true,
-			value: char => renderMoveDown(char, onMoveDown)
+			value: char => (char ? renderMoveDown(char, onMoveDown) : '')
 		}, {
 			title: '',
 			name: 'moveUp',
 			editable: true,
-			value: char => renderMoveUp(char, onMoveUp)
+			value: char => (char ? renderMoveUp(char, onMoveUp) : '')
 		}, {
 			title: '',
 			name: 'edit',
 			editable: true,
-			value: renderEdit
+			value: char => (char ? renderEdit(char) : '')
 		}, {
 			title: '',
 			name: 'delete',
 			editable: true,
-			value: char => renderDelete(char, onDelete)
+			value: char => (char ? renderDelete(char, onDelete) : '')
 		}
 	];
 

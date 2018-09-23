@@ -13,8 +13,8 @@ interface IMenuItem {
 
 const menuItems: IMenuItem[] = [
 	{ title: 'Start Battle', ico: 'fight', size: 'large', url: '/battle-setup' },
-	{ title: 'Edit Party', url: '/party-list' },
-	{ title: 'Edit Characters', url: '/character-list' }
+	{ title: 'Party Creation', url: '/party-list' },
+	{ title: 'Character Creation', url: '/character-list' }
 ];
 
 const MainMenuPage: React.SFC<RouteComponentProps<any>> = ({ history }) => (

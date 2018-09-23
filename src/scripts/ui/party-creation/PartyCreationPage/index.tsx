@@ -10,7 +10,7 @@ import Actions from 'actions/parties';
 import * as Selector from 'selectors';
 import { goto, gotoFn } from 'utils/nav';
 
-import { IPartyData } from 'engine/party-data';
+import { PartyData } from 'engine/party-data';
 import { CharacterData } from 'engine/character-data';
 
 import Page from 'ui/common/Page';
@@ -21,15 +21,15 @@ interface IStateToProps {
 }
 
 interface IPartyCreationPageContainerProps extends RouteComponentProps<any> {
-	readonly onSubmit: (history: History) => (party: IPartyData) => void;
+	readonly onSubmit: (history: History) => (party: PartyData) => void;
 }
 
 const mapStateToProps = (state: IStore): IStateToProps => ({
 	characters: Selector.getCharacters(state)
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<Action<IPartyData>>) => ({
-	onSubmit: (history: History) => (value: IPartyData): void => {
+const mapDispatchToProps = (dispatch: Dispatch<Action<PartyData>>) => ({
+	onSubmit: (history: History) => (value: PartyData): void => {
 		dispatch(Actions.addParty(value));
 		goto(history, '/party-list');
 	}

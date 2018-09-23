@@ -8,7 +8,7 @@ import * as Selector from 'selectors';
 import { goto } from 'utils/nav';
 
 import Engine, { IEngineState } from 'engine';
-import { IPartyData } from 'engine/party-data';
+import { PartyData } from 'engine/party-data';
 import { IBattleConfig } from 'engine/battle-config';
 import { CharacterData } from 'engine/character-data';
 
@@ -19,7 +19,7 @@ const txtExitConfirm = 'Do you realy want to exit and lost your game progress?';
 interface IStateToProps {
 	readonly battleConfig: IBattleConfig;
 	readonly characters: CharacterData[];
-	readonly parties: IPartyData[];
+	readonly parties: PartyData[];
 }
 
 const exit = (history: History) => () => {

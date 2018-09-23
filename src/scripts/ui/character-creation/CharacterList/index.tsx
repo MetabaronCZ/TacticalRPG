@@ -9,7 +9,7 @@ export type IOnDelete = (char: CharacterData, name: string) => () => void;
 
 interface ICharacterListProps {
 	readonly editable?: boolean;
-	readonly characters: CharacterData[];
+	readonly characters: Array<CharacterData|null>;
 	readonly onMoveDown?: IOnMoveDown;
 	readonly onMoveUp?: IOnMoveUp;
 	readonly onDelete?: IOnDelete;
@@ -18,9 +18,6 @@ interface ICharacterListProps {
 const CharacterList: React.SFC<ICharacterListProps> = props => {
 	const { editable = false, characters, onMoveDown, onMoveUp, onDelete } = props;
 	const columns = getColumns(editable, onMoveDown, onMoveUp, onDelete);
-
-	// ignore empty character slots
-	const chars = characters.filter(char => !!char);
 
 	return (
 		<ul className="List">
@@ -32,7 +29,7 @@ const CharacterList: React.SFC<ICharacterListProps> = props => {
 				))}
 			</li>
 
-			{chars.map((char, i) => (
+			{characters.map((char, i) => (
 				<li className="List-row" key={i}>
 					{columns.map((col, j) => (
 						<span className={`List-row-column List-row-column--${col.name}`} key={j}>

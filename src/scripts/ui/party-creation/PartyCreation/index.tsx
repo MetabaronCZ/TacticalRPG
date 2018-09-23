@@ -1,12 +1,12 @@
 import React, { SyntheticEvent } from 'react';
 
+import { validateField } from 'utils/validation';
+
 import Sexes from 'data/sexes';
 import Armors from 'data/armors';
 import Weapons from 'data/weapons';
 import Archetypes from 'data/archetypes';
 import { maxPartyNameLength, maxPartySize } from 'data/game-config';
-
-import { validateField, validateForm } from 'utils/validation';
 
 import Link from 'ui/common/Link';
 import Form from 'ui/common/Form';
@@ -18,11 +18,11 @@ import FormInput from 'ui/common/FormInput';
 import FormSelect from 'ui/common/FormSelect';
 import FormSelectItem from 'ui/common/FormSelectItem';
 
-import { IPartyData } from 'engine/party-data';
+import { PartyData } from 'engine/party-data';
 import { CharacterData } from 'engine/character-data';
-import { createParty, validateParty, getCharacterById } from 'engine/utils/party';
 
-const errNoCharacter = 'Party contains no character';
+const txtPartyError = `Party must contain 1 to ${maxPartySize} characters`;
+const txtNameError = 'Field is required';
 
 const NoCharacter: React.SFC<{}> = () => (
 	<p className="Paragraph">
@@ -37,66 +37,58 @@ const InvalidParty: React.SFC<{ msg: string|true }> = ({ msg }) => (
 );
 
 interface IPartyCreationProps {
-	readonly party?: IPartyData;
+	readonly party?: PartyData;
 	readonly characters: CharacterData[];
 	readonly onBack?: () => void;
-	readonly onSubmit: (party: IPartyData) => void;
+	readonly onSubmit: (party: PartyData) => void;
 }
 
 interface IPartyCreationState {
-	readonly fields: IPartyData;
-	readonly errors: {
-		readonly [field: string]: string|undefined;
-	};
+	partyNameError?: string;
+	partyError?: string;
 }
 
 class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationState> {
+	private party: PartyData;
+
 	constructor(props: IPartyCreationProps) {
 		super(props);
-
-		let chars = props.party ? props.party.characters : [];
-		chars = chars.filter(id => !!id);
+		this.party = props.party || new PartyData();
 
 		this.state = {
-			fields: createParty(props.party || {}),
-			errors: {
-				noCharError: (props.party && !chars.length ? errNoCharacter : undefined)
-			}
+			partyNameError: undefined,
+			partyError: undefined
 		};
 	}
 
 	public render() {
-		const { fields, errors } = this.state;
-		const chars = this.props.characters;
-		const partyExists = !!(chars && chars.length);
-
-		const partyValidation = errors.noCharError
-			? errors.noCharError
-			: validateParty(chars ? fields.characters.map(id => getCharacterById(id, chars)) : undefined);
+		const { props, state, party } = this;
+		const { characters } = props;
+		const { partyNameError, partyError } = state;
+		const canCreateParty = characters.length > 0;
+		const partyValidation = partyNameError || partyError;
 
 		return (
 			<Form onSubmit={this.onSubmit}>
-				{true !== partyValidation && (
-					<InvalidParty msg={partyValidation} />
-				)}
+				{partyError && <InvalidParty msg={partyError} />}
 
-				{partyExists
+				{canCreateParty
 					? (
 						<React.Fragment>
-							<FormField fieldId="f-name" label="Name" error={errors.name}>
+							<FormField fieldId="f-name" label="Name" error={partyNameError}>
 								<FormInput
 									id="f-name"
 									type="text"
-									value={fields.name}
+									value={party.getName()}
 									placeholder="Type party name ..."
 									name="name"
 									maxLength={maxPartyNameLength}
-									isInvalid={!!errors.name}
+									isInvalid={!!partyNameError}
 									onChange={this.onChange}
 								/>
 							</FormField>
 
-							{Array(maxPartySize).fill('').map((x, i) => this.renderPartyItem(i))}
+							{party.getCharacters().map(this.renderPartyItem)}
 						</React.Fragment>
 					)
 					: <NoCharacter />
@@ -106,88 +98,78 @@ class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationS
 				<ButtonRow>
 					<Button ico="back" text="Back" onClick={this.props.onBack} />
 
-					{partyExists && true === partyValidation
-						? <Button type="submit" ico="success" color="green" text="Save" />
-						: <span />
-					}
+					{canCreateParty && !partyValidation && (
+						<Button type="submit" ico="success" color="green" text="Save" />
+					)}
 				</ButtonRow>
 			</Form>
 		);
 	}
 
 	private onChange = (e: SyntheticEvent<any>) => {
-		const { fields, errors } = this.state;
-		let field = e.currentTarget.name;
-		let value = e.currentTarget.value;
+		const party = this.party;
+		const { characters } = this.props;
+		const { name: field, value } = e.currentTarget;
 
-		validateField(field, value, this.handleValidationError);
-
-		if (field.match(/^character/)) {
-			const chars = fields.characters.slice(0);
+		if ('name' === field) {
+			party.setName(value);
+			this.validateName();
+		} else if (field.match(/^character/)) {
+			const char = characters.find(ch => value === ch.id) || null;
 			const i = parseInt(field.split('-')[1], 10);
-			chars[i] = value;
-			field = 'characters';
-			value = chars;
-
-			if (value) {
-				// reset "no character" validation error
-				this.setState({
-					errors: {
-						...errors,
-						noCharError: undefined
-					}
-				});
-			}
+			party.setCharacter(char, i);
+			this.validateParty();
 		}
-
-		this.setState({
-			fields: {
-				...fields,
-				[field]: value
-			}
-		});
+		this.forceUpdate();
 	}
 
 	private onSubmit = (e: SyntheticEvent<any>) => {
 		e.preventDefault();
 
-		const { fields, errors } = this.state;
-		const isValidForm = validateForm(fields, this.handleValidationError);
+		const party = this.party;
+		const onSubmit = this.props.onSubmit;
+		const isValid = (this.validateName() && this.validateParty());
 
-		if (!isValidForm) {
-			return;
-		}
-		const ids = fields.characters.filter(id => !!id);
-
-		if (!ids.length) {
-			return this.setState({
-				errors: {
-					...errors,
-					noCharError: errNoCharacter
-				}
-			});
-		}
-
-		// submit data from all steps
-		if (this.props.onSubmit) {
-			this.props.onSubmit(this.state.fields);
+		if (isValid && onSubmit) {
+			onSubmit(party);
 		}
 	}
 
-	private handleValidationError = (field: string, error: string|null) => {
+	private validateName(): boolean {
+		const name = this.party.getName();
+		const validation = validateField('name', name);
+		let err = validation.error;
+
+		if (!err && '' === name.trim()) {
+			err = txtNameError;
+		}
+		this.setState({
+			partyNameError: (null === err ? undefined : err)
+		});
+
+		return validation.isValid;
+	}
+
+	private validateParty(): boolean {
+		const characters = this.party.getCharacters().filter(char => null !== char);
+		const partySize = characters.length;
+		const isValid = (partySize > 0 && partySize <= maxPartySize);
+
 		this.setState(state => ({
-			errors: {
-				...state.errors,
-				[field]: error || undefined
-			}
+			...state,
+			partyError: (isValid ? undefined : txtPartyError)
 		}));
+
+		return isValid;
 	}
 
-	private filterCharacters = (character?: CharacterData): CharacterData[] => {
-		const selected = this.state.fields.characters;
+	private filterCharacters = (character: CharacterData|null): CharacterData[] => {
 		const characters = this.props.characters;
+		const selected = this.party.getCharacters()
+			.filter(char => null !== char)
+			.map(char => char ? char.id : '');
 
-		if (!characters) {
+		if (!characters.length) {
 			return [];
 		}
 
@@ -197,24 +179,22 @@ class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationS
 		});
 	}
 
-	private renderPartyItem = (i: number) => {
-		const id = this.state.fields.characters[i] || '';
-		const characters = this.props.characters;
-		const selected = (characters ? getCharacterById(id, characters) : undefined);
-		const filtered = this.filterCharacters(selected);
+	private renderPartyItem = (character: CharacterData|null, i: number) => {
+		const id = (character ? character.id : '');
+		const filtered = this.filterCharacters(character);
 		let info = '';
 
-		if (selected) {
-			const main = Weapons.get(selected.getMainHand());
-			const off = Weapons.get(selected.getOffHand());
-			const arm = Armors.get(selected.getArmor());
-			const sex = Sexes.get(selected.getSex());
-			const arch = Archetypes.get(selected.getArchetype());
+		if (character) {
+			const main = Weapons.get(character.getMainHand());
+			const off = Weapons.get(character.getOffHand());
+			const arm = Armors.get(character.getArmor());
+			const sex = Sexes.get(character.getSex());
+			const arch = Archetypes.get(character.getArchetype());
 			let weapons = '';
 
-			if (selected.isBothWielding()) {
+			if (character.isBothWielding()) {
 				weapons = main.title;
-			} else if (selected.isDualWielding()) {
+			} else if (character.isDualWielding()) {
 				weapons = `${main.title} + ${main.title}`;
 			} else {
 				weapons = `${main.title} + ${off.title}`;

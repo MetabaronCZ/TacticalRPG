@@ -210,7 +210,7 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 			return;
 		}
 		const { name, value } = e.currentTarget;
-		validateField(name, value, this.handleValidationError);
+		const validation = validateField(name, value);
 
 		this.setState(state => ({
 			fields: {
@@ -219,6 +219,10 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 					...state.fields.character.serialize(),
 					[name]: value
 				})
+			},
+			errors: {
+				...state.errors,
+				[name]: validation.error || undefined
 			}
 		}));
 	}
@@ -230,7 +234,7 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 		const { onSubmit } = this.props;
 
 		if (!character.isValid()) {
-			validateForm(character.serialize(), this.handleValidationError);
+			this.validateForm(character.serialize());
 			return;
 		}
 
@@ -239,13 +243,9 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 		}
 	}
 
-	private handleValidationError = (field: keyof ICharacterData, error: string|null) => {
-		this.setState(state => ({
-			errors: {
-				...state.errors,
-				[field]: error || undefined
-			}
-		}));
+	private validateForm(data: ICharacterData) {
+		const result = validateForm(data);
+		this.setState({ errors: result.errors });
 	}
 }
 
