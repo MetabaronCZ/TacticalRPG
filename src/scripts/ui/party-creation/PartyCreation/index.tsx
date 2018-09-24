@@ -8,6 +8,9 @@ import Weapons from 'data/weapons';
 import Archetypes from 'data/archetypes';
 import { maxPartyNameLength, maxPartySize } from 'data/game-config';
 
+import { PartyData } from 'engine/party-data';
+import { CharacterData } from 'engine/character-data';
+
 import Link from 'ui/common/Link';
 import Form from 'ui/common/Form';
 import Button from 'ui/common/Button';
@@ -18,23 +21,8 @@ import FormInput from 'ui/common/FormInput';
 import FormSelect from 'ui/common/FormSelect';
 import FormSelectItem from 'ui/common/FormSelectItem';
 
-import { PartyData } from 'engine/party-data';
-import { CharacterData } from 'engine/character-data';
-
 const txtPartyError = `Party must contain 1 to ${maxPartySize} characters`;
 const txtNameError = 'Field is required';
-
-const NoCharacter: React.SFC<{}> = () => (
-	<p className="Paragraph">
-		You must <Link href="/character-create">create a character</Link> to form a party.
-	</p>
-);
-
-const InvalidParty: React.SFC<{ msg: string|true }> = ({ msg }) => (
-	<p className="ErrorBox">
-		Party is Invalid: {msg}
-	</p>
-);
 
 interface IPartyCreationProps {
 	readonly party?: PartyData;
@@ -70,7 +58,11 @@ class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationS
 
 		return (
 			<Form onSubmit={this.onSubmit}>
-				{partyError && <InvalidParty msg={partyError} />}
+				{partyError && (
+					<p className="ErrorBox">
+						Party is Invalid: {partyError}
+					</p>
+				)}
 
 				{canCreateParty
 					? (
@@ -91,7 +83,11 @@ class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationS
 							{party.getCharacters().map(this.renderPartyItem)}
 						</React.Fragment>
 					)
-					: <NoCharacter />
+					: (
+						<p className="Paragraph">
+							You must <Link href="/character-create">create a character</Link> to form a party.
+						</p>
+					)
 				}
 				<Separator />
 
@@ -112,14 +108,18 @@ class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationS
 		const { name: field, value } = e.currentTarget;
 
 		if ('name' === field) {
+			// validate name
 			party.setName(value);
 			this.validateName();
+
 		} else if (field.match(/^character/)) {
+			// validate character selection
 			const char = characters.find(ch => value === ch.id) || null;
 			const i = parseInt(field.split('-')[1], 10);
 			party.setCharacter(char, i);
 			this.validateParty();
 		}
+
 		this.forceUpdate();
 	}
 
