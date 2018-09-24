@@ -28,6 +28,7 @@
     "gulp-less": "^4.0.1",
     "gulp-postcss": "^8.0.0",
     "gulp-stylelint": "^7.0.0",
+    "normalize.less": "^1.0.0",
     "run-sequence": "^2.2.1",
     "stylelint": "^9.5.0",
     "stylelint-config-standard": "^18.2.0",
@@ -40,8 +41,6 @@
     "webpack": "^4.19.1"
   },
   "dependencies": {
-    "normalize.less": "^1.0.0",
-    "npm": "^6.4.1",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "react-redux": "^5.0.7",
