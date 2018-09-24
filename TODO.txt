@@ -5,6 +5,7 @@ TODO
 	- plosne skilly v grade 2
 --	pridat moznost menit poradi v PartyCreation
 --	pridat do Damage pocitani modifikatoru na utok do zad
+	- pocitat utok do zad uz ve PhaseReaction - pripadne nepovolit Evade, Block
 --	v Engine event metodach vracet jen to, co se zmenilo + upravit setState() v UI
 
 
