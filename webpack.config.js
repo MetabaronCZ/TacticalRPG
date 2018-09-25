@@ -41,12 +41,14 @@ module.exports = env => {
 						},
 						{ loader: 'ts-loader' }
 					],
-					include: path.resolve(pathSrc)
+					include: path.resolve(pathSrc),
+					exclude: /node_modules/
 				},
 				{
 					test: /\.tsx?$/,
 					enforce: 'pre',
-					use: ['tslint-loader']
+					use: ['tslint-loader'],
+					exclude: /node_modules/
 				}
 			]
 		},
