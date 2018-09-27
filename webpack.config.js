@@ -4,6 +4,7 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const pathSrc = './src/scripts';
 const pathDist = './dist/scripts';
 const pathModules = './node_modules';
+const pathCache = 'node_modules/.cache';
 
 module.exports = env => {
 	let mode = 'production';
@@ -34,19 +35,23 @@ module.exports = env => {
 					test: /\.tsx?$/,
 					use: [
 						{
-							loader: 'babel-loader',
+							loader: "awesome-typescript-loader",
 							options: {
-								cacheDirectory: true
+								useBabel: true,
+								useCache: true,
+								babelCore: "@babel/core",
+								cacheDirectory: `${pathCache}/awesome-typescript-loader`
 							}
-						},
-						{ loader: 'ts-loader' }
+						}
 					],
-					include: path.resolve(pathSrc)
+					include: path.resolve(pathSrc),
+					exclude: [/node_modules/]
 				},
 				{
 					test: /\.tsx?$/,
 					enforce: 'pre',
-					use: ['tslint-loader']
+					use: ['tslint-loader'],
+					exclude: [/node_modules/]
 				}
 			]
 		},
