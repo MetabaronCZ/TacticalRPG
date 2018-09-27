@@ -25,6 +25,7 @@
     "awesome-typescript-loader": "^5.2.1",
     "cssnano": "^4.1.0",
     "gulp": "^3.9.1",
+    "gulp-changed": "^3.2.0",
     "gulp-less": "^4.0.1",
     "gulp-postcss": "^8.0.0",
     "gulp-stylelint": "^7.0.0",

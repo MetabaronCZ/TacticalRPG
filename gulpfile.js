@@ -3,12 +3,15 @@ const gulp = require('gulp');
 const less = require('gulp-less');
 const webpack = require('webpack');
 const cssnano = require('cssnano');
+const changed = require('gulp-changed');
 const postcss = require('gulp-postcss');
 const stylelint = require('gulp-stylelint');
 const runSequence = require('run-sequence');
 const autoprefixer = require('autoprefixer');
 
 const webpackConfig = require('./webpack.config.js');
+const cssnanoConfig = { discardComments: { removeAll: true } };
+const stylelintConfig = { reporters: [{ formatter: 'string', console: true }] };
 
 const pathSrc = './src';
 const pathDist = './dist';
@@ -47,24 +50,18 @@ gulp.task('clear', () => del(pathDist));
 // lint LESS files
 gulp.task('stylelint', () => {
 	return gulp.src(paths.styles.files)
-		.pipe(stylelint({
-			reporters: [
-				{ formatter: 'string', console: true }
-			]
-		}));
+		.pipe(changed(paths.styles.dist))
+		.pipe(stylelint(stylelintConfig));
 });
 
 // build CSS
 gulp.task('styles', ['stylelint'], () => {
 	return gulp.src(paths.styles.src)
+		.pipe(changed(paths.styles.dist))
 		.pipe(less())
 		.pipe(postcss([
-			autoprefixer({
-				browsers: ['last 2 versions']
-			}),
-			cssnano({
-				discardComments: { removeAll: true }
-			})
+			autoprefixer(),
+			cssnano(cssnanoConfig)
 		]))
 		.pipe(gulp.dest(paths.styles.dist));
 });
@@ -72,12 +69,14 @@ gulp.task('styles', ['stylelint'], () => {
 // copy font files
 gulp.task('fonts', () => {
 	return gulp.src(paths.fonts.files)
+		.pipe(changed(paths.fonts.dist))
 		.pipe(gulp.dest(paths.fonts.dist));
 });
 
 // copy index.html
 gulp.task('index', () => {
 	return gulp.src(paths.templates.files)
+		.pipe(changed(paths.templates.dist))
 		.pipe(gulp.dest(paths.templates.dist));
 });
 
