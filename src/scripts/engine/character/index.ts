@@ -40,7 +40,7 @@ class Character {
 		this.baseAttributes = new BaseAttributes(data.archetype);
 
 		this.player = player;
-		this.skillset = new Skillset(data.skillset);
+		this.skillset = new Skillset(data.skillset, this.archetype);
 		this.status = new Status();
 
 		this.mainHand = new Weapon(data.main);

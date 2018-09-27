@@ -1,12 +1,13 @@
 import React from 'react';
 import { withRouter, RouteComponentProps } from 'react-router';
 
+import { IcoID } from 'data/icos';
 import { gotoFn } from 'utils/nav';
 import Button, { ButtonSize } from 'ui/common/Button';
 
 interface IMenuItem {
 	readonly title: string;
-	readonly ico?: string;
+	readonly ico?: IcoID;
 	readonly size?: ButtonSize;
 	readonly url: string;
 }

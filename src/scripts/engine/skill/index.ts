@@ -5,7 +5,8 @@ import Character from 'engine/character';
 import { getPosition } from 'engine/positions';
 import { StatusEffectID } from 'engine/status-effect';
 import {
-	SkillID, SkillType, SkillRange, SkillArea, SkillElement, SkillTarget
+	SkillID, SkillType, SkillElement, SkillGrade,
+	SkillRange, SkillArea, SkillTarget
 } from 'engine/skill/skill-data';
 
 class Skill {
@@ -13,6 +14,7 @@ class Skill {
 	public readonly title: string;
 	public readonly cost: number; // AP cost
 	public readonly type: SkillType;
+	public readonly grade: SkillGrade;
 	public readonly range: SkillRange;
 	public readonly area: SkillArea;
 	public readonly target: SkillTarget; // character target type
@@ -29,6 +31,7 @@ class Skill {
 		this.title = data.title;
 		this.cost = data.cost;
 		this.type = data.type;
+		this.grade = data.grade || 0;
 		this.range = data.range;
 		this.area = data.area;
 		this.target = data.target || 'NONE';

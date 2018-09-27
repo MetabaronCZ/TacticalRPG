@@ -1,8 +1,14 @@
-interface IIcos {
-	readonly [name: string]: string|null;
-}
+export type IcoID = 'default' |
+	'back' | 'next' | 'up' | 'down' |
+	'create' | 'destroy' | 'fight' |
+	'female' | 'male' |
+	'success';
 
-const Icos: IIcos = {
+type IIcos<T extends string> = {
+	readonly [id in T]: string|null;
+};
+
+export const Icos: IIcos<IcoID> = {
 	default: null,
 	back: '‹',
 	next: '›',
@@ -15,5 +21,3 @@ const Icos: IIcos = {
 	male: '♂',
 	success: '✔'
 };
-
-export default Icos;

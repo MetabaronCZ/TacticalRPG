@@ -6,6 +6,7 @@ const blackMagic: { [id in BlackMagicSkillID]: ISkillData; } = {
 		title: 'Dark Aura',
 		cost: 0,
 		type: 'PASSIVE',
+		grade: 1,
 		range: 0,
 		area: 'AOE3x3',
 		target: 'SELF',

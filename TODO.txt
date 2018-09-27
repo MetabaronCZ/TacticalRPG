@@ -1,12 +1,12 @@
 TODO
 ----------------------------------------------------------------------------------------------------------
---	skillum pridat SkillGrade
-	- do Skillsetu dat varianty podle grade (MM = grade 2; PM / SM = grade 1, PP / PS / SS = grade 0)
-	- plosne skilly v grade 2
 --	pridat moznost menit poradi v PartyCreation
 --	pridat do Damage pocitani modifikatoru na utok do zad
 	- pocitat utok do zad uz ve PhaseReaction - pripadne nepovolit Evade, Block
 --	v Engine event metodach vracet jen to, co se zmenilo + upravit setState() v UI
+--	logic for skill duration (StatusEffect) + DoT/HoT
+--	passive skills
+--	Ultimate skills (Revive, Berserking, ...)
 
 
 LONG TERM
@@ -20,7 +20,7 @@ LONG TERM
 	- postavy, zbrane, brneni, skilly
 
 --	AI
-	- pracovat s AI Playera, ne s Characteru (kooperace postav)
+	- pracovat s AI Playera, ne Charactera (kooperace postav)
 
 --	Skore
 	- na konci souboje zobrazovat minimalne statistiky

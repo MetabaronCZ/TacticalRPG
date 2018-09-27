@@ -1,6 +1,6 @@
 import React from 'react';
 
-import icos from 'data/icos';
+import { Icos, IcoID } from 'data/icos';
 import Wields from 'data/wields';
 import Armors from 'data/armors';
 import Weapons from 'data/weapons';
@@ -59,7 +59,7 @@ const getColumns = (editable = false, onMoveDown?: IOnMoveDown, onMoveUp?: IOnMo
 		}, {
 			title: '',
 			name: 'sex',
-			value: char => (char ? icos[char.getSex().toLowerCase()] : '')
+			value: char => (char ? Icos[char.getSex().toLowerCase() as IcoID] : '')
 		}, {
 			title: 'Name',
 			name: 'name',

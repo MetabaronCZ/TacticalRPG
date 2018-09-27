@@ -2,7 +2,7 @@ import React, { SyntheticEvent } from 'react';
 
 import { validateField, validateForm } from 'utils/validation';
 
-import Icos from 'data/icos';
+import { Icos, IcoID } from 'data/icos';
 import Sexes from 'data/sexes';
 import Wields from 'data/wields';
 import Armors from 'data/armors';
@@ -89,7 +89,7 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 					{Sexes.map((id, sex, i) => (
 						<FormRadio
 							id={`f-sex-${id}`}
-							label={`${Icos[id.toLocaleLowerCase()]} ${sex ? sex.title : ''}`}
+							label={`${Icos[id.toLocaleLowerCase() as IcoID]} ${sex ? sex.title : ''}`}
 							name="sex"
 							value={id}
 							isChecked={id === data.sex}

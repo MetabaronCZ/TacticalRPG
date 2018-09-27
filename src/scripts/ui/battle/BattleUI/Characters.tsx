@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Icos from 'data/icos';
+import { Icos, IcoID } from 'data/icos';
 
 import Act from 'engine/act';
 import Player from 'engine/player';
@@ -43,7 +43,7 @@ const Characters: React.SFC<ICharactersProps> = ({ act, players }) => (
 								<tr key={c} style={{ backgroundColor: color, }}>
 									<td>
 										<strong>{char.name}</strong>
-										{' '}{Icos[char.sex.toLowerCase()]}
+										{' '}{Icos[char.sex.toLowerCase() as IcoID]}
 										{' '}<ArchetypeIco archetype={char.archetype} />
 									</td>
 									<td style={{ textAlign: 'right', paddingLeft: '10px', }}>
