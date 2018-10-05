@@ -3,6 +3,7 @@ import { WeaponID, IWeaponData } from 'engine/equipment/weapon-data';
 
 const Weapons = new DataList<WeaponID, IWeaponData>({
 	NONE: {
+		id: 'NONE',
 		title: 'none',
 		description: 'No weapon equipped',
 		type: 'NONE',
@@ -11,6 +12,7 @@ const Weapons = new DataList<WeaponID, IWeaponData>({
 		magic: 0
 	},
 	FISTS: {
+		id: 'FISTS',
 		title: 'Fists',
 		description: '',
 		type: 'DUAL',
@@ -19,6 +21,7 @@ const Weapons = new DataList<WeaponID, IWeaponData>({
 		magic: 0
 	},
 	DAGGER: {
+		id: 'DAGGER',
 		title: 'Dagger',
 		description: '',
 		type: 'ONE_HANDED',
@@ -27,6 +30,7 @@ const Weapons = new DataList<WeaponID, IWeaponData>({
 		magic: 0
 	},
 	SWORD_1H: {
+		id: 'SWORD_1H',
 		title: '1H Sword',
 		description: '',
 		type: 'ONE_HANDED',
@@ -35,6 +39,7 @@ const Weapons = new DataList<WeaponID, IWeaponData>({
 		magic: 0
 	},
 	AXE_1H: {
+		id: 'AXE_1H',
 		title: '1H Axe',
 		description: '',
 		type: 'ONE_HANDED',
@@ -43,6 +48,7 @@ const Weapons = new DataList<WeaponID, IWeaponData>({
 		magic: 0
 	},
 	HAMMER_1H: {
+		id: 'HAMMER_1H',
 		title: '1H Hammer',
 		description: '',
 		type: 'ONE_HANDED',
@@ -51,6 +57,7 @@ const Weapons = new DataList<WeaponID, IWeaponData>({
 		magic: 0
 	},
 	SPEAR: {
+		id: 'SPEAR',
 		title: 'Spear',
 		description: '',
 		type: 'TWO_HANDED',
@@ -59,6 +66,7 @@ const Weapons = new DataList<WeaponID, IWeaponData>({
 		magic: 0
 	},
 	SWORD_2H: {
+		id: 'SWORD_2H',
 		title: '2H Sword',
 		description: '',
 		type: 'TWO_HANDED',
@@ -67,6 +75,7 @@ const Weapons = new DataList<WeaponID, IWeaponData>({
 		magic: 0
 	},
 	AXE_2H: {
+		id: 'AXE_2H',
 		title: '2H Axe',
 		description: '',
 		type: 'TWO_HANDED',
@@ -75,6 +84,7 @@ const Weapons = new DataList<WeaponID, IWeaponData>({
 		magic: 0
 	},
 	HAMMER_2H: {
+		id: 'HAMMER_2H',
 		title: '2H Hammer',
 		description: '',
 		type: 'TWO_HANDED',
@@ -83,6 +93,7 @@ const Weapons = new DataList<WeaponID, IWeaponData>({
 		magic: 0
 	},
 	MACE: {
+		id: 'MACE',
 		title: 'Mace',
 		description: '',
 		type: 'MAGICAL',
@@ -91,6 +102,7 @@ const Weapons = new DataList<WeaponID, IWeaponData>({
 		magic: 50
 	},
 	STAFF: {
+		id: 'STAFF',
 		title: 'Staff',
 		description: '',
 		type: 'MAGICAL',
@@ -99,6 +111,7 @@ const Weapons = new DataList<WeaponID, IWeaponData>({
 		magic: 100
 	},
 	BOW: {
+		id: 'BOW',
 		title: 'Bow',
 		description: '',
 		type: 'RANGED',
@@ -107,6 +120,7 @@ const Weapons = new DataList<WeaponID, IWeaponData>({
 		magic: 0
 	},
 	GUN_1H: {
+		id: 'GUN_1H',
 		title: '1H Gun',
 		description: '',
 		type: 'RANGED',
@@ -115,6 +129,7 @@ const Weapons = new DataList<WeaponID, IWeaponData>({
 		magic: 0
 	},
 	GUN_2H: {
+		id: 'GUN_2H',
 		title: '2H Gun',
 		description: '',
 		type: 'RANGED',
@@ -123,6 +138,7 @@ const Weapons = new DataList<WeaponID, IWeaponData>({
 		magic: 0
 	},
 	SHIELD_SMALL: {
+		id: 'SHIELD_SMALL',
 		title: 'Small Shield',
 		description: '',
 		type: 'SHIELD',
@@ -131,6 +147,7 @@ const Weapons = new DataList<WeaponID, IWeaponData>({
 		magic: 0
 	},
 	SHIELD_LARGE: {
+		id: 'SHIELD_LARGE',
 		title: 'Large Shield',
 		description: '',
 		type: 'SHIELD',

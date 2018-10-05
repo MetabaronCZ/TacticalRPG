@@ -1,6 +1,9 @@
 import React from 'react';
+import { observer } from 'mobx-react';
 
+import CharacterList from 'engine/character-list';
 import { CharacterData } from 'engine/character-data';
+
 import getColumns from 'ui/character-creation/CharacterList/columns';
 
 export type IOnMoveDown = (char: CharacterData) => () => void;
@@ -9,15 +12,19 @@ export type IOnDelete = (char: CharacterData) => () => void;
 
 interface ICharacterListProps {
 	readonly editable?: boolean;
-	readonly characters: Array<CharacterData|null>;
+	readonly characters: CharacterList;
 	readonly onMoveDown?: IOnMoveDown;
 	readonly onMoveUp?: IOnMoveUp;
 	readonly onDelete?: IOnDelete;
 }
 
-const CharacterList: React.SFC<ICharacterListProps> = props => {
+const CharacterListUI: React.SFC<ICharacterListProps> = props => {
 	const { editable = false, characters, onMoveDown, onMoveUp, onDelete } = props;
-	const columns = getColumns(editable, onMoveDown, onMoveUp, onDelete);
+
+	if (!characters.data.length) {
+		return null;
+	}
+	const columns = getColumns(characters, editable, onMoveDown, onMoveUp, onDelete);
 
 	return (
 		<ul className="List">
@@ -29,7 +36,7 @@ const CharacterList: React.SFC<ICharacterListProps> = props => {
 				))}
 			</li>
 
-			{characters.map((char, i) => (
+			{characters.data.map((char, i) => (
 				<li className="List-row" key={i}>
 					{columns.map((col, j) => (
 						<span className={`List-row-column List-row-column--${col.name}`} key={j}>
@@ -42,4 +49,4 @@ const CharacterList: React.SFC<ICharacterListProps> = props => {
 	);
 };
 
-export default CharacterList;
+export default observer(CharacterListUI);

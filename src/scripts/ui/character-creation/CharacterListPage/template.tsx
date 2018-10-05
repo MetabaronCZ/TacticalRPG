@@ -1,19 +1,19 @@
 import React from 'react';
 
-import { CharacterData } from 'engine/character-data';
+import CharacterList from 'engine/character-list';
 
 import Page from 'ui/common/Page';
 import Button from 'ui/common/Button';
 import ButtonRow from 'ui/common/ButtonRow';
 import Separator from 'ui/common/Separator';
-import CharacterList, { IOnDelete, IOnMoveDown, IOnMoveUp } from 'ui/character-creation/CharacterList';
+import CharacterListUI, { IOnDelete, IOnMoveDown, IOnMoveUp } from 'ui/character-creation/CharacterList';
 
 const NoCharacters = () => (
 	<p className="Paragraph">There are no characters.</p>
 );
 
 interface ICharacterListPageProps {
-	readonly characters: CharacterData[];
+	readonly characters: CharacterList;
 	readonly onBack?: () => void;
 	readonly onCreate?: () => void;
 	readonly onDelete?: IOnDelete;
@@ -27,8 +27,8 @@ const CharacterListPage: React.SFC<ICharacterListPageProps> = props => {
 	return (
 		<Page heading="Character list">
 			{
-				characters && characters.length
-					? <CharacterList
+				characters.data.length
+					? <CharacterListUI
 						editable={true}
 						characters={characters}
 						onDelete={onDelete}

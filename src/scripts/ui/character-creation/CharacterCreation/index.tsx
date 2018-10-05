@@ -1,7 +1,5 @@
 import React, { SyntheticEvent } from 'react';
 
-import { validateField, validateForm } from 'utils/validation';
-
 import { Icos, IcoID } from 'data/icos';
 import Sexes from 'data/sexes';
 import Wields from 'data/wields';
@@ -11,7 +9,7 @@ import Skillsets from 'data/skillsets';
 import Archetypes from 'data/archetypes';
 import { characterMaxNameLength } from 'data/game-config';
 
-import { CharacterData } from 'engine/character-data';
+import { CharacterData, ICharacterDataEditable } from 'engine/character-data';
 import { ArmorID, IArmorData } from 'engine/equipment/armor-data';
 import { IWeaponData, WeaponID } from 'engine/equipment/weapon-data';
 
@@ -24,9 +22,11 @@ import FormInput from 'ui/common/FormInput';
 import FormRadio from 'ui/common/FormRadio';
 import FormSelect from 'ui/common/FormSelect';
 import FormSelectItem from 'ui/common/FormSelectItem';
+import CharacterCreationForm from 'ui/character-creation/CharacterCreation/form';
+import { observer } from 'mobx-react';
 
 interface ICharacterCreationProps {
-	readonly character?: CharacterData;
+	readonly character: CharacterData|null;
 	readonly onBack?: () => void;
 	readonly onSubmit?: (data: CharacterData) => void;
 }
@@ -37,34 +37,25 @@ interface ICharacterCreationState {
 	};
 }
 
+@observer
 class CharacterCreation extends React.Component<ICharacterCreationProps, ICharacterCreationState> {
-	private character: CharacterData;
+	private form: CharacterCreationForm;
 
 	constructor(props: ICharacterCreationProps) {
 		super(props);
-		this.character = props.character || new CharacterData();
-
-		this.state = {
-			errors: {}
-		};
+		this.form = new CharacterCreationForm(props.character);
 	}
 
 	public render() {
-		const { character, onChange } = this;
-		const { errors } = this.state;
+		const { onChange } = this;
+		const { character, errors } = this.form.state;
+		const { name, sex, archetype, skillset, mainHand, offHand, armor } = character;
 
-		const data = character.serialize();
-
-		const archetype = Archetypes.get(data.archetype);
-		const skillset = Skillsets.get(data.skillset);
-		const armor = Armors.get(data.armor);
-		const main = Weapons.get(data.main);
-		const off = Weapons.get(data.off);
 		const mainHandWield = Wields.get('MAIN');
 		const offHandWield = Wields.get('OFF');
 
 		const isMagicUser = character.isMagicType();
-		const hasNoOffHand = character.isBothWielding() || character.isDualWielding();
+		const hasNoOffHand = (character.isBothWielding() || character.isDualWielding());
 
 		const mainWeapons = character.filterWeapons('MAIN').map(id => [id, Weapons.get(id)] as [WeaponID, IWeaponData]);
 		const offWeapons = character.filterWeapons('OFF').map(id => [id, Weapons.get(id)] as [WeaponID, IWeaponData]);
@@ -76,31 +67,31 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 					<FormInput
 						id="f-name"
 						type="text"
-						value={data.name}
+						value={name}
 						placeholder="Type character name ..."
 						name="name"
 						maxLength={characterMaxNameLength}
 						isInvalid={!!errors.name}
-						onChange={onChange}
+						onChange={onChange('name')}
 					/>
 				</FormField>
 
 				<FormField fieldId="f-sex" label="Sex" error={errors.sex}>
-					{Sexes.map((id, sex, i) => (
+					{Sexes.map((id, sexData, i) => (
 						<FormRadio
 							id={`f-sex-${id}`}
-							label={`${Icos[id.toLocaleLowerCase() as IcoID]} ${sex ? sex.title : ''}`}
+							label={`${Icos[id.toLocaleLowerCase() as IcoID]} ${sexData.title}`}
 							name="sex"
 							value={id}
-							isChecked={id === data.sex}
+							isChecked={id === sex.id}
 							key={i}
-							onChange={onChange}
+							onChange={onChange('sex')}
 						/>
 					))}
 				</FormField>
 
 				<FormField fieldId="f-archetype" label="Archetype" info={archetype.description}>
-					<FormSelect id="f-archetype" name="archetype" value={data.archetype} onChange={onChange}>
+					<FormSelect id="f-archetype" name="archetype" value={archetype.id} onChange={onChange('archetype')}>
 						{Archetypes.map((id, value, i) => (
 							<FormSelectItem value={id} key={i}>
 								{value.title}
@@ -110,7 +101,7 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 				</FormField>
 
 				<FormField fieldId="f-skillset" label="Magic" info={skillset.description}>
-					<FormSelect id="f-skillset" name="skillset" value={data.skillset} disabled={!isMagicUser} onChange={onChange}>
+					<FormSelect id="f-skillset" name="skillset" value={skillset.id} disabled={!isMagicUser} onChange={onChange('skillset')}>
 						{Skillsets.map((id, set, i) => (
 							<FormSelectItem value={id} key={i}>
 								{set.title}
@@ -119,8 +110,8 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 					</FormSelect>
 				</FormField>
 
-				<FormField fieldId="f-main" label={mainHandWield.title} info={main.description}>
-					<FormSelect id="f-main" name="main" value={data.main} onChange={onChange}>
+				<FormField fieldId="f-main" label={mainHandWield.title} info={mainHand.description}>
+					<FormSelect id="f-main" name="main" value={mainHand.id} onChange={onChange('main')}>
 						{mainWeapons.map(([id, item], i) => (
 							<FormSelectItem value={id} key={i}>
 								{item.title}
@@ -129,10 +120,10 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 					</FormSelect>
 				</FormField>
 
-				<FormField fieldId="f-off" label={offHandWield.title} info={!hasNoOffHand ? off.description : undefined}>
+				<FormField fieldId="f-off" label={offHandWield.title} info={!hasNoOffHand ? offHand.description : undefined}>
 					{!hasNoOffHand
 						? (
-							<FormSelect id="f-off" name="off" value={data.off} onChange={onChange}>
+							<FormSelect id="f-off" name="off" value={offHand.id} onChange={onChange('off')}>
 								{offWeapons.map(([id, item], i) => (
 									<FormSelectItem value={id} key={i}>
 										{item.title}
@@ -142,14 +133,14 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 						)
 						: (
 							<FormSelect disabled={true}>
-								<FormSelectItem>{main.title}</FormSelectItem>
+								<FormSelectItem>{mainHand.title}</FormSelectItem>
 							</FormSelect>
 						)
 					}
 				</FormField>
 
 				<FormField fieldId="f-armor" label="Armor" info={armor.description}>
-					<FormSelect id="f-armor" name="armor" value={data.armor} onChange={onChange}>
+					<FormSelect id="f-armor" name="armor" value={armor.id} onChange={onChange('armor')}>
 						{armors.map(([id, item], i) => (
 							<FormSelectItem value={id} key={i}>
 								{item.title}
@@ -168,60 +159,16 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 		);
 	}
 
-	private onChange = (e?: SyntheticEvent<any>) => {
+	private onChange = (attr: ICharacterDataEditable) => (e?: SyntheticEvent<any>) => {
 		if (!e) {
 			return;
 		}
-		const { name, value } = e.currentTarget;
-		const validation = validateField(name, value);
-
-		const character = new CharacterData({
-			...this.character.serialize(),
-			[name]: value
-		});
-
-		if (!character.isValid()) {
-			if (!character.isMagicType() && 'NONE' !== character.getSkillset()) {
-				character.setSkillset('NONE');
-			}
-
-			if (!character.canWieldWeapon(character.getMainHand(), 'MAIN')) {
-				character.setMainHand('NONE');
-			}
-
-			if (!character.canWieldWeapon(character.getOffHand(), 'OFF')) {
-				character.setOffHand('NONE');
-			}
-
-			if (!character.canWieldArmor(character.getArmor())) {
-				character.setArmor('NONE');
-			}
-		}
-		this.character = character;
-
-		this.setState(state => ({
-			errors: {
-				...state.errors,
-				[name]: validation.error || undefined
-			}
-		}));
+		this.form.onChange(attr, e.currentTarget.value);
 	}
 
 	private onSubmit = (e: SyntheticEvent<any>) => {
 		e.preventDefault();
-
-		const { onSubmit } = this.props;
-		const { character } = this;
-
-		if (!character.isValid()) {
-			const validation = validateForm(character.serialize());
-			this.setState({ errors: validation.errors });
-			return;
-		}
-
-		if (onSubmit) {
-			onSubmit(character);
-		}
+		this.form.onSubmit(this.props.onSubmit);
 	}
 }
 

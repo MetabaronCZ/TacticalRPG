@@ -12,6 +12,7 @@ export type WeaponTypeID =
 	'NONE' | 'DUAL' | 'ONE_HANDED' | 'TWO_HANDED' | 'MAGICAL' | 'RANGED' | 'SHIELD';
 
 export interface IWeaponData {
+	readonly id: WeaponID;
 	readonly title: string;
 	readonly description: string;
 	readonly type: WeaponTypeID;

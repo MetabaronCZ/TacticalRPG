@@ -1,11 +1,8 @@
 import React, { SyntheticEvent } from 'react';
+import { observer } from 'mobx-react';
 
 import { validateField } from 'utils/validation';
 
-import Sexes from 'data/sexes';
-import Armors from 'data/armors';
-import Weapons from 'data/weapons';
-import Archetypes from 'data/archetypes';
 import { maxPartyNameLength, maxPartySize } from 'data/game-config';
 
 import { PartyData } from 'engine/party-data';
@@ -36,6 +33,7 @@ interface IPartyCreationState {
 	partyError?: string;
 }
 
+@observer
 class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationState> {
 	private party: PartyData;
 
@@ -185,11 +183,11 @@ class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationS
 		let info = '';
 
 		if (character) {
-			const main = Weapons.get(character.getMainHand());
-			const off = Weapons.get(character.getOffHand());
-			const arm = Armors.get(character.getArmor());
-			const sex = Sexes.get(character.getSex());
-			const arch = Archetypes.get(character.getArchetype());
+			const main = character.mainHand;
+			const off = character.offHand;
+			const arm = character.armor;
+			const sex = character.sex;
+			const arch = character.archetype;
 			let weapons = '';
 
 			if (character.isBothWielding()) {
@@ -213,7 +211,7 @@ class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationS
 
 					{filtered.map((char, j) => (
 						<FormSelectItem value={char.id} key={j}>
-							{char.getName()}
+							{char.name}
 						</FormSelectItem>
 					))}
 				</FormSelect>

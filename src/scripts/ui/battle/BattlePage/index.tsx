@@ -1,26 +1,13 @@
 import React from 'react';
 import { History } from 'history';
-import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router';
 
-import { IStore } from 'store';
-import * as Selector from 'selectors';
 import { goto } from 'utils/nav';
-
+import { withContext, IContext } from 'context';
 import Engine, { IEngineState } from 'engine';
-import { PartyData } from 'engine/party-data';
-import { IBattleConfig } from 'engine/battle-config';
-import { CharacterData } from 'engine/character-data';
-
 import BattleUI from 'ui/battle/BattleUI';
 
 const txtExitConfirm = 'Do you realy want to exit and lost your game progress?';
-
-interface IStateToProps {
-	readonly battleConfig: IBattleConfig;
-	readonly characters: CharacterData[];
-	readonly parties: PartyData[];
-}
 
 const exit = (history: History) => () => {
 	 // go to Main Menu
@@ -29,13 +16,7 @@ const exit = (history: History) => () => {
 	}
 };
 
-const mapStateToProps = (state: IStore): IStateToProps => ({
-	battleConfig: Selector.getBattleConfig(state),
-	characters: Selector.getCharacters(state),
-	parties: Selector.getParties(state)
-});
-
-type IBattlePageContainerProps = IStateToProps & RouteComponentProps<any>;
+type IBattlePageContainerProps = RouteComponentProps<any> & IContext;
 
 interface IBattlePageContainerState {
 	engineState?: IEngineState;
@@ -48,15 +29,16 @@ class BattlePageContainer extends React.Component<IBattlePageContainerProps, IBa
 	constructor(props: IBattlePageContainerProps) {
 		super(props);
 
+		const { battleConfig, characters, parties } = this.props.store;
 		this.state = {};
 
 		this.engine = new Engine({
-			players: props.battleConfig.players.map(conf => ({
+			players: battleConfig.players.map(conf => ({
 				name: conf.name,
 				control: conf.control,
 				party: conf.party,
-				parties: props.parties,
-				characters: props.characters
+				parties,
+				characters: characters.data
 			})),
 			events: {
 				onStart: engineState => {
@@ -103,5 +85,5 @@ class BattlePageContainer extends React.Component<IBattlePageContainerProps, IBa
 }
 
 export default withRouter(
-	connect(mapStateToProps)(BattlePageContainer)
+	withContext(BattlePageContainer)
 );

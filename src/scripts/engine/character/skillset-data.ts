@@ -9,6 +9,7 @@ export type SkillsetID =
 	'ICE_MAGIC' | 'THUNDER_MAGIC';
 
 export interface ISkillsetData {
+	readonly id: SkillsetID;
 	readonly title: string;
 	readonly description: string;
 	readonly element: SkillElement;

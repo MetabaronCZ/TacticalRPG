@@ -2,10 +2,6 @@ import React from 'react';
 
 import { Icos, IcoID } from 'data/icos';
 import Wields from 'data/wields';
-import Armors from 'data/armors';
-import Weapons from 'data/weapons';
-import Skillsets from 'data/skillsets';
-import Archetypes from 'data/archetypes';
 
 import Link from 'ui/common/Link';
 import LinkIco from 'ui/common/LinkIco';
@@ -13,10 +9,11 @@ import LinkButton from 'ui/common/LinkButton';
 import ArchetypeIco from 'ui/common/ArchetypeIco';
 import { IOnMoveDown, IOnMoveUp, IOnDelete } from 'ui/character-creation/CharacterList';
 
+import CharacterList from 'engine/character-list';
 import { CharacterData } from 'engine/character-data';
 
 const renderArchetype = (char: CharacterData) => (
-	<ArchetypeIco archetype={char.getArchetype()} />
+	<ArchetypeIco archetype={char.archetype.id} />
 );
 
 const renderMoveDown = (char: CharacterData, onMoveDown?: IOnMoveDown) => (
@@ -46,7 +43,7 @@ interface IColumn {
 	readonly editable?: boolean;
 }
 
-const getColumns = (editable = false, onMoveDown?: IOnMoveDown, onMoveUp?: IOnMoveUp, onDelete?: IOnDelete): IColumn[] => {
+const getColumns = (characters: CharacterList, editable = false, onMoveDown?: IOnMoveDown, onMoveUp?: IOnMoveUp, onDelete?: IOnDelete): IColumn[] => {
 	let columns: IColumn[] = [
 		{
 			title: '',
@@ -59,11 +56,11 @@ const getColumns = (editable = false, onMoveDown?: IOnMoveDown, onMoveUp?: IOnMo
 		}, {
 			title: '',
 			name: 'sex',
-			value: char => (char ? Icos[char.getSex().toLowerCase() as IcoID] : '')
+			value: char => (char ? Icos[char.sex.id.toLowerCase() as IcoID] : '')
 		}, {
 			title: 'Name',
 			name: 'name',
-			value: char => (char ? char.getName() : 'Empty')
+			value: char => (char ? char.name : 'Empty')
 		}, {
 			title: 'Archetype',
 			name: 'archetype',
@@ -71,14 +68,12 @@ const getColumns = (editable = false, onMoveDown?: IOnMoveDown, onMoveUp?: IOnMo
 				if (!char) {
 					return '';
 				}
-				const archetype = Archetypes.get(char.getArchetype());
-				const skillset = Skillsets.get(char.getSkillset());
-				return `${archetype.title}${char.isMagicType() ? ' (' + skillset.title + ')' : ''}`;
+				return `${char.archetype.title}${char.isMagicType() ? ' (' + char.skillset.title + ')' : ''}`;
 			}
 		}, {
 			title: Wields.get('MAIN').title,
 			name: 'mainHand',
-			value: char => (char ? Weapons.get(char.getMainHand()).title : '')
+			value: char => (char ? char.mainHand.title : '')
 		}, {
 			title: Wields.get('OFF').title,
 			name: 'offHand',
@@ -86,8 +81,8 @@ const getColumns = (editable = false, onMoveDown?: IOnMoveDown, onMoveUp?: IOnMo
 				if (!char) {
 					return '';
 				}
-				const main = Weapons.get(char.getMainHand());
-				const off = Weapons.get(char.getOffHand());
+				const main = char.mainHand;
+				const off = char.offHand;
 
 				if (char.isBothWielding()) {
 					return renderOffHandBothWield(main.title);
@@ -100,7 +95,7 @@ const getColumns = (editable = false, onMoveDown?: IOnMoveDown, onMoveUp?: IOnMo
 		}, {
 			title: 'Armor',
 			name: 'armor',
-			value: char => (char ? Armors.get(char.getArmor()).title : '')
+			value: char => (char ? char.armor.title : '')
 		}, {
 			title: '',
 			name: 'moveDown',
