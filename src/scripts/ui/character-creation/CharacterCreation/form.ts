@@ -1,6 +1,7 @@
 import { observable, action } from 'mobx';
-import { CharacterData, ICharacterDataEditable } from 'engine/character-data';
+
 import { validateField, validateForm } from 'utils/validation';
+import { CharacterData, ICharacterDataEditable } from 'engine/character-data';
 
 interface ICharacterCreationform {
 	character: CharacterData;

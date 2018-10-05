@@ -24,6 +24,7 @@ import FormSelect from 'ui/common/FormSelect';
 import FormSelectItem from 'ui/common/FormSelectItem';
 import CharacterCreationForm from 'ui/character-creation/CharacterCreation/form';
 import { observer } from 'mobx-react';
+import { ISkillsetData, SkillsetID } from 'engine/character/skillset-data';
 
 interface ICharacterCreationProps {
 	readonly character: CharacterData|null;
@@ -54,9 +55,9 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 		const mainHandWield = Wields.get('MAIN');
 		const offHandWield = Wields.get('OFF');
 
-		const isMagicUser = character.isMagicType();
 		const hasNoOffHand = (character.isBothWielding() || character.isDualWielding());
 
+		const skillsets = character.filterSkillsets().map(id => [id, Skillsets.get(id)] as [SkillsetID, ISkillsetData]);
 		const mainWeapons = character.filterWeapons('MAIN').map(id => [id, Weapons.get(id)] as [WeaponID, IWeaponData]);
 		const offWeapons = character.filterWeapons('OFF').map(id => [id, Weapons.get(id)] as [WeaponID, IWeaponData]);
 		const armors = character.filterArmors().map(id => [id, Armors.get(id)] as [ArmorID, IArmorData]);
@@ -101,8 +102,8 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 				</FormField>
 
 				<FormField fieldId="f-skillset" label="Magic" info={skillset.description}>
-					<FormSelect id="f-skillset" name="skillset" value={skillset.id} disabled={!isMagicUser} onChange={onChange('skillset')}>
-						{Skillsets.map((id, set, i) => (
+					<FormSelect id="f-skillset" name="skillset" value={skillset.id} disabled={skillsets.length < 2} onChange={onChange('skillset')}>
+						{skillsets.map(([id, set], i) => (
 							<FormSelectItem value={id} key={i}>
 								{set.title}
 							</FormSelectItem>
@@ -111,7 +112,7 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 				</FormField>
 
 				<FormField fieldId="f-main" label={mainHandWield.title} info={mainHand.description}>
-					<FormSelect id="f-main" name="main" value={mainHand.id} onChange={onChange('main')}>
+					<FormSelect id="f-main" name="main" value={mainHand.id} disabled={mainWeapons.length < 2} onChange={onChange('main')}>
 						{mainWeapons.map(([id, item], i) => (
 							<FormSelectItem value={id} key={i}>
 								{item.title}
@@ -123,7 +124,7 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 				<FormField fieldId="f-off" label={offHandWield.title} info={!hasNoOffHand ? offHand.description : undefined}>
 					{!hasNoOffHand
 						? (
-							<FormSelect id="f-off" name="off" value={offHand.id} onChange={onChange('off')}>
+							<FormSelect id="f-off" name="off" value={offHand.id} disabled={offWeapons.length < 2} onChange={onChange('off')}>
 								{offWeapons.map(([id, item], i) => (
 									<FormSelectItem value={id} key={i}>
 										{item.title}
@@ -140,7 +141,7 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 				</FormField>
 
 				<FormField fieldId="f-armor" label="Armor" info={armor.description}>
-					<FormSelect id="f-armor" name="armor" value={armor.id} onChange={onChange('armor')}>
+					<FormSelect id="f-armor" name="armor" value={armor.id} disabled={armors.length < 2} onChange={onChange('armor')}>
 						{armors.map(([id, item], i) => (
 							<FormSelectItem value={id} key={i}>
 								{item.title}
@@ -160,10 +161,9 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 	}
 
 	private onChange = (attr: ICharacterDataEditable) => (e?: SyntheticEvent<any>) => {
-		if (!e) {
-			return;
+		if (e) {
+			this.form.onChange(attr, e.currentTarget.value);
 		}
-		this.form.onChange(attr, e.currentTarget.value);
 	}
 
 	private onSubmit = (e: SyntheticEvent<any>) => {
