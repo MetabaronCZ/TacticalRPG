@@ -37,7 +37,7 @@ class BattlePageContainer extends React.Component<IBattlePageContainerProps, IBa
 				name: conf.name,
 				control: conf.control,
 				party: conf.party,
-				parties,
+				parties: parties.data,
 				characters: characters.data
 			})),
 			events: {

@@ -2,10 +2,10 @@ import React, { SyntheticEvent } from 'react';
 import { observer } from 'mobx-react';
 
 import { validateField } from 'utils/validation';
-
 import { maxPartyNameLength, maxPartySize } from 'data/game-config';
 
 import { PartyData } from 'engine/party-data';
+import ObservableList from 'engine/observable-list';
 import { CharacterData } from 'engine/character-data';
 
 import Link from 'ui/common/Link';
@@ -23,7 +23,7 @@ const txtNameError = 'Field is required';
 
 interface IPartyCreationProps {
 	readonly party?: PartyData;
-	readonly characters: CharacterData[];
+	readonly characters: ObservableList<CharacterData>;
 	readonly onBack?: () => void;
 	readonly onSubmit: (party: PartyData) => void;
 }
@@ -39,7 +39,7 @@ class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationS
 
 	constructor(props: IPartyCreationProps) {
 		super(props);
-		this.party = props.party || new PartyData();
+		this.party = new PartyData(props.party ? props.party.serialize() : {}, props.characters.data);
 
 		this.state = {
 			partyNameError: undefined,
@@ -51,7 +51,7 @@ class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationS
 		const { props, state, party } = this;
 		const { characters } = props;
 		const { partyNameError, partyError } = state;
-		const canCreateParty = characters.length > 0;
+		const canCreateParty = characters.data.length > 0;
 		const partyValidation = partyNameError || partyError;
 
 		return (
@@ -112,7 +112,7 @@ class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationS
 
 		} else if (field.match(/^character/)) {
 			// validate character selection
-			const char = characters.find(ch => value === ch.id) || null;
+			const char = characters.data.find(ch => value === ch.id) || null;
 			const i = parseInt(field.split('-')[1], 10);
 			party.setCharacter(char, i);
 			this.validateParty();
@@ -167,12 +167,12 @@ class PartyCreation extends React.Component<IPartyCreationProps, IPartyCreationS
 			.filter(char => null !== char)
 			.map(char => char ? char.id : '');
 
-		if (!characters.length) {
+		if (!characters.data.length) {
 			return [];
 		}
 
 		// filter unselected characters (keep character itself)
-		return characters.filter(char => {
+		return characters.data.filter(char => {
 			return (character && char.id === character.id) || -1 === selected.indexOf(char.id);
 		});
 	}

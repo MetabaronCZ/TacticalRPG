@@ -2,10 +2,10 @@ import React from 'react';
 import { History } from 'history';
 import { withRouter, RouteComponentProps } from 'react-router';
 
-import { Store } from '_store';
+import { Store } from 'store';
+import { goto, gotoFn } from 'utils/nav';
 import { withContext, IContext } from 'context';
 
-import { goto, gotoFn } from 'utils/nav';
 import { BattleConfig } from 'engine/battle-config';
 
 import Page from 'ui/common/Page';

@@ -4,8 +4,8 @@ import { validateField } from 'utils/validation';
 import { randomPartyID, maxPlayers } from 'data/game-config';
 
 import { PartyData } from 'engine/party-data';
-import CharacterList from 'engine/character-list';
 import { BattleConfig } from 'engine/battle-config';
+import ObservableList from 'engine/observable-list';
 import { CharacterData } from 'engine/character-data';
 import { PlayerControlID } from 'engine/player-control';
 import { PlayerConfig, IPlayerConfig } from 'engine/player-config';
@@ -28,9 +28,9 @@ interface IPlayerBattleSetup {
 class BattleSetupForm {
 	@observable public state: IPlayerBattleSetup[];
 
-	constructor(config: BattleConfig, parties: PartyData[]) {
-		const defaultParty = parties.length ? parties[0].id : randomPartyID;
-		const partyIDs = [...parties.map(({ id }) => id), randomPartyID];
+	constructor(config: BattleConfig, parties: ObservableList<PartyData>) {
+		const defaultParty = parties.data.length ? parties.data[0].id : randomPartyID;
+		const partyIDs = [...parties.data.map(({ id }) => id), randomPartyID];
 
 		this.state = playerPool.map((_, p) => {
 			let conf = config.players[p];
@@ -51,7 +51,7 @@ class BattleSetupForm {
 				name: conf.name,
 				control: conf.control,
 				party,
-				parties,
+				parties: parties.data,
 				errors: {}
 			};
 		});
@@ -88,7 +88,7 @@ class BattleSetupForm {
 		return isValid;
 	}
 
-	public getPartyCharacters(player: IPlayerBattleSetup): CharacterList {
+	public getPartyCharacters(player: IPlayerBattleSetup): ObservableList<CharacterData> {
 		const characters: CharacterData[] = [];
 
 		if (randomPartyID !== player.party) {
@@ -102,7 +102,7 @@ class BattleSetupForm {
 				}
 			}
 		}
-		return new CharacterList(characters);
+		return new ObservableList(characters);
 	}
 
 	public getConfig(): BattleConfig {

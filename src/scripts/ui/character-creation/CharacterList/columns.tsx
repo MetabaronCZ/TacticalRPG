@@ -1,16 +1,15 @@
 import React from 'react';
 
-import { Icos, IcoID } from 'data/icos';
 import Wields from 'data/wields';
+import { Icos, IcoID } from 'data/icos';
+
+import { CharacterData } from 'engine/character-data';
 
 import Link from 'ui/common/Link';
 import LinkIco from 'ui/common/LinkIco';
 import LinkButton from 'ui/common/LinkButton';
 import ArchetypeIco from 'ui/common/ArchetypeIco';
 import { IOnMoveDown, IOnMoveUp, IOnDelete } from 'ui/character-creation/CharacterList';
-
-import CharacterList from 'engine/character-list';
-import { CharacterData } from 'engine/character-data';
 
 const renderArchetype = (char: CharacterData) => (
 	<ArchetypeIco archetype={char.archetype.id} />
@@ -43,7 +42,7 @@ interface IColumn {
 	readonly editable?: boolean;
 }
 
-const getColumns = (characters: CharacterList, editable = false, onMoveDown?: IOnMoveDown, onMoveUp?: IOnMoveUp, onDelete?: IOnDelete): IColumn[] => {
+const getColumns = (editable = false, onMoveDown?: IOnMoveDown, onMoveUp?: IOnMoveUp, onDelete?: IOnDelete): IColumn[] => {
 	let columns: IColumn[] = [
 		{
 			title: '',

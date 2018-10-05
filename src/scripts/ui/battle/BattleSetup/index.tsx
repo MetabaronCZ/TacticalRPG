@@ -4,6 +4,11 @@ import { observer } from 'mobx-react';
 import PlayerControl from 'data/player-control';
 import { playerMaxNameLength, randomPartyID } from 'data/game-config';
 
+import { PartyData } from 'engine/party-data';
+import { BattleConfig } from 'engine/battle-config';
+import ObservableList from 'engine/observable-list';
+import { CharacterData } from 'engine/character-data';
+
 import Form from 'ui/common/Form';
 import Button from 'ui/common/Button';
 import ButtonRow from 'ui/common/ButtonRow';
@@ -12,18 +17,13 @@ import FormField from 'ui/common/FormField';
 import FormInput from 'ui/common/FormInput';
 import FormSelect from 'ui/common/FormSelect';
 import FormSelectItem from 'ui/common/FormSelectItem';
-import CharacterListUI from 'ui/character-creation/CharacterList';
-
-import { PartyData } from 'engine/party-data';
-import CharacterList from 'engine/character-list';
-import { BattleConfig } from 'engine/battle-config';
-
+import CharacterList from 'ui/character-creation/CharacterList';
 import BattleConfigform, { BattleSetupEditable } from 'ui/battle/BattleSetup/form';
 
 interface IBattleSetupProps {
 	readonly config: BattleConfig;
-	readonly parties: PartyData[];
-	readonly characters: CharacterList;
+	readonly parties: ObservableList<PartyData>;
+	readonly characters: ObservableList<CharacterData>;
 	readonly onStart: (config: BattleConfig) => void;
 	readonly onBack: (e: SyntheticEvent<any>) => void;
 }
@@ -101,7 +101,7 @@ class BattleSetup extends React.Component<IBattleSetupProps> {
 								</FormSelect>
 							</FormField>
 
-							<CharacterListUI characters={characters} />
+							<CharacterList characters={characters} />
 							<br />
 
 							<Separator />

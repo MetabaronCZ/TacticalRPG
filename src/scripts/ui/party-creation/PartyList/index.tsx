@@ -1,10 +1,12 @@
 import React, { ReactNode } from 'react';
+import { observer } from 'mobx-react';
+
+import { PartyData } from 'engine/party-data';
+import ObservableList from 'engine/observable-list';
 
 import Link from 'ui/common/Link';
 import LinkIco from 'ui/common/LinkIco';
 import LinkButton from 'ui/common/LinkButton';
-
-import { PartyData } from 'engine/party-data';
 
 export type IOnMoveDown = (party: PartyData) => () => void;
 export type IOnMoveUp = (party: PartyData) => () => void;
@@ -41,7 +43,7 @@ const getColumns = (onMoveDown: IOnMoveDown, onMoveUp: IOnMoveUp, onDelete: IOnD
 ]);
 
 interface IPartyListProps {
-	readonly parties: PartyData[];
+	readonly parties: ObservableList<PartyData>;
 	readonly onMoveDown: IOnMoveDown;
 	readonly onMoveUp: IOnMoveUp;
 	readonly onDelete: IOnDelete;
@@ -61,7 +63,7 @@ const PartyList: React.SFC<IPartyListProps> = props => {
 				))}
 			</li>
 
-			{parties.map((party, i) => (
+			{parties.data.map((party, i) => (
 				<li className="List-row" key={i}>
 					{columns.map((col, j) => (
 						<span className={`List-row-column List-row-column--${col.name}`} key={j}>
@@ -74,4 +76,4 @@ const PartyList: React.SFC<IPartyListProps> = props => {
 	);
 };
 
-export default PartyList;
+export default observer(PartyList);

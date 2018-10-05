@@ -1,24 +1,16 @@
 import React from 'react';
 import { withRouter, RouteComponentProps } from 'react-router';
 
-import { Store } from '_store';
+import { Store } from 'store';
 import { gotoFn } from 'utils/nav';
 import { withContext, IContext } from 'context';
 import { CharacterData } from 'engine/character-data';
 
 import CharacterListPage from 'ui/character-creation/CharacterListPage/template';
-import { IOnDelete, IOnMoveUp, IOnMoveDown } from 'ui/character-creation/CharacterList';
-
-interface ICharacterListPageContainerProps extends RouteComponentProps<any>, IContext {
-	readonly onMoveDown: IOnMoveDown;
-	readonly onMoveUp: IOnMoveUp;
-	readonly onDelete: IOnDelete;
-}
 
 const onMoveDown = (store: Store) => (char: CharacterData) => () => {
 	store.characters.moveDown(char);
 	store.save();
-
 };
 
 const onMoveUp = (store: Store) => (char: CharacterData) => () => {
@@ -30,7 +22,7 @@ const onDelete = (store: Store) => (char: CharacterData) => () => {
 	if (confirm(`Do you realy want to delete "${char.name}"?`)) {
 		const included: string[] = [];
 
-		for (const party of store.parties) {
+		for (const party of store.parties.data) {
 			if (party.getCharacters().find((ch: CharacterData|null) => !!ch && ch.id === char.id)) {
 				included.push(party.getName());
 			}
@@ -45,7 +37,7 @@ const onDelete = (store: Store) => (char: CharacterData) => () => {
 	}
 };
 
-const CharacterListPageContainer: React.SFC<ICharacterListPageContainerProps> = props => {
+const CharacterListPageContainer: React.SFC<RouteComponentProps<any> & IContext> = props => {
 	const { store, history } = props;
 
 	return (

@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 
-import { Store } from '_store';
+import { Store } from 'store';
 
 export interface IContext {
 	store: Store;

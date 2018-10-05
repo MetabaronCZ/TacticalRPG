@@ -1,64 +1,44 @@
 import React from 'react';
-import { Dispatch } from 'redux';
-import { Action } from 'redux-actions';
-import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router';
 
-import { IStore } from 'store';
+import { Store } from 'store';
 import { gotoFn } from 'utils/nav';
-import * as Selector from 'selectors';
-import Actions from 'actions/parties';
+import { withContext, IContext } from 'context';
 
 import { PartyData } from 'engine/party-data';
-
 import PartyListPage from 'ui/party-creation/PartyListPage/template';
-import { IOnMoveDown, IOnMoveUp, IOnDelete } from 'ui/party-creation/PartyList';
 
-interface IStateToProps {
-	readonly parties: PartyData[];
-}
+const onMoveDown = (store: Store) => (party: PartyData) => () => {
+	store.parties.moveDown(party);
+	store.save();
+};
 
-interface IPartyListPageContainerProps extends RouteComponentProps<any> {
-	readonly onMoveDown: IOnMoveDown;
-	readonly onMoveUp: IOnMoveUp;
-	readonly onDelete: IOnDelete;
-}
+const onMoveUp = (store: Store) => (party: PartyData) => () => {
+	store.parties.moveUp(party);
+	store.save();
+};
 
-const mapStateToProps = (state: IStore): IStateToProps => ({
-	parties: Selector.getParties(state)
-});
-
-const mapDispatchToProps = (dispatch: Dispatch<Action<PartyData>>) => ({
-	onMoveDown: (party: PartyData) => () => {
-		dispatch(Actions.moveDownList(party));
-	},
-	onMoveUp: (party: PartyData) => () => {
-		dispatch(Actions.moveUpList(party));
-	},
-	onDelete: (party: PartyData) => () => {
-		if (confirm(`Do you realy want to delete "${party.getName()}"?`)) {
-			dispatch(Actions.removeParty(party));
-		}
+const onDelete = (store: Store) => (party: PartyData) => () => {
+	if (confirm(`Do you realy want to delete "${party.getName()}"?`)) {
+		store.parties.remove(party);
+		store.save();
 	}
-});
+};
 
-const PartyListPageContainer: React.SFC<IPartyListPageContainerProps & IStateToProps> = props => {
-	const { parties, history, onMoveDown, onMoveUp, onDelete } = props;
-	const fnCreate = gotoFn(history, '/party-create');
-	const fnGoBack = gotoFn(history, '/');
-
+const PartyListPageContainer: React.SFC<RouteComponentProps<any> & IContext> = props => {
+	const { store, history } = props;
 	return (
 		<PartyListPage
-			parties={parties}
-			onBack={fnGoBack}
-			onCreate={fnCreate}
-			onMoveDown={onMoveDown}
-			onMoveUp={onMoveUp}
-			onDelete={onDelete}
+			parties={store.parties}
+			onBack={gotoFn(history, '/')}
+			onCreate={gotoFn(history, '/party-create')}
+			onMoveDown={onMoveDown(store)}
+			onMoveUp={onMoveUp(store)}
+			onDelete={onDelete(store)}
 		/>
 	);
 };
 
 export default withRouter(
-	connect(mapStateToProps, mapDispatchToProps)(PartyListPageContainer)
+	withContext(PartyListPageContainer)
 );
