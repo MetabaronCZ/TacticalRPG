@@ -16,7 +16,7 @@ export const skillAnimDuration = 1000;
 export const maxOrderSize = 20; // maximum size of ordered character array
 
 // character
-export const characterMaxNameLength = 16;
+export const maxCharacterNameLength = 16;
 export const characterCTLimit = 100;
 
 // party

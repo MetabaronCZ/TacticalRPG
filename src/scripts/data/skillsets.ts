@@ -15,60 +15,70 @@ import { SkillsetID, ISkillsetData } from 'engine/character/skillset-data';
 
 const Skillsets = new DataList<SkillsetID, ISkillsetData>({
 	NONE: {
+		id: 'NONE',
 		title: 'none',
 		description: '',
 		element: 'NONE',
 		skills: []
 	},
 	PSYCHOKINESIS: {
+		id: 'PSYCHOKINESIS',
 		title: 'Psychokinesis',
 		description: '',
 		element: 'PSYCHIC',
 		skills: Object.keys(psychokinesis) as MagicSkillID[]
 	},
 	WHITE_MAGIC: {
+		id: 'WHITE_MAGIC',
 		title: 'White Magic',
 		description: '',
 		element: 'HOLY',
 		skills: Object.keys(whiteMagic) as MagicSkillID[]
 	},
 	BLACK_MAGIC: {
+		id: 'BLACK_MAGIC',
 		title: 'Black Magic',
 		description: '',
 		element: 'DARK',
 		skills: Object.keys(blackMagic) as MagicSkillID[]
 	},
 	FIRE_MAGIC: {
+		id: 'FIRE_MAGIC',
 		title: 'Fire Magic',
 		description: '',
 		element: 'FIRE',
 		skills: Object.keys(fireMagic) as MagicSkillID[]
 	},
 	WATER_MAGIC: {
+		id: 'WATER_MAGIC',
 		title: 'Water Magic',
 		description: '',
 		element: 'WATER',
 		skills: Object.keys(waterMagic) as MagicSkillID[]
 	},
 	WIND_MAGIC: {
+		id: 'WIND_MAGIC',
 		title: 'Wind Magic',
 		description: '',
 		element: 'WIND',
 		skills: Object.keys(windMagic) as MagicSkillID[]
 	},
 	EARTH_MAGIC: {
+		id: 'EARTH_MAGIC',
 		title: 'Earth Magic',
 		description: '',
 		element: 'EARTH',
 		skills: Object.keys(earthMagic) as MagicSkillID[]
 	},
 	ICE_MAGIC: {
+		id: 'ICE_MAGIC',
 		title: 'Ice Magic',
 		description: '',
 		element: 'ICE',
 		skills: Object.keys(iceMagic) as MagicSkillID[]
 	},
 	THUNDER_MAGIC: {
+		id: 'THUNDER_MAGIC',
 		title: 'Thunder Magic',
 		description: '',
 		element: 'THUNDER',

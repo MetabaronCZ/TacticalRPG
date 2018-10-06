@@ -7,6 +7,7 @@
 		"importHelpers": true, // importing helper functions from tslib
 		"noEmitHelpers": true, // disable emitting inline helper functions
 		"removeComments": true,
+		"experimentalDecorators": true,
 		"allowSyntheticDefaultImports": true,
 		"baseUrl": "./src/scripts",
 		"sourceMap": true,

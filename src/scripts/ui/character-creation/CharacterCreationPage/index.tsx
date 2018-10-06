@@ -1,38 +1,32 @@
 import React from 'react';
-import { Dispatch } from 'redux';
 import { History } from 'history';
-import { Action } from 'redux-actions';
-import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router';
 
-import { goto, gotoFn } from 'utils/nav';
-import Actions from 'actions/characters';
+import { Store } from 'store';
+import { goto, gotoFn } from 'core/navigation';
+import { withContext, IContext } from 'context';
 import { CharacterData } from 'engine/character-data';
 
 import Page from 'ui/common/Page';
 import CharacterCreation from 'ui/character-creation/CharacterCreation';
 
-interface ICharacterCreationPageContainerProps extends RouteComponentProps<any> {
-	readonly onSubmit: (history: History) => (data: CharacterData) => void;
-	readonly onBack: () => void;
-}
+const onSubmit = (store: Store, history: History) => (char: CharacterData): void => {
+	store.characters.add(char);
+	store.save();
 
-const mapDispatchToProps = (dispatch: Dispatch<Action<CharacterData>>) => ({
-	onSubmit: (history: History) => (value: CharacterData): void => {
-		dispatch(Actions.addCharacter(value));
-		goto(history, '/character-list');
-	}
-});
+	goto(history, '/character-list');
+};
 
-const CharacterCreationPageContainer: React.SFC<ICharacterCreationPageContainerProps> = ({ onSubmit, history }) => (
+const CharacterCreationPageContainer: React.SFC<RouteComponentProps<any> & IContext> = ({ store, history }) => (
 	<Page heading="Character creation">
 		<CharacterCreation
+			character={null}
 			onBack={gotoFn(history, '/character-list')}
-			onSubmit={onSubmit(history)}
+			onSubmit={onSubmit(store, history)}
 		/>
 	</Page>
 );
 
 export default withRouter(
-	connect(null, mapDispatchToProps)(CharacterCreationPageContainer)
+	withContext(CharacterCreationPageContainer)
 );

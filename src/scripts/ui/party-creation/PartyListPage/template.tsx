@@ -1,19 +1,20 @@
 import React from 'react';
 
+import { PartyData } from 'engine/party-data';
+import ObservableList from 'engine/observable-list';
+
 import Page from 'ui/common/Page';
 import Button from 'ui/common/Button';
 import ButtonRow from 'ui/common/ButtonRow';
 import Separator from 'ui/common/Separator';
 import PartyList, { IOnMoveDown, IOnMoveUp, IOnDelete } from 'ui/party-creation/PartyList';
 
-import { PartyData } from 'engine/party-data';
-
 const NoParties = () => (
 	<p className="Paragraph">There are no character parties.</p>
 );
 
 interface IPartyListPage {
-	readonly parties: PartyData[];
+	readonly parties: ObservableList<PartyData>;
 	readonly onBack?: () => void;
 	readonly onCreate?: () => void;
 	readonly onMoveDown: IOnMoveDown;
@@ -26,10 +27,9 @@ const PartyListPage: React.SFC<IPartyListPage> = props => {
 
 	return (
 		<Page heading="Party list">
-			{
-				(parties && parties.length)
-					? <PartyList parties={parties} onDelete={onDelete} onMoveDown={onMoveDown} onMoveUp={onMoveUp} />
-					: <NoParties />
+			{parties.data.length
+				? <PartyList parties={parties} onDelete={onDelete} onMoveDown={onMoveDown} onMoveUp={onMoveUp} />
+				: <NoParties />
 			}
 			<Separator />
 

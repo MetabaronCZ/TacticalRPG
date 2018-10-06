@@ -1,45 +1,26 @@
 import React from 'react';
-import { Dispatch } from 'redux';
 import { History } from 'history';
-import { Action } from 'redux-actions';
-import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router';
 
-import { IStore } from 'store';
-import Actions from 'actions/parties';
-import * as Selector from 'selectors';
-import { goto, gotoFn } from 'utils/nav';
-
+import { Store } from 'store';
+import { goto, gotoFn } from 'core/navigation';
+import { withContext, IContext } from 'context';
 import { PartyData } from 'engine/party-data';
-import { CharacterData } from 'engine/character-data';
 
 import Page from 'ui/common/Page';
 import PartyCreation from 'ui/party-creation/PartyCreation';
 
-interface IStateToProps {
-	readonly parties: PartyData[];
-	readonly characters: CharacterData[];
-}
+const onSubmit = (store: Store, history: History) => (party: PartyData) => {
+	store.parties.replace(party);
+	store.save();
 
-interface IPartyEditPageContainerProps extends RouteComponentProps<any> {
-	readonly onSubmit: (history: History) => (party: PartyData) => void;
-}
+	goto(history, '/party-list');
+};
 
-const mapStateToProps = (state: IStore): IStateToProps => ({
-	characters: Selector.getCharacters(state),
-	parties: Selector.getParties(state)
-});
-
-const mapDispatchToProps = (dispatch: Dispatch<Action<PartyData>>) => ({
-	onSubmit: (history: History) => (party: PartyData) => {
-		dispatch(Actions.editParty(party));
-		goto(history, '/party-list');
-	}
-});
-
-const PartyEditPageContainer: React.SFC<IPartyEditPageContainerProps & IStateToProps> = props => {
-	const { parties, characters, onSubmit, history, match } = props;
-	const party = (parties ? parties.find(c => c.id === match.params.id) : undefined);
+const PartyEditPageContainer: React.SFC<RouteComponentProps<any> & IContext> = props => {
+	const { store, history, match } = props;
+	const { characters, parties } = store;
+	const party = parties.data.find(c => c.id === match.params.id);
 
 	return (
 		<Page heading="Edit party">
@@ -47,12 +28,12 @@ const PartyEditPageContainer: React.SFC<IPartyEditPageContainerProps & IStateToP
 				party={party}
 				characters={characters}
 				onBack={gotoFn(history, '/party-list')}
-				onSubmit={onSubmit(history)}
+				onSubmit={onSubmit(store, history)}
 			/>
 		</Page>
 	);
 };
 
 export default withRouter(
-	connect(mapStateToProps, mapDispatchToProps)(PartyEditPageContainer)
+	withContext(PartyEditPageContainer)
 );

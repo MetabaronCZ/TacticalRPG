@@ -1,5 +1,6 @@
 import React from 'react';
 
+import ObservableList from 'engine/observable-list';
 import { CharacterData } from 'engine/character-data';
 
 import Page from 'ui/common/Page';
@@ -13,7 +14,7 @@ const NoCharacters = () => (
 );
 
 interface ICharacterListPageProps {
-	readonly characters: CharacterData[];
+	readonly characters: ObservableList<CharacterData>;
 	readonly onBack?: () => void;
 	readonly onCreate?: () => void;
 	readonly onDelete?: IOnDelete;
@@ -27,7 +28,7 @@ const CharacterListPage: React.SFC<ICharacterListPageProps> = props => {
 	return (
 		<Page heading="Character list">
 			{
-				characters && characters.length
+				characters.data.length
 					? <CharacterList
 						editable={true}
 						characters={characters}

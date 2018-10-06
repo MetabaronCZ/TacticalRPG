@@ -17,11 +17,11 @@ class DataList<T extends string, U> {
 		return this.data[item];
 	}
 
-	public getRandomID(): T {
+	public getRandomID(): T|null {
 		return ArrayUtils.getRandomItem(this.keys());
 	}
 
-	public getRandomItem(): U {
+	public getRandomItem(): U|null {
 		return ArrayUtils.getRandomItem(this.values());
 	}
 

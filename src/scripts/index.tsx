@@ -1,16 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
 
-import initStore from 'store';
+import { Provider, context } from 'context';
+
 import Router from 'ui/common/Router';
 import PageWrapper from 'ui/common/PageWrapper';
 
-export const store = initStore();
-
 ReactDOM.render(
 	<PageWrapper>
-		<Provider store={store}>
+		<Provider value={context}>
 			<Router />
 		</Provider>
 	</PageWrapper>,

@@ -1,27 +1,29 @@
+import { computed, action, observable } from 'mobx';
+
 import * as ArrayUtils from 'core/array';
-import { validationRules } from 'utils/validation';
 
 import Sexes from 'data/sexes';
 import Armors from 'data/armors';
 import Weapons from 'data/weapons';
 import Skillsets from 'data/skillsets';
 import Archetypes from 'data/archetypes';
-import { characterMaxNameLength } from 'data/game-config';
+import { maxCharacterNameLength } from 'data/game-config';
 import {
 	WeaponEquipTableArch, WeaponEquipTableWield,
 	WieldIndexTable, ArmorEquipTableArch,
 	ArchetypeIndexTable, safeOffHand
 } from 'data/equipment';
 
-import { SexID } from 'engine/character/sex';
-import { ArmorID } from 'engine/equipment/armor-data';
-import { WeaponID } from 'engine/equipment/weapon-data';
-import { ArchetypeID } from 'engine/character/archetype';
-import { SkillsetID } from 'engine/character/skillset-data';
+import { IValidation } from 'engine/validation';
+import { SexID, ISexData } from 'engine/character/sex';
 import { IEquipSlot, WieldID } from 'engine/equipment/wield';
+import { ArmorID, IArmorData } from 'engine/equipment/armor-data';
+import { WeaponID, IWeaponData } from 'engine/equipment/weapon-data';
+import { ArchetypeID, IArchetypeData } from 'engine/character/archetype';
+import { SkillsetID, ISkillsetData } from 'engine/character/skillset-data';
 import { IIndexableData, IndexableData } from 'engine/indexable-data';
 
-interface ICharacterConfig {
+export interface ICharacterConfig {
 	readonly name: string;
 	readonly sex: SexID;
 	readonly archetype: ArchetypeID;
@@ -31,29 +33,21 @@ interface ICharacterConfig {
 	readonly armor: ArmorID;
 }
 
+export type ICharacterDataEditable = keyof ICharacterConfig;
 export type ICharacterData = IIndexableData & ICharacterConfig;
 
-type IWeaponFilterCb = (id: WeaponID, i: number) => boolean;
-type IArmorFilterCb = (id: ArmorID, i: number) => boolean;
-
-const defaults: ICharacterConfig = {
-	name: '',
-	sex: 'MALE',
-	archetype: 'PP',
-	skillset: 'NONE',
-	main: 'NONE',
-	off: 'NONE',
-	armor: 'NONE'
-};
+type IFilterCb<T> = (id: T, i: number) => boolean;
 
 export class CharacterData extends IndexableData {
-	private name: string;
-	private sex: SexID;
-	private archetype: ArchetypeID;
-	private skillset: SkillsetID;
-	private main: WeaponID;
-	private off: WeaponID;
-	private armor: ArmorID;
+	@observable private data = {
+		name: '',
+		sex: Sexes.get('MALE'),
+		archetype: Archetypes.get('PP'),
+		skillset: Skillsets.get('NONE'),
+		main: Weapons.get('NONE'),
+		off: Weapons.get('NONE'),
+		armor: Armors.get('NONE')
+	};
 
 	constructor(conf: Partial<ICharacterData> = {}) {
 		super({
@@ -62,126 +56,216 @@ export class CharacterData extends IndexableData {
 			lastUpdate: conf.lastUpdate
 		});
 
-		const data: ICharacterConfig = Object.assign({}, defaults, conf);
+		for (const field of ['name', 'sex', 'archetype', 'skillset', 'main', 'off', 'armor']) {
+			const attr = field as ICharacterDataEditable;
+			const value = conf[attr];
 
-		this.name = data.name;
-		this.sex = data.sex;
-		this.archetype = data.archetype;
-		this.skillset = data.skillset;
-		this.main = data.main;
-		this.off = data.off;
-		this.armor = data.armor;
+			if ('undefined' !== typeof value) {
+				this.set(attr, value);
+			}
+		}
 	}
 
 	public static getRandom(name: string): CharacterData {
 		const character = new CharacterData({
 			name,
-			sex: Sexes.getRandomID(),
-			archetype: Archetypes.getRandomID(),
+			sex: Sexes.getRandomID() || 'MALE',
+			archetype: Archetypes.getRandomID() || 'PP',
 			skillset: 'NONE',
 			main: 'NONE',
 			off: 'NONE',
 			armor: 'NONE'
 		});
 
-		if (character.isMagicType()) {
-			const skillsets = Skillsets.filter(([id, set]) => id !== 'NONE');
-			const skillset = ArrayUtils.getRandomItem(skillsets)[0];
-			character.setSkillset(skillset);
-		}
-		const mainHands = character.filterWeapons('MAIN', id => id !== 'NONE');
-		const mainHand = ArrayUtils.getRandomItem(mainHands);
-		character.setMainHand(mainHand);
+		const skillsets = character.filterSkillsets(id => 'NONE' !== id && character.canUseSkillset(id));
+		const skillset = ArrayUtils.getRandomItem(skillsets);
+		character.setSkillset(skillset || 'NONE');
 
-		if (!character.isBothWielding() && !character.isDualWielding()) {
-			const offHands = character.filterWeapons('OFF', id => id !== 'NONE');
-			const offHand = ArrayUtils.getRandomItem(offHands);
-			character.setOffHand(offHand || 'NONE');
-		}
-		const armors = character.filterArmors(id => id !== 'NONE');
+		const mainHands = character.filterWeapons('MAIN', id => 'NONE' !== id && character.canWieldWeapon(id, 'MAIN'));
+		const mainHand = ArrayUtils.getRandomItem(mainHands);
+		character.setMainHand(mainHand || 'NONE');
+
+		const offHands = character.filterWeapons('OFF', id => 'NONE' !== id && character.canWieldWeapon(id, 'OFF'));
+		const offHand = ArrayUtils.getRandomItem(offHands);
+		character.setOffHand(offHand || 'NONE');
+
+		const armors = character.filterArmors(id => 'NONE' !== id && character.canWieldArmor(id));
 		const armor = ArrayUtils.getRandomItem(armors);
 		character.setArmor(armor || 'NONE');
 
 		return character;
 	}
 
-	public isValid(): boolean {
-		const { name, skillset, main, off, armor } = this;
-		return (
-			(name.length > 0 && name.length <= characterMaxNameLength) &&
-			(!validationRules.name || validationRules.name.test(name)) &&
-			(this.isMagicType() || skillset === 'NONE') &&
-			this.canWieldWeapon(main, 'MAIN') &&
-			this.canWieldWeapon(off, 'OFF') &&
-			this.canWieldArmor(armor)
-		);
+	public validate(): IValidation<ICharacterDataEditable> {
+		const { name, skillset, main, off, armor } = this.data;
+		const errors: { [field in ICharacterDataEditable]?: string; } = {};
+
+		if (name.length < 1 || name.length > maxCharacterNameLength) {
+			errors.name = `Name should contain 1 to ${maxCharacterNameLength} characters`;
+		}
+		if (!name.match(/^[a-zA-Z0-9-_\s.]+$/)) {
+			errors.name = 'Name should contain only letters, numbers, spaces or symbols (_, -, .)';
+		}
+		if (!this.canUseSkillset(skillset.id)) {
+			errors.skillset = `Character uses invalid skillset "${skillset.title}"`;
+		}
+		if (!this.canWieldWeapon(main.id, 'MAIN')) {
+			errors.main = `Character cannot wield "${main.title}" in main hand`;
+		}
+		if (!this.canWieldWeapon(off.id, 'OFF')) {
+			errors.off = `Character cannot wield "${off.title}" in off hand`;
+		}
+		if (!this.canWieldArmor(armor.id)) {
+			errors.armor = `Character cannot wield "${armor.title}"`;
+		}
+		return {
+			isValid: (0 === Object.keys(errors).length),
+			errors
+		};
 	}
 
 	public isPowerType(): boolean {
-		return -1 !== this.archetype.indexOf('P');
+		return -1 !== this.data.archetype.id.indexOf('P');
 	}
 
 	public isSpeedType(): boolean {
-		return -1 !== this.archetype.indexOf('S');
+		return -1 !== this.data.archetype.id.indexOf('S');
 	}
 
 	public isMagicType(): boolean {
-		return -1 !== this.archetype.indexOf('M');
+		return -1 !== this.data.archetype.id.indexOf('M');
 	}
 
 	public isBothWielding = (): boolean => {
-		return this.checkWeaponWield(this.main, 'BOTH');
+		return this.checkWeaponWield(this.data.main.id, 'BOTH');
 	}
 
 	public isDualWielding = (): boolean => {
-		return this.checkWeaponWield(this.main, 'DUAL');
+		return this.checkWeaponWield(this.data.main.id, 'DUAL');
 	}
 
-	public getName(): string {
-		return this.name;
+	@computed
+	public get name(): string {
+		return this.data.name;
 	}
 
-	public getSex(): SexID {
-		return this.sex;
+	@computed
+	public get sex(): ISexData {
+		return this.data.sex;
 	}
 
-	public getArchetype(): ArchetypeID {
-		return this.archetype;
+	@computed
+	public get archetype(): IArchetypeData {
+		return this.data.archetype;
 	}
 
-	public getSkillset(): SkillsetID {
-		return this.skillset;
+	@computed
+	public get skillset(): ISkillsetData {
+		return this.data.skillset;
 	}
 
-	public getMainHand(): WeaponID {
-		return this.main;
+	@computed
+	public get mainHand(): IWeaponData {
+		return this.data.main;
 	}
 
-	public getOffHand(): WeaponID {
-		return this.off;
+	@computed
+	public get offHand(): IWeaponData {
+		return this.data.off;
 	}
 
-	public getArmor(): ArmorID {
-		return this.armor;
+	@computed
+	public get armor(): IArmorData {
+		return this.data.armor;
 	}
 
+	@action
+	public setName(name: string) {
+		this.data.name = name;
+	}
+
+	@action
+	public setSex(id: SexID) {
+		this.data.sex = Sexes.get(id);
+	}
+
+	@action
+	public setArchetype(id: ArchetypeID) {
+		this.data.archetype = Archetypes.get(id);
+
+		if (!this.canUseSkillset(this.data.skillset.id)) {
+			this.setSkillset('NONE');
+		}
+
+		if (!this.canWieldWeapon(this.data.main.id, 'MAIN')) {
+			this.setMainHand('NONE');
+		}
+
+		if (!this.canWieldWeapon(this.data.off.id, 'OFF')) {
+			this.setOffHand('NONE');
+		}
+
+		if (!this.canWieldArmor(this.data.armor.id)) {
+			this.setArmor('NONE');
+		}
+	}
+
+	@action
 	public setSkillset(id: SkillsetID) {
-		this.skillset = id;
+		if (this.canUseSkillset(id)) {
+			this.data.skillset = Skillsets.get(id);
+		}
 	}
 
+	@action
 	public setMainHand(id: WeaponID) {
-		this.main = id;
+		if (this.canWieldWeapon(id, 'MAIN')) {
+			this.data.main = Weapons.get(id);
+
+			if (!this.canWieldWeapon(this.data.off.id, 'OFF')) {
+				this.setOffHand('NONE');
+			}
+		}
 	}
 
+	@action
 	public setOffHand(id: WeaponID) {
-		this.off = id;
+		if (this.canWieldWeapon(id, 'OFF')) {
+			this.data.off = Weapons.get(id);
+		}
 	}
 
+	@action
 	public setArmor(id: ArmorID) {
-		this.armor = id;
+		if (this.canWieldArmor(id)) {
+			this.data.armor = Armors.get(id);
+		}
 	}
 
-	public filterWeapons(slot: IEquipSlot, cb?: IWeaponFilterCb): WeaponID[] {
+	@action
+	public set(field: ICharacterDataEditable, value: string) {
+		switch (field) {
+			case 'name': return this.setName(value);
+			case 'sex': return this.setSex(value as SexID);
+			case 'archetype': return this.setArchetype(value as ArchetypeID);
+			case 'skillset': return this.setSkillset(value as SkillsetID);
+			case 'main': return this.setMainHand(value as WeaponID);
+			case 'off': return this.setOffHand(value as WeaponID);
+			case 'armor': return this.setArmor(value as ArmorID);
+			default:
+				throw new Error(`Field "${field}" is not editable`);
+		}
+	}
+
+	public filterSkillsets(cb?: IFilterCb<SkillsetID>): SkillsetID[] {
+		const usable = Skillsets
+			.filter(id => this.canUseSkillset(id))
+			.map(([id, skillset]) => id);
+
+		return cb ? usable.filter(cb) : usable;
+	}
+
+	public filterWeapons(slot: IEquipSlot, cb?: IFilterCb<WeaponID>): WeaponID[] {
 		const equipable = Weapons
 			.filter(id => this.canWieldWeapon(id, slot))
 			.map(([id, weapon]) => id);
@@ -189,12 +273,16 @@ export class CharacterData extends IndexableData {
 		return cb ? equipable.filter(cb) : equipable;
 	}
 
-	public filterArmors(cb?: IArmorFilterCb): ArmorID[] {
+	public filterArmors(cb?: IFilterCb<ArmorID>): ArmorID[] {
 		const equipable = Armors
 			.filter(id => this.canWieldArmor(id))
 			.map(([id, armor]) => id);
 
 		return cb ? equipable.filter(cb) : equipable;
+	}
+
+	public canUseSkillset(id: SkillsetID): boolean {
+		return 'NONE' === id || this.isMagicType();
 	}
 
 	public canWieldWeapon(weapon: WeaponID, slot: IEquipSlot): boolean {
@@ -217,7 +305,7 @@ export class CharacterData extends IndexableData {
 					this.checkWeaponWield(weapon, 'OFF') &&
 					!this.isBothWielding() &&
 					!this.isDualWielding() &&
-					('MM' !== this.archetype || -1 !== safeOffHand.indexOf(weapon))
+					('MM' !== this.data.archetype.id || -1 !== safeOffHand.indexOf(weapon))
 				);
 
 			default:
@@ -233,20 +321,21 @@ export class CharacterData extends IndexableData {
 	}
 
 	public serialize(): ICharacterData {
+		const { data } = this;
 		return {
 			...super.serialize(),
-			name: this.name,
-			sex: this.sex,
-			archetype: this.archetype,
-			skillset: this.skillset,
-			main: this.main,
-			off: this.off,
-			armor: this.armor
+			name: data.name,
+			sex: data.sex.id,
+			archetype: data.archetype.id,
+			skillset: data.skillset.id,
+			main: data.main.id,
+			off: data.off.id,
+			armor: data.armor.id
 		};
 	}
 
 	private checkWeaponArchetype(weapon: WeaponID): boolean {
-		return 1 === WeaponEquipTableArch[weapon][ArchetypeIndexTable[this.archetype]];
+		return 1 === WeaponEquipTableArch[weapon][ArchetypeIndexTable[this.data.archetype.id]];
 	}
 
 	private checkWeaponWield(weapon: WeaponID, wield: WieldID): boolean {
@@ -254,6 +343,6 @@ export class CharacterData extends IndexableData {
 	}
 
 	private checkArmorArchetype(armor: ArmorID): boolean {
-		return 1 === ArmorEquipTableArch[armor][ArchetypeIndexTable[this.archetype]];
+		return 1 === ArmorEquipTableArch[armor][ArchetypeIndexTable[this.data.archetype.id]];
 	}
 }

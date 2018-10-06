@@ -1,74 +1,57 @@
 import React from 'react';
-import { Dispatch } from 'redux';
-import { Action } from 'redux-actions';
-import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router';
 
-import { IStore } from 'store';
-import { gotoFn } from 'utils/nav';
-import * as Selector from 'selectors';
-import Actions from 'actions/characters';
+import { Store } from 'store';
+import { gotoFn } from 'core/navigation';
+import { withContext, IContext } from 'context';
 import { CharacterData } from 'engine/character-data';
 
 import CharacterListPage from 'ui/character-creation/CharacterListPage/template';
-import { IOnDelete, IOnMoveUp, IOnMoveDown } from 'ui/character-creation/CharacterList';
-import { store } from 'index';
 
-interface IStateToProps {
-	readonly characters: CharacterData[];
-}
+const onMoveDown = (store: Store) => (char: CharacterData) => () => {
+	store.characters.moveDown(char);
+	store.save();
+};
 
-interface ICharacterListPageContainerProps extends RouteComponentProps<any> {
-	readonly onMoveDown: IOnMoveDown;
-	readonly onMoveUp: IOnMoveUp;
-	readonly onDelete: IOnDelete;
-}
+const onMoveUp = (store: Store) => (char: CharacterData) => () => {
+	store.characters.moveUp(char);
+	store.save();
+};
 
-const mapStateToProps = (state: IStore): IStateToProps => ({
-	characters: Selector.getCharacters(state)
-});
+const onDelete = (store: Store) => (char: CharacterData) => () => {
+	if (confirm(`Do you realy want to delete "${char.name}"?`)) {
+		const included: string[] = [];
 
-const mapDispatchToProps = (dispatch: Dispatch<Action<CharacterData>>) => ({
-	onMoveDown: (char: CharacterData) => () => {
-		dispatch(Actions.moveDownList(char));
-	},
-	onMoveUp: (char: CharacterData) => () => {
-		dispatch(Actions.moveUpList(char));
-	},
-	onDelete: (char: CharacterData) => () => {
-		if (confirm(`Do you realy want to delete "${char.getName()}"?`)) {
-			const { parties } = store.getState();
-			const included: string[] = [];
-
-			for (const party of parties) {
-				if (party.getCharacters().find((ch: CharacterData|null) => !!ch && ch.id === char.id)) {
-					included.push(party.getName());
-				}
+		for (const party of store.parties.data) {
+			if (party.getCharacters().find((ch: CharacterData|null) => !!ch && ch.id === char.id)) {
+				included.push(party.getName());
 			}
-
-			if (included.length) {
-				return alert(`Could not delete "${char.getName()}": character is included in party (${included.join(', ')})`);
-			}
-			dispatch(Actions.removeCharacter(char));
 		}
-	}
-});
 
-const CharacterListPageContainer: React.SFC<ICharacterListPageContainerProps & IStateToProps> = props => {
-	const { characters, history, onMoveDown, onMoveUp, onDelete } = props;
+		if (included.length) {
+			return alert(`Could not delete "${char.name}": character is included in party (${included.join(', ')})`);
+		}
+
+		store.characters.remove(char);
+		store.save();
+	}
+};
+
+const CharacterListPageContainer: React.SFC<RouteComponentProps<any> & IContext> = props => {
+	const { store, history } = props;
 
 	return (
 		<CharacterListPage
-			characters={characters}
+			characters={store.characters}
 			onBack={gotoFn(history, '/')}
 			onCreate={gotoFn(history, '/character-create')}
-			onMoveDown={onMoveDown}
-			onMoveUp={onMoveUp}
-			onDelete={onDelete}
+			onMoveDown={onMoveDown(store)}
+			onMoveUp={onMoveUp(store)}
+			onDelete={onDelete(store)}
 		/>
 	);
 };
 
 export default withRouter(
-	connect(mapStateToProps, mapDispatchToProps)(CharacterListPageContainer)
+	withContext(CharacterListPageContainer)
 );

@@ -2,7 +2,7 @@ import React from 'react';
 import { withRouter, RouteComponentProps } from 'react-router';
 
 import { IcoID } from 'data/icos';
-import { gotoFn } from 'utils/nav';
+import { gotoFn } from 'core/navigation';
 import Button, { ButtonSize } from 'ui/common/Button';
 
 interface IMenuItem {
@@ -13,7 +13,7 @@ interface IMenuItem {
 }
 
 const menuItems: IMenuItem[] = [
-	{ title: 'Start Battle', ico: 'fight', size: 'large', url: '/battle-setup' },
+	{ title: 'Start Battle', ico: 'fight', size: 'large', url: '/battle-config' },
 	{ title: 'Party Creation', url: '/party-list' },
 	{ title: 'Character Creation', url: '/character-list' }
 ];

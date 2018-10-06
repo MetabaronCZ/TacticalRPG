@@ -1,54 +1,35 @@
 import React from 'react';
-import { Dispatch } from 'redux';
 import { History } from 'history';
-import { Action } from 'redux-actions';
-import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router';
 
-import { IStore } from 'store';
-import Actions from 'actions/parties';
-import * as Selector from 'selectors';
-import { goto, gotoFn } from 'utils/nav';
-
+import { Store } from 'store';
+import { goto, gotoFn } from 'core/navigation';
+import { withContext, IContext } from 'context';
 import { PartyData } from 'engine/party-data';
-import { CharacterData } from 'engine/character-data';
 
 import Page from 'ui/common/Page';
 import PartyCreation from 'ui/party-creation/PartyCreation';
 
-interface IStateToProps {
-	readonly characters: CharacterData[];
-}
+const onSubmit = (store: Store, history: History) => (party: PartyData): void => {
+	store.parties.add(party);
+	store.save();
 
-interface IPartyCreationPageContainerProps extends RouteComponentProps<any> {
-	readonly onSubmit: (history: History) => (party: PartyData) => void;
-}
+	goto(history, '/party-list');
+};
 
-const mapStateToProps = (state: IStore): IStateToProps => ({
-	characters: Selector.getCharacters(state)
-});
-
-const mapDispatchToProps = (dispatch: Dispatch<Action<PartyData>>) => ({
-	onSubmit: (history: History) => (value: PartyData): void => {
-		dispatch(Actions.addParty(value));
-		goto(history, '/party-list');
-	}
-});
-
-const PartyCreationPageContainer: React.SFC<IPartyCreationPageContainerProps & IStateToProps> = props => {
-	const { characters, onSubmit, history } = props;
-
+const PartyCreationPageContainer: React.SFC<RouteComponentProps<any> & IContext> = props => {
+	const { store, history } = props;
 	return (
 		<Page heading="Party creation">
 			<PartyCreation
-				characters={characters}
+				characters={store.characters}
 				onBack={gotoFn(history, '/party-list')}
-				onSubmit={onSubmit(history)}
+				onSubmit={onSubmit(store, history)}
 			/>
 		</Page>
 	);
 };
 
 export default withRouter(
-	connect(mapStateToProps, mapDispatchToProps)(PartyCreationPageContainer)
+	withContext(PartyCreationPageContainer)
 );

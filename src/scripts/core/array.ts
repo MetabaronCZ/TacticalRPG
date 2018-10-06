@@ -1,5 +1,8 @@
 // return array of random items from given array
-export const getRandomItems = <T>(arr: T[], count = 1): T[] => {
+export const getRandomItems = <T>(arr: T[], count = 1): T[]|null => {
+	if (count > arr.length) {
+		return null;
+	}
 	const res = [];
 	arr = arr.slice(0);
 
@@ -13,8 +16,9 @@ export const getRandomItems = <T>(arr: T[], count = 1): T[] => {
 };
 
 // return random array item
-export const getRandomItem = <T>(arr: T[]): T => {
-	return getRandomItems(arr, 1)[0];
+export const getRandomItem = <T>(arr: T[]): T|null => {
+	const ranItems = getRandomItems(arr, 1);
+	return ranItems ? ranItems[0] : null;
 };
 
 // return randomized array
@@ -24,6 +28,10 @@ export const randomize = <T>(arr: T[]): T[] => {
 
 	while (copy.length) {
 		const item = getRandomItem(copy);
+
+		if (null === item) {
+			break;
+		}
 		const i = copy.indexOf(item);
 		randomized.push(item);
 		copy.splice(i, 1);
