@@ -2,7 +2,7 @@ import React from 'react';
 import { withRouter, RouteComponentProps } from 'react-router';
 
 import { Store } from 'store';
-import { gotoFn } from 'utils/nav';
+import { gotoFn } from 'core/navigation';
 import { withContext, IContext } from 'context';
 import { CharacterData } from 'engine/character-data';
 

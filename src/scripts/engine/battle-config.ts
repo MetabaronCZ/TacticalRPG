@@ -1,26 +1,65 @@
-import { observable, action } from 'mobx';
-import { PlayerConfig, IPlayerConfig } from 'engine/player-config';
+import { observable } from 'mobx';
+
+import { maxPlayers, randomPartyID } from 'data/game-config';
+import { PlayerConfig, IPlayerConfig, IPlayerConfigEditable } from 'engine/player-config';
 
 export interface IBattleConfig {
 	players: IPlayerConfig[];
 }
 
+export interface IBattleConfigValidation {
+	isValid: boolean;
+	errors: {
+		players: Array<{
+			[attr in IPlayerConfigEditable]?: string;
+		}>;
+	};
+}
+
+const playerPool = Array(maxPlayers).fill(0);
+
 export class BattleConfig {
 	@observable.shallow public players: PlayerConfig[] = [];
 
 	constructor(data?: IBattleConfig) {
-		if (data) {
-			this.update(data);
-		}
+		this.update(data);
 	}
 
-	@action
-	public update(data: IBattleConfig) {
-		this.players = data.players.map(pl => new PlayerConfig(pl));
+	public validate(): IBattleConfigValidation {
+		const { players } = this;
+
+		const validation: IBattleConfigValidation = {
+			isValid: true,
+			errors: {
+				players: playerPool.map(_ => ({}))
+			}
+		};
+
+		players.forEach((player, p) => {
+			const val = player.validate();
+
+			if (!val.isValid) {
+				validation.isValid = false;
+			}
+			validation.errors.players[p] = val.errors;
+		});
+
+		return validation;
 	}
 
-	public clone(): BattleConfig {
-		return new BattleConfig(this.serialize());
+	public update(data?: IBattleConfig) {
+		this.players = playerPool.map((_, p) => {
+			if (data && data.players[p]) {
+				return new PlayerConfig(data.players[p]);
+
+			} else {
+				return new PlayerConfig({
+					name: `Player ${p + 1}`,
+					control: 'HUMAN',
+					party: randomPartyID
+				});
+			}
+		});
 	}
 
 	public serialize(): IBattleConfig {

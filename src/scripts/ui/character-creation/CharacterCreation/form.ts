@@ -1,39 +1,40 @@
 import { observable, action } from 'mobx';
 
-import { validateField, validateForm } from 'utils/validation';
+import { IValidation } from 'engine/validation';
 import { CharacterData, ICharacterDataEditable } from 'engine/character-data';
 
-interface ICharacterCreationform {
+interface ICharacterCreationForm {
 	character: CharacterData;
-	errors: {
-		[attr in ICharacterDataEditable]?: string;
-	};
+	validation: IValidation<ICharacterDataEditable>;
 }
 
 class CharacterCreationform {
-	@observable public state: ICharacterCreationform;
+	@observable public state: ICharacterCreationForm;
 
-	constructor(char: CharacterData|null) {
+	constructor(data: CharacterData|null) {
 		this.state = {
-			character: new CharacterData(char ? char.serialize() : {}),
-			errors: {}
+			character: new CharacterData(data ? data.serialize() : {}),
+			validation: {
+				isValid: true,
+				errors: {}
+			}
 		};
 	}
 
 	@action
 	public onChange(field: ICharacterDataEditable, value: string) {
-		const validation = validateField(field, value);
-		this.state.character.set(field, value);
-		this.state.errors[field] = validation.error || undefined;
+		const character = this.state.character;
+		character.set(field, value);
+		this.state.validation = character.validate();
 	}
 
 	@action
 	public onSubmit(next?: (char: CharacterData) => void) {
 		const character = this.state.character;
+		const validation = character.validate();
 
-		if (!character.isValid()) {
-			const validation = validateForm(character.serialize());
-			this.state.errors = validation.errors;
+		if (!validation.isValid) {
+			this.state.validation = validation;
 			return;
 		}
 

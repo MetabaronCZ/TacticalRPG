@@ -3,9 +3,8 @@ import { History } from 'history';
 import { withRouter, RouteComponentProps } from 'react-router';
 
 import { Store } from 'store';
-import { goto, gotoFn } from 'utils/nav';
+import { goto, gotoFn } from 'core/navigation';
 import { withContext, IContext } from 'context';
-
 import { PartyData } from 'engine/party-data';
 
 import Page from 'ui/common/Page';

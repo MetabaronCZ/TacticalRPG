@@ -1,6 +1,6 @@
 import { PartyData } from 'engine/party-data';
 import { CharacterData } from 'engine/character-data';
-import { PlayerControlID } from 'engine/player-control';
+import { PlayerControlID } from 'engine/player-config';
 
 export interface IPlayerData {
 	readonly name: string;

@@ -3,13 +3,13 @@ import { History } from 'history';
 import { withRouter, RouteComponentProps } from 'react-router';
 
 import { Store } from 'store';
-import { goto, gotoFn } from 'utils/nav';
+import { goto, gotoFn } from 'core/navigation';
 import { withContext, IContext } from 'context';
 
 import { BattleConfig } from 'engine/battle-config';
 
 import Page from 'ui/common/Page';
-import BattleSetup from 'ui/battle/BattleSetup';
+import BattleConfigUI from 'ui/battle/BattleConfigUI';
 
 const onStart = (history: History, store: Store) => (config: BattleConfig) => {
 	store.battleConfig.update(config.serialize());
@@ -18,12 +18,12 @@ const onStart = (history: History, store: Store) => (config: BattleConfig) => {
 	goto(history, '/battle');
 };
 
-const BattleSetupPageContainer: React.SFC<RouteComponentProps<any> & IContext> = ({ history, store }) => (
-	<Page heading="Battle setup">
-		<BattleSetup
+const BattleConfigPageContainer: React.SFC<RouteComponentProps<any> & IContext> = ({ history, store }) => (
+	<Page heading="Battle config">
+		<BattleConfigUI
 			config={store.battleConfig}
-			characters={store.characters}
-			parties={store.parties}
+			characters={store.characters.data}
+			parties={store.parties.data}
 			onBack={gotoFn(history, '/')}
 			onStart={onStart(history, store)}
 		/>
@@ -31,5 +31,5 @@ const BattleSetupPageContainer: React.SFC<RouteComponentProps<any> & IContext> =
 );
 
 export default withRouter(
-	withContext(BattleSetupPageContainer)
+	withContext(BattleConfigPageContainer)
 );

@@ -6,8 +6,8 @@ import { playerMaxNameLength, randomPartyID } from 'data/game-config';
 
 import { PartyData } from 'engine/party-data';
 import { BattleConfig } from 'engine/battle-config';
-import ObservableList from 'engine/observable-list';
 import { CharacterData } from 'engine/character-data';
+import { IPlayerConfigEditable } from 'engine/player-config';
 
 import Form from 'ui/common/Form';
 import Button from 'ui/common/Button';
@@ -17,36 +17,38 @@ import FormField from 'ui/common/FormField';
 import FormInput from 'ui/common/FormInput';
 import FormSelect from 'ui/common/FormSelect';
 import FormSelectItem from 'ui/common/FormSelectItem';
+import BattleConfigform from 'ui/battle/BattleConfigUI/form';
 import CharacterList from 'ui/character-creation/CharacterList';
-import BattleConfigform, { BattleSetupEditable } from 'ui/battle/BattleSetup/form';
 
-interface IBattleSetupProps {
-	readonly config: BattleConfig;
-	readonly parties: ObservableList<PartyData>;
-	readonly characters: ObservableList<CharacterData>;
+interface IBattleConfigUIProps {
+	readonly config?: BattleConfig;
+	readonly parties: PartyData[];
+	readonly characters: CharacterData[];
 	readonly onStart: (config: BattleConfig) => void;
 	readonly onBack: (e: SyntheticEvent<any>) => void;
 }
 
 @observer
-class BattleSetup extends React.Component<IBattleSetupProps> {
-	private formState: BattleConfigform;
+class BattleConfigUI extends React.Component<IBattleConfigUIProps> {
+	private form: BattleConfigform;
 
-	constructor(props: IBattleSetupProps) {
+	constructor(props: IBattleConfigUIProps) {
 		super(props);
 
 		const { config, parties } = this.props;
-		this.formState = new BattleConfigform(config, parties);
+		this.form = new BattleConfigform(config, parties);
 	}
 
 	public render() {
-		const { state, getPartyCharacters } = this.formState;
-		const isValid = this.formState.isValid();
+		const { config, validation } = this.form.state;
+		const parties = this.props.parties;
 
 		return (
 			<Form onSubmit={this.onSubmit}>
-				{state.map((player, p) => {
-					const characters = getPartyCharacters(player);
+				{config.players.map((player, p) => {
+					const characters = this.form.getPartyCharacters(player);
+					const errors = validation.errors.players[p];
+
 					const fieldName = `f-player-${p}-name`;
 					const fieldParty = `f-player-${p}-party`;
 					const fieldControl = `f-player-${p}-control`;
@@ -55,14 +57,14 @@ class BattleSetup extends React.Component<IBattleSetupProps> {
 						<React.Fragment key={p}>
 							<h2 className="Heading">Player {p + 1}</h2>
 
-							<FormField fieldId={fieldName} label="Name" error={player.errors.name}>
+							<FormField fieldId={fieldName} label="Name" error={errors.name}>
 								<FormInput
 									id={fieldName}
 									type="text"
 									value={player.name}
 									name={fieldName}
 									maxLength={playerMaxNameLength}
-									isInvalid={!!player.errors.name}
+									isInvalid={!!errors.name}
 									onChange={this.onChange(p, 'name')}
 								/>
 							</FormField>
@@ -89,7 +91,7 @@ class BattleSetup extends React.Component<IBattleSetupProps> {
 									value={player.party}
 									onChange={this.onChange(p, 'party')}
 								>
-									{player.parties.map((party, i) => (
+									{parties.map((party, i) => (
 										<FormSelectItem value={party.id} key={i}>
 											{party.getName()}
 										</FormSelectItem>
@@ -111,26 +113,23 @@ class BattleSetup extends React.Component<IBattleSetupProps> {
 
 				<ButtonRow>
 					<Button ico="back" text="Back" onClick={this.props.onBack} />
-					{isValid && <Button ico="fight" text="Start" color="green" type="submit" />}
+
+					{validation.isValid && (
+						<Button ico="fight" text="Start" color="green" type="submit" />
+					)}
 				</ButtonRow>
 			</Form>
 		);
 	}
 
-	private onChange = (player: number, name: BattleSetupEditable) => (e: SyntheticEvent<any>) => {
-		const value = e.currentTarget.value;
-		this.formState.change(name, player, value);
+	private onChange = (player: number, name: IPlayerConfigEditable) => (e: SyntheticEvent<any>) => {
+		this.form.onPlayerChange(name, player, e.currentTarget.value);
 	}
 
 	private onSubmit = (e: SyntheticEvent<HTMLFormElement>) => {
 		e.preventDefault();
-
-		const state = this.formState;
-
-		if (state.isValid() && this.props.onStart) {
-			this.props.onStart(state.getConfig());
-		}
+		this.form.onSubmit(this.props.onStart);
 	}
 }
 
-export default BattleSetup;
+export default BattleConfigUI;

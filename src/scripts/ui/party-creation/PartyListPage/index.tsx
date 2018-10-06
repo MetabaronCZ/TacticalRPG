@@ -2,10 +2,10 @@ import React from 'react';
 import { withRouter, RouteComponentProps } from 'react-router';
 
 import { Store } from 'store';
-import { gotoFn } from 'utils/nav';
+import { gotoFn } from 'core/navigation';
 import { withContext, IContext } from 'context';
-
 import { PartyData } from 'engine/party-data';
+
 import PartyListPage from 'ui/party-creation/PartyListPage/template';
 
 const onMoveDown = (store: Store) => (party: PartyData) => () => {

@@ -7,7 +7,7 @@ import Armors from 'data/armors';
 import Weapons from 'data/weapons';
 import Skillsets from 'data/skillsets';
 import Archetypes from 'data/archetypes';
-import { characterMaxNameLength } from 'data/game-config';
+import { maxCharacterNameLength } from 'data/game-config';
 
 import { CharacterData, ICharacterDataEditable } from 'engine/character-data';
 import { ArmorID, IArmorData } from 'engine/equipment/armor-data';
@@ -32,14 +32,8 @@ interface ICharacterCreationProps {
 	readonly onSubmit?: (data: CharacterData) => void;
 }
 
-interface ICharacterCreationState {
-	readonly errors: {
-		[field: string]: string|undefined;
-	};
-}
-
 @observer
-class CharacterCreation extends React.Component<ICharacterCreationProps, ICharacterCreationState> {
+class CharacterCreation extends React.Component<ICharacterCreationProps> {
 	private form: CharacterCreationForm;
 
 	constructor(props: ICharacterCreationProps) {
@@ -49,7 +43,7 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 
 	public render() {
 		const { onChange } = this;
-		const { character, errors } = this.form.state;
+		const { character, validation } = this.form.state;
 		const { name, sex, archetype, skillset, mainHand, offHand, armor } = character;
 
 		const mainHandWield = Wields.get('MAIN');
@@ -64,20 +58,20 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 
 		return (
 			<Form onSubmit={this.onSubmit}>
-				<FormField fieldId="f-name" label="Name" error={errors.name}>
+				<FormField fieldId="f-name" label="Name" error={validation.errors.name}>
 					<FormInput
 						id="f-name"
 						type="text"
 						value={name}
 						placeholder="Type character name ..."
 						name="name"
-						maxLength={characterMaxNameLength}
-						isInvalid={!!errors.name}
+						maxLength={maxCharacterNameLength}
+						isInvalid={!!validation.errors.name}
 						onChange={onChange('name')}
 					/>
 				</FormField>
 
-				<FormField fieldId="f-sex" label="Sex" error={errors.sex}>
+				<FormField fieldId="f-sex" label="Sex" error={validation.errors.sex}>
 					{Sexes.map((id, sexData, i) => (
 						<FormRadio
 							id={`f-sex-${id}`}
@@ -154,7 +148,10 @@ class CharacterCreation extends React.Component<ICharacterCreationProps, ICharac
 
 				<ButtonRow>
 					<Button ico="back" text="Back" onClick={this.props.onBack} />
-					<Button type="submit" ico="success" color="green" text="Save" />
+
+					{validation.isValid && (
+						<Button type="submit" ico="success" color="green" text="Save" />
+					)}
 				</ButtonRow>
 			</Form>
 		);

@@ -1,20 +1,20 @@
 import { computed, action, observable } from 'mobx';
 
 import * as ArrayUtils from 'core/array';
-import { validationRules } from 'utils/validation';
 
 import Sexes from 'data/sexes';
 import Armors from 'data/armors';
 import Weapons from 'data/weapons';
 import Skillsets from 'data/skillsets';
 import Archetypes from 'data/archetypes';
-import { characterMaxNameLength } from 'data/game-config';
+import { maxCharacterNameLength } from 'data/game-config';
 import {
 	WeaponEquipTableArch, WeaponEquipTableWield,
 	WieldIndexTable, ArmorEquipTableArch,
 	ArchetypeIndexTable, safeOffHand
 } from 'data/equipment';
 
+import { IValidation } from 'engine/validation';
 import { SexID, ISexData } from 'engine/character/sex';
 import { IEquipSlot, WieldID } from 'engine/equipment/wield';
 import { ArmorID, IArmorData } from 'engine/equipment/armor-data';
@@ -96,16 +96,32 @@ export class CharacterData extends IndexableData {
 		return character;
 	}
 
-	public isValid(): boolean {
+	public validate(): IValidation<ICharacterDataEditable> {
 		const { name, skillset, main, off, armor } = this.data;
-		return (
-			(name.length > 0 && name.length <= characterMaxNameLength) &&
-			(!validationRules.name || validationRules.name.test(name)) &&
-			this.canUseSkillset(skillset.id) &&
-			this.canWieldWeapon(main.id, 'MAIN') &&
-			this.canWieldWeapon(off.id, 'OFF') &&
-			this.canWieldArmor(armor.id)
-		);
+		const errors: { [field in ICharacterDataEditable]?: string; } = {};
+
+		if (name.length < 1 || name.length > maxCharacterNameLength) {
+			errors.name = `Name should contain 1 to ${maxCharacterNameLength} characters`;
+		}
+		if (!name.match(/^[a-zA-Z0-9-_\s.]+$/)) {
+			errors.name = 'Name should contain only letters, numbers, spaces or symbols (_, -, .)';
+		}
+		if (!this.canUseSkillset(skillset.id)) {
+			errors.skillset = `Character uses invalid skillset "${skillset.title}"`;
+		}
+		if (!this.canWieldWeapon(main.id, 'MAIN')) {
+			errors.main = `Character cannot wield "${main.title}" in main hand`;
+		}
+		if (!this.canWieldWeapon(off.id, 'OFF')) {
+			errors.off = `Character cannot wield "${off.title}" in off hand`;
+		}
+		if (!this.canWieldArmor(armor.id)) {
+			errors.armor = `Character cannot wield "${armor.title}"`;
+		}
+		return {
+			isValid: (0 === Object.keys(errors).length),
+			errors
+		};
 	}
 
 	public isPowerType(): boolean {

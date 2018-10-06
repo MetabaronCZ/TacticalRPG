@@ -48,7 +48,7 @@ export class Store {
 		}
 	}
 
-	private prepareBattleConfig(data: IBattleConfig): BattleConfig {
+	private prepareBattleConfig(data?: IBattleConfig): BattleConfig {
 		return new BattleConfig(data);
 	}
 
@@ -60,11 +60,12 @@ export class Store {
 				continue;
 			}
 			const charData = new CharacterData(char);
+			const validation = charData.validate();
 
-			if (charData.isValid()) {
+			if (validation.isValid) {
 				characters.push(charData);
 			} else {
-				Logger.error(`Invalid character: "${JSON.stringify(charData.serialize())}"`);
+				Logger.error(`Invalid character: "${JSON.stringify(validation.errors)}"`);
 			}
 		}
 		return new ObservableList(characters);
@@ -78,11 +79,12 @@ export class Store {
 				continue;
 			}
 			const partyData = new PartyData(party, characters);
+			const validation = partyData.validate();
 
-			if (partyData.isValid()) {
+			if (validation.isValid) {
 				parties.push(partyData);
 			} else {
-				Logger.error(`Invalid party: "${JSON.stringify(partyData.serialize())}"`);
+				Logger.error(`Invalid party: "${JSON.stringify(validation.errors)}"`);
 			}
 		}
 		return new ObservableList(parties);

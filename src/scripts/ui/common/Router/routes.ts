@@ -1,6 +1,6 @@
-import MainMenu from 'ui/menu/MainMenuPage';
-import BattleSetup from 'ui/battle/BattleSetupPage';
 import Battle from 'ui/battle/BattlePage';
+import MainMenu from 'ui/menu/MainMenuPage';
+import BattleConfig from 'ui/battle/BattleConfigPage';
 import BattleSummary from 'ui/battle/BattleSummaryPage';
 import PartyList from 'ui/party-creation/PartyListPage';
 import PartyEdit from 'ui/party-creation/PartyEditPage';
@@ -16,7 +16,7 @@ interface IRoute {
 
 const routes: IRoute[] = [
 	{ path: '/', component: MainMenu },
-	{ path: '/battle-setup', component: BattleSetup },
+	{ path: '/battle-config', component: BattleConfig },
 	{ path: '/battle', component: Battle },
 	{ path: '/battle-summary', component: BattleSummary },
 	{ path: '/party-list', component: PartyList },

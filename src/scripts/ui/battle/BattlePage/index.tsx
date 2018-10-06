@@ -2,9 +2,10 @@ import React from 'react';
 import { History } from 'history';
 import { withRouter, RouteComponentProps } from 'react-router';
 
-import { goto } from 'utils/nav';
+import { goto } from 'core/navigation';
 import { withContext, IContext } from 'context';
 import Engine, { IEngineState } from 'engine';
+
 import BattleUI from 'ui/battle/BattleUI';
 
 const txtExitConfirm = 'Do you realy want to exit and lost your game progress?';
