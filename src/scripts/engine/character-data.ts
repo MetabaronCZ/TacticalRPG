@@ -1,7 +1,5 @@
 import { computed, action, observable } from 'mobx';
 
-import * as ArrayUtils from 'core/array';
-
 import Sexes from 'data/sexes';
 import Armors from 'data/armors';
 import Weapons from 'data/weapons';
@@ -36,8 +34,6 @@ export interface ICharacterConfig {
 export type ICharacterDataEditable = keyof ICharacterConfig;
 export type ICharacterData = IIndexableData & ICharacterConfig;
 
-type IFilterCb<T> = (id: T, i: number) => boolean;
-
 export class CharacterData extends IndexableData {
 	@observable private data = {
 		name: '',
@@ -64,36 +60,6 @@ export class CharacterData extends IndexableData {
 				this.set(attr, value);
 			}
 		}
-	}
-
-	public static getRandom(name: string): CharacterData {
-		const character = new CharacterData({
-			name,
-			sex: Sexes.getRandomID() || 'MALE',
-			archetype: Archetypes.getRandomID() || 'PP',
-			skillset: 'NONE',
-			main: 'NONE',
-			off: 'NONE',
-			armor: 'NONE'
-		});
-
-		const skillsets = character.filterSkillsets(id => 'NONE' !== id && character.canUseSkillset(id));
-		const skillset = ArrayUtils.getRandomItem(skillsets);
-		character.setSkillset(skillset || 'NONE');
-
-		const mainHands = character.filterWeapons('MAIN', id => 'NONE' !== id && character.canWieldWeapon(id, 'MAIN'));
-		const mainHand = ArrayUtils.getRandomItem(mainHands);
-		character.setMainHand(mainHand || 'NONE');
-
-		const offHands = character.filterWeapons('OFF', id => 'NONE' !== id && character.canWieldWeapon(id, 'OFF'));
-		const offHand = ArrayUtils.getRandomItem(offHands);
-		character.setOffHand(offHand || 'NONE');
-
-		const armors = character.filterArmors(id => 'NONE' !== id && character.canWieldArmor(id));
-		const armor = ArrayUtils.getRandomItem(armors);
-		character.setArmor(armor || 'NONE');
-
-		return character;
 	}
 
 	public validate(): IValidation<ICharacterDataEditable> {
@@ -255,30 +221,6 @@ export class CharacterData extends IndexableData {
 			default:
 				throw new Error(`Field "${field}" is not editable`);
 		}
-	}
-
-	public filterSkillsets(cb?: IFilterCb<SkillsetID>): SkillsetID[] {
-		const usable = Skillsets
-			.filter(id => this.canUseSkillset(id))
-			.map(([id, skillset]) => id);
-
-		return cb ? usable.filter(cb) : usable;
-	}
-
-	public filterWeapons(slot: IEquipSlot, cb?: IFilterCb<WeaponID>): WeaponID[] {
-		const equipable = Weapons
-			.filter(id => this.canWieldWeapon(id, slot))
-			.map(([id, weapon]) => id);
-
-		return cb ? equipable.filter(cb) : equipable;
-	}
-
-	public filterArmors(cb?: IFilterCb<ArmorID>): ArmorID[] {
-		const equipable = Armors
-			.filter(id => this.canWieldArmor(id))
-			.map(([id, armor]) => id);
-
-		return cb ? equipable.filter(cb) : equipable;
 	}
 
 	public canUseSkillset(id: SkillsetID): boolean {

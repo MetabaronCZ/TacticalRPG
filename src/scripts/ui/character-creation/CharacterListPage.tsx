@@ -6,7 +6,11 @@ import { gotoFn } from 'core/navigation';
 import { withContext, IContext } from 'context';
 import { CharacterData } from 'engine/character-data';
 
-import CharacterListPage from 'ui/character-creation/CharacterListPage/template';
+import Page from 'ui/common/Page';
+import Button from 'ui/common/Button';
+import ButtonRow from 'ui/common/ButtonRow';
+import Separator from 'ui/common/Separator';
+import CharacterList from 'ui/character-creation/CharacterList';
 
 const onMoveDown = (store: Store) => (char: CharacterData) => () => {
 	store.characters.moveDown(char);
@@ -41,14 +45,29 @@ const CharacterListPageContainer: React.SFC<RouteComponentProps<any> & IContext>
 	const { store, history } = props;
 
 	return (
-		<CharacterListPage
-			characters={store.characters}
-			onBack={gotoFn(history, '/')}
-			onCreate={gotoFn(history, '/character-create')}
-			onMoveDown={onMoveDown(store)}
-			onMoveUp={onMoveUp(store)}
-			onDelete={onDelete(store)}
-		/>
+		<Page heading="Character list">
+			{store.characters.data.length
+				? <CharacterList
+					editable={true}
+					characters={store.characters}
+					onDelete={onDelete(store)}
+					onMoveDown={onMoveDown(store)}
+					onMoveUp={onMoveUp(store)}
+				/>
+				: <p className="Paragraph">There are no characters.</p>
+			}
+			<Separator />
+
+			<ButtonRow>
+				<Button ico="back" text="Back" onClick={gotoFn(history, '/')} />
+				<Button
+					ico="create"
+					color="green"
+					text="Create new Character"
+					onClick={gotoFn(history, '/character-create')}
+				/>
+			</ButtonRow>
+		</Page>
 	);
 };
 

@@ -8,7 +8,7 @@ import { withContext, IContext } from 'context';
 import { CharacterData } from 'engine/character-data';
 
 import Page from 'ui/common/Page';
-import CharacterCreation from 'ui/character-creation/CharacterCreation';
+import CharacterCreation from 'ui/character-creation/CharacterCreationUI';
 
 const onSubmit = (store: Store, history: History) => (char: CharacterData): void => {
 	store.characters.add(char);

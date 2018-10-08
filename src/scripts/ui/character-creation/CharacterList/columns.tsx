@@ -11,6 +11,13 @@ import LinkButton from 'ui/common/LinkButton';
 import ArchetypeIco from 'ui/common/ArchetypeIco';
 import { IOnMoveDown, IOnMoveUp, IOnDelete } from 'ui/character-creation/CharacterList';
 
+interface IColumn {
+	readonly title: string;
+	readonly name: string;
+	readonly value: (char: CharacterData|null, i: number) => React.ReactNode;
+	readonly editable?: boolean;
+}
+
 const renderArchetype = (char: CharacterData) => (
 	<ArchetypeIco archetype={char.archetype.id} />
 );
@@ -34,13 +41,6 @@ const renderDelete = (char: CharacterData, onDelete?: IOnDelete) => (
 const renderOffHandBothWield = (title: string) => (
 	<span className="List-disabled">{title}</span>
 );
-
-interface IColumn {
-	readonly title: string;
-	readonly name: string;
-	readonly value: (char: CharacterData|null, i: number) => React.ReactNode;
-	readonly editable?: boolean;
-}
 
 const getColumns = (editable = false, onMoveDown?: IOnMoveDown, onMoveUp?: IOnMoveUp, onDelete?: IOnDelete): IColumn[] => {
 	let columns: IColumn[] = [

@@ -16,6 +16,7 @@ import { getPosition } from 'engine/positions';
 import { IPlayerData } from 'engine/player-data';
 import CharacterAction from 'engine/character-action';
 import { CharacterData } from 'engine/character-data';
+import CharacterCreationForm from 'engine/character-creation';
 
 export interface IEngineState {
 	tick: number;
@@ -144,13 +145,24 @@ class Engine {
 		}
 		const players = playerData.map((conf, p) => {
 			const { name, control, party, parties } = conf;
-			let charData: CharacterData[] = [];
+			const charData: CharacterData[] = [];
 
 			// get character data
 			if (config.randomPartyID === party) {
 				// random generated party
 				const charNames = RandomNameGenerator.get(nameSamples, config.maxPartySize, config.maxPartyNameLength);
-				charData = charNames.map(n => CharacterData.getRandom(n));
+
+				for (const n of charNames) {
+					const charCreation = new CharacterCreationForm(null);
+					charCreation.change('name', n);
+					charCreation.randomize();
+
+					const char = charCreation.get();
+
+					if (char) {
+						charData.push(char);
+					}
+				}
 
 			} else {
 				// user created party

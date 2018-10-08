@@ -1,4 +1,5 @@
 import React, { SyntheticEvent } from 'react';
+import { observer } from 'mobx-react';
 
 import { Icos, IcoID } from 'data/icos';
 import Sexes from 'data/sexes';
@@ -9,9 +10,11 @@ import Skillsets from 'data/skillsets';
 import Archetypes from 'data/archetypes';
 import { maxCharacterNameLength } from 'data/game-config';
 
-import { CharacterData, ICharacterDataEditable } from 'engine/character-data';
+import CharacterCreation from 'engine/character-creation';
 import { ArmorID, IArmorData } from 'engine/equipment/armor-data';
 import { IWeaponData, WeaponID } from 'engine/equipment/weapon-data';
+import { ISkillsetData, SkillsetID } from 'engine/character/skillset-data';
+import { CharacterData, ICharacterDataEditable } from 'engine/character-data';
 
 import Form from 'ui/common/Form';
 import Button from 'ui/common/Button';
@@ -22,28 +25,25 @@ import FormInput from 'ui/common/FormInput';
 import FormRadio from 'ui/common/FormRadio';
 import FormSelect from 'ui/common/FormSelect';
 import FormSelectItem from 'ui/common/FormSelectItem';
-import CharacterCreationForm from 'ui/character-creation/CharacterCreation/form';
-import { observer } from 'mobx-react';
-import { ISkillsetData, SkillsetID } from 'engine/character/skillset-data';
 
-interface ICharacterCreationProps {
+interface ICharacterCreationUIProps {
 	readonly character: CharacterData|null;
-	readonly onBack?: () => void;
-	readonly onSubmit?: (data: CharacterData) => void;
+	readonly onBack: () => void;
+	readonly onSubmit: (data: CharacterData) => void;
 }
 
 @observer
-class CharacterCreation extends React.Component<ICharacterCreationProps> {
-	private form: CharacterCreationForm;
+class CharacterCreationUI extends React.Component<ICharacterCreationUIProps> {
+	private form: CharacterCreation;
 
-	constructor(props: ICharacterCreationProps) {
+	constructor(props: ICharacterCreationUIProps) {
 		super(props);
-		this.form = new CharacterCreationForm(props.character);
+		this.form = new CharacterCreation(props.character);
 	}
 
 	public render() {
-		const { onChange } = this;
-		const { character, validation } = this.form.state;
+		const { form, onChange } = this;
+		const { character, validation } = form.state;
 		const { name, sex, archetype, skillset, mainHand, offHand, armor } = character;
 
 		const mainHandWield = Wields.get('MAIN');
@@ -51,10 +51,10 @@ class CharacterCreation extends React.Component<ICharacterCreationProps> {
 
 		const hasNoOffHand = (character.isBothWielding() || character.isDualWielding());
 
-		const skillsets = character.filterSkillsets().map(id => [id, Skillsets.get(id)] as [SkillsetID, ISkillsetData]);
-		const mainWeapons = character.filterWeapons('MAIN').map(id => [id, Weapons.get(id)] as [WeaponID, IWeaponData]);
-		const offWeapons = character.filterWeapons('OFF').map(id => [id, Weapons.get(id)] as [WeaponID, IWeaponData]);
-		const armors = character.filterArmors().map(id => [id, Armors.get(id)] as [ArmorID, IArmorData]);
+		const skillsets = form.filterSkillsets().map(id => [id, Skillsets.get(id)] as [SkillsetID, ISkillsetData]);
+		const mainWeapons = form.filterWeapons('MAIN').map(id => [id, Weapons.get(id)] as [WeaponID, IWeaponData]);
+		const offWeapons = form.filterWeapons('OFF').map(id => [id, Weapons.get(id)] as [WeaponID, IWeaponData]);
+		const armors = form.filterArmors().map(id => [id, Armors.get(id)] as [ArmorID, IArmorData]);
 
 		return (
 			<Form onSubmit={this.onSubmit}>
@@ -159,14 +159,19 @@ class CharacterCreation extends React.Component<ICharacterCreationProps> {
 
 	private onChange = (attr: ICharacterDataEditable) => (e?: SyntheticEvent<any>) => {
 		if (e) {
-			this.form.onChange(attr, e.currentTarget.value);
+			this.form.change(attr, e.currentTarget.value);
 		}
 	}
 
 	private onSubmit = (e: SyntheticEvent<any>) => {
 		e.preventDefault();
-		this.form.onSubmit(this.props.onSubmit);
+
+		const char = this.form.get();
+
+		if (char) {
+			this.props.onSubmit(char);
+		}
 	}
 }
 
-export default CharacterCreation;
+export default CharacterCreationUI;
