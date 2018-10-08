@@ -1,13 +1,16 @@
 import React from 'react';
 import { Switch, MemoryRouter, Route } from 'react-router';
 
-import Battle from 'ui/battle/BattlePage';
 import MainMenu from 'ui/menu/MainMenuPage';
-import BattleConfig from 'ui/battle/BattleConfigPage';
-import BattleSummary from 'ui/battle/BattleSummaryPage';
+
+import Battle from 'ui/battle-management/BattlePage';
+import BattleConfig from 'ui/battle-management/BattleConfigPage';
+import BattleSummary from 'ui/battle-management/BattleSummaryPage';
+
 import PartyList from 'ui/party-creation/PartyListPage';
 import PartyEdit from 'ui/party-creation/PartyEditPage';
 import PartyCreate from 'ui/party-creation/PartyCreationPage';
+
 import CharacterList from 'ui/character-creation/CharacterListPage';
 import CharacterEdit from 'ui/character-creation/CharacterEditPage';
 import CharacterCreate from 'ui/character-creation/CharacterCreationPage';

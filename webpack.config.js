@@ -1,8 +1,10 @@
 const path = require('path');
+const webpack = require('webpack');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 const pathSrc = './src/scripts';
-const pathDist = './dist/scripts';
+const pathDist = path.resolve(__dirname, './dist/scripts');
+const pathPublic = './scripts/';
 const pathModules = './node_modules';
 const pathCache = 'node_modules/.cache';
 
@@ -22,7 +24,8 @@ module.exports = env => {
 			app: `${pathSrc}/index`
 		},
 		output: {
-			path: path.resolve(__dirname, pathDist),
+			path: pathDist,
+			publicPath: pathPublic,
 			filename: '[name].js'
 		},
 		target: 'web',
@@ -55,6 +58,13 @@ module.exports = env => {
 				}
 			]
 		},
+		plugins: [
+			new webpack.DefinePlugin({
+				'process.env': {
+					'DEBUG': ('dev' === env ? 'true' : 'false'),
+				}
+			})
+		],
 		resolve: {
 			extensions: ['.ts', '.tsx', '.js'],
 			modules: [
@@ -64,8 +74,14 @@ module.exports = env => {
 		},
 		optimization: {
 			splitChunks: {
-				name: 'libs',
-				chunks: 'all'
+				cacheGroups: {
+					libs: {
+						// node modules imported non-dynamically
+						name: 'libs',
+						chunks: 'initial',
+						test: /node_modules/
+					}
+				}
 			},
 			minimizer: [
 				new UglifyJsPlugin({

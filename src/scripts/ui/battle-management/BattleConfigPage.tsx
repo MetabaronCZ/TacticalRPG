@@ -9,7 +9,7 @@ import { withContext, IContext } from 'context';
 import { BattleConfig } from 'engine/battle-config';
 
 import Page from 'ui/common/Page';
-import BattleConfigUI from 'ui/battle/BattleConfigUI';
+import BattleConfigUI from 'ui/battle-management/BattleConfigUI';
 
 const onStart = (history: History, store: Store) => (config: BattleConfig) => {
 	store.battleConfig.update(config.serialize());

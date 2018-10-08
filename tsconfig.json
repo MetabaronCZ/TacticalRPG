@@ -1,13 +1,13 @@
 {
 	"compilerOptions": {
 		"strict": true,
-		"target": "es6",
-		"module": "es6",
+		"target": "es5",
+		"module": "esnext",
 		"moduleResolution": "node",
 		"importHelpers": true, // importing helper functions from tslib
 		"noEmitHelpers": true, // disable emitting inline helper functions
 		"removeComments": true,
-		"experimentalDecorators": true,
+		"experimentalDecorators": true, // alow ES7 decorators (MobX)
 		"allowSyntheticDefaultImports": true,
 		"baseUrl": "./src/scripts",
 		"sourceMap": true,

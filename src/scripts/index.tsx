@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import DevTools from 'mobx-react-devtools';
 
 import { Provider, context } from 'context';
 
+import Debug from 'ui/Debug';
 import Router from 'ui/common/Router';
 import PageWrapper from 'ui/common/PageWrapper';
 
@@ -13,7 +13,7 @@ ReactDOM.render(
 			<Router />
 		</Provider>
 
-		<DevTools />
+		<Debug />
 	</PageWrapper>,
 	document.querySelector('.PageContainer')
 );

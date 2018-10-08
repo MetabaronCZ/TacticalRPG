@@ -3,7 +3,7 @@ import React from 'react';
 import { gridSize } from 'data/game-config';
 
 import Character from 'engine/character';
-import { IPlayerColors } from 'ui/battle/BattleUI/Grid';
+import { IPlayerColors } from 'ui/battle/Grid';
 
 const itemSize = 100 / gridSize;
 

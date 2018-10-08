@@ -8,6 +8,7 @@ import { PartyData } from 'engine/party-data';
 import { BattleConfig } from 'engine/battle-config';
 import { CharacterData } from 'engine/character-data';
 import { IPlayerConfigEditable } from 'engine/player-config';
+import BattleConfiguration from 'engine/battle-configuration';
 
 import Form from 'ui/common/Form';
 import Button from 'ui/common/Button';
@@ -17,7 +18,6 @@ import FormField from 'ui/common/FormField';
 import FormInput from 'ui/common/FormInput';
 import FormSelect from 'ui/common/FormSelect';
 import FormSelectItem from 'ui/common/FormSelectItem';
-import BattleConfigform from 'ui/battle/BattleConfigUI/form';
 import CharacterList from 'ui/character-creation/CharacterList';
 
 interface IBattleConfigUIProps {
@@ -30,13 +30,13 @@ interface IBattleConfigUIProps {
 
 @observer
 class BattleConfigUI extends React.Component<IBattleConfigUIProps> {
-	private form: BattleConfigform;
+	private form: BattleConfiguration;
 
 	constructor(props: IBattleConfigUIProps) {
 		super(props);
 
 		const { config, parties } = this.props;
-		this.form = new BattleConfigform(config, parties);
+		this.form = new BattleConfiguration(config, parties);
 	}
 
 	public render() {

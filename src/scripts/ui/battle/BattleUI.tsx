@@ -4,10 +4,10 @@ import { IEngineState } from 'engine';
 import Position from 'engine/position';
 import CharacterAction from 'engine/character-action';
 
-import ActUI from 'ui/battle/BattleUI/Act';
-import Grid from 'ui/battle/BattleUI/Grid';
-import Order from 'ui/battle/BattleUI/Order';
-import Characters from 'ui/battle/BattleUI/Characters';
+import ActUI from 'ui/battle/Act';
+import Grid from 'ui/battle/Grid';
+import Order from 'ui/battle/Order';
+import Characters from 'ui/battle/Characters';
 
 interface IBattleUIProps {
 	engineState?: IEngineState;

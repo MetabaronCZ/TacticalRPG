@@ -8,13 +8,13 @@ import { CharacterData } from 'engine/character-data';
 import { IPlayerConfigEditable, PlayerConfig } from 'engine/player-config';
 import { BattleConfig, IBattleConfigValidation } from 'engine/battle-config';
 
-interface IBattleConfigForm {
+interface IBattleConfiguration {
 	config: BattleConfig;
 	validation: IBattleConfigValidation;
 }
 
-class BattleConfigForm {
-	@observable public state: IBattleConfigForm;
+class BattleConfiguration {
+	@observable public state: IBattleConfiguration;
 	public parties: PartyData[];
 
 	constructor(data?: BattleConfig, parties: PartyData[] = []) {
@@ -72,4 +72,4 @@ class BattleConfigForm {
 	}
 }
 
-export default BattleConfigForm;
+export default BattleConfiguration;
