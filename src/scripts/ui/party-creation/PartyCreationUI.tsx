@@ -5,6 +5,7 @@ import { maxPartyNameLength } from 'data/game-config';
 
 import ObservableList from 'engine/observable-list';
 import { CharacterData } from 'engine/character-data';
+import PartyCreationForm from 'engine/party-creation';
 import { PartyData, IPartyDataEditable } from 'engine/party-data';
 
 import Link from 'ui/common/Link';
@@ -16,20 +17,19 @@ import FormField from 'ui/common/FormField';
 import FormInput from 'ui/common/FormInput';
 import FormSelect from 'ui/common/FormSelect';
 import FormSelectItem from 'ui/common/FormSelectItem';
-import PartyCreationForm from 'ui/party-creation/PartyCreation/form';
 
-interface IPartyCreationProps {
+interface IPartyCreationUIProps {
 	readonly party?: PartyData;
 	readonly characters: ObservableList<CharacterData>;
-	readonly onBack?: () => void;
+	readonly onBack: () => void;
 	readonly onSubmit: (party: PartyData) => void;
 }
 
 @observer
-class PartyCreation extends React.Component<IPartyCreationProps> {
+class PartyCreationUI extends React.Component<IPartyCreationUIProps> {
 	private form: PartyCreationForm;
 
-	constructor(props: IPartyCreationProps) {
+	constructor(props: IPartyCreationUIProps) {
 		super(props);
 		this.form = new PartyCreationForm(props.party, props.characters.data);
 	}
@@ -86,12 +86,17 @@ class PartyCreation extends React.Component<IPartyCreationProps> {
 	}
 
 	private onChange = (attr: IPartyDataEditable, i: number|null) => (e: SyntheticEvent<any>) => {
-		this.form.onChange(attr, i, e.currentTarget.value);
+		this.form.change(attr, i, e.currentTarget.value);
 	}
 
 	private onSubmit = (e: SyntheticEvent<any>) => {
 		e.preventDefault();
-		this.form.onSubmit(this.props.onSubmit);
+
+		const party = this.form.get();
+
+		if (party) {
+			this.props.onSubmit(party);
+		}
 	}
 
 	private renderPartyItem = (character: CharacterData|null, i: number) => {
@@ -133,4 +138,4 @@ class PartyCreation extends React.Component<IPartyCreationProps> {
 	}
 }
 
-export default PartyCreation;
+export default PartyCreationUI;

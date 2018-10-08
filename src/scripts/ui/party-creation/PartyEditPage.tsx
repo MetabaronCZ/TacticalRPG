@@ -8,7 +8,7 @@ import { withContext, IContext } from 'context';
 import { PartyData } from 'engine/party-data';
 
 import Page from 'ui/common/Page';
-import PartyCreation from 'ui/party-creation/PartyCreation';
+import PartyCreationUI from 'ui/party-creation/PartyCreationUI';
 
 const onSubmit = (store: Store, history: History) => (party: PartyData) => {
 	store.parties.replace(party);
@@ -24,7 +24,7 @@ const PartyEditPageContainer: React.SFC<RouteComponentProps<any> & IContext> = p
 
 	return (
 		<Page heading="Edit party">
-			<PartyCreation
+			<PartyCreationUI
 				party={party}
 				characters={characters}
 				onBack={gotoFn(history, '/party-list')}

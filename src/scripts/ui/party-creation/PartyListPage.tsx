@@ -6,7 +6,11 @@ import { gotoFn } from 'core/navigation';
 import { withContext, IContext } from 'context';
 import { PartyData } from 'engine/party-data';
 
-import PartyListPage from 'ui/party-creation/PartyListPage/template';
+import Page from 'ui/common/Page';
+import Button from 'ui/common/Button';
+import Separator from 'ui/common/Separator';
+import ButtonRow from 'ui/common/ButtonRow';
+import PartyList from 'ui/party-creation/PartyList';
 
 const onMoveDown = (store: Store) => (party: PartyData) => () => {
 	store.parties.moveDown(party);
@@ -28,14 +32,29 @@ const onDelete = (store: Store) => (party: PartyData) => () => {
 const PartyListPageContainer: React.SFC<RouteComponentProps<any> & IContext> = props => {
 	const { store, history } = props;
 	return (
-		<PartyListPage
-			parties={store.parties}
-			onBack={gotoFn(history, '/')}
-			onCreate={gotoFn(history, '/party-create')}
-			onMoveDown={onMoveDown(store)}
-			onMoveUp={onMoveUp(store)}
-			onDelete={onDelete(store)}
-		/>
+		<Page heading="Party list">
+			{store.parties.data.length
+				? <PartyList
+					parties={store.parties}
+					onDelete={onDelete(store)}
+					onMoveUp={onMoveUp(store)}
+					onMoveDown={onMoveDown(store)}
+				/>
+				: <p className="Paragraph">There are no character parties.</p>
+			}
+			<Separator />
+
+			<ButtonRow>
+				<Button ico="back" text="Back" onClick={gotoFn(history, '/')} />
+
+				<Button
+					ico="create"
+					color="green"
+					text="Create new party"
+					onClick={gotoFn(history, '/party-create')}
+				/>
+			</ButtonRow>
+		</Page>
 	);
 };
 

@@ -4,13 +4,13 @@ import { IValidation } from 'engine/validation';
 import { CharacterData } from 'engine/character-data';
 import { PartyData, IPartyDataEditable } from 'engine/party-data';
 
-interface IPartyCreationForm {
+interface IPartyCreation {
 	party: PartyData;
 	validation: IValidation<IPartyDataEditable>;
 }
 
-class PartyCreationform {
-	@observable public state: IPartyCreationForm;
+class PartyCreation {
+	@observable public state: IPartyCreation;
 	private characters: CharacterData[];
 
 	constructor(data?: PartyData, characters: CharacterData[] = []) {
@@ -25,7 +25,7 @@ class PartyCreationform {
 	}
 
 	@action
-	public onChange(field: IPartyDataEditable, i: number|null, value: string) {
+	public change(field: IPartyDataEditable, i: number|null, value: string) {
 		const party = this.state.party;
 
 		if ('name' === field) {
@@ -35,23 +35,19 @@ class PartyCreationform {
 			const char = this.characters.find(ch => value === ch.id) || null;
 			party.setCharacter(char, i);
 		}
-
 		this.state.validation = party.validate();
 	}
 
 	@action
-	public onSubmit(next?: (party: PartyData) => void) {
+	public get(): PartyData|null {
 		const party = this.state.party;
 		const validation = party.validate();
 
 		if (!validation.isValid) {
 			this.state.validation = validation;
-			return;
+			return null;
 		}
-
-		if (next) {
-			next(party);
-		}
+		return party;
 	}
 
 	public filterCharacters(character: CharacterData|null): CharacterData[] {
@@ -71,4 +67,4 @@ class PartyCreationform {
 	}
 }
 
-export default PartyCreationform;
+export default PartyCreation;
