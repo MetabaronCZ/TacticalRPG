@@ -2,12 +2,22 @@ import React from 'react';
 
 import Archetypes from 'data/archetypes';
 import { ArchetypeID } from 'engine/character/archetype';
-import ArchetypeIcoSizes, { SizeID } from 'ui/common/ArchetypeIco/sizes';
+
+type SizeID = 'default' | 'large';
+
+type IArchetypeIcoSizes = {
+	[size in SizeID]: string;
+};
 
 interface IArchetypeIcoProps {
 	readonly size?: SizeID;
 	readonly archetype?: ArchetypeID;
 }
+
+const ArchetypeIcoSizes: IArchetypeIcoSizes = {
+	default: 'Default',
+	large: 'Large'
+};
 
 const ArchetypeIco: React.SFC<IArchetypeIcoProps> = props => {
 	const { size = 'default', archetype = 'PP' } = props;

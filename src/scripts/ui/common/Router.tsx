@@ -1,3 +1,6 @@
+import React from 'react';
+import { Switch, MemoryRouter, Route } from 'react-router';
+
 import Battle from 'ui/battle/BattlePage';
 import MainMenu from 'ui/menu/MainMenuPage';
 import BattleConfig from 'ui/battle/BattleConfigPage';
@@ -27,4 +30,14 @@ const routes: IRoute[] = [
 	{ path: '/character-create', component: CharacterCreate }
 ];
 
-export default routes;
+const Router: React.SFC<{}> = () => (
+	<MemoryRouter>
+		<Switch>
+			{routes.map((route, key) => (
+				<Route exact={true} path={route.path} component={route.component} key={key} />
+			))}
+		</Switch>
+	</MemoryRouter>
+);
+
+export default Router;

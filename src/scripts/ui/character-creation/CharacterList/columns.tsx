@@ -12,7 +12,7 @@ import ArchetypeIco from 'ui/common/ArchetypeIco';
 import { IOnMoveDown, IOnMoveUp, IOnDelete } from 'ui/character-creation/CharacterList';
 
 interface IColumn {
-	readonly title: string;
+	readonly title?: string;
 	readonly name: string;
 	readonly value: (char: CharacterData|null, i: number) => React.ReactNode;
 	readonly editable?: boolean;
@@ -45,15 +45,12 @@ const renderOffHandBothWield = (title: string) => (
 const getColumns = (editable = false, onMoveDown?: IOnMoveDown, onMoveUp?: IOnMoveUp, onDelete?: IOnDelete): IColumn[] => {
 	let columns: IColumn[] = [
 		{
-			title: '',
 			name: 'order',
 			value: (char, i) => i + 1
 		}, {
-			title: '',
 			name: 'ico',
 			value: char => (char ? renderArchetype(char) : '')
 		}, {
-			title: '',
 			name: 'sex',
 			value: char => (char ? Icos[char.sex.id.toLowerCase() as IcoID] : '')
 		}, {
@@ -96,22 +93,18 @@ const getColumns = (editable = false, onMoveDown?: IOnMoveDown, onMoveUp?: IOnMo
 			name: 'armor',
 			value: char => (char ? char.armor.title : '')
 		}, {
-			title: '',
 			name: 'moveDown',
 			editable: true,
 			value: char => (char ? renderMoveDown(char, onMoveDown) : '')
 		}, {
-			title: '',
 			name: 'moveUp',
 			editable: true,
 			value: char => (char ? renderMoveUp(char, onMoveUp) : '')
 		}, {
-			title: '',
 			name: 'edit',
 			editable: true,
 			value: char => (char ? renderEdit(char) : '')
 		}, {
-			title: '',
 			name: 'delete',
 			editable: true,
 			value: char => (char ? renderDelete(char, onDelete) : '')

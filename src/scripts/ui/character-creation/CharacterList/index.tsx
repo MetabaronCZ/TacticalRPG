@@ -31,7 +31,7 @@ const CharacterList: React.SFC<ICharacterListProps> = props => {
 			<li className="List-row List-row--header">
 				{columns.map((col, i) => (
 					<span className="List-row-column" key={i}>
-						{col.title}
+						{col.title || ''}
 					</span>
 				))}
 			</li>
