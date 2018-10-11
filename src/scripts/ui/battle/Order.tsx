@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Act from 'engine/act';
+import Act from 'engine/battle/act';
 import Character from 'engine/character';
 
 interface IOrderProps {

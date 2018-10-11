@@ -1,13 +1,13 @@
 import Logger from 'engine/logger';
-import Position from 'engine/position';
 import Character from 'engine/character';
-import { IBattleInfo } from 'engine/battle-info';
-import CharacterAction from 'engine/character-action';
+import Position from 'engine/battle/position';
+import { IBattleInfo } from 'engine/battle/battle-info';
+import CharacterAction from 'engine/battle/character-action';
 import { getIdleActions, getSkillActions, getSkillConfirmActions, getReactiveActions, getEvasiveActions } from 'engine/utils/character-action';
 
-import ActMove from 'engine/act/movement';
-import ActAction from 'engine/act/action';
-import ActDirect from 'engine/act/direction';
+import ActMove from 'engine/battle/act/movement';
+import ActAction from 'engine/battle/act/action';
+import ActDirect from 'engine/battle/act/direction';
 
 type ActPhase = 'INIT' | 'IDLE' | 'MOVEMENT' | 'ACTION' | 'DIRECTION';
 

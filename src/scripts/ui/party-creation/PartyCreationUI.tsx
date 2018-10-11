@@ -3,10 +3,10 @@ import { observer } from 'mobx-react';
 
 import { maxPartyNameLength } from 'data/game-config';
 
-import ObservableList from 'engine/observable-list';
-import { CharacterData } from 'engine/character-data';
+import IndexableList from 'engine/indexable-list';
 import PartyCreationForm from 'engine/party-creation';
-import { PartyData, IPartyDataEditable } from 'engine/party-data';
+import { CharacterData } from 'engine/character-creation/character-data';
+import { PartyData, IPartyDataEditable } from 'engine/party-creation/party-data';
 
 import Link from 'ui/common/Link';
 import Form from 'ui/common/Form';
@@ -20,7 +20,7 @@ import FormSelectItem from 'ui/common/FormSelectItem';
 
 interface IPartyCreationUIProps {
 	readonly party?: PartyData;
-	readonly characters: ObservableList<CharacterData>;
+	readonly characters: IndexableList<CharacterData>;
 	readonly onBack: () => void;
 	readonly onSubmit: (party: PartyData) => void;
 }

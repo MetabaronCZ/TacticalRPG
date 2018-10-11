@@ -1,8 +1,9 @@
 import Logger from 'engine/logger';
-import ObservableList from 'engine/observable-list';
-import { IPartyData, PartyData } from 'engine/party-data';
-import { IBattleConfig, BattleConfig } from 'engine/battle-config';
-import { ICharacterData, CharacterData } from 'engine/character-data';
+import IndexableList from 'engine/indexable-list';
+import { IPartyData, PartyData } from 'engine/party-creation/party-data';
+import { IBattleConfig, BattleConfig } from 'engine/battle-configuration/battle-config';
+import { ICharacterData, CharacterData } from 'engine/character-creation/character-data';
+import { randomPartyID } from 'data/game-config';
 
 const KEY = 'game'; // storage key
 
@@ -13,8 +14,8 @@ interface ISaveState {
 }
 
 export class Store {
-	public characters = new ObservableList<CharacterData>();
-	public parties = new ObservableList<PartyData>();
+	public characters = new IndexableList<CharacterData>();
+	public parties = new IndexableList<PartyData>();
 	public battleConfig = new BattleConfig();
 
 	constructor() {
@@ -39,7 +40,7 @@ export class Store {
 		try {
 			const data = JSON.parse(saved) as ISaveState;
 
-			this.battleConfig = this.prepareBattleConfig(data.battleConfig);
+			this.battleConfig = this.prepareBattleConfig(data.battleConfig, data.parties);
 			this.characters = this.prepareCharacters(data.characters);
 			this.parties = this.prepareParties(data.parties, this.characters.data);
 
@@ -48,11 +49,19 @@ export class Store {
 		}
 	}
 
-	private prepareBattleConfig(data?: IBattleConfig): BattleConfig {
-		return new BattleConfig(data);
+	private prepareBattleConfig(data?: IBattleConfig, parties: IPartyData[] = []): BattleConfig {
+		const config = new BattleConfig(data, parties);
+
+		for (const player of config.players) {
+			// fix invalid player party preference
+			if (!player.isValidParty(player.party)) {
+				player.setParty(randomPartyID);
+			}
+		}
+		return config;
 	}
 
-	private prepareCharacters(data: ICharacterData[] = []): ObservableList<CharacterData> {
+	private prepareCharacters(data: ICharacterData[] = []): IndexableList<CharacterData> {
 		const characters: CharacterData[] = [];
 
 		for (const char of data) {
@@ -68,10 +77,10 @@ export class Store {
 				Logger.error(`Invalid character: "${JSON.stringify(validation.errors)}"`);
 			}
 		}
-		return new ObservableList(characters);
+		return new IndexableList(characters);
 	}
 
-	private prepareParties(data: IPartyData[] = [], characters: CharacterData[] = []): ObservableList<PartyData> {
+	private prepareParties(data: IPartyData[] = [], characters: CharacterData[] = []): IndexableList<PartyData> {
 		const parties: PartyData[] = [];
 
 		for (const party of data) {
@@ -87,6 +96,6 @@ export class Store {
 				Logger.error(`Invalid party: "${JSON.stringify(validation.errors)}"`);
 			}
 		}
-		return new ObservableList(parties);
+		return new IndexableList(parties);
 	}
 }

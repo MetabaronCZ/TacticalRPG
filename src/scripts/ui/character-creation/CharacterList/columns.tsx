@@ -3,7 +3,7 @@ import React from 'react';
 import Wields from 'data/wields';
 import { Icos, IcoID } from 'data/icos';
 
-import { CharacterData } from 'engine/character-data';
+import { CharacterData } from 'engine/character-creation/character-data';
 
 import Link from 'ui/common/Link';
 import LinkIco from 'ui/common/LinkIco';

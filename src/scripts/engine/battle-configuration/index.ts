@@ -2,11 +2,11 @@ import { observable, action } from 'mobx';
 
 import { randomPartyID, maxPlayers } from 'data/game-config';
 
-import { PartyData } from 'engine/party-data';
-import ObservableList from 'engine/observable-list';
-import { CharacterData } from 'engine/character-data';
-import { IPlayerConfigEditable, PlayerConfig } from 'engine/player-config';
-import { BattleConfig, IBattleConfigValidation } from 'engine/battle-config';
+import IndexableList from 'engine/indexable-list';
+import { PartyData } from 'engine/party-creation/party-data';
+import { CharacterData } from 'engine/character-creation/character-data';
+import { IPlayerConfigEditable, PlayerConfig, PlayerControlID } from 'engine/battle-configuration/player-config';
+import { BattleConfig, IBattleConfigValidation } from 'engine/battle-configuration/battle-config';
 
 interface IBattleConfiguration {
 	config: BattleConfig;
@@ -19,7 +19,7 @@ class BattleConfiguration {
 
 	constructor(data?: BattleConfig, parties: PartyData[] = []) {
 		this.state = {
-			config: new BattleConfig(data),
+			config: new BattleConfig(data, parties.map(p => p.serialize())),
 			validation: {
 				isValid: true,
 				errors: {
@@ -34,7 +34,20 @@ class BattleConfiguration {
 	public onPlayerChange(field: IPlayerConfigEditable, i: number, value: string) {
 		const config = this.state.config;
 		const player = config.players[i];
-		player[field] = value;
+
+		switch (field) {
+			case 'name':
+				player.setName(value);
+				break;
+			case 'control':
+				player.setControl(value as PlayerControlID);
+				break;
+			case 'party':
+				player.setParty(value);
+				break;
+			default:
+				throw new Error('Invalid field: not editable');
+		}
 		this.state.validation = config.validate();
 	}
 
@@ -53,7 +66,7 @@ class BattleConfiguration {
 		}
 	}
 
-	public getPartyCharacters(player: PlayerConfig): ObservableList<CharacterData> {
+	public getPartyCharacters(player: PlayerConfig): IndexableList<CharacterData> {
 		const characters: CharacterData[] = [];
 		const parties = this.parties;
 
@@ -68,7 +81,7 @@ class BattleConfiguration {
 				}
 			}
 		}
-		return new ObservableList(characters);
+		return new IndexableList(characters);
 	}
 }
 

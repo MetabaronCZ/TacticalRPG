@@ -4,7 +4,7 @@ import { smallShieldBlock } from 'data/game-config';
 
 import Skill from 'engine/skill';
 import Character from 'engine/character';
-import { StatusEffectID } from 'engine/status-effect';
+import { StatusEffectID } from 'engine/battle/status-effect';
 import { ElementAffinityTable } from 'engine/skill/affinity';
 import { SkillID, SkillElement } from 'engine/skill/skill-data';
 

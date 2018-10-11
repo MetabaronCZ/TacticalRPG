@@ -1,7 +1,7 @@
 import Skill from 'engine/skill';
 import Character from 'engine/character';
 import { WeaponSkillID } from 'engine/skill/weapon';
-import CharacterAction from 'engine/character-action';
+import CharacterAction from 'engine/battle/character-action';
 
 export const getDontReactAction = () => new CharacterAction('DONT_REACT', 'Pass');
 export const getDirectAction = () => new CharacterAction('DIRECT', 'Direct');

@@ -1,7 +1,7 @@
 import { MagicSkillID } from 'engine/skill/magic';
 import { WeaponSkillID } from 'engine/skill/weapon';
-import { StatusEffectID } from 'engine/status-effect';
 import { ArchetypeSkillID } from 'engine/skill/archetype';
+import { StatusEffectID } from 'engine/battle/status-effect';
 
 export type SkillID = ArchetypeSkillID | WeaponSkillID | MagicSkillID;
 

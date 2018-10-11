@@ -6,12 +6,12 @@ import StatusEffects from 'data/status-effects';
 import { skillAnimDuration, smallShieldBlock } from 'data/game-config';
 
 import Logger from 'engine/logger';
-import Position from 'engine/position';
 import Character from 'engine/character';
-import ActReaction from 'engine/act/reaction';
-import CharacterAction from 'engine/character-action';
+import Position from 'engine/battle/position';
+import ActReaction from 'engine/battle/act/reaction';
+import CharacterAction from 'engine/battle/character-action';
 import { resolveDirection } from 'engine/utils/direction';
-import { getPhysicalDamage, getElementalDamage, getStatusEffects } from 'engine/damage';
+import { getPhysicalDamage, getElementalDamage, getStatusEffects } from 'engine/battle/damage';
 
 interface IActActionEvents {
 	onStart: (action: ActAction) => void;

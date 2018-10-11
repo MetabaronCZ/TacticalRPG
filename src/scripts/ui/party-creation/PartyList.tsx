@@ -1,8 +1,8 @@
 import React, { ReactNode } from 'react';
 import { observer } from 'mobx-react';
 
-import { PartyData } from 'engine/party-data';
-import ObservableList from 'engine/observable-list';
+import IndexableList from 'engine/indexable-list';
+import { PartyData } from 'engine/party-creation/party-data';
 
 import Link from 'ui/common/Link';
 import LinkIco from 'ui/common/LinkIco';
@@ -43,7 +43,7 @@ const getColumns = (onMoveDown: IOnMoveDown, onMoveUp: IOnMoveUp, onDelete: IOnD
 ]);
 
 interface IPartyListProps {
-	readonly parties: ObservableList<PartyData>;
+	readonly parties: IndexableList<PartyData>;
 	readonly onMoveDown: IOnMoveDown;
 	readonly onMoveUp: IOnMoveUp;
 	readonly onDelete: IOnDelete;

@@ -1,5 +1,5 @@
 import { gridSize } from 'data/game-config';
-import Position from 'engine/position';
+import Position from 'engine/battle/position';
 
 interface IPositions {
 	[id: string]: Position;

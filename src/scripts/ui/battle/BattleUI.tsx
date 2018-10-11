@@ -1,8 +1,8 @@
 import React from 'react';
 
 import { IEngineState } from 'engine';
-import Position from 'engine/position';
-import CharacterAction from 'engine/character-action';
+import Position from 'engine/battle/position';
+import CharacterAction from 'engine/battle/character-action';
 
 import ActUI from 'ui/battle/Act';
 import Grid from 'ui/battle/Grid';

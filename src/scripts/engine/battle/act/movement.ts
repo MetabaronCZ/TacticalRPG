@@ -2,9 +2,9 @@ import Animation, { IAnimationStep } from 'core/animation';
 import { gridSize, moveAnimDuration } from 'data/game-config';
 
 import Logger from 'engine/logger';
-import Position from 'engine/position';
+import Position from 'engine/battle/position';
 import Character from 'engine/character';
-import { getPosition } from 'engine/positions';
+import { getPosition } from 'engine/battle/positions';
 import { resolveDirection } from 'engine/utils/direction';
 import { getMovableTiles, getShortestPath, ICostMap } from 'engine/pathfinding';
 

@@ -1,8 +1,8 @@
 import { observable, action } from 'mobx';
 
 import { IValidation } from 'engine/validation';
-import { CharacterData } from 'engine/character-data';
-import { PartyData, IPartyDataEditable } from 'engine/party-data';
+import { CharacterData } from 'engine/character-creation/character-data';
+import { PartyData, IPartyDataEditable } from 'engine/party-creation/party-data';
 
 interface IPartyCreation {
 	party: PartyData;

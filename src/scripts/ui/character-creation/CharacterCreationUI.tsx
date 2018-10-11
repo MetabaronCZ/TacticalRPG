@@ -14,7 +14,7 @@ import CharacterCreation from 'engine/character-creation';
 import { ArmorID, IArmorData } from 'engine/equipment/armor-data';
 import { IWeaponData, WeaponID } from 'engine/equipment/weapon-data';
 import { ISkillsetData, SkillsetID } from 'engine/character/skillset-data';
-import { CharacterData, ICharacterDataEditable } from 'engine/character-data';
+import { CharacterData, ICharacterDataEditable } from 'engine/character-creation/character-data';
 
 import Form from 'ui/common/Form';
 import Button from 'ui/common/Button';

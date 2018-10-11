@@ -2,11 +2,11 @@ import React from 'react';
 import { History } from 'history';
 import { withRouter, RouteComponentProps } from 'react-router';
 
-import { Store } from 'store';
 import { goto, gotoFn } from 'core/navigation';
 import { withContext, IContext } from 'context';
 
-import { BattleConfig } from 'engine/battle-config';
+import { Store } from 'engine/store';
+import { BattleConfig } from 'engine/battle-configuration/battle-config';
 
 import Page from 'ui/common/Page';
 import BattleConfigUI from 'ui/battle-management/BattleConfigUI';

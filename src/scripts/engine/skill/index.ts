@@ -1,9 +1,9 @@
 import Skills, { attackSkills } from 'data/skills';
 
-import Position from 'engine/position';
+import Position from 'engine/battle/position';
 import Character from 'engine/character';
-import { getPosition } from 'engine/positions';
-import { StatusEffectID } from 'engine/status-effect';
+import { getPosition } from 'engine/battle/positions';
+import { StatusEffectID } from 'engine/battle/status-effect';
 import {
 	SkillID, SkillType, SkillElement, SkillGrade,
 	SkillRange, SkillArea, SkillTarget

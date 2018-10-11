@@ -1,6 +1,6 @@
 import { maxOrderSize, characterCTLimit } from 'data/game-config';
 
-import Player from 'engine/player';
+import Player from 'engine/battle/player';
 import Character from 'engine/character';
 
 class Order {

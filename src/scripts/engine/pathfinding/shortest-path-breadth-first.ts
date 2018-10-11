@@ -1,4 +1,4 @@
-import Position from 'engine/position';
+import Position from 'engine/battle/position';
 import { constructPath, IGraph } from 'engine/pathfinding';
 
 // Breadth first (shortest path at uniform maovement cost)

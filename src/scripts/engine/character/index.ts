@@ -1,16 +1,16 @@
 import { characterCTLimit } from 'data/game-config';
 
-import Position from 'engine/position';
-import DirectionID from 'engine/direction';
 import Armor from 'engine/equipment/armor';
 import Weapon from 'engine/equipment/weapon';
 import Status from 'engine/character/status';
+import Position from 'engine/battle/position';
 import Skillset from 'engine/character/skillset';
+import DirectionID from 'engine/battle/direction';
 import Attributes from 'engine/character/attributes';
-import { StatusEffectID } from 'engine/status-effect';
-import { CharacterData } from 'engine/character-data';
 import { ArchetypeID } from 'engine/character/archetype';
+import { StatusEffectID } from 'engine/battle/status-effect';
 import BaseAttributes from 'engine/character/base-attributes';
+import { CharacterData } from 'engine/character-creation/character-data';
 
 class Character {
 	public readonly name: string;

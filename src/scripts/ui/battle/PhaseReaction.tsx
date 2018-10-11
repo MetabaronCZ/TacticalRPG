@@ -1,6 +1,6 @@
 import React from 'react';
 
-import ActReaction from 'engine/act/reaction';
+import ActReaction from 'engine/battle/act/reaction';
 import { formatPosition, formatPositions } from 'engine/utils/position';
 
 interface IActReactUIProps {

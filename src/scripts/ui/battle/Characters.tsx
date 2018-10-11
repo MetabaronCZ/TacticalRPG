@@ -2,8 +2,8 @@ import React from 'react';
 
 import { Icos, IcoID } from 'data/icos';
 
-import Act from 'engine/act';
-import Player from 'engine/player';
+import Act from 'engine/battle/act';
+import Player from 'engine/battle/player';
 
 import ArchetypeIco from 'ui/common/ArchetypeIco';
 

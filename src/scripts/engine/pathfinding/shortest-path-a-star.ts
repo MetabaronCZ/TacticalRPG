@@ -1,7 +1,7 @@
 import * as ArrayUtils from 'core/array';
 import PriorityQueue from 'core/priority-queue';
 
-import Position from 'engine/position';
+import Position from 'engine/battle/position';
 import { getPriority, constructPath, IGraph, ICostMap } from 'engine/pathfinding';
 
 // A* algorithm (get shortest path according to movement cost)

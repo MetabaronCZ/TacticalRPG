@@ -1,7 +1,7 @@
 import { observable, action } from 'mobx';
 import { IndexableData } from 'engine/indexable-data';
 
-class ObservableList<T extends IndexableData> {
+class IndexableList<T extends IndexableData> {
 	@observable.shallow public data: T[] = [];
 
 	constructor(data: T[] = []) {
@@ -66,4 +66,4 @@ class ObservableList<T extends IndexableData> {
 	}
 }
 
-export default ObservableList;
+export default IndexableList;

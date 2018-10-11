@@ -1,5 +1,5 @@
 import DataList from 'core/data-list';
-import { IPlayerControlData, PlayerControlID } from 'engine/player-config';
+import { IPlayerControlData, PlayerControlID } from 'engine/battle-configuration/player-config';
 
 const PlayerControl = new DataList<PlayerControlID, IPlayerControlData>({
 	HUMAN: {

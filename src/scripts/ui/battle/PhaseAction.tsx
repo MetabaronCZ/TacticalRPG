@@ -1,6 +1,6 @@
 import React from 'react';
 
-import ActAction from 'engine/act/action';
+import ActAction from 'engine/battle/act/action';
 import { formatPosition, formatPositions } from 'engine/utils/position';
 
 import ActReactUI from 'ui/battle/PhaseReaction';

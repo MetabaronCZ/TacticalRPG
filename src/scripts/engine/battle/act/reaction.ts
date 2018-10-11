@@ -1,7 +1,7 @@
 import Logger from 'engine/logger';
-import Position from 'engine/position';
+import Position from 'engine/battle/position';
 import Character from 'engine/character';
-import CharacterAction from 'engine/character-action';
+import CharacterAction from 'engine/battle/character-action';
 
 interface IActReactionEvents {
 	onStart: (reaction: ActReaction) => void;

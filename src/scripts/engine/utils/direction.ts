@@ -1,6 +1,6 @@
-import Position from 'engine/position';
-import DirectionID from 'engine/direction';
-import { getPosition } from 'engine/positions';
+import Position from 'engine/battle/position';
+import DirectionID from 'engine/battle/direction';
+import { getPosition } from 'engine/battle/positions';
 
 type IByDirectionTable = {
 	[T in DirectionID]: (pos: Position) => Position|null;

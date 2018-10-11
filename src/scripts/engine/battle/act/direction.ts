@@ -1,5 +1,5 @@
 import Logger from 'engine/logger';
-import Position from 'engine/position';
+import Position from 'engine/battle/position';
 import Character from 'engine/character';
 import { resolveDirection, findPositionFrom } from 'engine/utils/direction';
 

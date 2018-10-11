@@ -1,5 +1,5 @@
 import Character from 'engine/character';
-import { PlayerControlID } from 'engine/player-config';
+import { PlayerControlID } from 'engine/battle-configuration/player-config';
 
 class Player {
 	public readonly name: string;

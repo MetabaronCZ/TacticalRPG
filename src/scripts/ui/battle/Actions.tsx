@@ -1,5 +1,5 @@
 import React, { SyntheticEvent } from 'react';
-import CharacterAction from 'engine/character-action';
+import CharacterAction from 'engine/battle/character-action';
 
 interface IActionsProps {
 	actions: CharacterAction[];

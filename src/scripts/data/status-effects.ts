@@ -1,6 +1,6 @@
 import DataList from 'core/data-list';
 import { smallShieldBlock } from 'data/game-config';
-import { IStatusEffect, StatusEffectID } from 'engine/status-effect';
+import { IStatusEffect, StatusEffectID } from 'engine/battle/status-effect';
 
 type StatusEffectFun = () => IStatusEffect;
 

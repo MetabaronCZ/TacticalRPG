@@ -4,11 +4,11 @@ import { observer } from 'mobx-react';
 import PlayerControl from 'data/player-control';
 import { playerMaxNameLength, randomPartyID } from 'data/game-config';
 
-import { PartyData } from 'engine/party-data';
-import { BattleConfig } from 'engine/battle-config';
-import { CharacterData } from 'engine/character-data';
-import { IPlayerConfigEditable } from 'engine/player-config';
+import { PartyData } from 'engine/party-creation/party-data';
 import BattleConfiguration from 'engine/battle-configuration';
+import { BattleConfig } from 'engine/battle-configuration/battle-config';
+import { CharacterData } from 'engine/character-creation/character-data';
+import { IPlayerConfigEditable } from 'engine/battle-configuration/player-config';
 
 import Form from 'ui/common/Form';
 import Button from 'ui/common/Button';

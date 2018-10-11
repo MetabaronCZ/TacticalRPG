@@ -5,18 +5,18 @@ import RandomNameGenerator from 'core/random-name-generator';
 import nameSamples from 'data/names';
 import * as config from 'data/game-config';
 
-import Act from 'engine/act';
-import Order from 'engine/order';
 import Logger from 'engine/logger';
-import Player from 'engine/player';
-import Position from 'engine/position';
+import Act from 'engine/battle/act';
+import Order from 'engine/battle/order';
 import Character from 'engine/character';
-import DirectionID from 'engine/direction';
-import { getPosition } from 'engine/positions';
-import { IPlayerData } from 'engine/player-data';
-import CharacterAction from 'engine/character-action';
-import { CharacterData } from 'engine/character-data';
+import Player from 'engine/battle/player';
+import Position from 'engine/battle/position';
+import DirectionID from 'engine/battle/direction';
+import { getPosition } from 'engine/battle/positions';
+import { IPlayerData } from 'engine/battle/player-data';
+import CharacterAction from 'engine/battle/character-action';
 import CharacterCreationForm from 'engine/character-creation';
+import { CharacterData } from 'engine/character-creation/character-data';
 
 export interface IEngineState {
 	tick: number;

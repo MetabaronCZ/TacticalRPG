@@ -1,10 +1,11 @@
 import React from 'react';
 import { withRouter, RouteComponentProps } from 'react-router';
 
-import { Store } from 'store';
 import { gotoFn } from 'core/navigation';
 import { withContext, IContext } from 'context';
-import { PartyData } from 'engine/party-data';
+
+import { Store } from 'engine/store';
+import { PartyData } from 'engine/party-creation/party-data';
 
 import Page from 'ui/common/Page';
 import Button from 'ui/common/Button';

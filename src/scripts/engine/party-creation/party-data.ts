@@ -1,8 +1,8 @@
 import { maxPartySize, maxPartyNameLength } from 'data/game-config';
 
 import { IValidation } from 'engine/validation';
-import { CharacterData } from 'engine/character-data';
 import { IIndexableData, IndexableData } from 'engine/indexable-data';
+import { CharacterData } from 'engine/character-creation/character-data';
 
 interface IPartyConfig {
 	readonly name: string;

@@ -1,8 +1,8 @@
 import React from 'react';
 
-import Act from 'engine/act';
-import CharacterAction from 'engine/character-action';
+import Act from 'engine/battle/act';
 import { formatPosition } from 'engine/utils/position';
+import CharacterAction from 'engine/battle/character-action';
 
 import Actions from 'ui/battle/Actions';
 import ActMoveUI from 'ui/battle/PhaseMove';

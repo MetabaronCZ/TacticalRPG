@@ -1,8 +1,8 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 
-import ObservableList from 'engine/observable-list';
-import { CharacterData } from 'engine/character-data';
+import IndexableList from 'engine/indexable-list';
+import { CharacterData } from 'engine/character-creation/character-data';
 
 import getColumns from 'ui/character-creation/CharacterList/columns';
 
@@ -12,7 +12,7 @@ export type IOnDelete = (char: CharacterData) => () => void;
 
 interface ICharacterListProps {
 	readonly editable?: boolean;
-	readonly characters: ObservableList<CharacterData>;
+	readonly characters: IndexableList<CharacterData>;
 	readonly onMoveDown?: IOnMoveDown;
 	readonly onMoveUp?: IOnMoveUp;
 	readonly onDelete?: IOnDelete;

@@ -1,7 +1,8 @@
 import { observable } from 'mobx';
 
 import { maxPlayers, randomPartyID } from 'data/game-config';
-import { PlayerConfig, IPlayerConfig, IPlayerConfigEditable } from 'engine/player-config';
+import { PlayerConfig, IPlayerConfig, IPlayerConfigEditable } from 'engine/battle-configuration/player-config';
+import { IPartyData } from 'engine/party-creation/party-data';
 
 export interface IBattleConfig {
 	players: IPlayerConfig[];
@@ -20,8 +21,10 @@ const playerPool = Array(maxPlayers).fill(0);
 
 export class BattleConfig {
 	@observable.shallow public players: PlayerConfig[] = [];
+	private parties: IPartyData[] = [];
 
-	constructor(data?: IBattleConfig) {
+	constructor(data?: IBattleConfig, parties: IPartyData[] = []) {
+		this.parties = parties;
 		this.update(data);
 	}
 
@@ -48,17 +51,22 @@ export class BattleConfig {
 	}
 
 	public update(data?: IBattleConfig) {
+		const parties = this.parties;
+
 		this.players = playerPool.map((_, p) => {
+			let conf: IPlayerConfig;
+
 			if (data && data.players[p]) {
-				return new PlayerConfig(data.players[p]);
+				conf = data.players[p];
 
 			} else {
-				return new PlayerConfig({
+				conf = {
 					name: `Player ${p + 1}`,
 					control: 'HUMAN',
 					party: randomPartyID
-				});
+				};
 			}
+			return new PlayerConfig(conf, parties);
 		});
 	}
 

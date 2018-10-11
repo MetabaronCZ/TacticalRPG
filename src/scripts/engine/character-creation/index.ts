@@ -13,7 +13,7 @@ import { IEquipSlot } from 'engine/equipment/wield';
 import { ArmorID } from 'engine/equipment/armor-data';
 import { WeaponID } from 'engine/equipment/weapon-data';
 import { SkillsetID } from 'engine/character/skillset-data';
-import { CharacterData, ICharacterDataEditable } from 'engine/character-data';
+import { CharacterData, ICharacterDataEditable } from 'engine/character-creation/character-data';
 
 interface ICharacterCreation {
 	character: CharacterData;

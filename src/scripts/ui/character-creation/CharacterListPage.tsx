@@ -1,10 +1,11 @@
 import React from 'react';
 import { withRouter, RouteComponentProps } from 'react-router';
 
-import { Store } from 'store';
 import { gotoFn } from 'core/navigation';
 import { withContext, IContext } from 'context';
-import { CharacterData } from 'engine/character-data';
+
+import { Store } from 'engine/store';
+import { CharacterData } from 'engine/character-creation/character-data';
 
 import Page from 'ui/common/Page';
 import Button from 'ui/common/Button';

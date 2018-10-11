@@ -1,4 +1,4 @@
-import Position from 'engine/position';
+import Position from 'engine/battle/position';
 
 export interface IGraph {
 	[id: string]: Position|null;
