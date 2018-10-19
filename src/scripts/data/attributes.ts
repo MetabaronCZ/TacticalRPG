@@ -1,7 +1,7 @@
-import { ArchetypeID } from 'engine/character/archetype';
+import { ArchetypeID } from 'modules/character/archetype';
 import {
 	PrimaryAttributeID, SecondaryAttributeID, IPrimaryAttributes
-} from 'engine/character/attributes-data';
+} from 'modules/character/attributes-data';
 
 type IPrimaryAttrFormula = (P: number, S: number, M: number) => number;
 

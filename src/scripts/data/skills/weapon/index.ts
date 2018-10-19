@@ -5,8 +5,8 @@ import magicalSkills from 'data/skills/weapon/magical';
 import rangedSkills from 'data/skills/weapon/ranged';
 import shieldSkills from 'data/skills/weapon/shield';
 
-import { ISkillData } from 'engine/skill/skill-data';
-import { WeaponSkillID } from 'engine/skill/weapon';
+import { ISkillData } from 'modules/skill/skill-data';
+import { WeaponSkillID } from 'modules/skill/weapon';
 
 const weaponSkills: { [id in WeaponSkillID]: ISkillData; } = {
 	...smallSkills,

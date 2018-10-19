@@ -4,8 +4,8 @@ import { withRouter, RouteComponentProps } from 'react-router';
 import { gotoFn } from 'core/navigation';
 import { withContext, IContext } from 'context';
 
-import { Store } from 'engine/store';
-import { PartyData } from 'engine/party-creation/party-data';
+import { Store } from 'modules/store';
+import { PartyData } from 'modules/party-creation/party-data';
 
 import Page from 'ui/common/Page';
 import Button from 'ui/common/Button';

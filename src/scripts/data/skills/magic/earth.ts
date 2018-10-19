@@ -1,5 +1,5 @@
-import { ISkillData } from 'engine/skill/skill-data';
-import { EarthMagicSkillID } from 'engine/skill/magic';
+import { ISkillData } from 'modules/skill/skill-data';
+import { EarthMagicSkillID } from 'modules/skill/magic';
 
 const earthMagic: { [id in EarthMagicSkillID]: ISkillData; } = {
 	EARTH_MAGIC_BOULDER: {

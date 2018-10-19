@@ -1,5 +1,5 @@
-import { ISkillData } from 'engine/skill/skill-data';
-import { RangedWeaponSkillID } from 'engine/skill/weapon';
+import { ISkillData } from 'modules/skill/skill-data';
+import { RangedWeaponSkillID } from 'modules/skill/weapon';
 
 const rangedSkills: { [id in RangedWeaponSkillID]: ISkillData; } = {
 	BOW_ATTACK: {

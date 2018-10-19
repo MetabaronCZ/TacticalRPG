@@ -1,9 +1,9 @@
 import React from 'react';
 
-import Act from 'engine/battle/act';
-import Character from 'engine/character';
-import Player from 'engine/battle/player';
-import Position from 'engine/battle/position';
+import Act from 'modules/battle/act';
+import Character from 'modules/character';
+import Player from 'modules/battle/player';
+import Position from 'modules/battle/position';
 
 import GridBase from 'ui/battle/GridBase';
 import GridCharacters from 'ui/battle/GridCharacters';

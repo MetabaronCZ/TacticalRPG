@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Archetypes from 'data/archetypes';
-import { ArchetypeID } from 'engine/character/archetype';
+import { ArchetypeID } from 'modules/character/archetype';
 
 type SizeID = 'default' | 'large';
 

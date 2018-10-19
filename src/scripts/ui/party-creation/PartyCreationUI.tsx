@@ -3,10 +3,10 @@ import { observer } from 'mobx-react';
 
 import { maxPartyNameLength } from 'data/game-config';
 
-import IndexableList from 'engine/indexable-list';
-import PartyCreationForm from 'engine/party-creation';
-import { CharacterData } from 'engine/character-creation/character-data';
-import { PartyData, IPartyDataEditable } from 'engine/party-creation/party-data';
+import IndexableList from 'modules/indexable-list';
+import PartyCreationForm from 'modules/party-creation';
+import { CharacterData } from 'modules/character-creation/character-data';
+import { PartyData, IPartyDataEditable } from 'modules/party-creation/party-data';
 
 import Link from 'ui/common/Link';
 import Form from 'ui/common/Form';

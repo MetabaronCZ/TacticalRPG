@@ -10,11 +10,11 @@ import Skillsets from 'data/skillsets';
 import Archetypes from 'data/archetypes';
 import { maxCharacterNameLength } from 'data/game-config';
 
-import CharacterCreation from 'engine/character-creation';
-import { ArmorID, IArmorData } from 'engine/equipment/armor-data';
-import { IWeaponData, WeaponID } from 'engine/equipment/weapon-data';
-import { ISkillsetData, SkillsetID } from 'engine/character/skillset-data';
-import { CharacterData, ICharacterDataEditable } from 'engine/character-creation/character-data';
+import CharacterCreation from 'modules/character-creation';
+import { ArmorID, IArmorData } from 'modules/equipment/armor-data';
+import { IWeaponData, WeaponID } from 'modules/equipment/weapon-data';
+import { ISkillsetData, SkillsetID } from 'modules/character/skillset-data';
+import { CharacterData, ICharacterDataEditable } from 'modules/character-creation/character-data';
 
 import Form from 'ui/common/Form';
 import Button from 'ui/common/Button';

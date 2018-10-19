@@ -1,5 +1,5 @@
-import { ISkillData } from 'engine/skill/skill-data';
-import { WindMagicSkillID } from 'engine/skill/magic';
+import { ISkillData } from 'modules/skill/skill-data';
+import { WindMagicSkillID } from 'modules/skill/magic';
 
 const windMagic: { [id in WindMagicSkillID]: ISkillData; } = {
 	WIND_MAGIC_AIR_BLAST: {

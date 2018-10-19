@@ -1,5 +1,5 @@
 import DataList from 'core/data-list';
-import { ArchetypeID, IArchetypeData } from 'engine/character/archetype';
+import { ArchetypeID, IArchetypeData } from 'modules/character/archetype';
 
 const Archetypes = new DataList<ArchetypeID, IArchetypeData>({
 	PP: {

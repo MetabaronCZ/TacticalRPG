@@ -1,5 +1,5 @@
-import { ISkillData } from 'engine/skill/skill-data';
-import { PsychokinesisSkillID } from 'engine/skill/magic';
+import { ISkillData } from 'modules/skill/skill-data';
+import { PsychokinesisSkillID } from 'modules/skill/magic';
 
 const psychokinesis: { [id in PsychokinesisSkillID]: ISkillData; } = {
 	PSYCHOKINESIS_KINETIC_STRIKE: {

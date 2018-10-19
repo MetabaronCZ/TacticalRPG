@@ -1,5 +1,5 @@
-import { ISkillData } from 'engine/skill/skill-data';
-import { MagicalWeaponSkillID } from 'engine/skill/weapon';
+import { ISkillData } from 'modules/skill/skill-data';
+import { MagicalWeaponSkillID } from 'modules/skill/weapon';
 
 const magicalSkills: { [id in MagicalWeaponSkillID]: ISkillData; } = {
 	MACE_ATTACK: {

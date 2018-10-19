@@ -10,8 +10,8 @@ import earthMagic from 'data/skills/magic/earth';
 import iceMagic from 'data/skills/magic/ice';
 import thunderMagic from 'data/skills/magic/thunder';
 
-import { MagicSkillID } from 'engine/skill/magic';
-import { SkillsetID, ISkillsetData } from 'engine/character/skillset-data';
+import { MagicSkillID } from 'modules/skill/magic';
+import { SkillsetID, ISkillsetData } from 'modules/character/skillset-data';
 
 const Skillsets = new DataList<SkillsetID, ISkillsetData>({
 	NONE: {

@@ -1,7 +1,7 @@
 import React from 'react';
 
-import ActDirect from 'engine/battle/act/direction';
-import { formatPosition, formatPositions } from 'engine/utils/position';
+import ActDirect from 'modules/battle/act/direction';
+import { formatPosition, formatPositions } from 'ui/utils';
 
 interface IActDirectUIProps {
 	direct: ActDirect;

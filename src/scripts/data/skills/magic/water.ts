@@ -1,5 +1,5 @@
-import { ISkillData } from 'engine/skill/skill-data';
-import { WaterMagicSkillID } from 'engine/skill/magic';
+import { ISkillData } from 'modules/skill/skill-data';
+import { WaterMagicSkillID } from 'modules/skill/magic';
 
 const waterMagic: { [id in WaterMagicSkillID]: ISkillData; } = {
 	WATER_MAGIC_SPLASH: {

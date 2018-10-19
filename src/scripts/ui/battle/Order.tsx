@@ -1,7 +1,7 @@
 import React from 'react';
 
-import Act from 'engine/battle/act';
-import Character from 'engine/character';
+import Act from 'modules/battle/act';
+import Character from 'modules/character';
 
 interface IOrderProps {
 	act: Act|null;

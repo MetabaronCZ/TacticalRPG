@@ -1,8 +1,8 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 
-import IndexableList from 'engine/indexable-list';
-import { CharacterData } from 'engine/character-creation/character-data';
+import IndexableList from 'modules/indexable-list';
+import { CharacterData } from 'modules/character-creation/character-data';
 
 import getColumns from 'ui/character-creation/CharacterList/columns';
 

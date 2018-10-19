@@ -1,5 +1,5 @@
-import { ISkillData } from 'engine/skill/skill-data';
-import { Wield1HWeaponSkillID } from 'engine/skill/weapon';
+import { ISkillData } from 'modules/skill/skill-data';
+import { Wield1HWeaponSkillID } from 'modules/skill/weapon';
 
 const wield1HSkills: { [id in Wield1HWeaponSkillID]: ISkillData; } = {
 	SWORD_1H_ATTACK: {

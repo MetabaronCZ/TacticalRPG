@@ -1,5 +1,5 @@
 import DataList from 'core/data-list';
-import { ArmorID, IArmorData } from 'engine/equipment/armor-data';
+import { ArmorID, IArmorData } from 'modules/equipment/armor-data';
 
 const Armors = new DataList<ArmorID, IArmorData>({
 	NONE: {

@@ -4,7 +4,7 @@ import weaponSkills from 'data/skills/weapon';
 import magicSkills from 'data/skills/magic';
 import archetypeSkills from 'data/skills/archetype';
 
-import { SkillID, ISkillData } from 'engine/skill/skill-data';
+import { SkillID, ISkillData } from 'modules/skill/skill-data';
 
 export const attackSkills: SkillID[] = [
 	'FISTS_ATTACK', 'DAGGER_ATTACK',

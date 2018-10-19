@@ -8,8 +8,8 @@ import earthMagic from 'data/skills/magic/earth';
 import iceMagic from 'data/skills/magic/ice';
 import thunderMagic from 'data/skills/magic/thunder';
 
-import { ISkillData } from 'engine/skill/skill-data';
-import { MagicSkillID } from 'engine/skill/magic';
+import { ISkillData } from 'modules/skill/skill-data';
+import { MagicSkillID } from 'modules/skill/magic';
 
 const magicSkills: { [id in MagicSkillID]: ISkillData; } = {
 	...psychokinesis,

@@ -1,5 +1,5 @@
-import { ISkillData } from 'engine/skill/skill-data';
-import { SmallWeaponSkillID } from 'engine/skill/weapon';
+import { ISkillData } from 'modules/skill/skill-data';
+import { SmallWeaponSkillID } from 'modules/skill/weapon';
 
 const smallSkills: { [id in SmallWeaponSkillID]: ISkillData; } = {
 	FISTS_ATTACK: {

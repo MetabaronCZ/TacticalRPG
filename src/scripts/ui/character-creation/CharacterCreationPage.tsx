@@ -5,8 +5,8 @@ import { withRouter, RouteComponentProps } from 'react-router';
 import { goto, gotoFn } from 'core/navigation';
 import { withContext, IContext } from 'context';
 
-import { Store } from 'engine/store';
-import { CharacterData } from 'engine/character-creation/character-data';
+import { Store } from 'modules/store';
+import { CharacterData } from 'modules/character-creation/character-data';
 
 import Page from 'ui/common/Page';
 import CharacterCreation from 'ui/character-creation/CharacterCreationUI';

@@ -4,7 +4,7 @@ import { withRouter, RouteComponentProps } from 'react-router';
 
 import { goto } from 'core/navigation';
 import { withContext, IContext } from 'context';
-import Engine, { IEngineState } from 'engine';
+import Engine, { IEngineState } from 'modules/battle/engine';
 
 import BattleUI from 'ui/battle/BattleUI';
 

@@ -5,8 +5,8 @@ import { withRouter, RouteComponentProps } from 'react-router';
 import { goto, gotoFn } from 'core/navigation';
 import { withContext, IContext } from 'context';
 
-import { Store } from 'engine/store';
-import { BattleConfig } from 'engine/battle-configuration/battle-config';
+import { Store } from 'modules/store';
+import { BattleConfig } from 'modules/battle-configuration/battle-config';
 
 import Page from 'ui/common/Page';
 import BattleConfigUI from 'ui/battle-management/BattleConfigUI';

@@ -2,9 +2,9 @@ import React from 'react';
 
 import { gridSize } from 'data/game-config';
 
-import Act from 'engine/battle/act';
-import Position from 'engine/battle/position';
-import { getPositions } from 'engine/battle/positions';
+import Act from 'modules/battle/act';
+import Position from 'modules/battle/position';
+import { getPositions } from 'modules/battle/positions';
 
 const itemSize = 100 / gridSize;
 

@@ -1,5 +1,5 @@
-import { ISkillData } from 'engine/skill/skill-data';
-import { WhiteMagicSkillID } from 'engine/skill/magic';
+import { ISkillData } from 'modules/skill/skill-data';
+import { WhiteMagicSkillID } from 'modules/skill/magic';
 
 const whiteMagic: { [id in WhiteMagicSkillID]: ISkillData; } = {
 	WHITE_MAGIC_HEAL: {

@@ -1,5 +1,5 @@
-import { ISkillData } from 'engine/skill/skill-data';
-import { FireMagicSkillID } from 'engine/skill/magic';
+import { ISkillData } from 'modules/skill/skill-data';
+import { FireMagicSkillID } from 'modules/skill/magic';
 
 const fireMagic: { [id in FireMagicSkillID]: ISkillData; } = {
 	FIRE_MAGIC_FIREBALL: {

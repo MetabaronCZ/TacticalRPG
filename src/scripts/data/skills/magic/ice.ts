@@ -1,5 +1,5 @@
-import { ISkillData } from 'engine/skill/skill-data';
-import { IceMagicSkillID } from 'engine/skill/magic';
+import { ISkillData } from 'modules/skill/skill-data';
+import { IceMagicSkillID } from 'modules/skill/magic';
 
 const iceMagic: { [id in IceMagicSkillID]: ISkillData; } = {
 	ICE_MAGIC_ICE_SPEAR: {

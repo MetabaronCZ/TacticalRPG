@@ -1,5 +1,5 @@
-import { ISkillData } from 'engine/skill/skill-data';
-import { BlackMagicSkillID } from 'engine/skill/magic';
+import { ISkillData } from 'modules/skill/skill-data';
+import { BlackMagicSkillID } from 'modules/skill/magic';
 
 const blackMagic: { [id in BlackMagicSkillID]: ISkillData; } = {
 	BLACK_MAGIC_DARK_AURA: {

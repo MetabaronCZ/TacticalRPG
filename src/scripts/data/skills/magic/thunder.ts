@@ -1,5 +1,5 @@
-import { ISkillData } from 'engine/skill/skill-data';
-import { ThunderMagicSkillID } from 'engine/skill/magic';
+import { ISkillData } from 'modules/skill/skill-data';
+import { ThunderMagicSkillID } from 'modules/skill/magic';
 
 const thunderMagic: { [id in ThunderMagicSkillID]: ISkillData; } = {
 	THUNDER_MAGIC_THUNDERBOLT: {

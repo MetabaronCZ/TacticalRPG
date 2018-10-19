@@ -1,5 +1,5 @@
-import { ISkillData } from 'engine/skill/skill-data';
-import { ArchetypeSkillID } from 'engine/skill/archetype';
+import { ISkillData } from 'modules/skill/skill-data';
+import { ArchetypeSkillID } from 'modules/skill/archetype';
 
 const archetypeSkills: { [id in ArchetypeSkillID]: ISkillData; } = {
 	EVADE: {

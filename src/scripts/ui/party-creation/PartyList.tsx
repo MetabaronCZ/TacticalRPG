@@ -1,8 +1,8 @@
 import React, { ReactNode } from 'react';
 import { observer } from 'mobx-react';
 
-import IndexableList from 'engine/indexable-list';
-import { PartyData } from 'engine/party-creation/party-data';
+import IndexableList from 'modules/indexable-list';
+import { PartyData } from 'modules/party-creation/party-data';
 
 import Link from 'ui/common/Link';
 import LinkIco from 'ui/common/LinkIco';

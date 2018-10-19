@@ -1,7 +1,7 @@
 import { smallShieldBlock } from 'data/game-config';
 
-import { ISkillData } from 'engine/skill/skill-data';
-import { ShieldWeaponSkillID } from 'engine/skill/weapon';
+import { ISkillData } from 'modules/skill/skill-data';
+import { ShieldWeaponSkillID } from 'modules/skill/weapon';
 
 const shieldSkills: { [id in ShieldWeaponSkillID]: ISkillData; } = {
 	SHIELD_SMALL_BLOCK: {

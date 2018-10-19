@@ -1,7 +1,7 @@
 import React from 'react';
 
-import ActMove from 'engine/battle/act/movement';
-import { formatPositions, formatPosition } from 'engine/utils/position';
+import ActMove from 'modules/battle/act/movement';
+import { formatPositions, formatPosition } from 'ui/utils';
 
 interface IActMoveUIProps {
 	move: ActMove;

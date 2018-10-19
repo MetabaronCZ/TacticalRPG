@@ -1,7 +1,7 @@
-import { WieldID } from 'engine/equipment/wield';
-import { ArmorID } from 'engine/equipment/armor-data';
-import { WeaponID } from 'engine/equipment/weapon-data';
-import { ArchetypeID } from 'engine/character/archetype';
+import { WieldID } from 'modules/equipment/wield';
+import { ArmorID } from 'modules/equipment/armor-data';
+import { WeaponID } from 'modules/equipment/weapon-data';
+import { ArchetypeID } from 'modules/character/archetype';
 
 type IArchetypeIndexTable = {
 	[id in ArchetypeID]: number;
