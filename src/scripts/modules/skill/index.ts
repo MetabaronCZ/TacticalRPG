@@ -1,8 +1,8 @@
 import Skills, { attackSkills } from 'data/skills';
 
-import Position from 'modules/battle/position';
 import Character from 'modules/character';
-import { getPosition } from 'modules/battle/positions';
+import Position from 'modules/geometry/position';
+import { getPosition } from 'modules/geometry/positions';
 import { StatusEffectID } from 'modules/battle/status-effect';
 import {
 	SkillID, SkillType, SkillElement, SkillGrade,

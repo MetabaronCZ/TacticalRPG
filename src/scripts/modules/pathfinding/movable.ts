@@ -1,7 +1,7 @@
 import PriorityQueue from 'core/priority-queue';
 
-import Position from 'modules/battle/position';
-import { getPositionByID } from 'modules/battle/positions';
+import Position from 'modules/geometry/position';
+import { getPositionByID } from 'modules/geometry/positions';
 
 export interface IMoveCostMap {
 	[id: string]: number;

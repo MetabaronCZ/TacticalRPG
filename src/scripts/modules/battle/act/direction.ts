@@ -1,7 +1,7 @@
 import Logger from 'modules/logger';
 import Character from 'modules/character';
-import Position from 'modules/battle/position';
-import { resolveDirection, findPositionFrom } from 'modules/battle/direction';
+import Position from 'modules/geometry/position';
+import { resolveDirection, findPositionFrom } from 'modules/geometry/direction';
 
 interface IActDirectEvents {
 	onStart: (direct: ActDirect) => void;

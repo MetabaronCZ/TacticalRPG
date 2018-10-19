@@ -30,31 +30,23 @@ class BattlePageContainer extends React.Component<IBattlePageContainerProps, IBa
 	constructor(props: IBattlePageContainerProps) {
 		super(props);
 
-		const { battleConfig, characters, parties } = this.props.store;
+		const { battleConfig, parties } = this.props.store;
 		this.state = {};
 
 		this.engine = new Engine({
-			players: battleConfig.players.map(conf => ({
-				name: conf.name,
-				control: conf.control,
-				party: conf.party,
-				parties: parties.data,
-				characters: characters.data
-			})),
+			players: battleConfig.players,
+			parties: parties.data,
 			events: {
 				onStart: engineState => {
-					const now = new Date();
-					this.setState(state => ({ engineState, engineUpdate: now }));
+					this.setState({ engineState, engineUpdate: new Date() });
 				},
 				onUpdate: engineState => {
-					const now = new Date();
-					this.setState(state => ({ engineState, engineUpdate: now }));
+					this.setState({ engineState, engineUpdate: new Date() });
 				},
 				onGameOver: engineState => {
-					const now = new Date();
-
 					throw new Error('TODO: Game Over');
 
+					const now = new Date();
 					this.setState(
 						state => ({ engineState, engineUpdate: now }),
 						() => exit(props.history)

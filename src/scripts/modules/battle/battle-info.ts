@@ -1,4 +1,4 @@
-import Position from 'modules/battle/position';
+import Position from 'modules/geometry/position';
 
 export interface IBattleInfo {
 	readonly text: string;

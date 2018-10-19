@@ -1,6 +1,6 @@
 import Logger from 'modules/logger';
-import Position from 'modules/battle/position';
 import Character from 'modules/character';
+import Position from 'modules/geometry/position';
 import CharacterAction from 'modules/battle/character-action';
 
 interface IActReactionEvents {

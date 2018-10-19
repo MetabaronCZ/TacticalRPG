@@ -1,3 +1,5 @@
+import nameSamples from 'data/names';
+
 const markovOrder = 3; // Markov chains order
 const paramEnd = 'END';
 
@@ -148,7 +150,7 @@ const createGraph = (dict: string[], order: number): IGraph => {
 	return graph;
 };
 
-const get = (nameSamples: string[], count: number, maxlength: number): string[] => {
+export const getRandomNames = (count: number, maxlength: number): string[] => {
 	const graph = createGraph(nameSamples, markovOrder);
 	const names = [];
 
@@ -156,8 +158,4 @@ const get = (nameSamples: string[], count: number, maxlength: number): string[] 
 		names.push(getRandom(graph, maxlength));
 	}
 	return names;
-};
-
-export default {
-	get
 };

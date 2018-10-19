@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Position from 'modules/battle/position';
+import Position from 'modules/geometry/position';
 import { IEngineState } from 'modules/battle/engine';
 import CharacterAction from 'modules/battle/character-action';
 

@@ -1,6 +1,6 @@
 import { observable, action } from 'mobx';
 
-import { IValidation } from 'modules/validation';
+import { IValidation } from 'core/validation';
 import { CharacterData } from 'modules/character-creation/character-data';
 import { PartyData, IPartyDataEditable } from 'modules/party-creation/party-data';
 

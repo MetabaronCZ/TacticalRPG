@@ -1,7 +1,7 @@
 import { maxOrderSize, characterCTLimit } from 'data/game-config';
 
-import Player from 'modules/battle/player';
 import Character from 'modules/character';
+import Player from 'modules/battle/player';
 
 class Order {
 	private players: Player[] = [];

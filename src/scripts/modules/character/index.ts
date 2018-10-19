@@ -2,11 +2,11 @@ import { characterCTLimit } from 'data/game-config';
 
 import Armor from 'modules/equipment/armor';
 import Weapon from 'modules/equipment/weapon';
-import Status from 'modules/character/status';
-import Position from 'modules/battle/position';
+import StatusEffect from 'modules/character/status';
+import Position from 'modules/geometry/position';
 import Skillset from 'modules/character/skillset';
 import Attributes from 'modules/character/attributes';
-import { DirectionID } from 'modules/battle/direction';
+import { DirectionID } from 'modules/geometry/direction';
 import { ArchetypeID } from 'modules/character/archetype';
 import { StatusEffectID } from 'modules/battle/status-effect';
 import BaseAttributes from 'modules/character/base-attributes';
@@ -21,7 +21,7 @@ class Character {
 
 	public readonly player: number;
 	public readonly skillset: Skillset;
-	public readonly status: Status;
+	public readonly status: StatusEffect;
 
 	public readonly mainHand: Weapon;
 	public readonly offHand: Weapon;
@@ -41,7 +41,7 @@ class Character {
 
 		this.player = player;
 		this.skillset = new Skillset(data.skillset, this.archetype);
-		this.status = new Status();
+		this.status = new StatusEffect();
 
 		this.mainHand = new Weapon(data.main);
 		this.offHand = new Weapon(data.off);

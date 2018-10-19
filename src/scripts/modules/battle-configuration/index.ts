@@ -5,8 +5,8 @@ import { randomPartyID, maxPlayers } from 'data/game-config';
 import IndexableList from 'modules/indexable-list';
 import { PartyData } from 'modules/party-creation/party-data';
 import { CharacterData } from 'modules/character-creation/character-data';
-import { IPlayerConfigEditable, PlayerConfig, PlayerControlID } from 'modules/battle-configuration/player-config';
 import { BattleConfig, IBattleConfigValidation } from 'modules/battle-configuration/battle-config';
+import { IPlayerConfigEditable, PlayerConfig, PlayerControlID } from 'modules/battle-configuration/player-config';
 
 interface IBattleConfiguration {
 	config: BattleConfig;

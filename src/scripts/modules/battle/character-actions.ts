@@ -13,11 +13,8 @@ export const getConfirmAction = (title = 'Confirm', cost = 0): CharacterAction =
 };
 
 export const getIdleActions = (character: Character): CharacterAction[] => {
-	const skillset = character.skillset;
+	const { mainHand, offHand, skillset } = character;
 	const AP = character.attributes.get('AP');
-
-	const mainHand = character.mainHand;
-	const offHand = character.offHand;
 	const actions: CharacterAction[] = [];
 	const attackSkillList: Skill[] = [];
 
@@ -64,10 +61,6 @@ export const getIdleActions = (character: Character): CharacterAction[] => {
 	actions.push(getPassAction());
 
 	return actions;
-};
-
-export const getSkillActions = (): CharacterAction[] => {
-	return [getBackAction()];
 };
 
 export const getSkillConfirmActions = (action: CharacterAction, targets: Character[] = []): CharacterAction[] => {
@@ -125,10 +118,6 @@ export const getReactiveActions = (character: Character): CharacterAction[] => {
 	return actions;
 };
 
-export const getEvasiveActions = (): CharacterAction[] => {
-	return [getBackAction()];
-};
-
-export const getDirectActions = (): CharacterAction[] => {
-	return [getDirectAction()];
-};
+export const getSkillActions = (): CharacterAction[] => [getBackAction()];
+export const getEvasiveActions = (): CharacterAction[] => [getBackAction()];
+export const getDirectActions = (): CharacterAction[] => [getDirectAction()];

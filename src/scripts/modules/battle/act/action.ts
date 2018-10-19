@@ -1,15 +1,15 @@
-import * as ArrayUtils from 'core/array';
-import * as NumberUtils from 'core/number';
+import { getIntersection } from 'core/array';
 import Animation, { IAnimationStep } from 'core/animation';
+import { formatNumber, randomNumberBetween } from 'core/number';
 
 import StatusEffects from 'data/status-effects';
 import { skillAnimDuration, smallShieldBlock } from 'data/game-config';
 
 import Logger from 'modules/logger';
 import Character from 'modules/character';
-import Position from 'modules/battle/position';
+import Position from 'modules/geometry/position';
 import ActReaction from 'modules/battle/act/reaction';
-import { resolveDirection } from 'modules/battle/direction';
+import { resolveDirection } from 'modules/geometry/direction';
 import CharacterAction from 'modules/battle/character-action';
 import { getPhysicalDamage, getElementalDamage, getStatusEffects } from 'modules/battle/damage';
 
@@ -109,7 +109,7 @@ class ActAction {
 		// update actor values
 		const skills = action.skills;
 		const skillAreas = skills.map(skill => skill.getTargetable(actor.position));
-		const targetable = ArrayUtils.getIntersection(skillAreas, pos => pos.id);
+		const targetable = getIntersection(skillAreas, pos => pos.id);
 		const targets = skills[0].getTargets(actor, characters, targetable);
 
 		this.area = targetable;
@@ -143,7 +143,7 @@ class ActAction {
 		this.state = 'SELECTED';
 
 		const effectAreas = skills.map(s => s.getEffectArea(actor.position, target));
-		const effectArea = ArrayUtils.getIntersection(effectAreas, pos => pos.id);
+		const effectArea = getIntersection(effectAreas, pos => pos.id);
 		const effectTargets = skills[0].getEffectTargets(actor, effectArea, characters);
 
 		this.effectTarget = target;
@@ -286,12 +286,12 @@ class ActAction {
 
 							// physical damage
 							phyDmg = getPhysicalDamage(actor, target, skill);
-							info.push(NumberUtils.format(phyDmg));
+							info.push(formatNumber(phyDmg));
 
 							// elemental damage
 							if (skill.elementalDamage) {
 								elmDmg = getElementalDamage(actor, target, skill);
-								info.push(NumberUtils.format(elmDmg));
+								info.push(formatNumber(elmDmg));
 							}
 
 							// status effects
@@ -316,7 +316,7 @@ class ActAction {
 							}
 						}
 						let infoTiming = Array(info.length).fill(0);
-						infoTiming = infoTiming.map(i => NumberUtils.randomBetween(250, 350));
+						infoTiming = infoTiming.map(i => randomNumberBetween(250, 350));
 
 						const infoAnim = new Animation(infoTiming, infoStep => {
 							this.events.onBattleInfo(info[infoStep.number], targetPos);

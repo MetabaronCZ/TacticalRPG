@@ -1,6 +1,7 @@
 import { observable, action } from 'mobx';
 
-import * as ArrayUtils from 'core/array';
+import { getRandomItem } from 'core/array';
+import { IValidation } from 'core/validation';
 
 import Sexes from 'data/sexes';
 import Armors from 'data/armors';
@@ -8,7 +9,6 @@ import Weapons from 'data/weapons';
 import Skillsets from 'data/skillsets';
 import Archetypes from 'data/archetypes';
 
-import { IValidation } from 'modules/validation';
 import { IEquipSlot } from 'modules/equipment/wield';
 import { ArmorID } from 'modules/equipment/armor-data';
 import { WeaponID } from 'modules/equipment/weapon-data';
@@ -62,19 +62,19 @@ class CharacterCreation {
 		character.setArchetype(Archetypes.getRandomID() || 'PP');
 
 		const skillsets = this.filterSkillsets(id => 'NONE' !== id && character.canUseSkillset(id));
-		const skillset = ArrayUtils.getRandomItem(skillsets);
+		const skillset = getRandomItem(skillsets);
 		character.setSkillset(skillset || 'NONE');
 
 		const mainHands = this.filterWeapons('MAIN', id => 'NONE' !== id && character.canWieldWeapon(id, 'MAIN'));
-		const mainHand = ArrayUtils.getRandomItem(mainHands);
+		const mainHand = getRandomItem(mainHands);
 		character.setMainHand(mainHand || 'NONE');
 
 		const offHands = this.filterWeapons('OFF', id => 'NONE' !== id && character.canWieldWeapon(id, 'OFF'));
-		const offHand = ArrayUtils.getRandomItem(offHands);
+		const offHand = getRandomItem(offHands);
 		character.setOffHand(offHand || 'NONE');
 
 		const armors = this.filterArmors(id => 'NONE' !== id && character.canWieldArmor(id));
-		const armor = ArrayUtils.getRandomItem(armors);
+		const armor = getRandomItem(armors);
 		character.setArmor(armor || 'NONE');
 
 		return character;

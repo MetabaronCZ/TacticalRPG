@@ -1,9 +1,7 @@
-import {
-	defaultBaseAttributes, PrimaryAttrFormula, SecondaryAttrFormula, Arch2AttTable
-} from 'data/attributes';
+import { defaultBaseAttributes, PrimaryAttrFormula, SecondaryAttrFormula, Arch2AttTable } from 'data/attributes';
 
 import { ArchetypeID } from 'modules/character/archetype';
-import { IPrimaryAttributes, ISecondaryAttributes, IAttributes, AttributeID } from 'modules/character/attributes-data';
+import { IPrimaryAttributes, ISecondaryAttributes, IAttributes, AttributeID } from 'modules/character/attributes';
 
 class BaseAttributes {
 	protected values: IAttributes;

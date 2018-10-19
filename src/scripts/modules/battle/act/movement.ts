@@ -3,9 +3,9 @@ import { gridSize, moveAnimDuration } from 'data/game-config';
 
 import Logger from 'modules/logger';
 import Character from 'modules/character';
-import Position from 'modules/battle/position';
-import { getPosition } from 'modules/battle/positions';
-import { resolveDirection } from 'modules/battle/direction';
+import Position from 'modules/geometry/position';
+import { getPosition } from 'modules/geometry/positions';
+import { resolveDirection } from 'modules/geometry/direction';
 import { getMovableTiles, getShortestPath, ICostMap } from 'modules/pathfinding';
 
 interface IActMoveEvents {

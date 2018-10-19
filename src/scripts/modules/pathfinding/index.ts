@@ -1,4 +1,4 @@
-import Position from 'modules/battle/position';
+import Position from 'modules/geometry/position';
 
 export interface IGraph {
 	[id: string]: Position|null;

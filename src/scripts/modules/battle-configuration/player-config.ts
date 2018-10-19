@@ -1,8 +1,7 @@
 import { observable, computed, action } from 'mobx';
 
+import { IValidation } from 'core/validation';
 import { playerMaxNameLength, randomPartyID } from 'data/game-config';
-
-import { IValidation } from 'modules/validation';
 import { IPartyData } from 'modules/party-creation/party-data';
 
 export type PlayerControlID = 'HUMAN' | 'AI';

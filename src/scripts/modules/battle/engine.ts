@@ -1,8 +1,4 @@
-import { randomize } from 'core/array';
-
-import RandomNameGenerator from 'core/random-name-generator';
-
-import nameSamples from 'data/names';
+import { randomizeArray } from 'core/array';
 import * as config from 'data/game-config';
 
 import Logger from 'modules/logger';
@@ -10,13 +6,15 @@ import Act from 'modules/battle/act';
 import Order from 'modules/battle/order';
 import Character from 'modules/character';
 import Player from 'modules/battle/player';
-import Position from 'modules/battle/position';
-import { DirectionID } from 'modules/battle/direction';
-import { getPosition } from 'modules/battle/positions';
-import { IPlayerData } from 'modules/battle/player-data';
+import Position from 'modules/geometry/position';
+import { getPosition } from 'modules/geometry/positions';
+import { DirectionID } from 'modules/geometry/direction';
+import { PartyData } from 'modules/party-creation/party-data';
 import CharacterAction from 'modules/battle/character-action';
 import CharacterCreationForm from 'modules/character-creation';
+import { getRandomNames } from 'modules/random-name-generator';
 import { CharacterData } from 'modules/character-creation/character-data';
+import { PlayerConfig } from 'modules/battle-configuration/player-config';
 
 export interface IEngineState {
 	tick: number;
@@ -33,7 +31,8 @@ interface IEngineEvents {
 }
 
 interface IEngineProps {
-	readonly players: IPlayerData[];
+	readonly players: PlayerConfig[];
+	readonly parties: PartyData[];
 	readonly events: IEngineEvents;
 }
 
@@ -49,7 +48,7 @@ class Engine {
 	private order: Order;
 
 	constructor(conf: IEngineProps) {
-		this.players = this.createPlayers(conf.players);
+		this.players = this.createPlayers(conf.players, conf.parties);
 		this.characters = this.players.map(pl => pl.characters).reduce((a, b) => a.concat(b));
 		this.order = new Order(this.players);
 		this.events = this.prepareEvents(conf.events);
@@ -139,18 +138,18 @@ class Engine {
 		this.act.start();
 	}
 
-	private createPlayers(playerData: IPlayerData[]): Player[] {
-		if (config.maxPlayers !== playerData.length) {
+	private createPlayers(players: PlayerConfig[], parties: PartyData[]): Player[] {
+		if (config.maxPlayers !== players.length) {
 			throw new Error(`Game has to have exactly ${config.maxPlayers} players`);
 		}
-		const players = playerData.map((conf, p) => {
-			const { name, control, party, parties } = conf;
+		const pl = players.map((conf, p) => {
+			const { party, control } = conf;
 			const charData: CharacterData[] = [];
 
 			// get character data
 			if (config.randomPartyID === party) {
 				// random generated party
-				const charNames = RandomNameGenerator.get(nameSamples, config.maxPartySize, config.maxPartyNameLength);
+				const charNames = getRandomNames(config.maxPartySize, config.maxPartyNameLength);
 
 				for (const n of charNames) {
 					const charCreation = new CharacterCreationForm(null);
@@ -207,7 +206,7 @@ class Engine {
 			return new Player(name, control, chars);
 		});
 
-		return randomize(players);
+		return randomizeArray(pl);
 	}
 
 	private checkWinConditions(): boolean {

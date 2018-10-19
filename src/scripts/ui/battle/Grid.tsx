@@ -3,7 +3,7 @@ import React from 'react';
 import Act from 'modules/battle/act';
 import Character from 'modules/character';
 import Player from 'modules/battle/player';
-import Position from 'modules/battle/position';
+import Position from 'modules/geometry/position';
 
 import GridBase from 'ui/battle/GridBase';
 import GridCharacters from 'ui/battle/GridCharacters';

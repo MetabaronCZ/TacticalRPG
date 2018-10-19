@@ -1,4 +1,4 @@
-import * as ArrayUtils from 'core/array';
+import { getRandomItem } from 'core/array';
 
 type DataListIterator<T, U> = (key: T, value: U, i: number) => void;
 
@@ -18,11 +18,11 @@ class DataList<T extends string, U> {
 	}
 
 	public getRandomID(): T|null {
-		return ArrayUtils.getRandomItem(this.keys());
+		return getRandomItem(this.keys());
 	}
 
 	public getRandomItem(): U|null {
-		return ArrayUtils.getRandomItem(this.values());
+		return getRandomItem(this.values());
 	}
 
 	public keys(): T[] {

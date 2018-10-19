@@ -1,8 +1,8 @@
 import { observable } from 'mobx';
 
 import { maxPlayers, randomPartyID } from 'data/game-config';
-import { PlayerConfig, IPlayerConfig, IPlayerConfigEditable } from 'modules/battle-configuration/player-config';
 import { IPartyData } from 'modules/party-creation/party-data';
+import { PlayerConfig, IPlayerConfig, IPlayerConfigEditable } from 'modules/battle-configuration/player-config';
 
 export interface IBattleConfig {
 	players: IPlayerConfig[];

@@ -1,6 +1,6 @@
+import { IValidation } from 'core/validation';
 import { maxPartySize, maxPartyNameLength } from 'data/game-config';
 
-import { IValidation } from 'modules/validation';
 import { IIndexableData, IndexableData } from 'modules/indexable-data';
 import { CharacterData } from 'modules/character-creation/character-data';
 

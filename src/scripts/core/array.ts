@@ -22,7 +22,7 @@ export const getRandomItem = <T>(arr: T[]): T|null => {
 };
 
 // return randomized array
-export const randomize = <T>(arr: T[]): T[] => {
+export const randomizeArray = <T>(arr: T[]): T[] => {
 	const randomized: T[] = [];
 	const copy = arr.slice(0);
 

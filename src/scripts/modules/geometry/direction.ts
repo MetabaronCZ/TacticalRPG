@@ -1,5 +1,5 @@
-import Position from 'modules/battle/position';
-import { getPosition } from 'modules/battle/positions';
+import Position from 'modules/geometry/position';
+import { getPosition } from 'modules/geometry/positions';
 
 export type DirectionID = 'TOP' | 'LEFT' | 'RIGHT' | 'BOTTOM';
 

@@ -1,6 +1,6 @@
 import Logger from 'modules/logger';
 import Character from 'modules/character';
-import Position from 'modules/battle/position';
+import Position from 'modules/geometry/position';
 import { IBattleInfo } from 'modules/battle/battle-info';
 import CharacterAction from 'modules/battle/character-action';
 import { getIdleActions, getSkillActions, getSkillConfirmActions, getReactiveActions, getEvasiveActions } from 'modules/battle/character-actions';

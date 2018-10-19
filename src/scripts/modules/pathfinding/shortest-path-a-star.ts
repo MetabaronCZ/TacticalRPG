@@ -1,7 +1,7 @@
-import * as ArrayUtils from 'core/array';
+import { randomizeArray } from 'core/array';
 import PriorityQueue from 'core/priority-queue';
 
-import Position from 'modules/battle/position';
+import Position from 'modules/geometry/position';
 import { getPriority, constructPath, IGraph, ICostMap } from 'modules/pathfinding';
 
 // A* algorithm (get shortest path according to movement cost)
@@ -26,7 +26,7 @@ export const getShortestPath = (start: Position, target: Position, obstacles: Po
 			break;
 		}
 		let neighbours = curr.getSideTiles(obstacles);
-		neighbours = ArrayUtils.randomize(neighbours);
+		neighbours = randomizeArray(neighbours);
 
 		for (const n of neighbours) {
 			const newCost = cost[curr.id] + n.cost;

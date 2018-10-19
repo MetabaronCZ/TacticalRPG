@@ -1,25 +1,27 @@
 import { computed, action, observable } from 'mobx';
 
+import { IValidation } from 'core/validation';
+
 import Sexes from 'data/sexes';
 import Armors from 'data/armors';
 import Weapons from 'data/weapons';
 import Skillsets from 'data/skillsets';
 import Archetypes from 'data/archetypes';
 import { maxCharacterNameLength } from 'data/game-config';
+
 import {
 	WeaponEquipTableArch, WeaponEquipTableWield,
 	WieldIndexTable, ArmorEquipTableArch,
 	ArchetypeIndexTable, safeOffHand
 } from 'data/equipment';
 
-import { IValidation } from 'modules/validation';
 import { SexID, ISexData } from 'modules/character/sex';
 import { IEquipSlot, WieldID } from 'modules/equipment/wield';
 import { ArmorID, IArmorData } from 'modules/equipment/armor-data';
 import { WeaponID, IWeaponData } from 'modules/equipment/weapon-data';
+import { IIndexableData, IndexableData } from 'modules/indexable-data';
 import { ArchetypeID, IArchetypeData } from 'modules/character/archetype';
 import { SkillsetID, ISkillsetData } from 'modules/character/skillset-data';
-import { IIndexableData, IndexableData } from 'modules/indexable-data';
 
 export interface ICharacterConfig {
 	readonly name: string;
