@@ -20,8 +20,6 @@ interface ICharacterCreation {
 	validation: IValidation<ICharacterDataEditable>;
 }
 
-type IFilterCb<T> = (id: T, i: number) => boolean;
-
 class CharacterCreation {
 	@observable public state: ICharacterCreation;
 
@@ -56,52 +54,43 @@ class CharacterCreation {
 
 	@action
 	public randomize(): CharacterData {
-		const character = this.state.character;
+		const char = this.state.character;
 
-		character.setSex(Sexes.getRandomID() || 'MALE');
-		character.setArchetype(Archetypes.getRandomID() || 'PP');
+		char.setSex(Sexes.getRandomID() || 'MALE');
+		char.setArchetype(Archetypes.getRandomID() || 'PP');
 
-		const skillsets = this.filterSkillsets(id => 'NONE' !== id && character.canUseSkillset(id));
+		const skillsets = this.getSkillsetIDs().filter(id => 'NONE' !== id && char.canUseSkillset(id));
 		const skillset = getRandomItem(skillsets);
-		character.setSkillset(skillset || 'NONE');
+		char.setSkillset(skillset || 'NONE');
 
-		const mainHands = this.filterWeapons('MAIN', id => 'NONE' !== id && character.canWieldWeapon(id, 'MAIN'));
+		const mainHands = this.getWeaponIDs('MAIN').filter(id => 'NONE' !== id && char.canWieldWeapon(id, 'MAIN'));
 		const mainHand = getRandomItem(mainHands);
-		character.setMainHand(mainHand || 'NONE');
+		char.setMainHand(mainHand || 'NONE');
 
-		const offHands = this.filterWeapons('OFF', id => 'NONE' !== id && character.canWieldWeapon(id, 'OFF'));
+		const offHands = this.getWeaponIDs('OFF').filter(id => 'NONE' !== id && char.canWieldWeapon(id, 'OFF'));
 		const offHand = getRandomItem(offHands);
-		character.setOffHand(offHand || 'NONE');
+		char.setOffHand(offHand || 'NONE');
 
-		const armors = this.filterArmors(id => 'NONE' !== id && character.canWieldArmor(id));
+		const armors = this.getArmorIDs().filter(id => 'NONE' !== id && char.canWieldArmor(id));
 		const armor = getRandomItem(armors);
-		character.setArmor(armor || 'NONE');
+		char.setArmor(armor || 'NONE');
 
-		return character;
+		return char;
 	}
 
-	public filterSkillsets(cb?: IFilterCb<SkillsetID>): SkillsetID[] {
-		const usable = Skillsets
-			.filter(id => this.state.character.canUseSkillset(id))
-			.map(([id, skillset]) => id);
-
-		return cb ? usable.filter(cb) : usable;
+	public getSkillsetIDs(): SkillsetID[] {
+		const char = this.state.character;
+		return Skillsets.keys().filter(id => char.canUseSkillset(id));
 	}
 
-	public filterWeapons(slot: IEquipSlot, cb?: IFilterCb<WeaponID>): WeaponID[] {
-		const equipable = Weapons
-			.filter(id => this.state.character.canWieldWeapon(id, slot))
-			.map(([id, weapon]) => id);
-
-		return cb ? equipable.filter(cb) : equipable;
+	public getWeaponIDs(slot: IEquipSlot): WeaponID[] {
+		const char = this.state.character;
+		return Weapons.keys().filter(id => char.canWieldWeapon(id, slot));
 	}
 
-	public filterArmors(cb?: IFilterCb<ArmorID>): ArmorID[] {
-		const equipable = Armors
-			.filter(id => this.state.character.canWieldArmor(id))
-			.map(([id, armor]) => id);
-
-		return cb ? equipable.filter(cb) : equipable;
+	public getArmorIDs(): ArmorID[] {
+		const char = this.state.character;
+		return Armors.keys().filter(id => char.canWieldArmor(id));
 	}
 }
 

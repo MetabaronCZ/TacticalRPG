@@ -11,9 +11,6 @@ import Archetypes from 'data/archetypes';
 import { maxCharacterNameLength } from 'data/game-config';
 
 import CharacterCreation from 'modules/character-creation';
-import { ArmorID, IArmorData } from 'modules/equipment/armor-data';
-import { IWeaponData, WeaponID } from 'modules/equipment/weapon-data';
-import { ISkillsetData, SkillsetID } from 'modules/character/skillset-data';
 import { CharacterData, ICharacterDataEditable } from 'modules/character-creation/character-data';
 
 import Form from 'ui/common/Form';
@@ -51,10 +48,10 @@ class CharacterCreationUI extends React.Component<ICharacterCreationUIProps> {
 
 		const hasNoOffHand = (character.isBothWielding() || character.isDualWielding());
 
-		const skillsets = form.filterSkillsets().map(id => [id, Skillsets.get(id)] as [SkillsetID, ISkillsetData]);
-		const mainWeapons = form.filterWeapons('MAIN').map(id => [id, Weapons.get(id)] as [WeaponID, IWeaponData]);
-		const offWeapons = form.filterWeapons('OFF').map(id => [id, Weapons.get(id)] as [WeaponID, IWeaponData]);
-		const armors = form.filterArmors().map(id => [id, Armors.get(id)] as [ArmorID, IArmorData]);
+		const skillsets = form.getSkillsetIDs().map(id => Skillsets.get(id));
+		const mainWeapons = form.getWeaponIDs('MAIN').map(id => Weapons.get(id));
+		const offWeapons = form.getWeaponIDs('OFF').map(id => Weapons.get(id));
+		const armors = form.getArmorIDs().map(id => Armors.get(id));
 
 		return (
 			<Form onSubmit={this.onSubmit}>
@@ -97,9 +94,9 @@ class CharacterCreationUI extends React.Component<ICharacterCreationUIProps> {
 
 				<FormField fieldId="f-skillset" label="Magic" info={skillset.description}>
 					<FormSelect id="f-skillset" name="skillset" value={skillset.id} disabled={skillsets.length < 2} onChange={onChange('skillset')}>
-						{skillsets.map(([id, set], i) => (
-							<FormSelectItem value={id} key={i}>
-								{set.title}
+						{skillsets.map((item, i) => (
+							<FormSelectItem value={item.id} key={i}>
+								{item.title}
 							</FormSelectItem>
 						))}
 					</FormSelect>
@@ -107,8 +104,8 @@ class CharacterCreationUI extends React.Component<ICharacterCreationUIProps> {
 
 				<FormField fieldId="f-main" label={mainHandWield.title} info={mainHand.description}>
 					<FormSelect id="f-main" name="main" value={mainHand.id} disabled={mainWeapons.length < 2} onChange={onChange('main')}>
-						{mainWeapons.map(([id, item], i) => (
-							<FormSelectItem value={id} key={i}>
+						{mainWeapons.map((item, i) => (
+							<FormSelectItem value={item.id} key={i}>
 								{item.title}
 							</FormSelectItem>
 						))}
@@ -119,8 +116,8 @@ class CharacterCreationUI extends React.Component<ICharacterCreationUIProps> {
 					{!hasNoOffHand
 						? (
 							<FormSelect id="f-off" name="off" value={offHand.id} disabled={offWeapons.length < 2} onChange={onChange('off')}>
-								{offWeapons.map(([id, item], i) => (
-									<FormSelectItem value={id} key={i}>
+								{offWeapons.map((item, i) => (
+									<FormSelectItem value={item.id} key={i}>
 										{item.title}
 									</FormSelectItem>
 								))}
@@ -136,8 +133,8 @@ class CharacterCreationUI extends React.Component<ICharacterCreationUIProps> {
 
 				<FormField fieldId="f-armor" label="Armor" info={armor.description}>
 					<FormSelect id="f-armor" name="armor" value={armor.id} disabled={armors.length < 2} onChange={onChange('armor')}>
-						{armors.map(([id, item], i) => (
-							<FormSelectItem value={id} key={i}>
+						{armors.map((item, i) => (
+							<FormSelectItem value={item.id} key={i}>
 								{item.title}
 							</FormSelectItem>
 						))}
