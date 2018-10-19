@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 
 import { Provider, context } from 'context';
 
-import Debug from 'ui/Debug';
+import Debug from 'ui/common/Debug';
 import Router from 'ui/common/Router';
 import PageWrapper from 'ui/common/PageWrapper';
 
