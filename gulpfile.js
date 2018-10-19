@@ -6,7 +6,6 @@ const cssnano = require('cssnano');
 const changed = require('gulp-changed');
 const postcss = require('gulp-postcss');
 const stylelint = require('gulp-stylelint');
-const runSequence = require('run-sequence');
 const autoprefixer = require('autoprefixer');
 
 const webpackConfig = require('./webpack.config.js');
@@ -41,21 +40,18 @@ const paths = {
 
 let env = 'prod';
 
-// set watch mode
-gulp.task('set-watch', () => env = 'dev');
-
 // clear "dist" folder
-gulp.task('clear', () => del(pathDist));
+const taskClear = () => del(pathDist);
 
 // lint LESS files
-gulp.task('stylelint', () => {
+const taskStylelint = () => {
 	return gulp.src(paths.styles.files)
 		.pipe(changed(paths.styles.dist))
 		.pipe(stylelint(stylelintConfig));
-});
+};
 
 // build CSS
-gulp.task('styles', ['stylelint'], () => {
+const taskStyles = () => {
 	return gulp.src(paths.styles.src)
 		.pipe(changed(paths.styles.dist))
 		.pipe(less())
@@ -64,24 +60,24 @@ gulp.task('styles', ['stylelint'], () => {
 			cssnano(cssnanoConfig)
 		]))
 		.pipe(gulp.dest(paths.styles.dist));
-});
+};
 
 // copy font files
-gulp.task('fonts', () => {
+const taskFonts = () => {
 	return gulp.src(paths.fonts.files)
 		.pipe(changed(paths.fonts.dist))
 		.pipe(gulp.dest(paths.fonts.dist));
-});
+};
 
 // copy index.html
-gulp.task('index', () => {
+const taskIndex = () => {
 	return gulp.src(paths.templates.files)
 		.pipe(changed(paths.templates.dist))
 		.pipe(gulp.dest(paths.templates.dist));
-});
+};
 
 // build JS
-gulp.task('scripts', cb => {
+const taskScripts = cb => {
 	const conf = webpackConfig(env);
 	let isFirstRun = true;
 
@@ -109,22 +105,21 @@ gulp.task('scripts', cb => {
 			cb();
 		}
 	});
-});
+};
 
 // watch files and perform given tasks
-gulp.task('watch', () => {
-	gulp.watch(paths.templates.files, ['index']);
-	gulp.watch(paths.styles.files, ['styles']);
-	gulp.watch(paths.fonts.files, ['fonts']);
-});
+const taskWatch = cb => {
+	env = 'dev';
+	gulp.watch(paths.templates.files, taskIndex);
+	gulp.watch(paths.styles.files, gulp.series(taskStylelint, taskStyles));
+	gulp.watch(paths.fonts.files, taskFonts);
+	cb();
+};
 
 // build app
-gulp.task('build', cb => {
-	runSequence('clear', 'index', 'fonts', 'styles', 'scripts', cb);
-});
+const build = gulp.series(taskClear, taskIndex, taskFonts, taskStylelint, taskStyles, taskScripts);
 
-// develop app
-gulp.task('dev', cb => {
-	// set watch before build, because "watch mode" in Webpack
-	runSequence('set-watch', 'watch', 'build', cb);
-});
+// develop app (set watch before build, because "watch mode" in Webpack)
+const dev = gulp.series(taskWatch, build);
+
+module.exports = { build, dev };
