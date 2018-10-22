@@ -61,15 +61,14 @@ class BattlePageContainer extends React.Component<IBattlePageContainerProps, IBa
 	}
 
 	public render() {
-		const { state, engine } = this;
-		const { engineState, engineUpdate } = state;
+		const engine = this.engine;
 		const onTileSelect = engine.selectTile.bind(engine);
 		const onActionSelect = engine.selectAction.bind(engine);
 
 		return (
 			<BattleUI
-				engineState={engineState}
-				engineUpdate={engineUpdate}
+				engineState={this.state.engineState}
+				engineUpdate={this.state.engineUpdate}
 				onTileSelect={onTileSelect}
 				onActionSelect={onActionSelect}
 			/>

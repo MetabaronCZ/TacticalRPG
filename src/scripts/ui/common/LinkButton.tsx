@@ -5,7 +5,7 @@ interface ILinkButtonProps {
 }
 
 const LinkButton: React.SFC<ILinkButtonProps> = ({ onClick, children }) => (
-	<button className="LinkButton" onClick={onClick}>
+	<button className="LinkButton" type="button" onClick={onClick}>
 		{children}
 	</button>
 );

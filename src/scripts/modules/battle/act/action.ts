@@ -113,7 +113,7 @@ class ActAction {
 		const targets = skills[0].getTargets(actor, characters, targetable);
 
 		this.area = targetable;
-		this.targets = targets;
+		this.targets = targets.map(char => char.position);
 
 		this.events.onStart(this);
 	}
@@ -144,7 +144,7 @@ class ActAction {
 
 		const effectAreas = skills.map(s => s.getEffectArea(actor.position, target));
 		const effectArea = getIntersection(effectAreas, pos => pos.id);
-		const effectTargets = skills[0].getEffectTargets(actor, effectArea, characters);
+		const effectTargets = skills[0].getTargets(actor, characters, effectArea);
 
 		this.effectTarget = target;
 		this.effectArea = effectArea;

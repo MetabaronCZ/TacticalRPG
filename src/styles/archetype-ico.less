@@ -19,37 +19,37 @@
 		transition: background-color linear @anim-default;
 	}
 
-	&--sizeDefault {
+	&&--sizeDefault {
 		width: @vu*2;
 		height: @vu*2;
 	}
 
-	&--sizeLarge {
+	&&--sizeLarge {
 		width: @vu*4;
 		height: @vu*4;
 	}
 
-	&--primaryP {
+	&&--primaryP {
 		.mx-archetype-primary(@color-red);
 	}
 
-	&--primaryS {
+	&&--primaryS {
 		.mx-archetype-primary(@color-green);
 	}
 
-	&--primaryM {
+	&&--primaryM {
 		.mx-archetype-primary(@color-blue);
 	}
 
-	&--secondaryP::after {
+	&&--secondaryP::after {
 		background-color: @color-red;
 	}
 
-	&--secondaryS::after {
+	&&--secondaryS::after {
 		background-color: @color-green;
 	}
 
-	&--secondaryM::after {
+	&&--secondaryM::after {
 		background-color: @color-blue;
 	}
 }

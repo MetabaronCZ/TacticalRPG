@@ -58,7 +58,6 @@ class CharacterCreationUI extends React.Component<ICharacterCreationUIProps> {
 				<FormField fieldId="f-name" label="Name" error={validation.errors.name}>
 					<FormInput
 						id="f-name"
-						type="text"
 						value={name}
 						placeholder="Type character name ..."
 						name="name"
@@ -85,9 +84,7 @@ class CharacterCreationUI extends React.Component<ICharacterCreationUIProps> {
 				<FormField fieldId="f-archetype" label="Archetype" info={archetype.description}>
 					<FormSelect id="f-archetype" name="archetype" value={archetype.id} onChange={onChange('archetype')}>
 						{Archetypes.map((id, value, i) => (
-							<FormSelectItem value={id} key={i}>
-								{value.title}
-							</FormSelectItem>
+							<FormSelectItem text={value.title} value={id} key={i} />
 						))}
 					</FormSelect>
 				</FormField>
@@ -95,9 +92,7 @@ class CharacterCreationUI extends React.Component<ICharacterCreationUIProps> {
 				<FormField fieldId="f-skillset" label="Magic" info={skillset.description}>
 					<FormSelect id="f-skillset" name="skillset" value={skillset.id} disabled={skillsets.length < 2} onChange={onChange('skillset')}>
 						{skillsets.map((item, i) => (
-							<FormSelectItem value={item.id} key={i}>
-								{item.title}
-							</FormSelectItem>
+							<FormSelectItem text={item.title} value={item.id} key={i} />
 						))}
 					</FormSelect>
 				</FormField>
@@ -105,9 +100,7 @@ class CharacterCreationUI extends React.Component<ICharacterCreationUIProps> {
 				<FormField fieldId="f-main" label={mainHandWield.title} info={mainHand.description}>
 					<FormSelect id="f-main" name="main" value={mainHand.id} disabled={mainWeapons.length < 2} onChange={onChange('main')}>
 						{mainWeapons.map((item, i) => (
-							<FormSelectItem value={item.id} key={i}>
-								{item.title}
-							</FormSelectItem>
+							<FormSelectItem text={item.title} value={item.id} key={i} />
 						))}
 					</FormSelect>
 				</FormField>
@@ -117,15 +110,13 @@ class CharacterCreationUI extends React.Component<ICharacterCreationUIProps> {
 						? (
 							<FormSelect id="f-off" name="off" value={offHand.id} disabled={offWeapons.length < 2} onChange={onChange('off')}>
 								{offWeapons.map((item, i) => (
-									<FormSelectItem value={item.id} key={i}>
-										{item.title}
-									</FormSelectItem>
+									<FormSelectItem text={item.title} value={item.id} key={i} />
 								))}
 							</FormSelect>
 						)
 						: (
 							<FormSelect disabled={true}>
-								<FormSelectItem>{mainHand.title}</FormSelectItem>
+								<FormSelectItem text={mainHand.title} />
 							</FormSelect>
 						)
 					}
@@ -134,9 +125,7 @@ class CharacterCreationUI extends React.Component<ICharacterCreationUIProps> {
 				<FormField fieldId="f-armor" label="Armor" info={armor.description}>
 					<FormSelect id="f-armor" name="armor" value={armor.id} disabled={armors.length < 2} onChange={onChange('armor')}>
 						{armors.map((item, i) => (
-							<FormSelectItem value={item.id} key={i}>
-								{item.title}
-							</FormSelectItem>
+							<FormSelectItem text={item.title} value={item.id} key={i} />
 						))}
 					</FormSelect>
 				</FormField>

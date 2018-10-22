@@ -19,8 +19,7 @@ class Position {
 
 	public isOnStraightLine(pos: Position): boolean {
 		const { x, y } = this;
-		const { x: posX, y: posY } = pos;
-		return (x === posX || y === posY || 0 === (Math.abs(x - posX) - Math.abs(y - posY)));
+		return (x === pos.x || y === pos.y || 0 === (Math.abs(x - pos.x) - Math.abs(y - pos.y)));
 	}
 
 	public getNeighbours(obstacles: Position[] = []): Position[] {

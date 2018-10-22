@@ -5,9 +5,10 @@ import { firstLetterToUpper } from 'core/string';
 
 export type ButtonColor = 'default' | 'yellow' | 'red' | 'green' | 'blue' | 'grey';
 export type ButtonSize = 'default' | 'small' | 'large';
+export type ButtonType = 'button' | 'submit' | 'reset';
 
 interface IButtonContainerProps {
-	readonly type?: 'button' | 'submit' | 'reset';
+	readonly type?: ButtonType;
 	readonly ico?: IcoID;
 	readonly size?: ButtonSize;
 	readonly color?: ButtonColor;
@@ -16,15 +17,13 @@ interface IButtonContainerProps {
 }
 
 const Button: React.SFC<IButtonContainerProps> = props => {
-	const { type, ico, size, color, text, onClick } = props;
-	const typeName = ('submit' === type ? type : 'button');
-	const icoName = Icos[ico || 'default'];
+	const { type = 'button', ico = 'default', size, color, text, onClick } = props;
 	const sizeCls = `Button--size${firstLetterToUpper(size || 'default')}`;
 	const colorCls = `Button--color${firstLetterToUpper(color || 'default')}`;
 
 	return (
-		<button className={`Button ${sizeCls} ${colorCls}`} type={typeName} onClick={onClick}>
-			{icoName ? <span className="Button-ico">{icoName}</span> : ''}
+		<button className={`Button ${sizeCls} ${colorCls}`} type={type} onClick={onClick}>
+			{Icos[ico] ? <span className="Button-ico">{Icos[ico]}</span> : ''}
 			{text}
 		</button>
 	);

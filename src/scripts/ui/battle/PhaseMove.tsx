@@ -8,9 +8,9 @@ interface IActMoveUIProps {
 }
 
 const ActMoveUI: React.SFC<IActMoveUIProps> = ({ move }) => (
-	<div>
+	<div className="Phase">
 		<h4>Movement phase:</h4>
-		<div>State: <strong>{move.getState()}</strong></div>
+		<div>State: <span className="u-weight-bold">{move.getState()}</span></div>
 		<div>Movable: {formatPositions(move.getMovable())}</div>
 		<div>Initial position: {formatPosition(move.getInitialPosition())}</div>
 		<div>Selected: {formatPosition(move.getTarget())}</div>

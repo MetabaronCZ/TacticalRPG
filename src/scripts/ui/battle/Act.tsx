@@ -19,33 +19,32 @@ const ActUI: React.SFC<IActUIProps> = ({ act, onActionSelect }) => {
 	if (null === act) {
 		return <div>Waiting for act data...</div>;
 	}
-	const move = act.getMovePhase();
+	const movePhase = act.getMovePhase();
 	const actionPhase = act.getActionPhase();
 	const directPhase = act.getDirectPhase();
 	const actions = act.getActions();
 	const actor = act.getActor();
 
 	return (
-		<table style={{ width: '100%', }}>
+		<table className="Act">
 			<tbody>
 				<tr>
-					<td style={{ verticalAlign: 'top', width: '70%', paddingRight: '40px', }}>
+					<td className="Act-row Act-row--character">
 						<h3 className="Heading">Character act</h3>
-						<div>Phase: <strong>{act.getPhase()}</strong></div>
-						<div>Actor: <strong>{actor.name}</strong> {formatPosition(actor.position)}</div>
+						<div>Phase: <span className="u-weight-bold">{act.getPhase()}</span></div>
+						<div>Actor: <span className="u-weight-bold">{actor.name}</span> {formatPosition(actor.position)}</div>
 
 						<br/>
 
-						<table style={{ width: '100%', }}>
+						<table className="Act-phases">
 							<tbody>
 								<tr>
-									<td style={{ verticalAlign: 'top', width: '50%', paddingRight: '20px', }}>
-										<ActMoveUI move={move} />
-										<br/>
+									<td className="Act-phases-row">
+										<ActMoveUI move={movePhase} />
 										<ActDirectUI direct={directPhase} />
 									</td>
 
-									<td style={{ verticalAlign: 'top', width: '50%', paddingRight: '20px', }}>
+									<td className="Act-phases-row">
 										<ActActionUI act={actionPhase} />
 									</td>
 								</tr>
@@ -53,7 +52,7 @@ const ActUI: React.SFC<IActUIProps> = ({ act, onActionSelect }) => {
 						</table>
 					</td>
 
-					<td style={{ verticalAlign: 'top', }}>
+					<td className="Act-row Act-row--actions">
 						<h3 className="Heading">Character Actions</h3>
 						<Actions actions={actions} onSelect={onActionSelect} />
 					</td>

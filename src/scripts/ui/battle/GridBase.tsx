@@ -13,11 +13,19 @@ interface IGridBaseProps {
 	onSelect: (pos: Position) => void;
 }
 
-const getColor = (pos: Position, act: Act|null) => {
-	let color = 'black';
+type TileType =
+	'default' |
+	'movable' | 'movePath' | 'moveTarget' |
+	'actionRange' | 'actionTargetable' |
+	'actionEffectArea' | 'actionEffectTargets' | 'actionEffectTarget' |
+	'reactors' | 'reactionEvasible' | 'reactor' |
+	'directable' | 'directTarget';
+
+const getTileType = (pos: Position, act: Act|null): TileType => {
+	let type: TileType = 'default';
 
 	if (null === act) {
-		return color;
+		return type;
 	}
 	switch (act.getPhase()) {
 		case 'MOVEMENT': {
@@ -25,13 +33,13 @@ const getColor = (pos: Position, act: Act|null) => {
 			const tgt = move.getTarget();
 
 			if (pos.isContained(move.getMovable())) {
-				color = 'green';
+				type = 'movable';
 			}
 			if (pos.isContained(move.getPath())) {
-				color = 'blue';
+				type = 'movePath';
 			}
 			if (pos === tgt) {
-				color = 'yellow';
+				type = 'moveTarget';
 			}
 			break;
 		}
@@ -43,10 +51,10 @@ const getColor = (pos: Position, act: Act|null) => {
 			switch (actionPhase.getState()) {
 				case 'IDLE':
 					if (pos.isContained(actionPhase.getArea())) {
-						color = 'green';
+						type = 'actionRange';
 					}
 					if (pos.isContained(actionPhase.getTargetable())) {
-						color = 'blue';
+						type = 'actionTargetable';
 					}
 					break;
 
@@ -54,13 +62,13 @@ const getColor = (pos: Position, act: Act|null) => {
 					const tgt = actionPhase.getEffectTarget();
 
 					if (pos.isContained(actionPhase.getEffectArea())) {
-						color = 'green';
+						type = 'actionEffectArea';
 					}
 					if (pos.isContained(actionPhase.getEffectTargets().map(char => char.position))) {
-						color = 'blue';
+						type = 'actionEffectTargets';
 					}
 					if (pos === tgt) {
-						color = 'yellow';
+						type = 'actionEffectTarget';
 					}
 					break;
 				}
@@ -71,13 +79,13 @@ const getColor = (pos: Position, act: Act|null) => {
 						const reactors = actionPhase.getReactions().map(char => char.getReactor().position);
 
 						if (pos.isContained(reactors)) {
-							color = 'blue';
+							type = 'reactors';
 						}
 						if (pos.isContained(reactionPhase.getEvasionTargets())) {
-							color = 'green';
+							type = 'reactionEvasible';
 						}
 						if (pos === reactor.position) {
-							color = 'yellow';
+							type = 'reactor';
 						}
 					}
 					break;
@@ -90,44 +98,41 @@ const getColor = (pos: Position, act: Act|null) => {
 			const tgt = direct.getTarget();
 
 			if (pos.isContained(direct.getDirectable())) {
-				color = 'green';
+				type = 'directable';
 			}
 			if (pos === tgt) {
-				color = 'yellow';
+				type = 'directTarget';
 			}
 			break;
 		}
 	}
 
-	return color;
+	return type;
 };
 
 const GridBase: React.SFC<IGridBaseProps> = ({ act, onSelect }) => {
 	const tiles = getPositions().map(pos => {
-		return [pos, getColor(pos, act)] as [Position, string];
+		return [pos, getTileType(pos, act)] as [Position, TileType];
 	});
 
-	return (
-		<div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', }}>
-			{tiles.map(([pos, color], i) => {
-				const { x, y } = pos;
-				const onClick = () => onSelect(pos);
+	const onClick = (pos: Position) => () => onSelect(pos);
 
+	return (
+		<div className="GridTiles">
+			{tiles.map(([pos, type], i) => {
+				const { x, y } = pos;
 				return (
 					<div
+						className={`GridTiles-item GridTiles-item--${type}`}
 						style={
 							{
-								position: 'absolute',
-								top: y * itemSize + '%',
-								left: x * itemSize + '%',
-								width: itemSize + '%',
-								height: itemSize + '%',
-								border: '1px solid grey',
-								background: color,
-								boxSizing: 'border-box',
+								top: (y * itemSize + '%'),
+								left: (x * itemSize + '%'),
+								width: (itemSize + '%'),
+								height: (itemSize + '%'),
 							}
 						}
-						onClick={onClick}
+						onClick={onClick(pos)}
 						key={i}
 					/>
 				);

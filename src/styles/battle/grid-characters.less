@@ -1,0 +1,65 @@
+.GridCharacters {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+
+	&-item {
+		position: absolute;
+
+		&-visual {
+			width: 100%;
+			height: 100%;
+			font-size: 9px;
+			color: @color-black;
+			text-align: center;
+			border-radius: 100%;
+			background: @color-black;
+			border: 4px solid @color-grey;
+
+			&&--player-0 {
+				border-color: darkorchid;
+				background-color: darkviolet;
+			}
+
+			&&--player-1 {
+				border-color: salmon;
+				background-color: tomato;
+			}
+
+			&.is-selected {
+				border-color: @color-yellow-light;
+			}
+		}
+
+		&-dir {
+			@dir-ico-size: 4px;
+			position: absolute;
+			width: 0;
+			height: 0;
+			border-radius: 100%;
+			border: @dir-ico-size solid @color-white;
+
+			&&--top {
+				top: 0;
+				left: calc(50% ~" - " @dir-ico-size);
+			}
+
+			&&--bottom {
+				bottom: 0;
+				left: calc(50% ~" - " @dir-ico-size);
+			}
+
+			&&--left {
+				top: calc(50% ~" - " @dir-ico-size);
+				left: 0;
+			}
+
+			&&--right {
+				top: calc(50% ~" - " @dir-ico-size);
+				right: 0;
+			}
+		}
+	}
+}

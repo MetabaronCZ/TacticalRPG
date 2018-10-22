@@ -7,25 +7,25 @@ import Player from 'modules/battle/player';
 
 import ArchetypeIco from 'ui/common/ArchetypeIco';
 
-interface ICharactersProps {
+interface IPlayersProps {
 	act: Act|null;
 	players: Player[];
 }
 
-const Characters: React.SFC<ICharactersProps> = ({ act, players }) => (
-	<div>
+const Players: React.SFC<IPlayersProps> = ({ act, players }) => (
+	<div className="Players">
 		{players.map((pl, p) => (
-			<div style={{ marginBottom: '20px', }} key={p}>
+			<div className="Players-item" key={p}>
 				<h3 className="Heading">
 					{pl.name} ({pl.control} Player)
 				</h3>
 
-				<table style={{ width: '100%', borderCollapse: 'collapse', }}>
+				<table className="Players-item-characters">
 					<thead>
 						<tr>
 							<th>Name</th>
-							<th style={{ textAlign: 'right', paddingLeft: '5px', }}>HP</th>
-							<th style={{ textAlign: 'right', paddingLeft: '5px', }}>AP</th>
+							<th className="Players-item-characters-heading">HP</th>
+							<th className="Players-item-characters-heading">AP</th>
 						</tr>
 					</thead>
 
@@ -37,20 +37,22 @@ const Characters: React.SFC<ICharactersProps> = ({ act, players }) => (
 							const AP = char.attributes.get('AP');
 							const baseHP = char.baseAttributes.get('HP');
 							const baseAP = char.baseAttributes.get('AP');
-							const color = (isDead ? 'darkred' : (isActive ? 'black' : ''));
+							const state = (isDead ? 'is-dead' : (isActive ? 'is-active' : ''));
 
 							return (
-								<tr key={c} style={{ backgroundColor: color, }}>
-									<td>
-										<strong>{char.name}</strong>
+								<tr className={`Players-item-characters-item ${state}`} key={c}>
+									<td className="Players-item-characters-item-row">
+										<span className="u-weight-bold">{char.name}</span>
 										{' '}{Icos[char.sex.toLowerCase() as IcoID]}
 										{' '}<ArchetypeIco archetype={char.archetype} />
 									</td>
-									<td style={{ textAlign: 'right', paddingLeft: '10px', }}>
-										{HP} <span style={{ color: 'grey', }}>/ {baseHP}</span>
+
+									<td className="Players-item-characters-item-row Players-item-characters-item-row--number">
+										{HP} <span className="Players-item-characters-item-base">/ {baseHP}</span>
 									</td>
-									<td style={{ textAlign: 'right', paddingLeft: '10px', }}>
-										{AP} <span style={{ color: 'grey', }}>/ {baseAP}</span>
+
+									<td className="Players-item-characters-item-row Players-item-characters-item-row--number">
+										{AP} <span className="Players-item-characters-item-base">/ {baseAP}</span>
 									</td>
 								</tr>
 							);
@@ -62,4 +64,4 @@ const Characters: React.SFC<ICharactersProps> = ({ act, players }) => (
 	</div>
 );
 
-export default Characters;
+export default Players;

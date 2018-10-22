@@ -1,0 +1,31 @@
+.Players {
+	&-item {
+		margin-bottom: 2*@vu;
+
+		&-characters {
+			width: 100%;
+			border-collapse: collapse;
+
+			&-heading {
+				text-align: right;
+				padding-left: @vu;
+			}
+
+			&-item {
+				&-row {
+					&&--number {
+						padding-left: @vu;
+						text-align: right;
+					}
+				}
+
+				&-base {
+					color: @color-grey;
+				}
+
+				&.is-active { background-color: @color-black; }
+				&.is-dead { background-color: @color-red-dark; }
+			}
+		}
+	}
+}

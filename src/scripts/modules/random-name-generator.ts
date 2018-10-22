@@ -3,13 +3,11 @@ import nameSamples from 'data/names';
 const markovOrder = 3; // Markov chains order
 const paramEnd = 'END';
 
-interface IGroup {
-	count: number;
-	readonly next: any;
-}
-
 interface IGroups {
-	[name: string]: IGroup;
+	[name: string]: {
+		count: number;
+		readonly next: any;
+	};
 }
 
 interface IFinishers {

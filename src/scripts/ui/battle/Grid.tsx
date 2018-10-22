@@ -8,14 +8,6 @@ import Position from 'modules/geometry/position';
 import GridBase from 'ui/battle/GridBase';
 import GridCharacters from 'ui/battle/GridCharacters';
 
-const gridWidth = 400;
-
-export interface IPlayerColors {
-	player: number;
-	colorA: string;
-	colorB: string;
-}
-
 interface IGridProps {
 	act: Act|null;
 	players: Player[];
@@ -24,19 +16,18 @@ interface IGridProps {
 }
 
 const Grid: React.SFC<IGridProps> = ({ act, players, characters, onTileSelect }) => {
-	const playerColors: IPlayerColors[] = players.map((pl, p) => ({
-		player: p,
-		colorA: 0 === p ? 'darkorchid' : 'salmon',
-		colorB: 0 === p ? 'darkviolet' : 'tomato'
-	}));
-
 	const actor = act ? act.getActor() : null;
 
 	return (
-		<div style={{ position: 'relative', width: gridWidth + 'px', height: gridWidth + 'px', cursor: 'pointer', }}>
-			<GridBase act={act} onSelect={onTileSelect} />
-			<GridCharacters actor={actor} characters={characters} colors={playerColors} />
-		</div>
+		<ul className="Grid">
+			<li className="Grid-item">
+				<GridBase act={act} onSelect={onTileSelect} />
+			</li>
+
+			<li className="Grid-item">
+				<GridCharacters actor={actor} characters={characters} players={players} />
+			</li>
+		</ul>
 	);
 };
 

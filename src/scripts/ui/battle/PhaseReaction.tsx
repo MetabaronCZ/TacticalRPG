@@ -13,7 +13,7 @@ const ActReactUI: React.SFC<IActReactUIProps> = ({ reaction, isActive }) => {
 	const action = reaction.getAction();
 
 	return (
-		<div style={{ backgroundColor: (isActive ? 'black' : ''), marginBottom: '10px', }}>
+		<div className={`Phase ${isActive ? 'is-active' : ''}`}>
 			<h4>Reactor: {reactor.name}</h4>
 			<div>State: {reaction.getState()}</div>
 			<div>Action: {action ? `${action.title} (${action.skills.join(', ')})` : '-'}</div>

@@ -36,7 +36,6 @@ const onDelete = (store: Store) => (char: CharacterData) => () => {
 		if (included.length) {
 			return alert(`Could not delete "${char.name}": character is included in party (${included.join(', ')})`);
 		}
-
 		store.characters.remove(char);
 		store.save();
 	}

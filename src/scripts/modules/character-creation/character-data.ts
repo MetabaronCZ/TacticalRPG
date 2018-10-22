@@ -54,14 +54,15 @@ export class CharacterData extends IndexableData {
 			lastUpdate: conf.lastUpdate
 		});
 
-		for (const field of ['name', 'sex', 'archetype', 'skillset', 'main', 'off', 'armor']) {
-			const attr = field as ICharacterDataEditable;
+		const attrs: ICharacterDataEditable[] = ['name', 'sex', 'archetype', 'skillset', 'main', 'off', 'armor'];
+
+		attrs.forEach(attr => {
 			const value = conf[attr];
 
 			if ('undefined' !== typeof value) {
 				this.set(attr, value);
 			}
-		}
+		});
 	}
 
 	public validate(): IValidation<ICharacterDataEditable> {
@@ -150,11 +151,13 @@ export class CharacterData extends IndexableData {
 	@action
 	public setName(name: string) {
 		this.data.name = name;
+		super.update();
 	}
 
 	@action
 	public setSex(id: SexID) {
 		this.data.sex = Sexes.get(id);
+		super.update();
 	}
 
 	@action
@@ -176,12 +179,14 @@ export class CharacterData extends IndexableData {
 		if (!this.canWieldArmor(this.data.armor.id)) {
 			this.setArmor('NONE');
 		}
+		super.update();
 	}
 
 	@action
 	public setSkillset(id: SkillsetID) {
 		if (this.canUseSkillset(id)) {
 			this.data.skillset = Skillsets.get(id);
+			super.update();
 		}
 	}
 
@@ -193,6 +198,7 @@ export class CharacterData extends IndexableData {
 			if (!this.canWieldWeapon(this.data.off.id, 'OFF')) {
 				this.setOffHand('NONE');
 			}
+			super.update();
 		}
 	}
 
@@ -200,6 +206,7 @@ export class CharacterData extends IndexableData {
 	public setOffHand(id: WeaponID) {
 		if (this.canWieldWeapon(id, 'OFF')) {
 			this.data.off = Weapons.get(id);
+			super.update();
 		}
 	}
 
@@ -207,6 +214,7 @@ export class CharacterData extends IndexableData {
 	public setArmor(id: ArmorID) {
 		if (this.canWieldArmor(id)) {
 			this.data.armor = Armors.get(id);
+			super.update();
 		}
 	}
 

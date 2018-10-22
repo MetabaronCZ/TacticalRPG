@@ -7,7 +7,7 @@ import CharacterAction from 'modules/battle/character-action';
 import ActUI from 'ui/battle/Act';
 import Grid from 'ui/battle/Grid';
 import Order from 'ui/battle/Order';
-import Characters from 'ui/battle/Characters';
+import Players from 'ui/battle/Players';
 
 interface IBattleUIProps {
 	engineState?: IEngineState;
@@ -26,29 +26,27 @@ const BattleUI: React.SFC<IBattleUIProps> = ({ engineState, engineUpdate, onTile
 		return <div>Waiting for act to start [Tick {tick}]...</div>;
 	}
 	return (
-		<div className="Paragraph" style={{ textAlign: 'left', padding: '40px', }}>
-			<br/>
-			<h2>
+		<div className="BattleUI">
+			<h2 className="BattleUI-heading">
 				ACT {act.getId()} ({engineUpdate.toLocaleTimeString()}) [Tick {tick}]
 			</h2>
-			<br/>
 
-			<table style={{ width: '100%', }}>
+			<table className="BattleUI-table">
 				<tbody>
 					<tr>
-						<td style={{ verticalAlign: 'top', width: '200px', }}>
+						<td className="BattleUI-table-column BattleUI-table-column--order">
 							<Order act={act} characters={order} />
 						</td>
 
-						<td style={{ verticalAlign: 'top', paddingLeft: '40px', width: '300px', }}>
-							<Characters act={act} players={players} />
+						<td className="BattleUI-table-column BattleUI-table-column--players">
+							<Players act={act} players={players} />
 						</td>
 
-						<td style={{ verticalAlign: 'top', paddingLeft: '40px', }}>
+						<td className="BattleUI-table-column">
 							<ActUI act={act} onActionSelect={onActionSelect}/>
 						</td>
 
-						<td style={{ verticalAlign: 'top', paddingLeft: '40px', width: '400px', }}>
+						<td className="BattleUI-table-column BattleUI-table-column--grid">
 							<Grid
 								act={act}
 								players={players}

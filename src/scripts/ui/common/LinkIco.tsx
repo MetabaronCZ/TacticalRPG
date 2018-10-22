@@ -7,9 +7,9 @@ interface ILinkIcoProps {
 	readonly onClick?: () => void;
 }
 
-const LinkIco: React.SFC<ILinkIcoProps> = ({ ico, title = '', onClick }) => (
+const LinkIco: React.SFC<ILinkIcoProps> = ({ ico = 'default', title = '', onClick }) => (
 	<button className="LinkIco" title={title} onClick={onClick}>
-		{Icos[ico || 'default']}
+		{Icos[ico]}
 	</button>
 );
 

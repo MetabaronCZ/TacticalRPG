@@ -1,54 +1,43 @@
 .Order {
-	width: 100%;
-	margin-bottom: @vu;
+	&-list {
+		width: 100%;
+		border-collapse: collapse;
 
-	&-item {
-		@skew: -10deg;
+		&-heading {
+			padding-right: @vu;
 
-		color: @color-yellow;
-		padding: 0 @vu*2;
-		margin-bottom: @vu;
-		border: 2px solid @color-grey;
-		border-radius: @border-radius-default;
-		cursor: pointer;
-		transform: skew(@skew);
-		transition: border-color linear @anim-default;
+			&:last-child {
+				padding-right: 0;
+			}
 
-		&-inner {
-			@shadow-color: @color-black;
-
-			.u-text-default;
-			.u-weight-bold;
-
-			color: @color-white;
-			text-shadow: 1px 1px 0 @shadow-color, -1px 1px 0 @shadow-color, 1px -1px 0 @shadow-color, -1px -1px 0 @shadow-color, 0 0 3px @shadow-color;
-			transform: skew(-@skew);
-		}
-
-		&&--ally {
-			background: linear-gradient(to right, @color-blue, transparent);
-
-			&:hover {
-				border-color: @color-white;
-				background: linear-gradient(to right, @color-blue, @color-green);
+			&&--number,
+			&&--ct,
+			&&--spd {
+				text-align: right;
 			}
 		}
 
-		&&--enemy {
-			background: linear-gradient(to right, @color-red, transparent);
+		&-item {
+			&-row {
+				padding-right: @vu;
 
-			&:hover {
-				border-color: @color-white;
-				background: linear-gradient(to right, @color-red, @color-yellow);
+				&:last-child {
+					padding-right: 0;
+				}
+
+				&&--title {
+					.u-weight-bold;
+				}
+
+				&&--number,
+				&&--ct,
+				&&--spd {
+					text-align: right;
+				}
 			}
-		}
 
-		&&--highlighted {
-			border-color: @color-yellow;
-
-			.Order-item-inner {
-				color: @color-yellow;
-			}
+			&.is-active { background-color: @color-black; }
+			&.is-dead { background-color: @color-red-dark; }
 		}
 	}
 }

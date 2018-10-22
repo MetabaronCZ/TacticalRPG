@@ -4,11 +4,11 @@ export type IcoID = 'default' |
 	'female' | 'male' |
 	'success';
 
-type IIcos<T extends string> = {
-	readonly [id in T]: string|null;
+type IIcos = {
+	readonly [id in IcoID]: string|null;
 };
 
-export const Icos: IIcos<IcoID> = {
+export const Icos: IIcos = {
 	default: null,
 	back: '‹',
 	next: '›',

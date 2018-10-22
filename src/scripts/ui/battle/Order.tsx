@@ -8,37 +8,38 @@ interface IOrderProps {
 	characters: Character[];
 }
 
-const getcolor = (act: Act|null, char: Character) => {
+const getState = (act: Act|null, char: Character): string|null => {
 	const isDead = char.isDead();
 	const isActive = !!(act && act.getActor() === char);
-	return (isDead ? 'darkred' : (isActive ? 'black' : ''));
+	return (isDead ? 'is-dead' : (isActive ? 'is-active' : null));
 };
 
 const Order: React.SFC<IOrderProps> = ({ act, characters }) => (
-	<div>
+	<div className="Order">
 		<h3 className="Heading">Order</h3>
 
-		<table style={{ width: '100%', borderCollapse: 'collapse', }}>
+		<table className="Order-list">
 			<thead>
 				<tr>
-					<th>Nr</th>
-					<th>Name</th>
-					<th style={{ textAlign: 'right', paddingLeft: '5px', }}>CT</th>
-					<th style={{ textAlign: 'right', paddingLeft: '5px', }}>SPD</th>
+					<th className="Order-list-heading Order-list-heading--number">Nr</th>
+					<th className="Order-list-heading Order-list-heading--title">Name</th>
+					<th className="Order-list-heading Order-list-heading--ct">CT</th>
+					<th className="Order-list-heading Order-list-heading--spd">SPD</th>
 				</tr>
 			</thead>
 
 			<tbody>
-				{characters.map((char, c) => (
-					<tr key={c} style={{ backgroundColor: getcolor(act, char), }}>
-						<td style={{ textAlign: 'right', }}>{c}.</td>
-						<td style={{ paddingLeft: '10px', }}>
-							<strong>{char.name}</strong>
-						</td>
-						<td style={{ textAlign: 'right', paddingLeft: '10px', }}>{char.attributes.get('CT')}</td>
-						<td style={{ textAlign: 'right', paddingLeft: '10px', }}>{char.attributes.get('SPD')}</td>
-					</tr>
-				))}
+				{characters.map((char, i) => {
+					const charState = getState(act, char);
+					return (
+						<tr className={`Order-list-item ${charState || ''}`} key={i}>
+							<td className="Order-list-item-row Order-list-item-row--number">{i}.</td>
+							<td className="Order-list-item-row Order-list-item-row--title">{char.name}</td>
+							<td className="Order-list-item-row Order-list-item-row--ct">{char.attributes.get('CT')}</td>
+							<td className="Order-list-item-row Order-list-item-row--spd">{char.attributes.get('SPD')}</td>
+						</tr>
+					);
+				})}
 			</tbody>
 		</table>
 	</div>

@@ -7,27 +7,31 @@ interface IActionsProps {
 }
 
 const Actions: React.SFC<IActionsProps> = ({ actions, onSelect }) => {
+	const onClick = (action: CharacterAction) => (e: SyntheticEvent) => {
+		e.preventDefault();
+
+		if (action.isActive()) {
+			onSelect(action);
+		}
+	};
 	return (
-		<React.Fragment>
-			{actions.map((action, i) => {
-				const color = action.isActive() ? '' : 'grey';
-				const onClick = (e: SyntheticEvent) => {
-					e.preventDefault();
-
-					if (action.isActive()) {
-						onSelect(action);
-					}
-				};
-
-				return (
-					<div style={{ color, marginBottom: '10px', }} key={i}>
-						<div>&rsaquo; <a className="Link" href="#" onClick={onClick}><strong>{action.title}</strong></a></div>
-						<div className="u-text-small">{action.id} ({action.cost}AP)</div>
-						<div className="u-text-small">[ {action.skills.map(skill => skill.id).join(', ')} ]</div>
+		<ul className="Actions">
+			{actions.map((action, i) => (
+				<li className={`Actions-item ${!action.isActive() ? 'is-disabled' : ''}`} key={i}>
+					<div>
+						&rsaquo; <a className="Link" href="#" onClick={onClick(action)}>
+							<span className="u-weight-bold">{action.title}</span>
+						</a>
 					</div>
-				);
-			})}
-		</React.Fragment>
+
+					<div className="u-text-small">
+						{action.id} ({action.cost}AP)
+						<br/>
+						[ {action.skills.map(skill => skill.id).join(', ')} ]
+					</div>
+				</li>
+			))}
+		</ul>
 	);
 };
 

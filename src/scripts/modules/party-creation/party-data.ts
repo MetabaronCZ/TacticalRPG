@@ -6,7 +6,7 @@ import { CharacterData } from 'modules/character-creation/character-data';
 
 interface IPartyConfig {
 	readonly name: string;
-	readonly characters: Array<string|null>;  // list of character IDs
+	readonly characters: Array<string|null>;  // list of character IDs or empty slots
 }
 
 export type IPartyDataEditable = keyof IPartyConfig;
@@ -78,6 +78,7 @@ export class PartyData extends IndexableData {
 
 	public setName(name: string) {
 		this.name = name;
+		super.update();
 	}
 
 	public setCharacter(char: CharacterData|null, slot: number) {
@@ -85,6 +86,7 @@ export class PartyData extends IndexableData {
 			throw new Error(`Could not set character: invalid slot "${slot}"`);
 		}
 		this.characters[slot] = char;
+		super.update();
 	}
 
 	public removeCharacter(id: string) {
@@ -94,6 +96,8 @@ export class PartyData extends IndexableData {
 			}
 			return char;
 		});
+
+		super.update();
 	}
 
 	public serialize(): IPartyData {

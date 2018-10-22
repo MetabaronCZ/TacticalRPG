@@ -59,19 +59,19 @@ class CharacterCreation {
 		char.setSex(Sexes.getRandomID() || 'MALE');
 		char.setArchetype(Archetypes.getRandomID() || 'PP');
 
-		const skillsets = this.getSkillsetIDs().filter(id => 'NONE' !== id && char.canUseSkillset(id));
+		const skillsets = this.getSkillsetIDs().filter(id => 'NONE' !== id);
 		const skillset = getRandomItem(skillsets);
 		char.setSkillset(skillset || 'NONE');
 
-		const mainHands = this.getWeaponIDs('MAIN').filter(id => 'NONE' !== id && char.canWieldWeapon(id, 'MAIN'));
+		const mainHands = this.getWeaponIDs('MAIN').filter(id => 'NONE' !== id);
 		const mainHand = getRandomItem(mainHands);
 		char.setMainHand(mainHand || 'NONE');
 
-		const offHands = this.getWeaponIDs('OFF').filter(id => 'NONE' !== id && char.canWieldWeapon(id, 'OFF'));
+		const offHands = this.getWeaponIDs('OFF').filter(id => 'NONE' !== id);
 		const offHand = getRandomItem(offHands);
 		char.setOffHand(offHand || 'NONE');
 
-		const armors = this.getArmorIDs().filter(id => 'NONE' !== id && char.canWieldArmor(id));
+		const armors = this.getArmorIDs().filter(id => 'NONE' !== id);
 		const armor = getRandomItem(armors);
 		char.setArmor(armor || 'NONE');
 

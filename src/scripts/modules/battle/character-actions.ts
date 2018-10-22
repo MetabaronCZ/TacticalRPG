@@ -3,10 +3,10 @@ import Character from 'modules/character';
 import { WeaponSkillID } from 'modules/skill/weapon';
 import CharacterAction from 'modules/battle/character-action';
 
-export const getDontReactAction = () => new CharacterAction('DONT_REACT', 'Pass');
-export const getDirectAction = () => new CharacterAction('DIRECT', 'Direct');
-export const getBackAction = () => new CharacterAction('BACK', 'Back');
-export const getPassAction = () => new CharacterAction('PASS', 'End turn');
+export const getDontReactAction = (): CharacterAction => new CharacterAction('DONT_REACT', 'Pass');
+export const getDirectAction = (): CharacterAction => new CharacterAction('DIRECT', 'Direct');
+export const getBackAction = (): CharacterAction => new CharacterAction('BACK', 'Back');
+export const getPassAction = (): CharacterAction => new CharacterAction('PASS', 'End turn');
 
 export const getConfirmAction = (title = 'Confirm', cost = 0): CharacterAction => {
 	return new CharacterAction('CONFIRM', title, cost, true, []);
@@ -50,11 +50,10 @@ export const getIdleActions = (character: Character): CharacterAction[] => {
 	for (const skill of skillset.skills) {
 		const { title, type, cost } = skill;
 
-		if ('ACTIVE' !== type) {
-			continue;
+		if ('ACTIVE' === type) {
+			const action = new CharacterAction('MAGIC', `${title} (${skillset.title})`, cost, AP >= cost, [skill]);
+			actions.push(action);
 		}
-		const action = new CharacterAction('MAGIC', `${title} (${skillset.title})`, cost, AP >= cost, [skill]);
-		actions.push(action);
 	}
 
 	// PASS action

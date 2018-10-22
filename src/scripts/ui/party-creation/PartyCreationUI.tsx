@@ -8,6 +8,8 @@ import PartyCreationForm from 'modules/party-creation';
 import { CharacterData } from 'modules/character-creation/character-data';
 import { PartyData, IPartyDataEditable } from 'modules/party-creation/party-data';
 
+import { formatCharacter } from 'ui/utils';
+
 import Link from 'ui/common/Link';
 import Form from 'ui/common/Form';
 import Button from 'ui/common/Button';
@@ -35,8 +37,8 @@ class PartyCreationUI extends React.Component<IPartyCreationUIProps> {
 	}
 
 	public render() {
+		const { characters } = this.props;
 		const { party, validation } = this.form.state;
-		const characters = this.props.characters;
 		const canCreateParty = characters.data.length > 0;
 
 		return (
@@ -53,7 +55,6 @@ class PartyCreationUI extends React.Component<IPartyCreationUIProps> {
 							<FormField fieldId="f-name" label="Name" error={validation.errors.name}>
 								<FormInput
 									id="f-name"
-									type="text"
 									value={party.getName()}
 									placeholder="Type party name ..."
 									name="name"
@@ -102,35 +103,16 @@ class PartyCreationUI extends React.Component<IPartyCreationUIProps> {
 	private renderPartyItem = (character: CharacterData|null, i: number) => {
 		const filtered = this.form.filterCharacters(character);
 		const id = (character ? character.id : '');
-		let info = '';
-
-		if (character) {
-			const { sex, archetype, mainHand, offHand, armor } = character;
-			let weapons = '';
-
-			if (character.isBothWielding()) {
-				weapons = mainHand.title;
-			} else if (character.isDualWielding()) {
-				weapons = `${mainHand.title} + ${mainHand.title}`;
-			} else {
-				weapons = `${mainHand.title} + ${offHand.title}`;
-			}
-			info = `${sex.title} ${archetype.title} | ${weapons} | ${armor.title}`;
-		}
-
+		const info = formatCharacter(character);
 		const fieldId = `f-character-${i}`;
 
 		return (
 			<FormField fieldId={fieldId} label={`Character ${i + 1}`} info={info} key={i}>
 				<FormSelect id={fieldId} name={`character-${i}`} value={id} onChange={this.onChange('characters', i)}>
-					<FormSelectItem value="">
-						- Empty -
-					</FormSelectItem>
+					<FormSelectItem text="- Empty -" value="" />
 
 					{filtered.map((char, j) => (
-						<FormSelectItem value={char.id} key={j}>
-							{char.name}
-						</FormSelectItem>
+						<FormSelectItem text={char.name} value={char.id} key={j} />
 					))}
 				</FormSelect>
 			</FormField>

@@ -18,12 +18,7 @@ class Status {
 	}
 
 	public remove(effectId: StatusEffectID) {
-		for (let i = 0, imax = this.items.length; i < imax; i++) {
-			if (this.items[i].id === effectId) {
-				this.items.splice(i, 1);
-				return;
-			}
-		}
+		this.items = this.items.filter(item => item.id !== effectId);
 	}
 }
 

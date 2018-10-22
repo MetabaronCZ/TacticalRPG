@@ -9,6 +9,47 @@ import {
 	SkillRange, SkillArea, SkillTarget
 } from 'modules/skill/skill-data';
 
+type ITargetTable = {
+	[id in SkillTarget]: (character: Character, actor: Character) => boolean;
+};
+
+type IAreaTable = {
+	[id in SkillArea]: (source: Position, target: Position, range: SkillRange) => Position[];
+};
+
+// SkillTarget based targetable logic
+const targetTable: ITargetTable = {
+	SELF:  (char: Character, actor: Character) => actor === char,
+	ALLY:  (char: Character, actor: Character) => actor.player === char.player,
+	ENEMY: (char: Character, actor: Character) => actor.player !== char.player,
+	NONE:  (char: Character, actor: Character) => false,
+	ANY:   (char: Character, actor: Character) => true
+};
+
+// SkillArea based area position getters
+const areaTable: IAreaTable = {
+	SINGLE: (source: Position, target: Position) => [target],
+	LINE: (source: Position, target: Position, range: SkillRange) => {
+		const diffX = target.x - source.x;
+		const diffY = target.y - source.y;
+		const dirX = (diffX / Math.abs(diffX)) || 0;
+		const dirY = (diffY / Math.abs(diffY)) || 0;
+		const area: Position[] = [];
+
+		for (let i = 1; i <= range; i++ ) {
+			const pos = getPosition(source.x + i * dirX, source.y + i * dirY);
+
+			if (null !== pos) {
+				area.push(pos);
+			}
+		}
+		return area;
+	},
+	CROSS:      (source: Position, target: Position) => [target, ...target.getSideTiles()],
+	NEIGHBOURS: (source: Position, target: Position) => source.getNeighbours(),
+	AOE3x3:     (source: Position, target: Position) => [target, ...target.getNeighbours()]
+};
+
 class Skill {
 	public readonly id: SkillID;
 	public readonly title: string;
@@ -44,34 +85,22 @@ class Skill {
 	}
 
 	public static filterAttack(ids: SkillID[]): Skill[] {
-		const skills: Skill[] = [];
-
-		for (const id of ids) {
-			const skill = new Skill(id);
-
-			if ('ACTIVE' === skill.type && skill.isAttackSkill) {
-				skills.push(skill);
-			}
-		}
-		return skills;
+		return ids.map(id => new Skill(id))
+			.filter(skill => 'ACTIVE' === skill.type && skill.isAttackSkill);
 	}
 
 	public static filterSpecial(ids: SkillID[]): Skill[] {
-		const skills: Skill[] = [];
-		const uniqueSkills: SkillID[] = [];
-
-		for (const id of ids) {
-			const skill = new Skill(id);
-
-			if ('ACTIVE' === skill.type && !skill.isAttackSkill && -1 === uniqueSkills.indexOf(id)) {
-				uniqueSkills.push(id);
-				skills.push(skill);
-			}
-		}
-		return skills;
+		return ids.map(id => new Skill(id))
+			.filter((skill, i, self) => {
+				return (
+					'ACTIVE' === skill.type &&
+					!skill.isAttackSkill &&
+					i === self.indexOf(skill) // skill unique in result array
+				);
+			});
 	}
 
-	public getTargetable( source: Position): Position[] {
+	public getTargetable(source: Position): Position[] {
 		const { target, range, area } = this;
 
 		if ('NONE' === target) {
@@ -102,132 +131,19 @@ class Skill {
 		return targetable;
 	}
 
-	public getTargets(actor: Character, characters: Character[], targetable: Position[]): Position[] {
-		if (!targetable.length) {
-			return [];
-		}
-		const { target } = this;
-
-		if ('SELF' === target) {
-			return [actor.position];
-		}
-		let targets: Character[] = [];
-
-		// remove dead characters
-		characters = characters.filter(char => !char.isDead());
-
-		// get possible targets
-		switch (target) {
-			case 'ANY':
-				targets = characters;
-				break;
-
-			case 'ALLY':
-				targets = characters.filter(char => char.player === actor.player);
-				break;
-
-			case 'ENEMY':
-				targets = characters.filter(char => char.player !== actor.player);
-				break;
-		}
-
-		if (!targets.length) {
-			return [];
-		}
-		const targetPositions = targets.map(char => char.position);
-		return targetable.filter(pos => pos.isContained(targetPositions));
+	public getTargets(actor: Character, characters: Character[], targetable: Position[]): Character[] {
+		return characters
+			.filter(char => {
+				return (
+					!char.isDead() &&
+					char.position.isContained(targetable) &&
+					targetTable[this.target](char, actor) // character is targetable
+				);
+			});
 	}
 
 	public getEffectArea(source: Position, target: Position): Position[] {
-		const { area, range } = this;
-		let effect: Position[] = [];
-
-		switch (area) {
-			case 'SINGLE':
-				effect.push(target);
-				break;
-
-			case 'LINE':
-				const diffX = target.x - source.x;
-				const diffY = target.y - source.y;
-				const absDiffX = Math.abs(diffX);
-				const absDiffY = Math.abs(diffY);
-				const dirX = (diffX / absDiffX) || 0;
-				const dirY = (diffY / absDiffY) || 0;
-
-				for (let i = 1; i <= range; i++ ) {
-					const pos = getPosition(source.x + i * dirX, source.y + i * dirY);
-
-					if (null !== pos) {
-						effect.push(pos);
-					}
-				}
-				break;
-
-			case 'CROSS':
-				effect = [target, ...target.getSideTiles()];
-				break;
-
-			case 'NEIGHBOURS':
-				effect = source.getNeighbours();
-				break;
-
-			case 'AOE3x3':
-				effect = [target, ...target.getNeighbours()];
-				break;
-
-			default:
-				throw new Error(`Unsupported skill area: ${area}`);
-		}
-
-		return effect;
-	}
-
-	public getEffectTargets(actor: Character, effectArea: Position[], characters: Character[]): Character[] {
-		const { target } = this;
-
-		if ('NONE' === target) {
-			return [];
-		}
-		const targets: Character[] = [];
-
-		// remove dead characters
-		characters = characters.filter(char => !char.isDead());
-
-		for (const char of characters) {
-			const isInArea = char.position.isContained(effectArea);
-
-			if (!isInArea) {
-				continue;
-			}
-			switch (target) {
-				case 'SELF':
-					if (actor === char) {
-						targets.push(char);
-					}
-					break;
-
-				case 'ALLY':
-					if (actor.player === char.player) {
-						targets.push(char);
-					}
-					break;
-
-				case 'ENEMY':
-					if (actor.player !== char.player) {
-						targets.push(char);
-					}
-					break;
-
-				case 'ANY':
-					targets.push(char);
-					break;
-
-				default:
-					throw new Error(`Invalid skill target: ${target}`);
-			}
-		}
-		return targets;
+		return areaTable[this.area](source, target, this.range);
 	}
 }
 

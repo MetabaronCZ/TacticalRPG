@@ -39,11 +39,10 @@ export class Store {
 		}
 
 		try {
-			const data = JSON.parse(saved) as ISaveState;
-
-			this.battleConfig = this.prepareBattleConfig(data.battleConfig, data.parties);
-			this.characters = this.prepareCharacters(data.characters);
-			this.parties = this.prepareParties(data.parties, this.characters.data);
+			const { battleConfig, characters, parties } = JSON.parse(saved) as ISaveState;
+			this.battleConfig = this.prepareBattleConfig(battleConfig, parties);
+			this.characters = this.prepareCharacters(characters);
+			this.parties = this.prepareParties(parties, this.characters.data);
 
 		} catch (err) {
 			Logger.error(`Invalid store data: "${err}"`);

@@ -9,8 +9,8 @@ import { PartyData } from 'modules/party-creation/party-data';
 
 import Page from 'ui/common/Page';
 import Button from 'ui/common/Button';
-import Separator from 'ui/common/Separator';
 import ButtonRow from 'ui/common/ButtonRow';
+import Separator from 'ui/common/Separator';
 import PartyList from 'ui/party-creation/PartyList';
 
 const onMoveDown = (store: Store) => (party: PartyData) => () => {

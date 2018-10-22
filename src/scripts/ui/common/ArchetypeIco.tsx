@@ -3,14 +3,14 @@ import React from 'react';
 import Archetypes from 'data/archetypes';
 import { ArchetypeID } from 'modules/character/archetype';
 
-type SizeID = 'default' | 'large';
+type ArchetypeSize = 'default' | 'large';
 
 type IArchetypeIcoSizes = {
-	[size in SizeID]: string;
+	[size in ArchetypeSize]: string;
 };
 
 interface IArchetypeIcoProps {
-	readonly size?: SizeID;
+	readonly size?: ArchetypeSize;
 	readonly archetype?: ArchetypeID;
 }
 

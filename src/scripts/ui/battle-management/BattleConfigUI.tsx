@@ -60,7 +60,6 @@ class BattleConfigUI extends React.Component<IBattleConfigUIProps> {
 							<FormField fieldId={fieldName} label="Name" error={errors.name}>
 								<FormInput
 									id={fieldName}
-									type="text"
 									value={player.name}
 									name={fieldName}
 									maxLength={playerMaxNameLength}
@@ -77,9 +76,7 @@ class BattleConfigUI extends React.Component<IBattleConfigUIProps> {
 									onChange={this.onChange(p, 'control')}
 								>
 									{PlayerControl.map((id, control, i) => (
-										<FormSelectItem value={id} key={i}>
-											{control.title}
-										</FormSelectItem>
+										<FormSelectItem text={control.title} value={id} key={i} />
 									))}
 								</FormSelect>
 							</FormField>
@@ -92,20 +89,15 @@ class BattleConfigUI extends React.Component<IBattleConfigUIProps> {
 									onChange={this.onChange(p, 'party')}
 								>
 									{parties.map((party, i) => (
-										<FormSelectItem value={party.id} key={i}>
-											{party.getName()}
-										</FormSelectItem>
+										<FormSelectItem text={party.getName()} value={party.id} key={i} />
 									))}
 
-									<FormSelectItem value={randomPartyID}>
-										Random characters
-									</FormSelectItem>
+									<FormSelectItem text="Random characters" value={randomPartyID} />
 								</FormSelect>
 							</FormField>
 
 							<CharacterList characters={characters} />
 							<br />
-
 							<Separator />
 						</React.Fragment>
 					);

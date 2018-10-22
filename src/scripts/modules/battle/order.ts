@@ -22,8 +22,8 @@ class Order {
 		const { players, characters } = this;
 		const liveChars = characters.filter(char => !char.isDead());
 
-		if (characters.length < 2) {
-			this.order = characters;
+		if (liveChars.length < 2) {
+			this.order = liveChars;
 			return;
 		}
 		let order: Character[] = [];
