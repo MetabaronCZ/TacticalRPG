@@ -9,9 +9,9 @@ import Weapons from 'data/weapons';
 import Skillsets from 'data/skillsets';
 import Archetypes from 'data/archetypes';
 
-import { IEquipSlot } from 'modules/equipment/wield';
 import { ArmorID } from 'modules/equipment/armor-data';
 import { WeaponID } from 'modules/equipment/weapon-data';
+import { IEquipSlot } from 'modules/equipment/wield-data';
 import { SkillsetID } from 'modules/character/skillset-data';
 import { CharacterData, ICharacterDataEditable } from 'modules/character-creation/character-data';
 

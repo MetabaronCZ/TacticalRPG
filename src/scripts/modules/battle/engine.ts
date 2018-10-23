@@ -94,7 +94,7 @@ class Engine {
 		order.update();
 
 		// get actors
-		const actors = liveChars.filter(char => char.attributes.get('CT') >= config.characterCTLimit);
+		const actors = liveChars.filter(char => char.attributes.CT >= config.characterCTLimit);
 
 		// if no actor present, continue updating
 		if (!actors.length) {

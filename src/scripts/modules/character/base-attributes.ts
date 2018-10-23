@@ -1,20 +1,27 @@
 import { defaultBaseAttributes, PrimaryAttrFormula, SecondaryAttrFormula, Arch2AttTable } from 'data/attributes';
 
 import { ArchetypeID } from 'modules/character/archetype';
-import { IPrimaryAttributes, ISecondaryAttributes, IAttributes, AttributeID } from 'modules/character/attributes';
+import { IPrimaryAttributes, ISecondaryAttributes, IAttributes } from 'modules/character/attributes';
 
-class BaseAttributes {
+class BaseAttributes implements IAttributes {
 	protected values: IAttributes;
 
 	constructor(archetype: ArchetypeID) {
-		this.values = this.getAttributes(archetype);
+		this.values = this.initAttributes(archetype);
 	}
 
-	public get(attr: AttributeID): number {
-		return this.values[attr];
-	}
+	public get STR(): number { return this.values.STR; }
+	public get VIT(): number { return this.values.VIT; }
+	public get SPD(): number { return this.values.SPD; }
+	public get MOV(): number { return this.values.MOV; }
+	public get MAG(): number { return this.values.MAG; }
+	public get SPR(): number { return this.values.SPR; }
 
-	private getAttributes = (archetype: ArchetypeID): IAttributes => {
+	public get HP(): number { return this.values.HP; }
+	public get AP(): number { return this.values.AP; }
+	public get CT(): number { return this.values.CT; }
+
+	private initAttributes = (archetype: ArchetypeID): IAttributes => {
 		const { STR, VIT, SPD, MOV, MAG, SPR } = defaultBaseAttributes;
 		const { P, S, M } = Arch2AttTable[archetype];
 

@@ -14,7 +14,7 @@ export const getConfirmAction = (title = 'Confirm', cost = 0): CharacterAction =
 
 export const getIdleActions = (character: Character): CharacterAction[] => {
 	const { mainHand, offHand, skillset } = character;
-	const AP = character.attributes.get('AP');
+	const { AP } = character.attributes;
 	const actions: CharacterAction[] = [];
 	const attackSkillList: Skill[] = [];
 
@@ -51,7 +51,8 @@ export const getIdleActions = (character: Character): CharacterAction[] => {
 		const { title, type, cost } = skill;
 
 		if ('ACTIVE' === type) {
-			const action = new CharacterAction('MAGIC', `${title} (${skillset.title})`, cost, AP >= cost, [skill]);
+			const actionTitle = `${title} (${skillset.title} lv. ${skillset.grade})`;
+			const action = new CharacterAction('MAGIC', actionTitle, cost, AP >= cost, [skill]);
 			actions.push(action);
 		}
 	}
@@ -78,7 +79,7 @@ export const getSkillConfirmActions = (action: CharacterAction, targets: Charact
 };
 
 export const getReactiveActions = (character: Character): CharacterAction[] => {
-	const AP = character.attributes.get('AP');
+	const { AP } = character.attributes;
 	const offHand = character.offHand;
 	const actions: CharacterAction[] = [];
 

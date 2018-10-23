@@ -7,14 +7,14 @@ interface IPositions {
 const positions: IPositions = {};
 
 // convert coords to position ID
-const toID = (x: number, y: number): string => `(${x}, ${y}})`;
+const getCoordsID = (x: number, y: number): string => `(${x}, ${y}})`;
 
 // initialize game tile positions pool
 const init = () => {
 	// generate positions
 	for (let x = 0; x < gridSize; x++) {
 		for (let y = 0; y < gridSize; y++) {
-			const id = toID(x, y);
+			const id = getCoordsID(x, y);
 			positions[id] = new Position(id, x, y, 1);
 		}
 	}
@@ -31,7 +31,7 @@ const init = () => {
 				if (!x && !y) {
 					continue;
 				}
-				const nID = toID(posX + x, posY + y);
+				const nID = getCoordsID(posX + x, posY + y);
 				const n = positions[nID] || null;
 
 				if (null !== n) {
@@ -53,7 +53,7 @@ export const getPositionByID = (id: string): Position|null => {
 };
 
 export const getPosition = (x: number, y: number): Position|null => {
-	return getPositionByID(toID(x, y));
+	return getPositionByID(getCoordsID(x, y));
 };
 
 export const getPositions = (): Position[] => {

@@ -35,8 +35,8 @@ const Order: React.SFC<IOrderProps> = ({ act, characters }) => (
 						<tr className={`Order-list-item ${charState || ''}`} key={i}>
 							<td className="Order-list-item-row Order-list-item-row--number">{i}.</td>
 							<td className="Order-list-item-row Order-list-item-row--title">{char.name}</td>
-							<td className="Order-list-item-row Order-list-item-row--ct">{char.attributes.get('CT')}</td>
-							<td className="Order-list-item-row Order-list-item-row--spd">{char.attributes.get('SPD')}</td>
+							<td className="Order-list-item-row Order-list-item-row--ct">{char.attributes.CT}</td>
+							<td className="Order-list-item-row Order-list-item-row--spd">{char.attributes.SPD}</td>
 						</tr>
 					);
 				})}

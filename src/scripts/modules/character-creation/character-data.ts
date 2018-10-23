@@ -16,7 +16,7 @@ import {
 } from 'data/equipment';
 
 import { SexID, ISexData } from 'modules/character/sex';
-import { IEquipSlot, WieldID } from 'modules/equipment/wield';
+import { IEquipSlot, WieldID } from 'modules/equipment/wield-data';
 import { ArmorID, IArmorData } from 'modules/equipment/armor-data';
 import { WeaponID, IWeaponData } from 'modules/equipment/weapon-data';
 import { IIndexableData, IndexableData } from 'modules/indexable-data';

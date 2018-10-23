@@ -31,19 +31,18 @@ const Players: React.SFC<IPlayersProps> = ({ act, players }) => (
 
 					<tbody>
 						{pl.characters.map((char, c) => {
-							const isActive = !!(act && act.getActor() === char);
 							const isDead = char.isDead();
-							const HP = char.attributes.get('HP');
-							const AP = char.attributes.get('AP');
-							const baseHP = char.baseAttributes.get('HP');
-							const baseAP = char.baseAttributes.get('AP');
+							const isActive = !!(act && act.getActor() === char);
 							const state = (isDead ? 'is-dead' : (isActive ? 'is-active' : ''));
+
+							const { HP, AP } = char.attributes;
+							const { HP: baseHP, AP: baseAP } = char.baseAttributes;
 
 							return (
 								<tr className={`Players-item-characters-item ${state}`} key={c}>
 									<td className="Players-item-characters-item-row">
 										<span className="u-weight-bold">{char.name}</span>
-										{' '}{Icos[char.sex.toLowerCase() as IcoID]}
+										{' '}{Icos[char.sex.id.toLowerCase() as IcoID]}
 										{' '}<ArchetypeIco archetype={char.archetype.id} />
 									</td>
 

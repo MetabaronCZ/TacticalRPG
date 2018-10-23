@@ -126,7 +126,7 @@ class ActReaction {
 		const cost = skills[0].cost;
 
 		// update reacting character
-		const AP = reactor.attributes.get('AP');
+		const { AP } = reactor.attributes;
 		reactor.position = target;
 		reactor.attributes.set('AP', AP - cost);
 

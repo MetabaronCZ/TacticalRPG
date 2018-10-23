@@ -25,13 +25,13 @@ export const getPhysicalDamage = (attacker: Character, defender: Character, skil
 	const defArmorDefense = defArmor.physicalDefense;
 	const attWeaponDamage = (attWeapon ? attWeapon.damage : 1);
 
-	const defense = (1 - defender.attributes.get('VIT') / 100) * (1 - defArmorDefense / 100);
+	const defense = (1 - defender.attributes.VIT / 100) * (1 - defArmorDefense / 100);
 	let attack = 0;
 
 	if (skill.isFixedPhysicalDamage) {
 		attack = skill.physicalDamage;
 	} else {
-		attack = attacker.attributes.get('STR') * attWeaponDamage * skill.physicalDamage;
+		attack = attacker.attributes.STR * attWeaponDamage * skill.physicalDamage;
 	}
 	const defHasShield = ('SHIELD' === defOffHand.type);
 	const defHasBlocked = defender.status.has('BLOCK_SMALL');
@@ -55,8 +55,8 @@ export const getElementalDamage = (attacker: Character, defender: Character, ski
 	const skillset = defender.skillset;
 	const modifier = getElementModifier(skill.element, skillset.element);
 
-	const attack = (attacker.attributes.get('MAG') + magBonus) * skill.elementalDamage;
-	const defense = (1 - defender.attributes.get('SPR') / 100) * (1 - armorDefense / 100);
+	const attack = (attacker.attributes.MAG + magBonus) * skill.elementalDamage;
+	const defense = (1 - defender.attributes.SPR / 100) * (1 - armorDefense / 100);
 	const damage = Math.round(attack * defense * modifier);
 
 	return damage > 0 ? damage : 0;
@@ -64,22 +64,20 @@ export const getElementalDamage = (attacker: Character, defender: Character, ski
 
 export const getStatusEffects = (attacker: Character, defender: Character, skill: Skill): StatusEffectID[] => {
 	const statuses = skill.status.map(id => StatusEffects.get(id)());
-	const attackSTR = attacker.attributes.get('STR');
-	const attackMAG = attacker.attributes.get('MAG');
-	const defendVIT = defender.attributes.get('VIT');
-	const defendSPR = defender.attributes.get('SPR');
+	const { STR: attSTR, MAG: attMAG } = attacker.attributes;
+	const { VIT: defVIT, SPR: defSPR } = defender.attributes;
 	const effects: StatusEffectID[] = [];
 
 	for (const status of statuses) {
 		switch (status.type) {
 			case 'PHYSICAL':
-				if (attackSTR >= defendVIT) {
+				if (attSTR >= defVIT) {
 					effects.push(status.id);
 				}
 				break;
 
 			case 'MAGICAL':
-				if (attackMAG >= defendSPR) {
+				if (attMAG >= defSPR) {
 					effects.push(status.id);
 				}
 				break;

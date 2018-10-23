@@ -18,7 +18,7 @@ export interface IPlayerConfig {
 
 export type IPlayerConfigEditable = keyof IPlayerConfig;
 
-export class PlayerConfig {
+export class PlayerConfig implements IPlayerConfig {
 	@observable private data: IPlayerConfig = {
 		name: 'Player',
 		control: 'HUMAN',

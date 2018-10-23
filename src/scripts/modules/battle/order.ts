@@ -30,8 +30,7 @@ class Order {
 
 		// serialize characters
 		const chars = liveChars.map(char => {
-			const SPD = char.attributes.get('SPD');
-			const CT = char.attributes.get('CT');
+			const { SPD, CT } = char.attributes;
 			let playerOrder = -1;
 
 			for (let p = 0, pmax = players.length; p < pmax; p++) {

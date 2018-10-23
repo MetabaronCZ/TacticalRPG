@@ -1,4 +1,4 @@
-import { WieldID } from 'modules/equipment/wield';
+import { WieldID } from 'modules/equipment/wield-data';
 import { ArmorID } from 'modules/equipment/armor-data';
 import { WeaponID } from 'modules/equipment/weapon-data';
 import { ArchetypeID } from 'modules/character/archetype';

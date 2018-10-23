@@ -31,7 +31,7 @@ class ActMove {
 
 	constructor(actor: Character, characters: Character[], events: IActMoveEvents) {
 		this.actor = actor;
-		this.initialAP = actor.attributes.get('AP');
+		this.initialAP = actor.attributes.AP;
 		this.initialPosition = actor.position;
 		this.obstacles = characters.filter(char => char !== actor).map(char => char.position);
 		this.target = this.initialPosition;
@@ -66,8 +66,7 @@ class ActMove {
 		}
 		this.state = 'IDLE';
 
-		const MOV = actor.attributes.get('MOV');
-		const AP = actor.attributes.get('AP');
+		const { MOV, AP } = actor.attributes;
 		const pos = actor.position;
 
 		const range = Math.min(MOV, AP);

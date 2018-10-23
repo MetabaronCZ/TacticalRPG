@@ -6,7 +6,7 @@ import { getPosition } from 'modules/geometry/positions';
 import { StatusEffectID } from 'modules/battle/status-effect';
 import {
 	SkillID, SkillType, SkillElement, SkillGrade,
-	SkillRange, SkillArea, SkillTarget
+	SkillRange, SkillArea, SkillTarget, ISkillData
 } from 'modules/skill/skill-data';
 
 type ITargetTable = {
@@ -50,7 +50,7 @@ const areaTable: IAreaTable = {
 	AOE3x3:     (source: Position, target: Position) => [target, ...target.getNeighbours()]
 };
 
-class Skill {
+class Skill implements ISkillData {
 	public readonly id: SkillID;
 	public readonly title: string;
 	public readonly cost: number; // AP cost

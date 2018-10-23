@@ -1,5 +1,5 @@
 import DataList from 'core/data-list';
-import { WieldID, IWieldData } from 'modules/equipment/wield';
+import { WieldID, IWieldData } from 'modules/equipment/wield-data';
 
 const Wields = new DataList<WieldID, IWieldData>({
 	MAIN: {
