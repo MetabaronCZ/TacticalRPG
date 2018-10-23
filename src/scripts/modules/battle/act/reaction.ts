@@ -5,7 +5,7 @@ import CharacterAction from 'modules/battle/character-action';
 
 interface IActReactionEvents {
 	onStart: (reaction: ActReaction) => void;
-	onReactionSelected: (reaction: ActReaction) => void;
+	onSelected: (reaction: ActReaction) => void;
 	onBlock: (reaction: ActReaction) => void;
 	onEvasionStart: (reaction: ActReaction) => void;
 	onEvasionEnd: (reaction: ActReaction) => void;
@@ -82,7 +82,7 @@ class ActReaction {
 		this.state = 'SELECTED';
 		this.action = action;
 
-		this.events.onReactionSelected(this);
+		this.events.onSelected(this);
 
 		const skillId = skills[0].id;
 
@@ -190,10 +190,10 @@ class ActReaction {
 				Logger.info(`ActReaction onStart: "${reaction.getReactor().name}"`);
 				events.onStart(reaction);
 			},
-			onReactionSelected: reaction => {
+			onSelected: reaction => {
 				const action = reaction.getAction();
 				Logger.info(`ActReaction onReactionSelected: "${action ? action.title : '-'}"`);
-				events.onReactionSelected(reaction);
+				events.onSelected(reaction);
 			},
 			onBlock: reaction => {
 				Logger.info('ActReaction onBlock');

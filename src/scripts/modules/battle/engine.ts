@@ -13,8 +13,8 @@ import { PartyData } from 'modules/party-creation/party-data';
 import CharacterAction from 'modules/battle/character-action';
 import CharacterCreationForm from 'modules/character-creation';
 import { getRandomNames } from 'modules/random-name-generator';
-import { CharacterData } from 'modules/character-creation/character-data';
 import { PlayerConfig } from 'modules/battle-configuration/player-config';
+import { CharacterData } from 'modules/character-creation/character-data';
 
 export interface IEngineState {
 	tick: number;

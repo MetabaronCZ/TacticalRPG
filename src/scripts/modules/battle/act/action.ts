@@ -20,6 +20,7 @@ interface IActActionEvents {
 	onConfirm: (action: ActAction) => void;
 	onPass: (action: ActAction) => void;
 	onAnimation: (action: ActAction, step: IAnimationStep) => void;
+	onEnd: (action: ActAction) => void;
 
 	onReactionStart: (reaction: ActReaction) => void;
 	onReactionSelected: (reaction: ActReaction) => void;
@@ -170,7 +171,7 @@ class ActAction {
 		this.reactions = effectTargets.map((reactor, id) => {
 			return new ActReaction(id, reactor, obstacles, {
 				onStart:			reaction => events.onReactionStart(reaction),
-				onReactionSelected:	reaction => events.onReactionSelected(reaction),
+				onSelected:			reaction => events.onReactionSelected(reaction),
 				onBlock:			reaction => events.onReactionBlock(reaction),
 				onEvasionStart:		reaction => events.onReactionEvasionStart(reaction),
 				onEvasionEnd:		reaction => events.onReactionEvasionEnd(reaction),
@@ -200,6 +201,7 @@ class ActAction {
 		this.state = 'DONE';
 		this.action = passAction;
 		this.events.onPass(this);
+		this.events.onEnd(this);
 	}
 
 	public passReaction(passAction: CharacterAction) {
@@ -250,7 +252,7 @@ class ActAction {
 	}
 
 	private animate() {
-		const { state, action, actor, effectArea, effectTargets } = this;
+		const { state, action, actor, effectArea, effectTargets, events } = this;
 
 		if ('REACTION' !== state) {
 			throw new Error('Could not run action animation: invalid state ' + state);
@@ -273,7 +275,7 @@ class ActAction {
 					if (target.status.has('BLOCK_LARGE')) {
 						// target blocked attack with shield
 						target.status.remove('BLOCK_LARGE');
-						this.events.onBattleInfo('Blocked', targetPos);
+						events.onBattleInfo('Blocked', targetPos);
 
 					} else {
 						// caclulate character changes
@@ -319,7 +321,7 @@ class ActAction {
 						infoTiming = infoTiming.map(i => randomNumberBetween(250, 350));
 
 						const infoAnim = new Animation(infoTiming, infoStep => {
-							this.events.onBattleInfo(info[infoStep.number], targetPos);
+							events.onBattleInfo(info[infoStep.number], targetPos);
 						});
 
 						infoAnim.start();
@@ -327,16 +329,17 @@ class ActAction {
 
 				} else {
 					// target evaded skill action
-					this.events.onBattleInfo('Evaded', targetPos);
+					events.onBattleInfo('Evaded', targetPos);
 				}
 			}
+
+			events.onAnimation(this, step);
 
 			if (step.isLast) {
 				this.state = 'DONE';
 				actor.skillReduceAP(action.cost);
+				events.onEnd(this);
 			}
-
-			this.events.onAnimation(this, step);
 		});
 
 		// start animation
@@ -371,6 +374,10 @@ class ActAction {
 			onAnimation: (action: ActAction, step: IAnimationStep) => {
 				Logger.info(`ActAction onAnimation: "${step.number + 1}/${step.max}"`);
 				events.onAnimation(action, step);
+			},
+			onEnd: (action: ActAction) => {
+				Logger.info('ActAction onEnd');
+				events.onEnd(action);
 			},
 			onReactionStart: events.onReactionStart,
 			onReactionSelected: events.onReactionSelected,

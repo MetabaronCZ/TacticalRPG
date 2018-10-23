@@ -6,6 +6,7 @@ import { resolveDirection, findPositionFrom } from 'modules/geometry/direction';
 interface IActDirectEvents {
 	onStart: (direct: ActDirect) => void;
 	onSelect: (direct: ActDirect) => void;
+	onEnd: (direct: ActDirect) => void;
 }
 
 export type ActDirectState = 'INIT' | 'IDLE' | 'DONE';
@@ -73,6 +74,7 @@ class ActDirect {
 		actor.direction = newDirection;
 
 		this.events.onSelect(this);
+		this.events.onEnd(this);
 	}
 
 	private prepareEvents(events: IActDirectEvents): IActDirectEvents {
@@ -85,7 +87,11 @@ class ActDirect {
 				const tgt = direct.target;
 				Logger.info(`ActDirect onSelect: "${tgt ? `(${tgt.x}, ${tgt.y})` : '-'}"`);
 				events.onSelect(direct);
-			}
+			},
+			onEnd: direct => {
+				Logger.info('ActDirect onEnd');
+				events.onEnd(direct);
+			},
 		};
 	}
 }

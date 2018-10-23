@@ -12,6 +12,7 @@ interface IActMoveEvents {
 	onStart: (move: ActMove) => void;
 	onSelect: (move: ActMove) => void;
 	onAnimation: (move: ActMove, step: IAnimationStep) => void;
+	onEnd: (move: ActMove) => void;
 }
 
 export type ActMoveState = 'INIT' | 'IDLE' | 'SELECTED' | 'ANIMATION';
@@ -130,10 +131,12 @@ class ActMove {
 			actor.direction = dir;
 			actor.attributes.set('AP', this.initialAP - costMap[tile.id]);
 
+			events.onAnimation(this, step);
+
 			if (step.isLast) {
 				this.state = 'IDLE';
+				events.onEnd(this);
 			}
-			events.onAnimation(this, step);
 		});
 
 		anim.start();
@@ -152,7 +155,11 @@ class ActMove {
 			},
 			onAnimation: (move, step) => {
 				Logger.info(`ActMove onAnimation: "${step.number + 1}/${step.max}"`);
-				events.onSelect(move);
+				events.onAnimation(move, step);
+			},
+			onEnd: move => {
+				Logger.info('ActMove onEnd');
+				events.onEnd(move);
 			}
 		};
 	}

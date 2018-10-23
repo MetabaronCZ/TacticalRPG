@@ -41,7 +41,8 @@ class Act {
 				this.update();
 			},
 			onSelect: move => this.update(),
-			onAnimation: (move, step) => this.update()
+			onAnimation: (move, step) => this.update(),
+			onEnd: move => this.update()
 		});
 
 		this.directPhase = new ActDirect(actor, {
@@ -49,7 +50,8 @@ class Act {
 				this.phase = 'DIRECTION';
 				this.update();
 			},
-			onSelect: direct => {
+			onSelect: direct => this.update(),
+			onEnd: direct => {
 				this.update();
 				this.end();
 			}
@@ -66,16 +68,13 @@ class Act {
 			},
 			onSelect: action => this.update(),
 			onConfirm: action => this.update(),
-			onPass: action => {
+			onPass: action => this.update(),
+			onAnimation: (action, step) => this.update(),
+			onEnd: action => {
+				this.update();
 				this.directPhase.start();
 			},
-			onAnimation: (action, step) => {
-				this.update();
 
-				if (step.isLast) {
-					this.directPhase.start();
-				}
-			},
 			onReactionStart: reaction => this.update(),
 			onReactionSelected: reaction => this.update(),
 			onReactionBlock: reaction => this.update(),
@@ -84,7 +83,9 @@ class Act {
 			onReactionPass: reaction => this.update(),
 			onReactionReset: reaction => this.update(),
 			onReactionEnd: reaction => this.update(),
+
 			onBattleInfo: (text, position) => {
+				this.update();
 				this.setBattleInfo(text, position);
 			},
 		});
