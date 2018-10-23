@@ -1,7 +1,6 @@
-import { observable } from 'mobx';
+import { observable, action } from 'mobx';
 
 import { maxPlayers, randomPartyID } from 'data/game-config';
-import { IPartyData } from 'modules/party-creation/party-data';
 import { PlayerConfig, IPlayerConfig, IPlayerConfigEditable } from 'modules/battle-configuration/player-config';
 
 export interface IBattleConfig {
@@ -21,10 +20,18 @@ const playerPool = Array(maxPlayers).fill(0);
 
 export class BattleConfig {
 	@observable.shallow public players: PlayerConfig[] = [];
-	private parties: IPartyData[] = [];
 
-	constructor(data?: IBattleConfig, parties: IPartyData[] = []) {
-		this.parties = parties;
+	constructor(data: IBattleConfig|null) {
+		// init player slots
+		this.players = playerPool.map((_, i) => {
+			const conf: IPlayerConfig = {
+				name: `Player ${i + 1}`,
+				control: 'HUMAN',
+				party: randomPartyID
+			};
+			return new PlayerConfig(conf);
+		});
+
 		this.update(data);
 	}
 
@@ -50,24 +57,12 @@ export class BattleConfig {
 		return validation;
 	}
 
-	public update(data?: IBattleConfig) {
-		const parties = this.parties;
-
-		this.players = playerPool.map((_, p) => {
-			let conf: IPlayerConfig;
-
-			if (data && data.players[p]) {
-				conf = data.players[p];
-
-			} else {
-				conf = {
-					name: `Player ${p + 1}`,
-					control: 'HUMAN',
-					party: randomPartyID
-				};
-			}
-			return new PlayerConfig(conf, parties);
-		});
+	@action
+	public update(data: IBattleConfig|null) {
+		if (null === data) {
+			return;
+		}
+		this.players = this.players.map((pl, i) => new PlayerConfig(data.players[i]));
 	}
 
 	public serialize(): IBattleConfig {

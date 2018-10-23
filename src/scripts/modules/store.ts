@@ -17,7 +17,7 @@ interface ISaveState {
 export class Store {
 	public characters = new IndexableList<CharacterData>();
 	public parties = new IndexableList<PartyData>();
-	public battleConfig = new BattleConfig();
+	public battleConfig = new BattleConfig(null);
 
 	constructor() {
 		this.initialize();
@@ -50,11 +50,11 @@ export class Store {
 	}
 
 	private prepareBattleConfig(data?: IBattleConfig, parties: IPartyData[] = []): BattleConfig {
-		const config = new BattleConfig(data, parties);
+		const config = new BattleConfig(data || null);
 
 		for (const player of config.players) {
 			// fix invalid player party preference
-			if (!player.isValidParty(player.party)) {
+			if (!player.isValidParty(player.party, parties)) {
 				player.setParty(randomPartyID);
 			}
 		}

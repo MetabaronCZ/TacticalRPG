@@ -1,7 +1,7 @@
 import { observable, computed, action } from 'mobx';
 
 import { IValidation } from 'core/validation';
-import { playerMaxNameLength, randomPartyID } from 'data/game-config';
+import { playerMaxNameLength, randomPartyID, textInputRegex } from 'data/game-config';
 import { IPartyData } from 'modules/party-creation/party-data';
 
 export type PlayerControlID = 'HUMAN' | 'AI';
@@ -24,19 +24,17 @@ export class PlayerConfig {
 		control: 'HUMAN',
 		party: randomPartyID
 	};
-	private parties: IPartyData[] = [];
 
-	constructor(data: IPlayerConfig, parties: IPartyData[] = []) {
-		this.parties = parties;
+	constructor(data: IPlayerConfig) {
 		this.setName(data.name);
 		this.setControl(data.control);
 		this.setParty(data.party);
 	}
 
-	public isValidParty(partyID: string): boolean {
+	public isValidParty(partyID: string, parties: IPartyData[]): boolean {
 		return (
 			(randomPartyID === partyID) ||
-			(-1 !== this.parties.map(p => p.id).indexOf(partyID))
+			(-1 !== parties.map(p => p.id).indexOf(partyID))
 		);
 	}
 
@@ -67,23 +65,18 @@ export class PlayerConfig {
 
 	@action
 	public setParty(partyID: string) {
-		if (this.isValidParty(partyID)) {
-			this.data.party = partyID;
-		}
+		this.data.party = partyID;
 	}
 
 	public validate(): IValidation<IPlayerConfigEditable> {
-		const { name, party } = this;
+		const { name } = this;
 		const errors: { [field in IPlayerConfigEditable]?: string; } = {};
 
 		if (name.length < 1 || name.length > playerMaxNameLength) {
 			errors.name = `Name should contain 1 to ${playerMaxNameLength} characters`;
 		}
-		if (!name.match(/^[a-zA-Z0-9-_\s.]+$/)) {
+		if (!name.match(textInputRegex)) {
 			errors.name = 'Name should contain only letters, numbers, spaces or symbols (_, -, .)';
-		}
-		if (!this.isValidParty(party)) {
-			errors.party = 'Invalid party ID';
 		}
 		return {
 			isValid: (0 === Object.keys(errors).length),

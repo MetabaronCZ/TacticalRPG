@@ -28,14 +28,15 @@ const onDelete = (store: Store) => (char: CharacterData) => () => {
 		const included: string[] = [];
 
 		for (const party of store.parties.data) {
-			if (party.getCharacters().find((ch: CharacterData|null) => !!ch && ch.id === char.id)) {
-				included.push(party.getName());
+			if (party.characters.find(ch => ch.id === char.id)) {
+				included.push(party.name);
 			}
 		}
 
 		if (included.length) {
 			return alert(`Could not delete "${char.name}": character is included in party (${included.join(', ')})`);
 		}
+
 		store.characters.remove(char);
 		store.save();
 	}

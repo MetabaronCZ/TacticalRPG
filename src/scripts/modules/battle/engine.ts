@@ -143,8 +143,8 @@ class Engine {
 			throw new Error(`Game has to have exactly ${config.maxPlayers} players`);
 		}
 		const pl = players.map((conf, p) => {
-			const { party, control } = conf;
-			const charData: CharacterData[] = [];
+			const { name, party, control } = conf;
+			let charData: CharacterData[] = [];
 
 			// get character data
 			if (config.randomPartyID === party) {
@@ -170,11 +170,7 @@ class Engine {
 				if (!selectedParty) {
 					throw new Error(`Could not create player "${name}": Invalid party selected`);
 				}
-				for (const char of selectedParty.getCharacters()) {
-					if (null !== char) {
-						charData.push(char);
-					}
-				}
+				charData = selectedParty.characters;
 			}
 
 			// create characters

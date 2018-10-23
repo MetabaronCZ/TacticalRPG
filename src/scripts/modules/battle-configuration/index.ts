@@ -19,7 +19,7 @@ class BattleConfiguration {
 
 	constructor(data?: BattleConfig, parties: PartyData[] = []) {
 		this.state = {
-			config: new BattleConfig(data, parties.map(p => p.serialize())),
+			config: new BattleConfig(data ? data.serialize() : null),
 			validation: {
 				isValid: true,
 				errors: {
@@ -27,6 +27,16 @@ class BattleConfiguration {
 				}
 			}
 		};
+
+		// fix invalid party selections
+		const partyData = parties.map(party => party.serialize());
+
+		for (const pl of this.state.config.players) {
+			if (!pl.isValidParty(pl.party, partyData)) {
+				pl.setParty(randomPartyID);
+			}
+		}
+
 		this.parties = parties;
 	}
 
@@ -67,18 +77,14 @@ class BattleConfiguration {
 	}
 
 	public getPartyCharacters(player: PlayerConfig): IndexableList<CharacterData> {
-		const characters: CharacterData[] = [];
+		let characters: CharacterData[] = [];
 		const parties = this.parties;
 
 		if (randomPartyID !== player.party) {
 			const selecteParty = parties.find(party => player.party === party.id);
 
 			if (selecteParty) {
-				for (const char of selecteParty.getCharacters()) {
-					if (null !== char) {
-						characters.push(char);
-					}
-				}
+				characters = selecteParty.characters;
 			}
 		}
 		return new IndexableList(characters);

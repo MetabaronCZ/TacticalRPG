@@ -89,7 +89,7 @@ class BattleConfigUI extends React.Component<IBattleConfigUIProps> {
 									onChange={this.onChange(p, 'party')}
 								>
 									{parties.map((party, i) => (
-										<FormSelectItem text={party.getName()} value={party.id} key={i} />
+										<FormSelectItem text={party.name} value={party.id} key={i} />
 									))}
 
 									<FormSelectItem text="Random characters" value={randomPartyID} />

@@ -7,16 +7,17 @@ import Position from 'modules/geometry/position';
 import Skillset from 'modules/character/skillset';
 import Attributes from 'modules/character/attributes';
 import { DirectionID } from 'modules/geometry/direction';
-import { ArchetypeID } from 'modules/character/archetype';
+import { IArchetypeData } from 'modules/character/archetype';
 import { StatusEffectID } from 'modules/battle/status-effect';
 import BaseAttributes from 'modules/character/base-attributes';
 import { CharacterData } from 'modules/character-creation/character-data';
+import Archetypes from 'data/archetypes';
 
 class Character {
 	public readonly name: string;
 	public readonly sex: string;
-	public readonly archetype: ArchetypeID;
 	public readonly attributes: Attributes;
+	public readonly archetype: IArchetypeData;
 	public readonly baseAttributes: BaseAttributes;
 
 	public readonly player: number;
@@ -35,12 +36,12 @@ class Character {
 
 		this.name = data.name;
 		this.sex = data.sex;
-		this.archetype = data.archetype;
+		this.archetype = Archetypes.get(data.archetype);
 		this.attributes = new Attributes(data.archetype);
 		this.baseAttributes = new BaseAttributes(data.archetype);
 
 		this.player = player;
-		this.skillset = new Skillset(data.skillset, this.archetype);
+		this.skillset = new Skillset(data.skillset, data.archetype);
 		this.status = new StatusEffect();
 
 		this.mainHand = new Weapon(data.main);
@@ -49,18 +50,6 @@ class Character {
 
 		this.position = position;
 		this.direction = direction;
-	}
-
-	public isPowerType(): boolean {
-		return -1 !== this.archetype.indexOf('P');
-	}
-
-	public isSpeedType(): boolean {
-		return -1 !== this.archetype.indexOf('S');
-	}
-
-	public isMagicType(): boolean {
-		return -1 !== this.archetype.indexOf('M');
 	}
 
 	public isDead(): boolean {

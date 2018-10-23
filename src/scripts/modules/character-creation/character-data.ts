@@ -7,7 +7,7 @@ import Armors from 'data/armors';
 import Weapons from 'data/weapons';
 import Skillsets from 'data/skillsets';
 import Archetypes from 'data/archetypes';
-import { maxCharacterNameLength } from 'data/game-config';
+import { maxCharacterNameLength, textInputRegex } from 'data/game-config';
 
 import {
 	WeaponEquipTableArch, WeaponEquipTableWield,
@@ -54,7 +54,7 @@ export class CharacterData extends IndexableData {
 			lastUpdate: conf.lastUpdate
 		});
 
-		const attrs: ICharacterDataEditable[] = ['name', 'sex', 'archetype', 'skillset', 'main', 'off', 'armor'];
+		const attrs = Object.keys(this.data) as ICharacterDataEditable[];
 
 		attrs.forEach(attr => {
 			const value = conf[attr];
@@ -72,7 +72,7 @@ export class CharacterData extends IndexableData {
 		if (name.length < 1 || name.length > maxCharacterNameLength) {
 			errors.name = `Name should contain 1 to ${maxCharacterNameLength} characters`;
 		}
-		if (!name.match(/^[a-zA-Z0-9-_\s.]+$/)) {
+		if (!name.match(textInputRegex)) {
 			errors.name = 'Name should contain only letters, numbers, spaces or symbols (_, -, .)';
 		}
 		if (!this.canUseSkillset(skillset.id)) {
@@ -91,18 +91,6 @@ export class CharacterData extends IndexableData {
 			isValid: (0 === Object.keys(errors).length),
 			errors
 		};
-	}
-
-	public isPowerType(): boolean {
-		return -1 !== this.data.archetype.id.indexOf('P');
-	}
-
-	public isSpeedType(): boolean {
-		return -1 !== this.data.archetype.id.indexOf('S');
-	}
-
-	public isMagicType(): boolean {
-		return -1 !== this.data.archetype.id.indexOf('M');
 	}
 
 	public isBothWielding = (): boolean => {
@@ -234,7 +222,7 @@ export class CharacterData extends IndexableData {
 	}
 
 	public canUseSkillset(id: SkillsetID): boolean {
-		return 'NONE' === id || this.isMagicType();
+		return 'NONE' === id || this.archetype.type.M;
 	}
 
 	public canWieldWeapon(weapon: WeaponID, slot: IEquipSlot): boolean {

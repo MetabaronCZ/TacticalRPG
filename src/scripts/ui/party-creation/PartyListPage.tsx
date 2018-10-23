@@ -24,7 +24,7 @@ const onMoveUp = (store: Store) => (party: PartyData) => () => {
 };
 
 const onDelete = (store: Store) => (party: PartyData) => () => {
-	if (confirm(`Do you realy want to delete "${party.getName()}"?`)) {
+	if (confirm(`Do you realy want to delete "${party.name}"?`)) {
 		store.parties.remove(party);
 		store.save();
 	}

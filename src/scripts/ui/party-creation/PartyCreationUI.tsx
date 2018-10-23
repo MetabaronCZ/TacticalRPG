@@ -43,9 +43,9 @@ class PartyCreationUI extends React.Component<IPartyCreationUIProps> {
 
 		return (
 			<Form onSubmit={this.onSubmit}>
-				{validation.errors.characters && (
+				{validation.errors.slots && (
 					<p className="ErrorBox">
-						{validation.errors.characters}
+						{validation.errors.slots}
 					</p>
 				)}
 
@@ -55,7 +55,7 @@ class PartyCreationUI extends React.Component<IPartyCreationUIProps> {
 							<FormField fieldId="f-name" label="Name" error={validation.errors.name}>
 								<FormInput
 									id="f-name"
-									value={party.getName()}
+									value={party.name}
 									placeholder="Type party name ..."
 									name="name"
 									maxLength={maxPartyNameLength}
@@ -64,7 +64,7 @@ class PartyCreationUI extends React.Component<IPartyCreationUIProps> {
 								/>
 							</FormField>
 
-							{party.getCharacters().map(this.renderPartyItem)}
+							{party.slots.map(this.renderPartyItem)}
 						</React.Fragment>
 					)
 					: (
@@ -108,7 +108,7 @@ class PartyCreationUI extends React.Component<IPartyCreationUIProps> {
 
 		return (
 			<FormField fieldId={fieldId} label={`Character ${i + 1}`} info={info} key={i}>
-				<FormSelect id={fieldId} name={`character-${i}`} value={id} onChange={this.onChange('characters', i)}>
+				<FormSelect id={fieldId} name={`character-${i}`} value={id} onChange={this.onChange('slots', i)}>
 					<FormSelectItem text="- Empty -" value="" />
 
 					{filtered.map((char, j) => (

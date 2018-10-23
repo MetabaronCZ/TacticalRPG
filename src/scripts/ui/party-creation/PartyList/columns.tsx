@@ -30,7 +30,7 @@ interface IColumn {
 }
 
 const getColumns = (onMoveDown: IOnMoveDown, onMoveUp: IOnMoveUp, onDelete: IOnDelete): IColumn[] => ([
-	{ title: 'Name', name: 'name', value: party => party.getName() },
+	{ title: 'Name', name: 'name', value: party => party.name },
 	{ title: '', name: 'moveDown', value: party => renderMoveDown(party, onMoveDown) },
 	{ title: '', name: 'moveUp', value: party => renderMoveUp(party, onMoveUp) },
 	{ title: '', name: 'edit', value: renderEdit },

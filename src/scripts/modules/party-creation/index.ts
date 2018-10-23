@@ -31,9 +31,9 @@ class PartyCreation {
 		if ('name' === field) {
 			party.setName(value);
 
-		} else if ('characters' === field && null !== i) {
+		} else if ('slots' === field && null !== i) {
 			const char = this.characters.find(ch => value === ch.id) || null;
-			party.setCharacter(char, i);
+			party.setSlot(char, i);
 		}
 		this.state.validation = party.validate();
 	}
@@ -56,9 +56,7 @@ class PartyCreation {
 		if (!characters.length) {
 			return [];
 		}
-		const selected = this.state.party.getCharacters()
-			.map(char => char ? char.id : null)
-			.filter(id => null !== id);
+		const selected = this.state.party.characters.map(char => char.id);
 
 		// filter unselected characters (keep character itself)
 		return characters.filter(char => {

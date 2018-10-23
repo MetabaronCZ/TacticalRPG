@@ -64,7 +64,7 @@ const getColumns = (editable = false, onMoveDown?: IOnMoveDown, onMoveUp?: IOnMo
 				if (!char) {
 					return '';
 				}
-				return `${char.archetype.title}${char.isMagicType() ? ' (' + char.skillset.title + ')' : ''}`;
+				return `${char.archetype.title}${char.archetype.type.M ? ' (' + char.skillset.title + ')' : ''}`;
 			}
 		}, {
 			title: Wields.get('MAIN').title,

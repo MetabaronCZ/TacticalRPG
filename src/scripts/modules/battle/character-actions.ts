@@ -83,7 +83,7 @@ export const getReactiveActions = (character: Character): CharacterAction[] => {
 	const actions: CharacterAction[] = [];
 
 	// EVADE action
-	if (character.isSpeedType()) {
+	if (character.archetype.type.S) {
 		const skill = new Skill('EVADE');
 		const { title, cost } = skill;
 

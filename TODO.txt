@@ -1,9 +1,6 @@
 TODO
 ----------------------------------------------------------------------------------------------------------
---	pridat do ArchetypeData (P|S|M: boolean)
 --	refaktorovat attributes.get(ID) na "public get ID()" metody
---	predelat Weapon, Armor na pregenerovane instance jako Position / Positions
-
 --	pridat moznost menit poradi v PartyCreation
 --	pridat do Damage pocitani modifikatoru na utok do zad
 	- pocitat utok do zad uz ve PhaseReaction - pripadne nepovolit Evade, Block
