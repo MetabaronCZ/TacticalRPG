@@ -4,9 +4,19 @@ import { smallShieldBlock } from 'data/game-config';
 
 import Skill from 'modules/skill';
 import Character from 'modules/character';
+import { Vector2D } from 'modules/geometry/vector';
 import { StatusEffectID } from 'modules/battle/status-effect';
 import { ElementAffinityTable } from 'modules/skill/affinity';
 import { SkillID, SkillElement } from 'modules/skill/skill-data';
+
+interface IDamageInfo {
+	physical: number;
+	elemental: number;
+	blockModifier: number;
+	elementalModifier: number;
+	directionModifier: number;
+	status: StatusEffectID[];
+}
 
 const getElementModifier = (attacker: SkillElement, defender: SkillElement): number => {
 	if (ElementAffinityTable[attacker] === defender) {
@@ -18,10 +28,29 @@ const getElementModifier = (attacker: SkillElement, defender: SkillElement): num
 	return 1;
 };
 
-export const getPhysicalDamage = (attacker: Character, defender: Character, skill: Skill): number => {
+const getDirectionModifier = (attacker: Character, defender: Character): number => {
+	const attVector = Vector2D.fromPositions(attacker.position, defender.position);
+	const defVector = Vector2D.fromDirection(defender.direction);
+	const angle = attVector.getAngle(defVector);
+	return ((angle <= Math.PI / 2) ? 2 : 1);
+};
+
+const getBlockModifier = (defender: Character): number => {
+	const defHasShield = ('SHIELD' === defender.offHand.type);
+	const defHasBlocked = defender.status.has('BLOCK_SMALL');
+	let defBlock = 0;
+
+	// small shield block
+	if (defHasShield && defHasBlocked) {
+		defBlock = smallShieldBlock;
+	}
+
+	return 1 - defBlock;
+};
+
+const getPhysicalDamage = (attacker: Character, defender: Character, skill: Skill): number => {
 	const defArmor = defender.armor;
 	const attWeapon = Weapons.values().find(wpn => -1 !== (wpn.skills as SkillID[]).indexOf(skill.id));
-	const defOffHand = defender.offHand;
 	const defArmorDefense = defArmor.physicalDefense;
 	const attWeaponDamage = (attWeapon ? attWeapon.damage : 1);
 
@@ -33,36 +62,24 @@ export const getPhysicalDamage = (attacker: Character, defender: Character, skil
 	} else {
 		attack = attacker.attributes.STR * attWeaponDamage * skill.physicalDamage;
 	}
-	const defHasShield = ('SHIELD' === defOffHand.type);
-	const defHasBlocked = defender.status.has('BLOCK_SMALL');
-	let defBlock = 0;
 
-	// small shield block
-	if (defHasShield && defHasBlocked) {
-		defBlock = smallShieldBlock;
-	}
-	const damage = Math.round(attack * defense * (1 - defBlock));
-
-	return damage > 0 ? damage : 0;
+	return attack * defense;
 };
 
-export const getElementalDamage = (attacker: Character, defender: Character, skill: Skill): number => {
+const getElementalDamage = (attacker: Character, defender: Character, skill: Skill): number => {
 	const main = attacker.mainHand;
 	const off = attacker.offHand;
 	const armor = defender.armor;
 	const armorDefense = armor.magicalDefense;
 	const magBonus = main.magic + off.magic;
-	const skillset = defender.skillset;
-	const modifier = getElementModifier(skill.element, skillset.element);
 
 	const attack = (attacker.attributes.MAG + magBonus) * skill.elementalDamage;
 	const defense = (1 - defender.attributes.SPR / 100) * (1 - armorDefense / 100);
-	const damage = Math.round(attack * defense * modifier);
 
-	return damage > 0 ? damage : 0;
+	return attack * defense;
 };
 
-export const getStatusEffects = (attacker: Character, defender: Character, skill: Skill): StatusEffectID[] => {
+const getStatusEffects = (attacker: Character, defender: Character, skill: Skill): StatusEffectID[] => {
 	const statuses = skill.status.map(id => StatusEffects.get(id)());
 	const { STR: attSTR, MAG: attMAG } = attacker.attributes;
 	const { VIT: defVIT, SPR: defSPR } = defender.attributes;
@@ -91,4 +108,31 @@ export const getStatusEffects = (attacker: Character, defender: Character, skill
 		}
 	}
 	return effects;
+};
+
+export const getDamageInfo = (attacker: Character, defender: Character, skill: Skill): IDamageInfo => {
+	const blockModifier = getBlockModifier(defender);
+	const directionModifier = getDirectionModifier(attacker, defender);
+	const elementalModifier = getElementModifier(skill.element, defender.skillset.element);
+	const status = getStatusEffects(attacker, defender, skill);
+
+	let physical = getPhysicalDamage(attacker, defender, skill);
+	let elemental = getElementalDamage(attacker, defender, skill);
+
+	// apply modifiers
+	physical = physical * directionModifier * blockModifier;
+	elemental = elemental * directionModifier * elementalModifier;
+
+	// clamp values
+	physical = physical > 0 ? Math.round(physical) : 0;
+	elemental = elemental > 0 ? Math.round(elemental) : 0;
+
+	return {
+		physical,
+		elemental,
+		blockModifier,
+		elementalModifier,
+		directionModifier,
+		status
+	};
 };

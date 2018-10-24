@@ -1,9 +1,7 @@
 TODO
 ----------------------------------------------------------------------------------------------------------
---	pridat moznost menit poradi v PartyCreation
---	pridat do Damage pocitani modifikatoru na utok do zad
-	- pocitat utok do zad uz ve PhaseReaction - pripadne nepovolit Evade, Block
---	v Engine event metodach vracet jen to, co se zmenilo + upravit setState() v UI
+--	pocitat utok do zad uz ve PhaseReaction - pripadne nepovolit Evade, Block
+	--	ukazovat info data o utoku jeste predtim nez se provede reakce (viz FFT)
 --	logika pro SkillDuration (StatusEffect) + DoT/HoT
 --	pasivni skilly
 --	ultimatni skilly (Revive, Berserking, ...)

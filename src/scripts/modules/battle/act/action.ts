@@ -9,9 +9,9 @@ import Logger from 'modules/logger';
 import Character from 'modules/character';
 import Position from 'modules/geometry/position';
 import ActReaction from 'modules/battle/act/reaction';
+import { getDamageInfo } from 'modules/battle/damage';
 import { resolveDirection } from 'modules/geometry/direction';
 import CharacterAction from 'modules/battle/character-action';
-import { getPhysicalDamage, getElementalDamage, getStatusEffects } from 'modules/battle/damage';
 
 interface IActActionEvents {
 	onStart: (action: ActAction) => void;
@@ -282,25 +282,34 @@ class ActAction {
 						let info: string[] = [];
 
 						for (const skill of action.skills) {
+							const damage = getDamageInfo(actor, target, skill);
 							const skillStatus = skill.status;
-							let phyDmg = 0;
-							let elmDmg = 0;
+
+							// show small shield block info
+							if (-1 !== damage.status.indexOf('BLOCK_SMALL')) {
+								target.status.remove('BLOCK_SMALL');
+								info.push(`Blocked (${smallShieldBlock})`);
+							}
+
+							if (1 !== damage.directionModifier) {
+								info.push('Back attack');
+							}
 
 							// physical damage
-							phyDmg = getPhysicalDamage(actor, target, skill);
-							info.push(formatNumber(phyDmg));
+							info.push(formatNumber(damage.physical));
 
 							// elemental damage
 							if (skill.elementalDamage) {
-								elmDmg = getElementalDamage(actor, target, skill);
-								info.push(formatNumber(elmDmg));
+								if (damage.elementalModifier > 1) {
+									info.push('Strong elemental affinity');
+								} else if (damage.elementalModifier < 1) {
+									info.push('Weak elemental affinity');
+								}
+								info.push(formatNumber(damage.elemental));
 							}
 
-							// status effects
-							const effects = getStatusEffects(actor, target, skill);
-
 							// apply skill damage / statuses to target
-							target.applySkill(phyDmg + elmDmg, effects);
+							target.applySkill(damage.physical + damage.elemental, damage.status);
 
 							if (target.isDead()) {
 								info.push('Dead');
@@ -309,12 +318,6 @@ class ActAction {
 							} else if (skillStatus.length) {
 								// add skill effects
 								info = [...info, ...skillStatus.map(id => StatusEffects.get(id)().title)];
-							}
-
-							// show small shield block info
-							if (-1 !== effects.indexOf('BLOCK_SMALL')) {
-								target.status.remove('BLOCK_SMALL');
-								info.unshift(`Blocked (${smallShieldBlock})`);
 							}
 						}
 						let infoTiming = Array(info.length).fill(0);
