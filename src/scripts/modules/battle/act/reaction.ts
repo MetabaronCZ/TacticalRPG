@@ -19,6 +19,7 @@ export type ActReactionState = 'INIT' | 'IDLE' | 'SELECTED' | 'EVASION' | 'BLOCK
 class ActReaction {
 	private readonly id: number;
 	private readonly reactor: Character;
+	private readonly isBackAttack: boolean;
 	private readonly obstacles: Position[] = [];
 	private readonly events: IActReactionEvents;
 
@@ -27,10 +28,11 @@ class ActReaction {
 	private evasionTarget: Position|null = null; // selected evasion tile position
 	private evasionTargets: Position[] = []; // possible evasion positions of reacting character
 
-	constructor(id: number, reactor: Character, obstacles: Position[], events: IActReactionEvents) {
+	constructor(id: number, reactor: Character, isBackAttack: boolean, obstacles: Position[], events: IActReactionEvents) {
 		this.id = id;
 		this.reactor = reactor;
 		this.obstacles = obstacles;
+		this.isBackAttack = isBackAttack;
 		this.events = this.prepareEvents(events);
 	}
 
@@ -40,6 +42,10 @@ class ActReaction {
 
 	public getId(): number {
 		return this.id;
+	}
+
+	public isBackAttacked(): boolean {
+		return this.isBackAttack;
 	}
 
 	public getReactor(): Character {
@@ -78,6 +84,10 @@ class ActReaction {
 
 		if (!skills.length) {
 			throw new Error('Could not select reaction: invalid action');
+		}
+
+		if (this.isBackAttack) {
+			throw new Error('Cannot react if back attacked');
 		}
 		this.state = 'SELECTED';
 		this.action = action;

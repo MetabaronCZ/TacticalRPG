@@ -9,6 +9,10 @@ import { StatusEffectID } from 'modules/battle/status-effect';
 import { ElementAffinityTable } from 'modules/skill/affinity';
 import { SkillID, SkillElement } from 'modules/skill/skill-data';
 
+const backAttackModifier = 2;
+const elementWeakModifier = 2;
+const elementStrongModifier = 0.5;
+
 interface IDamageInfo {
 	physical: number;
 	elemental: number;
@@ -20,19 +24,19 @@ interface IDamageInfo {
 
 const getElementModifier = (attacker: SkillElement, defender: SkillElement): number => {
 	if (ElementAffinityTable[attacker] === defender) {
-		return 2;
+		return elementStrongModifier;
 	}
 	if (ElementAffinityTable[defender] === attacker) {
-		return 0.5;
+		return elementWeakModifier;
 	}
 	return 1;
 };
 
-const getDirectionModifier = (attacker: Character, defender: Character): number => {
+export const isBackAttack = (attacker: Character, defender: Character): boolean => {
 	const attVector = Vector2D.fromPositions(attacker.position, defender.position);
 	const defVector = Vector2D.fromDirection(defender.direction);
 	const angle = attVector.getAngle(defVector);
-	return ((angle <= Math.PI / 2) ? 2 : 1);
+	return angle < Math.PI / 2;
 };
 
 const getBlockModifier = (defender: Character): number => {
@@ -112,7 +116,7 @@ const getStatusEffects = (attacker: Character, defender: Character, skill: Skill
 
 export const getDamageInfo = (attacker: Character, defender: Character, skill: Skill): IDamageInfo => {
 	const blockModifier = getBlockModifier(defender);
-	const directionModifier = getDirectionModifier(attacker, defender);
+	const directionModifier = isBackAttack(attacker, defender) ? backAttackModifier : 1;
 	const elementalModifier = getElementModifier(skill.element, defender.skillset.element);
 	const status = getStatusEffects(attacker, defender, skill);
 

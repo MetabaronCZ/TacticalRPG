@@ -1,7 +1,6 @@
 TODO
 ----------------------------------------------------------------------------------------------------------
---	pocitat utok do zad uz ve PhaseReaction - pripadne nepovolit Evade, Block
-	--	ukazovat info data o utoku jeste predtim nez se provede reakce (viz FFT)
+--	pridat Counter reaktivni akci pro S-type archetypy (bude to attack skill mainHand zbrane)
 --	logika pro SkillDuration (StatusEffect) + DoT/HoT
 --	pasivni skilly
 --	ultimatni skilly (Revive, Berserking, ...)

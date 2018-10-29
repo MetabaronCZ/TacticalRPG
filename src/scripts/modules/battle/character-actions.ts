@@ -78,37 +78,40 @@ export const getSkillConfirmActions = (action: CharacterAction, targets: Charact
 	return actions;
 };
 
-export const getReactiveActions = (character: Character): CharacterAction[] => {
-	const { AP } = character.attributes;
-	const offHand = character.offHand;
+export const getReactiveActions = (character: Character, isBackAttack: boolean): CharacterAction[] => {
 	const actions: CharacterAction[] = [];
 
-	// EVADE action
-	if (character.archetype.type.S) {
-		const skill = new Skill('EVADE');
-		const { title, cost } = skill;
+	if (!isBackAttack) {
+		const { AP } = character.attributes;
+		const offHand = character.offHand;
 
-		if (AP >= cost) {
-			const action = new CharacterAction('REACTION', title, cost, true, [skill]);
-			actions.push(action);
+		// EVADE action
+		if (character.archetype.type.S) {
+			const skill = new Skill('EVADE');
+			const { title, cost } = skill;
+
+			if (AP >= cost) {
+				const action = new CharacterAction('REACTION', title, cost, true, [skill]);
+				actions.push(action);
+			}
 		}
-	}
 
-	// BLOCK action
-	if ('SHIELD' === offHand.type) {
-		let id: WeaponSkillID;
+		// BLOCK action
+		if ('SHIELD' === offHand.type) {
+			let id: WeaponSkillID;
 
-		if ('SHIELD_LARGE' === offHand.id) {
-			id = 'SHIELD_LARGE_BLOCK';
-		} else {
-			id = 'SHIELD_SMALL_BLOCK';
-		}
-		const skill = new Skill(id);
-		const { title, cost } = skill;
+			if ('SHIELD_LARGE' === offHand.id) {
+				id = 'SHIELD_LARGE_BLOCK';
+			} else {
+				id = 'SHIELD_SMALL_BLOCK';
+			}
+			const skill = new Skill(id);
+			const { title, cost } = skill;
 
-		if (AP >= cost) {
-			const action = new CharacterAction('REACTION', title, cost, true, [skill]);
-			actions.push(action);
+			if (AP >= cost) {
+				const action = new CharacterAction('REACTION', title, cost, true, [skill]);
+				actions.push(action);
+			}
 		}
 	}
 

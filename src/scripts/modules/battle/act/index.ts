@@ -330,7 +330,7 @@ class Act {
 
 						switch (reactionState) {
 							case 'IDLE':
-								this.actions = getReactiveActions(reaction.getReactor());
+								this.actions = getReactiveActions(reaction.getReactor(), reaction.isBackAttacked());
 								break;
 							case 'EVASION':
 								this.actions = getEvasiveActions();

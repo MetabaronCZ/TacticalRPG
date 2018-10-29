@@ -9,7 +9,7 @@ import Logger from 'modules/logger';
 import Character from 'modules/character';
 import Position from 'modules/geometry/position';
 import ActReaction from 'modules/battle/act/reaction';
-import { getDamageInfo } from 'modules/battle/damage';
+import { getDamageInfo, isBackAttack } from 'modules/battle/damage';
 import { resolveDirection } from 'modules/geometry/direction';
 import CharacterAction from 'modules/battle/character-action';
 
@@ -155,7 +155,7 @@ class ActAction {
 	}
 
 	public confirm() {
-		const { state, action, characters, effectTarget, effectTargets, events } = this;
+		const { actor, state, action, characters, effectTarget, effectTargets, events } = this;
 
 		if ('SELECTED' !== state) {
 			throw new Error('Could not confirm action: invalid state ' + state);
@@ -169,7 +169,9 @@ class ActAction {
 		const obstacles = characters.map(char => char.position);
 
 		this.reactions = effectTargets.map((reactor, id) => {
-			return new ActReaction(id, reactor, obstacles, {
+			const isBackAttacked = isBackAttack(actor, reactor);
+
+			return new ActReaction(id, reactor, isBackAttacked, obstacles, {
 				onStart:			reaction => events.onReactionStart(reaction),
 				onSelected:			reaction => events.onReactionSelected(reaction),
 				onBlock:			reaction => events.onReactionBlock(reaction),
@@ -185,7 +187,7 @@ class ActAction {
 						this.animate();
 					} else {
 						// go to next reaction
-						this.startReact(id + 1);
+						this.startReact(this.reactions[id + 1]);
 					}
 				}
 			});
@@ -194,7 +196,7 @@ class ActAction {
 		this.events.onConfirm(this);
 
 		this.state = 'REACTION';
-		this.startReact(0);
+		this.startReact(this.reactions[0]);
 	}
 
 	public pass(passAction: CharacterAction) {
@@ -231,16 +233,11 @@ class ActAction {
 		this.events.onReset(this);
 	}
 
-	private startReact(id: number) {
+	private startReact(reaction: ActReaction) {
 		const { state, actor } = this;
 
 		if ('REACTION' !== state) {
 			throw new Error('Could not start reaction: invalid state ' + state);
-		}
-		const reaction = this.reactions[id];
-
-		if (null === reaction) {
-			throw new Error('Could not start reaction: invalid reaction');
 		}
 		this.reaction = reaction;
 
@@ -362,12 +359,12 @@ class ActAction {
 			},
 			onSelect: (action: ActAction) => {
 				const tgt = action.getEffectTarget();
-				Logger.info(`ActMove onSelect: "${tgt ? `(${tgt.x}, ${tgt.y})` : '-'}"`);
+				Logger.info(`ActAction onSelect: "${tgt ? `(${tgt.x}, ${tgt.y})` : '-'}"`);
 				events.onSelect(action);
 			},
 			onConfirm: (action: ActAction) => {
 				const actionItem = action.getAction();
-				Logger.info(`ActMove onConfirm: "${actionItem ? actionItem.title : '-'}"`);
+				Logger.info(`ActAction onConfirm: "${actionItem ? actionItem.title : '-'}"`);
 				events.onConfirm(action);
 			},
 			onPass: (action: ActAction) => {
