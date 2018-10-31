@@ -1,0 +1,47 @@
+// font sizes
+$font-size-smaller: 10px;
+$font-size-small: 12px;
+$font-size-default: 16px;
+$font-size-large: 20px;
+$font-size-larger: 24px;
+
+// line heights
+$line-height-smaller: 2*$vu;
+$line-height-small: 2*$vu;
+$line-height-default: 3*$vu;
+$line-height-large: 3*$vu;
+$line-height-larger: 4*$vu;
+
+// font weights
+.u-weight-regular {
+	font-family: "robotoregular", Arial, sans-serif;
+}
+
+.u-weight-light {
+	font-family: "robotolight", Arial, sans-serif;
+}
+
+.u-weight-bold {
+	font-family: "robotobold", Arial, sans-serif;
+}
+
+// fonts
+.u-text-smaller {
+	@include mx-text($font-size-smaller, $line-height-smaller);
+}
+
+.u-text-small {
+	@include mx-text($font-size-small, $line-height-small);
+}
+
+.u-text-default {
+	@include mx-text($font-size-default, $line-height-default);
+}
+
+.u-text-large {
+	@include  mx-text($font-size-large, $line-height-large);
+}
+
+.u-text-larger {
+	@include  mx-text($font-size-larger, $line-height-larger);
+}

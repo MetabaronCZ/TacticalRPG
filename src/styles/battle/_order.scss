@@ -1,0 +1,43 @@
+.Order {
+	&-list {
+		width: 100%;
+		border-collapse: collapse;
+
+		&-heading {
+			padding-right: $vu;
+
+			&:last-child {
+				padding-right: 0;
+			}
+
+			&.Order-list-heading--number,
+			&.Order-list-heading--ct,
+			&.Order-list-heading--spd {
+				text-align: right;
+			}
+		}
+
+		&-item {
+			&-row {
+				padding-right: $vu;
+
+				&:last-child {
+					padding-right: 0;
+				}
+
+				&.Order-list-item-row--title {
+					@extend .u-weight-bold;
+				}
+
+				&.Order-list-item-row--number,
+				&.Order-list-item-row--ct,
+				&.Order-list-item-row--spd {
+					text-align: right;
+				}
+			}
+
+			&.is-active { background-color: $color-black; }
+			&.is-dead { background-color: $color-red-dark; }
+		}
+	}
+}

@@ -1,0 +1,26 @@
+.Act {
+	width: 100%;
+
+	&-row {
+		vertical-align: top;
+
+		&.Act-row--character {
+			width: 70%;
+			padding-right: 5*$vu;
+		}
+
+		&.Act-row--actions {
+			/* ... */
+		}
+	}
+
+	&-phases {
+		width: 100%;
+
+		&-row {
+			vertical-align: top;
+			width: 50%;
+			padding-right: 2*$vu;
+		}
+	}
+}

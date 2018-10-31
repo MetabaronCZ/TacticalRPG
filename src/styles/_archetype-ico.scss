@@ -1,0 +1,54 @@
+.ArchetypeIco {
+	$border-size: 1px;
+	display: inline-block;
+	border-radius: 100%;
+	overflow: hidden;
+	vertical-align: middle;
+	border: $border-size solid $color-grey;
+	transition: border-color linear $anim-default;
+
+	&::before,
+	&::after {
+		display: inline-block;
+		content: " ";
+		width: 50%;
+		height: 100%;
+		background: $color-grey;
+		vertical-align: top;
+		transition: background-color linear $anim-default;
+	}
+
+	&.ArchetypeIco--sizeDefault {
+		width: $vu*2;
+		height: $vu*2;
+	}
+
+	&.ArchetypeIco--sizeLarge {
+		width: $vu*4;
+		height: $vu*4;
+	}
+
+	&.ArchetypeIco--primaryP {
+		@include mx-archetype-primary($color-red);
+	}
+
+	&.ArchetypeIco--primaryS {
+		@include mx-archetype-primary($color-green);
+	}
+
+	&.ArchetypeIco--primaryM {
+		@include mx-archetype-primary($color-blue);
+	}
+
+	&.ArchetypeIco--secondaryP::after {
+		background-color: $color-red;
+	}
+
+	&.ArchetypeIco--secondaryS::after {
+		background-color: $color-green;
+	}
+
+	&.ArchetypeIco--secondaryM::after {
+		background-color: $color-blue;
+	}
+}

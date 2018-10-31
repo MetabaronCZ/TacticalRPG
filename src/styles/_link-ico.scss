@@ -1,0 +1,15 @@
+.LinkIco {
+	display: inline-block;
+	width: $vu*2;
+	height: $vu*2;
+	line-height: $vu*2;
+	text-align: center;
+	border: 0;
+	color: $color-yellow;
+	background: transparent;
+	cursor: pointer;
+
+	&:active {
+		color: $color-white;
+	}
+}

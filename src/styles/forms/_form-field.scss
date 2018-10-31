@@ -1,0 +1,38 @@
+.FormField {
+	$label-width: 200px;
+	$input-width: 250px;
+	$gutter: $vu*2;
+
+	@extend .u-text-default, .u-weight-regular, .u-closed;
+	display: block;
+	border: 0;
+	color: $color-yellow;
+	padding: 0;
+	margin-bottom: $vu*2;
+
+	&-label {
+		display: block;
+		width: $label-width;
+		float: left;
+	}
+
+	&-input {
+		display: block;
+		float: left;
+		width: $input-width;
+		margin-left: $gutter;
+	}
+
+	&-info {
+		display: block;
+		margin-left: ($label-width + $input-width + $gutter*2);
+	}
+
+	&-error {
+		display: block;
+		margin-top: $vu;
+		margin-left: ($label-width + $vu*2);
+		clear: both;
+		color: $color-red;
+	}
+}

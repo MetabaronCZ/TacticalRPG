@@ -1,0 +1,33 @@
+.GridTiles {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+
+	&-item {
+		position: absolute;
+		box-sizing: border-box;
+		border: 1px solid $color-grey;
+
+		&.GridTiles-item--default { background-color: $color-black; }
+
+		&.GridTiles-item--movable { background-color: $color-green-dark; }
+		&.GridTiles-item--movePath { background-color: $color-blue-dark; }
+		&.GridTiles-item--moveTarget { background-color: $color-yellow; }
+
+		&.GridTiles-item--actionRange { background-color: $color-green-dark; }
+		&.GridTiles-item--actionTargetable { background-color: $color-blue-dark; }
+
+		&.GridTiles-item--actionEffectArea { background-color: $color-green-dark; }
+		&.GridTiles-item--actionEffectTargets { background-color: $color-blue-dark; }
+		&.GridTiles-item--actionEffectTarget { background-color: $color-yellow; }
+
+		&.GridTiles-item--reactors { background-color: $color-blue-dark; }
+		&.GridTiles-item--reactionEvasible { background-color: $color-green-dark; }
+		&.GridTiles-item--reactor { background-color: $color-yellow; }
+
+		&.GridTiles-item--directable { background-color: $color-green-dark; }
+		&.GridTiles-item--directTarget { background-color: $color-yellow; }
+	}
+}

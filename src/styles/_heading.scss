@@ -1,0 +1,15 @@
+.Heading {
+	$border-size: 1px;
+	@extend .u-text-default, .u-weight-regular;
+	color: $color-yellow;
+	font-weight: normal;
+	text-transform: uppercase;
+	padding: 0 0 ($vu*2 - $border-size);
+	margin-bottom: $vu*2;
+	border-bottom: $border-size dotted $color-yellow;
+
+	&.Heading--large {
+		@extend .u-text-larger;
+		border-bottom-style: solid;
+	}
+}

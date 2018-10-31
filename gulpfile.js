@@ -1,6 +1,6 @@
 const del = require('del');
 const gulp = require('gulp');
-const less = require('gulp-less');
+const sass = require('gulp-sass');
 const webpack = require('webpack');
 const cssnano = require('cssnano');
 const changed = require('gulp-changed');
@@ -17,8 +17,8 @@ const pathDist = './dist';
 
 const paths = {
 	styles: {
-		src: `${pathSrc}/styles/app.less`,
-		files: `${pathSrc}/styles/**/*.less`,
+		src: `${pathSrc}/styles/app.scss`,
+		files: `${pathSrc}/styles/**/*.scss`,
 		dist: `${pathDist}/styles`
 	},
 	scripts: {
@@ -43,7 +43,7 @@ let env = 'prod';
 // clear "dist" folder
 const taskClear = () => del(pathDist);
 
-// lint LESS files
+// lint SASS files
 const taskStylelint = () => {
 	return gulp.src(paths.styles.files)
 		.pipe(changed(paths.styles.dist))
@@ -54,7 +54,7 @@ const taskStylelint = () => {
 const taskStyles = () => {
 	return gulp.src(paths.styles.src)
 		.pipe(changed(paths.styles.dist))
-		.pipe(less())
+		.pipe(sass().on('error', sass.logError))
 		.pipe(postcss([
 			autoprefixer(),
 			cssnano(cssnanoConfig)

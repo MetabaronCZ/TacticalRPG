@@ -1,0 +1,54 @@
+.List {
+	display: table;
+	list-style-type: none;
+	width: 100%;
+	margin-bottom: $vu*2;
+
+	&-row {
+		@extend .u-text-default, .u-weight-regular;
+		display: table-row;
+		color: $color-yellow;
+
+		&-column {
+			display: table-cell;
+			vertical-align: middle;
+			padding-left: $vu;
+
+			&:first-child {
+				padding-left: 0;
+			}
+
+			&.List-row-column--ico,
+			&.List-row-column--sex {
+				width: $vu;
+			}
+
+			&.List-row-column--moveUp,
+			&.List-row-column--moveDown,
+			&.List-row-column--edit,
+			&.List-row-column--delete {
+				width: $vu*2;
+				text-align: right;
+			}
+		}
+
+		&.List-row--header {
+			.List-row-column {
+				$border-width: 1px;
+				@extend .u-weight-bold;
+				padding-bottom: ($vu - $border-width);
+				border-bottom: $border-width dotted $color-yellow;
+			}
+		}
+
+		&.List-row--header + .List-row {
+			.List-row-column {
+				padding-top: $vu;
+			}
+		}
+	}
+
+	&-disabled {
+		color: $color-grey;
+	}
+}

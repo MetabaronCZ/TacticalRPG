@@ -1,0 +1,7 @@
+.LinkButton {
+	@extend .Link;
+	background: transparent;
+	border: 0;
+	font: inherit;
+	cursor: pointer;
+}

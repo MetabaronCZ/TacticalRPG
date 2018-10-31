@@ -1,0 +1,55 @@
+.Button {
+	$border-size: 2px;
+	@extend .u-text-default, .u-weight-bold;
+	@include mx-button-color-variation($color-yellow, $border-size);
+
+	width: 100%;
+	padding: ($vu - $border-size) ($vu*2 - $border-size);
+	text-transform: uppercase;
+	text-align: center;
+	cursor: pointer;
+	border-radius: $border-radius-default;
+	box-shadow: $box-shadow-default;
+	transition: all linear $anim-default;
+
+	&-ico {
+		margin-right: $vu*2;
+	}
+
+	&:hover,
+	&:focus {
+		transition: all linear $anim-fast;
+	}
+
+	&:active {
+		box-shadow: none;
+	}
+
+	// size variation
+	&.Button--sizeLarge {
+		@extend .u-text-larger;
+		padding-top: ($vu*2 - $border-size);
+		padding-bottom: ($vu*2 - $border-size);
+	}
+
+	// color variations
+	&.Button--colorYellow {
+		@include mx-button-color-variation($color-yellow, $border-size);
+	}
+
+	&.Button--colorRed {
+		@include mx-button-color-variation($color-red, $border-size);
+	}
+
+	&.Button--colorGreen {
+		@include mx-button-color-variation($color-green, $border-size);
+	}
+
+	&.Button--colorBlue {
+		@include mx-button-color-variation($color-blue, $border-size);
+	}
+
+	&.Button--colorGrey {
+		@include mx-button-color-variation($color-grey, $border-size);
+	}
+}

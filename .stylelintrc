@@ -1,9 +1,13 @@
 {
-	"extends": "stylelint-config-standard",
+	"extends": "stylelint-config-sass-guidelines",
 	"rules": {
 		"indentation": "tab",
-		"declaration-empty-line-before": null,
-		"at-rule-empty-line-before": null,
-		"at-rule-semicolon-newline-after": null
+		"string-quotes": "double",
+		"max-nesting-depth": null,
+		"selector-class-pattern": null,
+		"color-named": null,
+		"order/properties-alphabetical-order": null,
+		"scss/dollar-variable-pattern": null,
+		"scss/at-extend-no-missing-placeholder": null
 	}
 }

@@ -1,0 +1,20 @@
+.Grid {
+	$gridSize: 400px;
+	list-style-type: none;
+	position: relative;
+	width: $gridSize;
+	height: $gridSize;
+	cursor: pointer;
+
+	&-item {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+
+		&:not(:first-child) {
+			pointer-events: none;
+		}
+	}
+}

@@ -1,0 +1,25 @@
+// box-sizing reset
+html {
+	box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: inherit;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+}
+
+html,
+body {
+	height: 100%;
+}
+
+strong {
+	@extend .u-weight-bold;
+	font-weight: normal;
+}

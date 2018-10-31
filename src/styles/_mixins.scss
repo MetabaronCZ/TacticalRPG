@@ -1,0 +1,30 @@
+// Button color variants
+@mixin mx-button-color-variation($color, $border-size) {
+	background: $color;
+	color: $color-grey-dark;
+	border: $border-size solid $color;
+
+	&:hover {
+		color: $color;
+		background-color: $color-grey-dark;
+	}
+
+	&:active {
+		color: $color-white;
+		border-color: $color-white;
+	}
+}
+
+// Archetype primary variants
+@mixin mx-archetype-primary($color) {
+	background-color: $color;
+
+	&::before {
+		background-color: $color;
+	}
+}
+
+@mixin mx-text($font-size, $line-height) {
+	font-size: $font-size;
+	line-height: $line-height;
+}

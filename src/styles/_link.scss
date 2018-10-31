@@ -1,0 +1,13 @@
+.Link {
+	color: $color-yellow;
+	text-decoration: underline;
+
+	&:hover,
+	&:focus {
+		text-decoration: none;
+	}
+
+	&:active {
+		color: $color-white;
+	}
+}
