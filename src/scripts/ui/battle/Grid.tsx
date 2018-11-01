@@ -4,18 +4,21 @@ import Act from 'modules/battle/act';
 import Character from 'modules/character';
 import Player from 'modules/battle/player';
 import Position from 'modules/geometry/position';
+import { IBattleInfo } from 'modules/battle/battle-info';
 
 import GridBase from 'ui/battle/GridBase';
 import GridCharacters from 'ui/battle/GridCharacters';
+import GridBattleInfo from 'ui/battle/GridBattleInfo';
 
 interface IGridProps {
 	act: Act|null;
 	players: Player[];
 	characters: Character[];
+	battleInfo: IBattleInfo[];
 	onTileSelect: (pos: Position) => void;
 }
 
-const Grid: React.SFC<IGridProps> = ({ act, players, characters, onTileSelect }) => {
+const Grid: React.SFC<IGridProps> = ({ act, players, characters, battleInfo, onTileSelect }) => {
 	const actor = act ? act.getActor() : null;
 
 	return (
@@ -26,6 +29,10 @@ const Grid: React.SFC<IGridProps> = ({ act, players, characters, onTileSelect })
 
 			<li className="Grid-item">
 				<GridCharacters actor={actor} characters={characters} players={players} />
+			</li>
+
+			<li className="Grid-item">
+				<GridBattleInfo info={battleInfo} />
 			</li>
 		</ul>
 	);

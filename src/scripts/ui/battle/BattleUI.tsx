@@ -51,6 +51,7 @@ const BattleUI: React.SFC<IBattleUIProps> = ({ engineState, engineUpdate, onTile
 								act={act}
 								players={players}
 								characters={characters}
+								battleInfo={act.getBattleInfo()}
 								onTileSelect={onTileSelect}
 							/>
 						</td>

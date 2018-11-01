@@ -31,6 +31,12 @@
 			&.is-selected {
 				border-color: $color-yellow-light;
 			}
+
+			&.is-dead {
+				color: $color-white;
+				border-color: $color-grey;
+				background: $color-grey-dark;
+			}
 		}
 
 		&-dir {

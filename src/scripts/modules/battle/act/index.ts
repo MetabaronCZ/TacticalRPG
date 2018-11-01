@@ -103,6 +103,10 @@ class Act {
 		return this.actions;
 	}
 
+	public getBattleInfo(): IBattleInfo[] {
+		return this.battleInfo;
+	}
+
 	public getPhase(): ActPhase {
 		return this.phase;
 	}

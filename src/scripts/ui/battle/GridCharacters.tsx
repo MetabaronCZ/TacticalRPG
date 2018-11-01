@@ -26,15 +26,18 @@ const GridCharacters: React.SFC<IGridChactersProps> = ({ actor, characters, play
 				visualCls += ' is-selected';
 			}
 
+			if (char.isDead()) {
+				visualCls += ' is-dead';
+			}
 			return (
 				<div
 					className="GridCharacters-item"
 					style={
 						{
-							top: (y * itemSize + '%'),
-							left: (x * itemSize + '%'),
-							width: (itemSize + '%'),
-							height: (itemSize + '%'),
+							top: `${y * itemSize}%`,
+							left: `${x * itemSize}%`,
+							width: `${itemSize}%`,
+							height: `${itemSize}%`,
 						}
 					}
 					title={char.name}

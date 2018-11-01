@@ -1,17 +1,17 @@
+import { skillAnimDuration } from 'data/game-config';
+
 import { getIntersection } from 'core/array';
+import { firstLetterToUpper } from 'core/string';
 import Animation, { IAnimationStep } from 'core/animation';
 import { formatNumber, randomNumberBetween } from 'core/number';
-
-import StatusEffects from 'data/status-effects';
-import { skillAnimDuration, smallShieldBlock } from 'data/game-config';
 
 import Logger from 'modules/logger';
 import Character from 'modules/character';
 import Position from 'modules/geometry/position';
 import ActReaction from 'modules/battle/act/reaction';
-import { getDamageInfo, isBackAttack } from 'modules/battle/damage';
-import { resolveDirection } from 'modules/geometry/direction';
 import CharacterAction from 'modules/battle/character-action';
+import { resolveDirection } from 'modules/geometry/direction';
+import { getDamageInfo, isBackAttack } from 'modules/battle/damage';
 
 interface IActActionEvents {
 	onStart: (action: ActAction) => void;
@@ -280,15 +280,15 @@ class ActAction {
 
 						for (const skill of action.skills) {
 							const damage = getDamageInfo(actor, target, skill);
-							const skillStatus = skill.status;
+							const damageStatus = damage.status.map(status => status.id);
 
 							// show small shield block info
-							if (-1 !== damage.status.indexOf('BLOCK_SMALL')) {
+							if (damage.blockModifier) {
 								target.status.remove('BLOCK_SMALL');
-								info.push(`Blocked (${smallShieldBlock})`);
+								info.push(`Blocked (${(damage.blockModifier * 100).toFixed(0)}%)`);
 							}
 
-							if (1 !== damage.directionModifier) {
+							if (1 !== damage.directionModifier && -1 === info.indexOf('Back attack')) {
 								info.push('Back attack');
 							}
 
@@ -302,23 +302,24 @@ class ActAction {
 								} else if (damage.elementalModifier < 1) {
 									info.push('Weak elemental affinity');
 								}
-								info.push(formatNumber(damage.elemental));
+								info.push(
+									`${formatNumber(damage.elemental)} (${firstLetterToUpper(skill.element.toLowerCase())})`
+								);
 							}
 
 							// apply skill damage / statuses to target
-							target.applySkill(damage.physical + damage.elemental, damage.status);
+							target.applySkill(damage.physical + damage.elemental, damageStatus);
 
 							if (target.isDead()) {
 								info.push('Dead');
 								break;
 
-							} else if (skillStatus.length) {
+							} else if (damage.status.length) {
 								// add skill effects
-								info = [...info, ...skillStatus.map(id => StatusEffects.get(id)().title)];
+								info = [...info, ...damage.status.map(status => status.title)];
 							}
 						}
-						let infoTiming = Array(info.length).fill(0);
-						infoTiming = infoTiming.map(i => randomNumberBetween(250, 350));
+						const infoTiming = info.map(_ => randomNumberBetween(250, 350));
 
 						const infoAnim = new Animation(infoTiming, infoStep => {
 							events.onBattleInfo(info[infoStep.number], targetPos);

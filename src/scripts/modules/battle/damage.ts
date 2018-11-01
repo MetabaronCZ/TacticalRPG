@@ -5,7 +5,7 @@ import { smallShieldBlock } from 'data/game-config';
 import Skill from 'modules/skill';
 import Character from 'modules/character';
 import { Vector2D } from 'modules/geometry/vector';
-import { StatusEffectID } from 'modules/battle/status-effect';
+import { IStatusEffect } from 'modules/battle/status-effect';
 import { ElementAffinityTable } from 'modules/skill/affinity';
 import { SkillID, SkillElement } from 'modules/skill/skill-data';
 
@@ -19,7 +19,7 @@ interface IDamageInfo {
 	blockModifier: number;
 	elementalModifier: number;
 	directionModifier: number;
-	status: StatusEffectID[];
+	status: IStatusEffect[];
 }
 
 const getElementModifier = (attacker: SkillElement, defender: SkillElement): number => {
@@ -83,28 +83,28 @@ const getElementalDamage = (attacker: Character, defender: Character, skill: Ski
 	return attack * defense;
 };
 
-const getStatusEffects = (attacker: Character, defender: Character, skill: Skill): StatusEffectID[] => {
+const getStatusEffects = (attacker: Character, defender: Character, skill: Skill): IStatusEffect[] => {
 	const statuses = skill.status.map(id => StatusEffects.get(id)());
 	const { STR: attSTR, MAG: attMAG } = attacker.attributes;
 	const { VIT: defVIT, SPR: defSPR } = defender.attributes;
-	const effects: StatusEffectID[] = [];
+	const effects: IStatusEffect[] = [];
 
 	for (const status of statuses) {
 		switch (status.type) {
 			case 'PHYSICAL':
 				if (attSTR >= defVIT) {
-					effects.push(status.id);
+					effects.push(status);
 				}
 				break;
 
 			case 'MAGICAL':
 				if (attMAG >= defSPR) {
-					effects.push(status.id);
+					effects.push(status);
 				}
 				break;
 
 			case 'SUPPORT':
-				effects.push(status.id);
+				effects.push(status);
 				break;
 
 			default:
@@ -134,7 +134,7 @@ export const getDamageInfo = (attacker: Character, defender: Character, skill: S
 	return {
 		physical,
 		elemental,
-		blockModifier,
+		blockModifier: 1 - blockModifier,
 		elementalModifier,
 		directionModifier,
 		status

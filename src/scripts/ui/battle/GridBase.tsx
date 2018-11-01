@@ -126,10 +126,10 @@ const GridBase: React.SFC<IGridBaseProps> = ({ act, onSelect }) => {
 						className={`GridTiles-item GridTiles-item--${type}`}
 						style={
 							{
-								top: (y * itemSize + '%'),
-								left: (x * itemSize + '%'),
-								width: (itemSize + '%'),
-								height: (itemSize + '%'),
+								top: `${y * itemSize}%`,
+								left: `${x * itemSize}%`,
+								width: `${itemSize}%`,
+								height: `${itemSize}%`,
 							}
 						}
 						onClick={onClick(pos)}
