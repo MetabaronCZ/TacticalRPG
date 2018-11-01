@@ -27,5 +27,17 @@
 		animation-fill-mode: forwards;
 		animation-duration: $anim-duration;
 		animation-timing-function: linear;
+
+		&.GridBattleInfo-item--default {
+			color: $color-yellow;
+		}
+
+		&.GridBattleInfo-item--damage {
+			color: $color-red;
+		}
+
+		&.GridBattleInfo-item--healing {
+			color: $color-green;
+		}
 	}
 }

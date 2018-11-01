@@ -1,14 +1,15 @@
+import StatusEffects from 'data/status-effects';
 import { skillAnimDuration } from 'data/game-config';
 
-import { getIntersection } from 'core/array';
-import { firstLetterToUpper } from 'core/string';
 import Animation, { IAnimationStep } from 'core/animation';
+import { getIntersection, getRandomItem } from 'core/array';
 import { formatNumber, randomNumberBetween } from 'core/number';
 
 import Logger from 'modules/logger';
 import Character from 'modules/character';
 import Position from 'modules/geometry/position';
 import ActReaction from 'modules/battle/act/reaction';
+import { IBattleInfo } from 'modules/battle/battle-info';
 import CharacterAction from 'modules/battle/character-action';
 import { resolveDirection } from 'modules/geometry/direction';
 import { getDamageInfo, isBackAttack } from 'modules/battle/damage';
@@ -31,7 +32,7 @@ interface IActActionEvents {
 	onReactionReset: (reaction: ActReaction) => void;
 	onReactionEnd: (reaction: ActReaction) => void;
 
-	onBattleInfo: (text: string, position: Position) => void;
+	onBattleInfo: (info: IBattleInfo, position: Position) => void;
 }
 
 export type ActActionState = 'INIT' | 'IDLE' | 'SELECTED' | 'CONFIRMED' | 'REACTION' | 'ANIMATION' | 'DONE';
@@ -166,37 +167,45 @@ class ActAction {
 		}
 		this.state = 'CONFIRMED';
 
-		const obstacles = characters.map(char => char.position);
+		const reactableSkills = action.skills.filter(skill => skill.isReactable());
 
-		this.reactions = effectTargets.map((reactor, id) => {
-			const isBackAttacked = isBackAttack(actor, reactor);
+		if (reactableSkills.length) {
+			const obstacles = characters.map(char => char.position);
 
-			return new ActReaction(id, reactor, isBackAttacked, obstacles, {
-				onStart:			reaction => events.onReactionStart(reaction),
-				onSelected:			reaction => events.onReactionSelected(reaction),
-				onBlock:			reaction => events.onReactionBlock(reaction),
-				onEvasionStart:		reaction => events.onReactionEvasionStart(reaction),
-				onEvasionEnd:		reaction => events.onReactionEvasionEnd(reaction),
-				onPass:				reaction => events.onReactionPass(reaction),
-				onReset:			reaction => events.onReactionReset(reaction),
-				onEnd: reaction => {
-					events.onReactionEnd(reaction);
+			this.reactions = effectTargets.map((reactor, id) => {
+				const isBackAttacked = isBackAttack(actor, reactor);
 
-					if (id + 1 >= this.reactions.length) {
-						// go to skill animation
-						this.animate();
-					} else {
-						// go to next reaction
-						this.startReact(this.reactions[id + 1]);
+				return new ActReaction(id, reactor, isBackAttacked, obstacles, {
+					onStart:			reaction => events.onReactionStart(reaction),
+					onSelected:			reaction => events.onReactionSelected(reaction),
+					onBlock:			reaction => events.onReactionBlock(reaction),
+					onEvasionStart:		reaction => events.onReactionEvasionStart(reaction),
+					onEvasionEnd:		reaction => events.onReactionEvasionEnd(reaction),
+					onPass:				reaction => events.onReactionPass(reaction),
+					onReset:			reaction => events.onReactionReset(reaction),
+					onEnd: reaction => {
+						events.onReactionEnd(reaction);
+
+						if (id + 1 >= this.reactions.length) {
+							// go to skill animation
+							this.animate();
+						} else {
+							// go to next reaction
+							this.startReact(this.reactions[id + 1]);
+						}
 					}
-				}
+				});
 			});
-		});
-
+		}
 		this.events.onConfirm(this);
 
 		this.state = 'REACTION';
-		this.startReact(this.reactions[0]);
+
+		if (this.reactions.length) {
+			this.startReact(this.reactions[0]);
+		} else {
+			this.animate();
+		}
 	}
 
 	public pass(passAction: CharacterAction) {
@@ -268,69 +277,163 @@ class ActAction {
 			if (!target.isDead()) {
 				const targetPos = target.position;
 
-				if (targetPos.isContained(effectArea)) {
-					if (target.status.has('BLOCK_LARGE')) {
-						// target blocked attack with shield
-						target.status.remove('BLOCK_LARGE');
-						events.onBattleInfo('Blocked', targetPos);
+				const info: IBattleInfo[] = [];
 
-					} else {
-						// caclulate character changes
-						let info: string[] = [];
-
-						for (const skill of action.skills) {
-							const damage = getDamageInfo(actor, target, skill);
-							const damageStatus = damage.status.map(status => status.id);
-
-							// show small shield block info
-							if (damage.blockModifier) {
-								target.status.remove('BLOCK_SMALL');
-								info.push(`Blocked (${(damage.blockModifier * 100).toFixed(0)}%)`);
-							}
-
-							if (1 !== damage.directionModifier && -1 === info.indexOf('Back attack')) {
-								info.push('Back attack');
-							}
-
-							// physical damage
-							info.push(formatNumber(damage.physical));
-
-							// elemental damage
-							if (skill.elementalDamage) {
-								if (damage.elementalModifier > 1) {
-									info.push('Strong elemental affinity');
-								} else if (damage.elementalModifier < 1) {
-									info.push('Weak elemental affinity');
-								}
-								info.push(
-									`${formatNumber(damage.elemental)} (${firstLetterToUpper(skill.element.toLowerCase())})`
-								);
-							}
-
-							// apply skill damage / statuses to target
-							target.applySkill(damage.physical + damage.elemental, damageStatus);
-
-							if (target.isDead()) {
-								info.push('Dead');
-								break;
-
-							} else if (damage.status.length) {
-								// add skill effects
-								info = [...info, ...damage.status.map(status => status.title)];
-							}
-						}
-						const infoTiming = info.map(_ => randomNumberBetween(250, 350));
-
-						const infoAnim = new Animation(infoTiming, infoStep => {
-							events.onBattleInfo(info[infoStep.number], targetPos);
-						});
-
-						infoAnim.start();
-					}
+				if (!targetPos.isContained(effectArea)) {
+					// target evaded skill action
+					info.push({
+						text: 'Evaded',
+						type: 'ACTION',
+						position: targetPos
+					});
 
 				} else {
-					// target evaded skill action
-					events.onBattleInfo('Evaded', targetPos);
+					// caclulate character changes
+					for (const skill of action.skills) {
+						if ('ALLY' === skill.target) {
+							switch (skill.id) {
+								case 'WHITE_MAGIC_REMEDY': {
+									// remove one bad status
+									const statuses = target.status.get().filter(s => 'SUPPORT' !== s.type);
+									const status = getRandomItem(statuses);
+
+									if (null !== status) {
+										target.status.remove(status.id);
+									}
+									info.push({
+										text: `${status ? status.title : 'No'} status healed`,
+										type: 'HEALING',
+										position: targetPos
+									});
+									break;
+								}
+
+								case 'WHITE_MAGIC_REVIVE': {
+									// TODO: revive death target ONCE
+									break;
+								}
+
+								default: {
+									// apply healing to target
+									const magBonus = actor.mainHand.magic + actor.offHand.magic;
+									const healing = (actor.attributes.MAG + magBonus) * skill.elementalDamage;
+									target.applyHealing(healing, skill.status);
+
+									info.push({
+										text: formatNumber(healing),
+										type: 'HEALING',
+										position: targetPos
+									});
+
+									for (const id of skill.status) {
+										info.push({
+											text: StatusEffects.get(id)().title,
+											type: 'BUFF',
+											position: targetPos
+										});
+									}
+								}
+							}
+							continue;
+						}
+
+						if (target.status.has('BLOCK_LARGE')) {
+							// target completely blocked attack with shield
+							target.status.remove('BLOCK_LARGE');
+
+							info.push({
+								text: 'Blocked',
+								type: 'ACTION',
+								position: targetPos
+							});
+							continue;
+						}
+						const damage = getDamageInfo(actor, target, skill);
+						const damageStatus = damage.status.map(status => status.id);
+
+						// show small shield block info
+						if (damage.blockModifier) {
+							target.status.remove('BLOCK_SMALL');
+
+							info.push({
+								text: `Blocked (${(damage.blockModifier * 100).toFixed(0)}%)`,
+								type: 'ACTION',
+								position: targetPos
+							});
+						}
+
+						if (1 !== damage.directionModifier && !info.find(i => 'Back attack' === i.text)) {
+							info.push({
+								text: 'Back attack',
+								type: 'ACTION',
+								position: targetPos
+							});
+						}
+
+						// physical damage
+						info.push({
+							text: formatNumber(damage.physical),
+							type: 'DAMAGE',
+							position: targetPos
+						});
+
+						// elemental damage
+						if (skill.elementalDamage) {
+							let affinity = '';
+
+							if (damage.elementalModifier > 1) {
+								affinity = 'Strong elemental affinity';
+							} else if (damage.elementalModifier < 1) {
+								affinity = 'Weak elemental affinity';
+							}
+
+							if (affinity) {
+								info.push({
+									text: affinity,
+									type: 'ACTION',
+									position: targetPos
+								});
+							}
+							info.push({
+								text: formatNumber(damage.elemental),
+								type: 'DAMAGE',
+								element: skill.element,
+								position: targetPos
+							});
+						}
+
+						// apply skill damage / statuses to target
+						target.applyDamage(damage.physical + damage.elemental, damageStatus);
+
+						if (target.isDead()) {
+							info.push({
+								text: 'Dead',
+								type: 'ACTION',
+								position: targetPos
+							});
+							break;
+
+						} else if (damage.status.length) {
+							// add skill effects
+							for (const status of damage.status) {
+								info.push({
+									text: status.title,
+									type: 'DEBUFF',
+									position: targetPos
+								});
+							}
+						}
+					}
+				}
+
+				if (info.length) {
+					const infoTiming = info.map(_ => randomNumberBetween(250, 350));
+
+					const infoAnim = new Animation(infoTiming, infoStep => {
+						events.onBattleInfo(info[infoStep.number], targetPos);
+					});
+
+					infoAnim.start();
 				}
 			}
 
@@ -388,9 +491,9 @@ class ActAction {
 			onReactionPass: events.onReactionPass,
 			onReactionReset: events.onReactionReset,
 			onReactionEnd: events.onReactionEnd,
-			onBattleInfo: (text: string, pos: Position) => {
-				Logger.info(`ActAction onBattleInfo: "${text}" (${pos.x}, ${pos.y})`);
-				events.onBattleInfo(text, pos);
+			onBattleInfo: (info: IBattleInfo, pos: Position) => {
+				Logger.info(`ActAction onBattleInfo: "${info.text}" (${pos.x}, ${pos.y})`);
+				events.onBattleInfo(info, pos);
 			}
 		};
 	}

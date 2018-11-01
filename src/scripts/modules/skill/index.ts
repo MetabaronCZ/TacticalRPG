@@ -50,6 +50,8 @@ const areaTable: IAreaTable = {
 	AOE3x3:     (source: Position, target: Position) => [target, ...target.getNeighbours()]
 };
 
+const reactableSkillTargets: SkillTarget[] = ['ANY', 'ENEMY'];
+
 class Skill implements ISkillData {
 	public readonly id: SkillID;
 	public readonly title: string;
@@ -98,6 +100,10 @@ class Skill implements ISkillData {
 					i === self.indexOf(skill) // skill unique in result array
 				);
 			});
+	}
+
+	public isReactable(): boolean {
+		return -1 !== reactableSkillTargets.indexOf(this.target);
 	}
 
 	public getTargetable(source: Position): Position[] {

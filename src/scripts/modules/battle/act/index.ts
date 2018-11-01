@@ -84,9 +84,9 @@ class Act {
 			onReactionReset: reaction => this.update(),
 			onReactionEnd: reaction => this.update(),
 
-			onBattleInfo: (text, position) => {
+			onBattleInfo: (info, position) => {
 				this.update();
-				this.setBattleInfo(text, position);
+				this.setBattleInfo(info);
 			},
 		});
 	}
@@ -362,19 +362,17 @@ class Act {
 		this.events.onUpdate(this);
 	}
 
-	private setBattleInfo(text: string, position: Position, duration = 3000) {
+	private setBattleInfo(info: IBattleInfo, duration = 3000) {
 		const infos = this.battleInfo;
 
 		// set battle info item
-		const item: IBattleInfo = { text, position };
-		infos.push(item);
-
+		infos.push(info);
 		this.update();
 
 		// remove battle info item after fixed amount of time
 		setTimeout(() => {
 			for (let i = 0, imax = infos.length; i < imax; i++) {
-				if (infos[i] === item) {
+				if (infos[i] === info) {
 					infos.splice(i, 1);
 					this.update();
 					break;

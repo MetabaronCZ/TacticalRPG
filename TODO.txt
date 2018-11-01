@@ -1,9 +1,8 @@
 TODO
 ----------------------------------------------------------------------------------------------------------
---	healovani / leceni statusu + zrusit reakce na healovaci skilly
-	--	zrusit elemental affinity u healovani Dark Element cilu
 --	pridat Counter reaktivni akci pro S-type archetypy (bude to attack skill mainHand zbrane)
 --	logika pro SkillDuration (StatusEffect) + DoT/HoT
+--	pridat cooldowny na pokrocilejsi skilly (aby neslo delat napr. Disarm kazde kolo)
 --	pridat realne efekty u statusu
 --	pasivni skilly
 --	ultimatni skilly (Revive, Berserking, ...)

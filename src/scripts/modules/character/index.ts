@@ -93,10 +93,22 @@ class Character {
 		this.attributes.set('CT', CT % characterCTLimit);
 	}
 
-	public applySkill(damage: number, effectIds: StatusEffectID[] = []) {
-		const residualHP = this.attributes.HP - damage;
+	public applyDamage(damage: number, effectIds: StatusEffectID[] = []) {
+		const newHP = this.attributes.HP - damage;
+		const minHP = 0;
 
-		this.attributes.set('HP', residualHP > 0 ? residualHP : 0);
+		this.attributes.set('HP', newHP > minHP ? newHP : minHP);
+
+		for (const effect of effectIds) {
+			this.status.apply(effect);
+		}
+	}
+
+	public applyHealing(healing: number, effectIds: StatusEffectID[] = []) {
+		const newHP = this.attributes.HP + healing;
+		const maxHP = this.baseAttributes.HP;
+
+		this.attributes.set('HP', newHP < maxHP ? newHP : maxHP);
 
 		for (const effect of effectIds) {
 			this.status.apply(effect);
