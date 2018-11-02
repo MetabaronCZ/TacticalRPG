@@ -316,7 +316,8 @@ class ActAction {
 								default: {
 									// apply healing to target
 									const magBonus = actor.mainHand.magic + actor.offHand.magic;
-									const healing = (actor.attributes.MAG + magBonus) * skill.elementalDamage;
+									let healing = (actor.attributes.MAG + magBonus) * skill.elementalDamage;
+									healing = healing > 0 ? Math.round(healing) : 0;
 									target.applyHealing(healing, skill.status);
 
 									info.push({
@@ -441,7 +442,7 @@ class ActAction {
 
 			if (step.isLast) {
 				this.state = 'DONE';
-				actor.skillReduceAP(action.cost);
+				actor.act(action);
 				events.onEnd(this);
 			}
 		});

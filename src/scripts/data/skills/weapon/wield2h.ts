@@ -18,7 +18,8 @@ const wield2HSkills: { [id in Wield2HWeaponSkillID]: ISkillData; } = {
 		range: 2,
 		area: 'LINE',
 		target: 'ENEMY',
-		physicalDamage: 1
+		physicalDamage: 1,
+		cooldown: 1
 	},
 	SWORD_2H_ATTACK: {
 		title: 'Attack',
@@ -36,7 +37,8 @@ const wield2HSkills: { [id in Wield2HWeaponSkillID]: ISkillData; } = {
 		range: 1,
 		area: 'NEIGHBOURS',
 		target: 'ENEMY',
-		physicalDamage: 0.5
+		physicalDamage: 0.5,
+		cooldown: 1
 	},
 	AXE_2H_ATTACK: {
 		title: 'Attack',
@@ -54,7 +56,8 @@ const wield2HSkills: { [id in Wield2HWeaponSkillID]: ISkillData; } = {
 		range: 1,
 		area: 'NEIGHBOURS',
 		target: 'ENEMY',
-		physicalDamage: 0.5
+		physicalDamage: 0.5,
+		cooldown: 1
 	},
 	HAMMER_2H_ATTACK: {
 		title: 'Attack',
@@ -72,7 +75,8 @@ const wield2HSkills: { [id in Wield2HWeaponSkillID]: ISkillData; } = {
 		range: 1,
 		area: 'CROSS',
 		target: 'ENEMY',
-		physicalDamage: 0.5
+		physicalDamage: 0.5,
+		cooldown: 1
 	}
 };
 

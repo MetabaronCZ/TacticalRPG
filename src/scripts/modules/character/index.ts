@@ -13,9 +13,15 @@ import { DirectionID } from 'modules/geometry/direction';
 import { IArmorData } from 'modules/equipment/armor-data';
 import { IWeaponData } from 'modules/equipment/weapon-data';
 import { IArchetypeData } from 'modules/character/archetype';
+import { SkillID, Ultimate } from 'modules/skill/skill-data';
 import { StatusEffectID } from 'modules/battle/status-effect';
+import CharacterAction from 'modules/battle/character-action';
 import BaseAttributes from 'modules/character/base-attributes';
 import { CharacterData } from 'modules/character-creation/character-data';
+
+type ISkillCooldowns = Partial<{
+	[id in SkillID]: number | Ultimate;
+}>;
 
 class Character {
 	public readonly name: string;
@@ -35,6 +41,7 @@ class Character {
 
 	public position: Position;
 	public direction: DirectionID;
+	public cooldowns: ISkillCooldowns = {}; // skill cooldowns
 
 	constructor(character: CharacterData, position: Position, direction: DirectionID, player: number) {
 		const data = character.serialize();
@@ -81,6 +88,19 @@ class Character {
 		// regenerate actor AP
 		const { AP } = this.baseAttributes;
 		this.attributes.set('AP', AP);
+
+		// update skill cooldowns
+		for (const id of Object.keys(this.cooldowns) as SkillID[]) {
+			const cd = this.cooldowns[id] || 0;
+
+			if ('ULTIMATE' !== cd) {
+				if (cd > 1) {
+					this.cooldowns[id] = cd - 1;
+				} else {
+					delete this.cooldowns[id];
+				}
+			}
+		}
 	}
 
 	// update on character act end
@@ -115,7 +135,16 @@ class Character {
 		}
 	}
 
-	public skillReduceAP(cost: number) {
+	public act(action: CharacterAction) {
+		const { cost} = action;
+
+		// put skills on cooldown
+		for (const skill of action.skills) {
+			const cd = skill.cooldown;
+			this.cooldowns[skill.id] = ('ULTIMATE' === cd ? cd : cd + 1);
+		}
+
+		// reduce AP
 		this.attributes.set('AP', this.attributes.AP - cost);
 	}
 }

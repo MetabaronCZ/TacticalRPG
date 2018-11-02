@@ -9,7 +9,7 @@ export const getBackAction = (): CharacterAction => new CharacterAction('BACK', 
 export const getPassAction = (): CharacterAction => new CharacterAction('PASS', 'End turn');
 
 export const getConfirmAction = (title = 'Confirm', cost = 0): CharacterAction => {
-	return new CharacterAction('CONFIRM', title, cost, true, []);
+	return new CharacterAction('CONFIRM', title, cost);
 };
 
 export const getIdleActions = (character: Character): CharacterAction[] => {
@@ -23,36 +23,62 @@ export const getIdleActions = (character: Character): CharacterAction[] => {
 		const attackSkills = Skill.filterAttack(wpn.skills);
 
 		for (const skill of attackSkills) {
-			const cost = skill.cost;
-			const action = new CharacterAction('ATTACK', `Attack (${wpn.title})`, cost, AP >= cost, [skill]);
-			attackSkillList.push(skill);
-			actions.push(action);
+			const cd = character.cooldowns[skill.id] || 0;
+
+			if ('ULTIMATE' !== cd) {
+				const cost = skill.cost;
+				const isActive = (AP >= cost && 0 === cd);
+				const action = new CharacterAction('ATTACK', `Attack (${wpn.title})`, cost, cd, isActive, [skill]);
+				attackSkillList.push(skill);
+				actions.push(action);
+			}
 		}
 	}
 
 	// DOUBLE ATTACK action
 	if (attackSkillList.length > 1) {
-		const cost = attackSkillList.map(skill => skill.cost).reduce((a, b) => a + b);
-		const action = new CharacterAction('DOUBLE_ATTACK', 'Double Attack', cost, AP >= cost, attackSkillList);
-		actions.push(action);
+		const cds = attackSkillList.map(skill => character.cooldowns[skill.id] || 0);
+
+		if (-1 === cds.indexOf('ULTIMATE')) {
+			let cd = 0;
+
+			for (const c of cds) {
+				if ('ULTIMATE' !== c && c > cd) {
+					cd = c;
+				}
+			}
+			const cost = attackSkillList.map(skill => skill.cost).reduce((a, b) => a + b);
+			const isActive = (AP >= cost && 0 === cd);
+
+			const action = new CharacterAction('DOUBLE_ATTACK', 'Double Attack', cost, cd, isActive, attackSkillList);
+			actions.push(action);
+		}
 	}
 
 	// WEAPON actions
 	for (const wpn of [mainHand, offHand]) {
 		for (const skill of Skill.filterSpecial(wpn.skills)) {
-			const { title, cost } = skill;
-			const action = new CharacterAction('WEAPON', `${title} (${wpn.title})`, cost, AP >= cost, [skill]);
-			actions.push(action);
+			const cd = character.cooldowns[skill.id] || 0;
+
+			if ('ULTIMATE' !== cd) {
+				const { title, cost } = skill;
+				const isActive = (AP >= cost && 0 === cd);
+
+				const action = new CharacterAction('WEAPON', `${title} (${wpn.title})`, cost, cd, isActive, [skill]);
+				actions.push(action);
+			}
 		}
 	}
 
 	// MAGIC actions
 	for (const skill of skillset.skills) {
 		const { title, type, cost } = skill;
+		const cd = character.cooldowns[skill.id] || 0;
 
-		if ('ACTIVE' === type) {
+		if ('ULTIMATE' !== cd && 'ACTIVE' === type) {
+			const isActive = (AP >= cost && 0 === cd);
 			const actionTitle = `${title} (${skillset.title} lv. ${skillset.grade})`;
-			const action = new CharacterAction('MAGIC', actionTitle, cost, AP >= cost, [skill]);
+			const action = new CharacterAction('MAGIC', actionTitle, cost, cd, isActive, [skill]);
 			actions.push(action);
 		}
 	}
@@ -90,10 +116,8 @@ export const getReactiveActions = (character: Character, isBackAttack: boolean):
 			const skill = new Skill('EVADE');
 			const { title, cost } = skill;
 
-			if (AP >= cost) {
-				const action = new CharacterAction('REACTION', title, cost, true, [skill]);
-				actions.push(action);
-			}
+			const action = new CharacterAction('REACTION', title, cost, 0, AP >= cost, [skill]);
+			actions.push(action);
 		}
 
 		// BLOCK action
@@ -108,10 +132,8 @@ export const getReactiveActions = (character: Character, isBackAttack: boolean):
 			const skill = new Skill(id);
 			const { title, cost } = skill;
 
-			if (AP >= cost) {
-				const action = new CharacterAction('REACTION', title, cost, true, [skill]);
-				actions.push(action);
-			}
+			const action = new CharacterAction('REACTION', title, cost, 0, AP >= cost, [skill]);
+			actions.push(action);
 		}
 	}
 

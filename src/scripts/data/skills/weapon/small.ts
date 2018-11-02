@@ -19,7 +19,8 @@ const smallSkills: { [id in SmallWeaponSkillID]: ISkillData; } = {
 		area: 'SINGLE',
 		target: 'ENEMY',
 		physicalDamage: 0.5,
-		status: ['DISARM']
+		status: ['DISARM'],
+		cooldown: 1
 	},
 	DAGGER_ATTACK: {
 		title: 'Attack',
@@ -37,7 +38,8 @@ const smallSkills: { [id in SmallWeaponSkillID]: ISkillData; } = {
 		range: 1,
 		area: 'SINGLE',
 		target: 'ENEMY',
-		physicalDamage: 2
+		physicalDamage: 2,
+		cooldown: 1
 	}
 };
 

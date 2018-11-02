@@ -33,7 +33,8 @@ const whiteMagic: { [id in WhiteMagicSkillID]: ISkillData; } = {
 		target: 'ALLY',
 		element: 'HOLY',
 		elementalDamage: 0.5,
-		status: ['REGEN']
+		status: ['REGEN'],
+		cooldown: 1
 	},
 	WHITE_MAGIC_GROUP_HEAL: {
 		title: 'Group Heal',
@@ -44,7 +45,8 @@ const whiteMagic: { [id in WhiteMagicSkillID]: ISkillData; } = {
 		area: 'AOE3x3',
 		target: 'ALLY',
 		element: 'HOLY',
-		elementalDamage: 0.5
+		elementalDamage: 0.5,
+		cooldown: 2
 	},
 	WHITE_MAGIC_HOLY_AURA: {
 		title: 'Holy Aura',
@@ -65,7 +67,8 @@ const whiteMagic: { [id in WhiteMagicSkillID]: ISkillData; } = {
 		range: 4,
 		area: 'SINGLE',
 		target: 'ALLY',
-		element: 'HOLY'
+		element: 'HOLY',
+		cooldown: 'ULTIMATE'
 	}
 };
 

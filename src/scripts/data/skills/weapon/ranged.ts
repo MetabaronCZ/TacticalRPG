@@ -18,7 +18,8 @@ const rangedSkills: { [id in RangedWeaponSkillID]: ISkillData; } = {
 		range: 4,
 		area: 'SINGLE',
 		target: 'ENEMY',
-		physicalDamage: 1.5
+		physicalDamage: 1.5,
+		cooldown: 1
 	},
 	GUN_1H_ATTACK: {
 		title: 'Attack',
@@ -39,7 +40,8 @@ const rangedSkills: { [id in RangedWeaponSkillID]: ISkillData; } = {
 		target: 'ENEMY',
 		isFixedPhysicalDamage: true,
 		physicalDamage: 50,
-		status: ['CRIPPLE']
+		status: ['CRIPPLE'],
+		cooldown: 1
 	},
 	GUN_2H_ATTACK: {
 		title: 'Attack',
@@ -59,7 +61,8 @@ const rangedSkills: { [id in RangedWeaponSkillID]: ISkillData; } = {
 		area: 'LINE',
 		target: 'ENEMY',
 		isFixedPhysicalDamage: true,
-		physicalDamage: 100
+		physicalDamage: 100,
+		cooldown: 1
 	}
 };
 

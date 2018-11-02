@@ -6,7 +6,7 @@ import { getPosition } from 'modules/geometry/positions';
 import { StatusEffectID } from 'modules/battle/status-effect';
 import {
 	SkillID, SkillType, SkillElement, SkillGrade,
-	SkillRange, SkillArea, SkillTarget, ISkillData
+	SkillRange, SkillArea, SkillTarget, ISkillData, SkillCooldown
 } from 'modules/skill/skill-data';
 
 type ITargetTable = {
@@ -66,6 +66,7 @@ class Skill implements ISkillData {
 	public readonly physicalDamage: number; // damage modifier [%]
 	public readonly elementalDamage: number; // elemental damage modifier [%]
 	public readonly status: StatusEffectID[]; // status effects added to attack
+	public readonly cooldown: SkillCooldown;
 	public readonly isAttackSkill: boolean;
 
 	constructor(id: SkillID) {
@@ -83,6 +84,7 @@ class Skill implements ISkillData {
 		this.physicalDamage = data.physicalDamage || 0;
 		this.elementalDamage = data.elementalDamage || 0;
 		this.status = data.status || [];
+		this.cooldown = data.cooldown || 0;
 		this.isAttackSkill = (-1 !== attackSkills.indexOf(this.id));
 	}
 
@@ -104,6 +106,10 @@ class Skill implements ISkillData {
 
 	public isReactable(): boolean {
 		return -1 !== reactableSkillTargets.indexOf(this.target);
+	}
+
+	public isUltimate(): boolean {
+		return 'ULTIMATE' === this.cooldown;
 	}
 
 	public getTargetable(source: Position): Position[] {

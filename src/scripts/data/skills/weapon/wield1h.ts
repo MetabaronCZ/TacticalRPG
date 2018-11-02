@@ -19,7 +19,8 @@ const wield1HSkills: { [id in Wield1HWeaponSkillID]: ISkillData; } = {
 		area: 'SINGLE',
 		target: 'ENEMY',
 		physicalDamage: 0.5,
-		status: ['BLEED']
+		status: ['BLEED'],
+		cooldown: 1
 	},
 	AXE_1H_ATTACK: {
 		title: 'Attack',
@@ -37,7 +38,8 @@ const wield1HSkills: { [id in Wield1HWeaponSkillID]: ISkillData; } = {
 		range: 1,
 		area: 'SINGLE',
 		target: 'ENEMY',
-		physicalDamage: 1.5
+		physicalDamage: 1.5,
+		cooldown: 1
 	},
 	HAMMER_1H_ATTACK: {
 		title: 'Attack',
@@ -56,7 +58,8 @@ const wield1HSkills: { [id in Wield1HWeaponSkillID]: ISkillData; } = {
 		area: 'SINGLE',
 		target: 'ENEMY',
 		physicalDamage: 0.5,
-		status: ['STUN']
+		status: ['STUN'],
+		cooldown: 1
 	}
 };
 

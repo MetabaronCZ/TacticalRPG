@@ -25,7 +25,8 @@ const earthMagic: { [id in EarthMagicSkillID]: ISkillData; } = {
 		element: 'EARTH',
 		physicalDamage: 0.25,
 		elementalDamage: 0.25,
-		status: ['STUN']
+		status: ['STUN'],
+		cooldown: 1
 	},
 	EARTH_MAGIC_EARTHQUAKE: {
 		title: 'Earthquake',
@@ -38,7 +39,8 @@ const earthMagic: { [id in EarthMagicSkillID]: ISkillData; } = {
 		element: 'EARTH',
 		physicalDamage: 0.25,
 		elementalDamage: 5,
-		status: []
+		status: [],
+		cooldown: 2
 	},
 	EARTH_MAGIC_STONE_SKIN: {
 		title: 'Stone Skin',
@@ -49,7 +51,8 @@ const earthMagic: { [id in EarthMagicSkillID]: ISkillData; } = {
 		area: 'SINGLE',
 		target: 'SELF',
 		element: 'EARTH',
-		status: ['IRON_SKIN']
+		status: ['IRON_SKIN'],
+		cooldown: 1
 	}
 };
 

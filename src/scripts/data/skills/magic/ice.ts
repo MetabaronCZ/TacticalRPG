@@ -25,7 +25,8 @@ const iceMagic: { [id in IceMagicSkillID]: ISkillData; } = {
 		element: 'ICE',
 		physicalDamage: 0.25,
 		elementalDamage: 0.25,
-		status: ['FREEZE']
+		status: ['FREEZE'],
+		cooldown: 1
 	},
 	ICE_MAGIC_BLIZZARD: {
 		title: 'Blizzard',
@@ -37,7 +38,8 @@ const iceMagic: { [id in IceMagicSkillID]: ISkillData; } = {
 		target: 'ENEMY',
 		element: 'ICE',
 		physicalDamage: 0.25,
-		elementalDamage: 0.5
+		elementalDamage: 0.5,
+		cooldown: 2
 	},
 	ICE_MAGIC_FROST_AURA: {
 		title: 'Frost Aura',

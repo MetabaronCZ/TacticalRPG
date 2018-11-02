@@ -25,9 +25,13 @@ const Actions: React.SFC<IActionsProps> = ({ actions, onSelect }) => {
 					</div>
 
 					<div className="u-text-small">
-						{action.id} ({action.cost}AP)
-						<br/>
-						[ {action.skills.map(skill => skill.id).join(', ')} ]
+						<div>{action.id} ({action.cost}AP)</div>
+
+						{action.cooldown > 0 && (
+							<div>{action.cooldown} turn/s</div>
+						)}
+
+						<div>[ {action.skills.map(skill => skill.id).join(', ')} ]</div>
 					</div>
 				</li>
 			))}

@@ -25,7 +25,8 @@ const waterMagic: { [id in WaterMagicSkillID]: ISkillData; } = {
 		element: 'WATER',
 		physicalDamage: 0.25,
 		elementalDamage: 0.25,
-		status: ['SILENCE']
+		status: ['SILENCE'],
+		cooldown: 1
 	},
 	WATER_MAGIC_FLOOD: {
 		title: 'Flood',
@@ -37,7 +38,8 @@ const waterMagic: { [id in WaterMagicSkillID]: ISkillData; } = {
 		target: 'ENEMY',
 		element: 'WATER',
 		physicalDamage: 0.25,
-		elementalDamage: 0.5
+		elementalDamage: 0.5,
+		cooldown: 2
 	},
 	WATER_MAGIC_WATER_AURA: {
 		title: 'Water Aura',

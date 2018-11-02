@@ -23,7 +23,8 @@ const psychokinesis: { [id in PsychokinesisSkillID]: ISkillData; } = {
 		area: 'SINGLE',
 		target: 'ENEMY',
 		element: 'PSYCHIC',
-		status: ['FORGET']
+		status: ['FORGET'],
+		cooldown: 1
 	},
 	PSYCHOKINESIS_PSYCHODOME: {
 		title: 'Psychodome',

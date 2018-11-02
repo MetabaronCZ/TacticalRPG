@@ -24,7 +24,8 @@ const windMagic: { [id in WindMagicSkillID]: ISkillData; } = {
 		target: 'ENEMY',
 		element: 'WIND',
 		physicalDamage: 0.25,
-		elementalDamage: 0.25
+		elementalDamage: 0.25,
+		cooldown: 1
 	},
 	WIND_MAGIC_TORNADO: {
 		title: 'Tornado',
@@ -36,7 +37,8 @@ const windMagic: { [id in WindMagicSkillID]: ISkillData; } = {
 		target: 'ENEMY',
 		element: 'WIND',
 		physicalDamage: 0.25,
-		elementalDamage: 0.5
+		elementalDamage: 0.5,
+		cooldown: 2
 	},
 	WIND_MAGIC_WIND_AURA: {
 		title: 'Wind Aura',

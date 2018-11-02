@@ -33,6 +33,8 @@ const ActUI: React.SFC<IActUIProps> = ({ act, onActionSelect }) => {
 						<h3 className="Heading">Character act</h3>
 						<div>Phase: <span className="u-weight-bold">{act.getPhase()}</span></div>
 						<div>Actor: <span className="u-weight-bold">{actor.name}</span> {formatPosition(actor.position)}</div>
+						<div>Status: [ {actor.status.get().map(status => status.id).join(', ')} ]</div>
+						<div>Cooldown: [ {Object.keys(actor.cooldowns).join(', ')} ]</div>
 
 						<br/>
 

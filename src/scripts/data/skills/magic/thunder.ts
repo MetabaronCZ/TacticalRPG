@@ -25,7 +25,8 @@ const thunderMagic: { [id in ThunderMagicSkillID]: ISkillData; } = {
 		element: 'THUNDER',
 		physicalDamage: 0.25,
 		elementalDamage: 0.25,
-		status: ['SHOCK']
+		status: ['SHOCK'],
+		cooldown: 1
 	},
 	THUNDER_MAGIC_THUNDERSTORM: {
 		title: 'Thunderstorm',
@@ -37,7 +38,8 @@ const thunderMagic: { [id in ThunderMagicSkillID]: ISkillData; } = {
 		target: 'ENEMY',
 		element: 'THUNDER',
 		physicalDamage: 0.25,
-		elementalDamage: 0.5
+		elementalDamage: 0.5,
+		cooldown: 2
 	},
 	THUNDER_MAGIC_THUNDER_AURA: {
 		title: 'Thunder Aura',
