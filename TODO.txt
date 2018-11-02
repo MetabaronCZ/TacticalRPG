@@ -2,6 +2,8 @@ TODO
 ----------------------------------------------------------------------------------------------------------
 --	logika pro SkillDuration (StatusEffect) + DoT/HoT
 --	pridat realne efekty u statusu
+--	nepovolit reakce pri statusech stunned, frozen, apod.
+
 --	pasivni skilly
 --	pridat Counter reaktivni akci pro S-type archetypy (bude to attack skill mainHand zbrane)
 
