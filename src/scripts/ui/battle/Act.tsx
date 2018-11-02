@@ -25,6 +25,9 @@ const ActUI: React.SFC<IActUIProps> = ({ act, onActionSelect }) => {
 	const actions = act.getActions();
 	const actor = act.getActor();
 
+	const status = actor.status.get().map(st => `${st.id} (${st.duration})`);
+	const cooldown = Object.keys(actor.cooldowns);
+
 	return (
 		<table className="Act">
 			<tbody>
@@ -33,8 +36,8 @@ const ActUI: React.SFC<IActUIProps> = ({ act, onActionSelect }) => {
 						<h3 className="Heading">Character act</h3>
 						<div>Phase: <span className="u-weight-bold">{act.getPhase()}</span></div>
 						<div>Actor: <span className="u-weight-bold">{actor.name}</span> {formatPosition(actor.position)}</div>
-						<div>Status: [ {actor.status.get().map(status => status.id).join(', ')} ]</div>
-						<div>Cooldown: [ {Object.keys(actor.cooldowns).join(', ')} ]</div>
+						<div>Status: [ {status.join(', ')} ]</div>
+						<div>Cooldown: [ {cooldown.join(', ')} ]</div>
 
 						<br/>
 

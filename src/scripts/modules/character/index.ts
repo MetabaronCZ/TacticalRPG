@@ -11,6 +11,7 @@ import StatusEffect from 'modules/character/status';
 import Attributes from 'modules/character/attributes';
 import { DirectionID } from 'modules/geometry/direction';
 import { IArmorData } from 'modules/equipment/armor-data';
+import { IOnBattleInfo } from 'modules/battle/battle-info';
 import { IWeaponData } from 'modules/equipment/weapon-data';
 import { IArchetypeData } from 'modules/character/archetype';
 import { SkillID, Ultimate } from 'modules/skill/skill-data';
@@ -43,7 +44,9 @@ class Character {
 	public direction: DirectionID;
 	public cooldowns: ISkillCooldowns = {}; // skill cooldowns
 
-	constructor(character: CharacterData, position: Position, direction: DirectionID, player: number) {
+	private onInfo: IOnBattleInfo;
+
+	constructor(character: CharacterData, position: Position, direction: DirectionID, player: number, onInfo: IOnBattleInfo) {
 		const data = character.serialize();
 
 		this.name = data.name;
@@ -64,6 +67,8 @@ class Character {
 		this.position = position;
 		this.direction = direction;
 		this.status = new StatusEffect();
+
+		this.onInfo = onInfo;
 	}
 
 	public isDead(): boolean {
@@ -75,6 +80,9 @@ class Character {
 		if (this.isDead()) {
 			return;
 		}
+		// update status effects
+		this.status.update(this, this.onInfo);
+
 		// update CT
 		const { SPD, CT } = this.attributes;
 		this.attributes.set('CT', CT + SPD);
@@ -120,7 +128,7 @@ class Character {
 		this.attributes.set('HP', newHP > minHP ? newHP : minHP);
 
 		for (const effect of effectIds) {
-			this.status.apply(effect);
+			this.status.apply(effect, damage);
 		}
 	}
 
@@ -131,7 +139,7 @@ class Character {
 		this.attributes.set('HP', newHP < maxHP ? newHP : maxHP);
 
 		for (const effect of effectIds) {
-			this.status.apply(effect);
+			this.status.apply(effect, healing);
 		}
 	}
 

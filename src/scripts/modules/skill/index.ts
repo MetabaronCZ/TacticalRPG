@@ -108,10 +108,6 @@ class Skill implements ISkillData {
 		return -1 !== reactableSkillTargets.indexOf(this.target);
 	}
 
-	public isUltimate(): boolean {
-		return 'ULTIMATE' === this.cooldown;
-	}
-
 	public getTargetable(source: Position): Position[] {
 		const { target, range, area } = this;
 

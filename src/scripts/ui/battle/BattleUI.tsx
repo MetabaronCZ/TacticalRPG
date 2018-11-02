@@ -20,7 +20,7 @@ const BattleUI: React.SFC<IBattleUIProps> = ({ engineState, engineUpdate, onTile
 	if (!engineState || !engineUpdate) {
 		return <div>Loading...</div>;
 	}
-	const { players, characters, order, act, tick } = engineState;
+	const { players, characters, order, act, tick, battleInfo } = engineState;
 
 	if (null === act) {
 		return <div>Waiting for act to start [Tick {tick}]...</div>;
@@ -51,7 +51,7 @@ const BattleUI: React.SFC<IBattleUIProps> = ({ engineState, engineUpdate, onTile
 								act={act}
 								players={players}
 								characters={characters}
-								battleInfo={act.getBattleInfo()}
+								battleInfo={battleInfo}
 								onTileSelect={onTileSelect}
 							/>
 						</td>
