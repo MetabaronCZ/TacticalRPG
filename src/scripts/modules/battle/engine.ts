@@ -30,6 +30,7 @@ interface IEngineEvents {
 	onStart: (state: IEngineState) => void;
 	onUpdate: (state: IEngineState) => void;
 	onGameOver: (state: IEngineState) => void;
+	onBattleInfo: (state: IEngineState) => void;
 }
 
 interface IEngineProps {
@@ -90,7 +91,9 @@ class Engine {
 		this.tick++;
 
 		// update characters
-		characters.forEach(char => char.update());
+		characters.forEach(char => {
+			char.update(this.onInfo.bind(this));
+		});
 
 		// update order
 		order.update();
@@ -130,7 +133,7 @@ class Engine {
 		this.act = new Act(this.actNumber, actor, characters, {
 			onStart: act => events.onUpdate(this.getState()),
 			onUpdate: act => events.onUpdate(this.getState()),
-			onBattleInfo: info => this.onInfo,
+			onBattleInfo: info => this.onInfo(info),
 			onEnd: act => {
 				// run next act
 				this.act = null;
@@ -193,7 +196,7 @@ class Engine {
 				if (null === pos) {
 					throw new Error('Invalid position given');
 				}
-				const char = new Character(data, pos, dir, p, this.onInfo);
+				const char = new Character(data, pos, dir, p);
 
 				// set small random initial CP
 				const ct = Math.floor((config.characterCTLimit / 10) * Math.random());
@@ -242,23 +245,27 @@ class Engine {
 			onGameOver: state => {
 				Logger.info('Engine onGameOver');
 				events.onGameOver(state);
+			},
+			onBattleInfo: state => {
+				Logger.info(`Engine onBattleInfo: [ ${state.battleInfo.map(info => info.text).join(', ')} ]`);
+				events.onBattleInfo(state);
 			}
 		};
 	}
 
 	private onInfo(info: IBattleInfo, duration = 3000) {
-		const infos = this.battleInfo;
+		const { battleInfo, events } = this;
 
 		// set battle info item
-		infos.push(info);
-		this.update();
+		battleInfo.push(info);
+		events.onBattleInfo(this.getState());
 
 		// remove battle info item after fixed amount of time
 		setTimeout(() => {
-			for (let i = 0, imax = infos.length; i < imax; i++) {
-				if (infos[i] === info) {
-					infos.splice(i, 1);
-					this.update();
+			for (let i = 0, imax = battleInfo.length; i < imax; i++) {
+				if (battleInfo[i] === info) {
+					battleInfo.splice(i, 1);
+					events.onBattleInfo(this.getState());
 					break;
 				}
 			}

@@ -26,21 +26,27 @@ class Status {
 
 	public update(character: Character, cb: IOnBattleInfo) {
 		for (const item of this.items) {
-			if ('undefined' !== typeof item.duration) {
-				item.duration--;
+			item.duration = item.duration || 0;
+			item.repeat = item.repeat || 0;
 
-				if (item.duration <= 0) {
-					if ('undefined' !== typeof item.repeat) {
-						item.repeat--;
-					}
+			item.duration--;
 
-					if (item.apply) {
-						item.apply(character, cb);
-					}
+			if (item.duration <= 0) {
+				item.duration = StatusEffects.get(item.id)().duration;
+				item.repeat--;
 
-					if (!item.repeat) {
-						this.remove(item.id);
-					}
+				if (item.apply) {
+					item.apply(character, cb);
+				}
+
+				if (item.repeat <= 0) {
+					this.remove(item.id);
+
+					cb({
+						text: `${item.title} ended`,
+						type: 'ACTION',
+						position: character.position
+					});
 				}
 			}
 		}

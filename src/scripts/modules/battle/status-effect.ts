@@ -7,8 +7,8 @@ export type StatusEffectID =
 	'REGEN' | 'IRON_SKIN' | 'BLOCK_SMALL' | 'BLOCK_LARGE';
 
 export type StatusEffectType = 'PHYSICAL' | 'MAGICAL' | 'SUPPORT';
-export type StatusEffectDuration = 100 | 300;  // game ticks
-export type StatusEffectRepeat = 3;
+export type StatusEffectDuration = 0 | 100 | 300;  // game ticks
+export type StatusEffectRepeat = 0 | 3;
 
 export interface IStatusEffect {
 	id: StatusEffectID;

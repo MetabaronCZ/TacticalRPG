@@ -44,9 +44,7 @@ class Character {
 	public direction: DirectionID;
 	public cooldowns: ISkillCooldowns = {}; // skill cooldowns
 
-	private onInfo: IOnBattleInfo;
-
-	constructor(character: CharacterData, position: Position, direction: DirectionID, player: number, onInfo: IOnBattleInfo) {
+	constructor(character: CharacterData, position: Position, direction: DirectionID, player: number) {
 		const data = character.serialize();
 
 		this.name = data.name;
@@ -67,8 +65,6 @@ class Character {
 		this.position = position;
 		this.direction = direction;
 		this.status = new StatusEffect();
-
-		this.onInfo = onInfo;
 	}
 
 	public isDead(): boolean {
@@ -76,12 +72,12 @@ class Character {
 	}
 
 	// updates on every game tick
-	public update() {
+	public update(onInfo: IOnBattleInfo) {
 		if (this.isDead()) {
 			return;
 		}
 		// update status effects
-		this.status.update(this, this.onInfo);
+		this.status.update(this, onInfo);
 
 		// update CT
 		const { SPD, CT } = this.attributes;
