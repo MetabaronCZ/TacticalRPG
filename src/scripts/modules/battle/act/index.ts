@@ -3,7 +3,9 @@ import Character from 'modules/character';
 import Position from 'modules/geometry/position';
 import { IBattleInfo } from 'modules/battle/battle-info';
 import CharacterAction from 'modules/battle/character-action';
-import { getIdleActions, getSkillActions, getSkillConfirmActions, getReactiveActions, getEvasiveActions } from 'modules/battle/character-actions';
+import {
+	getIdleActions, getSkillActions, getSkillConfirmActions, getReactiveActions, getEvasiveActions
+} from 'modules/battle/character-actions';
 
 import ActMove from 'modules/battle/act/movement';
 import ActAction from 'modules/battle/act/action';
@@ -15,6 +17,7 @@ export interface IActEvents {
 	onStart: (act: Act) => void;
 	onUpdate: (act: Act) => void;
 	onEnd: (act: Act) => void;
+	onBattleInfo: (info: IBattleInfo) => void;
 }
 
 class Act {
@@ -28,7 +31,6 @@ class Act {
 
 	private phase: ActPhase = 'INIT';
 	private actions: CharacterAction[] = [];
-	private battleInfo: IBattleInfo[] = [];
 
 	constructor(id: number, actor: Character, characters: Character[], events: IActEvents) {
 		this.id = id;
@@ -84,10 +86,7 @@ class Act {
 			onReactionReset: reaction => this.update(),
 			onReactionEnd: reaction => this.update(),
 
-			onBattleInfo: (info, position) => {
-				this.update();
-				this.setBattleInfo(info);
-			},
+			onBattleInfo: this.events.onBattleInfo
 		});
 	}
 
@@ -101,10 +100,6 @@ class Act {
 
 	public getActions(): CharacterAction[] {
 		return this.actions;
-	}
-
-	public getBattleInfo(): IBattleInfo[] {
-		return this.battleInfo;
 	}
 
 	public getPhase(): ActPhase {
@@ -362,25 +357,6 @@ class Act {
 		this.events.onUpdate(this);
 	}
 
-	private setBattleInfo(info: IBattleInfo, duration = 3000) {
-		const infos = this.battleInfo;
-
-		// set battle info item
-		infos.push(info);
-		this.update();
-
-		// remove battle info item after fixed amount of time
-		setTimeout(() => {
-			for (let i = 0, imax = infos.length; i < imax; i++) {
-				if (infos[i] === info) {
-					infos.splice(i, 1);
-					this.update();
-					break;
-				}
-			}
-		}, duration);
-	}
-
 	private prepareEvents(events: IActEvents): IActEvents {
 		return {
 			onStart: act => {
@@ -391,7 +367,8 @@ class Act {
 			onEnd: act => {
 				Logger.info('Act onEnd');
 				events.onEnd(act);
-			}
+			},
+			onBattleInfo: events.onBattleInfo
 		};
 	}
 }

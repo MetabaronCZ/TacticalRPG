@@ -32,7 +32,7 @@ interface IActActionEvents {
 	onReactionReset: (reaction: ActReaction) => void;
 	onReactionEnd: (reaction: ActReaction) => void;
 
-	onBattleInfo: (info: IBattleInfo, position: Position) => void;
+	onBattleInfo: (info: IBattleInfo) => void;
 }
 
 export type ActActionState = 'INIT' | 'IDLE' | 'SELECTED' | 'CONFIRMED' | 'REACTION' | 'ANIMATION' | 'DONE';
@@ -431,7 +431,7 @@ class ActAction {
 					const infoTiming = info.map(_ => randomNumberBetween(250, 350));
 
 					const infoAnim = new Animation(infoTiming, infoStep => {
-						events.onBattleInfo(info[infoStep.number], targetPos);
+						events.onBattleInfo(info[infoStep.number]);
 					});
 
 					infoAnim.start();
@@ -492,10 +492,7 @@ class ActAction {
 			onReactionPass: events.onReactionPass,
 			onReactionReset: events.onReactionReset,
 			onReactionEnd: events.onReactionEnd,
-			onBattleInfo: (info: IBattleInfo, pos: Position) => {
-				Logger.info(`ActAction onBattleInfo: "${info.text}" (${pos.x}, ${pos.y})`);
-				events.onBattleInfo(info, pos);
-			}
+			onBattleInfo: events.onBattleInfo
 		};
 	}
 }

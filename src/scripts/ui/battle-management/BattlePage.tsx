@@ -46,12 +46,14 @@ class BattlePageContainer extends React.Component<IBattlePageContainerProps, IBa
 				onGameOver: engineState => {
 					throw new Error('TODO: Game Over');
 
-					const now = new Date();
 					this.setState(
-						state => ({ engineState, engineUpdate: now }),
+						state => ({ engineState, engineUpdate: new Date() }),
 						() => exit(props.history)
 					);
-				}
+				},
+				onBattleInfo: engineState => {
+					this.setState({ engineState, engineUpdate: new Date() });
+				},
 			}
 		});
 	}

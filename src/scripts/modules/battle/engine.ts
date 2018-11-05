@@ -15,6 +15,7 @@ import CharacterCreationForm from 'modules/character-creation';
 import { getRandomNames } from 'modules/random-name-generator';
 import { PlayerConfig } from 'modules/battle-configuration/player-config';
 import { CharacterData } from 'modules/character-creation/character-data';
+import { IBattleInfo } from 'modules/battle/battle-info';
 
 export interface IEngineState {
 	tick: number;
@@ -22,12 +23,14 @@ export interface IEngineState {
 	players: Player[];
 	characters: Character[];
 	order: Character[];
+	battleInfo: IBattleInfo[];
 }
 
 interface IEngineEvents {
 	onStart: (state: IEngineState) => void;
 	onUpdate: (state: IEngineState) => void;
 	onGameOver: (state: IEngineState) => void;
+	onBattleInfo: (state: IEngineState) => void;
 }
 
 interface IEngineProps {
@@ -39,6 +42,7 @@ interface IEngineProps {
 class Engine {
 	private readonly players: Player[] = [];
 	private readonly characters: Character[] = [];
+	private readonly battleInfo: IBattleInfo[] = [];
 	private readonly events: IEngineEvents;
 
 	private tick = 0; // game update counter
@@ -82,19 +86,20 @@ class Engine {
 			return;
 		}
 		const { characters, order } = this;
-		const liveChars = characters.filter(char => !char.isDead());
 
 		// update game tick counter
 		this.tick++;
 
 		// update characters
-		liveChars.forEach(char => char.update());
+		characters.forEach(char => {
+			char.update(this.onInfo.bind(this));
+		});
 
 		// update order
 		order.update();
 
 		// get actors
-		const actors = liveChars.filter(char => char.attributes.CT >= config.characterCTLimit);
+		const actors = characters.filter(char => !char.isDead() && char.attributes.CT >= config.characterCTLimit);
 
 		// if no actor present, continue updating
 		if (!actors.length) {
@@ -128,6 +133,7 @@ class Engine {
 		this.act = new Act(this.actNumber, actor, characters, {
 			onStart: act => events.onUpdate(this.getState()),
 			onUpdate: act => events.onUpdate(this.getState()),
+			onBattleInfo: info => this.onInfo(info),
 			onEnd: act => {
 				// run next act
 				this.act = null;
@@ -224,7 +230,8 @@ class Engine {
 			act: this.act,
 			players: this.players,
 			characters: this.characters,
-			order: this.order.get()
+			order: this.order.get(),
+			battleInfo: this.battleInfo
 		};
 	}
 
@@ -238,8 +245,31 @@ class Engine {
 			onGameOver: state => {
 				Logger.info('Engine onGameOver');
 				events.onGameOver(state);
+			},
+			onBattleInfo: state => {
+				Logger.info(`Engine onBattleInfo: [ ${state.battleInfo.map(info => info.text).join(', ')} ]`);
+				events.onBattleInfo(state);
 			}
 		};
+	}
+
+	private onInfo(info: IBattleInfo, duration = 3000) {
+		const { battleInfo, events } = this;
+
+		// set battle info item
+		battleInfo.push(info);
+		events.onBattleInfo(this.getState());
+
+		// remove battle info item after fixed amount of time
+		setTimeout(() => {
+			for (let i = 0, imax = battleInfo.length; i < imax; i++) {
+				if (battleInfo[i] === info) {
+					battleInfo.splice(i, 1);
+					events.onBattleInfo(this.getState());
+					break;
+				}
+			}
+		}, duration);
 	}
 }
 

@@ -11,6 +11,7 @@ import StatusEffect from 'modules/character/status';
 import Attributes from 'modules/character/attributes';
 import { DirectionID } from 'modules/geometry/direction';
 import { IArmorData } from 'modules/equipment/armor-data';
+import { IOnBattleInfo } from 'modules/battle/battle-info';
 import { IWeaponData } from 'modules/equipment/weapon-data';
 import { IArchetypeData } from 'modules/character/archetype';
 import { SkillID, Ultimate } from 'modules/skill/skill-data';
@@ -71,10 +72,13 @@ class Character {
 	}
 
 	// updates on every game tick
-	public update() {
+	public update(onInfo: IOnBattleInfo) {
 		if (this.isDead()) {
 			return;
 		}
+		// update status effects
+		this.status.update(this, onInfo);
+
 		// update CT
 		const { SPD, CT } = this.attributes;
 		this.attributes.set('CT', CT + SPD);
@@ -120,7 +124,7 @@ class Character {
 		this.attributes.set('HP', newHP > minHP ? newHP : minHP);
 
 		for (const effect of effectIds) {
-			this.status.apply(effect);
+			this.status.apply(effect, damage);
 		}
 	}
 
@@ -131,7 +135,7 @@ class Character {
 		this.attributes.set('HP', newHP < maxHP ? newHP : maxHP);
 
 		for (const effect of effectIds) {
-			this.status.apply(effect);
+			this.status.apply(effect, healing);
 		}
 	}
 

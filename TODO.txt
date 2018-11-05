@@ -1,6 +1,5 @@
 TODO
 ----------------------------------------------------------------------------------------------------------
---	logika pro SkillDuration (StatusEffect) + DoT/HoT
 --	pridat realne efekty u statusu
 --	nepovolit reakce pri statusech stunned, frozen, apod.
 
