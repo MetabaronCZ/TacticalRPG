@@ -20,7 +20,7 @@ const Actions: React.SFC<IActionsProps> = ({ actions, onSelect }) => {
 				<li className={`Actions-item ${!action.isActive() ? 'is-disabled' : ''}`} key={i}>
 					<div>
 						&rsaquo; <a className="Link" href="#" onClick={onClick(action)}>
-							<span className="u-weight-bold">{action.title}</span>
+							<strong>{action.title}</strong>
 						</a>
 					</div>
 

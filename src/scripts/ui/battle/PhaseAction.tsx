@@ -15,7 +15,7 @@ const ActActionUI: React.SFC<IActActionUIProps> = ({ act }) => {
 	return (
 		<div className="Phase">
 			<h4>Action phase:</h4>
-			<div>State: <span className="u-weight-bold">{act.getState()}</span></div>
+			<div>State: <strong>{act.getState()}</strong></div>
 			<div>Action: {null !== action ? `${action.title} (${action.id})` : '-'}</div>
 			<div>Action range: {formatPositions(act.getArea())}</div>
 			<div>Targetable: {formatPositions(act.getTargetable())}</div>

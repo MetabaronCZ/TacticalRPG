@@ -51,27 +51,34 @@ class ActDirect {
 		this.target = findPositionFrom(pos, dir); // set initial direction
 
 		this.events.onStart(this);
+
+		if (!actor.canAct()) {
+			// force direction to end
+			this.select(this.target);
+		}
 	}
 
-	public select(position: Position) {
+	public select(position: Position|null) {
 		const { state, actor, targets } = this;
 
 		if ('IDLE' !== state) {
 			throw new Error('Could not select direct target: invalid state ' + state);
 		}
 
-		if (!position.isContained(targets)) {
+		if (position && !position.isContained(targets)) {
 			// non-directable position selected
 			return;
 		}
 		this.state = 'DONE';
 
-		const pos = actor.position;
-		this.target = position;
+		if (position) {
+			const pos = actor.position;
+			this.target = position;
 
-		// update character direction
-		const newDirection = resolveDirection(pos, this.target);
-		actor.direction = newDirection;
+			// update character direction
+			const newDirection = resolveDirection(pos, this.target);
+			actor.direction = newDirection;
+		}
 
 		this.events.onSelect(this);
 		this.events.onEnd(this);

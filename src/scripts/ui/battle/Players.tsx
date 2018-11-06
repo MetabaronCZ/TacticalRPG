@@ -41,7 +41,7 @@ const Players: React.SFC<IPlayersProps> = ({ act, players }) => (
 							return (
 								<tr className={`Players-item-characters-item ${state}`} key={c}>
 									<td className="Players-item-characters-item-row">
-										<span className="u-weight-bold">{char.name}</span>
+										<strong>{char.name}</strong>
 										{' '}{Icos[char.sex.id.toLowerCase() as IcoID]}
 										{' '}<ArchetypeIco archetype={char.archetype.id} />
 									</td>

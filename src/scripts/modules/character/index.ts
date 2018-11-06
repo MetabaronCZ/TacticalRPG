@@ -71,6 +71,16 @@ class Character {
 		return this.attributes.HP <= 0;
 	}
 
+	public canAct(): boolean {
+		const status = this.status;
+		return !this.isDead() && !status.has('STUN') && !status.has('FREEZE');
+	}
+
+	public canMove(): boolean {
+		const status = this.status;
+		return this.canAct() && !status.has('CRIPPLE');
+	}
+
 	// updates on every game tick
 	public update(onInfo: IOnBattleInfo) {
 		if (this.isDead()) {

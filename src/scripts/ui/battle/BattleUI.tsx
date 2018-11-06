@@ -43,7 +43,7 @@ const BattleUI: React.SFC<IBattleUIProps> = ({ engineState, engineUpdate, onTile
 						</td>
 
 						<td className="BattleUI-table-column">
-							<ActUI act={act} onActionSelect={onActionSelect}/>
+							<ActUI act={act}  players={players} onActionSelect={onActionSelect}/>
 						</td>
 
 						<td className="BattleUI-table-column BattleUI-table-column--grid">

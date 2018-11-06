@@ -127,16 +127,14 @@ class ActAction {
 			throw new Error('Could not select action target: invalid state ' + state);
 		}
 
-		if (null === action) {
+		if (null === action || !action.isActive()) {
 			throw new Error('Could not select action target: invalid action');
 		}
 
 		if (!target.isContained(targets)) {
-			// non-selctable action target
+			// non-selectable action target
 			return;
 		}
-
-		// get skill effect area
 		const skills = action.skills;
 
 		if (!skills.length) {
@@ -144,6 +142,7 @@ class ActAction {
 		}
 		this.state = 'SELECTED';
 
+		// get skill effect area
 		const effectAreas = skills.map(s => s.getEffectArea(actor.position, target));
 		const effectArea = getIntersection(effectAreas, pos => pos.id);
 		const effectTargets = skills[0].getTargets(actor, characters, effectArea);
@@ -162,7 +161,7 @@ class ActAction {
 			throw new Error('Could not confirm action: invalid state ' + state);
 		}
 
-		if (null === action || null === effectTarget || !effectTargets.length) {
+		if (null === action || null === effectTarget || !effectTargets.length || !action.isActive()) {
 			throw new Error('Could not confirm action: invalid action data');
 		}
 		this.state = 'CONFIRMED';
@@ -265,7 +264,7 @@ class ActAction {
 		}
 		this.state = 'ANIMATION';
 
-		if (!effectTargets.length || null === action) {
+		if (!effectTargets.length || null === action || !action.isActive()) {
 			throw new Error('Could not run action animation: invalid data');
 		}
 		const timing = Array(effectTargets.length).fill(skillAnimDuration);

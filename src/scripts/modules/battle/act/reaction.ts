@@ -89,6 +89,10 @@ class ActReaction {
 		if (this.isBackAttack) {
 			throw new Error('Cannot react if back attacked');
 		}
+
+		if (!action.isActive()) {
+			throw new Error('Cannot react');
+		}
 		this.state = 'SELECTED';
 		this.action = action;
 
@@ -121,7 +125,7 @@ class ActReaction {
 			throw new Error('Could not select evasion target: invalid state ' + state);
 		}
 
-		if (null === action || !action.skills.length) {
+		if (null === action || !action.skills.length || !action.isActive()) {
 			throw new Error('Could not select evasion target: invalid action');
 		}
 

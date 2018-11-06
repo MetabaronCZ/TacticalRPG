@@ -7,6 +7,7 @@ import Position from 'modules/geometry/position';
 import { getPosition } from 'modules/geometry/positions';
 import { resolveDirection } from 'modules/geometry/direction';
 import { getMovableTiles, getShortestPath, ICostMap } from 'modules/pathfinding';
+import { formatPosition } from 'ui/utils';
 
 interface IActMoveEvents {
 	onStart: (move: ActMove) => void;
@@ -82,7 +83,7 @@ class ActMove {
 	public selectTarget(target: Position) {
 		const { state, actor, obstacles, area } = this;
 
-		if ('IDLE' !== state || !target.isContained(area)) {
+		if ('IDLE' !== state || !target.isContained(area) || !actor.canMove()) {
 			return;
 		}
 		const obst = obstacles.slice(0);
@@ -145,16 +146,15 @@ class ActMove {
 	private prepareEvents(events: IActMoveEvents): IActMoveEvents {
 		return {
 			onStart: move => {
-				Logger.info('ActMove onStart');
+				Logger.info(`ActMove onStart: ${formatPosition(move.initialPosition)}`);
 				events.onStart(move);
 			},
 			onSelect: move => {
-				const tgt = move.target;
-				Logger.info(`ActMove onSelect: "${tgt ? `(${tgt.x}, ${tgt.y})` : '-'}"`);
+				Logger.info(`ActMove onSelect: ${formatPosition(move.target)}`);
 				events.onSelect(move);
 			},
 			onAnimation: (move, step) => {
-				Logger.info(`ActMove onAnimation: "${step.number + 1}/${step.max}"`);
+				Logger.info(`ActMove onAnimation (${step.number + 1}/${step.max}): ${formatPosition(move.actor.position)}`);
 				events.onAnimation(move, step);
 			},
 			onEnd: move => {

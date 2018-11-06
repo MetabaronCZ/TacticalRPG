@@ -3,7 +3,7 @@ import { IOnBattleInfo } from 'modules/battle/battle-info';
 
 export type StatusEffectID =
 	'CRIPPLE' | 'DISARM' | 'BLEED' | 'STUN' |
-	'BURN' | 'SHOCK' | 'FREEZE' | 'FORGET' | 'SILENCE' |
+	'BURN' | 'SHOCK' | 'FREEZE' | 'CONFUSION' | 'SILENCE' |
 	'REGEN' | 'IRON_SKIN' | 'BLOCK_SMALL' | 'BLOCK_LARGE';
 
 export type StatusEffectType = 'PHYSICAL' | 'MAGICAL' | 'SUPPORT';
@@ -14,6 +14,8 @@ export interface IStatusEffect {
 	id: StatusEffectID;
 	type: StatusEffectType;
 	title: string;
+	effect: string;
+	description?: string;
 	duration?: StatusEffectDuration;
 	repeat?: StatusEffectRepeat;
 	apply?: (character: Character, cb: IOnBattleInfo) => void;

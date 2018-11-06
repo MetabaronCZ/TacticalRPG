@@ -19,6 +19,7 @@ interface IDamageInfo {
 	blockModifier: number;
 	elementalModifier: number;
 	directionModifier: number;
+	statusModifier: number;
 	status: IStatusEffect[];
 }
 
@@ -83,6 +84,19 @@ const getElementalDamage = (attacker: Character, defender: Character, skill: Ski
 	return attack * defense;
 };
 
+const getStatusModifier = (defender: Character): number => {
+	const { status } = defender;
+	let mod = 1;
+
+	if (status.has('SHOCK')) {
+		mod *= 2;
+	}
+	if (status.has('IRON_SKIN')) {
+		mod /= 2;
+	}
+	return mod;
+};
+
 const getStatusEffects = (attacker: Character, defender: Character, skill: Skill): IStatusEffect[] => {
 	const statuses = skill.status.map(id => StatusEffects.get(id)());
 	const { STR: attSTR, MAG: attMAG } = attacker.attributes;
@@ -118,14 +132,15 @@ export const getDamageInfo = (attacker: Character, defender: Character, skill: S
 	const blockModifier = getBlockModifier(defender);
 	const directionModifier = isBackAttack(attacker, defender) ? backAttackModifier : 1;
 	const elementalModifier = getElementModifier(skill.element, defender.skillset.element);
+	const statusModifier = getStatusModifier(defender);
 	const status = getStatusEffects(attacker, defender, skill);
 
 	let physical = getPhysicalDamage(attacker, defender, skill);
 	let elemental = getElementalDamage(attacker, defender, skill);
 
 	// apply modifiers
-	physical = physical * directionModifier * blockModifier;
-	elemental = elemental * directionModifier * elementalModifier;
+	physical *= directionModifier * statusModifier * blockModifier;
+	elemental *= directionModifier * statusModifier * elementalModifier;
 
 	// clamp values
 	physical = physical > 0 ? Math.round(physical) : 0;
@@ -137,6 +152,7 @@ export const getDamageInfo = (attacker: Character, defender: Character, skill: S
 		blockModifier: 1 - blockModifier,
 		elementalModifier,
 		directionModifier,
+		statusModifier,
 		status
 	};
 };

@@ -14,8 +14,8 @@ const psychokinesis: { [id in PsychokinesisSkillID]: ISkillData; } = {
 		physicalDamage: 0.5,
 		elementalDamage: 1
 	},
-	PSYCHOKINESIS_FORGET: {
-		title: 'Forget',
+	PSYCHOKINESIS_CONFUSION: {
+		title: 'Confusion',
 		cost: 2,
 		type: 'ACTIVE',
 		grade: 1,
@@ -23,7 +23,7 @@ const psychokinesis: { [id in PsychokinesisSkillID]: ISkillData; } = {
 		area: 'SINGLE',
 		target: 'ENEMY',
 		element: 'PSYCHIC',
-		status: ['FORGET'],
+		status: ['CONFUSION'],
 		cooldown: 1
 	},
 	PSYCHOKINESIS_PSYCHODOME: {

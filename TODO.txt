@@ -1,15 +1,12 @@
 TODO
 ----------------------------------------------------------------------------------------------------------
---	pridat realne efekty u statusu
---	nepovolit reakce pri statusech stunned, frozen, apod.
-
 --	pasivni skilly
 --	pridat Counter reaktivni akci pro S-type archetypy (bude to attack skill mainHand zbrane)
 
 
 LONG TERM
 ----------------------------------------------------------------------------------------------------------
---	graficky design
+--	grafika
 	- HUD
 	- ilustrace postav
 	- textury Gridu
@@ -21,7 +18,6 @@ LONG TERM
 	- pracovat s AI Playera, ne Charactera (kooperace postav)
 
 --	Skore
-	- na konci souboje zobrazovat minimalne statistiky
 
 --	Chronox
 	- trackovat rozhodnuti
