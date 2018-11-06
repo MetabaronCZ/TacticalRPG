@@ -18,21 +18,27 @@ const Actions: React.SFC<IActionsProps> = ({ actions, onSelect }) => {
 		<ul className="Actions">
 			{actions.map((action, i) => (
 				<li className={`Actions-item ${!action.isActive() ? 'is-disabled' : ''}`} key={i}>
-					<div>
-						&rsaquo; <a className="Link" href="#" onClick={onClick(action)}>
-							<strong>{action.title}</strong>
-						</a>
-					</div>
+					{action.isActive
+						? (
+							<div>
+								<a className="Link" href="#" onClick={onClick(action)}>
+									<strong>{action.title}</strong>
+								</a>
+								<div className="u-text-small">
+									{action.id} ({action.cost}AP)
+								</div>
+							</div>
+						)
+						: (
+							<div>
+								<strong>{action.title}</strong>
 
-					<div className="u-text-small">
-						<div>{action.id} ({action.cost}AP)</div>
-
-						{action.cooldown > 0 && (
-							<div>{action.cooldown} turn/s</div>
-						)}
-
-						<div>[ {action.skills.map(skill => skill.id).join(', ')} ]</div>
-					</div>
+								{action.cooldown > 0 && (
+									<div className="u-text-small">{action.cooldown} turn/s</div>
+								)}
+							</div>
+						)
+					}
 				</li>
 			))}
 		</ul>

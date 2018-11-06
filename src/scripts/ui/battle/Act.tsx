@@ -27,7 +27,7 @@ const ActUI: React.SFC<IActUIProps> = ({ act, players, onActionSelect }) => {
 	const actions = act.getActions();
 	const actor = act.getActor();
 
-	const status = actor.status.get().map(st => `${st.id} (${st.duration})`);
+	const status = actor.status.get().map(st => `${st.effect} (${st.duration})`);
 	const cooldown = Object.keys(actor.cooldowns);
 
 	const reaction = actionPhase.getReaction();

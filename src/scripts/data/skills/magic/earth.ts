@@ -2,7 +2,7 @@ import { ISkillData } from 'modules/skill/skill-data';
 import { EarthMagicSkillID } from 'modules/skill/magic';
 
 const earthMagic: { [id in EarthMagicSkillID]: ISkillData; } = {
-	EARTH_MAGIC_BOULDER: {
+	ERT_BOULDER: {
 		title: 'Boulder',
 		cost: 2,
 		type: 'ACTIVE',
@@ -14,7 +14,7 @@ const earthMagic: { [id in EarthMagicSkillID]: ISkillData; } = {
 		physicalDamage: 0.5,
 		elementalDamage: 1
 	},
-	EARTH_MAGIC_EARTH_SPIKE: {
+	ERT_EARTH_SPIKE: {
 		title: 'Earth Spike',
 		cost: 2,
 		type: 'ACTIVE',
@@ -28,7 +28,7 @@ const earthMagic: { [id in EarthMagicSkillID]: ISkillData; } = {
 		status: ['STUN'],
 		cooldown: 1
 	},
-	EARTH_MAGIC_EARTHQUAKE: {
+	ERT_EARTHQUAKE: {
 		title: 'Earthquake',
 		cost: 4,
 		type: 'ACTIVE',
@@ -42,7 +42,7 @@ const earthMagic: { [id in EarthMagicSkillID]: ISkillData; } = {
 		status: [],
 		cooldown: 2
 	},
-	EARTH_MAGIC_STONE_SKIN: {
+	ERT_STONE_SKIN: {
 		title: 'Stone Skin',
 		cost: 0,
 		type: 'PASSIVE',

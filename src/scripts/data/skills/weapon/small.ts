@@ -2,7 +2,7 @@ import { ISkillData } from 'modules/skill/skill-data';
 import { SmallWeaponSkillID } from 'modules/skill/weapon';
 
 const smallSkills: { [id in SmallWeaponSkillID]: ISkillData; } = {
-	FISTS_ATTACK: {
+	FST_ATTACK: {
 		title: 'Attack',
 		cost: 1,
 		type: 'ACTIVE',
@@ -11,7 +11,7 @@ const smallSkills: { [id in SmallWeaponSkillID]: ISkillData; } = {
 		target: 'ENEMY',
 		physicalDamage: 1
 	},
-	FISTS_DISARM: {
+	FST_DISARM: {
 		title: 'Disarm',
 		cost: 2,
 		type: 'ACTIVE',
@@ -22,7 +22,7 @@ const smallSkills: { [id in SmallWeaponSkillID]: ISkillData; } = {
 		status: ['DISARM'],
 		cooldown: 1
 	},
-	DAGGER_ATTACK: {
+	DGR_ATTACK: {
 		title: 'Attack',
 		cost: 1,
 		type: 'ACTIVE',
@@ -31,7 +31,7 @@ const smallSkills: { [id in SmallWeaponSkillID]: ISkillData; } = {
 		target: 'ENEMY',
 		physicalDamage: 1
 	},
-	DAGGER_STAB: {
+	DGR_STAB: {
 		title: 'Stab',
 		cost: 2,
 		type: 'ACTIVE',

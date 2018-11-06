@@ -17,10 +17,10 @@ const ActActionUI: React.SFC<IActActionUIProps> = ({ act }) => {
 			<h4>Action phase:</h4>
 			<div>State: <strong>{act.getState()}</strong></div>
 			<div>Action: {null !== action ? `${action.title} (${action.id})` : '-'}</div>
-			<div>Action range: {formatPositions(act.getArea())}</div>
+			<div>Action range: {act.getArea().length} tile/s</div>
 			<div>Targetable: {formatPositions(act.getTargetable())}</div>
 			<div>Selected target: {formatPosition(act.getEffectTarget())}</div>
-			<div>Action effect area: {formatPositions(act.getEffectArea())}</div>
+			<div>Action effect area: {act.getEffectArea().length} tile/s</div>
 			<div>Action effect targets: [ {act.getEffectTargets().map(char => char.name).join(', ')} ]</div>
 
 			<br />

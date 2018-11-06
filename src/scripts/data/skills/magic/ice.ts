@@ -2,7 +2,7 @@ import { ISkillData } from 'modules/skill/skill-data';
 import { IceMagicSkillID } from 'modules/skill/magic';
 
 const iceMagic: { [id in IceMagicSkillID]: ISkillData; } = {
-	ICE_MAGIC_ICE_SPEAR: {
+	ICE_ICE_SPEAR: {
 		title: 'Ice Spear',
 		cost: 2,
 		type: 'ACTIVE',
@@ -14,7 +14,7 @@ const iceMagic: { [id in IceMagicSkillID]: ISkillData; } = {
 		physicalDamage: 0.5,
 		elementalDamage: 1
 	},
-	ICE_MAGIC_FREEZE: {
+	ICE_FREEZE: {
 		title: 'Freeze',
 		cost: 2,
 		type: 'ACTIVE',
@@ -28,7 +28,7 @@ const iceMagic: { [id in IceMagicSkillID]: ISkillData; } = {
 		status: ['FREEZE'],
 		cooldown: 1
 	},
-	ICE_MAGIC_BLIZZARD: {
+	ICE_BLIZZARD: {
 		title: 'Blizzard',
 		cost: 4,
 		type: 'ACTIVE',
@@ -41,7 +41,7 @@ const iceMagic: { [id in IceMagicSkillID]: ISkillData; } = {
 		elementalDamage: 0.5,
 		cooldown: 2
 	},
-	ICE_MAGIC_FROST_AURA: {
+	ICE_FROST_AURA: {
 		title: 'Frost Aura',
 		cost: 0,
 		type: 'PASSIVE',

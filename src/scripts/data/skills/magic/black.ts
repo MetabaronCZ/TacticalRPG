@@ -2,7 +2,7 @@ import { ISkillData } from 'modules/skill/skill-data';
 import { BlackMagicSkillID } from 'modules/skill/magic';
 
 const blackMagic: { [id in BlackMagicSkillID]: ISkillData; } = {
-	BLACK_MAGIC_DARK_AURA: {
+	BLK_DARK_AURA: {
 		title: 'Dark Aura',
 		cost: 0,
 		type: 'PASSIVE',
@@ -10,7 +10,8 @@ const blackMagic: { [id in BlackMagicSkillID]: ISkillData; } = {
 		range: 0,
 		area: 'AOE3x3',
 		target: 'SELF',
-		element: 'DARK'
+		element: 'DARK',
+		elementalDamage: 0.25
 	}
 };
 

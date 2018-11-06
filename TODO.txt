@@ -1,6 +1,7 @@
 TODO
 ----------------------------------------------------------------------------------------------------------
 --	pasivni skilly
+--	Revive (vyjimky pro targetovani dead characteru)
 --	pridat Counter reaktivni akci pro S-type archetypy (bude to attack skill mainHand zbrane)
 
 

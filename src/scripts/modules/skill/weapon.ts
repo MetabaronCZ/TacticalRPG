@@ -1,28 +1,28 @@
 export type SmallWeaponSkillID =
-	'FISTS_ATTACK' | 'FISTS_DISARM' |
-	'DAGGER_ATTACK' | 'DAGGER_STAB';
+	'FST_ATTACK' | 'FST_DISARM' |
+	'DGR_ATTACK' | 'DGR_STAB';
 
 export type MagicalWeaponSkillID =
-	'MACE_ATTACK' | 'STAFF_ATTACK';
+	'MCE_ATTACK' | 'STF_ATTACK';
 
 export type RangedWeaponSkillID =
 	'BOW_ATTACK' | 'BOW_CHARGE' |
-	'GUN_1H_ATTACK' | 'GUN_1H_CRIPPLE' |
-	'GUN_2H_ATTACK' | 'GUN_2H_PIERCE';
+	'G1H_ATTACK' | 'G1H_CRIPPLE' |
+	'G2H_ATTACK' | 'G2H_PIERCE';
 
 export type ShieldWeaponSkillID =
-	'SHIELD_SMALL_BLOCK' | 'SHIELD_LARGE_BLOCK';
+	'SHD_SMALL_BLOCK' | 'SHD_LARGE_BLOCK';
 
 export type Wield1HWeaponSkillID =
-	'SWORD_1H_ATTACK' | 'SWORD_1H_BLEED' |
-	'AXE_1H_ATTACK' | 'AXE_1H_SMASH' |
-	'HAMMER_1H_ATTACK' | 'HAMMER_1H_STUN';
+	'S1H_ATTACK' | 'S1H_BLEED' |
+	'A1H_ATTACK' | 'A1H_SMASH' |
+	'H1H_ATTACK' | 'H1H_STUN';
 
 export type Wield2HWeaponSkillID =
-	'SPEAR_ATTACK' | 'SPEAR_THRUST' |
-	'SWORD_2H_ATTACK' | 'SWORD_2H_CLEAVE' |
-	'AXE_2H_ATTACK' | 'AXE_2H_WHIRLWIND' |
-	'HAMMER_2H_ATTACK' | 'HAMMER_2H_SHOCKWAVE';
+	'SPR_ATTACK' | 'SPR_THRUST' |
+	'S2H_ATTACK' | 'S2H_CLEAVE' |
+	'A2H_ATTACK' | 'A2H_WHIRLWIND' |
+	'H2H_ATTACK' | 'H2H_SHOCKWAVE';
 
 export type WeaponSkillID =
 	SmallWeaponSkillID |

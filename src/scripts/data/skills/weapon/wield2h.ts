@@ -2,7 +2,7 @@ import { ISkillData } from 'modules/skill/skill-data';
 import { Wield2HWeaponSkillID } from 'modules/skill/weapon';
 
 const wield2HSkills: { [id in Wield2HWeaponSkillID]: ISkillData; } = {
-	SPEAR_ATTACK: {
+	SPR_ATTACK: {
 		title: 'Attack',
 		cost: 2,
 		type: 'ACTIVE',
@@ -11,7 +11,7 @@ const wield2HSkills: { [id in Wield2HWeaponSkillID]: ISkillData; } = {
 		target: 'ENEMY',
 		physicalDamage: 1
 	},
-	SPEAR_THRUST: {
+	SPR_THRUST: {
 		title: 'Thrust',
 		cost: 4,
 		type: 'ACTIVE',
@@ -21,7 +21,7 @@ const wield2HSkills: { [id in Wield2HWeaponSkillID]: ISkillData; } = {
 		physicalDamage: 1,
 		cooldown: 1
 	},
-	SWORD_2H_ATTACK: {
+	S2H_ATTACK: {
 		title: 'Attack',
 		cost: 2,
 		type: 'ACTIVE',
@@ -30,7 +30,7 @@ const wield2HSkills: { [id in Wield2HWeaponSkillID]: ISkillData; } = {
 		target: 'ENEMY',
 		physicalDamage: 1
 	},
-	SWORD_2H_CLEAVE: {
+	S2H_CLEAVE: {
 		title: 'Cleave',
 		cost: 4,
 		type: 'ACTIVE',
@@ -40,7 +40,7 @@ const wield2HSkills: { [id in Wield2HWeaponSkillID]: ISkillData; } = {
 		physicalDamage: 0.5,
 		cooldown: 1
 	},
-	AXE_2H_ATTACK: {
+	A2H_ATTACK: {
 		title: 'Attack',
 		cost: 2,
 		type: 'ACTIVE',
@@ -49,7 +49,7 @@ const wield2HSkills: { [id in Wield2HWeaponSkillID]: ISkillData; } = {
 		target: 'ENEMY',
 		physicalDamage: 1
 	},
-	AXE_2H_WHIRLWIND: {
+	A2H_WHIRLWIND: {
 		title: 'Whirlwind',
 		cost: 4,
 		type: 'ACTIVE',
@@ -59,7 +59,7 @@ const wield2HSkills: { [id in Wield2HWeaponSkillID]: ISkillData; } = {
 		physicalDamage: 0.5,
 		cooldown: 1
 	},
-	HAMMER_2H_ATTACK: {
+	H2H_ATTACK: {
 		title: 'Attack',
 		cost: 2,
 		type: 'ACTIVE',
@@ -68,7 +68,7 @@ const wield2HSkills: { [id in Wield2HWeaponSkillID]: ISkillData; } = {
 		target: 'ENEMY',
 		physicalDamage: 1
 	},
-	HAMMER_2H_SHOCKWAVE: {
+	H2H_SHOCKWAVE: {
 		title: 'Shockwave',
 		cost: 4,
 		type: 'ACTIVE',

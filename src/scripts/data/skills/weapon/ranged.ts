@@ -21,7 +21,7 @@ const rangedSkills: { [id in RangedWeaponSkillID]: ISkillData; } = {
 		physicalDamage: 1.5,
 		cooldown: 1
 	},
-	GUN_1H_ATTACK: {
+	G1H_ATTACK: {
 		title: 'Attack',
 		cost: 1,
 		type: 'ACTIVE',
@@ -31,7 +31,7 @@ const rangedSkills: { [id in RangedWeaponSkillID]: ISkillData; } = {
 		isFixedPhysicalDamage: true,
 		physicalDamage: 100
 	},
-	GUN_1H_CRIPPLE: {
+	G1H_CRIPPLE: {
 		title: 'Cripple',
 		cost: 2,
 		type: 'ACTIVE',
@@ -43,7 +43,7 @@ const rangedSkills: { [id in RangedWeaponSkillID]: ISkillData; } = {
 		status: ['CRIPPLE'],
 		cooldown: 1
 	},
-	GUN_2H_ATTACK: {
+	G2H_ATTACK: {
 		title: 'Attack',
 		cost: 2,
 		type: 'ACTIVE',
@@ -53,7 +53,7 @@ const rangedSkills: { [id in RangedWeaponSkillID]: ISkillData; } = {
 		isFixedPhysicalDamage: true,
 		physicalDamage: 200
 	},
-	GUN_2H_PIERCE: {
+	G2H_PIERCE: {
 		title: 'Pierce',
 		cost: 4,
 		type: 'ACTIVE',

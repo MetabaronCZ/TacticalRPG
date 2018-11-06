@@ -2,7 +2,7 @@ import { ISkillData } from 'modules/skill/skill-data';
 import { Wield1HWeaponSkillID } from 'modules/skill/weapon';
 
 const wield1HSkills: { [id in Wield1HWeaponSkillID]: ISkillData; } = {
-	SWORD_1H_ATTACK: {
+	S1H_ATTACK: {
 		title: 'Attack',
 		cost: 1,
 		type: 'ACTIVE',
@@ -11,7 +11,7 @@ const wield1HSkills: { [id in Wield1HWeaponSkillID]: ISkillData; } = {
 		target: 'ENEMY',
 		physicalDamage: 1
 	},
-	SWORD_1H_BLEED: {
+	S1H_BLEED: {
 		title: 'Bleed',
 		cost: 2,
 		type: 'ACTIVE',
@@ -22,7 +22,7 @@ const wield1HSkills: { [id in Wield1HWeaponSkillID]: ISkillData; } = {
 		status: ['BLEED'],
 		cooldown: 1
 	},
-	AXE_1H_ATTACK: {
+	A1H_ATTACK: {
 		title: 'Attack',
 		cost: 1,
 		type: 'ACTIVE',
@@ -31,7 +31,7 @@ const wield1HSkills: { [id in Wield1HWeaponSkillID]: ISkillData; } = {
 		target: 'ENEMY',
 		physicalDamage: 1
 	},
-	AXE_1H_SMASH: {
+	A1H_SMASH: {
 		title: 'Smash',
 		cost: 2,
 		type: 'ACTIVE',
@@ -41,7 +41,7 @@ const wield1HSkills: { [id in Wield1HWeaponSkillID]: ISkillData; } = {
 		physicalDamage: 1.5,
 		cooldown: 1
 	},
-	HAMMER_1H_ATTACK: {
+	H1H_ATTACK: {
 		title: 'Attack',
 		cost: 1,
 		type: 'ACTIVE',
@@ -50,7 +50,7 @@ const wield1HSkills: { [id in Wield1HWeaponSkillID]: ISkillData; } = {
 		target: 'ENEMY',
 		physicalDamage: 1
 	},
-	HAMMER_1H_STUN: {
+	H1H_STUN: {
 		title: 'Stun',
 		cost: 2,
 		type: 'ACTIVE',

@@ -289,9 +289,9 @@ class ActAction {
 				} else {
 					// caclulate character changes
 					for (const skill of action.skills) {
-						if ('ALLY' === skill.target) {
+						if ('SELF' === skill.target || 'ALLY' === skill.target) {
 							switch (skill.id) {
-								case 'WHITE_MAGIC_REMEDY': {
+								case 'WHT_REMEDY': {
 									// remove one bad status
 									const statuses = target.status.get().filter(s => 'SUPPORT' !== s.type);
 									const status = getRandomItem(statuses);
@@ -307,7 +307,7 @@ class ActAction {
 									break;
 								}
 
-								case 'WHITE_MAGIC_REVIVE': {
+								case 'WHT_REVIVE': {
 									// TODO: revive death target ONCE
 									break;
 								}
@@ -327,7 +327,7 @@ class ActAction {
 
 									for (const id of skill.status) {
 										info.push({
-											text: StatusEffects.get(id)().title,
+											text: StatusEffects.get(id)().effect,
 											type: 'BUFF',
 											position: targetPos
 										});
@@ -417,7 +417,7 @@ class ActAction {
 							// add skill effects
 							for (const status of damage.status) {
 								info.push({
-									text: status.title,
+									text: status.effect,
 									type: 'DEBUFF',
 									position: targetPos
 								});

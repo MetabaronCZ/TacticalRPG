@@ -2,7 +2,7 @@ import { ISkillData } from 'modules/skill/skill-data';
 import { WhiteMagicSkillID } from 'modules/skill/magic';
 
 const whiteMagic: { [id in WhiteMagicSkillID]: ISkillData; } = {
-	WHITE_MAGIC_HEAL: {
+	WHT_HEAL: {
 		title: 'Heal',
 		cost: 2,
 		type: 'ACTIVE',
@@ -13,7 +13,7 @@ const whiteMagic: { [id in WhiteMagicSkillID]: ISkillData; } = {
 		element: 'HOLY',
 		elementalDamage: 1
 	},
-	WHITE_MAGIC_REMEDY: {
+	WHT_REMEDY: {
 		title: 'Remedy',
 		cost: 2,
 		type: 'ACTIVE',
@@ -23,7 +23,7 @@ const whiteMagic: { [id in WhiteMagicSkillID]: ISkillData; } = {
 		target: 'ALLY',
 		element: 'HOLY'
 	},
-	WHITE_MAGIC_REGENERATE: {
+	WHT_REGENERATE: {
 		title: 'Regenerate',
 		cost: 2,
 		type: 'ACTIVE',
@@ -36,7 +36,7 @@ const whiteMagic: { [id in WhiteMagicSkillID]: ISkillData; } = {
 		status: ['REGEN'],
 		cooldown: 1
 	},
-	WHITE_MAGIC_GROUP_HEAL: {
+	WHT_GROUP_HEAL: {
 		title: 'Group Heal',
 		cost: 4,
 		type: 'ACTIVE',
@@ -48,7 +48,7 @@ const whiteMagic: { [id in WhiteMagicSkillID]: ISkillData; } = {
 		elementalDamage: 0.5,
 		cooldown: 2
 	},
-	WHITE_MAGIC_HOLY_AURA: {
+	WHT_HOLY_AURA: {
 		title: 'Holy Aura',
 		cost: 0,
 		type: 'PASSIVE',
@@ -59,7 +59,7 @@ const whiteMagic: { [id in WhiteMagicSkillID]: ISkillData; } = {
 		element: 'HOLY',
 		elementalDamage: 0.25
 	},
-	WHITE_MAGIC_REVIVE: {
+	WHT_REVIVE: {
 		title: 'Revive',
 		cost: 2,
 		type: 'ACTIVE',

@@ -16,7 +16,7 @@ const Weapons = new DataList<WeaponID, IWeaponData>({
 		title: 'Fists',
 		description: '',
 		type: 'DUAL',
-		skills: ['FISTS_ATTACK', 'FISTS_DISARM'],
+		skills: ['FST_ATTACK', 'FST_DISARM'],
 		damage: 5,
 		magic: 0
 	},
@@ -25,7 +25,7 @@ const Weapons = new DataList<WeaponID, IWeaponData>({
 		title: 'Dagger',
 		description: '',
 		type: 'ONE_HANDED',
-		skills: ['DAGGER_ATTACK', 'DAGGER_STAB'],
+		skills: ['DGR_ATTACK', 'DGR_STAB'],
 		damage: 5,
 		magic: 0
 	},
@@ -34,7 +34,7 @@ const Weapons = new DataList<WeaponID, IWeaponData>({
 		title: '1H Sword',
 		description: '',
 		type: 'ONE_HANDED',
-		skills: ['SWORD_1H_ATTACK', 'SWORD_1H_BLEED'],
+		skills: ['S1H_ATTACK', 'S1H_BLEED'],
 		damage: 10,
 		magic: 0
 	},
@@ -43,7 +43,7 @@ const Weapons = new DataList<WeaponID, IWeaponData>({
 		title: '1H Axe',
 		description: '',
 		type: 'ONE_HANDED',
-		skills: ['AXE_1H_ATTACK', 'AXE_1H_SMASH'],
+		skills: ['A1H_ATTACK', 'A1H_SMASH'],
 		damage: 10,
 		magic: 0
 	},
@@ -52,7 +52,7 @@ const Weapons = new DataList<WeaponID, IWeaponData>({
 		title: '1H Hammer',
 		description: '',
 		type: 'ONE_HANDED',
-		skills: ['HAMMER_1H_ATTACK', 'HAMMER_1H_STUN'],
+		skills: ['H1H_ATTACK', 'H1H_STUN'],
 		damage: 10,
 		magic: 0
 	},
@@ -61,7 +61,7 @@ const Weapons = new DataList<WeaponID, IWeaponData>({
 		title: 'Spear',
 		description: '',
 		type: 'TWO_HANDED',
-		skills: ['SPEAR_ATTACK', 'SPEAR_THRUST'],
+		skills: ['SPR_ATTACK', 'SPR_THRUST'],
 		damage: 20,
 		magic: 0
 	},
@@ -70,7 +70,7 @@ const Weapons = new DataList<WeaponID, IWeaponData>({
 		title: '2H Sword',
 		description: '',
 		type: 'TWO_HANDED',
-		skills: ['SWORD_2H_ATTACK', 'SWORD_2H_CLEAVE'],
+		skills: ['S2H_ATTACK', 'S2H_CLEAVE'],
 		damage: 20,
 		magic: 0
 	},
@@ -79,7 +79,7 @@ const Weapons = new DataList<WeaponID, IWeaponData>({
 		title: '2H Axe',
 		description: '',
 		type: 'TWO_HANDED',
-		skills: ['AXE_2H_ATTACK', 'AXE_2H_WHIRLWIND'],
+		skills: ['A2H_ATTACK', 'A2H_WHIRLWIND'],
 		damage: 20,
 		magic: 0
 	},
@@ -88,7 +88,7 @@ const Weapons = new DataList<WeaponID, IWeaponData>({
 		title: '2H Hammer',
 		description: '',
 		type: 'TWO_HANDED',
-		skills: ['HAMMER_2H_ATTACK', 'HAMMER_2H_SHOCKWAVE'],
+		skills: ['H2H_ATTACK', 'H2H_SHOCKWAVE'],
 		damage: 20,
 		magic: 0
 	},
@@ -97,7 +97,7 @@ const Weapons = new DataList<WeaponID, IWeaponData>({
 		title: 'Mace',
 		description: '',
 		type: 'MAGICAL',
-		skills: ['MACE_ATTACK'],
+		skills: ['MCE_ATTACK'],
 		damage: 1,
 		magic: 50
 	},
@@ -106,7 +106,7 @@ const Weapons = new DataList<WeaponID, IWeaponData>({
 		title: 'Staff',
 		description: '',
 		type: 'MAGICAL',
-		skills: ['STAFF_ATTACK'],
+		skills: ['STF_ATTACK'],
 		damage: 5,
 		magic: 100
 	},
@@ -124,7 +124,7 @@ const Weapons = new DataList<WeaponID, IWeaponData>({
 		title: '1H Gun',
 		description: '',
 		type: 'RANGED',
-		skills: ['GUN_1H_ATTACK', 'GUN_1H_CRIPPLE'],
+		skills: ['G1H_ATTACK', 'G1H_CRIPPLE'],
 		damage: 1,
 		magic: 0
 	},
@@ -133,7 +133,7 @@ const Weapons = new DataList<WeaponID, IWeaponData>({
 		title: '2H Gun',
 		description: '',
 		type: 'RANGED',
-		skills: ['GUN_2H_ATTACK', 'GUN_2H_PIERCE'],
+		skills: ['G2H_ATTACK', 'G2H_PIERCE'],
 		damage: 1,
 		magic: 0
 	},
@@ -142,7 +142,7 @@ const Weapons = new DataList<WeaponID, IWeaponData>({
 		title: 'Small Shield',
 		description: '',
 		type: 'SHIELD',
-		skills: ['SHIELD_SMALL_BLOCK'],
+		skills: ['SHD_SMALL_BLOCK'],
 		damage: 1,
 		magic: 0
 	},
@@ -151,7 +151,7 @@ const Weapons = new DataList<WeaponID, IWeaponData>({
 		title: 'Large Shield',
 		description: '',
 		type: 'SHIELD',
-		skills: ['SHIELD_LARGE_BLOCK'],
+		skills: ['SHD_LARGE_BLOCK'],
 		damage: 1,
 		magic: 0
 	}

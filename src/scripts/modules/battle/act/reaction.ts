@@ -105,11 +105,11 @@ class ActReaction {
 				this.evasionStart();
 				break;
 
-			case 'SHIELD_SMALL_BLOCK':
+			case 'SHD_SMALL_BLOCK':
 				this.block('BLOCK_SMALL');
 				break;
 
-			case 'SHIELD_LARGE_BLOCK':
+			case 'SHD_LARGE_BLOCK':
 				this.block('BLOCK_LARGE');
 				break;
 

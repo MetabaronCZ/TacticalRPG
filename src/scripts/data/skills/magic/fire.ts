@@ -2,7 +2,7 @@ import { ISkillData } from 'modules/skill/skill-data';
 import { FireMagicSkillID } from 'modules/skill/magic';
 
 const fireMagic: { [id in FireMagicSkillID]: ISkillData; } = {
-	FIRE_MAGIC_FIREBALL: {
+	FIR_FIREBALL: {
 		title: 'Fireball',
 		cost: 2,
 		type: 'ACTIVE',
@@ -14,7 +14,7 @@ const fireMagic: { [id in FireMagicSkillID]: ISkillData; } = {
 		physicalDamage: 0.5,
 		elementalDamage: 1
 	},
-	FIRE_MAGIC_BURN: {
+	FIR_BURN: {
 		title: 'Burn',
 		cost: 2,
 		type: 'ACTIVE',
@@ -28,7 +28,7 @@ const fireMagic: { [id in FireMagicSkillID]: ISkillData; } = {
 		status: ['BURN'],
 		cooldown: 1
 	},
-	FIRE_MAGIC_FIRESTORM: {
+	FIR_FIRESTORM: {
 		title: 'Firestorm',
 		cost: 4,
 		type: 'ACTIVE',
@@ -41,7 +41,7 @@ const fireMagic: { [id in FireMagicSkillID]: ISkillData; } = {
 		elementalDamage: 0.5,
 		cooldown: 2
 	},
-	FIRE_MAGIC_FIRE_AURA: {
+	FIR_FIRE_AURA: {
 		title: 'Fire Aura',
 		cost: 0,
 		type: 'PASSIVE',

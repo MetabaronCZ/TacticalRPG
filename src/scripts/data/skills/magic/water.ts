@@ -2,7 +2,7 @@ import { ISkillData } from 'modules/skill/skill-data';
 import { WaterMagicSkillID } from 'modules/skill/magic';
 
 const waterMagic: { [id in WaterMagicSkillID]: ISkillData; } = {
-	WATER_MAGIC_SPLASH: {
+	WAT_SPLASH: {
 		title: 'Splash',
 		cost: 2,
 		type: 'ACTIVE',
@@ -14,7 +14,7 @@ const waterMagic: { [id in WaterMagicSkillID]: ISkillData; } = {
 		physicalDamage: 0.5,
 		elementalDamage: 1
 	},
-	WATER_MAGIC_SILENCE: {
+	WAT_SILENCE: {
 		title: 'Silence',
 		cost: 2,
 		type: 'ACTIVE',
@@ -28,7 +28,7 @@ const waterMagic: { [id in WaterMagicSkillID]: ISkillData; } = {
 		status: ['SILENCE'],
 		cooldown: 1
 	},
-	WATER_MAGIC_FLOOD: {
+	WAT_FLOOD: {
 		title: 'Flood',
 		cost: 4,
 		type: 'ACTIVE',
@@ -41,7 +41,7 @@ const waterMagic: { [id in WaterMagicSkillID]: ISkillData; } = {
 		elementalDamage: 0.5,
 		cooldown: 2
 	},
-	WATER_MAGIC_WATER_AURA: {
+	WAT_WATER_AURA: {
 		title: 'Water Aura',
 		cost: 0,
 		type: 'PASSIVE',

@@ -2,7 +2,7 @@ import { ISkillData } from 'modules/skill/skill-data';
 import { ThunderMagicSkillID } from 'modules/skill/magic';
 
 const thunderMagic: { [id in ThunderMagicSkillID]: ISkillData; } = {
-	THUNDER_MAGIC_THUNDERBOLT: {
+	THU_THUNDERBOLT: {
 		title: 'Thunderbolt',
 		cost: 2,
 		type: 'ACTIVE',
@@ -14,7 +14,7 @@ const thunderMagic: { [id in ThunderMagicSkillID]: ISkillData; } = {
 		physicalDamage: 0.5,
 		elementalDamage: 1
 	},
-	THUNDER_MAGIC_SHOCK: {
+	THU_SHOCK: {
 		title: 'Shock',
 		cost: 2,
 		type: 'ACTIVE',
@@ -28,7 +28,7 @@ const thunderMagic: { [id in ThunderMagicSkillID]: ISkillData; } = {
 		status: ['SHOCK'],
 		cooldown: 1
 	},
-	THUNDER_MAGIC_THUNDERSTORM: {
+	THU_THUNDERSTORM: {
 		title: 'Thunderstorm',
 		cost: 4,
 		type: 'ACTIVE',
@@ -41,7 +41,7 @@ const thunderMagic: { [id in ThunderMagicSkillID]: ISkillData; } = {
 		elementalDamage: 0.5,
 		cooldown: 2
 	},
-	THUNDER_MAGIC_THUNDER_AURA: {
+	THU_THUNDER_AURA: {
 		title: 'Thunder Aura',
 		cost: 0,
 		type: 'PASSIVE',

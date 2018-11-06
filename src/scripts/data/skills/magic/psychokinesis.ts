@@ -2,7 +2,7 @@ import { ISkillData } from 'modules/skill/skill-data';
 import { PsychokinesisSkillID } from 'modules/skill/magic';
 
 const psychokinesis: { [id in PsychokinesisSkillID]: ISkillData; } = {
-	PSYCHOKINESIS_KINETIC_STRIKE: {
+	PSY_KINETIC_STRIKE: {
 		title: 'Kinetic Strike',
 		cost: 2,
 		type: 'ACTIVE',
@@ -14,7 +14,7 @@ const psychokinesis: { [id in PsychokinesisSkillID]: ISkillData; } = {
 		physicalDamage: 0.5,
 		elementalDamage: 1
 	},
-	PSYCHOKINESIS_CONFUSION: {
+	PSY_CONFUSION: {
 		title: 'Confusion',
 		cost: 2,
 		type: 'ACTIVE',
@@ -26,7 +26,7 @@ const psychokinesis: { [id in PsychokinesisSkillID]: ISkillData; } = {
 		status: ['CONFUSION'],
 		cooldown: 1
 	},
-	PSYCHOKINESIS_PSYCHODOME: {
+	PSY_PSYCHODOME: {
 		title: 'Psychodome',
 		cost: 0,
 		type: 'PASSIVE',
@@ -34,7 +34,8 @@ const psychokinesis: { [id in PsychokinesisSkillID]: ISkillData; } = {
 		range: 0,
 		area: 'AOE3x3',
 		target: 'ENEMY',
-		element: 'PSYCHIC'
+		element: 'PSYCHIC',
+		status: ['CONFUSION']
 	}
 };
 

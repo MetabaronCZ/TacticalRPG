@@ -141,9 +141,9 @@ export const getReactiveActions = (character: Character, isBackAttack: boolean):
 		let id: WeaponSkillID;
 
 		if ('SHIELD_LARGE' === offHand.id) {
-			id = 'SHIELD_LARGE_BLOCK';
+			id = 'SHD_LARGE_BLOCK';
 		} else {
-			id = 'SHIELD_SMALL_BLOCK';
+			id = 'SHD_SMALL_BLOCK';
 		}
 		const skill = new Skill(id);
 		const cost = getCost(skill);

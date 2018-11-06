@@ -16,6 +16,7 @@ const ActReactUI: React.SFC<IActReactUIProps> = ({ reaction, isActive }) => {
 		<div className={`Phase ${isActive ? 'is-active' : ''}`}>
 			<h4>Reactor: {reactor.name}</h4>
 			<div>State: {reaction.getState()}</div>
+			<div>Status: [ {reactor.status.get().map(s => s.effect).join(', ')} ]</div>
 			<div>Action: {action ? `${action.title} (${action.skills.join(', ')})` : '-'}</div>
 			<div>Evasible: {formatPositions(reaction.getEvasionTargets())}</div>
 			<div>Evasion target: {formatPosition(reaction.getEvasionTarget())}</div>
