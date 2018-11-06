@@ -1,6 +1,7 @@
 import PriorityQueue from 'core/priority-queue';
 
 import Position from 'modules/geometry/position';
+import { getTerrainCost } from 'modules/geometry/terrain';
 import { getPositionByID } from 'modules/geometry/positions';
 
 export interface IMoveCostMap {
@@ -30,7 +31,8 @@ export const getMovableTiles = (start: Position, obstacles: Position[], max: num
 		const neighbours = curr.getSideTiles(obstacles);
 
 		for (const n of neighbours) {
-			const newCost = costMap[curr.id] + n.cost;
+			const terrainCost = getTerrainCost(n.terrain);
+			const newCost = costMap[curr.id] + terrainCost;
 
 			if (newCost > max) {
 				continue;

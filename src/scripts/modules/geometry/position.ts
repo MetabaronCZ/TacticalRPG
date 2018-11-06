@@ -1,16 +1,18 @@
+import { Terrain } from 'modules/geometry/terrain';
+
 class Position {
 	public readonly id: string;
 	public readonly x: number;
 	public readonly y: number;
-	public readonly cost: number;
+	public readonly terrain: Terrain;
 	private neighbours: Position[] = [];
 	private sideTiles: Position[] = [];
 
-	constructor(id: string, x: number, y: number, cost: number) {
+	constructor(id: string, x: number, y: number, terrain: Terrain) {
 		this.id = id;
 		this.x = x;
 		this.y = y;
-		this.cost = cost;
+		this.terrain = terrain;
 	}
 
 	public isContained = (arr: Position[] = []): boolean => {

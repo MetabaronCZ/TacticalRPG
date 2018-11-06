@@ -15,7 +15,7 @@ const init = () => {
 	for (let x = 0; x < gridSize; x++) {
 		for (let y = 0; y < gridSize; y++) {
 			const id = getCoordsID(x, y);
-			positions[id] = new Position(id, x, y, 1);
+			positions[id] = new Position(id, x, y, 'DEFAULT');
 		}
 	}
 

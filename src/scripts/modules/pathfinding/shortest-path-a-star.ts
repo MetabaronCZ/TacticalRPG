@@ -2,6 +2,7 @@ import { randomizeArray } from 'core/array';
 import PriorityQueue from 'core/priority-queue';
 
 import Position from 'modules/geometry/position';
+import { getTerrainCost } from 'modules/geometry/terrain';
 import { getPriority, constructPath, IGraph, ICostMap } from 'modules/pathfinding';
 
 // A* algorithm (get shortest path according to movement cost)
@@ -29,7 +30,8 @@ export const getShortestPath = (start: Position, target: Position, obstacles: Po
 		neighbours = randomizeArray(neighbours);
 
 		for (const n of neighbours) {
-			const newCost = cost[curr.id] + n.cost;
+			const terrainCost = getTerrainCost(n.terrain);
+			const newCost = cost[curr.id] + terrainCost;
 
 			if (!cost[n.id] || newCost < cost[n.id]) {
 				const priority = newCost + getPriority(target, n);

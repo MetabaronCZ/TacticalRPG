@@ -2,7 +2,9 @@ TODO
 ----------------------------------------------------------------------------------------------------------
 --	pasivni skilly
 --	Revive (vyjimky pro targetovani dead characteru)
---	pridat Counter reaktivni akci pro S-type archetypy (bude to attack skill mainHand zbrane)
+--	pridat Counter reaktivni akci pro S-type archetypy
+	- bude to attack skill mainHand zbrane (pokud nema STUN, FREEZE nebo DISARM)
+??	zmenit princip pocitatni vzdalenosti (ctverce vs kruhy)
 
 
 LONG TERM
