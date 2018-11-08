@@ -3,14 +3,14 @@ import React from 'react';
 import { gridSize } from 'data/game-config';
 
 import Act from 'modules/battle/act';
-import Position from 'modules/geometry/position';
-import { getPositions } from 'modules/geometry/positions';
+import Tile from 'modules/geometry/tile';
+import { getTiles } from 'modules/geometry/tiles';
 
 const itemSize = 100 / gridSize;
 
 interface IGridBaseProps {
 	act: Act|null;
-	onSelect: (pos: Position) => void;
+	onSelect: (tile: Tile) => void;
 }
 
 type TileType =
@@ -21,7 +21,7 @@ type TileType =
 	'reactors' | 'reactionEvasible' | 'reactor' |
 	'directable' | 'directTarget';
 
-const getTileType = (pos: Position, act: Act|null): TileType => {
+const getTileType = (tile: Tile, act: Act|null): TileType => {
 	let type: TileType = 'default';
 
 	if (null === act) {
@@ -32,13 +32,13 @@ const getTileType = (pos: Position, act: Act|null): TileType => {
 			const move = act.getMovePhase();
 			const tgt = move.getTarget();
 
-			if (pos.isContained(move.getMovable())) {
+			if (tile.isContained(move.getMovable())) {
 				type = 'movable';
 			}
-			if (pos.isContained(move.getPath())) {
+			if (tile.isContained(move.getPath())) {
 				type = 'movePath';
 			}
-			if (pos === tgt) {
+			if (tile === tgt) {
 				type = 'moveTarget';
 			}
 			break;
@@ -50,10 +50,10 @@ const getTileType = (pos: Position, act: Act|null): TileType => {
 
 			switch (actionPhase.getState()) {
 				case 'IDLE':
-					if (pos.isContained(actionPhase.getArea())) {
+					if (tile.isContained(actionPhase.getArea())) {
 						type = 'actionRange';
 					}
-					if (pos.isContained(actionPhase.getTargetable())) {
+					if (tile.isContained(actionPhase.getTargetable())) {
 						type = 'actionTargetable';
 					}
 					break;
@@ -61,13 +61,13 @@ const getTileType = (pos: Position, act: Act|null): TileType => {
 				case 'SELECTED': {
 					const tgt = actionPhase.getEffectTarget();
 
-					if (pos.isContained(actionPhase.getEffectArea())) {
+					if (tile.isContained(actionPhase.getEffectArea())) {
 						type = 'actionEffectArea';
 					}
-					if (pos.isContained(actionPhase.getEffectTargets().map(char => char.position))) {
+					if (tile.isContained(actionPhase.getEffectTargets().map(char => char.position))) {
 						type = 'actionEffectTargets';
 					}
-					if (pos === tgt) {
+					if (tile === tgt) {
 						type = 'actionEffectTarget';
 					}
 					break;
@@ -78,13 +78,13 @@ const getTileType = (pos: Position, act: Act|null): TileType => {
 						const reactor = reactionPhase.getReactor();
 						const reactors = actionPhase.getReactions().map(char => char.getReactor().position);
 
-						if (pos.isContained(reactors)) {
+						if (tile.isContained(reactors)) {
 							type = 'reactors';
 						}
-						if (pos.isContained(reactionPhase.getEvasionTargets())) {
+						if (tile.isContained(reactionPhase.getEvasionTargets())) {
 							type = 'reactionEvasible';
 						}
-						if (pos === reactor.position) {
+						if (tile === reactor.position) {
 							type = 'reactor';
 						}
 					}
@@ -97,10 +97,10 @@ const getTileType = (pos: Position, act: Act|null): TileType => {
 			const direct = act.getDirectPhase();
 			const tgt = direct.getTarget();
 
-			if (pos.isContained(direct.getDirectable())) {
+			if (tile.isContained(direct.getDirectable())) {
 				type = 'directable';
 			}
-			if (pos === tgt) {
+			if (tile === tgt) {
 				type = 'directTarget';
 			}
 			break;
@@ -111,16 +111,16 @@ const getTileType = (pos: Position, act: Act|null): TileType => {
 };
 
 const GridBase: React.SFC<IGridBaseProps> = ({ act, onSelect }) => {
-	const tiles = getPositions().map(pos => {
-		return [pos, getTileType(pos, act)] as [Position, TileType];
+	const tiles = getTiles().map(tile => {
+		return [tile, getTileType(tile, act)] as [Tile, TileType];
 	});
 
-	const onClick = (pos: Position) => () => onSelect(pos);
+	const onClick = (tile: Tile) => () => onSelect(tile);
 
 	return (
 		<div className="GridTiles">
-			{tiles.map(([pos, type], i) => {
-				const { x, y } = pos;
+			{tiles.map(([tile, type], i) => {
+				const { x, y } = tile;
 				return (
 					<div
 						className={`GridTiles-item GridTiles-item--${type}`}
@@ -132,7 +132,7 @@ const GridBase: React.SFC<IGridBaseProps> = ({ act, onSelect }) => {
 								height: `${itemSize}%`,
 							}
 						}
-						onClick={onClick(pos)}
+						onClick={onClick(tile)}
 						key={i}
 					/>
 				);

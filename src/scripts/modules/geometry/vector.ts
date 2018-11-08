@@ -1,4 +1,4 @@
-import Position from 'modules/geometry/position';
+import Tile from 'modules/geometry/tile';
 import { DirectionID } from 'modules/geometry/direction';
 
 export class Vector2D {
@@ -10,7 +10,7 @@ export class Vector2D {
 		this.y = y;
 	}
 
-	public static fromPositions(a: Position, b: Position): Vector2D {
+	public static fromTiles(a: Tile, b: Tile): Vector2D {
 		return new Vector2D(b.x - a.x, b.y - a.y);
 	}
 

@@ -6,8 +6,8 @@ import { getIntersection, getRandomItem } from 'core/array';
 import { formatNumber, randomNumberBetween } from 'core/number';
 
 import Logger from 'modules/logger';
+import Tile from 'modules/geometry/tile';
 import Character from 'modules/character';
-import Position from 'modules/geometry/position';
 import ActReaction from 'modules/battle/act/reaction';
 import { IBattleInfo } from 'modules/battle/battle-info';
 import CharacterAction from 'modules/battle/character-action';
@@ -36,7 +36,7 @@ interface IActActionEvents {
 }
 
 export type ActActionState = 'INIT' | 'IDLE' | 'SELECTED' | 'CONFIRMED' | 'REACTION' | 'ANIMATION' | 'DONE';
-export type IOnActionInfo = (text: string, position: Position) => void;
+export type IOnActionInfo = (text: string, tile: Tile) => void;
 
 class ActAction {
 	private readonly actor: Character;
@@ -47,10 +47,10 @@ class ActAction {
 	private action: CharacterAction|null = null;
 	private reaction: ActReaction|null = null; // current reaction phase
 	private reactions: ActReaction[] = []; // action reactor phases
-	private area: Position[] = []; // skill range tiles
-	private targets: Position[] = []; // targetable tiles
-	private effectArea: Position[] = []; // targeted skill effect area
-	private effectTarget: Position|null = null; // selected skill target
+	private area: Tile[] = []; // skill range tiles
+	private targets: Tile[] = []; // targetable tiles
+	private effectArea: Tile[] = []; // targeted skill effect area
+	private effectTarget: Tile|null = null; // selected skill target
 	private effectTargets: Character[] = []; // targeted skill affected characters
 
 	constructor(actor: Character, characters: Character[], events: IActActionEvents) {
@@ -67,19 +67,19 @@ class ActAction {
 		return this.action;
 	}
 
-	public getArea(): Position[] {
+	public getArea(): Tile[] {
 		return this.area;
 	}
 
-	public getTargetable(): Position[] {
+	public getTargetable(): Tile[] {
 		return this.targets;
 	}
 
-	public getEffectArea(): Position[] {
+	public getEffectArea(): Tile[] {
 		return this.effectArea;
 	}
 
-	public getEffectTarget(): Position|null {
+	public getEffectTarget(): Tile|null {
 		return this.effectTarget;
 	}
 
@@ -120,7 +120,7 @@ class ActAction {
 		this.events.onStart(this);
 	}
 
-	public selectTarget(target: Position) {
+	public selectTarget(target: Tile) {
 		const { state, actor, action, targets, characters } = this;
 
 		if ('IDLE' !== state && 'SELECTED' !== state) {

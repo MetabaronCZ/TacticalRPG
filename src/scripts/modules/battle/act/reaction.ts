@@ -1,6 +1,6 @@
 import Logger from 'modules/logger';
+import Tile from 'modules/geometry/tile';
 import Character from 'modules/character';
-import Position from 'modules/geometry/position';
 import CharacterAction from 'modules/battle/character-action';
 
 interface IActReactionEvents {
@@ -20,15 +20,15 @@ class ActReaction {
 	private readonly id: number;
 	private readonly reactor: Character;
 	private readonly isBackAttack: boolean;
-	private readonly obstacles: Position[] = [];
+	private readonly obstacles: Tile[] = [];
 	private readonly events: IActReactionEvents;
 
 	private state: ActReactionState = 'INIT';
 	private action: CharacterAction|null = null;
-	private evasionTarget: Position|null = null; // selected evasion tile position
-	private evasionTargets: Position[] = []; // possible evasion positions of reacting character
+	private evasionTarget: Tile|null = null; // selected evasion tile
+	private evasionTargets: Tile[] = []; // possible evasion tiles of reacting character
 
-	constructor(id: number, reactor: Character, isBackAttack: boolean, obstacles: Position[], events: IActReactionEvents) {
+	constructor(id: number, reactor: Character, isBackAttack: boolean, obstacles: Tile[], events: IActReactionEvents) {
 		this.id = id;
 		this.reactor = reactor;
 		this.obstacles = obstacles;
@@ -56,11 +56,11 @@ class ActReaction {
 		return this.action;
 	}
 
-	public getEvasionTarget(): Position|null {
+	public getEvasionTarget(): Tile|null {
 		return this.evasionTarget;
 	}
 
-	public getEvasionTargets(): Position[] {
+	public getEvasionTargets(): Tile[] {
 		return this.evasionTargets;
 	}
 
@@ -118,7 +118,7 @@ class ActReaction {
 		}
 	}
 
-	public selectEvasionTarget(target: Position) {
+	public selectEvasionTarget(target: Tile) {
 		const { state, action, reactor, evasionTargets } = this;
 
 		if ('EVASION' !== state) {
@@ -130,7 +130,7 @@ class ActReaction {
 		}
 
 		if (!target.isContained(evasionTargets)) {
-			// non-evasible position selected
+			// non-evasible tile selected
 			return;
 		}
 		this.state = 'DONE';

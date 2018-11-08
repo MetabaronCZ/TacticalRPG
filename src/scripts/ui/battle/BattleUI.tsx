@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Position from 'modules/geometry/position';
+import Tile from 'modules/geometry/tile';
 import { IEngineState } from 'modules/battle/engine';
 import CharacterAction from 'modules/battle/character-action';
 
@@ -12,7 +12,7 @@ import Players from 'ui/battle/Players';
 interface IBattleUIProps {
 	engineState?: IEngineState;
 	engineUpdate?: Date;
-	onTileSelect: (pos: Position) => void;
+	onTileSelect: (tile: Tile) => void;
 	onActionSelect: (action: CharacterAction) => void;
 }
 

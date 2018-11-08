@@ -1,6 +1,6 @@
 import Logger from 'modules/logger';
+import Tile from 'modules/geometry/tile';
 import Character from 'modules/character';
-import Position from 'modules/geometry/position';
 import { IBattleInfo } from 'modules/battle/battle-info';
 import CharacterAction from 'modules/battle/character-action';
 import {
@@ -131,13 +131,13 @@ class Act {
 		this.movePhase.start();
 	}
 
-	public selectTile(position: Position) {
+	public selectTile(tile: Tile) {
 		const { phase, actionPhase, movePhase, directPhase } = this;
 
 		switch (phase) {
 			case 'MOVEMENT':
 				// select movement target
-				movePhase.selectTarget(position);
+				movePhase.selectTarget(tile);
 				return;
 
 			case 'ACTION':
@@ -150,10 +150,10 @@ class Act {
 						const prevTarget = actionPhase.getEffectTarget();
 
 						// confirm target on double selection
-						if (prevTarget === position) {
+						if (prevTarget === tile) {
 							actionPhase.confirm();
 						} else {
-							actionPhase.selectTarget(position);
+							actionPhase.selectTarget(tile);
 						}
 						return;
 					}
@@ -165,7 +165,7 @@ class Act {
 							throw new Error('Could not select reaction target: invalid reaction');
 						}
 						if ('EVASION' === reaction.getState()) {
-							reaction.selectEvasionTarget(position);
+							reaction.selectEvasionTarget(tile);
 						}
 						return;
 
@@ -175,7 +175,7 @@ class Act {
 
 			case 'DIRECTION':
 				// select direction
-				directPhase.select(position);
+				directPhase.select(tile);
 				return;
 
 			default:

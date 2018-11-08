@@ -1,12 +1,12 @@
-import Position from 'modules/geometry/position';
+import Tile from 'modules/geometry/tile';
 import { constructPath, IGraph } from 'modules/pathfinding';
 
 // Breadth first (shortest path at uniform maovement cost)
-export const getShortestPath = (start: Position, target: Position, obstacles: Position[]) => {
+export const getShortestPath = (start: Tile, target: Tile, obstacles: Tile[]) => {
 	const graph: IGraph = {
 		[start.id]: null
 	};
-	const frontier: Position[] = [start];
+	const frontier: Tile[] = [start];
 
 	while (frontier.length) {
 		const curr = frontier.shift();

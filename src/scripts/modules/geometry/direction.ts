@@ -1,20 +1,20 @@
-import Position from 'modules/geometry/position';
-import { getPosition } from 'modules/geometry/positions';
+import Tile from 'modules/geometry/tile';
+import { getTile } from 'modules/geometry/tiles';
 
 export type DirectionID = 'TOP' | 'LEFT' | 'RIGHT' | 'BOTTOM';
 
 type IByDirectionTable = {
-	[T in DirectionID]: (pos: Position) => Position|null;
+	[T in DirectionID]: (tile: Tile) => Tile|null;
 };
 
 const byDirectionTable: IByDirectionTable = {
-	TOP:    ({ x, y }) => getPosition(x, y - 1),
-	BOTTOM: ({ x, y }) => getPosition(x, y + 1),
-	LEFT:   ({ x, y }) => getPosition(x - 1, y),
-	RIGHT:  ({ x, y }) => getPosition(x + 1, y)
+	TOP:    ({ x, y }) => getTile(x, y - 1),
+	BOTTOM: ({ x, y }) => getTile(x, y + 1),
+	LEFT:   ({ x, y }) => getTile(x - 1, y),
+	RIGHT:  ({ x, y }) => getTile(x + 1, y)
 };
 
-export const resolveDirection = (source: Position, target: Position): DirectionID => {
+export const resolveDirection = (source: Tile, target: Tile): DirectionID => {
 	const diffX = target.x - source.x;
 	const diffY = target.y - source.y;
 
@@ -28,6 +28,6 @@ export const resolveDirection = (source: Position, target: Position): DirectionI
 	}
 };
 
-export const findPositionFrom = (source: Position, dir: DirectionID): Position|null => {
+export const findTileFrom = (source: Tile, dir: DirectionID): Tile|null => {
 	return byDirectionTable[dir](source);
 };

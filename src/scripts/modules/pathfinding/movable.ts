@@ -1,22 +1,23 @@
+import { maxJumpHeight } from 'data/game-config';
 import PriorityQueue from 'core/priority-queue';
 
-import Position from 'modules/geometry/position';
+import Tile from 'modules/geometry/tile';
+import { getTileByID } from 'modules/geometry/tiles';
 import { getTerrainCost } from 'modules/geometry/terrain';
-import { getPositionByID } from 'modules/geometry/positions';
 
 export interface IMoveCostMap {
 	[id: string]: number;
 }
 
 interface IMovable {
-	readonly positions: Position[];
+	readonly tiles: Tile[];
 	readonly costMap: IMoveCostMap;
 }
 
 // Dijkstra algorithm (movement cost based search)
-export const getMovableTiles = (start: Position, obstacles: Position[], max: number): IMovable => {
-	const movable: Position[] = [];
-	const frontier = new PriorityQueue<Position>();
+export const getMovableTiles = (start: Tile, obstacles: Tile[], max: number): IMovable => {
+	const movable: Tile[] = [];
+	const frontier = new PriorityQueue<Tile>();
 	frontier.push(start, 0);
 
 	const costMap: IMoveCostMap = {};
@@ -31,8 +32,13 @@ export const getMovableTiles = (start: Position, obstacles: Position[], max: num
 		const neighbours = curr.getSideTiles(obstacles);
 
 		for (const n of neighbours) {
+			const heightCost = Math.abs(curr.z - n.z);
+
+			if (heightCost > maxJumpHeight) {
+				continue;
+			}
 			const terrainCost = getTerrainCost(n.terrain);
-			const newCost = costMap[curr.id] + terrainCost;
+			const newCost = costMap[curr.id] + heightCost + terrainCost;
 
 			if (newCost > max) {
 				continue;
@@ -47,13 +53,13 @@ export const getMovableTiles = (start: Position, obstacles: Position[], max: num
 
 	// get movable tiles
 	for (const id in costMap) {
-		const pos = getPositionByID(id);
+		const tile = getTileByID(id);
 
-		if (null === pos) {
-			throw new Error('Position lost during movable computation');
+		if (null === tile) {
+			throw new Error('Tile lost during movable computation');
 		}
-		movable.push(pos);
+		movable.push(tile);
 	}
 
-	return { positions: movable, costMap };
+	return { tiles: movable, costMap };
 };

@@ -4,8 +4,8 @@ import Weapons from 'data/weapons';
 import Archetypes from 'data/archetypes';
 import { characterCTLimit } from 'data/game-config';
 
+import Tile from 'modules/geometry/tile';
 import { ISexData } from 'modules/character/sex';
-import Position from 'modules/geometry/position';
 import Skillset from 'modules/character/skillset';
 import StatusEffect from 'modules/character/status';
 import Attributes from 'modules/character/attributes';
@@ -40,11 +40,11 @@ class Character {
 	public readonly offHand: IWeaponData;
 	public readonly armor: IArmorData;
 
-	public position: Position;
+	public position: Tile;
 	public direction: DirectionID;
 	public cooldowns: ISkillCooldowns = {}; // skill cooldowns
 
-	constructor(character: CharacterData, position: Position, direction: DirectionID, player: number) {
+	constructor(character: CharacterData, position: Tile, direction: DirectionID, player: number) {
 		const data = character.serialize();
 
 		this.name = data.name;

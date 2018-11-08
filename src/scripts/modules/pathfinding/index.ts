@@ -1,20 +1,20 @@
-import Position from 'modules/geometry/position';
+import Tile from 'modules/geometry/tile';
 
 export interface IGraph {
-	[id: string]: Position|null;
+	[id: string]: Tile|null;
 }
 
 export interface ICostMap {
 	[id: string]: number;
 }
 
-export const getPriority = (a: Position, b: Position): number => {
+export const getPriority = (a: Tile, b: Tile): number => {
 	return Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
 };
 
-export const constructPath = (start: Position, target: Position, graph: IGraph): Position[] => {
-	let curr: Position|null = target;
-	const path: Position[] = [];
+export const constructPath = (start: Tile, target: Tile, graph: IGraph): Tile[] => {
+	let curr: Tile|null = target;
+	const path: Tile[] = [];
 
 	while (curr !== start) {
 		if (null === curr) {

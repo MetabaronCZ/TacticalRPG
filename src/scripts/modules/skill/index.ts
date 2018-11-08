@@ -1,8 +1,8 @@
 import Skills, { attackSkills } from 'data/skills';
 
+import Tile from 'modules/geometry/tile';
 import Character from 'modules/character';
-import Position from 'modules/geometry/position';
-import { getPosition } from 'modules/geometry/positions';
+import { getTile } from 'modules/geometry/tiles';
 import { StatusEffectID } from 'modules/battle/status-effect';
 import {
 	SkillID, SkillType, SkillElement, SkillGrade,
@@ -14,7 +14,7 @@ type ITargetTable = {
 };
 
 type IAreaTable = {
-	[id in SkillArea]: (source: Position, target: Position, range: SkillRange) => Position[];
+	[id in SkillArea]: (source: Tile, target: Tile, range: SkillRange) => Tile[];
 };
 
 // SkillTarget based targetable logic
@@ -26,28 +26,28 @@ const targetTable: ITargetTable = {
 	ANY:   (char: Character, actor: Character) => true
 };
 
-// SkillArea based area position getters
+// SkillArea based area tile getters
 const areaTable: IAreaTable = {
-	SINGLE: (source: Position, target: Position) => [target],
-	LINE: (source: Position, target: Position, range: SkillRange) => {
+	SINGLE: (source: Tile, target: Tile) => [target],
+	LINE: (source: Tile, target: Tile, range: SkillRange) => {
 		const diffX = target.x - source.x;
 		const diffY = target.y - source.y;
 		const dirX = (diffX / Math.abs(diffX)) || 0;
 		const dirY = (diffY / Math.abs(diffY)) || 0;
-		const area: Position[] = [];
+		const area: Tile[] = [];
 
 		for (let i = 1; i <= range; i++ ) {
-			const pos = getPosition(source.x + i * dirX, source.y + i * dirY);
+			const tile = getTile(source.x + i * dirX, source.y + i * dirY);
 
-			if (null !== pos) {
-				area.push(pos);
+			if (null !== tile) {
+				area.push(tile);
 			}
 		}
 		return area;
 	},
-	CROSS:      (source: Position, target: Position) => [target, ...target.getSideTiles()],
-	NEIGHBOURS: (source: Position, target: Position) => source.getNeighbours(),
-	AOE3x3:     (source: Position, target: Position) => [target, ...target.getNeighbours()]
+	CROSS:      (source: Tile, target: Tile) => [target, ...target.getSideTiles()],
+	NEIGHBOURS: (source: Tile, target: Tile) => source.getNeighbours(),
+	AOE3x3:     (source: Tile, target: Tile) => [target, ...target.getNeighbours()]
 };
 
 const reactableSkillTargets: SkillTarget[] = ['ANY', 'ENEMY'];
@@ -108,7 +108,7 @@ class Skill implements ISkillData {
 		return -1 !== reactableSkillTargets.indexOf(this.target);
 	}
 
-	public getTargetable(source: Position): Position[] {
+	public getTargetable(source: Tile): Tile[] {
 		const { target, range, area } = this;
 
 		if ('NONE' === target) {
@@ -117,29 +117,29 @@ class Skill implements ISkillData {
 		if ('SELF' === target) {
 			return [source];
 		}
-		let targetable: Position[] = [];
+		let targetable: Tile[] = [];
 
 		// get all tiles in range
 		for (let x = -range; x <= range; x++) {
 			for (let y = -range; y <= range; y++) {
-				const pos = getPosition(source.x + x, source.y + y);
+				const tile = getTile(source.x + x, source.y + y);
 
-				if (null === pos) {
+				if (null === tile) {
 					continue;
 				}
-				targetable.push(pos);
+				targetable.push(tile);
 			}
 		}
 
 		// filter diagonals and straight lines for LINE area skill type
 		if ('LINE' === area) {
-			targetable = targetable.filter(pos => pos.isOnStraightLine(source));
+			targetable = targetable.filter(tile => tile.isOnStraightLine(source));
 		}
 
 		return targetable;
 	}
 
-	public getTargets(actor: Character, characters: Character[], targetable: Position[]): Character[] {
+	public getTargets(actor: Character, characters: Character[], targetable: Tile[]): Character[] {
 		return characters
 			.filter(char => {
 				return (
@@ -150,7 +150,7 @@ class Skill implements ISkillData {
 			});
 	}
 
-	public getEffectArea(source: Position, target: Position): Position[] {
+	public getEffectArea(source: Tile, target: Tile): Tile[] {
 		return areaTable[this.area](source, target, this.range);
 	}
 }

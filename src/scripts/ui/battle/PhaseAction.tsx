@@ -3,7 +3,7 @@ import React from 'react';
 import ActAction from 'modules/battle/act/action';
 
 import ActReactUI from 'ui/battle/PhaseReaction';
-import { formatPosition, formatPositions } from 'ui/utils';
+import { formatTile, formatTiles } from 'ui/utils';
 
 interface IActActionUIProps {
 	act: ActAction;
@@ -18,8 +18,8 @@ const ActActionUI: React.SFC<IActActionUIProps> = ({ act }) => {
 			<div>State: <strong>{act.getState()}</strong></div>
 			<div>Action: {null !== action ? `${action.title} (${action.id})` : '-'}</div>
 			<div>Action range: {act.getArea().length} tile/s</div>
-			<div>Targetable: {formatPositions(act.getTargetable())}</div>
-			<div>Selected target: {formatPosition(act.getEffectTarget())}</div>
+			<div>Targetable: {formatTiles(act.getTargetable())}</div>
+			<div>Selected target: {formatTile(act.getEffectTarget())}</div>
 			<div>Action effect area: {act.getEffectArea().length} tile/s</div>
 			<div>Action effect targets: [ {act.getEffectTargets().map(char => char.name).join(', ')} ]</div>
 

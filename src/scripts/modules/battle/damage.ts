@@ -34,7 +34,7 @@ const getElementModifier = (attacker: SkillElement, defender: SkillElement): num
 };
 
 export const isBackAttack = (attacker: Character, defender: Character): boolean => {
-	const attVector = Vector2D.fromPositions(attacker.position, defender.position);
+	const attVector = Vector2D.fromTiles(attacker.position, defender.position);
 	const defVector = Vector2D.fromDirection(defender.direction);
 	const angle = attVector.getAngle(defVector);
 	return angle < Math.PI / 2;

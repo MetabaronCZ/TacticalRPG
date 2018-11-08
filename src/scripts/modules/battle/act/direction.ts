@@ -1,7 +1,7 @@
 import Logger from 'modules/logger';
+import Tile from 'modules/geometry/tile';
 import Character from 'modules/character';
-import Position from 'modules/geometry/position';
-import { resolveDirection, findPositionFrom } from 'modules/geometry/direction';
+import { resolveDirection, findTileFrom } from 'modules/geometry/direction';
 
 interface IActDirectEvents {
 	onStart: (direct: ActDirect) => void;
@@ -16,8 +16,8 @@ class ActDirect {
 	private readonly events: IActDirectEvents;
 
 	private state: ActDirectState = 'INIT';
-	private targets: Position[] = []; // positions character can be directed to
-	private target: Position|null = null; // position character is directed to
+	private targets: Tile[] = []; // tiles character can be directed to
+	private target: Tile|null = null; // tiles character is directed to
 
 	constructor(actor: Character, events: IActDirectEvents) {
 		this.actor = actor;
@@ -28,11 +28,11 @@ class ActDirect {
 		return this.state;
 	}
 
-	public getDirectable(): Position[] {
+	public getDirectable(): Tile[] {
 		return this.targets;
 	}
 
-	public getTarget(): Position|null {
+	public getTarget(): Tile|null {
 		return this.target;
 	}
 
@@ -47,8 +47,8 @@ class ActDirect {
 		const pos = actor.position;
 		const dir = actor.direction;
 
-		this.targets = pos.getSideTiles(), // directable positions
-		this.target = findPositionFrom(pos, dir); // set initial direction
+		this.targets = pos.getSideTiles(), // directable tiles
+		this.target = findTileFrom(pos, dir); // set initial direction
 
 		this.events.onStart(this);
 
@@ -58,22 +58,22 @@ class ActDirect {
 		}
 	}
 
-	public select(position: Position|null) {
+	public select(tile: Tile|null) {
 		const { state, actor, targets } = this;
 
 		if ('IDLE' !== state) {
 			throw new Error('Could not select direct target: invalid state ' + state);
 		}
 
-		if (position && !position.isContained(targets)) {
-			// non-directable position selected
+		if (tile && !tile.isContained(targets)) {
+			// non-directable tile selected
 			return;
 		}
 		this.state = 'DONE';
 
-		if (position) {
+		if (tile) {
 			const pos = actor.position;
-			this.target = position;
+			this.target = tile;
 
 			// update character direction
 			const newDirection = resolveDirection(pos, this.target);
