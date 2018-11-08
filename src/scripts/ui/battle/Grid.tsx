@@ -1,9 +1,9 @@
 import React from 'react';
 
 import Act from 'modules/battle/act';
+import Tile from 'modules/geometry/tile';
 import Character from 'modules/character';
 import Player from 'modules/battle/player';
-import Position from 'modules/geometry/position';
 import { IBattleInfo } from 'modules/battle/battle-info';
 
 import GridBase from 'ui/battle/GridBase';
@@ -15,7 +15,7 @@ interface IGridProps {
 	players: Player[];
 	characters: Character[];
 	battleInfo: IBattleInfo[];
-	onTileSelect: (pos: Position) => void;
+	onTileSelect: (tile: Tile) => void;
 }
 
 const Grid: React.SFC<IGridProps> = ({ act, players, characters, battleInfo, onTileSelect }) => {

@@ -3,11 +3,12 @@ import * as config from 'data/game-config';
 
 import Logger from 'modules/logger';
 import Act from 'modules/battle/act';
+import Tile from 'modules/geometry/tile';
 import Order from 'modules/battle/order';
 import Character from 'modules/character';
 import Player from 'modules/battle/player';
-import Position from 'modules/geometry/position';
-import { getPosition } from 'modules/geometry/positions';
+import { getTile } from 'modules/geometry/tiles';
+import { IBattleInfo } from 'modules/battle/battle-info';
 import { DirectionID } from 'modules/geometry/direction';
 import { PartyData } from 'modules/party-creation/party-data';
 import CharacterAction from 'modules/battle/character-action';
@@ -15,7 +16,6 @@ import CharacterCreationForm from 'modules/character-creation';
 import { getRandomNames } from 'modules/random-name-generator';
 import { PlayerConfig } from 'modules/battle-configuration/player-config';
 import { CharacterData } from 'modules/character-creation/character-data';
-import { IBattleInfo } from 'modules/battle/battle-info';
 
 export interface IEngineState {
 	tick: number;
@@ -63,11 +63,11 @@ class Engine {
 		this.update();
 	}
 
-	public selectTile(position: Position) {
+	public selectTile(tile: Tile) {
 		if (null === this.act) {
 			throw new Error('Could not select tile: invalid act');
 		}
-		this.act.selectTile(position);
+		this.act.selectTile(tile);
 	}
 
 	public selectAction(action: CharacterAction) {
@@ -181,22 +181,22 @@ class Engine {
 
 			// create characters
 			const chars = charData.map((data, i) => {
-				let pos: Position|null;
+				let tile: Tile|null;
 				let dir: DirectionID;
 
 				// set position / orientation
 				if (0 === p) {
-					pos = getPosition(i + 2, config.gridSize - 1);
+					tile = getTile(i + 2, config.gridSize - 1);
 					dir = 'TOP';
 				} else {
-					pos = getPosition(i + 2, 0);
+					tile = getTile(i + 2, 0);
 					dir = 'BOTTOM';
 				}
 
-				if (null === pos) {
-					throw new Error('Invalid position given');
+				if (null === tile) {
+					throw new Error('Invalid tile given');
 				}
-				const char = new Character(data, pos, dir, p);
+				const char = new Character(data, tile, dir, p);
 
 				// set small random initial CP
 				const ct = Math.floor((config.characterCTLimit / 10) * Math.random());

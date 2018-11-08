@@ -1,7 +1,7 @@
 import React from 'react';
 
 import ActReaction from 'modules/battle/act/reaction';
-import { formatPosition, formatPositions } from 'ui/utils';
+import { formatTile, formatTiles } from 'ui/utils';
 
 interface IActReactUIProps {
 	isActive: boolean;
@@ -18,8 +18,8 @@ const ActReactUI: React.SFC<IActReactUIProps> = ({ reaction, isActive }) => {
 			<div>State: {reaction.getState()}</div>
 			<div>Status: [ {reactor.status.get().map(s => s.effect).join(', ')} ]</div>
 			<div>Action: {action ? `${action.title} (${action.skills.join(', ')})` : '-'}</div>
-			<div>Evasible: {formatPositions(reaction.getEvasionTargets())}</div>
-			<div>Evasion target: {formatPosition(reaction.getEvasionTarget())}</div>
+			<div>Evasible: {formatTiles(reaction.getEvasionTargets())}</div>
+			<div>Evasion target: {formatTile(reaction.getEvasionTarget())}</div>
 		</div>
 	);
 };

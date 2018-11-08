@@ -3,7 +3,7 @@ import React from 'react';
 import Act from 'modules/battle/act';
 import CharacterAction from 'modules/battle/character-action';
 
-import { formatPosition } from 'ui/utils';
+import { formatTile } from 'ui/utils';
 
 import Actions from 'ui/battle/Actions';
 import ActMoveUI from 'ui/battle/PhaseMove';
@@ -41,7 +41,7 @@ const ActUI: React.SFC<IActUIProps> = ({ act, players, onActionSelect }) => {
 					<td className="Act-row Act-row--character">
 						<h3 className="Heading">Character act</h3>
 						<div>Phase: <strong>{act.getPhase()}</strong></div>
-						<div>Actor: <strong>{actor.name}</strong> {formatPosition(actor.position)}</div>
+						<div>Actor: <strong>{actor.name}</strong> {formatTile(actor.position)}</div>
 						<div>Status: [ {status.join(', ')} ]</div>
 						<div>Cooldown: [ {cooldown.join(', ')} ]</div>
 

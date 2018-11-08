@@ -1,8 +1,8 @@
-import Position from 'modules/geometry/position';
+import Tile from 'modules/geometry/tile';
 import { CharacterData } from 'modules/character-creation/character-data';
 
-export const formatPosition = (pos: Position|null) => null !== pos ? `(${pos.x}, ${pos.y})` : '-';
-export const formatPositions = (arr: Position[]) => `[ ${arr.map(pos => formatPosition(pos)).join(', ')} ]`;
+export const formatTile = (tile: Tile|null) => null !== tile ? `(${tile.x}, ${tile.y})` : '-';
+export const formatTiles = (arr: Tile[]) => `[ ${arr.map(tile => formatTile(tile)).join(', ')} ]`;
 
 export const formatCharacter = (character: CharacterData|null): string => {
 	if (!character) {

@@ -5,6 +5,10 @@ TODO
 --	pridat Counter reaktivni akci pro S-type archetypy
 	- bude to attack skill mainHand zbrane (pokud nema STUN, FREEZE nebo DISARM)
 ??	zmenit princip pocitatni vzdalenosti (ctverce vs kruhy)
+--	upravit targetArea a effectArea, aby braly v uvahu i prevyseni utocnika a cile
+--	pridat random grid generation
+	- udelat konfigurovatelne v BattleManagment
+	- moznost vyberu BASE, TERRAIN, HEIGHTMAP, RANDOM a CUSTOM (moznost nastavit parametry generovani)
 
 
 LONG TERM

@@ -18,6 +18,7 @@ export const maxOrderSize = 20; // maximum size of ordered character array
 // character
 export const maxCharacterNameLength = 16;
 export const characterCTLimit = 100;
+export const maxJumpHeight = 1;
 
 // party
 export const maxPartySize = 8; // maximum character count in one party

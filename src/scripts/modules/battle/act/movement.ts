@@ -2,12 +2,13 @@ import Animation, { IAnimationStep } from 'core/animation';
 import { gridSize, moveAnimDuration } from 'data/game-config';
 
 import Logger from 'modules/logger';
+import Tile from 'modules/geometry/tile';
 import Character from 'modules/character';
-import Position from 'modules/geometry/position';
-import { getPosition } from 'modules/geometry/positions';
+import { getTile } from 'modules/geometry/tiles';
 import { resolveDirection } from 'modules/geometry/direction';
 import { getMovableTiles, getShortestPath, ICostMap } from 'modules/pathfinding';
-import { formatPosition } from 'ui/utils';
+
+import { formatTile } from 'ui/utils';
 
 interface IActMoveEvents {
 	onStart: (move: ActMove) => void;
@@ -21,14 +22,14 @@ export type ActMoveState = 'INIT' | 'IDLE' | 'SELECTED' | 'ANIMATION';
 class ActMove {
 	private readonly actor: Character;
 	private readonly initialAP: number;
-	private readonly initialPosition: Position;
-	private readonly obstacles: Position[] = [];
+	private readonly initialPosition: Tile;
+	private readonly obstacles: Tile[] = [];
 	private readonly events: IActMoveEvents;
 
 	private state: ActMoveState = 'INIT';
-	private area: Position[] = []; // movable tiles
-	private target: Position; // target position
-	private path: Position[] = []; // move path
+	private area: Tile[] = []; // movable tiles
+	private target: Tile; // target tile
+	private path: Tile[] = []; // move path
 	private costMap: ICostMap = {}; // movable area cost map
 
 	constructor(actor: Character, characters: Character[], events: IActMoveEvents) {
@@ -44,19 +45,19 @@ class ActMove {
 		return this.state;
 	}
 
-	public getMovable(): Position[] {
+	public getMovable(): Tile[] {
 		return this.area;
 	}
 
-	public getTarget(): Position|null {
+	public getTarget(): Tile|null {
 		return this.target;
 	}
 
-	public getPath(): Position[] {
+	public getPath(): Tile[] {
 		return this.path;
 	}
 
-	public getInitialPosition(): Position {
+	public getInitialPosition(): Tile {
 		return this.initialPosition;
 	}
 
@@ -74,13 +75,13 @@ class ActMove {
 		const range = Math.min(MOV, AP);
 		const movable = getMovableTiles(pos, obstacles, range);
 
-		this.area = movable.positions;
+		this.area = movable.tiles;
 		this.costMap = movable.costMap;
 
 		this.events.onStart(this);
 	}
 
-	public selectTarget(target: Position) {
+	public selectTarget(target: Tile) {
 		const { state, actor, obstacles, area } = this;
 
 		if ('IDLE' !== state || !target.isContained(area) || !actor.canMove()) {
@@ -91,7 +92,7 @@ class ActMove {
 		// add non-moveArea positions in obstacles
 		for (let x = 0; x < gridSize; x++) {
 			for (let y = 0; y < gridSize; y++) {
-				const pos = getPosition(x, y);
+				const pos = getTile(x, y);
 
 				if (null === pos || pos.isContained(area) || pos.isContained(obst)) {
 					continue;
@@ -146,15 +147,15 @@ class ActMove {
 	private prepareEvents(events: IActMoveEvents): IActMoveEvents {
 		return {
 			onStart: move => {
-				Logger.info(`ActMove onStart: ${formatPosition(move.initialPosition)}`);
+				Logger.info(`ActMove onStart: ${formatTile(move.initialPosition)}`);
 				events.onStart(move);
 			},
 			onSelect: move => {
-				Logger.info(`ActMove onSelect: ${formatPosition(move.target)}`);
+				Logger.info(`ActMove onSelect: ${formatTile(move.target)}`);
 				events.onSelect(move);
 			},
 			onAnimation: (move, step) => {
-				Logger.info(`ActMove onAnimation (${step.number + 1}/${step.max}): ${formatPosition(move.actor.position)}`);
+				Logger.info(`ActMove onAnimation (${step.number + 1}/${step.max}): ${formatTile(move.actor.position)}`);
 				events.onAnimation(move, step);
 			},
 			onEnd: move => {

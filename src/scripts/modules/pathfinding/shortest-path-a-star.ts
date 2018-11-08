@@ -1,13 +1,15 @@
 import { randomizeArray } from 'core/array';
 import PriorityQueue from 'core/priority-queue';
 
-import Position from 'modules/geometry/position';
+import { maxJumpHeight } from 'data/game-config';
+
+import Tile from 'modules/geometry/tile';
 import { getTerrainCost } from 'modules/geometry/terrain';
 import { getPriority, constructPath, IGraph, ICostMap } from 'modules/pathfinding';
 
 // A* algorithm (get shortest path according to movement cost)
-export const getShortestPath = (start: Position, target: Position, obstacles: Position[]): Position[] => {
-	const frontier = new PriorityQueue<Position>();
+export const getShortestPath = (start: Tile, target: Tile, obstacles: Tile[]): Tile[] => {
+	const frontier = new PriorityQueue<Tile>();
 	frontier.push(start, 0);
 
 	const visited: IGraph = {};
@@ -30,8 +32,13 @@ export const getShortestPath = (start: Position, target: Position, obstacles: Po
 		neighbours = randomizeArray(neighbours);
 
 		for (const n of neighbours) {
+			const heightCost = Math.abs(curr.z - n.z);
+
+			if (heightCost > maxJumpHeight) {
+				continue;
+			}
 			const terrainCost = getTerrainCost(n.terrain);
-			const newCost = cost[curr.id] + terrainCost;
+			const newCost = cost[curr.id] + heightCost + terrainCost;
 
 			if (!cost[n.id] || newCost < cost[n.id]) {
 				const priority = newCost + getPriority(target, n);
