@@ -30,7 +30,7 @@ interface IEngineEvents {
 	onStart: (state: IEngineState) => void;
 	onUpdate: (state: IEngineState) => void;
 	onGameOver: (state: IEngineState) => void;
-	onBattleInfo: (state: IEngineState) => void;
+	onBattleInfo: (state: IBattleInfo[]) => void;
 }
 
 interface IEngineProps {
@@ -246,9 +246,9 @@ class Engine {
 				Logger.info('Engine onGameOver');
 				events.onGameOver(state);
 			},
-			onBattleInfo: state => {
-				Logger.info(`Engine onBattleInfo: [ ${state.battleInfo.map(info => info.text).join(', ')} ]`);
-				events.onBattleInfo(state);
+			onBattleInfo: info => {
+				Logger.info(`Engine onBattleInfo: [ ${info.map(i => i.text).join(', ')} ]`);
+				events.onBattleInfo(info);
 			}
 		};
 	}
@@ -258,14 +258,14 @@ class Engine {
 
 		// set battle info item
 		battleInfo.push(info);
-		events.onBattleInfo(this.getState());
+		events.onBattleInfo(battleInfo);
 
 		// remove battle info item after fixed amount of time
 		setTimeout(() => {
 			for (let i = 0, imax = battleInfo.length; i < imax; i++) {
 				if (battleInfo[i] === info) {
 					battleInfo.splice(i, 1);
-					events.onBattleInfo(this.getState());
+					events.onBattleInfo(battleInfo);
 					break;
 				}
 			}

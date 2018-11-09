@@ -17,21 +17,31 @@ const exit = (history: History) => () => {
 	}
 };
 
-type IBattlePageContainerProps = RouteComponentProps<any> & IContext;
+type IProps = RouteComponentProps<any> & IContext;
 
-interface IBattlePageContainerState {
-	engineState?: IEngineState;
-	engineUpdate?: Date;
+interface IState {
+	engineState: IEngineState;
+	engineUpdate: Date|null;
 }
 
-class BattlePageContainer extends React.Component<IBattlePageContainerProps, IBattlePageContainerState> {
+class BattlePageContainer extends React.Component<IProps, IState> {
+	public state: IState = {
+		engineState: {
+			tick: 0,
+			act: null,
+			battleInfo: [],
+			characters: [],
+			players: [],
+			order: []
+		},
+		engineUpdate: null
+	};
 	private engine: Engine;
 
-	constructor(props: IBattlePageContainerProps) {
+	constructor(props: IProps) {
 		super(props);
 
 		const { battleConfig, parties } = this.props.store;
-		this.state = {};
 
 		this.engine = new Engine({
 			players: battleConfig.players,
@@ -51,8 +61,14 @@ class BattlePageContainer extends React.Component<IBattlePageContainerProps, IBa
 						() => exit(props.history)
 					);
 				},
-				onBattleInfo: engineState => {
-					this.setState({ engineState, engineUpdate: new Date() });
+				onBattleInfo: info => {
+					this.setState(state => ({
+						engineState: {
+							...state.engineState,
+							battleInfo: info
+						},
+						engineUpdate: new Date()
+					}));
 				},
 			}
 		});

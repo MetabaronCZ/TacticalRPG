@@ -10,14 +10,14 @@ import Order from 'ui/battle/Order';
 import Players from 'ui/battle/Players';
 
 interface IBattleUIProps {
-	engineState?: IEngineState;
-	engineUpdate?: Date;
+	engineState: IEngineState;
+	engineUpdate: Date|null;
 	onTileSelect: (tile: Tile) => void;
 	onActionSelect: (action: CharacterAction) => void;
 }
 
 const BattleUI: React.SFC<IBattleUIProps> = ({ engineState, engineUpdate, onTileSelect, onActionSelect }) => {
-	if (!engineState || !engineUpdate) {
+	if (null === engineUpdate) {
 		return <div>Loading...</div>;
 	}
 	const { players, characters, order, act, tick, battleInfo } = engineState;
