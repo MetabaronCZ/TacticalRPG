@@ -4,7 +4,6 @@ TODO
 --	Revive (vyjimky pro targetovani dead characteru)
 --	pridat Counter reaktivni akci pro S-type archetypy
 	- bude to attack skill mainHand zbrane (pokud nema STUN, FREEZE nebo DISARM)
-??	zmenit princip pocitatni vzdalenosti (ctverce vs kruhy)
 --	upravit targetArea a effectArea, aby braly v uvahu i prevyseni utocnika a cile
 	- u strelnych zbrani pridat dostrel a effect areu pri strelbe dolu
 --	pridat logiku pro zobrazovani / validace akci v UI a Engine na zaklade PlayerControl

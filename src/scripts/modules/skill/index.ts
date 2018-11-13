@@ -117,11 +117,14 @@ class Skill implements ISkillData {
 		if ('SELF' === target) {
 			return [source];
 		}
-		let targetable: Tile[] = [];
+		const targetable: Tile[] = [];
 
 		// get all tiles in range
 		for (let x = -range; x <= range; x++) {
 			for (let y = -range; y <= range; y++) {
+				if (x * x + y * y > range * range) {
+					continue;
+				}
 				const tile = getTile(source.x + x, source.y + y);
 
 				if (null === tile) {
@@ -133,9 +136,8 @@ class Skill implements ISkillData {
 
 		// filter diagonals and straight lines for LINE area skill type
 		if ('LINE' === area) {
-			targetable = targetable.filter(tile => tile.isOnStraightLine(source));
+			return targetable.filter(tile => tile.isOnStraightLine(source));
 		}
-
 		return targetable;
 	}
 
