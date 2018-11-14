@@ -28,7 +28,7 @@ const onDelete = (store: Store) => (char: CharacterData) => () => {
 		const included: string[] = [];
 
 		for (const party of store.parties.data) {
-			if (party.characters.find(ch => ch.id === char.id)) {
+			if (party.characters.find(id => id === char.id)) {
 				included.push(party.name);
 			}
 		}

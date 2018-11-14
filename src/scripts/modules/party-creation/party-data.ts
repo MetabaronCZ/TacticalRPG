@@ -17,7 +17,7 @@ export type IPartyData = IPartyConfig & IIndexableData;
 export class PartyData extends IndexableData {
 	@observable private data = {
 		name: '',
-		slots: Array(maxPartySize).fill(null) as Array<CharacterData|null>
+		slots: Array(maxPartySize).fill(null) as Array<string|null>
 	};
 
 	constructor(conf: Partial<IPartyData> = {}, characters: CharacterData[] = []) {
@@ -32,9 +32,11 @@ export class PartyData extends IndexableData {
 		}
 
 		if (conf.slots && characters.length) {
-			conf.slots.forEach((item, i) => {
-				const character = characters.find(char => item === char.id) || null;
-				this.setSlot(character, i);
+			conf.slots.forEach((id, i) => {
+				// check character with given ID exists
+				if (characters.find(char => id === char.id)) {
+					this.setSlot(id, i);
+				}
 			});
 		}
 	}
@@ -67,27 +69,20 @@ export class PartyData extends IndexableData {
 	}
 
 	@computed
-	public get slots(): Array<CharacterData|null> {
+	public get slots(): Array<string|null> {
 		return this.data.slots;
 	}
 
 	@computed
-	public get characters(): CharacterData[] {
-		const characters: CharacterData[] = [];
+	public get characters(): string[] {
+		const characters: string[] = [];
 
-		for (const item of this.data.slots) {
-			if (null !== item) {
-				characters.push(item);
+		for (const id of this.data.slots) {
+			if (null !== id) {
+				characters.push(id);
 			}
 		}
 		return characters;
-	}
-
-	public getCharacter(slot: number): CharacterData|null {
-		if (slot < 0 || slot >= maxPartySize) {
-			throw new Error(`Could not get character: invalid slot "${slot}"`);
-		}
-		return this.data.slots[slot] || null;
 	}
 
 	@action
@@ -97,31 +92,16 @@ export class PartyData extends IndexableData {
 	}
 
 	@action
-	public setSlot(char: CharacterData|null, slot: number) {
+	public setSlot(id: string|null, slot: number) {
 		if (slot < 0 || slot >= maxPartySize) {
 			throw new Error(`Could not set character: invalid slot "${slot}"`);
 		}
-		this.data.slots[slot] = char;
-		super.update();
-	}
-
-	@action
-	public removeCharacter(id: string) {
-		this.data.slots = this.data.slots.map(item => {
-			if (null === item || id === item.id) {
-				return null;
-			}
-			return item;
-		});
-
+		this.data.slots[slot] = id;
 		super.update();
 	}
 
 	public serialize(): IPartyData {
-		return {
-			...super.serialize(),
-			name: this.data.name,
-			slots: this.data.slots.map(item => item ? item.id : null)
-		};
+		const { name, slots } = this.data;
+		return { ...super.serialize(), name, slots };
 	}
 }

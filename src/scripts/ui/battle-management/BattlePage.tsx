@@ -41,9 +41,10 @@ class BattlePageContainer extends React.Component<IProps, IState> {
 	constructor(props: IProps) {
 		super(props);
 
-		const { battleConfig, parties } = this.props.store;
+		const { battleConfig, parties, characters } = this.props.store;
 
 		this.engine = new Engine({
+			characters: characters.data,
 			players: battleConfig.players,
 			parties: parties.data,
 			events: {

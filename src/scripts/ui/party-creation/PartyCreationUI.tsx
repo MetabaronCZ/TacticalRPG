@@ -100,15 +100,15 @@ class PartyCreationUI extends React.Component<IPartyCreationUIProps> {
 		}
 	}
 
-	private renderPartyItem = (character: CharacterData|null, i: number) => {
+	private renderPartyItem = (id: string|null, i: number) => {
+		const character = id ? this.props.characters.getById(id) : null;
 		const filtered = this.form.filterCharacters(character);
-		const id = (character ? character.id : '');
 		const info = formatCharacter(character);
 		const fieldId = `f-character-${i}`;
 
 		return (
 			<FormField fieldId={fieldId} label={`Character ${i + 1}`} info={info} key={i}>
-				<FormSelect id={fieldId} name={`character-${i}`} value={id} onChange={this.onChange('slots', i)}>
+				<FormSelect id={fieldId} name={`character-${i}`} value={id || ''} onChange={this.onChange('slots', i)}>
 					<FormSelectItem text="- Empty -" value="" />
 
 					{filtered.map((char, j) => (

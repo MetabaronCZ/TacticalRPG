@@ -62,7 +62,7 @@ class BattleConfiguration {
 	}
 
 	@action
-	public onSubmit(next?: (config: BattleConfig) => void) {
+	public onSubmit(next: (config: BattleConfig) => void) {
 		const config = this.state.config;
 		const validation = config.validate();
 
@@ -70,24 +70,27 @@ class BattleConfiguration {
 			this.state.validation = validation;
 			return;
 		}
-
-		if (next) {
-			next(config);
-		}
+		next(config);
 	}
 
-	public getPartyCharacters(player: PlayerConfig): IndexableList<CharacterData> {
-		let characters: CharacterData[] = [];
-		const parties = this.parties;
+	public getPartyCharacters(player: PlayerConfig, characters: CharacterData[] = []): IndexableList<CharacterData> {
+		const chars: CharacterData[] = [];
 
 		if (randomPartyID !== player.party) {
-			const selecteParty = parties.find(party => player.party === party.id);
+			const parties = this.parties;
+			const selectedParty = parties.find(party => player.party === party.id);
 
-			if (selecteParty) {
-				characters = selecteParty.characters;
+			if (selectedParty) {
+				for (const id of selectedParty.characters) {
+					const char = characters.find(ch => id === ch.id);
+
+					if (char) {
+						chars.push(char);
+					}
+				}
 			}
 		}
-		return new IndexableList(characters);
+		return new IndexableList(chars);
 	}
 }
 

@@ -41,12 +41,12 @@ class BattleConfigUI extends React.Component<IBattleConfigUIProps> {
 
 	public render() {
 		const { config, validation } = this.form.state;
-		const parties = this.props.parties;
+		const { parties, characters } = this.props;
 
 		return (
 			<Form onSubmit={this.onSubmit}>
 				{config.players.map((player, p) => {
-					const characters = this.form.getPartyCharacters(player);
+					const chars = this.form.getPartyCharacters(player, characters);
 					const errors = validation.errors.players[p];
 
 					const fieldName = `f-player-${p}-name`;
@@ -96,7 +96,7 @@ class BattleConfigUI extends React.Component<IBattleConfigUIProps> {
 								</FormSelect>
 							</FormField>
 
-							<CharacterList characters={characters} />
+							<CharacterList characters={chars} />
 							<br />
 							<Separator />
 						</React.Fragment>

@@ -117,12 +117,13 @@ class Skill implements ISkillData {
 		if ('SELF' === target) {
 			return [source];
 		}
+		const r2 = range * range;
 		const targetable: Tile[] = [];
 
 		// get all tiles in range
 		for (let x = -range; x <= range; x++) {
 			for (let y = -range; y <= range; y++) {
-				if (x * x + y * y > range * range) {
+				if (x * x + y * y > r2) {
 					continue;
 				}
 				const tile = getTile(source.x + x, source.y + y);

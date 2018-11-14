@@ -32,8 +32,8 @@ class PartyCreation {
 			party.setName(value);
 
 		} else if ('slots' === field && null !== i) {
-			const char = this.characters.find(ch => value === ch.id) || null;
-			party.setSlot(char, i);
+			const char = this.characters.find(ch => value === ch.id);
+			party.setSlot(char ? char.id : null, i);
 		}
 		this.state.validation = party.validate();
 	}
@@ -56,11 +56,11 @@ class PartyCreation {
 		if (!characters.length) {
 			return [];
 		}
-		const selected = this.state.party.characters.map(char => char.id);
+		const selected = this.state.party.characters;
 
 		// filter unselected characters (keep character itself)
 		return characters.filter(char => {
-			return (character && char.id === character.id) || -1 === selected.indexOf(char.id);
+			return character === char || -1 === selected.indexOf(char.id);
 		});
 	}
 }

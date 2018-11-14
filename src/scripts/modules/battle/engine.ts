@@ -34,6 +34,7 @@ interface IEngineEvents {
 }
 
 interface IEngineProps {
+	readonly characters: CharacterData[];
 	readonly players: PlayerConfig[];
 	readonly parties: PartyData[];
 	readonly events: IEngineEvents;
@@ -52,7 +53,7 @@ class Engine {
 	private order: Order;
 
 	constructor(conf: IEngineProps) {
-		this.players = this.createPlayers(conf.players, conf.parties);
+		this.players = this.createPlayers(conf);
 		this.characters = this.players.map(pl => pl.characters).reduce((a, b) => a.concat(b));
 		this.order = new Order(this.players);
 		this.events = this.prepareEvents(conf.events);
@@ -144,13 +145,15 @@ class Engine {
 		this.act.start();
 	}
 
-	private createPlayers(players: PlayerConfig[], parties: PartyData[]): Player[] {
+	private createPlayers(conf: IEngineProps): Player[] {
+		const { players, parties, characters } = conf;
+
 		if (config.maxPlayers !== players.length) {
 			throw new Error(`Game has to have exactly ${config.maxPlayers} players`);
 		}
-		const pl = players.map((conf, p) => {
-			const { name, party, control } = conf;
-			let charData: CharacterData[] = [];
+		const pl = players.map((player, p) => {
+			const { name, party, control } = player;
+			const charData: CharacterData[] = [];
 
 			// get character data
 			if (config.randomPartyID === party) {
@@ -176,7 +179,14 @@ class Engine {
 				if (!selectedParty) {
 					throw new Error(`Could not create player "${name}": Invalid party selected`);
 				}
-				charData = selectedParty.characters;
+
+				for (const id of selectedParty.characters) {
+					const char = characters.find(ch => id === ch.id);
+
+					if (char) {
+						charData.push(char);
+					}
+				}
 			}
 
 			// create characters
