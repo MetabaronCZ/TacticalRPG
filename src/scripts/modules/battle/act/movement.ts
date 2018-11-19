@@ -49,6 +49,10 @@ class ActMove {
 		return this.area;
 	}
 
+	public getMoveCostMap(): ICostMap {
+		return this.costMap;
+	}
+
 	public getTarget(): Tile|null {
 		return this.target;
 	}

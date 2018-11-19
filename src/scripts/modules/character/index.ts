@@ -4,7 +4,9 @@ import Weapons from 'data/weapons';
 import Archetypes from 'data/archetypes';
 import { characterCTLimit } from 'data/game-config';
 
+import AI from 'modules/ai';
 import Tile from 'modules/geometry/tile';
+import Player from 'modules/battle/player';
 import { ISexData } from 'modules/character/sex';
 import Skillset from 'modules/character/skillset';
 import StatusEffect from 'modules/character/status';
@@ -32,7 +34,7 @@ class Character {
 	public readonly attributes: Attributes;
 	public readonly baseAttributes: BaseAttributes;
 
-	public readonly player: number;
+	public readonly player: Player;
 	public readonly skillset: Skillset;
 	public readonly status: StatusEffect;
 
@@ -44,7 +46,7 @@ class Character {
 	public direction: DirectionID;
 	public cooldowns: ISkillCooldowns = {}; // skill cooldowns
 
-	constructor(character: CharacterData, position: Tile, direction: DirectionID, player: number) {
+	constructor(character: CharacterData, position: Tile, direction: DirectionID, player: Player) {
 		const data = character.serialize();
 
 		this.name = data.name;
@@ -69,6 +71,10 @@ class Character {
 
 	public isDead(): boolean {
 		return this.attributes.HP <= 0;
+	}
+
+	public isAI(): boolean {
+		return this.player instanceof AI;
 	}
 
 	public canAct(): boolean {

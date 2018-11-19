@@ -27,7 +27,11 @@ export class BattleConfig {
 			const conf: IPlayerConfig = {
 				name: `Player ${i + 1}`,
 				control: 'HUMAN',
-				party: randomPartyID
+				party: randomPartyID,
+				aiSettings: {
+					preset: 'RANK_1',
+					config: {}
+				}
 			};
 			return new PlayerConfig(conf);
 		});
@@ -62,7 +66,12 @@ export class BattleConfig {
 		if (null === data) {
 			return;
 		}
-		this.players = this.players.map((pl, i) => new PlayerConfig(data.players[i]));
+		this.players = this.players.map((pl, i) => {
+			return new PlayerConfig({
+				...pl.serialize(),
+				...data.players[i]
+			});
+		});
 	}
 
 	public serialize(): IBattleConfig {

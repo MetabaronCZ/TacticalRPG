@@ -7,7 +7,7 @@ interface ITiles {
 const tiles: ITiles = {};
 
 // convert coords to tile ID
-const getTileID = (x: number, y: number): string => `(${x}, ${y}})`;
+const getTileID = (x: number, y: number): string => `(${x}, ${y})`;
 
 // initialize game tile pool
 const init = () => {

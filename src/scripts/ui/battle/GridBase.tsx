@@ -115,7 +115,13 @@ const GridBase: React.SFC<IGridBaseProps> = ({ act, onSelect }) => {
 		return [tile, getTileType(tile, act)] as [Tile, TileType];
 	});
 
-	const onClick = (tile: Tile) => () => onSelect(tile);
+	const actingChar = act ? act.getActingCharacter() : null;
+
+	const onClick = (tile: Tile) => () => {
+		if (actingChar && !actingChar.isAI()) {
+			onSelect(tile);
+		}
+	};
 
 	return (
 		<div className="GridTiles">

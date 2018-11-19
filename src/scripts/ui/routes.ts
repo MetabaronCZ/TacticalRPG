@@ -1,6 +1,6 @@
 import MainMenu from 'ui/menu/MainMenuPage';
 
-import Battle from 'ui/battle-management/BattlePage';
+import Battle from 'ui/battle/BattlePage';
 import BattleConfig from 'ui/battle-management/BattleConfigPage';
 import BattleSummary from 'ui/battle-management/BattleSummaryPage';
 

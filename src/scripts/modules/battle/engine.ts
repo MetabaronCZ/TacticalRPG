@@ -1,6 +1,9 @@
 import { randomizeArray } from 'core/array';
+
+import AIPresets from 'data/ai-presets';
 import * as config from 'data/game-config';
 
+import AI from 'modules/ai';
 import Logger from 'modules/logger';
 import Act from 'modules/battle/act';
 import Tile from 'modules/geometry/tile';
@@ -20,7 +23,7 @@ import { CharacterData } from 'modules/character-creation/character-data';
 export interface IEngineState {
 	tick: number;
 	act: Act|null;
-	players: Player[];
+	players: Array<Player|AI>;
 	characters: Character[];
 	order: Character[];
 	battleInfo: IBattleInfo[];
@@ -41,7 +44,7 @@ interface IEngineProps {
 }
 
 class Engine {
-	private readonly players: Player[] = [];
+	private readonly players: Array<Player|AI> = [];
 	private readonly characters: Character[] = [];
 	private readonly battleInfo: IBattleInfo[] = [];
 	private readonly events: IEngineEvents;
@@ -54,7 +57,11 @@ class Engine {
 
 	constructor(conf: IEngineProps) {
 		this.players = this.createPlayers(conf);
-		this.characters = this.players.map(pl => pl.characters).reduce((a, b) => a.concat(b));
+
+		this.characters = this.players
+			.map(pl => pl.getCharacters())
+			.reduce((a, b) => a.concat(b));
+
 		this.order = new Order(this.players);
 		this.events = this.prepareEvents(conf.events);
 	}
@@ -145,15 +152,31 @@ class Engine {
 		this.act.start();
 	}
 
-	private createPlayers(conf: IEngineProps): Player[] {
+	private createPlayers(conf: IEngineProps): Array<Player|AI> {
 		const { players, parties, characters } = conf;
 
 		if (config.maxPlayers !== players.length) {
 			throw new Error(`Game has to have exactly ${config.maxPlayers} players`);
 		}
-		const pl = players.map((player, p) => {
-			const { name, party, control } = player;
+		const pl = players.map((plConfig, p) => {
+			const { name, party, control, aiSettings } = plConfig;
 			const charData: CharacterData[] = [];
+			let player: Player|AI;
+
+			if ('AI' === control) {
+				// AI player
+				const preset = aiSettings.preset;
+				let aiConf = aiSettings.config;
+
+				if ('CUSTOM' !== preset) {
+					aiConf = AIPresets.get(preset).config;
+				}
+				player = new AI(name, aiConf);
+
+			} else {
+				// human controlled player
+				player = new Player(name);
+			}
 
 			// get character data
 			if (config.randomPartyID === party) {
@@ -206,7 +229,7 @@ class Engine {
 				if (null === tile) {
 					throw new Error('Invalid tile given');
 				}
-				const char = new Character(data, tile, dir, p);
+				const char = new Character(data, tile, dir, player);
 
 				// set small random initial CP
 				const ct = Math.floor((config.characterCTLimit / 10) * Math.random());
@@ -215,7 +238,20 @@ class Engine {
 				return char;
 			});
 
-			return new Player(name, control, chars);
+			player.setCharacters(chars);
+			return player;
+		});
+
+		// set enemy for AI players
+		pl.forEach(player => {
+			if (player instanceof AI) {
+				const enemy = pl.find(p => p !== player);
+
+				if (!enemy) {
+					throw new Error(`Could not find enemy for AI player "${player.getName()}"`);
+				}
+				player.setEnemy(enemy);
+			}
 		});
 
 		return randomizeArray(pl);
@@ -225,7 +261,7 @@ class Engine {
 		const { players } = this;
 
 		for (const pl of players) {
-			const liveChars = pl.characters.filter(char => !char.isDead());
+			const liveChars = pl.getCharacters().filter(char => !char.isDead());
 
 			if (0 === liveChars.length) {
 				return true;

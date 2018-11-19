@@ -2,6 +2,7 @@ import { observable, action } from 'mobx';
 
 import { randomPartyID, maxPlayers } from 'data/game-config';
 
+import { IAISettings } from 'modules/ai/settings';
 import IndexableList from 'modules/indexable-list';
 import { PartyData } from 'modules/party-creation/party-data';
 import { CharacterData } from 'modules/character-creation/character-data';
@@ -58,6 +59,13 @@ class BattleConfiguration {
 			default:
 				throw new Error('Invalid field: not editable');
 		}
+		this.state.validation = config.validate();
+	}
+
+	@action
+	public onPlayerAIChange(i: number, settings: IAISettings) {
+		const config = this.state.config;
+		config.players[i].setAISettings(settings);
 		this.state.validation = config.validate();
 	}
 

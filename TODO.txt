@@ -6,17 +6,28 @@ TODO
 	- bude to attack skill mainHand zbrane (pokud nema STUN, FREEZE nebo DISARM)
 --	upravit targetArea a effectArea, aby braly v uvahu i prevyseni utocnika a cile
 	- u strelnych zbrani pridat dostrel a effect areu pri strelbe dolu
---	pridat logiku pro zobrazovani / validace akci v UI a Engine na zaklade PlayerControl
-	- pro COMPUTER pridat zatim nahodne vybirani akci/poli
-	- a pridat jako Rank I obtiznost do BattleManagement
-	- udelat zaklad pro moduly ohledne AI, tam realizovat i Rank I
 --	pridat random grid generation
 	- udelat konfigurovatelne v BattleManagment
 	- moznost vyberu BASE, TERRAIN, HEIGHTMAP, RANDOM a CUSTOM (moznost nastavit parametry generovani)
---	zapracovat (konfigurovatelny?) odpocet do konce hry
+--	zapracovat (konfigurovatelny) odpocet do konce hry
 	- pokud hra trva prilis dlouho (kolik ticku?) budou od urcite chvile pravidelne mizet okruzni policka gridu
 	- postavy na nich zemrou
 	- vyresi stavy typu healer versus slabe melee
+--	AI
+	- zapracovat rozdeleni roli AIP layerem (ze zacatku DAMAGE, HEALING)
+	- pri "onAction" provadet kompoletni analyzu postav, nepratelm, apod.
+		- updatovat cile postav
+		- koordinovat healery, aby si rozdelili mezi sebe zranene postavy
+--	2.5D
+	- pomoci CSS 3D transformaci vytvorit ortogonalni pohled na grid
+	- ozkouset nastaveni prevyseni Tile poli
+	- pridat moznost rotace gridu pomoci ovladacich prvku (JS animace CSS atributu)
+--	hit-scan utoky
+	- filtrovat pole vysledne SkillArea, pokud je ceste projektilu non-enemy target
+	- Bow vs Gun
+	- missile projektily
+--	neuspesna evasion
+	- u GUN_1H, GUN2H, SPEAR_ATTACK by evasion nemela projit, pokud je cilove pole stale v effectArea skillu
 
 
 LONG TERM
@@ -28,9 +39,11 @@ LONG TERM
 
 --	vyrovnani atributu
 	- postavy, zbrane, brneni, skilly
+	? drazsi reaktivni skilly
 
 --	AI
-	- pracovat s AI Playera, ne Charactera (kooperace postav)
+	- urovne obtiznosti (nastaveni AI)
+	- kooperace postav
 
 --	Skore
 

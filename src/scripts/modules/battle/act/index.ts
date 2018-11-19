@@ -1,11 +1,10 @@
+import AI from 'modules/ai';
 import Logger from 'modules/logger';
 import Tile from 'modules/geometry/tile';
 import Character from 'modules/character';
 import { IBattleInfo } from 'modules/battle/battle-info';
 import CharacterAction from 'modules/battle/character-action';
-import {
-	getIdleActions, getSkillActions, getSkillConfirmActions, getReactiveActions, getEvasiveActions
-} from 'modules/battle/character-actions';
+import * as CharacterActions from 'modules/battle/character-actions';
 
 import ActMove from 'modules/battle/act/movement';
 import ActAction from 'modules/battle/act/action';
@@ -70,7 +69,10 @@ class Act {
 			},
 			onSelect: action => this.update(),
 			onConfirm: action => this.update(),
-			onPass: action => this.update(),
+			onPass: action => {
+				this.phase = 'ACTION';
+				this.update();
+			},
 			onAnimation: (action, step) => this.update(),
 			onEnd: action => {
 				this.update();
@@ -96,6 +98,12 @@ class Act {
 
 	public getActor(): Character {
 		return this.actor;
+	}
+
+	public getActingCharacter(): Character {
+		const reaction = this.actionPhase.getReaction();
+		const isReaction = ('ACTION' === this.phase && reaction && 'DONE' !== reaction.getState());
+		return (isReaction && reaction ? reaction.getReactor() : this.actor);
 	}
 
 	public getActions(): CharacterAction[] {
@@ -185,9 +193,8 @@ class Act {
 
 	public selectAction(action: CharacterAction) {
 		const { phase, actionPhase } = this;
-		const actionId = action.id;
 
-		switch (actionId) {
+		switch (action.id) {
 			case 'ATTACK':
 			case 'DOUBLE_ATTACK':
 			case 'WEAPON':
@@ -271,7 +278,7 @@ class Act {
 			}
 
 			default:
-				throw new Error('Unsupported action: ' + actionId);
+				throw new Error('Unsupported action: ' + action.id);
 		}
 	}
 
@@ -290,24 +297,51 @@ class Act {
 	}
 
 	private updateActions() {
+		const { actor, movePhase, actionPhase, directPhase } = this;
+
 		switch (this.phase) {
 			case 'MOVEMENT': {
-				if ('IDLE' === this.movePhase.getState()) {
-					this.actions = getIdleActions(this.actor);
-				} else {
-					this.actions = [];
+				this.actions = [];
+
+				if ('IDLE' === movePhase.getState()) {
+					const actions = CharacterActions.getIdleActions(actor);
+
+					if (!actor.isAI()) {
+						// player move and/or choose actions
+						this.actions = actions;
+
+					} else {
+						// let AI decide
+						(actor.player as AI).onAction({
+							actor,
+							actions,
+							movable: movePhase.getMovable(),
+							moveCostMap: movePhase.getMoveCostMap(),
+							onTileSelect: tile => this.selectTile(tile),
+							onActionSelect: action => this.selectAction(action)
+						});
+					}
 				}
 				break;
 			}
 
 			case 'ACTION': {
-				const actionPhase = this.actionPhase;
-				const state = actionPhase.getState();
+				switch (actionPhase.getState()) {
+					case 'IDLE': {
+						const actions = CharacterActions.getSkillActions();
+						this.actions = [];
 
-				switch (state) {
-					case 'IDLE':
-						this.actions = getSkillActions();
+						if (!actor.isAI()) {
+							// player chooses action target
+							this.actions = actions;
+
+						} else {
+							// let AI choose target
+							const player = actor.player as AI;
+							player.onActionTarget(actor, actionPhase.getTargetable(), tile => this.selectTile(tile));
+						}
 						break;
+					}
 
 					case 'SELECTED': {
 						const action = actionPhase.getAction();
@@ -315,7 +349,19 @@ class Act {
 						if (null === action) {
 							throw new Error('Could not update actions: no action');
 						}
-						this.actions = getSkillConfirmActions(action, actionPhase.getEffectTargets());
+						this.actions = [];
+
+						const actions = CharacterActions.getSkillConfirmActions(action, actionPhase.getEffectTargets());
+
+						if (!actor.isAI()) {
+							// player decide action confirmation
+							this.actions = actions;
+
+						} else {
+							// let AI confirm action
+							const player = actor.player as AI;
+							player.onActionConfirm(actions, a => this.selectAction(a));
+						}
 						break;
 					}
 
@@ -325,18 +371,45 @@ class Act {
 						if (null === reaction) {
 							throw new Error('Could not set react actions: invalid reaction');
 						}
+						this.actions = [];
+
+						const reactor = reaction.getReactor();
 						const reactionState = reaction.getState();
+						const isBackAttacked = reaction.isBackAttacked();
 
 						switch (reactionState) {
-							case 'IDLE':
-								this.actions = getReactiveActions(reaction.getReactor(), reaction.isBackAttacked());
+							case 'IDLE': {
+								const actions = CharacterActions.getReactiveActions(reactor, isBackAttacked);
+
+								if (!reactor.isAI()) {
+									// player chooses reaction
+									this.actions = actions;
+
+								} else {
+									// let AI choose reaction
+									const player = reactor.player as AI;
+									player.onReaction(reactor, actions, isBackAttacked, r => this.selectAction(r));
+								}
 								break;
-							case 'EVASION':
-								this.actions = getEvasiveActions();
+							}
+
+							case 'EVASION': {
+								const actions = CharacterActions.getEvasiveActions();
+
+								if (!reactor.isAI()) {
+									// player chooses reaction
+									this.actions = actions;
+
+								} else {
+									// let AI choose reaction
+									const player = reactor.player as AI;
+									player.onEvasion(reaction.getEvasionTargets(), tile => this.selectTile(tile));
+								}
 								break;
+							}
 
 							default:
-								this.actions = [];
+								// pass
 						}
 						break;
 					}
@@ -346,6 +419,17 @@ class Act {
 				}
 				break;
 			}
+
+			case 'DIRECTION':
+				this.actions = [];
+
+				if ('IDLE' === directPhase.getState()) {
+					if (actor.isAI()) {
+						const player = actor.player as AI;
+						player.onDirect(actor, directPhase.getDirectable(), tile => this.selectTile(tile));
+					}
+				}
+				break;
 
 			default:
 				this.actions = [];

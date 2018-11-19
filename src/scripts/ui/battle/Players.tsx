@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Icos, IcoID } from 'data/icos';
 
+import AI from 'modules/ai';
 import Act from 'modules/battle/act';
 import Player from 'modules/battle/player';
 
@@ -9,7 +10,7 @@ import ArchetypeIco from 'ui/common/ArchetypeIco';
 
 interface IPlayersProps {
 	act: Act|null;
-	players: Player[];
+	players: Array<Player|AI>;
 }
 
 const Players: React.SFC<IPlayersProps> = ({ act, players }) => (
@@ -17,7 +18,7 @@ const Players: React.SFC<IPlayersProps> = ({ act, players }) => (
 		{players.map((pl, p) => (
 			<div className="Players-item" key={p}>
 				<h3 className="Heading">
-					{pl.name} ({pl.control} Player)
+					{pl.getName()} ({pl instanceof AI ? 'AI' : 'HUMAN'} Player)
 				</h3>
 
 				<table className="Players-item-characters">
@@ -30,7 +31,7 @@ const Players: React.SFC<IPlayersProps> = ({ act, players }) => (
 					</thead>
 
 					<tbody>
-						{pl.characters.map((char, c) => {
+						{pl.getCharacters().map((char, c) => {
 							const isDead = char.isDead();
 							const isActive = !!(act && act.getActor() === char);
 							const state = (isDead ? 'is-dead' : (isActive ? 'is-active' : ''));

@@ -1,15 +1,16 @@
 import { maxOrderSize, characterCTLimit } from 'data/game-config';
 
+import AI from 'modules/ai';
 import Character from 'modules/character';
 import Player from 'modules/battle/player';
 
 class Order {
-	private players: Player[] = [];
+	private players: Array<Player|AI> = [];
 	private characters: Character[] = [];
 	private order: Character[] = [];
 
-	constructor(players: Player[]) {
-		this.characters = players.map(pl => pl.characters).reduce((a, b) => a.concat(b));
+	constructor(players: Array<Player|AI>) {
+		this.characters = players.map(pl => pl.getCharacters()).reduce((a, b) => a.concat(b));
 		this.players = players;
 		this.update();
 	}
@@ -34,7 +35,7 @@ class Order {
 			let playerOrder = -1;
 
 			for (let p = 0, pmax = players.length; p < pmax; p++) {
-				if (-1 !== players[p].characters.indexOf(char)) {
+				if (-1 !== players[p].getCharacters().indexOf(char)) {
 					playerOrder = p;
 					break;
 				}

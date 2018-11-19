@@ -1,14 +1,26 @@
 import Character from 'modules/character';
-import { PlayerControlID } from 'modules/battle-configuration/player-config';
 
 class Player {
-	public readonly name: string;
-	public readonly control: PlayerControlID;
-	public readonly characters: Character[] = [];
+	protected characters: Character[] = [];
+	private name: string;
 
-	constructor(name: string, control: PlayerControlID, characters: Character[]) {
+	constructor(name: string) {
 		this.name = name;
-		this.control = control;
+	}
+
+	public getName(): string {
+		return this.name;
+	}
+
+	public getCharacters(): Character[] {
+		return this.characters;
+	}
+
+	public setName(name: string) {
+		this.name = name;
+	}
+
+	public setCharacters(characters: Character[]) {
 		this.characters = characters;
 	}
 }

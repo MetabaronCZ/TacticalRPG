@@ -1,38 +1,40 @@
 import React from 'react';
 
 import Act from 'modules/battle/act';
+import Character from 'modules/character';
 import CharacterAction from 'modules/battle/character-action';
 
 import { formatTile } from 'ui/utils';
-
 import Actions from 'ui/battle/Actions';
 import ActMoveUI from 'ui/battle/PhaseMove';
 import ActActionUI from 'ui/battle/PhaseAction';
 import ActDirectUI from 'ui/battle/PhaseDirect';
-import Player from 'modules/battle/player';
 
 interface IActUIProps {
 	act: Act|null;
-	players: Player[];
 	onActionSelect: (action: CharacterAction) => void;
 }
 
-const ActUI: React.SFC<IActUIProps> = ({ act, players, onActionSelect }) => {
+const ActUI: React.SFC<IActUIProps> = ({ act, onActionSelect }) => {
 	if (null === act) {
 		return <div>Waiting for act data...</div>;
 	}
 	const movePhase = act.getMovePhase();
 	const actionPhase = act.getActionPhase();
 	const directPhase = act.getDirectPhase();
+	const action = actionPhase.getAction();
+	const reaction = actionPhase.getReaction();
 	const actions = act.getActions();
 	const actor = act.getActor();
 
 	const status = actor.status.get().map(st => `${st.effect} (${st.duration})`);
 	const cooldown = Object.keys(actor.cooldowns);
+	const actingChar = act.getActingCharacter();
+	const actionCharacters: Character[] = [actor];
 
-	const reaction = actionPhase.getReaction();
-	const isReaction = ('ACTION' === act.getPhase() && reaction && 'DONE' !== reaction.getState());
-	const actingChar = (isReaction && reaction ? reaction.getReactor() : actor);
+	if (reaction) {
+		actionCharacters.push(reaction.getReactor());
+	}
 
 	return (
 		<table className="Act">
@@ -64,16 +66,40 @@ const ActUI: React.SFC<IActUIProps> = ({ act, players, onActionSelect }) => {
 					</td>
 
 					<td className="Act-row Act-row--actions">
-						<h3 className="Heading">Character Actions</h3>
+						<h3 className="Heading">Character Info</h3>
 
-						<div><strong>{actingChar.name}</strong> ({players[actingChar.player].name})</div>
-						<div>HP: {actingChar.attributes.HP} / <span className="u-disabled">{actingChar.baseAttributes.HP}</span></div>
-						<div>AP: {actingChar.attributes.AP} / <span className="u-disabled">{actingChar.baseAttributes.AP}</span></div>
-						<div>Status: [ {actingChar.status.get().map(s => s.effect).join(', ')} ]</div>
+						<div className="ActBattleInfo">
+							{actionCharacters.map((char, i) => (
+								<React.Fragment key={i}>
+									<div className="ActBattleInfo-item">
+										<strong>{char.name}</strong> ({char.player.getName()})
+										<br />
+										HP: {char.attributes.HP} / <span className="u-disabled">{char.baseAttributes.HP}</span>
+										<br />
+										AP: {char.attributes.AP} / <span className="u-disabled">{char.baseAttributes.AP}</span>
+										<br />
+										Status: [ {char.status.get().map(s => s.effect).join(', ')} ]
+									</div>
 
-						<br />
+									{i < actionCharacters.length - 1 && (
+										<div className="ActBattleInfo-item ActBattleInfo-item--delimiter">
+											&rsaquo;
+										</div>
+									)}
+								</React.Fragment>
+							))}
+						</div>
 
-						<Actions actions={actions} onSelect={onActionSelect} />
+						{!!action && (
+							<React.Fragment>
+								<div>Action: {action.title}</div>
+								<br />
+							</React.Fragment>
+						)}
+
+						{!actingChar.isAI() && (
+							<Actions actions={actions} onSelect={onActionSelect} />
+						)}
 					</td>
 				</tr>
 			</tbody>

@@ -2,16 +2,13 @@ import { maxJumpHeight } from 'data/game-config';
 import PriorityQueue from 'core/priority-queue';
 
 import Tile from 'modules/geometry/tile';
+import { ICostMap } from 'modules/pathfinding';
 import { getTileByID } from 'modules/geometry/tiles';
 import { getTerrainCost } from 'modules/geometry/terrain';
 
-export interface IMoveCostMap {
-	[id: string]: number;
-}
-
 interface IMovable {
 	readonly tiles: Tile[];
-	readonly costMap: IMoveCostMap;
+	readonly costMap: ICostMap;
 }
 
 // Dijkstra algorithm (movement cost based search)
@@ -20,7 +17,7 @@ export const getMovableTiles = (start: Tile, obstacles: Tile[], max: number): IM
 	const frontier = new PriorityQueue<Tile>();
 	frontier.push(start, 0);
 
-	const costMap: IMoveCostMap = {};
+	const costMap: ICostMap = {};
 	costMap[start.id] = 0;
 
 	while (frontier.size()) {

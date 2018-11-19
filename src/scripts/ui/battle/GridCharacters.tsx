@@ -2,6 +2,7 @@ import React from 'react';
 
 import { gridSize } from 'data/game-config';
 
+import AI from 'modules/ai';
 import Character from 'modules/character';
 import Player from 'modules/battle/player';
 
@@ -9,7 +10,7 @@ const itemSize = 100 / gridSize;
 
 interface IGridChactersProps {
 	actor: Character|null;
-	players: Player[];
+	players: Array<Player|AI>;
 	characters: Character[];
 }
 
@@ -20,7 +21,7 @@ const GridCharacters: React.SFC<IGridChactersProps> = ({ actor, characters, play
 			const dir = char.direction.toLowerCase();
 
 			let visualCls = 'GridCharacters-item-visual';
-			visualCls += ' GridCharacters-item-visual--player-' + char.player;
+			visualCls += ' GridCharacters-item-visual--player-' + players.indexOf(char.player);
 
 			if (actor === char) {
 				visualCls += ' is-selected';
