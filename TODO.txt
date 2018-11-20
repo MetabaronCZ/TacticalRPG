@@ -14,16 +14,16 @@ TODO
 	- postavy na nich zemrou
 	- vyresi stavy typu healer versus slabe melee
 --	AI
-	- zapracovat rozdeleni roli AIP layerem (ze zacatku DAMAGE, HEALING)
-	- pri "onAction" provadet kompoletni analyzu postav, nepratelm, apod.
+	- zapracovat rozdeleni roli AI Playerem (ze zacatku DAMAGE, HEALING)
+	- pri "onAction" provadet kompletni analyzu postav, nepratel, apod.
 		- updatovat cile postav
-		- koordinovat healery, aby si rozdelili mezi sebe zranene postavy
+		- koordinovat healery, aby si rozdelili zranene postavy mezi sebe
 --	2.5D
 	- pomoci CSS 3D transformaci vytvorit ortogonalni pohled na grid
 	- ozkouset nastaveni prevyseni Tile poli
 	- pridat moznost rotace gridu pomoci ovladacich prvku (JS animace CSS atributu)
 --	hit-scan utoky
-	- filtrovat pole vysledne SkillArea, pokud je ceste projektilu non-enemy target
+	- filtrovat pole vysledne SkillArea, pokud je v ceste projektilu non-enemy target
 	- Bow vs Gun
 	- missile projektily
 --	neuspesna evasion
