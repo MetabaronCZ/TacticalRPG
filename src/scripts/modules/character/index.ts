@@ -4,8 +4,8 @@ import Weapons from 'data/weapons';
 import Archetypes from 'data/archetypes';
 import { characterCTLimit } from 'data/game-config';
 
-import AI from 'modules/ai';
 import Tile from 'modules/geometry/tile';
+import AIPlayer from 'modules/ai/player';
 import Player from 'modules/battle/player';
 import { ISexData } from 'modules/character/sex';
 import Skillset from 'modules/character/skillset';
@@ -74,7 +74,7 @@ class Character {
 	}
 
 	public isAI(): boolean {
-		return this.player instanceof AI;
+		return this.player instanceof AIPlayer;
 	}
 
 	public canAct(): boolean {

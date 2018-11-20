@@ -2,7 +2,7 @@ import React from 'react';
 
 import { gridSize } from 'data/game-config';
 
-import AI from 'modules/ai';
+import AIPlayer from 'modules/ai/player';
 import Character from 'modules/character';
 import Player from 'modules/battle/player';
 
@@ -10,7 +10,7 @@ const itemSize = 100 / gridSize;
 
 interface IGridChactersProps {
 	actor: Character|null;
-	players: Array<Player|AI>;
+	players: Array<Player|AIPlayer>;
 	characters: Character[];
 }
 

@@ -2,15 +2,15 @@ import React from 'react';
 
 import { Icos, IcoID } from 'data/icos';
 
-import AI from 'modules/ai';
 import Act from 'modules/battle/act';
+import AIPlayer from 'modules/ai/player';
 import Player from 'modules/battle/player';
 
 import ArchetypeIco from 'ui/common/ArchetypeIco';
 
 interface IPlayersProps {
 	act: Act|null;
-	players: Array<Player|AI>;
+	players: Array<Player|AIPlayer>;
 }
 
 const Players: React.SFC<IPlayersProps> = ({ act, players }) => (
@@ -18,7 +18,7 @@ const Players: React.SFC<IPlayersProps> = ({ act, players }) => (
 		{players.map((pl, p) => (
 			<div className="Players-item" key={p}>
 				<h3 className="Heading">
-					{pl.getName()} ({pl instanceof AI ? 'AI' : 'HUMAN'} Player)
+					{pl.getName()} ({pl instanceof AIPlayer ? 'AI' : 'HUMAN'} Player)
 				</h3>
 
 				<table className="Players-item-characters">

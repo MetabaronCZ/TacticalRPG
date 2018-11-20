@@ -1,6 +1,6 @@
-import AI from 'modules/ai';
 import Logger from 'modules/logger';
 import Tile from 'modules/geometry/tile';
+import AIPlayer from 'modules/ai/player';
 import Character from 'modules/character';
 import { IBattleInfo } from 'modules/battle/battle-info';
 import CharacterAction from 'modules/battle/character-action';
@@ -312,11 +312,10 @@ class Act {
 
 					} else {
 						// let AI decide
-						(actor.player as AI).onAction({
+						(actor.player as AIPlayer).onAction({
 							actor,
 							actions,
 							movable: movePhase.getMovable(),
-							moveCostMap: movePhase.getMoveCostMap(),
 							onTileSelect: tile => this.selectTile(tile),
 							onActionSelect: action => this.selectAction(action)
 						});
@@ -337,7 +336,7 @@ class Act {
 
 						} else {
 							// let AI choose target
-							const player = actor.player as AI;
+							const player = actor.player as AIPlayer;
 							player.onActionTarget(actor, actionPhase.getTargetable(), tile => this.selectTile(tile));
 						}
 						break;
@@ -359,7 +358,7 @@ class Act {
 
 						} else {
 							// let AI confirm action
-							const player = actor.player as AI;
+							const player = actor.player as AIPlayer;
 							player.onActionConfirm(actions, a => this.selectAction(a));
 						}
 						break;
@@ -387,7 +386,7 @@ class Act {
 
 								} else {
 									// let AI choose reaction
-									const player = reactor.player as AI;
+									const player = reactor.player as AIPlayer;
 									player.onReaction(reactor, actions, isBackAttacked, r => this.selectAction(r));
 								}
 								break;
@@ -402,8 +401,8 @@ class Act {
 
 								} else {
 									// let AI choose reaction
-									const player = reactor.player as AI;
-									player.onEvasion(reaction.getEvasionTargets(), tile => this.selectTile(tile));
+									const player = reactor.player as AIPlayer;
+									player.onEvasion(reactor, reaction.getEvasionTargets(), tile => this.selectTile(tile));
 								}
 								break;
 							}
@@ -425,7 +424,7 @@ class Act {
 
 				if ('IDLE' === directPhase.getState()) {
 					if (actor.isAI()) {
-						const player = actor.player as AI;
+						const player = actor.player as AIPlayer;
 						player.onDirect(actor, directPhase.getDirectable(), tile => this.selectTile(tile));
 					}
 				}

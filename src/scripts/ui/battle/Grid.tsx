@@ -1,8 +1,8 @@
 import React from 'react';
 
-import AI from 'modules/ai';
 import Act from 'modules/battle/act';
 import Tile from 'modules/geometry/tile';
+import AIPlayer from 'modules/ai/player';
 import Character from 'modules/character';
 import Player from 'modules/battle/player';
 import { IBattleInfo } from 'modules/battle/battle-info';
@@ -13,7 +13,7 @@ import GridBattleInfo from 'ui/battle/GridBattleInfo';
 
 interface IGridProps {
 	act: Act|null;
-	players: Array<Player|AI>;
+	players: Array<Player|AIPlayer>;
 	characters: Character[];
 	battleInfo: IBattleInfo[];
 	onTileSelect: (tile: Tile) => void;

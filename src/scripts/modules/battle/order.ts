@@ -1,15 +1,15 @@
 import { maxOrderSize, characterCTLimit } from 'data/game-config';
 
-import AI from 'modules/ai';
+import AIPlayer from 'modules/ai/player';
 import Character from 'modules/character';
 import Player from 'modules/battle/player';
 
 class Order {
-	private players: Array<Player|AI> = [];
+	private players: Array<Player|AIPlayer> = [];
 	private characters: Character[] = [];
 	private order: Character[] = [];
 
-	constructor(players: Array<Player|AI>) {
+	constructor(players: Array<Player|AIPlayer>) {
 		this.characters = players.map(pl => pl.getCharacters()).reduce((a, b) => a.concat(b));
 		this.players = players;
 		this.update();

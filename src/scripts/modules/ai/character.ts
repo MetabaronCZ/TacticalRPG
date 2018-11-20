@@ -1,66 +1,43 @@
-import { getIntersection, getRandomItem } from 'core/array';
+import { getRandomItem, getIntersection } from 'core/array';
 
 import Tile from 'modules/geometry/tile';
 import Character from 'modules/character';
-import Player from 'modules/battle/player';
-import { IAIConfig } from 'modules/ai/settings';
+import { getShortestPath } from 'modules/pathfinding';
 import CharacterAction from 'modules/battle/character-action';
-import { ICostMap, getShortestPath } from 'modules/pathfinding';
-import { resolveDirection, findTileFrom } from 'modules/geometry/direction';
+import { IOnActionSelect, IOnTileSelect } from 'modules/ai/player';
+import { findTileFrom, resolveDirection } from 'modules/geometry/direction';
 
-type IOnTileSelect = (tile: Tile) => void;
-type IOnActionSelect = (action: CharacterAction) => void;
-
-interface IAIActStartData {
-	actor: Character;
+interface IOnActionConf {
 	actions: CharacterAction[];
 	movable: Tile[];
-	moveCostMap: ICostMap;
+	enemy: Character[];
+	obstacles: Tile[];
 	onTileSelect: IOnTileSelect;
 	onActionSelect: IOnActionSelect;
 }
 
-interface IAICharacter {
-	character: Character;
-	hasMoved: boolean;
-	target: Character|null; // skill target character
-}
+class AICharacter {
+	private character: Character;
+	private moved = false;
+	private target: Character|null = null; // skill target character
 
-class AI extends Player {
-	// private readonly config: IAIConfig;
-	private enemy?: Player|AI;
-	private ally: IAICharacter[] = [];
-
-	constructor(name: string, config: IAIConfig) {
-		super(name);
-		// this.config = config;
+	constructor(character: Character) {
+		this.character = character;
 	}
 
-	public setEnemy(enemy: Player|AI) {
-		this.enemy = enemy;
+	public getCharacter(): Character {
+		return this.character;
 	}
 
-	public setCharacters(characters: Character[]) {
-		super.setCharacters(characters);
+	public onAction(conf: IOnActionConf) {
+		const { actions, movable, enemy, obstacles, onTileSelect, onActionSelect } = conf;
+		const char = this.character;
 
-		this.ally = this.characters.map(char => ({
-			character: char,
-			hasMoved: false,
-			target: null
-		} as IAICharacter));
-	}
-
-	public onAction(conf: IAIActStartData) {
-		const { actor, actions, movable, onTileSelect, onActionSelect } = conf;
-		const char = this.getCharacter(actor);
-
-		if (!char.hasMoved) {
-			char.hasMoved = true;
+		if (!this.moved) {
+			this.moved = true;
 
 			// get closest enemy
-			const pos = char.character.position;
-			const obstacles = this.getObstacles();
-			const enemy = this.enemy ? this.enemy.getCharacters() : [];
+			const pos = char.position;
 			const targets: Array<{ path: Tile[]; character: Character; }> = [];
 
 			// find all paths to enemies
@@ -79,7 +56,7 @@ class AI extends Player {
 
 			// find closest target
 			const sortedTargets = targets.sort((a, b) => a.path.length - b.path.length);
-			char.target = sortedTargets[0].character;
+			this.target = sortedTargets[0].character;
 
 			const path = sortedTargets[0].path.slice(1); // path without actor position
 
@@ -92,16 +69,12 @@ class AI extends Player {
 			}
 		}
 
-		this.selectAction(char, actions, onActionSelect);
+		this.selectAction(actions, enemy, onActionSelect);
 	}
 
-	public onActionTarget(actor: Character, targetable: Tile[], onSelect: IOnTileSelect) {
-		const char = this.getCharacter(actor);
-		let target: Tile|null = null;
+	public onActionTarget(targetable: Tile[], onSelect: IOnTileSelect) {
+		let target = this.target ? this.target.position : null;
 
-		if (char.target) {
-			target = char.target.position;
-		}
 		if (!target || !target.isContained(targetable)) {
 			target = getRandomItem(targetable);
 		}
@@ -112,16 +85,7 @@ class AI extends Player {
 		onSelect(target);
 	}
 
-	public onActionConfirm(actions: CharacterAction[], onSelect: IOnActionSelect) {
-		const confirmAction = actions.find(act => 'CONFIRM' === act.id);
-
-		if (!confirmAction) {
-			throw new Error('AI character actions does not contain confirm action');
-		}
-		onSelect(confirmAction);
-	}
-
-	public onReaction(reactor: Character, actions: CharacterAction[], isBackAttacked: boolean, onSelect: IOnActionSelect) {
+	public onReaction(actions: CharacterAction[], isBackAttacked: boolean, obstacles: Tile[], onSelect: IOnActionSelect) {
 		const passAction = actions.find(act => 'DONT_REACT' === act.id);
 
 		if (!passAction) {
@@ -131,7 +95,8 @@ class AI extends Player {
 			onSelect(passAction);
 			return;
 		}
-		const ap = reactor.attributes.AP;
+		const char = this.character;
+		const ap = char.attributes.AP;
 
 		// find first applicable reaction
 		for (const action of actions) {
@@ -142,8 +107,7 @@ class AI extends Player {
 
 			if ('EVADE' === skill.id) {
 				// get evasible tiles
-				const obstacles = this.getObstacles();
-				const evasible = reactor.position.getSideTiles(obstacles);
+				const evasible = char.position.getSideTiles(obstacles);
 
 				if (!evasible.length) {
 					continue;
@@ -166,13 +130,13 @@ class AI extends Player {
 		onSelect(evasionTarget);
 	}
 
-	public onDirect(actor: Character, directable: Tile[], onSelect: IOnTileSelect) {
-		const char = this.getCharacter(actor);
-		const pos = actor.position;
-		let dir = actor.direction;
+	public onDirect(directable: Tile[], onSelect: IOnTileSelect) {
+		const char = this.character;
+		const pos = char.position;
+		let dir = char.direction;
 
-		if (char.target) {
-			dir = resolveDirection(pos, char.target.position);
+		if (this.target) {
+			dir = resolveDirection(pos, this.target.position);
 		}
 		let directTarget = findTileFrom(pos, dir);
 
@@ -186,20 +150,18 @@ class AI extends Player {
 		onSelect(directTarget);
 	}
 
-	private selectAction(actor: IAICharacter, actions: CharacterAction[], onSelect: IOnActionSelect) {
+	private selectAction(actions: CharacterAction[], enemy: Character[], onSelect: IOnActionSelect) {
 		const passAction = actions.find(act => 'PASS' === act.id);
 
 		if (!passAction) {
 			throw new Error('AI character actions does not contain pass action');
 		}
-		const target = actor.target;
 
-		if (!target) {
+		if (!this.target) {
 			onSelect(passAction);
 			return;
 		}
-		const enemy = this.enemy ? this.enemy.getCharacters() : [];
-		const char = actor.character;
+		const char = this.character;
 		const pos = char.position;
 		const ap = char.attributes.AP;
 
@@ -218,7 +180,7 @@ class AI extends Player {
 			const targetable = getIntersection(skillAreas, p => p.id);
 			const targets = action.skills[0].getTargets(char, enemy, targetable);
 
-			if (-1 !== targets.indexOf(target)) {
+			if (-1 !== targets.indexOf(this.target)) {
 				onSelect(action);
 				return;
 			}
@@ -227,23 +189,6 @@ class AI extends Player {
 		// enemy is not targetable
 		onSelect(passAction);
 	}
-
-	private getCharacter(actor: Character): IAICharacter {
-		const char = this.ally.find(ch => ch.character === actor);
-
-		if (!char) {
-			throw new Error('Actor is not an AI');
-		}
-		return char;
-	}
-
-	private getObstacles(): Tile[] {
-		const enemy = this.enemy ? this.enemy.getCharacters() : [];
-		return [
-			...this.ally.map(ch => ch.character.position),
-			...enemy.map(ch => ch.position)
-		];
-	}
 }
 
-export default AI;
+export default AICharacter;

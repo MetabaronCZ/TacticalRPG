@@ -3,11 +3,11 @@ import { randomizeArray } from 'core/array';
 import AIPresets from 'data/ai-presets';
 import * as config from 'data/game-config';
 
-import AI from 'modules/ai';
 import Logger from 'modules/logger';
 import Act from 'modules/battle/act';
 import Tile from 'modules/geometry/tile';
 import Order from 'modules/battle/order';
+import AIPlayer from 'modules/ai/player';
 import Character from 'modules/character';
 import Player from 'modules/battle/player';
 import { getTile } from 'modules/geometry/tiles';
@@ -23,7 +23,7 @@ import { CharacterData } from 'modules/character-creation/character-data';
 export interface IEngineState {
 	tick: number;
 	act: Act|null;
-	players: Array<Player|AI>;
+	players: Array<Player|AIPlayer>;
 	characters: Character[];
 	order: Character[];
 	battleInfo: IBattleInfo[];
@@ -44,7 +44,7 @@ interface IEngineProps {
 }
 
 class Engine {
-	private readonly players: Array<Player|AI> = [];
+	private readonly players: Array<Player|AIPlayer> = [];
 	private readonly characters: Character[] = [];
 	private readonly battleInfo: IBattleInfo[] = [];
 	private readonly events: IEngineEvents;
@@ -152,7 +152,7 @@ class Engine {
 		this.act.start();
 	}
 
-	private createPlayers(conf: IEngineProps): Array<Player|AI> {
+	private createPlayers(conf: IEngineProps): Array<Player|AIPlayer> {
 		const { players, parties, characters } = conf;
 
 		if (config.maxPlayers !== players.length) {
@@ -161,7 +161,7 @@ class Engine {
 		const pl = players.map((plConfig, p) => {
 			const { name, party, control, aiSettings } = plConfig;
 			const charData: CharacterData[] = [];
-			let player: Player|AI;
+			let player: Player|AIPlayer;
 
 			if ('AI' === control) {
 				// AI player
@@ -171,7 +171,7 @@ class Engine {
 				if ('CUSTOM' !== preset) {
 					aiConf = AIPresets.get(preset).config;
 				}
-				player = new AI(name, aiConf);
+				player = new AIPlayer(name, aiConf);
 
 			} else {
 				// human controlled player
@@ -244,7 +244,7 @@ class Engine {
 
 		// set enemy for AI players
 		pl.forEach(player => {
-			if (player instanceof AI) {
+			if (player instanceof AIPlayer) {
 				const enemy = pl.find(p => p !== player);
 
 				if (!enemy) {
