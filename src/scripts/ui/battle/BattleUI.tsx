@@ -4,10 +4,11 @@ import Tile from 'modules/geometry/tile';
 import { IEngineState } from 'modules/battle/engine';
 import CharacterAction from 'modules/battle/character-action';
 
-import ActUI from 'ui/battle/Act';
 import Grid from 'ui/battle/Grid';
+import ActUI from 'ui/battle/Act';
 import Order from 'ui/battle/Order';
 import Players from 'ui/battle/Players';
+import GridCoordinates from 'ui/battle/GridCoordinates';
 
 interface IBattleUIProps {
 	engineState: IEngineState;
@@ -47,13 +48,15 @@ const BattleUI: React.SFC<IBattleUIProps> = ({ engineState, engineUpdate, onTile
 						</td>
 
 						<td className="BattleUI-table-column BattleUI-table-column--grid">
-							<Grid
-								act={act}
-								players={players}
-								characters={characters}
-								battleInfo={battleInfo}
-								onTileSelect={onTileSelect}
-							/>
+							<GridCoordinates>
+								<Grid
+									act={act}
+									players={players}
+									characters={characters}
+									battleInfo={battleInfo}
+									onTileSelect={onTileSelect}
+								/>
+							</GridCoordinates>
 						</td>
 					</tr>
 				</tbody>

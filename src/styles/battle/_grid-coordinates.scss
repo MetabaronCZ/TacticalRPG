@@ -1,0 +1,36 @@
+.GridCoordinates {
+	display: table;
+	border-collapse: collapse;
+
+	&-row {
+		display: table-row;
+		height: 100%;
+
+		&-column {
+			display: table-cell;
+			vertical-align: middle;
+			text-align: center;
+			font-size: 0;
+			height: 100%; // set height of container for item list
+		}
+	}
+
+	&-item {
+		@extend .u-text-small;
+		text-align: center;
+		color: $color-grey;
+		line-height: 1;
+
+		&.GridCoordinates-item--inRow {
+			display: inline-block;
+			vertical-align: top;
+			padding: $vu 0;
+		}
+
+		&.GridCoordinates-item--inColumn {
+			display: flex;
+			padding: 0 $vu;
+			align-items: center;
+		}
+	}
+}

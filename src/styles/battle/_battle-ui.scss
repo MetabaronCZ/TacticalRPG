@@ -1,6 +1,6 @@
 .BattleUI {
 	@extend .Paragraph;
-	text-align-last: left;
+	text-align: left;
 	padding: 7*$vu 5*$vu 5*$vu;
 
 	&-heading {
