@@ -28,3 +28,8 @@
 	font-size: $font-size;
 	line-height: $line-height;
 }
+
+@mixin mx-grid-tile($background, $border) {
+	border-color: $border;
+	background-color: $background;
+}

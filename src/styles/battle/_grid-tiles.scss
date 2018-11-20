@@ -6,28 +6,37 @@
 	height: 100%;
 
 	&-item {
+		$black-bg: #000;
+		$black-border: #444;
+		$green-bg: #084;
+		$green-border: #063;
+		$blue-bg: #04d;
+		$blue-border: #02b;
+		$yellow-bg: #dc0;
+		$yellow-border: #b90;
+
 		position: absolute;
 		box-sizing: border-box;
 		border: 1px solid $color-grey;
 
-		&.GridTiles-item--default { background-color: $color-black; }
+		&.GridTiles-item--default { @include mx-grid-tile($black-bg, $black-border); }
 
-		&.GridTiles-item--movable { background-color: $color-green-dark; }
-		&.GridTiles-item--movePath { background-color: $color-blue-dark; }
-		&.GridTiles-item--moveTarget { background-color: $color-yellow; }
+		&.GridTiles-item--movable { @include mx-grid-tile($green-bg, $green-border); }
+		&.GridTiles-item--movePath { @include mx-grid-tile($blue-bg, $blue-border); }
+		&.GridTiles-item--moveTarget { @include mx-grid-tile($yellow-bg, $yellow-border); }
 
-		&.GridTiles-item--actionRange { background-color: $color-green-dark; }
-		&.GridTiles-item--actionTargetable { background-color: $color-blue-dark; }
+		&.GridTiles-item--actionRange { @include mx-grid-tile($green-bg, $green-border); }
+		&.GridTiles-item--actionTargetable { @include mx-grid-tile($blue-bg, $blue-border); }
 
-		&.GridTiles-item--actionEffectArea { background-color: $color-green-dark; }
-		&.GridTiles-item--actionEffectTargets { background-color: $color-blue-dark; }
-		&.GridTiles-item--actionEffectTarget { background-color: $color-yellow; }
+		&.GridTiles-item--actionEffectArea { @include mx-grid-tile($green-bg, $green-border); }
+		&.GridTiles-item--actionEffectTargets { @include mx-grid-tile($blue-bg, $blue-border); }
+		&.GridTiles-item--actionEffectTarget { @include mx-grid-tile($yellow-bg, $yellow-border); }
 
-		&.GridTiles-item--reactors { background-color: $color-blue-dark; }
-		&.GridTiles-item--reactionEvasible { background-color: $color-green-dark; }
-		&.GridTiles-item--reactor { background-color: $color-yellow; }
+		&.GridTiles-item--reactors { @include mx-grid-tile($blue-bg, $blue-border); }
+		&.GridTiles-item--reactionEvasible { @include mx-grid-tile($green-bg, $green-border); }
+		&.GridTiles-item--reactor { @include mx-grid-tile($yellow-bg, $yellow-border); }
 
-		&.GridTiles-item--directable { background-color: $color-green-dark; }
-		&.GridTiles-item--directTarget { background-color: $color-yellow; }
+		&.GridTiles-item--directable { @include mx-grid-tile($green-bg, $green-border); }
+		&.GridTiles-item--directTarget { @include mx-grid-tile($yellow-bg, $yellow-border); }
 	}
 }
