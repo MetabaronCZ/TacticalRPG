@@ -1,5 +1,6 @@
 TODO
 ----------------------------------------------------------------------------------------------------------
+--	omezit plochu pro pohyb nejen podle MOV ale i current AP (nestaci range = Math.min(MOV, AP) >> tile budou mit ruzny cost)
 --	hit-scan utoky
 	- filtrovat pole vysledne SkillArea, pokud je v ceste projektilu non-enemy target
 	- Bow vs Gun
