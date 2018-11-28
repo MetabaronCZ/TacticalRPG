@@ -1,6 +1,9 @@
 TODO
 ----------------------------------------------------------------------------------------------------------
---	omezit plochu pro pohyb nejen podle MOV ale i current AP (nestaci range = Math.min(MOV, AP) >> tile budou mit ruzny cost)
+--	skill preview
+	- po vyberu cile (pred potvrzenim akce) vypsat info o postavach zdroj-cile
+	- vypsat info o akci (typ DAMAGE, HEALING, apod.)
+	- u AI akci, pokud je protivnik HUMAN, nechat potvrzeni akce jako tlacitko >> potvrzuje protihrac, aby bylo videt info, co se deje
 --	hit-scan utoky
 	- filtrovat pole vysledne SkillArea, pokud je v ceste projektilu non-enemy target
 	- Bow vs Gun
@@ -15,6 +18,7 @@ TODO
 	- pomoci CSS 3D transformaci vytvorit ortogonalni pohled na grid
 	- ozkouset nastaveni prevyseni Tile poli
 	- pridat moznost rotace gridu pomoci ovladacich prvku (JS animace CSS atributu)
+	! postavy, BattleInfo by mely zustat jako billboard sprite
 --	upravit targetArea a effectArea, aby braly v uvahu i prevyseni utocnika a cile
 	- u strelnych zbrani pridat dostrel a effect areu pri strelbe dolu
 --	pridat random grid generation
@@ -28,7 +32,7 @@ TODO
 --	zapracovat (konfigurovatelny) odpocet do konce hry
 	- pokud hra trva prilis dlouho (kolik ticku?) budou od urcite chvile pravidelne mizet okruzni policka gridu
 	- postavy na nich zemrou
-	- vyresi stavy typu healer versus slabe melee
+	- vyresi stavy typu: healer versus slabe melee
 
 
 LONG TERM
