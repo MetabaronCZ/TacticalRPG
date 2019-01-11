@@ -2,12 +2,12 @@ import React from 'react';
 import { IcoID, Icos } from 'data/icos';
 
 interface ILinkIcoProps {
-	readonly ico?: IcoID;
+	readonly ico: IcoID;
 	readonly title: string;
 	readonly onClick?: () => void;
 }
 
-const LinkIco: React.SFC<ILinkIcoProps> = ({ ico = 'default', title = '', onClick }) => (
+const LinkIco: React.SFC<ILinkIcoProps> = ({ ico, title = '', onClick }) => (
 	<button className="LinkIco" title={title} onClick={onClick}>
 		{Icos[ico]}
 	</button>

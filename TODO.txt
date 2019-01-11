@@ -1,5 +1,10 @@
 TODO
 ----------------------------------------------------------------------------------------------------------
+--	armor effekty:
+	- heavy: +100 HP
+	- light: evasion reactive skill
+	- magical: +50 energy shield
+
 --	skill preview
 	- po vyberu cile (pred potvrzenim akce) vypsat info o postavach zdroj-cile
 	- vypsat info o akci (typ DAMAGE, HEALING, apod.)

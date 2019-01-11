@@ -1,25 +1,29 @@
-import React, { CSSProperties } from 'react';
+import React from 'react';
+
 import { letters } from 'core/string';
 import { gridSize } from 'data/game-config';
 
 const itemPool = Array(gridSize).fill(null);
-const itemSize = 100 / gridSize;
 
-const renderItems = (type: 'inRow'| 'inColumn') => {
-	const width = ('inRow' === type ? itemSize + '%' : 'auto');
-	const height = ('inColumn' === type ? itemSize + '%' : 'auto');
+const renderLetters = () => (
+	<div className="GridCoordinates-letters">
+		{itemPool.map((_, i) => (
+			<div className="GridCoordinates-letters-item" key={i}>
+				{letters[i]}
+			</div>
+		))}
+	</div>
+);
 
-	const style: CSSProperties = {
-		width,
-		height,
-	};
-
-	return itemPool.map((_, i) => (
-		<div className={`GridCoordinates-item GridCoordinates-item--${type}`} style={style} key={i}>
-			{'inRow' === type ? i + 1 : letters[i]}
-		</div>
-	));
-};
+const renderNumbers = () => (
+	<div className="GridCoordinates-numbers">
+		{itemPool.map((_, i) => (
+			<div className="GridCoordinates-numbers-item" key={i}>
+				{i + 1}
+			</div>
+		))}
+	</div>
+);
 
 const GridCoordinates: React.SFC<{}> = ({ children }) => {
 	return (
@@ -28,7 +32,7 @@ const GridCoordinates: React.SFC<{}> = ({ children }) => {
 				<div className="GridCoordinates-row-column" />
 
 				<div className="GridCoordinates-row-column">
-					{renderItems('inRow')}
+					{renderLetters()}
 				</div>
 
 				<div className="GridCoordinates-row-column" />
@@ -36,7 +40,7 @@ const GridCoordinates: React.SFC<{}> = ({ children }) => {
 
 			<div className="GridCoordinates-row">
 				<div className="GridCoordinates-row-column">
-					{renderItems('inColumn')}
+					{renderNumbers()}
 				</div>
 
 				<div className="GridCoordinates-row-column">
@@ -44,7 +48,7 @@ const GridCoordinates: React.SFC<{}> = ({ children }) => {
 				</div>
 
 				<div className="GridCoordinates-row-column">
-					{renderItems('inColumn')}
+					{renderNumbers()}
 				</div>
 			</div>
 
@@ -52,7 +56,7 @@ const GridCoordinates: React.SFC<{}> = ({ children }) => {
 				<div className="GridCoordinates-row-column" />
 
 				<div className="GridCoordinates-row-column">
-					{renderItems('inRow')}
+					{renderLetters()}
 				</div>
 
 				<div className="GridCoordinates-row-column" />
