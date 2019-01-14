@@ -1,13 +1,17 @@
 TODO
 ----------------------------------------------------------------------------------------------------------
---	armor effekty:
-	- heavy: +100 HP
-	- light: evasion reactive skill
-	- magical: +50 energy shield
-
+--	refactor armor / defense
+	- kazda postava 100 HP
+	- za kazde P bonus +50 PDEF
+	- za kazde M bonus +50 MDEF
+	- Heavy armor: +100 PDEF
+	- Magical armor: +100 MDEF
+	- Light armor: muze pouzivat Evasion (reactive action)
+	- physical a magical damage nejdriv ubiraji z PDEF a MDEF, teprve potom z HP
+	- Heal skilly leci jen HP
 --	skill preview
-	- po vyberu cile (pred potvrzenim akce) vypsat info o postavach zdroj-cile
-	- vypsat info o akci (typ DAMAGE, HEALING, apod.)
+	OK po vyberu cile (pred potvrzenim akce) vypsat info o postavach zdroj-cile
+	OK vypsat info o akci (typ DAMAGE, HEALING, apod.)
 	- u AI akci, pokud je protivnik HUMAN, nechat potvrzeni akce jako tlacitko >> potvrzuje protihrac, aby bylo videt info, co se deje
 --	hit-scan utoky
 	- filtrovat pole vysledne SkillArea, pokud je v ceste projektilu non-enemy target
@@ -19,11 +23,6 @@ TODO
 --	Revive (vyjimky pro targetovani dead characteru)
 --	pridat Counter reaktivni akci pro S-type archetypy
 	- bude to attack skill mainHand zbrane (pokud nema STUN, FREEZE nebo DISARM)
---	2.5D
-	- pomoci CSS 3D transformaci vytvorit ortogonalni pohled na grid
-	- ozkouset nastaveni prevyseni Tile poli
-	- pridat moznost rotace gridu pomoci ovladacich prvku (JS animace CSS atributu)
-	! postavy, BattleInfo by mely zustat jako billboard sprite
 --	upravit targetArea a effectArea, aby braly v uvahu i prevyseni utocnika a cile
 	- u strelnych zbrani pridat dostrel a effect areu pri strelbe dolu
 --	pridat random grid generation

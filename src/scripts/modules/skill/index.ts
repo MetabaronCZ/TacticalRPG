@@ -50,6 +50,34 @@ const areaTable: IAreaTable = {
 	AOE3x3:     (source: Tile, target: Tile) => [target, ...target.getNeighbours()]
 };
 
+// targetable circle area
+const getCircleArea = (center: Tile, radius: number): Tile[] => {
+	const r2 = radius * radius;
+	const circle: Tile[] = [];
+
+	// iterate only for 1st quadrant
+	for (let x = -radius; x <= 0; x++) {
+		for (let y = -radius; y <= 0; y++) {
+			if (x * x + y * y <= r2) {
+				// get tiles for all 4 quadrants
+				const tiles = [
+					getTile(center.x + x, center.y + y),
+					getTile(center.x - x, center.y + y),
+					getTile(center.x + x, center.y - y),
+					getTile(center.x - x, center.y - y)
+				];
+
+				for (const tile of tiles) {
+					if (null !== tile && -1 === circle.indexOf(tile)) {
+						circle.push(tile);
+					}
+				}
+			}
+		}
+	}
+	return circle;
+};
+
 const reactableSkillTargets: SkillTarget[] = ['ANY', 'ENEMY'];
 
 class Skill implements ISkillData {
@@ -117,23 +145,7 @@ class Skill implements ISkillData {
 		if ('SELF' === target) {
 			return [source];
 		}
-		const r2 = range * range;
-		const targetable: Tile[] = [];
-
-		// get all tiles in range
-		for (let x = -range; x <= range; x++) {
-			for (let y = -range; y <= range; y++) {
-				if (x * x + y * y > r2) {
-					continue;
-				}
-				const tile = getTile(source.x + x, source.y + y);
-
-				if (null === tile) {
-					continue;
-				}
-				targetable.push(tile);
-			}
-		}
+		const targetable = getCircleArea(source, range);
 
 		// filter diagonals and straight lines for LINE area skill type
 		if ('LINE' === area) {
