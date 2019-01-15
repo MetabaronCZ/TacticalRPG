@@ -15,7 +15,7 @@ const onStart = (history: History, store: Store) => (config: BattleConfig) => {
 	store.battleConfig.update(config.serialize());
 	store.save();
 
-	goto(history, '/battle');
+	goto(history, 'BATTLE');
 };
 
 const BattleConfigPageContainer: React.SFC<RouteComponentProps<any> & IContext> = ({ history, store }) => (
@@ -24,7 +24,7 @@ const BattleConfigPageContainer: React.SFC<RouteComponentProps<any> & IContext> 
 			config={store.battleConfig}
 			characters={store.characters.data}
 			parties={store.parties.data}
-			onBack={gotoFn(history, '/')}
+			onBack={gotoFn(history, 'ROOT')}
 			onStart={onStart(history, store)}
 		/>
 	</Page>

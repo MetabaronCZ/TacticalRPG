@@ -15,7 +15,7 @@ const onSubmit = (store: Store, history: History) => (party: PartyData): void =>
 	store.parties.add(party);
 	store.save();
 
-	goto(history, '/party-list');
+	goto(history, 'PARTY_LIST');
 };
 
 const PartyCreationPageContainer: React.SFC<RouteComponentProps<any> & IContext> = props => {
@@ -24,7 +24,7 @@ const PartyCreationPageContainer: React.SFC<RouteComponentProps<any> & IContext>
 		<Page heading="Party creation">
 			<PartyCreationUI
 				characters={store.characters}
-				onBack={gotoFn(history, '/party-list')}
+				onBack={gotoFn(history, 'PARTY_LIST')}
 				onSubmit={onSubmit(store, history)}
 			/>
 		</Page>

@@ -60,12 +60,12 @@ const CharacterListPageContainer: React.SFC<RouteComponentProps<any> & IContext>
 			<Separator />
 
 			<ButtonRow>
-				<Button ico="back" text="Back" onClick={gotoFn(history, '/')} />
+				<Button ico="back" text="Back" onClick={gotoFn(history, 'ROOT')} />
 				<Button
 					ico="create"
 					color="green"
 					text="Create new Character"
-					onClick={gotoFn(history, '/character-create')}
+					onClick={gotoFn(history, 'CHARACTER_CREATE')}
 				/>
 			</ButtonRow>
 		</Page>

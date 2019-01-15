@@ -46,13 +46,13 @@ const PartyListPageContainer: React.SFC<RouteComponentProps<any> & IContext> = p
 			<Separator />
 
 			<ButtonRow>
-				<Button ico="back" text="Back" onClick={gotoFn(history, '/')} />
+				<Button ico="back" text="Back" onClick={gotoFn(history, 'ROOT')} />
 
 				<Button
 					ico="create"
 					color="green"
 					text="Create new party"
-					onClick={gotoFn(history, '/party-create')}
+					onClick={gotoFn(history, 'PARTY_CREATE')}
 				/>
 			</ButtonRow>
 		</Page>

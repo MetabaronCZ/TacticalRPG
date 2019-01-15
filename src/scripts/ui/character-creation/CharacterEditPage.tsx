@@ -15,7 +15,7 @@ const onSubmit = (store: Store, history: History) => (char: CharacterData) => {
 	store.characters.replace(char);
 	store.save();
 
-	goto(history, '/character-list');
+	goto(history, 'CHARACTER_LIST');
 };
 
 const CharacterEditPageContainer: React.SFC<RouteComponentProps<any> & IContext> = props => {
@@ -26,7 +26,7 @@ const CharacterEditPageContainer: React.SFC<RouteComponentProps<any> & IContext>
 		<Page heading="Edit character">
 			<CharacterCreation
 				character={character}
-				onBack={gotoFn(history, '/character-list')}
+				onBack={gotoFn(history, 'CHARACTER_LIST')}
 				onSubmit={onSubmit(store, history)}
 			/>
 		</Page>

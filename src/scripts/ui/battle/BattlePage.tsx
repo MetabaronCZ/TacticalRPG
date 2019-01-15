@@ -13,7 +13,7 @@ const txtExitConfirm = 'Do you realy want to exit and lost your game progress?';
 const exit = (history: History) => () => {
 	 // go to Main Menu
 	if (window.confirm(txtExitConfirm)) {
-		goto(history, '/');
+		goto(history, 'ROOT');
 	}
 };
 

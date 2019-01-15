@@ -3,19 +3,21 @@ import { withRouter, RouteComponentProps } from 'react-router';
 
 import { IcoID } from 'data/icos';
 import { gotoFn } from 'core/navigation';
+
+import { RouteID } from 'modules/route';
 import Button, { ButtonSize } from 'ui/common/Button';
 
 interface IMenuItem {
 	readonly title: string;
 	readonly ico?: IcoID;
 	readonly size?: ButtonSize;
-	readonly url: string;
+	readonly route: RouteID;
 }
 
 const menuItems: IMenuItem[] = [
-	{ title: 'Start Battle', ico: 'fight', size: 'large', url: '/battle-config' },
-	{ title: 'Party Creation', url: '/party-list' },
-	{ title: 'Character Creation', url: '/character-list' }
+	{ title: 'Start Battle', ico: 'fight', size: 'large', route: 'BATTLE_CONFIG' },
+	{ title: 'Party Creation', route: 'PARTY_LIST' },
+	{ title: 'Character Creation', route: 'CHARACTER_LIST' }
 ];
 
 const MainMenuPage: React.SFC<RouteComponentProps<any>> = ({ history }) => (
@@ -23,7 +25,7 @@ const MainMenuPage: React.SFC<RouteComponentProps<any>> = ({ history }) => (
 		<ul className="MainMenu-butttons">
 			{menuItems.map((item, i) => (
 				<li className="MainMenu-buttons-item" key={i}>
-					<Button ico={item.ico} size={item.size} text={item.title} onClick={gotoFn(history, item.url)} />
+					<Button ico={item.ico} size={item.size} text={item.title} onClick={gotoFn(history, item.route)} />
 				</li>
 			))}
 		</ul>

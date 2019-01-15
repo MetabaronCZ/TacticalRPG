@@ -15,14 +15,14 @@ const onSubmit = (store: Store, history: History) => (char: CharacterData): void
 	store.characters.add(char);
 	store.save();
 
-	goto(history, '/character-list');
+	goto(history, 'CHARACTER_LIST');
 };
 
 const CharacterCreationPageContainer: React.SFC<RouteComponentProps<any> & IContext> = ({ store, history }) => (
 	<Page heading="Character creation">
 		<CharacterCreation
 			character={null}
-			onBack={gotoFn(history, '/character-list')}
+			onBack={gotoFn(history, 'CHARACTER_LIST')}
 			onSubmit={onSubmit(store, history)}
 		/>
 	</Page>
