@@ -3,7 +3,7 @@ import { smallShieldBlock } from 'data/game-config';
 import { IStatusEffect, StatusEffectID } from 'modules/battle/status-effect';
 import { formatNumber } from 'core/number';
 
-type StatusEffectFun = (strength?: number) => IStatusEffect;
+type StatusEffectFun = (phy?: number, mag?: number) => IStatusEffect;
 
 const StatusEffects = new DataList<StatusEffectID, StatusEffectFun>({
 	CRIPPLE: () => ({
@@ -22,7 +22,7 @@ const StatusEffects = new DataList<StatusEffectID, StatusEffectFun>({
 		type: 'PHYSICAL',
 		duration: 100
 	}),
-	BLEED: (strength = 0) => ({
+	BLEED: (phy = 0) => ({
 		id: 'BLEED',
 		title: 'Bleed',
 		effect: 'Wounded',
@@ -31,8 +31,8 @@ const StatusEffects = new DataList<StatusEffectID, StatusEffectFun>({
 		duration: 100,
 		repeat: 3,
 		apply: (char, cb) => {
-			const dmg = Math.floor(strength / 2);
-			char.applyDamage(dmg);
+			const dmg = Math.floor(phy / 2);
+			char.applyDamage(dmg, 0);
 
 			cb({
 				text: formatNumber(dmg),
@@ -49,7 +49,7 @@ const StatusEffects = new DataList<StatusEffectID, StatusEffectFun>({
 		type: 'PHYSICAL',
 		duration: 100
 	}),
-	BURN: (strength = 0) => ({
+	BURN: (phy = 0, mag = 0) => ({
 		id: 'BURN',
 		title: 'Burn',
 		effect: 'Burning',
@@ -58,8 +58,8 @@ const StatusEffects = new DataList<StatusEffectID, StatusEffectFun>({
 		duration: 100,
 		repeat: 3,
 		apply: (char, cb) => {
-			const dmg = Math.floor(strength / 2);
-			char.applyDamage(dmg);
+			const dmg = Math.floor(mag / 2);
+			char.applyDamage(0, dmg);
 
 			cb({
 				text: formatNumber(dmg),
@@ -101,7 +101,7 @@ const StatusEffects = new DataList<StatusEffectID, StatusEffectFun>({
 		type: 'MAGICAL',
 		duration: 100
 	}),
-	REGEN: (strength = 0) => ({
+	REGEN: (phy = 0, mag = 0) => ({
 		id: 'REGEN',
 		title: 'Regen',
 		effect: 'Rejuvenating',
@@ -110,7 +110,7 @@ const StatusEffects = new DataList<StatusEffectID, StatusEffectFun>({
 		duration: 100,
 		repeat: 3,
 		apply: (char, cb) => {
-			const healing = Math.floor(strength / 2);
+			const healing = Math.floor(mag / 2);
 			char.applyHealing(healing);
 
 			cb({

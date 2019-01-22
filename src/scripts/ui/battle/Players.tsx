@@ -27,6 +27,8 @@ const Players: React.SFC<IPlayersProps> = ({ act, players }) => (
 							<th>Name</th>
 							<th className="Players-item-characters-heading">HP</th>
 							<th className="Players-item-characters-heading">AP</th>
+							<th className="Players-item-characters-heading">ARM</th>
+							<th className="Players-item-characters-heading">ESH</th>
 						</tr>
 					</thead>
 
@@ -36,8 +38,8 @@ const Players: React.SFC<IPlayersProps> = ({ act, players }) => (
 							const isActive = !!(act && act.getActor() === char);
 							const state = (isDead ? 'is-dead' : (isActive ? 'is-active' : ''));
 
-							const { HP, AP } = char.attributes;
-							const { HP: baseHP, AP: baseAP } = char.baseAttributes;
+							const { HP, AP, ARM, ESH } = char.attributes;
+							const { HP: baseHP, AP: baseAP, ARM: baseARM, ESH: baseESH } = char.baseAttributes;
 
 							return (
 								<tr className={`Players-item-characters-item ${state}`} key={c}>
@@ -53,6 +55,14 @@ const Players: React.SFC<IPlayersProps> = ({ act, players }) => (
 
 									<td className="Players-item-characters-item-row Players-item-characters-item-row--number">
 										{AP} <span className="Players-item-characters-item-base">/ {baseAP}</span>
+									</td>
+
+									<td className="Players-item-characters-item-row Players-item-characters-item-row--number">
+										{ARM} <span className="Players-item-characters-item-base">/ {baseARM}</span>
+									</td>
+
+									<td className="Players-item-characters-item-row Players-item-characters-item-row--number">
+										{ESH} <span className="Players-item-characters-item-base">/ {baseESH}</span>
 									</td>
 								</tr>
 							);

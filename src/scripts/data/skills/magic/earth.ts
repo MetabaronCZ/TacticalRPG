@@ -12,7 +12,7 @@ const earthMagic: { [id in EarthMagicSkillID]: ISkillData; } = {
 		target: 'ENEMY',
 		element: 'EARTH',
 		physicalDamage: 0.5,
-		elementalDamage: 1
+		magicalDamage: 1
 	},
 	ERT_EARTH_SPIKE: {
 		title: 'Earth Spike',
@@ -24,7 +24,7 @@ const earthMagic: { [id in EarthMagicSkillID]: ISkillData; } = {
 		target: 'ENEMY',
 		element: 'EARTH',
 		physicalDamage: 0.25,
-		elementalDamage: 0.25,
+		magicalDamage: 0.25,
 		status: ['STUN'],
 		cooldown: 1
 	},
@@ -38,7 +38,7 @@ const earthMagic: { [id in EarthMagicSkillID]: ISkillData; } = {
 		target: 'ENEMY',
 		element: 'EARTH',
 		physicalDamage: 0.25,
-		elementalDamage: 5,
+		magicalDamage: 5,
 		status: [],
 		cooldown: 2
 	},

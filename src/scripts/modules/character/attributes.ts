@@ -1,29 +1,21 @@
 import BaseAttributes from 'modules/character/base-attributes';
 
-export type PrimaryAttributeID =
+export type AttributeID =
 	'STR' | // strength
 	'VIT' | // vitality
 	'SPD' | // speed
 	'MOV' | // movement
 	'MAG' | // magic
-	'SPR';  // spirit
+	'SPR' |  // spirit
+	'HP' |  // hit points / life
+	'AP' |  // action points / stamina
+	'CT' |  // charge time
+	'ARM' | // armor
+	'ESH';  // energy shield
 
-export type SecondaryAttributeID =
-	'HP' | // hit points
-	'AP' | // action points
-	'CT';  // charge time
-
-export type AttributeID = PrimaryAttributeID | SecondaryAttributeID;
-
-export type IPrimaryAttributes = {
-	[attr in PrimaryAttributeID]: number;
+export type IAttributes = {
+	[attr in AttributeID]: number;
 };
-
-export type ISecondaryAttributes = {
-	[attr in SecondaryAttributeID]: number;
-};
-
-export type IAttributes = IPrimaryAttributes & ISecondaryAttributes;
 
 class Attributes extends BaseAttributes {
 	// set attribute value

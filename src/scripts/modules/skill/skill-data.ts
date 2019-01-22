@@ -26,7 +26,7 @@ export interface ISkillData {
 	readonly element?: SkillElement;
 	readonly isFixedPhysicalDamage?: boolean;
 	readonly physicalDamage?: number;
-	readonly elementalDamage?: number;
+	readonly magicalDamage?: number;
 	readonly status?: StatusEffectID[];
 	readonly cooldown?: SkillCooldown;
 }

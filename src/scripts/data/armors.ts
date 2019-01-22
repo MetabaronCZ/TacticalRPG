@@ -6,29 +6,29 @@ const Armors = new DataList<ArmorID, IArmorData>({
 		id: 'NONE',
 		title: 'none',
 		description: 'No armor equipped',
-		physicalDefense: 1,
-		magicalDefense: 1
+		physical: 0,
+		magical: 0
 	},
-	ROBE: {
-		id: 'ROBE',
-		title: 'Robe',
+	MAGICAL: {
+		id: 'MAGICAL',
+		title: 'Magical',
 		description: '',
-		physicalDefense: 25,
-		magicalDefense: 75
+		physical: 0,
+		magical: 100
 	},
 	LIGHT: {
 		id: 'LIGHT',
 		title: 'Light Armor',
 		description: '',
-		physicalDefense: 50,
-		magicalDefense: 1
+		physical: 0,
+		magical: 0
 	},
 	HEAVY: {
 		id: 'HEAVY',
 		title: 'Heavy Armor',
 		description: '',
-		physicalDefense: 75,
-		magicalDefense: 25
+		physical: 100,
+		magical: 0
 	}
 });
 

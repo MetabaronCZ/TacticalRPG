@@ -12,7 +12,7 @@ const fireMagic: { [id in FireMagicSkillID]: ISkillData; } = {
 		target: 'ENEMY',
 		element: 'FIRE',
 		physicalDamage: 0.5,
-		elementalDamage: 1
+		magicalDamage: 1
 	},
 	FIR_BURN: {
 		title: 'Burn',
@@ -24,7 +24,7 @@ const fireMagic: { [id in FireMagicSkillID]: ISkillData; } = {
 		target: 'ENEMY',
 		element: 'FIRE',
 		physicalDamage: 0.25,
-		elementalDamage: 0.25,
+		magicalDamage: 0.25,
 		status: ['BURN'],
 		cooldown: 1
 	},
@@ -38,7 +38,7 @@ const fireMagic: { [id in FireMagicSkillID]: ISkillData; } = {
 		target: 'ENEMY',
 		element: 'FIRE',
 		physicalDamage: 0.25,
-		elementalDamage: 0.5,
+		magicalDamage: 0.5,
 		cooldown: 2
 	},
 	FIR_FIRE_AURA: {
@@ -51,7 +51,7 @@ const fireMagic: { [id in FireMagicSkillID]: ISkillData; } = {
 		target: 'SELF',
 		element: 'FIRE',
 		physicalDamage: 0,
-		elementalDamage: 0.25,
+		magicalDamage: 0.25,
 		status: ['BURN']
 	}
 };

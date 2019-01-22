@@ -15,7 +15,7 @@ const elementStrongModifier = 0.5;
 
 interface IDamageInfo {
 	physical: number;
-	elemental: number;
+	magical: number;
 	blockModifier: number;
 	elementalModifier: number;
 	directionModifier: number;
@@ -53,35 +53,22 @@ const getBlockModifier = (defender: Character): number => {
 	return 1 - defBlock;
 };
 
-const getPhysicalDamage = (attacker: Character, defender: Character, skill: Skill): number => {
-	const defArmor = defender.armor;
+const getPhysicalDamage = (attacker: Character, skill: Skill): number => {
 	const attWeapon = Weapons.values().find(wpn => -1 !== (wpn.skills as SkillID[]).indexOf(skill.id));
-	const defArmorDefense = defArmor.physicalDefense;
 	const attWeaponDamage = (attWeapon ? attWeapon.damage : 1);
 
-	const defense = (1 - defender.attributes.VIT / 100) * (1 - defArmorDefense / 100);
-	let attack = 0;
-
 	if (skill.isFixedPhysicalDamage) {
-		attack = skill.physicalDamage;
+		return skill.physicalDamage;
 	} else {
-		attack = attacker.attributes.STR * attWeaponDamage * skill.physicalDamage;
+		return attacker.attributes.STR * attWeaponDamage * skill.physicalDamage;
 	}
-
-	return attack * defense;
 };
 
-const getElementalDamage = (attacker: Character, defender: Character, skill: Skill): number => {
-	const main = attacker.mainHand;
-	const off = attacker.offHand;
-	const armor = defender.armor;
-	const armorDefense = armor.magicalDefense;
-	const magBonus = main.magic + off.magic;
+const getMagicalDamage = (attacker: Character, skill: Skill): number => {
+	const { mainHand, offHand } = attacker;
+	const attWeaponMagic = (mainHand.magic + offHand.magic) || 1;
 
-	const attack = (attacker.attributes.MAG + magBonus) * skill.elementalDamage;
-	const defense = (1 - defender.attributes.SPR / 100) * (1 - armorDefense / 100);
-
-	return attack * defense;
+	return attacker.attributes.MAG * attWeaponMagic * skill.magicalDamage;
 };
 
 const getStatusModifier = (defender: Character): number => {
@@ -135,20 +122,20 @@ export const getDamageInfo = (attacker: Character, defender: Character, skill: S
 	const statusModifier = getStatusModifier(defender);
 	const status = getStatusEffects(attacker, defender, skill);
 
-	let physical = getPhysicalDamage(attacker, defender, skill);
-	let elemental = getElementalDamage(attacker, defender, skill);
+	let physical = getPhysicalDamage(attacker, skill);
+	let magical = getMagicalDamage(attacker, skill);
 
 	// apply modifiers
 	physical *= directionModifier * statusModifier * blockModifier;
-	elemental *= directionModifier * statusModifier * elementalModifier;
+	magical *= directionModifier * statusModifier * elementalModifier;
 
 	// clamp values
 	physical = physical > 0 ? Math.round(physical) : 0;
-	elemental = elemental > 0 ? Math.round(elemental) : 0;
+	magical = magical > 0 ? Math.round(magical) : 0;
 
 	return {
 		physical,
-		elemental,
+		magical,
 		blockModifier: 1 - blockModifier,
 		elementalModifier,
 		directionModifier,

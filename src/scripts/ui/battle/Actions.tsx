@@ -18,7 +18,7 @@ const Actions: React.SFC<IActionsProps> = ({ actions, onSelect }) => {
 		<ul className="Actions">
 			{actions.map((action, i) => (
 				<li className={`Actions-item ${!action.isActive() ? 'is-disabled' : ''}`} key={i}>
-					{action.isActive
+					{!action.cooldown
 						? (
 							<div>
 								<a className="Link" href="#" onClick={onClick(action)}>

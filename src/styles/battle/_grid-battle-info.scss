@@ -22,6 +22,7 @@
 	pointer-events: none;
 
 	&-item {
+		@extend .u-text-default;
 		position: absolute;
 		animation-name: battleInfoAnim;
 		animation-fill-mode: forwards;

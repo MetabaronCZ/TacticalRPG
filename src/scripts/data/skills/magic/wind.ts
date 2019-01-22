@@ -12,7 +12,7 @@ const windMagic: { [id in WindMagicSkillID]: ISkillData; } = {
 		target: 'ENEMY',
 		element: 'WIND',
 		physicalDamage: 0.5,
-		elementalDamage: 1
+		magicalDamage: 1
 	},
 	WND_JET_STREAM: {
 		title: 'Jet Stream',
@@ -24,7 +24,7 @@ const windMagic: { [id in WindMagicSkillID]: ISkillData; } = {
 		target: 'ENEMY',
 		element: 'WIND',
 		physicalDamage: 0.25,
-		elementalDamage: 0.25,
+		magicalDamage: 0.25,
 		cooldown: 1
 	},
 	WND_TORNADO: {
@@ -37,7 +37,7 @@ const windMagic: { [id in WindMagicSkillID]: ISkillData; } = {
 		target: 'ENEMY',
 		element: 'WIND',
 		physicalDamage: 0.25,
-		elementalDamage: 0.5,
+		magicalDamage: 0.5,
 		cooldown: 2
 	},
 	WND_WIND_AURA: {
@@ -49,7 +49,7 @@ const windMagic: { [id in WindMagicSkillID]: ISkillData; } = {
 		area: 'AOE3x3',
 		target: 'SELF',
 		element: 'WIND',
-		elementalDamage: 0.25
+		magicalDamage: 0.25
 	}
 };
 

@@ -85,11 +85,11 @@ export const WeaponEquipTableWield: IWeaponEquipWieldTable = {
 };
 
 export const ArmorEquipTableArch: IArmorEquipTable = {
-	//      PP PS PM SS SM MM
-	NONE:  [1, 1, 1, 1, 1, 1],
-	ROBE:  [0, 0, 1, 0, 1, 1],
-	LIGHT: [0, 1, 0, 1, 1, 0],
-	HEAVY: [1, 1, 1, 0, 0, 0]
+	//         PP PS PM SS SM MM
+	NONE:     [1, 1, 1, 1, 1, 1],
+	HEAVY:    [1, 1, 1, 0, 0, 0],
+	LIGHT:    [0, 1, 0, 1, 1, 0],
+	MAGICAL:  [0, 0, 1, 0, 1, 1]
 };
 
 export const safeOffHand: WeaponID[] = ['NONE', 'SHIELD_SMALL', 'SHIELD_LARGE'];

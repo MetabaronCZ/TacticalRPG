@@ -21,8 +21,6 @@ export type ActMoveState = 'INIT' | 'IDLE' | 'SELECTED' | 'ANIMATION';
 
 class ActMove {
 	private readonly actor: Character;
-	private readonly initialAP: number;
-	private readonly initialPosition: Tile;
 	private readonly obstacles: Tile[] = [];
 	private readonly events: IActMoveEvents;
 
@@ -31,6 +29,8 @@ class ActMove {
 	private target: Tile; // target tile
 	private path: Tile[] = []; // move path
 	private costMap: ICostMap = {}; // movable area cost map
+	private initialAP: number;
+	private initialPosition: Tile;
 
 	constructor(actor: Character, characters: Character[], events: IActMoveEvents) {
 		this.actor = actor;
@@ -81,6 +81,9 @@ class ActMove {
 
 		this.area = movable.tiles;
 		this.costMap = movable.costMap;
+		this.initialAP = actor.attributes.AP;
+		this.initialPosition = pos;
+		this.target = pos;
 
 		this.events.onStart(this);
 	}

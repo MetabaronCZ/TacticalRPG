@@ -59,11 +59,10 @@ class AICharacter {
 			this.target = sortedTargets[0].character;
 
 			const path = sortedTargets[0].path.slice(1); // path without actor position
+			const movePath = path.filter(tile => tile.isContained(movable));
 
-			if (path.length) {
-				const movePath = path.filter(tile => tile.isContained(movable));
+			if (movePath.length) {
 				const moveTarget = movePath[movePath.length - 1];
-
 				onTileSelect(moveTarget);
 				return;
 			}

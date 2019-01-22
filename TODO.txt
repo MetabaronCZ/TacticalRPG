@@ -1,18 +1,14 @@
 TODO
 ----------------------------------------------------------------------------------------------------------
---	refactor armor / defense
-	- kazda postava 100 HP
-	- za kazde P bonus +50 PDEF
-	- za kazde M bonus +50 MDEF
-	- Heavy armor: +100 PDEF
-	- Magical armor: +100 MDEF
-	- Light armor: muze pouzivat Evasion (reactive action)
-	- physical a magical damage nejdriv ubiraji z PDEF a MDEF, teprve potom z HP
-	- Heal skilly leci jen HP
---	skill preview
-	OK po vyberu cile (pred potvrzenim akce) vypsat info o postavach zdroj-cile
-	OK vypsat info o akci (typ DAMAGE, HEALING, apod.)
-	- u AI akci, pokud je protivnik HUMAN, nechat potvrzeni akce jako tlacitko >> potvrzuje protihrac, aby bylo videt info, co se deje
+--	Double attack dat na cooldown
+--	poresit DamageInfo zvlast pro physical a magical Skilly
+	- melee
+		phy: STR * weapon.physical * skill.physical
+	- magical
+		phy: MAG * weapon.magical * skill.physical
+		mag: MAG * weapon.magical * skill.magical
+--	u AI akci, pokud je protivnik HUMAN, nechat potvrzeni akce jako tlacitko
+	- potvrzuje protihrac, aby bylo videt info, co se deje
 --	hit-scan utoky
 	- filtrovat pole vysledne SkillArea, pokud je v ceste projektilu non-enemy target
 	- Bow vs Gun

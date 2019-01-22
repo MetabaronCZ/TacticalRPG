@@ -12,7 +12,7 @@ const psychokinesis: { [id in PsychokinesisSkillID]: ISkillData; } = {
 		target: 'ENEMY',
 		element: 'PSYCHIC',
 		physicalDamage: 0.5,
-		elementalDamage: 1
+		magicalDamage: 1
 	},
 	PSY_CONFUSION: {
 		title: 'Confusion',

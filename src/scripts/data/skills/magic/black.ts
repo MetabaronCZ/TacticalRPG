@@ -11,7 +11,7 @@ const blackMagic: { [id in BlackMagicSkillID]: ISkillData; } = {
 		area: 'AOE3x3',
 		target: 'SELF',
 		element: 'DARK',
-		elementalDamage: 0.25
+		magicalDamage: 0.25
 	}
 };
 

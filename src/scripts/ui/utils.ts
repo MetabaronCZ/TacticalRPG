@@ -1,7 +1,8 @@
 import Tile from 'modules/geometry/tile';
 import { CharacterData } from 'modules/character-creation/character-data';
+import { letters } from 'core/string';
 
-export const formatTile = (tile: Tile|null) => null !== tile ? `(${tile.x}, ${tile.y})` : '-';
+export const formatTile = (tile: Tile|null) => null !== tile ? `(${letters[tile.x]}, ${tile.y + 1})` : '-';
 export const formatTiles = (arr: Tile[]) => `[ ${arr.map(tile => formatTile(tile)).join(', ')} ]`;
 
 export const formatCharacter = (character: CharacterData|null): string => {

@@ -4,11 +4,8 @@ import Act from 'modules/battle/act';
 import Character from 'modules/character';
 import CharacterAction from 'modules/battle/character-action';
 
-import { formatTile } from 'ui/utils';
 import Actions from 'ui/battle/Actions';
-import ActMoveUI from 'ui/battle/PhaseMove';
-import ActActionUI from 'ui/battle/PhaseAction';
-import ActDirectUI from 'ui/battle/PhaseDirect';
+import { SkillID } from 'modules/skill/skill-data';
 
 interface IActUIProps {
 	act: Act|null;
@@ -19,16 +16,11 @@ const ActUI: React.SFC<IActUIProps> = ({ act, onActionSelect }) => {
 	if (null === act) {
 		return <div>Waiting for act data...</div>;
 	}
-	const movePhase = act.getMovePhase();
 	const actionPhase = act.getActionPhase();
-	const directPhase = act.getDirectPhase();
 	const action = actionPhase.getAction();
 	const reaction = actionPhase.getReaction();
 	const actions = act.getActions();
 	const actor = act.getActor();
-
-	const status = actor.status.get().map(st => `${st.effect} (${st.duration})`);
-	const cooldown = Object.keys(actor.cooldowns);
 	const actingChar = act.getActingCharacter();
 	const actionCharacters: Character[] = [actor];
 
@@ -41,32 +33,7 @@ const ActUI: React.SFC<IActUIProps> = ({ act, onActionSelect }) => {
 			<tbody>
 				<tr>
 					<td className="Act-row Act-row--character">
-						<h3 className="Heading">Character act</h3>
-						<div>Phase: <strong>{act.getPhase()}</strong></div>
-						<div>Actor: <strong>{actor.name}</strong> {formatTile(actor.position)}</div>
-						<div>Status: [ {status.join(', ')} ]</div>
-						<div>Cooldown: [ {cooldown.join(', ')} ]</div>
-
-						<br />
-
-						<table className="Act-phases">
-							<tbody>
-								<tr>
-									<td className="Act-phases-row">
-										<ActMoveUI move={movePhase} />
-										<ActDirectUI direct={directPhase} />
-									</td>
-
-									<td className="Act-phases-row">
-										<ActActionUI act={actionPhase} />
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					</td>
-
-					<td className="Act-row Act-row--actions">
-						<h3 className="Heading">Character Info</h3>
+						<h3 className="Heading">Actor Info</h3>
 
 						<div className="ActBattleInfo">
 							{actionCharacters.map((char, i) => (
@@ -76,9 +43,15 @@ const ActUI: React.SFC<IActUIProps> = ({ act, onActionSelect }) => {
 										<br />
 										HP: {char.attributes.HP} / <span className="u-disabled">{char.baseAttributes.HP}</span>
 										<br />
+										Armor: {char.attributes.ARM} / <span className="u-disabled">{char.baseAttributes.ARM}</span>
+										<br />
+										Energy shield: {char.attributes.ESH} / <span className="u-disabled">{char.baseAttributes.ESH}</span>
+										<br />
 										AP: {char.attributes.AP} / <span className="u-disabled">{char.baseAttributes.AP}</span>
 										<br />
-										Status: [ {char.status.get().map(s => s.effect).join(', ')} ]
+										Status: [ {char.status.get().map(st => `${st.effect} (${st.duration})`).join(', ')} ]
+										<br />
+										Cooldowns: [ {Object.keys(char.cooldowns).map(cd => `${cd} (${char.cooldowns[cd as SkillID]})`).join(', ')} ]
 									</div>
 
 									{i < actionCharacters.length - 1 && (
@@ -96,6 +69,12 @@ const ActUI: React.SFC<IActUIProps> = ({ act, onActionSelect }) => {
 								<br />
 							</React.Fragment>
 						)}
+					</td>
+
+					<td className="Act-row Act-row--actions">
+						<h3 className="Heading">
+							Actions ({actingChar.name})
+						</h3>
 
 						{!actingChar.isAI() && (
 							<Actions actions={actions} onSelect={onActionSelect} />

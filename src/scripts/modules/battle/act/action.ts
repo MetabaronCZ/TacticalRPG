@@ -315,7 +315,7 @@ class ActAction {
 								default: {
 									// apply healing to target
 									const magBonus = actor.mainHand.magic + actor.offHand.magic;
-									let healing = (actor.attributes.MAG + magBonus) * skill.elementalDamage;
+									let healing = (actor.attributes.MAG + magBonus) * skill.magicalDamage;
 									healing = healing > 0 ? Math.round(healing) : 0;
 									target.applyHealing(healing, skill.status);
 
@@ -377,8 +377,8 @@ class ActAction {
 							position: targetPos
 						});
 
-						// elemental damage
-						if (skill.elementalDamage) {
+						// magical damage
+						if (skill.magicalDamage) {
 							let affinity = '';
 
 							if (damage.elementalModifier > 1) {
@@ -395,7 +395,7 @@ class ActAction {
 								});
 							}
 							info.push({
-								text: formatNumber(damage.elemental),
+								text: formatNumber(damage.magical),
 								type: 'DAMAGE',
 								element: skill.element,
 								position: targetPos
@@ -403,7 +403,7 @@ class ActAction {
 						}
 
 						// apply skill damage / statuses to target
-						target.applyDamage(damage.physical + damage.elemental, damageStatus);
+						target.applyDamage(damage.physical, damage.magical, damageStatus);
 
 						if (target.isDead()) {
 							info.push({

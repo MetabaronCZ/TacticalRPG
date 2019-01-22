@@ -15,9 +15,9 @@ class Status {
 		return this.items;
 	}
 
-	public apply(effectId: StatusEffectID, strength?: number) {
+	public apply(effectId: StatusEffectID, physical?: number, magical?: number) {
 		const effect = StatusEffects.get(effectId);
-		this.items.push(effect(strength));
+		this.items.push(effect(physical, magical));
 	}
 
 	public remove(effectId: StatusEffectID) {

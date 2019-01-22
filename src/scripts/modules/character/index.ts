@@ -61,8 +61,8 @@ class Character {
 
 		this.player = player;
 
-		this.attributes = new Attributes(data.archetype);
-		this.baseAttributes = new BaseAttributes(data.archetype);
+		this.attributes = new Attributes(this);
+		this.baseAttributes = new BaseAttributes(this);
 
 		this.position = position;
 		this.direction = direction;
@@ -133,14 +133,27 @@ class Character {
 		this.attributes.set('CT', CT % characterCTLimit);
 	}
 
-	public applyDamage(damage: number, effectIds: StatusEffectID[] = []) {
-		const newHP = this.attributes.HP - damage;
-		const minHP = 0;
+	public applyDamage(physical: number, magical: number, effectIds: StatusEffectID[] = []) {
+		const { HP, ARM, ESH } = this.attributes;
+		let newARM = ARM - physical;
+		let newESH = ESH - magical;
+		let newHP = HP;
 
-		this.attributes.set('HP', newHP > minHP ? newHP : minHP);
+		if (newARM < 0) {
+			newHP += newARM;
+			newARM = 0;
+		}
+
+		if (newESH < 0) {
+			newHP += newESH;
+			newESH = 0;
+		}
+		this.attributes.set('ARM', newARM);
+		this.attributes.set('ESH', newESH);
+		this.attributes.set('HP', newHP > 0 ? newHP : 0);
 
 		for (const effect of effectIds) {
-			this.status.apply(effect, damage);
+			this.status.apply(effect, physical, magical);
 		}
 	}
 
@@ -151,7 +164,7 @@ class Character {
 		this.attributes.set('HP', newHP < maxHP ? newHP : maxHP);
 
 		for (const effect of effectIds) {
-			this.status.apply(effect, healing);
+			this.status.apply(effect, 0, healing);
 		}
 	}
 

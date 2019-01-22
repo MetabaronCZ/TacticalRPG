@@ -99,7 +99,7 @@ const Weapons = new DataList<WeaponID, IWeaponData>({
 		type: 'MAGICAL',
 		skills: ['MCE_ATTACK'],
 		damage: 1,
-		magic: 50
+		magic: 10
 	},
 	STAFF: {
 		id: 'STAFF',
@@ -108,7 +108,7 @@ const Weapons = new DataList<WeaponID, IWeaponData>({
 		type: 'MAGICAL',
 		skills: ['STF_ATTACK'],
 		damage: 5,
-		magic: 100
+		magic: 20
 	},
 	BOW: {
 		id: 'BOW',
