@@ -5,6 +5,7 @@ import { IcoID } from 'data/icos';
 import { gotoFn } from 'core/navigation';
 
 import { RouteID } from 'modules/route';
+import PageWrapper from 'ui/common/PageWrapper';
 import Button, { ButtonSize } from 'ui/common/Button';
 
 interface IMenuItem {
@@ -21,15 +22,22 @@ const menuItems: IMenuItem[] = [
 ];
 
 const MainMenuPage: React.SFC<RouteComponentProps<any>> = ({ history }) => (
-	<div className="MainMenu">
-		<ul className="MainMenu-butttons">
-			{menuItems.map((item, i) => (
-				<li className="MainMenu-buttons-item" key={i}>
-					<Button ico={item.ico} size={item.size} text={item.title} onClick={gotoFn(history, item.route)} />
-				</li>
-			))}
-		</ul>
-	</div>
+	<PageWrapper>
+		<div className="MainMenu">
+			<ul className="MainMenu-butttons">
+				{menuItems.map((item, i) => (
+					<li className="MainMenu-buttons-item" key={i}>
+						<Button
+							ico={item.ico}
+							size={item.size}
+							text={item.title}
+							onClick={gotoFn(history, item.route)}
+						/>
+					</li>
+				))}
+			</ul>
+		</div>
+	</PageWrapper>
 );
 
 export default withRouter(MainMenuPage);

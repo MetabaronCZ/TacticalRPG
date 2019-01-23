@@ -5,15 +5,14 @@ import { Provider, context } from 'context';
 
 import Debug from 'ui/common/Debug';
 import Router from 'ui/common/Router';
-import PageWrapper from 'ui/common/PageWrapper';
 
 ReactDOM.render(
-	<PageWrapper>
+	<React.Fragment>
 		<Provider value={context}>
 			<Router />
 		</Provider>
 
 		<Debug />
-	</PageWrapper>,
+	</React.Fragment>,
 	document.querySelector('.PageContainer')
 );

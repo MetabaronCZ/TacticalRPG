@@ -1,6 +1,7 @@
 TODO
 ----------------------------------------------------------------------------------------------------------
 --	Double attack dat na cooldown
+--	opravit vypocet magical damage
 --	poresit DamageInfo zvlast pro physical a magical Skilly
 	- melee
 		phy: STR * weapon.physical * skill.physical

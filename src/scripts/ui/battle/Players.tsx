@@ -13,6 +13,16 @@ interface IPlayersProps {
 	players: Array<Player|AIPlayer>;
 }
 
+const formatInteger = (nr: number, ciphers: number): string => {
+	const result = nr + '';
+
+	if (result.length > ciphers) {
+		throw new Error('Ciphers count should at least input number ciphers count');
+	}
+	const fill = Array(ciphers - result.length).fill(0).join('');
+	return fill + result;
+};
+
 const Players: React.SFC<IPlayersProps> = ({ act, players }) => (
 	<div className="Players">
 		{players.map((pl, p) => (
@@ -50,19 +60,19 @@ const Players: React.SFC<IPlayersProps> = ({ act, players }) => (
 									</td>
 
 									<td className="Players-item-characters-item-row Players-item-characters-item-row--number">
-										{HP} <span className="Players-item-characters-item-base">/ {baseHP}</span>
+										{formatInteger(HP, 3)} <span className="Players-item-characters-item-base">/ {formatInteger(baseHP, 3)}</span>
 									</td>
 
 									<td className="Players-item-characters-item-row Players-item-characters-item-row--number">
-										{AP} <span className="Players-item-characters-item-base">/ {baseAP}</span>
+										{formatInteger(AP, 2)} <span className="Players-item-characters-item-base">/ {formatInteger(baseAP, 2)}</span>
 									</td>
 
 									<td className="Players-item-characters-item-row Players-item-characters-item-row--number">
-										{ARM} <span className="Players-item-characters-item-base">/ {baseARM}</span>
+										{formatInteger(ARM, 3)} <span className="Players-item-characters-item-base">/ {formatInteger(baseARM, 3)}</span>
 									</td>
 
 									<td className="Players-item-characters-item-row Players-item-characters-item-row--number">
-										{ESH} <span className="Players-item-characters-item-base">/ {baseESH}</span>
+										{formatInteger(ESH, 3)} <span className="Players-item-characters-item-base">/ {formatInteger(baseESH, 3)}</span>
 									</td>
 								</tr>
 							);

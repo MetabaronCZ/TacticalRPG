@@ -1,43 +1,30 @@
 .Order {
-	&-list {
-		width: 100%;
-		border-collapse: collapse;
+	list-style-type: none;
+	display: flex;
+	width: 100%;
+	overflow-x: scroll;
+	margin-bottom: 4*$vu;
 
-		&-heading {
-			padding-right: $vu;
+	&-item {
+		@extend .u-text-default;
+		flex: 1 0 auto;
+		padding: $vu;
+		margin-right: 2px;
+		border-top: 2px solid $color-grey;
 
-			&:last-child {
-				padding-right: 0;
-			}
-
-			&.Order-list-heading--number,
-			&.Order-list-heading--ct,
-			&.Order-list-heading--spd {
-				text-align: right;
-			}
+		&:last-child {
+			margin-right: 0;
 		}
 
-		&-item {
-			&-row {
-				padding-right: $vu;
-
-				&:last-child {
-					padding-right: 0;
-				}
-
-				&.Order-list-item-row--title {
-					@extend .u-weight-bold;
-				}
-
-				&.Order-list-item-row--number,
-				&.Order-list-item-row--ct,
-				&.Order-list-item-row--spd {
-					text-align: right;
-				}
-			}
-
-			&.is-active { background-color: $color-black; }
-			&.is-dead { background-color: $color-red-dark; }
+		&.Order-item--type0 {
+			border-color: darkorchid;
 		}
+
+		&.Order-item--type1 {
+			border-color: salmon;
+		}
+
+		&.is-active { background-color: $color-black; }
+		&.is-dead { background-color: $color-red-dark; }
 	}
 }
