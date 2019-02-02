@@ -7,7 +7,6 @@ BUGS
 
 TODO
 ----------------------------------------------------------------------------------------------------------
---	u physical damage pridavat i text "Physical"
 --	poresit DamageInfo zvlast pro physical a magical Skilly
 	- melee
 		phy: STR * weapon.physical * skill.physical

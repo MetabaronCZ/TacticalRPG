@@ -352,7 +352,7 @@ class ActAction {
 						const damage = getDamageInfo(actor, target, skill);
 						const damageStatus = damage.status.map(status => status.id);
 
-						// show small shield block info
+						// show Small shield block info
 						if (damage.blockModifier) {
 							target.status.remove('BLOCK_SMALL');
 

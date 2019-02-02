@@ -30,9 +30,10 @@ const GridBattleInfo: React.SFC<IGridBattleInfo> = ({ info }) => {
 		<ul className="GridBattleInfo">
 			{info.map(({ text, type, element, position }, i) => {
 				const variant = getVariant(type);
+				const elmText = element || 'PHYSICAL';
 
-				if ('DAMAGE' === type && element) {
-					text = `${text} (${firstLetterToUpper(element.toLowerCase())})`;
+				if ('DAMAGE' === type) {
+					text = `${text} (${firstLetterToUpper(elmText.toLowerCase())})`;
 				}
 				return (
 					<li
