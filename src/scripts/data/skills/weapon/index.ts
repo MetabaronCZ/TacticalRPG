@@ -9,6 +9,15 @@ import { ISkillData } from 'modules/skill/skill-data';
 import { WeaponSkillID } from 'modules/skill/weapon';
 
 const weaponSkills: { [id in WeaponSkillID]: ISkillData; } = {
+	DOUBLE_ATTACK: {
+		title: 'Double Attack',
+		cost: 0,
+		type: 'ACTIVE',
+		range: 'ULTIMATE',
+		area: 'SINGLE',
+		target: 'ENEMY',
+		cooldown: 1
+	},
 	...smallSkills,
 	...wield1HSkills,
 	...wield2HSkills,

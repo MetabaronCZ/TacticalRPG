@@ -25,6 +25,7 @@ export type Wield2HWeaponSkillID =
 	'H2H_ATTACK' | 'H2H_SHOCKWAVE';
 
 export type WeaponSkillID =
+	'DOUBLE_ATTACK' |
 	SmallWeaponSkillID |
 	Wield1HWeaponSkillID |
 	Wield2HWeaponSkillID |

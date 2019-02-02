@@ -2,7 +2,7 @@ import Skills, { attackSkills } from 'data/skills';
 
 import Tile from 'modules/geometry/tile';
 import Character from 'modules/character';
-import { getTile } from 'modules/geometry/tiles';
+import { getTile, getTiles } from 'modules/geometry/tiles';
 import { StatusEffectID } from 'modules/battle/status-effect';
 import {
 	SkillID, SkillType, SkillElement, SkillGrade,
@@ -145,7 +145,13 @@ class Skill implements ISkillData {
 		if ('SELF' === target) {
 			return [source];
 		}
-		const targetable = getCircleArea(source, range);
+		let targetable: Tile[] = [];
+
+		if ('ULTIMATE' === range) {
+			targetable = getTiles();
+		} else {
+			targetable = getCircleArea(source, range);
+		}
 
 		// filter diagonals and straight lines for LINE area skill type
 		if ('LINE' === area) {

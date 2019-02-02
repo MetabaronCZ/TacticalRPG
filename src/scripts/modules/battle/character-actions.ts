@@ -43,7 +43,9 @@ export const getIdleActions = (character: Character): CharacterAction[] => {
 
 	// DOUBLE ATTACK action
 	if (attackSkillList.length > 1) {
-		const cds = attackSkillList.map(skill => character.cooldowns[skill.id] || 0);
+		const doubleAttack = new Skill('DOUBLE_ATTACK');
+		const skills = [...attackSkillList, doubleAttack];
+		const cds = skills.map(skill => character.cooldowns[skill.id] || 0);
 
 		if (-1 === cds.indexOf('ULTIMATE')) {
 			let cd = 0;
@@ -53,13 +55,10 @@ export const getIdleActions = (character: Character): CharacterAction[] => {
 					cd = c;
 				}
 			}
-			const cost = attackSkillList
-				.map(skill => getCost(skill))
-				.reduce((a, b) => a + b);
-
+			const cost = skills.map(skill => getCost(skill)).reduce((a, b) => a + b);
 			const isActive = (AP >= cost && 0 === cd && canAct && !isDisarmed);
 
-			const action = new CharacterAction('DOUBLE_ATTACK', 'Double Attack', cost, cd, isActive, attackSkillList);
+			const action = new CharacterAction('DOUBLE_ATTACK', doubleAttack.title, cost, cd, isActive, skills);
 			actions.push(action);
 		}
 	}

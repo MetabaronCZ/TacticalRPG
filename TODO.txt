@@ -1,13 +1,22 @@
+BUGS
+----------------------------------------------------------------------------------------------------------
+--	vypocet magical damage
+--	zobrazeni/funkcionalita DoT/Hot
+
+
 TODO
 ----------------------------------------------------------------------------------------------------------
---	Double attack dat na cooldown
---	opravit vypocet magical damage
+--	nezobrazovat duplicitni akce (dual wielding stejnych zbrani)
+--	u physical damage pridavat i text "Physical"
 --	poresit DamageInfo zvlast pro physical a magical Skilly
 	- melee
 		phy: STR * weapon.physical * skill.physical
 	- magical
 		phy: MAG * weapon.magical * skill.physical
 		mag: MAG * weapon.magical * skill.magical
+??	AP utoky (water magic)
+--	u plosnych utoku povolit targetovat pole (type SkillTargetMode = 'CHARACTER' | 'TILE')
+	- ale jen pokud ve SkillEfectArea je targetable Character
 --	u AI akci, pokud je protivnik HUMAN, nechat potvrzeni akce jako tlacitko
 	- potvrzuje protihrac, aby bylo videt info, co se deje
 --	hit-scan utoky
