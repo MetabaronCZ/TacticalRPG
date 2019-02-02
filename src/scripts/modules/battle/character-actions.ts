@@ -2,6 +2,8 @@ import Skill from 'modules/skill';
 import Character from 'modules/character';
 import { WeaponSkillID } from 'modules/skill/weapon';
 import CharacterAction from 'modules/battle/character-action';
+import { SkillID } from 'modules/skill/skill-data';
+import { formatSkillset } from 'modules/format';
 
 export const getDontReactAction = (): CharacterAction => new CharacterAction('DONT_REACT', 'Pass');
 export const getDirectAction = (): CharacterAction => new CharacterAction('DIRECT', 'Direct');
@@ -18,6 +20,7 @@ export const getIdleActions = (character: Character): CharacterAction[] => {
 	const canAct = character.canAct();
 	const actions: CharacterAction[] = [];
 	const attackSkillList: Skill[] = [];
+	const skillIds: SkillID[] = [];
 
 	const isDisarmed = status.has('DISARM');
 	const isSilenced = status.has('SILENCE');
@@ -32,11 +35,16 @@ export const getIdleActions = (character: Character): CharacterAction[] => {
 			const cd = character.cooldowns[skill.id] || 0;
 
 			if ('ULTIMATE' !== cd) {
-				const cost = getCost(skill);
-				const isActive = (AP >= cost && 0 === cd && canAct && !isDisarmed);
-				const action = new CharacterAction('ATTACK', `Attack (${wpn.title})`, cost, cd, isActive, [skill]);
 				attackSkillList.push(skill);
-				actions.push(action);
+
+				if (!skillIds.find(id => id === skill.id)) {
+					const cost = getCost(skill);
+					const isActive = (AP >= cost && 0 === cd && canAct && !isDisarmed);
+
+					const action = new CharacterAction('ATTACK', `Attack (${wpn.title})`, cost, cd, isActive, [skill]);
+					actions.push(action);
+					skillIds.push(skill.id);
+				}
 			}
 		}
 	}
@@ -66,7 +74,11 @@ export const getIdleActions = (character: Character): CharacterAction[] => {
 	// WEAPON actions
 	for (const wpn of [mainHand, offHand]) {
 		for (const skill of Skill.filterSpecial(wpn.skills)) {
+			if (skillIds.find(id => id === skill.id)) {
+				continue;
+			}
 			const cd = character.cooldowns[skill.id] || 0;
+			skillIds.push(skill.id);
 
 			if ('ULTIMATE' !== cd) {
 				const cost = getCost(skill);
@@ -86,7 +98,7 @@ export const getIdleActions = (character: Character): CharacterAction[] => {
 
 		if ('ULTIMATE' !== cd && 'ACTIVE' === type) {
 			const isActive = (AP >= cost && 0 === cd && canAct && !isSilenced);
-			const actionTitle = `${title} (${skillset.title} lv. ${skillset.grade})`;
+			const actionTitle = `${title} (${formatSkillset(skillset)})`;
 			const action = new CharacterAction('MAGIC', actionTitle, cost, cd, isActive, [skill]);
 			actions.push(action);
 		}

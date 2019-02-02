@@ -7,7 +7,6 @@ BUGS
 
 TODO
 ----------------------------------------------------------------------------------------------------------
---	nezobrazovat duplicitni akce (dual wielding stejnych zbrani)
 --	u physical damage pridavat i text "Physical"
 --	poresit DamageInfo zvlast pro physical a magical Skilly
 	- melee
