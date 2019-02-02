@@ -156,7 +156,7 @@ class Engine {
 		const { players, parties, characters } = conf;
 
 		if (config.maxPlayers !== players.length) {
-			throw new Error(`Game has to have exactly ${config.maxPlayers} players`);
+			throw new Error(`Game must have exactly ${config.maxPlayers} players`);
 		}
 		const pl = players.map((plConfig, p) => {
 			const { name, party, control, aiSettings } = plConfig;

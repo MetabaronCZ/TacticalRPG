@@ -1,3 +1,4 @@
+import { formatTile } from 'modules/format';
 import Logger from 'modules/logger';
 import Tile from 'modules/geometry/tile';
 import Character from 'modules/character';
@@ -219,7 +220,7 @@ class ActReaction {
 			},
 			onEvasionEnd: reaction => {
 				const tgt = reaction.getEvasionTarget();
-				Logger.info(`ActReaction onEvasionEnd: ${tgt ? `(${tgt.x}, ${tgt.y})` : '-'}`);
+				Logger.info(`ActReaction onEvasionEnd: ${formatTile(tgt)}`);
 				events.onEvasionEnd(reaction);
 			},
 			onReset: reaction => {

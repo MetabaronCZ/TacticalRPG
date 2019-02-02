@@ -5,6 +5,7 @@ import Animation, { IAnimationStep } from 'core/animation';
 import { getIntersection, getRandomItem } from 'core/array';
 import { formatNumber, randomNumberBetween } from 'core/number';
 
+import { formatTile } from 'modules/format';
 import Logger from 'modules/logger';
 import Tile from 'modules/geometry/tile';
 import Character from 'modules/character';
@@ -463,7 +464,7 @@ class ActAction {
 			},
 			onSelect: (action: ActAction) => {
 				const tgt = action.getEffectTarget();
-				Logger.info(`ActAction onSelect: "${tgt ? `(${tgt.x}, ${tgt.y})` : '-'}"`);
+				Logger.info(`ActAction onSelect: "${formatTile(tgt)}"`);
 				events.onSelect(action);
 			},
 			onConfirm: (action: ActAction) => {

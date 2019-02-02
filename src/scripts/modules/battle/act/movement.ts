@@ -1,14 +1,13 @@
 import Animation, { IAnimationStep } from 'core/animation';
 import { gridSize, moveAnimDuration } from 'data/game-config';
 
+import { formatTile } from 'modules/format';
 import Logger from 'modules/logger';
 import Tile from 'modules/geometry/tile';
 import Character from 'modules/character';
 import { getTile } from 'modules/geometry/tiles';
 import { resolveDirection } from 'modules/geometry/direction';
 import { getMovableTiles, getShortestPath, ICostMap } from 'modules/pathfinding';
-
-import { formatTile } from 'ui/utils';
 
 interface IActMoveEvents {
 	onStart: (move: ActMove) => void;

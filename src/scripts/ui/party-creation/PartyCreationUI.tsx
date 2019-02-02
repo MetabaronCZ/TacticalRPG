@@ -3,12 +3,11 @@ import { observer } from 'mobx-react';
 
 import { maxPartyNameLength } from 'data/game-config';
 
+import { formatCharacter } from 'modules/format';
 import IndexableList from 'modules/indexable-list';
 import PartyCreationForm from 'modules/party-creation';
 import { CharacterData } from 'modules/character-creation/character-data';
 import { PartyData, IPartyDataEditable } from 'modules/party-creation/party-data';
-
-import { formatCharacter } from 'ui/utils';
 
 import Link from 'ui/common/Link';
 import Form from 'ui/common/Form';

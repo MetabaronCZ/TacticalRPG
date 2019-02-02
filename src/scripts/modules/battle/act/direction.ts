@@ -1,3 +1,4 @@
+import { formatTile } from 'modules/format';
 import Logger from 'modules/logger';
 import Tile from 'modules/geometry/tile';
 import Character from 'modules/character';
@@ -92,7 +93,7 @@ class ActDirect {
 			},
 			onSelect: direct => {
 				const tgt = direct.target;
-				Logger.info(`ActDirect onSelect: "${tgt ? `(${tgt.x}, ${tgt.y})` : '-'}"`);
+				Logger.info(`ActDirect onSelect: "${formatTile(tgt)}"`);
 				events.onSelect(direct);
 			},
 			onEnd: direct => {
