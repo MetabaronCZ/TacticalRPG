@@ -1,12 +1,12 @@
 import { MagicSkillID } from 'modules/skill/magic';
 import { WeaponSkillID } from 'modules/skill/weapon';
-import { ArchetypeSkillID } from 'modules/skill/archetype';
+import { MiscSkillID } from 'modules/skill/misc';
 import { StatusEffectID } from 'modules/battle/status-effect';
 
 // fake infinity number
 export type Ultimate = 'ULTIMATE';
 
-export type SkillID = ArchetypeSkillID | WeaponSkillID | MagicSkillID;
+export type SkillID = MiscSkillID | WeaponSkillID | MagicSkillID;
 export type SkillType = 'ACTIVE' | 'REACTIVE' | 'PASSIVE';
 export type SkillArea = 'SINGLE' | 'LINE' | 'CROSS' | 'AOE3x3' | 'NEIGHBOURS';
 export type SkillElement = 'NONE' | 'FIRE' | 'ICE' | 'WIND' | 'EARTH' | 'THUNDER' | 'WATER' | 'DARK' | 'HOLY' | 'PSYCHIC';

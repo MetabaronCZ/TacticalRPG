@@ -2,6 +2,7 @@ BUGS
 ----------------------------------------------------------------------------------------------------------
 --	vypocet magical damage
 --	zobrazeni/funkcionalita DoT/Hot
+??	chyba po vyberu Direction cile u AI, pokud zvoli PASS action
 
 
 TODO

@@ -2,7 +2,7 @@ import DataList from 'core/data-list';
 
 import weaponSkills from 'data/skills/weapon';
 import magicSkills from 'data/skills/magic';
-import archetypeSkills from 'data/skills/archetype';
+import miscSkills from 'data/skills/misc';
 
 import { SkillID, ISkillData } from 'modules/skill/skill-data';
 
@@ -17,7 +17,7 @@ export const attackSkills: SkillID[] = [
 const Skills = new DataList<SkillID, ISkillData>({
 	...weaponSkills,
 	...magicSkills,
-	...archetypeSkills
+	...miscSkills
 });
 
 export default Skills;
