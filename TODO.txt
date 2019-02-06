@@ -1,7 +1,8 @@
 BUGS
 ----------------------------------------------------------------------------------------------------------
 --	vypocet magical damage
---	zobrazeni/funkcionalita DoT/Hot
+--	zobrazeni/funkcionalita DoT/Hot -> ukaze se pouze prvni
+--	pokud PLAYER postavy nic nedelaji, AI postavy delaji jen PASS
 ??	chyba po vyberu Direction cile u AI, pokud zvoli PASS action
 
 
