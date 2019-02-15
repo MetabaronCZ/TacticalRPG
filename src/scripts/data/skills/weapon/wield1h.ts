@@ -9,7 +9,8 @@ const wield1HSkills: { [id in Wield1HWeaponSkillID]: ISkillData; } = {
 		range: 1,
 		area: 'SINGLE',
 		target: 'ENEMY',
-		physicalDamage: 1
+		physical: 1,
+		magical: 0,
 	},
 	S1H_BLEED: {
 		title: 'Bleed',
@@ -18,7 +19,8 @@ const wield1HSkills: { [id in Wield1HWeaponSkillID]: ISkillData; } = {
 		range: 1,
 		area: 'SINGLE',
 		target: 'ENEMY',
-		physicalDamage: 0.5,
+		physical: 0.5,
+		magical: 0,
 		status: ['BLEED'],
 		cooldown: 1
 	},
@@ -29,7 +31,8 @@ const wield1HSkills: { [id in Wield1HWeaponSkillID]: ISkillData; } = {
 		range: 1,
 		area: 'SINGLE',
 		target: 'ENEMY',
-		physicalDamage: 1
+		physical: 1,
+		magical: 0,
 	},
 	A1H_SMASH: {
 		title: 'Smash',
@@ -38,7 +41,8 @@ const wield1HSkills: { [id in Wield1HWeaponSkillID]: ISkillData; } = {
 		range: 1,
 		area: 'SINGLE',
 		target: 'ENEMY',
-		physicalDamage: 1.5,
+		physical: 1.5,
+		magical: 0,
 		cooldown: 1
 	},
 	H1H_ATTACK: {
@@ -48,7 +52,8 @@ const wield1HSkills: { [id in Wield1HWeaponSkillID]: ISkillData; } = {
 		range: 1,
 		area: 'SINGLE',
 		target: 'ENEMY',
-		physicalDamage: 1
+		physical: 1,
+		magical: 0,
 	},
 	H1H_STUN: {
 		title: 'Stun',
@@ -57,7 +62,8 @@ const wield1HSkills: { [id in Wield1HWeaponSkillID]: ISkillData; } = {
 		range: 1,
 		area: 'SINGLE',
 		target: 'ENEMY',
-		physicalDamage: 0.5,
+		physical: 0.5,
+		magical: 0,
 		status: ['STUN'],
 		cooldown: 1
 	}

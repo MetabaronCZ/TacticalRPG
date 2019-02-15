@@ -90,9 +90,9 @@ class Skill implements ISkillData {
 	public readonly area: SkillArea;
 	public readonly target: SkillTarget; // character target type
 	public readonly element: SkillElement; // fire, water, ...
-	public readonly isFixedPhysicalDamage: boolean;
-	public readonly physicalDamage: number; // damage modifier [%]
-	public readonly magicalDamage: number; // magical damage modifier [%]
+	public readonly isFixedDamage: boolean;
+	public readonly physical: number; // damage modifier [%]
+	public readonly magical: number; // magical damage modifier [%]
 	public readonly status: StatusEffectID[]; // status effects added to attack
 	public readonly cooldown: SkillCooldown;
 	public readonly isAttackSkill: boolean;
@@ -108,9 +108,9 @@ class Skill implements ISkillData {
 		this.area = data.area;
 		this.target = data.target || 'NONE';
 		this.element = data.element || 'NONE';
-		this.isFixedPhysicalDamage = data.isFixedPhysicalDamage || false;
-		this.physicalDamage = data.physicalDamage || 0;
-		this.magicalDamage = data.magicalDamage || 0;
+		this.isFixedDamage = data.isFixedDamage || false;
+		this.physical = data.physical;
+		this.magical = data.magical;
 		this.status = data.status || [];
 		this.cooldown = data.cooldown || 0;
 		this.isAttackSkill = (-1 !== attackSkills.indexOf(this.id));

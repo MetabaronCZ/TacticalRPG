@@ -11,8 +11,8 @@ const iceMagic: { [id in IceMagicSkillID]: ISkillData; } = {
 		area: 'SINGLE',
 		target: 'ENEMY',
 		element: 'ICE',
-		physicalDamage: 0.5,
-		magicalDamage: 1
+		physical: 0,
+		magical: 1
 	},
 	ICE_FREEZE: {
 		title: 'Freeze',
@@ -23,8 +23,8 @@ const iceMagic: { [id in IceMagicSkillID]: ISkillData; } = {
 		area: 'SINGLE',
 		target: 'ENEMY',
 		element: 'ICE',
-		physicalDamage: 0.25,
-		magicalDamage: 0.25,
+		physical: 0,
+		magical: 0.5,
 		status: ['FREEZE'],
 		cooldown: 1
 	},
@@ -37,8 +37,8 @@ const iceMagic: { [id in IceMagicSkillID]: ISkillData; } = {
 		area: 'AOE3x3',
 		target: 'ENEMY',
 		element: 'ICE',
-		physicalDamage: 0.25,
-		magicalDamage: 0.5,
+		physical: 0,
+		magical: 0.5,
 		cooldown: 2
 	},
 	ICE_FROST_AURA: {
@@ -50,7 +50,8 @@ const iceMagic: { [id in IceMagicSkillID]: ISkillData; } = {
 		area: 'AOE3x3',
 		target: 'ENEMY',
 		element: 'ICE',
-		magicalDamage: 0.25,
+		physical: 0,
+		magical: 0.25,
 		status: ['FREEZE']
 	}
 };

@@ -29,8 +29,5 @@ export const randomPartyID = 'RANDOM_PARTY';
 export const maxPlayers = 2;
 export const playerMaxNameLength = 16;
 
-// skills
-export const smallShieldBlock = 0.3; // small shield damage reduction
-
 // validation
 export const textInputRegex = /^[a-zA-Z0-9-_\s.]+$/;

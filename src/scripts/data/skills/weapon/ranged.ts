@@ -9,7 +9,8 @@ const rangedSkills: { [id in RangedWeaponSkillID]: ISkillData; } = {
 		range: 4,
 		area: 'SINGLE',
 		target: 'ENEMY',
-		physicalDamage: 1
+		physical: 1,
+		magical: 0,
 	},
 	BOW_CHARGE: {
 		title: 'Charge',
@@ -18,50 +19,32 @@ const rangedSkills: { [id in RangedWeaponSkillID]: ISkillData; } = {
 		range: 4,
 		area: 'SINGLE',
 		target: 'ENEMY',
-		physicalDamage: 1.5,
+		physical: 1.5,
+		magical: 0,
 		cooldown: 1
 	},
-	G1H_ATTACK: {
+	GUN_ATTACK: {
 		title: 'Attack',
 		cost: 1,
 		type: 'ACTIVE',
 		range: 4,
 		area: 'SINGLE',
 		target: 'ENEMY',
-		isFixedPhysicalDamage: true,
-		physicalDamage: 100
+		isFixedDamage: true,
+		physical: 30,
+		magical: 0,
 	},
-	G1H_CRIPPLE: {
+	GUN_CRIPPLE: {
 		title: 'Cripple',
 		cost: 2,
 		type: 'ACTIVE',
 		range: 4,
 		area: 'SINGLE',
 		target: 'ENEMY',
-		isFixedPhysicalDamage: true,
-		physicalDamage: 50,
+		isFixedDamage: true,
 		status: ['CRIPPLE'],
-		cooldown: 1
-	},
-	G2H_ATTACK: {
-		title: 'Attack',
-		cost: 2,
-		type: 'ACTIVE',
-		range: 4,
-		area: 'SINGLE',
-		target: 'ENEMY',
-		isFixedPhysicalDamage: true,
-		physicalDamage: 200
-	},
-	G2H_PIERCE: {
-		title: 'Pierce',
-		cost: 4,
-		type: 'ACTIVE',
-		range: 1,
-		area: 'LINE',
-		target: 'ENEMY',
-		isFixedPhysicalDamage: true,
-		physicalDamage: 100,
+		physical: 20,
+		magical: 0,
 		cooldown: 1
 	}
 };

@@ -11,8 +11,8 @@ const psychokinesis: { [id in PsychokinesisSkillID]: ISkillData; } = {
 		area: 'SINGLE',
 		target: 'ENEMY',
 		element: 'PSYCHIC',
-		physicalDamage: 0.5,
-		magicalDamage: 1
+		physical: 0,
+		magical: 1
 	},
 	PSY_CONFUSION: {
 		title: 'Confusion',
@@ -24,6 +24,8 @@ const psychokinesis: { [id in PsychokinesisSkillID]: ISkillData; } = {
 		target: 'ENEMY',
 		element: 'PSYCHIC',
 		status: ['CONFUSION'],
+		physical: 0,
+		magical: 0,
 		cooldown: 1
 	},
 	PSY_PSYCHODOME: {
@@ -35,6 +37,8 @@ const psychokinesis: { [id in PsychokinesisSkillID]: ISkillData; } = {
 		area: 'AOE3x3',
 		target: 'ENEMY',
 		element: 'PSYCHIC',
+		physical: 0,
+		magical: 0,
 		status: ['CONFUSION']
 	}
 };

@@ -9,6 +9,8 @@ const miscSkills: { [id in MiscSkillID]: ISkillData; } = {
 		range: 'ULTIMATE',
 		area: 'SINGLE',
 		target: 'ENEMY',
+		physical: 0,
+		magical: 0,
 		cooldown: 1
 	},
 	EVADE: {
@@ -16,7 +18,9 @@ const miscSkills: { [id in MiscSkillID]: ISkillData; } = {
 		cost: 2,
 		type: 'REACTIVE',
 		range: 1,
-		area: 'SINGLE'
+		area: 'SINGLE',
+		physical: 0,
+		magical: 0,
 	}
 };
 

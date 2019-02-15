@@ -9,7 +9,8 @@ const smallSkills: { [id in SmallWeaponSkillID]: ISkillData; } = {
 		range: 1,
 		area: 'SINGLE',
 		target: 'ENEMY',
-		physicalDamage: 1
+		physical: 1,
+		magical: 0,
 	},
 	FST_DISARM: {
 		title: 'Disarm',
@@ -18,7 +19,8 @@ const smallSkills: { [id in SmallWeaponSkillID]: ISkillData; } = {
 		range: 1,
 		area: 'SINGLE',
 		target: 'ENEMY',
-		physicalDamage: 0.5,
+		physical: 0.5,
+		magical: 0,
 		status: ['DISARM'],
 		cooldown: 1
 	},
@@ -29,7 +31,8 @@ const smallSkills: { [id in SmallWeaponSkillID]: ISkillData; } = {
 		range: 1,
 		area: 'SINGLE',
 		target: 'ENEMY',
-		physicalDamage: 1
+		physical: 1,
+		magical: 0,
 	},
 	DGR_STAB: {
 		title: 'Stab',
@@ -38,7 +41,8 @@ const smallSkills: { [id in SmallWeaponSkillID]: ISkillData; } = {
 		range: 1,
 		area: 'SINGLE',
 		target: 'ENEMY',
-		physicalDamage: 2,
+		physical: 2,
+		magical: 0,
 		cooldown: 1
 	}
 };

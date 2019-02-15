@@ -1,6 +1,5 @@
 BUGS
 ----------------------------------------------------------------------------------------------------------
---	vypocet magical damage
 --	zobrazeni/funkcionalita DoT/Hot -> ukaze se pouze prvni
 --	pokud PLAYER postavy nic nedelaji, AI postavy delaji jen PASS
 ??	chyba po vyberu Direction cile u AI, pokud zvoli PASS action
@@ -8,13 +7,10 @@ BUGS
 
 TODO
 ----------------------------------------------------------------------------------------------------------
---	poresit DamageInfo zvlast pro physical a magical Skilly
-	- melee
-		phy: STR * weapon.physical * skill.physical
-	- magical
-		phy: MAG * weapon.magical * skill.physical
-		mag: MAG * weapon.magical * skill.magical
-??	AP utoky (water magic)
+--	SPEAR utoky:
+	- zakladni bymel utocit max do 2 poli
+	- THRUST utoci skrz vice postav (pouze enemy)
+--	dynamicky pridavat CharacterAction elementarnich utoku zbranemi (SM s lukem -> Fire arrow; 50% PHY + 50% FIR)
 --	u plosnych utoku povolit targetovat pole (type SkillTargetMode = 'CHARACTER' | 'TILE')
 	- ale jen pokud ve SkillEfectArea je targetable Character
 --	u AI akci, pokud je protivnik HUMAN, nechat potvrzeni akce jako tlacitko
@@ -25,21 +21,27 @@ TODO
 	- missile projektily
 --	neuspesna evasion
 	- u GUN_1H, GUN2H, SPEAR_ATTACK by evasion nemela projit, pokud je cilove pole stale v effectArea skillu
---	pasivni skilly
 --	Revive (vyjimky pro targetovani dead characteru)
 --	pridat Counter reaktivni akci pro S-type archetypy
 	- bude to attack skill mainHand zbrane (pokud nema STUN, FREEZE nebo DISARM)
---	upravit targetArea a effectArea, aby braly v uvahu i prevyseni utocnika a cile
-	- u strelnych zbrani pridat dostrel a effect areu pri strelbe dolu
---	pridat random grid generation
-	- udelat konfigurovatelne v BattleManagment
-	- moznost vyberu BASE, TERRAIN, HEIGHTMAP, RANDOM a CUSTOM (moznost nastavit parametry generovani)
 --	AI
 	- zapracovat rozdeleni roli AI Playerem (ze zacatku DAMAGE, HEALING)
 	- pri "onAction" provadet kompletni analyzu postav, nepratel, apod.
 		- updatovat cile postav
 		- koordinovat healery, aby si rozdelili zranene postavy mezi sebe
---	zapracovat (konfigurovatelny) odpocet do konce hry
+??	pasivni skilly
+??	AP utoky (water magic / AP strike)
+??	pridat skilly pro doplneni ARM, ESH
+		- Repair Armor (engeneering skill)
+		- Refill Energy Shield (mage skill)
+		- dat jako skill nejake nove zbrani (Engeneering kit, apod.)
+		- nebo udelat specializace, ktere posdtavam pridaji Speciality Skills (neco jako classy)
+??	upravit targetArea a effectArea, aby braly v uvahu i prevyseni utocnika a cile
+	- u strelnych zbrani pridat dostrel a effect areu pri strelbe dolu
+??	pridat random grid generation
+	- udelat konfigurovatelne v BattleManagment
+	- moznost vyberu BASE, TERRAIN, HEIGHTMAP, RANDOM a CUSTOM (moznost nastavit parametry generovani)
+??	zapracovat (konfigurovatelny) odpocet do konce hry
 	- pokud hra trva prilis dlouho (kolik ticku?) budou od urcite chvile pravidelne mizet okruzni policka gridu
 	- postavy na nich zemrou
 	- vyresi stavy typu: healer versus slabe melee

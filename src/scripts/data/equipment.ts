@@ -57,8 +57,7 @@ export const WeaponEquipTableArch: IWeaponEquipArchTable = {
 	MACE:         [0, 0, 1, 0, 1, 1],
 	STAFF:        [0, 0, 1, 0, 1, 1],
 	BOW:          [0, 1, 0, 1, 1, 0],
-	GUN_1H:       [0, 1, 0, 1, 1, 0],
-	GUN_2H:       [0, 1, 0, 1, 1, 0],
+	GUN:          [0, 1, 0, 1, 1, 0],
 	SHIELD_SMALL: [1, 1, 1, 1, 1, 1],
 	SHIELD_LARGE: [1, 1, 1, 0, 0, 0]
 };
@@ -78,8 +77,7 @@ export const WeaponEquipTableWield: IWeaponEquipWieldTable = {
 	MACE:         [1,   0,   0,   0],
 	STAFF:        [0,   1,   0,   0],
 	BOW:          [0,   1,   0,   0],
-	GUN_1H:       [1,   0,   1,   0],
-	GUN_2H:       [0,   1,   0,   0],
+	GUN:          [1,   0,   1,   0],
 	SHIELD_SMALL: [0,   0,   1,   0],
 	SHIELD_LARGE: [0,   0,   1,   0]
 };

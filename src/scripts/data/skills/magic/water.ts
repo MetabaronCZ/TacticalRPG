@@ -11,8 +11,8 @@ const waterMagic: { [id in WaterMagicSkillID]: ISkillData; } = {
 		area: 'SINGLE',
 		target: 'ENEMY',
 		element: 'WATER',
-		physicalDamage: 0.5,
-		magicalDamage: 1
+		physical: 0,
+		magical: 1
 	},
 	WAT_SILENCE: {
 		title: 'Silence',
@@ -23,8 +23,8 @@ const waterMagic: { [id in WaterMagicSkillID]: ISkillData; } = {
 		area: 'SINGLE',
 		target: 'ENEMY',
 		element: 'WATER',
-		physicalDamage: 0.25,
-		magicalDamage: 0.25,
+		physical: 0,
+		magical: 0.5,
 		status: ['SILENCE'],
 		cooldown: 1
 	},
@@ -37,8 +37,8 @@ const waterMagic: { [id in WaterMagicSkillID]: ISkillData; } = {
 		area: 'AOE3x3',
 		target: 'ENEMY',
 		element: 'WATER',
-		physicalDamage: 0.25,
-		magicalDamage: 0.5,
+		physical: 0,
+		magical: 0.5,
 		cooldown: 2
 	},
 	WAT_WATER_AURA: {
@@ -50,7 +50,8 @@ const waterMagic: { [id in WaterMagicSkillID]: ISkillData; } = {
 		area: 'AOE3x3',
 		target: 'SELF',
 		element: 'WATER',
-		magicalDamage: 0.25,
+		physical: 0,
+		magical: 0.25,
 		status: ['SILENCE']
 	}
 };

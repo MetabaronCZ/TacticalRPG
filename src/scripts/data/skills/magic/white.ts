@@ -11,7 +11,8 @@ const whiteMagic: { [id in WhiteMagicSkillID]: ISkillData; } = {
 		area: 'SINGLE',
 		target: 'ALLY',
 		element: 'HOLY',
-		magicalDamage: 1
+		physical: 0,
+		magical: 1
 	},
 	WHT_REMEDY: {
 		title: 'Remedy',
@@ -21,7 +22,9 @@ const whiteMagic: { [id in WhiteMagicSkillID]: ISkillData; } = {
 		range: 4,
 		area: 'SINGLE',
 		target: 'ALLY',
-		element: 'HOLY'
+		element: 'HOLY',
+		physical: 0,
+		magical: 0
 	},
 	WHT_REGENERATE: {
 		title: 'Regenerate',
@@ -32,7 +35,8 @@ const whiteMagic: { [id in WhiteMagicSkillID]: ISkillData; } = {
 		area: 'SINGLE',
 		target: 'ALLY',
 		element: 'HOLY',
-		magicalDamage: 0.5,
+		physical: 0,
+		magical: 0.5,
 		status: ['REGEN'],
 		cooldown: 1
 	},
@@ -45,7 +49,8 @@ const whiteMagic: { [id in WhiteMagicSkillID]: ISkillData; } = {
 		area: 'AOE3x3',
 		target: 'ALLY',
 		element: 'HOLY',
-		magicalDamage: 0.5,
+		physical: 0,
+		magical: 0.5,
 		cooldown: 2
 	},
 	WHT_HOLY_AURA: {
@@ -57,7 +62,8 @@ const whiteMagic: { [id in WhiteMagicSkillID]: ISkillData; } = {
 		area: 'AOE3x3',
 		target: 'ALLY',
 		element: 'HOLY',
-		magicalDamage: 0.25
+		physical: 0,
+		magical: 0.25
 	},
 	WHT_REVIVE: {
 		title: 'Revive',
@@ -68,6 +74,8 @@ const whiteMagic: { [id in WhiteMagicSkillID]: ISkillData; } = {
 		area: 'SINGLE',
 		target: 'ALLY',
 		element: 'HOLY',
+		physical: 0,
+		magical: 0,
 		cooldown: 'ULTIMATE'
 	}
 };

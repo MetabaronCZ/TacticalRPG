@@ -13,7 +13,7 @@ import ActReaction from 'modules/battle/act/reaction';
 import { IBattleInfo } from 'modules/battle/battle-info';
 import CharacterAction from 'modules/battle/character-action';
 import { resolveDirection } from 'modules/geometry/direction';
-import { getDamageInfo, isBackAttack } from 'modules/battle/damage';
+import { getDamageInfo, isBackAttacked } from 'modules/battle/damage';
 
 interface IActActionEvents {
 	onStart: (action: ActAction) => void;
@@ -173,9 +173,9 @@ class ActAction {
 			const obstacles = characters.map(char => char.position);
 
 			this.reactions = effectTargets.map((reactor, id) => {
-				const isBackAttacked = isBackAttack(actor, reactor);
+				const backAttacked = isBackAttacked(actor, reactor);
 
-				return new ActReaction(id, reactor, isBackAttacked, obstacles, {
+				return new ActReaction(id, reactor, backAttacked, obstacles, {
 					onStart:			reaction => events.onReactionStart(reaction),
 					onSelected:			reaction => events.onReactionSelected(reaction),
 					onBlock:			reaction => events.onReactionBlock(reaction),
@@ -315,8 +315,8 @@ class ActAction {
 
 								default: {
 									// apply healing to target
-									const magBonus = actor.mainHand.magic + actor.offHand.magic;
-									let healing = (actor.attributes.MAG + magBonus) * skill.magicalDamage;
+									const magBonus = actor.mainHand.magical + actor.offHand.magical;
+									let healing = (actor.attributes.MAG + magBonus) * skill.magical;
 									healing = healing > 0 ? Math.round(healing) : 0;
 									target.applyHealing(healing, skill.status);
 
@@ -337,27 +337,16 @@ class ActAction {
 							}
 							continue;
 						}
+						const damage = getDamageInfo(actor, target, skill);
+						const damageStatus = damage.status.map(status => status.id);
 
-						if (target.status.has('BLOCK_LARGE')) {
-							// target completely blocked attack with shield
+						// show shield block info
+						if (null !== damage.blockModifier) {
+							target.status.remove('BLOCK_SMALL');
 							target.status.remove('BLOCK_LARGE');
 
 							info.push({
 								text: 'Blocked',
-								type: 'ACTION',
-								position: targetPos
-							});
-							continue;
-						}
-						const damage = getDamageInfo(actor, target, skill);
-						const damageStatus = damage.status.map(status => status.id);
-
-						// show Small shield block info
-						if (damage.blockModifier) {
-							target.status.remove('BLOCK_SMALL');
-
-							info.push({
-								text: `Blocked (${(damage.blockModifier * 100).toFixed(0)}%)`,
 								type: 'ACTION',
 								position: targetPos
 							});
@@ -372,14 +361,16 @@ class ActAction {
 						}
 
 						// physical damage
-						info.push({
-							text: formatNumber(damage.physical),
-							type: 'DAMAGE',
-							position: targetPos
-						});
+						if (0 !== skill.physical) {
+							info.push({
+								text: formatNumber(damage.physical),
+								type: 'DAMAGE',
+								position: targetPos
+							});
+						}
 
 						// magical damage
-						if (skill.magicalDamage) {
+						if (0 !== skill.magical) {
 							let affinity = '';
 
 							if (damage.elementalModifier > 1) {

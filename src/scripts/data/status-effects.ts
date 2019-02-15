@@ -1,7 +1,7 @@
 import DataList from 'core/data-list';
-import { smallShieldBlock } from 'data/game-config';
-import { IStatusEffect, StatusEffectID } from 'modules/battle/status-effect';
 import { formatNumber } from 'core/number';
+
+import { IStatusEffect, StatusEffectID } from 'modules/battle/status-effect';
 
 type StatusEffectFun = (phy?: number, mag?: number) => IStatusEffect;
 
@@ -130,8 +130,8 @@ const StatusEffects = new DataList<StatusEffectID, StatusEffectFun>({
 	}),
 	BLOCK_SMALL: () => ({
 		id: 'BLOCK_SMALL',
-		title: `Block ${smallShieldBlock * 100}%`,
-		effect: 'Blocking',
+		title: 'Block',
+		effect: 'Blocked',
 		description: 'Shield based damage reduction',
 		type: 'SUPPORT'
 	}),
@@ -139,7 +139,7 @@ const StatusEffects = new DataList<StatusEffectID, StatusEffectFun>({
 		id: 'BLOCK_LARGE',
 		title: 'Block',
 		effect: 'Blocked',
-		description: 'Shield based damage avoidance',
+		description: 'Shield based damage reduction',
 		type: 'SUPPORT'
 	})
 });

@@ -11,8 +11,8 @@ const thunderMagic: { [id in ThunderMagicSkillID]: ISkillData; } = {
 		area: 'SINGLE',
 		target: 'ENEMY',
 		element: 'THUNDER',
-		physicalDamage: 0.5,
-		magicalDamage: 1
+		physical: 0,
+		magical: 1
 	},
 	THU_SHOCK: {
 		title: 'Shock',
@@ -23,8 +23,8 @@ const thunderMagic: { [id in ThunderMagicSkillID]: ISkillData; } = {
 		area: 'SINGLE',
 		target: 'ENEMY',
 		element: 'THUNDER',
-		physicalDamage: 0.25,
-		magicalDamage: 0.25,
+		physical: 0,
+		magical: 0.5,
 		status: ['SHOCK'],
 		cooldown: 1
 	},
@@ -37,8 +37,8 @@ const thunderMagic: { [id in ThunderMagicSkillID]: ISkillData; } = {
 		area: 'AOE3x3',
 		target: 'ENEMY',
 		element: 'THUNDER',
-		physicalDamage: 0.25,
-		magicalDamage: 0.5,
+		physical: 0,
+		magical: 0.5,
 		cooldown: 2
 	},
 	THU_THUNDER_AURA: {
@@ -50,7 +50,8 @@ const thunderMagic: { [id in ThunderMagicSkillID]: ISkillData; } = {
 		area: 'AOE3x3',
 		target: 'SELF',
 		element: 'THUNDER',
-		magicalDamage: 0.25,
+		physical: 0,
+		magical: 0.25,
 		status: ['SHOCK']
 	}
 };

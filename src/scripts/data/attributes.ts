@@ -22,8 +22,8 @@ export const Arch2AttTable: IArch2AttrTable = {
 export const getAttributes = (character: Character): IAttributes => {
 	const { archetype, armor } = character;
 	const { P, S, M } = Arch2AttTable[archetype.id];
-	const phy = 1 + P;
-	const mag = (M ? 1 + M : 0);
+	const phy = 10 + P * 10;
+	const mag = 10 + M * 10;
 	const spd = 4 + S;
 
 	return {

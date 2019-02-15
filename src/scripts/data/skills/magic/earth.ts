@@ -11,8 +11,8 @@ const earthMagic: { [id in EarthMagicSkillID]: ISkillData; } = {
 		area: 'SINGLE',
 		target: 'ENEMY',
 		element: 'EARTH',
-		physicalDamage: 0.5,
-		magicalDamage: 1
+		physical: 0,
+		magical: 1
 	},
 	ERT_EARTH_SPIKE: {
 		title: 'Earth Spike',
@@ -23,8 +23,8 @@ const earthMagic: { [id in EarthMagicSkillID]: ISkillData; } = {
 		area: 'SINGLE',
 		target: 'ENEMY',
 		element: 'EARTH',
-		physicalDamage: 0.25,
-		magicalDamage: 0.25,
+		physical: 0,
+		magical: 0.5,
 		status: ['STUN'],
 		cooldown: 1
 	},
@@ -37,8 +37,8 @@ const earthMagic: { [id in EarthMagicSkillID]: ISkillData; } = {
 		area: 'AOE3x3',
 		target: 'ENEMY',
 		element: 'EARTH',
-		physicalDamage: 0.25,
-		magicalDamage: 5,
+		physical: 0,
+		magical: 0.5,
 		status: [],
 		cooldown: 2
 	},
@@ -52,6 +52,8 @@ const earthMagic: { [id in EarthMagicSkillID]: ISkillData; } = {
 		target: 'SELF',
 		element: 'EARTH',
 		status: ['IRON_SKIN'],
+		physical: 0,
+		magical: 0,
 		cooldown: 1
 	}
 };

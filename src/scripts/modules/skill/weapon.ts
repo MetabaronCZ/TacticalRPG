@@ -2,13 +2,9 @@ export type SmallWeaponSkillID =
 	'FST_ATTACK' | 'FST_DISARM' |
 	'DGR_ATTACK' | 'DGR_STAB';
 
-export type MagicalWeaponSkillID =
-	'MCE_ATTACK' | 'STF_ATTACK';
-
 export type RangedWeaponSkillID =
 	'BOW_ATTACK' | 'BOW_CHARGE' |
-	'G1H_ATTACK' | 'G1H_CRIPPLE' |
-	'G2H_ATTACK' | 'G2H_PIERCE';
+	'GUN_ATTACK' | 'GUN_CRIPPLE';
 
 export type ShieldWeaponSkillID =
 	'SHD_SMALL_BLOCK' | 'SHD_LARGE_BLOCK';
@@ -28,6 +24,5 @@ export type WeaponSkillID =
 	SmallWeaponSkillID |
 	Wield1HWeaponSkillID |
 	Wield2HWeaponSkillID |
-	MagicalWeaponSkillID |
 	RangedWeaponSkillID |
 	ShieldWeaponSkillID;

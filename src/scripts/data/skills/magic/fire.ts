@@ -11,8 +11,8 @@ const fireMagic: { [id in FireMagicSkillID]: ISkillData; } = {
 		area: 'SINGLE',
 		target: 'ENEMY',
 		element: 'FIRE',
-		physicalDamage: 0.5,
-		magicalDamage: 1
+		physical: 0,
+		magical: 1
 	},
 	FIR_BURN: {
 		title: 'Burn',
@@ -23,8 +23,8 @@ const fireMagic: { [id in FireMagicSkillID]: ISkillData; } = {
 		area: 'SINGLE',
 		target: 'ENEMY',
 		element: 'FIRE',
-		physicalDamage: 0.25,
-		magicalDamage: 0.25,
+		physical: 0,
+		magical: 0.5,
 		status: ['BURN'],
 		cooldown: 1
 	},
@@ -37,8 +37,8 @@ const fireMagic: { [id in FireMagicSkillID]: ISkillData; } = {
 		area: 'AOE3x3',
 		target: 'ENEMY',
 		element: 'FIRE',
-		physicalDamage: 0.25,
-		magicalDamage: 0.5,
+		physical: 0,
+		magical: 0.5,
 		cooldown: 2
 	},
 	FIR_FIRE_AURA: {
@@ -50,8 +50,8 @@ const fireMagic: { [id in FireMagicSkillID]: ISkillData; } = {
 		area: 'AOE3x3',
 		target: 'SELF',
 		element: 'FIRE',
-		physicalDamage: 0,
-		magicalDamage: 0.25,
+		physical: 0,
+		magical: 0.25,
 		status: ['BURN']
 	}
 };
