@@ -8,7 +8,7 @@ BUGS
 TODO
 ----------------------------------------------------------------------------------------------------------
 --	SPEAR utoky:
-	- zakladni bymel utocit max do 2 poli
+	- zakladni by mel utocit max do 2 poli
 	- THRUST utoci skrz vice postav (pouze enemy)
 --	dynamicky pridavat CharacterAction elementarnich utoku zbranemi (SM s lukem -> Fire arrow; 50% PHY + 50% FIR)
 --	u plosnych utoku povolit targetovat pole (type SkillTargetMode = 'CHARACTER' | 'TILE')
