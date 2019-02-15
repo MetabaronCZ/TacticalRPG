@@ -29,7 +29,6 @@
     "gulp-postcss": "^8.0.0",
     "gulp-sass": "^4.0.2",
     "gulp-stylelint": "^8.0.0",
-    "mobx-react-devtools": "^6.0.3",
     "stylelint": "^9.10.1",
     "stylelint-config-sass-guidelines": "^5.3.0",
     "tslint": "^5.12.1",

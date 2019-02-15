@@ -1,5 +1,4 @@
 const path = require('path');
-const webpack = require('webpack');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 const pathSrc = './src/scripts';
@@ -58,13 +57,6 @@ module.exports = env => {
 				}
 			]
 		},
-		plugins: [
-			new webpack.DefinePlugin({
-				'process.env': {
-					'DEBUG': ('dev' === env ? 'true' : 'false'),
-				}
-			})
-		],
 		resolve: {
 			extensions: ['.ts', '.tsx', '.js'],
 			modules: [
