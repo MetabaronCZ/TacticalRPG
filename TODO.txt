@@ -21,6 +21,9 @@ TODO
 --	neuspesna evasion
 	- u GUN, SPEAR_ATTACK, Magic skill by evasion nemela projit, pokud je cilove pole stale v effectArea skillu
 --	Revive (vyjimky pro targetovani dead characteru)
+	- dead postavy by mely zmizet po urcite dobe, aby nezustala nejaka postava obklicena mrtvolami
+	- udelat status DYING - po skonceni doby statusu bude postava dead
+	- Revive funguje na postavy s DYING statusem
 --	pridat Counter reaktivni akci pro S-type archetypy
 	- bude to attack skill mainHand zbrane (pokud nema STUN, FREEZE nebo DISARM)
 --	AI
