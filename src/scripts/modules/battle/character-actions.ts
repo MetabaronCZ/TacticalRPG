@@ -1,9 +1,10 @@
 import Skill from 'modules/skill';
 import Character from 'modules/character';
-import { WeaponSkillID } from 'modules/skill/weapon';
-import CharacterAction from 'modules/battle/character-action';
-import { SkillID } from 'modules/skill/skill-data';
 import { formatSkillset } from 'modules/format';
+import { SkillID } from 'modules/skill/skill-data';
+import { WeaponSkillID } from 'modules/skill/weapon';
+import { getDynamicSkillID } from 'modules/skill/dynamic';
+import CharacterAction from 'modules/battle/character-action';
 
 export const getDontReactAction = (): CharacterAction => new CharacterAction('DONT_REACT', 'Pass');
 export const getDirectAction = (): CharacterAction => new CharacterAction('DIRECT', 'Direct');
@@ -86,6 +87,29 @@ export const getIdleActions = (character: Character): CharacterAction[] => {
 
 				const action = new CharacterAction('WEAPON', `${skill.title} (${wpn.title})`, cost, cd, isActive, [skill]);
 				actions.push(action);
+			}
+		}
+	}
+
+	// DYNAMIC actions
+	if ('NONE' !== skillset.element) {
+		for (const wpn of [mainHand, offHand]) {
+			const skillID = getDynamicSkillID(wpn, skillset);
+
+			if (null !== skillID) {
+				if (skillIds.find(id => id === skillID)) {
+					continue;
+				}
+				const skill = new Skill(skillID);
+				const cd = character.cooldowns[skill.id] || 0;
+				skillIds.push(skill.id);
+
+				if ('ULTIMATE' !== cd) {
+					const cost = getCost(skill);
+					const isActive = (AP >= cost && 0 === cd && canAct && !isDisarmed);
+					const action = new CharacterAction('DYNAMIC', skill.title, cost, cd, isActive, [skill]);
+					actions.push(action);
+				}
 			}
 		}
 	}

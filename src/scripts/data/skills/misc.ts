@@ -13,6 +13,17 @@ const miscSkills: { [id in MiscSkillID]: ISkillData; } = {
 		magical: 0,
 		cooldown: 1
 	},
+	DYNAMIC_SKILL: {
+		title: '',
+		cost: 1,
+		type: 'ACTIVE',
+		range: 'ULTIMATE',
+		area: 'SINGLE',
+		target: 'ENEMY',
+		physical: 0.5,
+		magical: 0.5,
+		cooldown: 1
+	},
 	EVADE: {
 		title: 'Evade',
 		cost: 2,

@@ -1,7 +1,7 @@
 import Skill from 'modules/skill';
 
 export type CharacterActionID =
-	'ATTACK' | 'DOUBLE_ATTACK' | 'WEAPON' | 'MAGIC' |
+	'ATTACK' | 'DOUBLE_ATTACK' | 'WEAPON' | 'MAGIC' | 'DYNAMIC' |
 	'PASS' | 'REACTION' | 'DONT_REACT' | 'DIRECT' | 'CONFIRM' | 'BACK';
 
 class CharacterAction {

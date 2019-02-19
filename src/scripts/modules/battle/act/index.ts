@@ -198,7 +198,8 @@ class Act {
 			case 'ATTACK':
 			case 'DOUBLE_ATTACK':
 			case 'WEAPON':
-			case 'MAGIC': {
+			case 'MAGIC':
+			case 'DYNAMIC': {
 				// start action
 				if ('MOVEMENT' !== phase) {
 					throw new Error('Could not select action: invalid phase ' + phase);

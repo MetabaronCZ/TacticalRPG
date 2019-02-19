@@ -7,10 +7,10 @@ BUGS
 
 TODO
 ----------------------------------------------------------------------------------------------------------
+--	sjednotit BLACK vs DARK magic - skilly, elementy, skillsety
 --	SPEAR utoky:
 	- zakladni by mel utocit max do 2 poli
 	- THRUST utoci skrz vice postav (pouze enemy)
---	dynamicky pridavat CharacterAction elementarnich utoku zbranemi (SM s lukem -> Fire arrow; 50% PHY + 50% FIR)
 --	u plosnych utoku povolit targetovat pole (type SkillTargetMode = 'CHARACTER' | 'TILE')
 	- ale jen pokud ve SkillEfectArea je targetable Character
 --	u AI akci, pokud je protivnik HUMAN, nechat potvrzeni akce jako tlacitko
@@ -20,7 +20,7 @@ TODO
 	- Bow vs Gun
 	- missile projektily
 --	neuspesna evasion
-	- u GUN_1H, GUN2H, SPEAR_ATTACK by evasion nemela projit, pokud je cilove pole stale v effectArea skillu
+	- u GUN, SPEAR_ATTACK, Magic skill by evasion nemela projit, pokud je cilove pole stale v effectArea skillu
 --	Revive (vyjimky pro targetovani dead characteru)
 --	pridat Counter reaktivni akci pro S-type archetypy
 	- bude to attack skill mainHand zbrane (pokud nema STUN, FREEZE nebo DISARM)

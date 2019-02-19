@@ -4,7 +4,7 @@ import { SmallWeaponSkillID } from 'modules/skill/weapon';
 const smallSkills: { [id in SmallWeaponSkillID]: ISkillData; } = {
 	FST_ATTACK: {
 		title: 'Attack',
-		cost: 1,
+		cost: 2,
 		type: 'ACTIVE',
 		range: 1,
 		area: 'SINGLE',
