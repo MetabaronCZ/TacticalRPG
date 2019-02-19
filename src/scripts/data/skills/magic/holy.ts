@@ -1,8 +1,8 @@
 import { ISkillData } from 'modules/skill/skill-data';
-import { WhiteMagicSkillID } from 'modules/skill/magic';
+import { HolyMagicSkillID } from 'modules/skill/magic';
 
-const whiteMagic: { [id in WhiteMagicSkillID]: ISkillData; } = {
-	WHT_HEAL: {
+const holyMagic: { [id in HolyMagicSkillID]: ISkillData; } = {
+	HOL_HEAL: {
 		title: 'Heal',
 		cost: 2,
 		type: 'ACTIVE',
@@ -14,7 +14,7 @@ const whiteMagic: { [id in WhiteMagicSkillID]: ISkillData; } = {
 		physical: 0,
 		magical: 1
 	},
-	WHT_REMEDY: {
+	HOL_REMEDY: {
 		title: 'Remedy',
 		cost: 2,
 		type: 'ACTIVE',
@@ -26,7 +26,7 @@ const whiteMagic: { [id in WhiteMagicSkillID]: ISkillData; } = {
 		physical: 0,
 		magical: 0
 	},
-	WHT_REGENERATE: {
+	HOL_REGENERATE: {
 		title: 'Regenerate',
 		cost: 2,
 		type: 'ACTIVE',
@@ -40,7 +40,7 @@ const whiteMagic: { [id in WhiteMagicSkillID]: ISkillData; } = {
 		status: ['REGEN'],
 		cooldown: 1
 	},
-	WHT_GROUP_HEAL: {
+	HOL_GROUP_HEAL: {
 		title: 'Group Heal',
 		cost: 4,
 		type: 'ACTIVE',
@@ -53,7 +53,7 @@ const whiteMagic: { [id in WhiteMagicSkillID]: ISkillData; } = {
 		magical: 0.5,
 		cooldown: 2
 	},
-	WHT_HOLY_AURA: {
+	HOL_HOLY_AURA: {
 		title: 'Holy Aura',
 		cost: 0,
 		type: 'PASSIVE',
@@ -65,7 +65,7 @@ const whiteMagic: { [id in WhiteMagicSkillID]: ISkillData; } = {
 		physical: 0,
 		magical: 0.25
 	},
-	WHT_REVIVE: {
+	HOL_REVIVE: {
 		title: 'Revive',
 		cost: 2,
 		type: 'ACTIVE',
@@ -80,4 +80,4 @@ const whiteMagic: { [id in WhiteMagicSkillID]: ISkillData; } = {
 	}
 };
 
-export default whiteMagic;
+export default holyMagic;

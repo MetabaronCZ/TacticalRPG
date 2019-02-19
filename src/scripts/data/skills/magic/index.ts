@@ -1,6 +1,6 @@
 import psychokinesis from 'data/skills/magic/psychokinesis';
-import whiteMagic from 'data/skills/magic/white';
-import blackMagic from 'data/skills/magic/black';
+import holyMagic from 'data/skills/magic/holy';
+import darkMagic from 'data/skills/magic/dark';
 import fireMagic from 'data/skills/magic/fire';
 import waterMagic from 'data/skills/magic/water';
 import windMagic from 'data/skills/magic/wind';
@@ -13,8 +13,8 @@ import { MagicSkillID } from 'modules/skill/magic';
 
 const magicSkills: { [id in MagicSkillID]: ISkillData; } = {
 	...psychokinesis,
-	...whiteMagic,
-	...blackMagic,
+	...holyMagic,
+	...darkMagic,
 	...fireMagic,
 	...waterMagic,
 	...windMagic,

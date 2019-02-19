@@ -3,7 +3,7 @@ import { MagicSkillID } from 'modules/skill/magic';
 
 export type SkillsetID =
 	'NONE' | 'PSYCHOKINESIS' |
-	'WHITE_MAGIC' | 'BLACK_MAGIC' |
+	'HOLY_MAGIC' | 'DARK_MAGIC' |
 	'FIRE_MAGIC' | 'WATER_MAGIC' |
 	'WIND_MAGIC' | 'EARTH_MAGIC' |
 	'ICE_MAGIC' | 'THUNDER_MAGIC';

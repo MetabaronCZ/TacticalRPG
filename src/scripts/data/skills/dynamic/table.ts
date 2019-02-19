@@ -23,8 +23,8 @@ const dynamicSkillTable: DynamicSkillTable = {
 		EARTH: 'FST_ERT',
 		THUNDER: 'FST_THU',
 		WATER: 'FST_WAT',
-		DARK: 'FST_BLK',
-		HOLY: 'FST_WHT',
+		DARK: 'FST_DRK',
+		HOLY: 'FST_HOL',
 		PSYCHIC: 'FST_PSY'
 	},
 	DAGGER: {
@@ -35,8 +35,8 @@ const dynamicSkillTable: DynamicSkillTable = {
 		EARTH: 'DGR_ERT',
 		THUNDER: 'DGR_THU',
 		WATER: 'DGR_WAT',
-		DARK: 'DGR_BLK',
-		HOLY: 'DGR_WHT',
+		DARK: 'DGR_DRK',
+		HOLY: 'DGR_HOL',
 		PSYCHIC: 'DGR_PSY'
 	},
 	SWORD_1H: {
@@ -47,8 +47,8 @@ const dynamicSkillTable: DynamicSkillTable = {
 		EARTH: 'S1H_ERT',
 		THUNDER: 'S1H_THU',
 		WATER: 'S1H_WAT',
-		DARK: 'S1H_BLK',
-		HOLY: 'S1H_WHT',
+		DARK: 'S1H_DRK',
+		HOLY: 'S1H_HOL',
 		PSYCHIC: 'S1H_PSY'
 	},
 	AXE_1H: {
@@ -59,8 +59,8 @@ const dynamicSkillTable: DynamicSkillTable = {
 		EARTH: 'A1H_ERT',
 		THUNDER: 'A1H_THU',
 		WATER: 'A1H_WAT',
-		DARK: 'A1H_BLK',
-		HOLY: 'A1H_WHT',
+		DARK: 'A1H_DRK',
+		HOLY: 'A1H_HOL',
 		PSYCHIC: 'A1H_PSY'
 	},
 	HAMMER_1H: {
@@ -71,8 +71,8 @@ const dynamicSkillTable: DynamicSkillTable = {
 		EARTH: 'H1H_ERT',
 		THUNDER: 'H1H_THU',
 		WATER: 'H1H_WAT',
-		DARK: 'H1H_BLK',
-		HOLY: 'H1H_WHT',
+		DARK: 'H1H_DRK',
+		HOLY: 'H1H_HOL',
 		PSYCHIC: 'H1H_PSY'
 	},
 	SPEAR: {
@@ -83,8 +83,8 @@ const dynamicSkillTable: DynamicSkillTable = {
 		EARTH: 'SPR_ERT',
 		THUNDER: 'SPR_THU',
 		WATER: 'SPR_WAT',
-		DARK: 'SPR_BLK',
-		HOLY: 'SPR_WHT',
+		DARK: 'SPR_DRK',
+		HOLY: 'SPR_HOL',
 		PSYCHIC: 'SPR_PSY'
 	},
 	SWORD_2H: {
@@ -95,8 +95,8 @@ const dynamicSkillTable: DynamicSkillTable = {
 		EARTH: 'S2H_ERT',
 		THUNDER: 'S2H_THU',
 		WATER: 'S2H_WAT',
-		DARK: 'S2H_BLK',
-		HOLY: 'S2H_WHT',
+		DARK: 'S2H_DRK',
+		HOLY: 'S2H_HOL',
 		PSYCHIC: 'S2H_PSY'
 	},
 	AXE_2H: {
@@ -107,8 +107,8 @@ const dynamicSkillTable: DynamicSkillTable = {
 		EARTH: 'A2H_ERT',
 		THUNDER: 'A2H_THU',
 		WATER: 'A2H_WAT',
-		DARK: 'A2H_BLK',
-		HOLY: 'A2H_WHT',
+		DARK: 'A2H_DRK',
+		HOLY: 'A2H_HOL',
 		PSYCHIC: 'A2H_PSY'
 	},
 	HAMMER_2H: {
@@ -119,8 +119,8 @@ const dynamicSkillTable: DynamicSkillTable = {
 		EARTH: 'H2H_ERT',
 		THUNDER: 'H2H_THU',
 		WATER: 'H2H_WAT',
-		DARK: 'H2H_BLK',
-		HOLY: 'H2H_WHT',
+		DARK: 'H2H_DRK',
+		HOLY: 'H2H_HOL',
 		PSYCHIC: 'H2H_PSY'
 	},
 	BOW: {
@@ -131,8 +131,8 @@ const dynamicSkillTable: DynamicSkillTable = {
 		EARTH: 'BOW_ERT',
 		THUNDER: 'BOW_THU',
 		WATER: 'BOW_WAT',
-		DARK: 'BOW_BLK',
-		HOLY: 'BOW_WHT',
+		DARK: 'BOW_DRK',
+		HOLY: 'BOW_HOL',
 		PSYCHIC: 'BOW_PSY'
 	},
 	GUN: {
@@ -143,8 +143,8 @@ const dynamicSkillTable: DynamicSkillTable = {
 		EARTH: 'GUN_ERT',
 		THUNDER: 'GUN_THU',
 		WATER: 'GUN_WAT',
-		DARK: 'GUN_BLK',
-		HOLY: 'GUN_WHT',
+		DARK: 'GUN_DRK',
+		HOLY: 'GUN_HOL',
 		PSYCHIC: 'GUN_PSY'
 	}
 };

@@ -292,7 +292,7 @@ class ActAction {
 					for (const skill of action.skills) {
 						if ('SELF' === skill.target || 'ALLY' === skill.target) {
 							switch (skill.id) {
-								case 'WHT_REMEDY': {
+								case 'HOL_REMEDY': {
 									// remove one bad status
 									const statuses = target.status.get().filter(s => 'SUPPORT' !== s.type);
 									const status = getRandomItem(statuses);
@@ -308,7 +308,7 @@ class ActAction {
 									break;
 								}
 
-								case 'WHT_REVIVE': {
+								case 'HOL_REVIVE': {
 									// TODO: revive death target ONCE
 									break;
 								}

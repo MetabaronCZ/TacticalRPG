@@ -7,7 +7,6 @@ BUGS
 
 TODO
 ----------------------------------------------------------------------------------------------------------
---	sjednotit BLACK vs DARK magic - skilly, elementy, skillsety
 --	SPEAR utoky:
 	- zakladni by mel utocit max do 2 poli
 	- THRUST utoci skrz vice postav (pouze enemy)

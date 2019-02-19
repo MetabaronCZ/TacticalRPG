@@ -1,8 +1,8 @@
 import { ISkillData } from 'modules/skill/skill-data';
-import { BlackMagicSkillID } from 'modules/skill/magic';
+import { DarkMagicSkillID } from 'modules/skill/magic';
 
-const blackMagic: { [id in BlackMagicSkillID]: ISkillData; } = {
-	BLK_DARK_AURA: {
+const darkMagic: { [id in DarkMagicSkillID]: ISkillData; } = {
+	DRK_DARK_AURA: {
 		title: 'Dark Aura',
 		cost: 0,
 		type: 'PASSIVE',
@@ -16,4 +16,4 @@ const blackMagic: { [id in BlackMagicSkillID]: ISkillData; } = {
 	}
 };
 
-export default blackMagic;
+export default darkMagic;

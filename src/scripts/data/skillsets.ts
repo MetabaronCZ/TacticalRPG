@@ -1,8 +1,8 @@
 import DataList from 'core/data-list';
 
 import psychokinesis from 'data/skills/magic/psychokinesis';
-import whiteMagic from 'data/skills/magic/white';
-import blackMagic from 'data/skills/magic/black';
+import holyMagic from 'data/skills/magic/holy';
+import darkMagic from 'data/skills/magic/dark';
 import fireMagic from 'data/skills/magic/fire';
 import waterMagic from 'data/skills/magic/water';
 import windMagic from 'data/skills/magic/wind';
@@ -28,19 +28,19 @@ const Skillsets = new DataList<SkillsetID, ISkillsetData>({
 		element: 'PSYCHIC',
 		skills: Object.keys(psychokinesis) as MagicSkillID[]
 	},
-	WHITE_MAGIC: {
-		id: 'WHITE_MAGIC',
-		title: 'White Magic',
+	HOLY_MAGIC: {
+		id: 'HOLY_MAGIC',
+		title: 'Holy Magic',
 		description: '',
 		element: 'HOLY',
-		skills: Object.keys(whiteMagic) as MagicSkillID[]
+		skills: Object.keys(holyMagic) as MagicSkillID[]
 	},
-	BLACK_MAGIC: {
-		id: 'BLACK_MAGIC',
-		title: 'Black Magic',
+	DARK_MAGIC: {
+		id: 'DARK_MAGIC',
+		title: 'Dark Magic',
 		description: '',
 		element: 'DARK',
-		skills: Object.keys(blackMagic) as MagicSkillID[]
+		skills: Object.keys(darkMagic) as MagicSkillID[]
 	},
 	FIRE_MAGIC: {
 		id: 'FIRE_MAGIC',
