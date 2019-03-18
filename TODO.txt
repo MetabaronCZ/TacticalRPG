@@ -7,8 +7,6 @@ BUGS
 
 TODO
 ----------------------------------------------------------------------------------------------------------
---	do UI pridat hover efekt nad postavu, kde bude i jeji vyzbroj
-	- statusy (cooldowny?)
 --	refaktorovat Skill atributy - sjednotit type, apod.
 --	u plosnych utoku a healu povolit targetovat pole (type SkillTargetMode = 'CHARACTER' | 'TILE')
 	- ale jen pokud ve SkillEfectArea je targetable Character

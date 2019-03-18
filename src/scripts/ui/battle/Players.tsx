@@ -1,87 +1,118 @@
 import React from 'react';
 
-import { Icos, IcoID } from 'data/icos';
+import { formatInteger } from 'core/number';
 
 import Act from 'modules/battle/act';
 import AIPlayer from 'modules/ai/player';
 import Player from 'modules/battle/player';
 
+import CharacterBadge from 'ui/battle/CharacterBadge';
 import ArchetypeIco from 'ui/common/ArchetypeIco';
 
-interface IPlayersProps {
+interface IProps {
 	act: Act|null;
 	players: Array<Player|AIPlayer>;
 }
 
-const formatInteger = (nr: number, ciphers: number): string => {
-	const result = nr + '';
+interface IState {
+	visibleBadge: [number, number]|null;
+}
 
-	if (result.length > ciphers) {
-		throw new Error('Ciphers count should at least input number ciphers count');
-	}
-	const fill = Array(ciphers - result.length).fill(0).join('');
-	return fill + result;
-};
+class Players extends React.Component<IProps, IState> {
+	public state: IState = {
+		visibleBadge: null
+	};
 
-const Players: React.SFC<IPlayersProps> = ({ act, players }) => (
-	<div className="Players">
-		{players.map((pl, p) => (
-			<div className="Players-item" key={p}>
-				<h3 className="Heading">
-					{pl.getName()} ({pl instanceof AIPlayer ? 'AI' : 'HUMAN'} Player)
-				</h3>
+	public render() {
+		const { players, act } = this.props;
+		const { visibleBadge } = this.state;
 
-				<table className="Players-item-characters">
-					<thead>
-						<tr>
-							<th>Name</th>
-							<th className="Players-item-characters-heading">HP</th>
-							<th className="Players-item-characters-heading">AP</th>
-							<th className="Players-item-characters-heading">ARM</th>
-							<th className="Players-item-characters-heading">ESH</th>
-						</tr>
-					</thead>
+		const badgeCharacter = visibleBadge
+			? players[visibleBadge[0]].getCharacters().find((char, c) => c === visibleBadge[1])
+			: null;
 
-					<tbody>
-						{pl.getCharacters().map((char, c) => {
-							const isDead = char.isDead();
-							const isActive = !!(act && act.getActor() === char);
-							const state = (isDead ? 'is-dead' : (isActive ? 'is-active' : ''));
+		return (
+			<div className="Players">
+				{players.map((pl, p) => (
+					<div className="Players-item" key={p}>
+						<h3 className="Heading">
+							{pl.getName()} ({pl instanceof AIPlayer ? 'AI' : 'HUMAN'} Player)
+						</h3>
 
-							const { HP, AP, ARM, ESH } = char.attributes;
-							const { HP: baseHP, AP: baseAP, ARM: baseARM, ESH: baseESH } = char.baseAttributes;
-
-							return (
-								<tr className={`Players-item-characters-item ${state}`} key={c}>
-									<td className="Players-item-characters-item-row">
-										<strong>{char.name}</strong>
-										{' '}{Icos[char.sex.id.toLowerCase() as IcoID]}
-										{' '}<ArchetypeIco archetype={char.archetype.id} />
-									</td>
-
-									<td className="Players-item-characters-item-row Players-item-characters-item-row--number">
-										{formatInteger(HP, 3)} <span className="Players-item-characters-item-base">/ {formatInteger(baseHP, 3)}</span>
-									</td>
-
-									<td className="Players-item-characters-item-row Players-item-characters-item-row--number">
-										{formatInteger(AP, 2)} <span className="Players-item-characters-item-base">/ {formatInteger(baseAP, 2)}</span>
-									</td>
-
-									<td className="Players-item-characters-item-row Players-item-characters-item-row--number">
-										{formatInteger(ARM, 3)} <span className="Players-item-characters-item-base">/ {formatInteger(baseARM, 3)}</span>
-									</td>
-
-									<td className="Players-item-characters-item-row Players-item-characters-item-row--number">
-										{formatInteger(ESH, 3)} <span className="Players-item-characters-item-base">/ {formatInteger(baseESH, 3)}</span>
-									</td>
+						<table className="Players-item-characters">
+							<thead>
+								<tr>
+									<th>Name</th>
+									<th className="Players-item-characters-heading">HP</th>
+									<th className="Players-item-characters-heading">AP</th>
+									<th className="Players-item-characters-heading">ARM</th>
+									<th className="Players-item-characters-heading">ESH</th>
 								</tr>
-							);
-						})}
-					</tbody>
-				</table>
+							</thead>
+
+							<tbody>
+								{pl.getCharacters().map((char, c) => {
+									const isDead = char.isDead();
+									const isActive = !!(act && act.getActor() === char);
+									const state = (isDead ? 'is-dead' : (isActive ? 'is-active' : ''));
+
+									const { HP, AP, ARM, ESH } = char.attributes;
+									const { HP: baseHP, AP: baseAP, ARM: baseARM, ESH: baseESH } = char.baseAttributes;
+
+									return (
+										<tr
+											className={`Players-item-characters-item ${state}`}
+											onMouseEnter={this.showBadge(p, c)}
+											onMouseLeave={this.hideBadge()}
+											key={c}
+										>
+											<td className="Players-item-characters-item-row">
+												<ArchetypeIco archetype={char.archetype.id} />
+												&nbsp;&nbsp;
+												<strong>{char.name}</strong>
+											</td>
+
+											<td className="Players-item-characters-item-row Players-item-characters-item-row--number">
+												{formatInteger(HP, 3)} <span className="Players-item-characters-item-base">/ {formatInteger(baseHP, 3)}</span>
+											</td>
+
+											<td className="Players-item-characters-item-row Players-item-characters-item-row--number">
+												{formatInteger(AP, 2)} <span className="Players-item-characters-item-base">/ {formatInteger(baseAP, 2)}</span>
+											</td>
+
+											<td className="Players-item-characters-item-row Players-item-characters-item-row--number">
+												{formatInteger(ARM, 3)} <span className="Players-item-characters-item-base">/ {formatInteger(baseARM, 3)}</span>
+											</td>
+
+											<td className="Players-item-characters-item-row Players-item-characters-item-row--number">
+												{formatInteger(ESH, 3)} <span className="Players-item-characters-item-base">/ {formatInteger(baseESH, 3)}</span>
+											</td>
+										</tr>
+									);
+								})}
+							</tbody>
+						</table>
+					</div>
+				))}
+
+				{badgeCharacter && (
+					<CharacterBadge character={badgeCharacter} />
+				)}
 			</div>
-		))}
-	</div>
-);
+		);
+	}
+
+	private showBadge = (player: number, character: number) => () => {
+		this.setState({
+			visibleBadge: [player, character]
+		});
+	}
+
+	private hideBadge = () => () => {
+		this.setState({
+			visibleBadge: null
+		});
+	}
+}
 
 export default Players;
