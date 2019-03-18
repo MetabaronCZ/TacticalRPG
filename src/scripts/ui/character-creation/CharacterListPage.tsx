@@ -1,5 +1,6 @@
 import React from 'react';
 import { withRouter, RouteComponentProps } from 'react-router';
+import { observer } from 'mobx-react';
 
 import { gotoFn } from 'core/navigation';
 import { withContext, IContext } from 'context';
@@ -73,5 +74,7 @@ const CharacterListPageContainer: React.SFC<RouteComponentProps<any> & IContext>
 };
 
 export default withRouter(
-	withContext(CharacterListPageContainer)
+	withContext(
+		observer(CharacterListPageContainer)
+	)
 );

@@ -1,6 +1,5 @@
 BUGS
 ----------------------------------------------------------------------------------------------------------
---	po smazani posledni party zustane UI ve spatnem stavu
 --	zobrazeni/funkcionalita DoT/Hot -> ukaze se pouze prvni
 --	pokud PLAYER postavy nic nedelaji, AI postavy delaji jen PASS
 ??	chyba po vyberu Direction cile u AI, pokud zvoli PASS action
