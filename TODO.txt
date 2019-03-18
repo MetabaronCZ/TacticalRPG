@@ -7,19 +7,21 @@ BUGS
 
 TODO
 ----------------------------------------------------------------------------------------------------------
---	SPEAR utoky:
-	- zakladni by mel utocit max do 2 poli
-	- THRUST utoci skrz vice postav (pouze enemy)
+--	1H zbrane / small zbrane povolit jen pro S-typy a P-typy (MM muze mit jen magical zbrane a stit)
+--	pri tvorbe postavy vzdy predvybrat brneni
+	? nepovolit NONE hodnotu u armor a main hand weapon
+--	refaktorovat Skill atributy - sjednotit type, apod.
+--	do UI pridat hover efekt nad postyvu, kde bude i jeji vyzbroj
+	- statusy (cooldowny?)
+--	do Party Creation k poli postavy pridat Edit tlacitko pro primou editaci postavy
+	- tlacitko Zpet pujde do predchozi Party Creation
 --	u plosnych utoku a healu povolit targetovat pole (type SkillTargetMode = 'CHARACTER' | 'TILE')
 	- ale jen pokud ve SkillEfectArea je targetable Character
 --	u AI akci, pokud je protivnik HUMAN, nechat potvrzeni akce jako tlacitko
 	- potvrzuje protihrac, aby bylo videt info, co se deje
---	hit-scan utoky
-	- filtrovat pole vysledne SkillArea, pokud je v ceste projektilu non-enemy target
-	- Bow vs Gun
-	- missile projektily
 --	neuspesna evasion
 	- u GUN, SPEAR_ATTACK, Magic skill by evasion nemela projit, pokud je cilove pole stale v effectArea skillu
+	+ u tile area poresit hit-scan (ne u missile)
 --	Revive (vyjimky pro targetovani dead characteru)
 	- dead postavy by mely zmizet po urcite dobe, aby nezustala nejaka postava obklicena mrtvolami
 	- udelat status DYING - po skonceni doby statusu bude postava dead

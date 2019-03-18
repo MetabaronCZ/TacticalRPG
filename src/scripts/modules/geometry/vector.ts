@@ -23,6 +23,11 @@ export class Vector2D {
 		}
 	}
 
+	public getSize(): number {
+		const { x, y } = this;
+		return Math.sqrt(x * x + y * y);
+	}
+
 	public getAngle(vector: Vector2D): number {
 		const { x: ax, y: ay } = this;
 		const { x: bx, y: by } = vector;

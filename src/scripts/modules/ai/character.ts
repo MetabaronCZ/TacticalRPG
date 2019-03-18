@@ -10,6 +10,7 @@ import { findTileFrom, resolveDirection } from 'modules/geometry/direction';
 interface IOnActionConf {
 	actions: CharacterAction[];
 	movable: Tile[];
+	ally: Character[];
 	enemy: Character[];
 	obstacles: Tile[];
 	onTileSelect: IOnTileSelect;
@@ -30,7 +31,7 @@ class AICharacter {
 	}
 
 	public onAction(conf: IOnActionConf) {
-		const { actions, movable, enemy, obstacles, onTileSelect, onActionSelect } = conf;
+		const { actions, movable, ally, enemy, obstacles, onTileSelect, onActionSelect } = conf;
 		const char = this.character;
 
 		if (!this.moved) {
@@ -68,7 +69,7 @@ class AICharacter {
 			}
 		}
 
-		this.selectAction(actions, enemy, onActionSelect);
+		this.selectAction(actions, ally, enemy, onActionSelect);
 	}
 
 	public onActionTarget(targetable: Tile[], onSelect: IOnTileSelect) {
@@ -149,7 +150,7 @@ class AICharacter {
 		onSelect(directTarget);
 	}
 
-	private selectAction(actions: CharacterAction[], enemy: Character[], onSelect: IOnActionSelect) {
+	private selectAction(actions: CharacterAction[], ally: Character[], enemy: Character[], onSelect: IOnActionSelect) {
 		const passAction = actions.find(act => 'PASS' === act.id);
 
 		if (!passAction) {
@@ -175,7 +176,8 @@ class AICharacter {
 				// ignore non applicable skills
 				continue;
 			}
-			const skillAreas = action.skills.map(skill => skill.getTargetable(pos));
+			const obstacles = ally.map(a => a.position);
+			const skillAreas = action.skills.map(skill => skill.getTargetable(pos, obstacles));
 			const targetable = getIntersection(skillAreas, p => p.id);
 			const targets = action.skills[0].getTargets(char, enemy, targetable);
 

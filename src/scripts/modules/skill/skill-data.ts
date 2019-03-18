@@ -25,6 +25,7 @@ export interface ISkillData {
 	readonly area: SkillArea;
 	readonly target?: SkillTarget;
 	readonly element?: SkillElement;
+	readonly hitScan?: boolean;
 	readonly isFixedDamage?: boolean;
 	readonly physical: number;
 	readonly magical: number;

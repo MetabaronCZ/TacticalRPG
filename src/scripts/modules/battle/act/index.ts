@@ -22,6 +22,7 @@ export interface IActEvents {
 class Act {
 	private readonly id: number;
 	private readonly actor: Character;
+	private readonly characters: Character[];
 	private readonly events: IActEvents;
 
 	private readonly movePhase: ActMove;
@@ -34,6 +35,7 @@ class Act {
 	constructor(id: number, actor: Character, characters: Character[], events: IActEvents) {
 		this.id = id;
 		this.actor = actor;
+		this.characters = characters;
 		this.events = this.prepareEvents(events);
 
 		this.movePhase = new ActMove(actor, characters, {
@@ -192,7 +194,7 @@ class Act {
 	}
 
 	public selectAction(action: CharacterAction) {
-		const { phase, actionPhase } = this;
+		const { actor, phase, actionPhase, characters } = this;
 
 		switch (action.id) {
 			case 'ATTACK':
@@ -204,7 +206,9 @@ class Act {
 				if ('MOVEMENT' !== phase) {
 					throw new Error('Could not select action: invalid phase ' + phase);
 				}
-				actionPhase.start(action);
+				const allies = characters.filter(char => char.player === actor.player);
+				const obstacles = allies.map(char => char.position);
+				actionPhase.start(action, obstacles);
 				return;
 			}
 

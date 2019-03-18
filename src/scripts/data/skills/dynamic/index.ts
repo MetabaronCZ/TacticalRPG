@@ -41,6 +41,7 @@ const getData = (title: string, weapon: WeaponID, element: SkillElement): ISkill
 		physical: 0.5,
 		magical: 0.5,
 		cooldown: 1,
+		hitScan: data.hitScan,
 		isFixedDamage: data.isFixedDamage
 	};
 };

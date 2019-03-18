@@ -42,9 +42,10 @@ class AIPlayer extends Player {
 		const { actor, actions, movable, onTileSelect, onActionSelect } = conf;
 		const char = this.getCharacter(actor);
 		const obstacles = this.getObstacles();
+		const ally = this.ally.map(a => a.getCharacter());
 		const enemy = (this.enemy ? this.enemy.getCharacters() : []);
 
-		char.onAction({ actions, movable, enemy, obstacles, onTileSelect, onActionSelect });
+		char.onAction({ actions, movable, ally, enemy, obstacles, onTileSelect, onActionSelect });
 	}
 
 	public onActionTarget(actor: Character, targetable: Tile[], onSelect: IOnTileSelect) {

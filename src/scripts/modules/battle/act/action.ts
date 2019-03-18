@@ -96,7 +96,7 @@ class ActAction {
 		return this.reactions;
 	}
 
-	public start(action: CharacterAction) {
+	public start(action: CharacterAction, obstacles: Tile[]) {
 		const { state, actor, characters } = this;
 
 		if ('INIT' !== state) {
@@ -111,7 +111,7 @@ class ActAction {
 
 		// update actor values
 		const skills = action.skills;
-		const skillAreas = skills.map(skill => skill.getTargetable(actor.position));
+		const skillAreas = skills.map(skill => skill.getTargetable(actor.position, obstacles));
 		const targetable = getIntersection(skillAreas, pos => pos.id);
 		const targets = skills[0].getTargets(actor, characters, targetable);
 

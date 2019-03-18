@@ -2,6 +2,7 @@ import Skills, { attackSkills } from 'data/skills';
 
 import Tile from 'modules/geometry/tile';
 import Character from 'modules/character';
+import { getVisible } from 'modules/pathfinding/hit-scan';
 import { getTile, getTiles } from 'modules/geometry/tiles';
 import { StatusEffectID } from 'modules/battle/status-effect';
 import {
@@ -90,6 +91,7 @@ class Skill implements ISkillData {
 	public readonly area: SkillArea;
 	public readonly target: SkillTarget; // character target type
 	public readonly element: SkillElement; // fire, water, ...
+	public readonly hitScan: boolean;
 	public readonly isFixedDamage: boolean;
 	public readonly physical: number; // damage modifier [%]
 	public readonly magical: number; // magical damage modifier [%]
@@ -108,6 +110,7 @@ class Skill implements ISkillData {
 		this.area = data.area;
 		this.target = data.target || 'NONE';
 		this.element = data.element || 'NONE';
+		this.hitScan = data.hitScan || false;
 		this.isFixedDamage = data.isFixedDamage || false;
 		this.physical = data.physical;
 		this.magical = data.magical;
@@ -136,8 +139,8 @@ class Skill implements ISkillData {
 		return -1 !== reactableSkillTargets.indexOf(this.target);
 	}
 
-	public getTargetable(source: Tile): Tile[] {
-		const { target, range, area } = this;
+	public getTargetable(source: Tile, obstacles: Tile[]): Tile[] {
+		const { target, range, area, hitScan } = this;
 
 		if ('NONE' === target) {
 			return [];
@@ -155,7 +158,12 @@ class Skill implements ISkillData {
 
 		// filter diagonals and straight lines for LINE area skill type
 		if ('LINE' === area) {
-			return targetable.filter(tile => tile.isOnStraightLine(source));
+			targetable = targetable.filter(tile => tile.isOnStraightLine(source));
+		}
+
+		// apply hit-scan filter
+		if (hitScan) {
+			targetable = getVisible(targetable, source, obstacles);
 		}
 		return targetable;
 	}
