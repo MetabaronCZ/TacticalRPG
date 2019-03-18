@@ -2,8 +2,8 @@ import React from 'react';
 import { History } from 'history';
 import { withRouter, RouteComponentProps } from 'react-router';
 
-import { goto, gotoFn } from 'core/navigation';
 import { withContext, IContext } from 'context';
+import { gotoRoute, gotoFn } from 'core/navigation';
 
 import { Store } from 'modules/store';
 import { BattleConfig } from 'modules/battle-configuration/battle-config';
@@ -15,7 +15,7 @@ const onStart = (history: History, store: Store) => (config: BattleConfig) => {
 	store.battleConfig.update(config.serialize());
 	store.save();
 
-	goto(history, 'BATTLE');
+	gotoRoute(history, 'BATTLE');
 };
 
 const BattleConfigPageContainer: React.SFC<RouteComponentProps<any> & IContext> = ({ history, store }) => (

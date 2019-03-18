@@ -3,6 +3,7 @@ import React from 'react';
 import Wields from 'data/wields';
 import { Icos, IcoID } from 'data/icos';
 
+import { getPath } from 'modules/route';
 import { CharacterData } from 'modules/character-creation/character-data';
 
 import Link from 'ui/common/Link';
@@ -31,7 +32,7 @@ const renderMoveUp = (char: CharacterData, onMoveUp?: IOnMoveUp) => (
 );
 
 const renderEdit = (char: CharacterData) => (
-	<Link href={`/character-edit/${char.id}`}>Edit</Link>
+	<Link href={getPath('CHARACTER_EDIT', char.id)}>Edit</Link>
 );
 
 const renderDelete = (char: CharacterData, onDelete?: IOnDelete) => (

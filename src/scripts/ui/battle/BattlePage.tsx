@@ -2,7 +2,7 @@ import React from 'react';
 import { History } from 'history';
 import { withRouter, RouteComponentProps } from 'react-router';
 
-import { goto } from 'core/navigation';
+import { gotoRoute } from 'core/navigation';
 import { withContext, IContext } from 'context';
 import Engine, { IEngineState } from 'modules/battle/engine';
 
@@ -13,7 +13,7 @@ const txtExitConfirm = 'Do you realy want to exit and lost your game progress?';
 const exit = (history: History) => () => {
 	 // go to Main Menu
 	if (window.confirm(txtExitConfirm)) {
-		goto(history, 'ROOT');
+		gotoRoute(history, 'ROOT');
 	}
 };
 

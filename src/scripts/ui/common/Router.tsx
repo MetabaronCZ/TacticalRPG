@@ -1,8 +1,7 @@
 import React from 'react';
 import { Switch, MemoryRouter, Route } from 'react-router';
 
-import paths from 'data/routes';
-import { RouteID } from 'modules/route';
+import { RouteID, getPath } from 'modules/route';
 
 import MainMenu from 'ui/menu/MainMenuPage';
 
@@ -42,7 +41,7 @@ const Router: React.SFC<{}> = () => (
 			{routes.map((route, key) => (
 				<Route
 					exact={true}
-					path={paths[route.id]}
+					path={getPath(route.id)}
 					component={route.component}
 					key={key}
 				/>

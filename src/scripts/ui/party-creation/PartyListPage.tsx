@@ -1,6 +1,6 @@
 import React from 'react';
-import { withRouter, RouteComponentProps } from 'react-router';
 import { observer } from 'mobx-react';
+import { withRouter, RouteComponentProps } from 'react-router';
 
 import { gotoFn } from 'core/navigation';
 import { withContext, IContext } from 'context';

@@ -7,14 +7,9 @@ BUGS
 
 TODO
 ----------------------------------------------------------------------------------------------------------
---	1H zbrane / small zbrane povolit jen pro S-typy a P-typy (MM muze mit jen magical zbrane a stit)
---	pri tvorbe postavy vzdy predvybrat brneni
-	? nepovolit NONE hodnotu u armor a main hand weapon
---	refaktorovat Skill atributy - sjednotit type, apod.
---	do UI pridat hover efekt nad postyvu, kde bude i jeji vyzbroj
+--	do UI pridat hover efekt nad postavu, kde bude i jeji vyzbroj
 	- statusy (cooldowny?)
---	do Party Creation k poli postavy pridat Edit tlacitko pro primou editaci postavy
-	- tlacitko Zpet pujde do predchozi Party Creation
+--	refaktorovat Skill atributy - sjednotit type, apod.
 --	u plosnych utoku a healu povolit targetovat pole (type SkillTargetMode = 'CHARACTER' | 'TILE')
 	- ale jen pokud ve SkillEfectArea je targetable Character
 --	u AI akci, pokud je protivnik HUMAN, nechat potvrzeni akce jako tlacitko

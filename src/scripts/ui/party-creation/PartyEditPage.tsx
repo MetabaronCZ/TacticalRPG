@@ -2,8 +2,8 @@ import React from 'react';
 import { History } from 'history';
 import { withRouter, RouteComponentProps } from 'react-router';
 
-import { goto, gotoFn } from 'core/navigation';
 import { withContext, IContext } from 'context';
+import { gotoRoute, gotoFn } from 'core/navigation';
 
 import { Store } from 'modules/store';
 import { PartyData } from 'modules/party-creation/party-data';
@@ -15,7 +15,7 @@ const onSubmit = (store: Store, history: History) => (party: PartyData) => {
 	store.parties.replace(party);
 	store.save();
 
-	goto(history, 'PARTY_LIST');
+	gotoRoute(history, 'PARTY_LIST');
 };
 
 const PartyEditPageContainer: React.SFC<RouteComponentProps<any> & IContext> = props => {

@@ -1,3 +1,5 @@
+import paths from 'data/routes';
+
 export type RouteID =
 	'ROOT' |
 	'BATTLE_CONFIG' |
@@ -9,3 +11,11 @@ export type RouteID =
 	'CHARACTER_LIST' |
 	'CHARACTER_EDIT' |
 	'CHARACTER_CREATE';
+
+export const getPath = (route: RouteID, param = ''): string => {
+	if (param) {
+		return paths[route].replace(':id', param);
+	} else {
+		return paths[route];
+	}
+};

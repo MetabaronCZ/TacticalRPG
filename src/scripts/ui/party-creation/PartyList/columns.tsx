@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react';
 
+import { getPath } from 'modules/route';
 import { PartyData } from 'modules/party-creation/party-data';
 
 import Link from 'ui/common/Link';
@@ -16,7 +17,7 @@ const renderMoveUp = (party: PartyData, onMoveUp: IOnMoveUp) => (
 );
 
 const renderEdit = (party: PartyData) => (
-	<Link href={`/party-edit/${party.id}`}>Edit</Link>
+	<Link href={getPath('PARTY_EDIT', party.id)}>Edit</Link>
 );
 
 const renderDelete = (party: PartyData, onDelete: IOnDelete) => (

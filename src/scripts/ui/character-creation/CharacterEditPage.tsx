@@ -2,8 +2,8 @@ import React from 'react';
 import { History } from 'history';
 import { withRouter, RouteComponentProps } from 'react-router';
 
-import { goto, gotoFn } from 'core/navigation';
 import { withContext, IContext } from 'context';
+import { gotoRoute, gotoFn } from 'core/navigation';
 
 import { Store } from 'modules/store';
 import { CharacterData } from 'modules/character-creation/character-data';
@@ -15,7 +15,7 @@ const onSubmit = (store: Store, history: History) => (char: CharacterData) => {
 	store.characters.replace(char);
 	store.save();
 
-	goto(history, 'CHARACTER_LIST');
+	gotoRoute(history, 'CHARACTER_LIST');
 };
 
 const CharacterEditPageContainer: React.SFC<RouteComponentProps<any> & IContext> = props => {

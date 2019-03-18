@@ -3,6 +3,7 @@ import { observer } from 'mobx-react';
 
 import { maxPartyNameLength } from 'data/game-config';
 
+import { getPath } from 'modules/route';
 import { formatCharacter } from 'modules/format';
 import IndexableList from 'modules/indexable-list';
 import PartyCreationForm from 'modules/party-creation';
@@ -25,6 +26,20 @@ interface IPartyCreationUIProps {
 	readonly onBack: () => void;
 	readonly onSubmit: (party: PartyData) => void;
 }
+
+const getLabel = (i: number, id: string|null) => (
+	<React.Fragment>
+		Character {i + 1} {
+			id
+				? (
+					<React.Fragment>
+						(<Link href={getPath('CHARACTER_EDIT', id)}>Edit</Link>)
+					</React.Fragment>
+				)
+				: ''
+		}
+	</React.Fragment>
+);
 
 @observer
 class PartyCreationUI extends React.Component<IPartyCreationUIProps> {
@@ -68,7 +83,7 @@ class PartyCreationUI extends React.Component<IPartyCreationUIProps> {
 					)
 					: (
 						<p className="Paragraph">
-							You must <Link href="/character-create">create a character</Link> to form a party.
+							You must <Link href={getPath('CHARACTER_CREATE')}>create a character</Link> to form a party.
 						</p>
 					)
 				}
@@ -106,7 +121,7 @@ class PartyCreationUI extends React.Component<IPartyCreationUIProps> {
 		const fieldId = `f-character-${i}`;
 
 		return (
-			<FormField fieldId={fieldId} label={`Character ${i + 1}`} info={info} key={i}>
+			<FormField fieldId={fieldId} label={getLabel(i, id)} info={info} key={i}>
 				<FormSelect id={fieldId} name={`character-${i}`} value={id || ''} onChange={this.onChange('slots', i)}>
 					<FormSelectItem text="- Empty -" value="" />
 
