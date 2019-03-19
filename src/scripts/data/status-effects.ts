@@ -28,7 +28,7 @@ const StatusEffects = new DataList<StatusEffectID, StatusEffectFun>({
 		effect: 'Wounded',
 		description: 'Physical damage over time',
 		type: 'PHYSICAL',
-		duration: 100,
+		duration: 33,
 		repeat: 3,
 		apply: (char, cb) => {
 			const dmg = Math.floor(phy / 2);
@@ -55,7 +55,7 @@ const StatusEffects = new DataList<StatusEffectID, StatusEffectFun>({
 		effect: 'Burning',
 		description: 'Fire elemental damage over time',
 		type: 'MAGICAL',
-		duration: 100,
+		duration: 33,
 		repeat: 3,
 		apply: (char, cb) => {
 			const dmg = Math.floor(mag / 2);
@@ -107,7 +107,7 @@ const StatusEffects = new DataList<StatusEffectID, StatusEffectFun>({
 		effect: 'Rejuvenating',
 		description: 'Healing over time',
 		type: 'SUPPORT',
-		duration: 100,
+		duration: 33,
 		repeat: 3,
 		apply: (char, cb) => {
 			const healing = Math.floor(mag / 2);
