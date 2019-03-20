@@ -6,11 +6,11 @@ BUGS
 
 TODO
 ----------------------------------------------------------------------------------------------------------
+--	u AI akci, pokud je protivnik HUMAN, nechat potvrzeni akce jako tlacitko
+	- potvrzuje protihrac, aby bylo videt info, co se deje
 --	refaktorovat Skill atributy - sjednotit type, apod.
 --	u plosnych utoku a healu povolit targetovat pole (type SkillTargetMode = 'CHARACTER' | 'TILE')
 	- ale jen pokud ve SkillEfectArea je targetable Character
---	u AI akci, pokud je protivnik HUMAN, nechat potvrzeni akce jako tlacitko
-	- potvrzuje protihrac, aby bylo videt info, co se deje
 --	neuspesna evasion
 	- u GUN, SPEAR_ATTACK, Magic skill by evasion nemela projit, pokud je cilove pole stale v effectArea skillu
 	+ u tile area poresit hit-scan (ne u missile)
