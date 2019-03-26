@@ -24,6 +24,10 @@ class Status {
 		this.items = this.items.filter(item => item.id !== effectId);
 	}
 
+	public removeAll() {
+		this.items = [];
+	}
+
 	public update(character: Character, cb: IOnBattleInfo) {
 		for (const item of this.items) {
 			item.duration = item.duration || 0;

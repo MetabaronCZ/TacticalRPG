@@ -168,6 +168,15 @@ class Character {
 		}
 	}
 
+	public revive() {
+		if (!this.isDead()) {
+			throw new Error('Illegal character revive attempt');
+		}
+		this.attributes.set('HP', this.baseAttributes.HP);
+		this.attributes.set('CT', 0);
+		this.status.removeAll();
+	}
+
 	public act(action: CharacterAction) {
 		const { cost} = action;
 

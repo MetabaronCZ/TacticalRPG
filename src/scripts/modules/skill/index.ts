@@ -172,9 +172,9 @@ class Skill implements ISkillData {
 		return characters
 			.filter(char => {
 				return (
-					!char.isDead() &&
 					char.position.isContained(targetable) &&
-					targetTable[this.target](char, actor) // character is targetable
+					targetTable[this.target](char, actor) && // character is targetable
+					('HOL_REVIVE' === this.id ? char.isDead() : !char.isDead())
 				);
 			});
 	}

@@ -273,160 +273,172 @@ class ActAction {
 		// animate skill action
 		const skillAnim = new Animation(timing, step => {
 			const target = effectTargets[step.number];
+			const targetPos = target.position;
+			const info: IBattleInfo[] = [];
 
-			if (!target.isDead()) {
-				const targetPos = target.position;
+			if (!targetPos.isContained(effectArea)) {
+				// target has been pushed from or evaded skill action
+				info.push({
+					text: 'Evaded',
+					type: 'ACTION',
+					position: targetPos
+				});
 
-				const info: IBattleInfo[] = [];
-
-				if (!targetPos.isContained(effectArea)) {
-					// target evaded skill action
-					info.push({
-						text: 'Evaded',
-						type: 'ACTION',
-						position: targetPos
-					});
-
-				} else {
-					// caclulate character changes
-					for (const skill of action.skills) {
-						if ('SELF' === skill.target || 'ALLY' === skill.target) {
-							switch (skill.id) {
-								case 'HOL_REMEDY': {
-									// remove one bad status
-									const statuses = target.status.get().filter(s => 'SUPPORT' !== s.type);
-									const status = getRandomItem(statuses);
-
-									if (null !== status) {
-										target.status.remove(status.id);
-									}
-									info.push({
-										text: `${status ? status.title : 'No'} status healed`,
-										type: 'HEALING',
-										position: targetPos
-									});
-									break;
+			} else {
+				// caclulate character changes
+				for (const skill of action.skills) {
+					if ('SELF' === skill.target || 'ALLY' === skill.target) {
+						switch (skill.id) {
+							case 'HOL_REMEDY': {
+								if (target.isDead()) {
+									continue;
 								}
+								// remove one bad status
+								const statuses = target.status.get().filter(s => 'SUPPORT' !== s.type);
+								const status = getRandomItem(statuses);
 
-								case 'HOL_REVIVE': {
-									// TODO: revive death target ONCE
-									break;
+								if (null !== status) {
+									target.status.remove(status.id);
 								}
-
-								default: {
-									// apply healing to target
-									const magBonus = actor.mainHand.magical + actor.offHand.magical;
-									let healing = (actor.attributes.MAG + magBonus) * skill.magical;
-									healing = healing > 0 ? Math.round(healing) : 0;
-									target.applyHealing(healing, skill.status);
-
-									info.push({
-										text: formatNumber(healing),
-										type: 'HEALING',
-										position: targetPos
-									});
-
-									for (const id of skill.status) {
-										info.push({
-											text: StatusEffects.get(id)().effect,
-											type: 'BUFF',
-											position: targetPos
-										});
-									}
-								}
-							}
-							continue;
-						}
-						const damage = getDamageInfo(actor, target, skill);
-						const damageStatus = damage.status.map(status => status.id);
-
-						// show shield block info
-						if (null !== damage.blockModifier) {
-							target.status.remove('BLOCK_SMALL');
-							target.status.remove('BLOCK_LARGE');
-
-							info.push({
-								text: 'Blocked',
-								type: 'ACTION',
-								position: targetPos
-							});
-						}
-
-						if (1 !== damage.directionModifier && !info.find(i => 'Back attack' === i.text)) {
-							info.push({
-								text: 'Back attack',
-								type: 'ACTION',
-								position: targetPos
-							});
-						}
-
-						// physical damage
-						if (0 !== skill.physical) {
-							info.push({
-								text: formatNumber(damage.physical),
-								type: 'DAMAGE',
-								position: targetPos
-							});
-						}
-
-						// magical damage
-						if (0 !== skill.magical) {
-							let affinity = '';
-
-							if (damage.elementalModifier > 1) {
-								affinity = 'Strong elemental affinity';
-							} else if (damage.elementalModifier < 1) {
-								affinity = 'Weak elemental affinity';
-							}
-
-							if (affinity) {
 								info.push({
-									text: affinity,
-									type: 'ACTION',
+									text: `${status ? status.title : 'No'} status healed`,
+									type: 'HEALING',
 									position: targetPos
 								});
+								break;
 							}
-							info.push({
-								text: formatNumber(damage.magical),
-								type: 'DAMAGE',
-								element: skill.element,
-								position: targetPos
-							});
+
+							case 'HOL_REVIVE': {
+								// revive target
+								if (!target.isDead()) {
+									continue;
+								}
+								target.revive();
+
+								info.push({
+									text: 'Revived',
+									type: 'BUFF',
+									position: targetPos
+								});
+								break;
+							}
+
+							default: {
+								// apply healing to target
+								if (target.isDead()) {
+									continue;
+								}
+								const magBonus = actor.mainHand.magical + actor.offHand.magical;
+								let healing = (actor.attributes.MAG + magBonus) * skill.magical;
+								healing = healing > 0 ? Math.round(healing) : 0;
+								target.applyHealing(healing, skill.status);
+
+								info.push({
+									text: formatNumber(healing),
+									type: 'HEALING',
+									position: targetPos
+								});
+
+								for (const id of skill.status) {
+									info.push({
+										text: StatusEffects.get(id)().effect,
+										type: 'BUFF',
+										position: targetPos
+									});
+								}
+							}
+						}
+						continue;
+					}
+					const damage = getDamageInfo(actor, target, skill);
+					const damageStatus = damage.status.map(status => status.id);
+
+					// show shield block info
+					if (null !== damage.blockModifier) {
+						target.status.remove('BLOCK_SMALL');
+						target.status.remove('BLOCK_LARGE');
+
+						info.push({
+							text: 'Blocked',
+							type: 'ACTION',
+							position: targetPos
+						});
+					}
+
+					if (1 !== damage.directionModifier && !info.find(i => 'Back attack' === i.text)) {
+						info.push({
+							text: 'Back attack',
+							type: 'ACTION',
+							position: targetPos
+						});
+					}
+
+					// physical damage
+					if (0 !== skill.physical) {
+						info.push({
+							text: formatNumber(damage.physical),
+							type: 'DAMAGE',
+							position: targetPos
+						});
+					}
+
+					// magical damage
+					if (0 !== skill.magical) {
+						let affinity = '';
+
+						if (damage.elementalModifier > 1) {
+							affinity = 'Strong elemental affinity';
+						} else if (damage.elementalModifier < 1) {
+							affinity = 'Weak elemental affinity';
 						}
 
-						// apply skill damage / statuses to target
-						target.applyDamage(damage.physical, damage.magical, damageStatus);
-
-						if (target.isDead()) {
+						if (affinity) {
 							info.push({
-								text: 'Dead',
+								text: affinity,
 								type: 'ACTION',
 								position: targetPos
 							});
-							break;
+						}
+						info.push({
+							text: formatNumber(damage.magical),
+							type: 'DAMAGE',
+							element: skill.element,
+							position: targetPos
+						});
+					}
 
-						} else if (damage.status.length) {
-							// add skill effects
-							for (const status of damage.status) {
-								info.push({
-									text: status.effect,
-									type: 'DEBUFF',
-									position: targetPos
-								});
-							}
+					// apply skill damage / statuses to target
+					target.applyDamage(damage.physical, damage.magical, damageStatus);
+
+					if (target.isDead()) {
+						info.push({
+							text: 'Dead',
+							type: 'ACTION',
+							position: targetPos
+						});
+						break;
+
+					} else if (damage.status.length) {
+						// add skill effects
+						for (const status of damage.status) {
+							info.push({
+								text: status.effect,
+								type: 'DEBUFF',
+								position: targetPos
+							});
 						}
 					}
 				}
+			}
 
-				if (info.length) {
-					const infoTiming = info.map(_ => randomNumberBetween(250, 350));
+			if (info.length) {
+				const infoTiming = info.map(_ => randomNumberBetween(250, 350));
 
-					const infoAnim = new Animation(infoTiming, infoStep => {
-						events.onBattleInfo(info[infoStep.number]);
-					});
+				const infoAnim = new Animation(infoTiming, infoStep => {
+					events.onBattleInfo(info[infoStep.number]);
+				});
 
-					infoAnim.start();
-				}
+				infoAnim.start();
 			}
 
 			events.onAnimation(this, step);

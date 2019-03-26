@@ -6,10 +6,6 @@ BUGS
 
 TODO
 ----------------------------------------------------------------------------------------------------------
---	Revive (vyjimky pro targetovani dead characteru)
-	- dead postavy by mely zmizet po urcite dobe, aby nezustala nejaka postava obklicena mrtvolami
-	- udelat status DYING - po skonceni doby statusu bude postava dead
-	- Revive funguje na postavy s DYING statusem
 --	refaktorovat Skill atributy - sjednotit type, apod.
 --	u plosnych utoku a healu povolit targetovat pole (type SkillTargetMode = 'CHARACTER' | 'TILE')
 	- ale jen pokud ve SkillEfectArea je targetable Character
@@ -18,7 +14,7 @@ TODO
 	- pri "onAction" provadet kompletni analyzu postav, nepratel, apod.
 		- updatovat cile postav
 		- koordinovat healery, aby si rozdelili zranene postavy mezi sebe
-??	pasivni skilly
+--	pasivni skilly
 ??	AP utoky (psycho / water magic / AP strike)
 ??	pridat skilly pro doplneni ARM, ESH
 		- Repair Armor (engineering skill)
