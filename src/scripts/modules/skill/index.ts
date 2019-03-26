@@ -182,6 +182,10 @@ class Skill implements ISkillData {
 	public getEffectArea(source: Tile, target: Tile): Tile[] {
 		return areaTable[this.area](source, target, this.range);
 	}
+
+	public getGradeTitle(): string {
+		return ['I', 'II', 'III'][this.grade - 1];
+	}
 }
 
 export default Skill;

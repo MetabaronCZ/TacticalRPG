@@ -1,6 +1,5 @@
 import Skill from 'modules/skill';
 import Character from 'modules/character';
-import { formatSkillset } from 'modules/format';
 import { SkillID } from 'modules/skill/skill-data';
 import { WeaponSkillID } from 'modules/skill/weapon';
 import { getDynamicSkillID } from 'modules/skill/dynamic';
@@ -116,7 +115,7 @@ export const getIdleActions = (character: Character): CharacterAction[] => {
 
 		if ('ACTIVE' === type) {
 			const isActive = (AP >= cost && 0 === cd && canAct && !isSilenced);
-			const actionTitle = `${title} (${formatSkillset(skillset)})`;
+			const actionTitle = `${title} (${skillset.title} ${skill.getGradeTitle()})`;
 
 			const action = new CharacterAction('MAGIC', actionTitle, cost, cd, isActive, [skill]);
 			actions.push(action);
