@@ -6,14 +6,12 @@ BUGS
 
 TODO
 ----------------------------------------------------------------------------------------------------------
---	u AI akci, pokud je protivnik HUMAN, nechat potvrzeni akce jako tlacitko
-	- potvrzuje protihrac, aby bylo videt info, co se deje
---	refaktorovat Skill atributy - sjednotit type, apod.
---	u plosnych utoku a healu povolit targetovat pole (type SkillTargetMode = 'CHARACTER' | 'TILE')
-	- ale jen pokud ve SkillEfectArea je targetable Character
 --	neuspesna evasion
 	- u GUN, SPEAR_ATTACK, Magic skill by evasion nemela projit, pokud je cilove pole stale v effectArea skillu
 	+ u tile area poresit hit-scan (ne u missile)
+--	refaktorovat Skill atributy - sjednotit type, apod.
+--	u plosnych utoku a healu povolit targetovat pole (type SkillTargetMode = 'CHARACTER' | 'TILE')
+	- ale jen pokud ve SkillEfectArea je targetable Character
 --	Revive (vyjimky pro targetovani dead characteru)
 	- dead postavy by mely zmizet po urcite dobe, aby nezustala nejaka postava obklicena mrtvolami
 	- udelat status DYING - po skonceni doby statusu bude postava dead
@@ -26,9 +24,9 @@ TODO
 		- updatovat cile postav
 		- koordinovat healery, aby si rozdelili zranene postavy mezi sebe
 ??	pasivni skilly
-??	AP utoky (water magic / AP strike)
+??	AP utoky (psycho / water magic / AP strike)
 ??	pridat skilly pro doplneni ARM, ESH
-		- Repair Armor (engeneering skill)
+		- Repair Armor (engineering skill)
 		- Refill Energy Shield (mage skill)
 		- dat jako skill nejake nove zbrani (Engeneering kit, apod.)
 		- nebo udelat specializace, ktere posdtavam pridaji Speciality Skills (neco jako classy)
