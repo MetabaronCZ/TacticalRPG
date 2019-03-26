@@ -6,18 +6,13 @@ BUGS
 
 TODO
 ----------------------------------------------------------------------------------------------------------
---	neuspesna evasion
-	- u GUN, SPEAR_ATTACK, Magic skill by evasion nemela projit, pokud je cilove pole stale v effectArea skillu
-	+ u tile area poresit hit-scan (ne u missile)
---	refaktorovat Skill atributy - sjednotit type, apod.
---	u plosnych utoku a healu povolit targetovat pole (type SkillTargetMode = 'CHARACTER' | 'TILE')
-	- ale jen pokud ve SkillEfectArea je targetable Character
 --	Revive (vyjimky pro targetovani dead characteru)
 	- dead postavy by mely zmizet po urcite dobe, aby nezustala nejaka postava obklicena mrtvolami
 	- udelat status DYING - po skonceni doby statusu bude postava dead
 	- Revive funguje na postavy s DYING statusem
---	pridat Counter reaktivni akci pro S-type archetypy
-	- bude to attack skill mainHand zbrane (pokud nema STUN, FREEZE nebo DISARM)
+--	refaktorovat Skill atributy - sjednotit type, apod.
+--	u plosnych utoku a healu povolit targetovat pole (type SkillTargetMode = 'CHARACTER' | 'TILE')
+	- ale jen pokud ve SkillEfectArea je targetable Character
 --	AI
 	- zapracovat rozdeleni roli AI Playerem (ze zacatku DAMAGE, HEALING)
 	- pri "onAction" provadet kompletni analyzu postav, nepratel, apod.

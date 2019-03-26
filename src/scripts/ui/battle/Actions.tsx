@@ -18,7 +18,7 @@ const Actions: React.SFC<IActionsProps> = ({ actions, onSelect }) => {
 		<ul className="Actions">
 			{actions.map((action, i) => (
 				<li className={`Actions-item ${!action.isActive() ? 'is-disabled' : ''}`} key={i}>
-					{!action.cooldown
+					{0 === action.cooldown
 						? (
 							<div>
 								<a className="Link" href="#" onClick={onClick(action)}>
@@ -33,9 +33,9 @@ const Actions: React.SFC<IActionsProps> = ({ actions, onSelect }) => {
 							<div>
 								<strong>{action.title}</strong>
 
-								{action.cooldown > 0 && (
-									<div className="u-text-small">{action.cooldown} turn/s</div>
-								)}
+								<div className="u-text-small">
+									{'ULTIMATE' === action.cooldown ? 'Ultimate skill used' : action.cooldown + ' turn/s'}
+								</div>
 							</div>
 						)
 					}

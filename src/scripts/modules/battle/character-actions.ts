@@ -33,19 +33,17 @@ export const getIdleActions = (character: Character): CharacterAction[] => {
 		const attackSkills = Skill.filterAttack(wpn.skills);
 
 		for (const skill of attackSkills) {
-			const cd = character.cooldowns[skill.id] || 0;
+			attackSkillList.push(skill);
 
-			if ('ULTIMATE' !== cd) {
-				attackSkillList.push(skill);
+			if (!skillIds.find(id => id === skill.id)) {
+				skillIds.push(skill.id);
 
-				if (!skillIds.find(id => id === skill.id)) {
-					const cost = getCost(skill);
-					const isActive = (AP >= cost && 0 === cd && canAct && !isDisarmed);
+				const cost = getCost(skill);
+				const cd = character.cooldowns[skill.id] || 0;
+				const isActive = (AP >= cost && 0 === cd && canAct && !isDisarmed);
 
-					const action = new CharacterAction('ATTACK', `Attack (${wpn.title})`, cost, cd, isActive, [skill]);
-					actions.push(action);
-					skillIds.push(skill.id);
-				}
+				const action = new CharacterAction('ATTACK', `Attack (${wpn.title})`, cost, cd, isActive, [skill]);
+				actions.push(action);
 			}
 		}
 	}
@@ -56,20 +54,18 @@ export const getIdleActions = (character: Character): CharacterAction[] => {
 		const skills = [...attackSkillList, doubleAttack];
 		const cds = skills.map(skill => character.cooldowns[skill.id] || 0);
 
-		if (-1 === cds.indexOf('ULTIMATE')) {
-			let cd = 0;
+		let cd = 0;
 
-			for (const c of cds) {
-				if ('ULTIMATE' !== c && c > cd) {
-					cd = c;
-				}
+		for (const c of cds) {
+			if ('ULTIMATE' !== c && c > cd) {
+				cd = c;
 			}
-			const cost = skills.map(skill => getCost(skill)).reduce((a, b) => a + b);
-			const isActive = (AP >= cost && 0 === cd && canAct && !isDisarmed);
-
-			const action = new CharacterAction('DOUBLE_ATTACK', doubleAttack.title, cost, cd, isActive, skills);
-			actions.push(action);
 		}
+		const cost = skills.map(skill => getCost(skill)).reduce((a, b) => a + b);
+		const isActive = (AP >= cost && 0 === cd && canAct && !isDisarmed);
+
+		const action = new CharacterAction('DOUBLE_ATTACK', doubleAttack.title, cost, cd, isActive, skills);
+		actions.push(action);
 	}
 
 	// WEAPON actions
@@ -78,16 +74,14 @@ export const getIdleActions = (character: Character): CharacterAction[] => {
 			if (skillIds.find(id => id === skill.id)) {
 				continue;
 			}
-			const cd = character.cooldowns[skill.id] || 0;
 			skillIds.push(skill.id);
 
-			if ('ULTIMATE' !== cd) {
-				const cost = getCost(skill);
-				const isActive = (AP >= cost && 0 === cd && canAct && !isDisarmed);
+			const cost = getCost(skill);
+			const cd = character.cooldowns[skill.id] || 0;
+			const isActive = (AP >= cost && 0 === cd && canAct && !isDisarmed);
 
-				const action = new CharacterAction('WEAPON', `${skill.title} (${wpn.title})`, cost, cd, isActive, [skill]);
-				actions.push(action);
-			}
+			const action = new CharacterAction('WEAPON', `${skill.title} (${wpn.title})`, cost, cd, isActive, [skill]);
+			actions.push(action);
 		}
 	}
 
@@ -101,15 +95,15 @@ export const getIdleActions = (character: Character): CharacterAction[] => {
 					continue;
 				}
 				const skill = new Skill(skillID);
-				const cd = character.cooldowns[skill.id] || 0;
+
 				skillIds.push(skill.id);
 
-				if ('ULTIMATE' !== cd) {
-					const cost = getCost(skill);
-					const isActive = (AP >= cost && 0 === cd && canAct && !isDisarmed);
-					const action = new CharacterAction('DYNAMIC', skill.title, cost, cd, isActive, [skill]);
-					actions.push(action);
-				}
+				const cost = getCost(skill);
+				const cd = character.cooldowns[skill.id] || 0;
+				const isActive = (AP >= cost && 0 === cd && canAct && !isDisarmed);
+
+				const action = new CharacterAction('DYNAMIC', skill.title, cost, cd, isActive, [skill]);
+				actions.push(action);
 			}
 		}
 	}
@@ -120,9 +114,10 @@ export const getIdleActions = (character: Character): CharacterAction[] => {
 		const cost = getCost(skill);
 		const cd = character.cooldowns[skill.id] || 0;
 
-		if ('ULTIMATE' !== cd && 'ACTIVE' === type) {
+		if ('ACTIVE' === type) {
 			const isActive = (AP >= cost && 0 === cd && canAct && !isSilenced);
 			const actionTitle = `${title} (${formatSkillset(skillset)})`;
+
 			const action = new CharacterAction('MAGIC', actionTitle, cost, cd, isActive, [skill]);
 			actions.push(action);
 		}
