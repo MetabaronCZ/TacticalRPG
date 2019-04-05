@@ -50,25 +50,29 @@ class AICharacter {
 
 				for (const tile of sideTiles) {
 					if (!tile.isContained(obstacles)) {
-						targets.push({
-							path: getShortestPath(pos, tile, obstacles),
-							character: e
-						});
+						try {
+							const enemyPath = getShortestPath(pos, tile, obstacles);
+							targets.push({ path: enemyPath, character: e });
+						} catch (err) {
+							// tile is not accessible
+						}
 					}
 				}
 			});
 
-			// find closest target
-			const sortedTargets = targets.sort((a, b) => a.path.length - b.path.length);
-			this.target = sortedTargets[0].character;
+			if (targets.length) {
+				// find closest target
+				const sortedTargets = targets.sort((a, b) => a.path.length - b.path.length);
+				this.target = sortedTargets[0].character;
 
-			const path = sortedTargets[0].path.slice(1); // path without actor position
-			const movePath = path.filter(tile => tile.isContained(movable));
+				const path = sortedTargets[0].path.slice(1); // path without actor position
+				const movePath = path.filter(tile => tile.isContained(movable));
 
-			if (movePath.length) {
-				const moveTarget = movePath[movePath.length - 1];
-				onTileSelect(moveTarget);
-				return;
+				if (movePath.length) {
+					const moveTarget = movePath[movePath.length - 1];
+					onTileSelect(moveTarget);
+					return;
+				}
 			}
 		}
 
