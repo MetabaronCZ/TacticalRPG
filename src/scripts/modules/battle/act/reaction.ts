@@ -146,7 +146,11 @@ class ActReaction {
 		reactor.attributes.set('AP', AP - cost);
 
 		this.events.onEvasionEnd(this);
-		this.events.onEnd(this);
+
+		// run second event after update (prevent race condition)
+		setTimeout(() => {
+			this.events.onEnd(this);
+		});
 	}
 
 	public pass(passAction: CharacterAction) {
@@ -159,7 +163,11 @@ class ActReaction {
 		this.action = passAction;
 
 		this.events.onPass(this);
-		this.events.onEnd(this);
+
+		// run second event after update (prevent race condition)
+		setTimeout(() => {
+			this.events.onEnd(this);
+		});
 	}
 
 	public reset() {
@@ -196,7 +204,11 @@ class ActReaction {
 		this.reactor.status.apply(block);
 
 		this.events.onBlock(this);
-		this.events.onEnd(this);
+
+		// run second event after update (prevent race condition)
+		setTimeout(() => {
+			this.events.onEnd(this);
+		});
 	}
 
 	private prepareEvents(events: IActReactionEvents): IActReactionEvents {

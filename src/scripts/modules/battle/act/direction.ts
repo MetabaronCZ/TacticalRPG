@@ -82,7 +82,11 @@ class ActDirect {
 		}
 
 		this.events.onSelect(this);
-		this.events.onEnd(this);
+
+		// run second event after update (prevent race condition)
+		setTimeout(() => {
+			this.events.onEnd(this);
+		});
 	}
 
 	private prepareEvents(events: IActDirectEvents): IActDirectEvents {

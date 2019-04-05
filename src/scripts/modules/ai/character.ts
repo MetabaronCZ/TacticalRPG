@@ -167,7 +167,7 @@ class AICharacter {
 
 		// find first skill to attack chosen target
 		for (const action of actions) {
-			if (!action.skills.length || !action.isActive || action.cost > ap) {
+			if (!action.skills.length || !action.isActive() || action.cost > ap) {
 				continue;
 			}
 			const skillTarget = action.skills[0].target;

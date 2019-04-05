@@ -1,19 +1,12 @@
 BUGS
 ----------------------------------------------------------------------------------------------------------
---	pokud PLAYER postavy nic nedelaji, AI postavy delaji jen PASS
-??	chyba po vyberu Direction cile u AI, pokud zvoli PASS action
+--	AI postavy po urcite dobe delaji jen PASS
+--	random chyba pri volani AICharacter.onAction
+	- graph v metode "constructPath" obsahuje prvek bez ID atributu
 
 
 TODO
 ----------------------------------------------------------------------------------------------------------
---	refaktorovat Skill atributy - sjednotit type, apod.
---	u plosnych utoku a healu povolit targetovat pole (type SkillTargetMode = 'CHARACTER' | 'TILE')
-	- ale jen pokud ve SkillEfectArea je targetable Character
---	AI
-	- zapracovat rozdeleni roli AI Playerem (ze zacatku DAMAGE, HEALING)
-	- pri "onAction" provadet kompletni analyzu postav, nepratel, apod.
-		- updatovat cile postav
-		- koordinovat healery, aby si rozdelili zranene postavy mezi sebe
 --	pasivni skilly
 ??	AP utoky (psycho / water magic / AP strike)
 ??	pridat skilly pro doplneni ARM, ESH

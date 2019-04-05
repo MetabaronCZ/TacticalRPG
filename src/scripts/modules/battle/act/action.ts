@@ -212,7 +212,11 @@ class ActAction {
 		this.state = 'DONE';
 		this.action = passAction;
 		this.events.onPass(this);
-		this.events.onEnd(this);
+
+		// run second event after update (prevent PASS action cycling)
+		setTimeout(() => {
+			this.events.onEnd(this);
+		});
 	}
 
 	public passReaction(passAction: CharacterAction) {
