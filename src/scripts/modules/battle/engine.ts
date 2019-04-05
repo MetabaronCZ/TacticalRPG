@@ -128,8 +128,13 @@ class Engine {
 		this.actors.shift();
 
 		if (!actor) {
-			// start new cycle
+			// start new cycle (find actors)
 			this.update();
+			return;
+		}
+		if (actor.isDead()) {
+			// skip dead actors
+			this.startAct();
 			return;
 		}
 		this.actNumber++;

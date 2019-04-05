@@ -43,6 +43,9 @@ class AICharacter {
 
 			// find all paths to enemies
 			enemy.forEach(e => {
+				if (e.isDead()) {
+					return;
+				}
 				const sideTiles = e.position.getSideTiles();
 
 				for (const tile of sideTiles) {
