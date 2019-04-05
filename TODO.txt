@@ -1,12 +1,13 @@
 BUGS
 ----------------------------------------------------------------------------------------------------------
---	AI postavy po urcite dobe delaji jen PASS
 --	random chyba pri volani AICharacter.onAction
 	- graph v metode "constructPath" obsahuje prvek bez ID atributu
 
 
 TODO
 ----------------------------------------------------------------------------------------------------------
+--	pridat AI logiku: snazit se dostat k utoku ze zadu nebo z boku
+	- pripadne nahodny pohyb v ramci dostrelu, aby nestali postavy pul hry na miste
 --	pasivni skilly
 ??	AP utoky (psycho / water magic / AP strike)
 ??	pridat skilly pro doplneni ARM, ESH

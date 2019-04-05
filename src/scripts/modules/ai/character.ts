@@ -160,6 +160,9 @@ class AICharacter {
 			throw new Error('AI character actions does not contain pass action');
 		}
 
+		// reset move state
+		this.moved = false;
+
 		if (!this.target) {
 			onSelect(passAction);
 			return;
