@@ -56,7 +56,7 @@ class ActAction {
 
 	constructor(actor: Character, characters: Character[], events: IActActionEvents) {
 		this.actor = actor;
-		this.characters = characters;
+		this.characters = characters.filter(char => !char.isDead());
 		this.events = this.prepareEvents(events);
 	}
 
@@ -294,7 +294,7 @@ class ActAction {
 					if ('SELF' === skill.target || 'ALLY' === skill.target) {
 						switch (skill.id) {
 							case 'HOL_REMEDY': {
-								if (target.isDead()) {
+								if (target.isDead() || target.status.has('DYING')) {
 									continue;
 								}
 								// remove one bad status
@@ -314,7 +314,7 @@ class ActAction {
 
 							case 'HOL_REVIVE': {
 								// revive target
-								if (!target.isDead()) {
+								if (!target.status.has('DYING')) {
 									continue;
 								}
 								target.revive();
@@ -329,7 +329,7 @@ class ActAction {
 
 							default: {
 								// apply healing to target
-								if (target.isDead()) {
+								if (target.isDead() || target.status.has('DYING')) {
 									continue;
 								}
 								const magBonus = actor.mainHand.magical + actor.offHand.magical;
@@ -414,9 +414,9 @@ class ActAction {
 					// apply skill damage / statuses to target
 					target.applyDamage(damage.physical, damage.magical, damageStatus);
 
-					if (target.isDead()) {
+					if (target.status.has('DYING')) {
 						info.push({
-							text: 'Dead',
+							text: 'Dying',
 							type: 'ACTION',
 							position: targetPos
 						});

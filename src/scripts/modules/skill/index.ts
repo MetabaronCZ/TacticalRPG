@@ -171,10 +171,12 @@ class Skill implements ISkillData {
 	public getTargets(actor: Character, characters: Character[], targetable: Tile[]): Character[] {
 		return characters
 			.filter(char => {
+				const isDying = char.status.has('DYING');
 				return (
+					!char.isDead() &&
 					char.position.isContained(targetable) &&
 					targetTable[this.target](char, actor) && // character is targetable
-					('HOL_REVIVE' === this.id ? char.isDead() : !char.isDead())
+					('HOL_REVIVE' === this.id ? isDying : !isDying)
 				);
 			});
 	}

@@ -35,7 +35,11 @@ class ActMove {
 		this.actor = actor;
 		this.initialAP = actor.attributes.AP;
 		this.initialPosition = actor.position;
-		this.obstacles = characters.filter(char => char !== actor).map(char => char.position);
+
+		this.obstacles = characters
+			.filter(char => char !== actor && !char.isDead())
+			.map(char => char.position);
+
 		this.target = this.initialPosition;
 		this.events = this.prepareEvents(events);
 	}

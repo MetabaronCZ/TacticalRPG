@@ -11,14 +11,17 @@ interface IOrderProps {
 }
 
 const getState = (act: Act|null, char: Character): string => {
-	const isDead = char.isDead();
+	const isDying = char.status.has('DYING');
 	const isActive = !!(act && act.getActor() === char);
-	return (isDead ? 'dead' : (isActive ? 'active' : ''));
+	return (isDying ? 'dying' : (isActive ? 'active' : ''));
 };
 
 const Order: React.SFC<IOrderProps> = ({ act, characters, players }) => (
 	<ul className="Order">
 		{characters.map((char, i) => {
+			if (char.isDead()) {
+				return;
+			}
 			const charState = getState(act, char);
 			const charPlayer = players.indexOf(char.player);
 			return (

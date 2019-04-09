@@ -266,7 +266,7 @@ class Engine {
 		const { players } = this;
 
 		for (const pl of players) {
-			const liveChars = pl.getCharacters().filter(char => !char.isDead());
+			const liveChars = pl.getCharacters().filter(char => !char.isDead() && !char.status.has('DYING'));
 
 			if (0 === liveChars.length) {
 				return true;
@@ -297,10 +297,7 @@ class Engine {
 				Logger.info('Engine onGameOver');
 				events.onGameOver(state);
 			},
-			onBattleInfo: info => {
-				Logger.info(`Engine onBattleInfo: [ ${info.map(i => i.text).join(', ')} ]`);
-				events.onBattleInfo(info);
-			}
+			onBattleInfo: events.onBattleInfo
 		};
 	}
 

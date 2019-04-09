@@ -17,6 +17,9 @@ interface IGridChactersProps {
 const GridCharacters: React.SFC<IGridChactersProps> = ({ actor, characters, players }) => (
 	<div className="GridCharacters">
 		{characters.map((char, i) => {
+			if (char.isDead()) {
+				return;
+			}
 			const { x, y } = char.position;
 			const dir = char.direction.toLowerCase();
 
@@ -27,8 +30,8 @@ const GridCharacters: React.SFC<IGridChactersProps> = ({ actor, characters, play
 				visualCls += ' is-selected';
 			}
 
-			if (char.isDead()) {
-				visualCls += ' is-dead';
+			if (char.status.has('DYING')) {
+				visualCls += ' is-dying';
 			}
 			return (
 				<div

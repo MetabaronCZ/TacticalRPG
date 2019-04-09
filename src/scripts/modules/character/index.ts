@@ -46,6 +46,8 @@ class Character {
 	public direction: DirectionID;
 	public cooldowns: ISkillCooldowns = {}; // skill cooldowns
 
+	private dead: boolean = false;
+
 	constructor(character: CharacterData, position: Tile, direction: DirectionID, player: Player) {
 		const data = character.serialize();
 
@@ -70,7 +72,7 @@ class Character {
 	}
 
 	public isDead(): boolean {
-		return this.attributes.HP <= 0;
+		return this.dead;
 	}
 
 	public isAI(): boolean {
@@ -79,7 +81,7 @@ class Character {
 
 	public canAct(): boolean {
 		const status = this.status;
-		return !this.isDead() && !status.has('STUN') && !status.has('FREEZE');
+		return !this.dead && !status.has('DYING') && !status.has('STUN') && !status.has('FREEZE');
 	}
 
 	public canMove(): boolean {
@@ -89,22 +91,31 @@ class Character {
 
 	// updates on every game tick
 	public update(onInfo: IOnBattleInfo) {
-		if (this.isDead()) {
+		if (this.dead) {
 			return;
 		}
+
 		// update status effects
 		this.status.update(this, onInfo);
 
-		// update CT
-		const { SPD, CT } = this.attributes;
-		this.attributes.set('CT', CT + SPD);
+		if (!this.status.has('DYING')) {
+			// update CT
+			const { SPD, CT } = this.attributes;
+			this.attributes.set('CT', CT + SPD);
+		}
 	}
 
 	// update on character act start
 	public startAct() {
-		if (this.isDead()) {
+		if (this.dead) {
 			throw new Error('Character cannot start act: dead state');
 		}
+
+		if (this.status.has('DYING')) {
+			// pass if character is dying
+			return;
+		}
+
 		// regenerate actor AP
 		const { AP } = this.baseAttributes;
 		this.attributes.set('AP', AP);
@@ -125,16 +136,27 @@ class Character {
 
 	// update on character act end
 	public endAct() {
-		if (this.isDead()) {
-			throw new Error('Character cannot end act: dead state');
+		if (this.dead) {
+			throw new Error('Character cannot end act: dead or dying');
 		}
+
+		if (this.status.has('DYING')) {
+			// pass if character is dying
+			return;
+		}
+
 		// update character CT
 		const { CT } = this.attributes;
 		this.attributes.set('CT', CT % characterCTLimit);
 	}
 
 	public applyDamage(physical: number, magical: number, effectIds: StatusEffectID[] = []) {
-		const { HP, ARM, ESH } = this.attributes;
+		const { attributes, status } = this;
+
+		if (this.dead || status.has('DYING')) {
+			throw new Error('Cannot apply damage: dead or dying');
+		}
+		const { HP, ARM, ESH } = attributes;
 		let newARM = ARM - physical;
 		let newESH = ESH - magical;
 		let newHP = HP;
@@ -148,16 +170,26 @@ class Character {
 			newHP += newESH;
 			newESH = 0;
 		}
-		this.attributes.set('ARM', newARM);
-		this.attributes.set('ESH', newESH);
-		this.attributes.set('HP', newHP > 0 ? newHP : 0);
+		attributes.set('ARM', newARM);
+		attributes.set('ESH', newESH);
+		attributes.set('HP', newHP > 0 ? newHP : 0);
 
+		// apply damage status effects
 		for (const effect of effectIds) {
-			this.status.apply(effect, physical, magical);
+			status.apply(effect, physical, magical);
+		}
+
+		// set DYING status if mortally wounded
+		if (attributes.HP <= 0) {
+			status.removeAll();
+			status.apply('DYING');
 		}
 	}
 
 	public applyHealing(healing: number, effectIds: StatusEffectID[] = []) {
+		if (this.dead || this.status.has('DYING')) {
+			throw new Error('Cannot apply healing: dead or dying');
+		}
 		const newHP = this.attributes.HP + healing;
 		const maxHP = this.baseAttributes.HP;
 
@@ -169,12 +201,18 @@ class Character {
 	}
 
 	public revive() {
-		if (!this.isDead()) {
+		if (!this.status.has('DYING')) {
 			throw new Error('Illegal character revive attempt');
 		}
+		this.status.removeAll();
+
 		this.attributes.set('HP', this.baseAttributes.HP);
 		this.attributes.set('CT', 0);
+	}
+
+	public die() {
 		this.status.removeAll();
+		this.dead = true;
 	}
 
 	public act(action: CharacterAction) {

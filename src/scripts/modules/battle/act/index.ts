@@ -138,7 +138,16 @@ class Act {
 
 		actor.startAct();
 		this.events.onStart(this);
+
 		this.movePhase.start();
+
+		if (actor.status.has('DYING')) {
+			// pass any actions for dying character
+			setTimeout(() => {
+				const passAction = CharacterActions.getPassAction();
+				this.selectAction(passAction);
+			});
+		}
 	}
 
 	public selectTile(tile: Tile) {

@@ -40,6 +40,10 @@ class AIPlayer extends Player {
 
 	public onAction(conf: IAIActStartData) {
 		const { actor, actions, movable, onTileSelect, onActionSelect } = conf;
+
+		if (actor.isDead()) {
+			return;
+		}
 		const char = this.getCharacter(actor);
 		const obstacles = this.getObstacles();
 		const ally = this.ally.map(a => a.getCharacter());
@@ -49,6 +53,9 @@ class AIPlayer extends Player {
 	}
 
 	public onActionTarget(actor: Character, targetable: Tile[], onSelect: IOnTileSelect) {
+		if (actor.isDead()) {
+			return;
+		}
 		const char = this.getCharacter(actor);
 		char.onActionTarget(targetable, onSelect);
 	}
@@ -63,17 +70,26 @@ class AIPlayer extends Player {
 	}
 
 	public onReaction(reactor: Character, actions: CharacterAction[], isBackAttacked: boolean, onSelect: IOnActionSelect) {
+		if (reactor.isDead()) {
+			return;
+		}
 		const char = this.getCharacter(reactor);
 		const obstacles = this.getObstacles();
 		char.onReaction(actions, isBackAttacked, obstacles, onSelect);
 	}
 
 	public onEvasion(actor: Character, evasible: Tile[], onSelect: IOnTileSelect) {
+		if (actor.isDead()) {
+			return;
+		}
 		const char = this.getCharacter(actor);
 		char.onEvasion(evasible, onSelect);
 	}
 
 	public onDirect(actor: Character, directable: Tile[], onSelect: IOnTileSelect) {
+		if (actor.isDead()) {
+			return;
+		}
 		const char = this.getCharacter(actor);
 		char.onDirect(directable, onSelect);
 	}

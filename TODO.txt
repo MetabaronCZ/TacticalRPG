@@ -1,10 +1,10 @@
 TODO
 ----------------------------------------------------------------------------------------------------------
---	vyradit dead postavy po urcite dobe (mohou uveznit jinou postavu)
 --	pridat AI logiku: snazit se dostat k utoku ze zadu nebo z boku
 	- pripadne nahodny pohyb v ramci dostrelu, aby nestali postavy pul hry na miste
 --	AICharacter: pohyb podle melee vs ranged vs support role
 	- vybrano AIPlayerem
+	- prioritizace skillu (healing -> Revive)
 --	pasivni skilly
 --	implementovat GameSummary (game state po skonceni hry)
 --	implementovat Sudden death mode (aby nedoslo ke stavu, kdy zbyvaji jen S-typy, ktere evaduji vsechny utoky)

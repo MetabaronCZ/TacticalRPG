@@ -34,6 +34,10 @@ class AICharacter {
 		const { actions, movable, ally, enemy, obstacles, onTileSelect, onActionSelect } = conf;
 		const char = this.character;
 
+		if (char.isDead()) {
+			return;
+		}
+
 		if (!this.moved) {
 			this.moved = true;
 
@@ -43,7 +47,7 @@ class AICharacter {
 
 			// find all paths to enemies
 			enemy.forEach(e => {
-				if (e.isDead()) {
+				if (e.isDead() || e.status.has('DYING')) {
 					return;
 				}
 				const sideTiles = e.position.getSideTiles();
@@ -139,6 +143,10 @@ class AICharacter {
 
 	public onDirect(directable: Tile[], onSelect: IOnTileSelect) {
 		const char = this.character;
+
+		if (char.isDead()) {
+			return;
+		}
 		const pos = char.position;
 		let dir = char.direction;
 

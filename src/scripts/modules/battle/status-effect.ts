@@ -2,7 +2,7 @@ import Character from 'modules/character';
 import { IOnBattleInfo } from 'modules/battle/battle-info';
 
 export type StatusEffectID =
-	'CRIPPLE' | 'DISARM' | 'BLEED' | 'STUN' |
+	'CRIPPLE' | 'DISARM' | 'BLEED' | 'STUN' | 'DYING' |
 	'BURN' | 'SHOCK' | 'FREEZE' | 'CONFUSION' | 'SILENCE' |
 	'REGEN' | 'IRON_SKIN' | 'BLOCK_SMALL' | 'BLOCK_LARGE';
 

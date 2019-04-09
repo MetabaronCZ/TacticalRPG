@@ -101,6 +101,23 @@ const StatusEffects = new DataList<StatusEffectID, StatusEffectFun>({
 		type: 'MAGICAL',
 		duration: 100
 	}),
+	DYING: () => ({
+		id: 'DYING',
+		title: 'Dying',
+		effect: 'Dying',
+		description: 'Incapacitated',
+		type: 'PHYSICAL',
+		duration: 100,
+		apply: (char, cb) => {
+			char.die();
+
+			cb({
+				text: 'Dead',
+				type: 'ACTION',
+				position: char.position
+			});
+		}
+	}),
 	REGEN: (phy = 0, mag = 0) => ({
 		id: 'REGEN',
 		title: 'Regen',
