@@ -4,11 +4,13 @@ import ReactDOM from 'react-dom';
 import { Provider, context } from 'context';
 import Router from 'ui/common/Router';
 
+const App = () => (
+	<Provider value={context}>
+		<Router />
+	</Provider>
+);
+
 ReactDOM.render(
-	<React.Fragment>
-		<Provider value={context}>
-			<Router />
-		</Provider>
-	</React.Fragment>,
+	<App />,
 	document.querySelector('.PageContainer')
 );

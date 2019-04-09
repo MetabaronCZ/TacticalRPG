@@ -5,7 +5,6 @@ import Character from 'modules/character';
 import CharacterAction from 'modules/battle/character-action';
 
 import Actions from 'ui/battle/Actions';
-import { SkillID } from 'modules/skill/skill-data';
 
 interface IActUIProps {
 	act: Act|null;
@@ -17,7 +16,6 @@ const ActUI: React.SFC<IActUIProps> = ({ act, onActionSelect }) => {
 		return <div>Waiting for act data...</div>;
 	}
 	const actionPhase = act.getActionPhase();
-	const action = actionPhase.getAction();
 	const reaction = actionPhase.getReaction();
 	const actions = act.getActions();
 	const actor = act.getActor();
@@ -29,60 +27,15 @@ const ActUI: React.SFC<IActUIProps> = ({ act, onActionSelect }) => {
 	}
 
 	return (
-		<table className="Act">
-			<tbody>
-				<tr>
-					<td className="Act-row Act-row--character">
-						<h3 className="Heading">Actor Info</h3>
+		<React.Fragment>
+			<h3 className="Heading">
+				Actions ({actingChar.name})
+			</h3>
 
-						<div className="ActBattleInfo">
-							{actionCharacters.map((char, i) => (
-								<React.Fragment key={i}>
-									<div className="ActBattleInfo-item">
-										<strong>{char.name}</strong> ({char.player.getName()})
-										<br />
-										HP: {char.attributes.HP} / <span className="u-disabled">{char.baseAttributes.HP}</span>
-										<br />
-										Armor: {char.attributes.ARM} / <span className="u-disabled">{char.baseAttributes.ARM}</span>
-										<br />
-										Energy shield: {char.attributes.ESH} / <span className="u-disabled">{char.baseAttributes.ESH}</span>
-										<br />
-										AP: {char.attributes.AP} / <span className="u-disabled">{char.baseAttributes.AP}</span>
-										<br />
-										Status: [ {char.status.get().map(st => `${st.effect} (${st.duration})`).join(', ')} ]
-										<br />
-										Cooldowns: [ {Object.keys(char.cooldowns).map(cd => `${cd} (${char.cooldowns[cd as SkillID]})`).join(', ')} ]
-									</div>
-
-									{i < actionCharacters.length - 1 && (
-										<div className="ActBattleInfo-item ActBattleInfo-item--delimiter">
-											&rsaquo;
-										</div>
-									)}
-								</React.Fragment>
-							))}
-						</div>
-
-						{!!action && (
-							<React.Fragment>
-								<div>Action: {action.title}</div>
-								<br />
-							</React.Fragment>
-						)}
-					</td>
-
-					<td className="Act-row Act-row--actions">
-						<h3 className="Heading">
-							Actions ({actingChar.name})
-						</h3>
-
-						{!actingChar.isAI() && (
-							<Actions actions={actions} onSelect={onActionSelect} />
-						)}
-					</td>
-				</tr>
-			</tbody>
-		</table>
+			{!actingChar.isAI() && (
+				<Actions actions={actions} onSelect={onActionSelect} />
+			)}
+		</React.Fragment>
 	);
 };
 
