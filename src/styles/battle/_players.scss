@@ -2,6 +2,23 @@
 	&-item {
 		margin-bottom: 2*$vu;
 
+		&-ico {
+			display: inline-block;
+			width: 2*$vu;
+			height: 2*$vu;
+			margin-right: $vu;
+			border-radius: 100%;
+			vertical-align: middle;
+	
+			&.Players-item-ico--player-0 {
+				background-color: darkviolet;
+			}
+	
+			&.Players-item-ico--player-1 {
+				background-color: tomato;
+			}
+		}
+
 		&-characters {
 			width: 100%;
 			border-collapse: collapse;
