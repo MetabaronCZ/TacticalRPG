@@ -6,9 +6,9 @@ import { IBattleInfo } from 'modules/battle/battle-info';
 import CharacterAction from 'modules/battle/character-action';
 import * as CharacterActions from 'modules/battle/character-actions';
 
-import ActMove from 'modules/battle/act/movement';
-import ActAction from 'modules/battle/act/action';
-import ActDirect from 'modules/battle/act/direction';
+import ActMove, { IActMoveRecord } from 'modules/battle/act/movement';
+import ActAction, { IActActionRecord } from 'modules/battle/act/action';
+import ActDirect, { IActDirectRecord } from 'modules/battle/act/direction';
 
 type ActPhase = 'INIT' | 'IDLE' | 'MOVEMENT' | 'ACTION' | 'DIRECTION';
 
@@ -17,6 +17,14 @@ export interface IActEvents {
 	onUpdate: (act: Act) => void;
 	onEnd: (act: Act) => void;
 	onBattleInfo: (info: IBattleInfo) => void;
+}
+
+export interface IActRecord {
+	readonly id: number;
+	readonly actor: Character;
+	readonly movePhase: IActMoveRecord;
+	readonly actionPhase: IActActionRecord;
+	readonly directPhase: IActDirectRecord;
 }
 
 class Act {
@@ -294,6 +302,16 @@ class Act {
 			default:
 				throw new Error('Unsupported action: ' + action.id);
 		}
+	}
+
+	public serialize(): IActRecord {
+		return {
+			id: this.id,
+			actor: this.actor,
+			movePhase: this.movePhase.serialize(),
+			actionPhase: this.actionPhase.serialize(),
+			directPhase: this.directPhase.serialize()
+		};
 	}
 
 	private end() {

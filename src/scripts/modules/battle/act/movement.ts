@@ -16,6 +16,11 @@ interface IActMoveEvents {
 	onEnd: (move: ActMove) => void;
 }
 
+export interface IActMoveRecord {
+	readonly initialPosition: Tile;
+	readonly target: Tile;
+}
+
 export type ActMoveState = 'INIT' | 'IDLE' | 'SELECTED' | 'ANIMATION';
 
 class ActMove {
@@ -124,6 +129,13 @@ class ActMove {
 		this.animate();
 	}
 
+	public serialize(): IActMoveRecord {
+		return {
+			initialPosition: this.initialPosition,
+			target: this.target
+		};
+	}
+
 	private animate() {
 		const { state, actor, path, costMap, events } = this;
 
@@ -164,10 +176,7 @@ class ActMove {
 				Logger.info(`ActMove onSelect: ${formatTile(move.target)}`);
 				events.onSelect(move);
 			},
-			onAnimation: (move, step) => {
-				Logger.info(`ActMove onAnimation (${step.number + 1}/${step.max}): ${formatTile(move.actor.position)}`);
-				events.onAnimation(move, step);
-			},
+			onAnimation: events.onAnimation,
 			onEnd: move => {
 				Logger.info('ActMove onEnd');
 				events.onEnd(move);

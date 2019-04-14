@@ -15,7 +15,7 @@ class Order {
 		this.update();
 	}
 
-	public get(): Character[] {
+	public serialize(): Character[] {
 		return this.order;
 	}
 

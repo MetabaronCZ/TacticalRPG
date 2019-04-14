@@ -10,6 +10,10 @@ interface IActDirectEvents {
 	onEnd: (direct: ActDirect) => void;
 }
 
+export interface IActDirectRecord {
+	readonly target: Tile|null;
+}
+
 export type ActDirectState = 'INIT' | 'IDLE' | 'DONE';
 
 class ActDirect {
@@ -87,6 +91,12 @@ class ActDirect {
 		setTimeout(() => {
 			this.events.onEnd(this);
 		});
+	}
+
+	public serialize(): IActDirectRecord {
+		return {
+			target: this.target
+		};
 	}
 
 	private prepareEvents(events: IActDirectEvents): IActDirectEvents {

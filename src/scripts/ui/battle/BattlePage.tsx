@@ -32,7 +32,8 @@ class BattlePageContainer extends React.Component<IProps, IState> {
 			battleInfo: [],
 			characters: [],
 			players: [],
-			order: []
+			order: [],
+			chronox: []
 		},
 		engineUpdate: null
 	};
@@ -55,6 +56,48 @@ class BattlePageContainer extends React.Component<IProps, IState> {
 					this.setState({ engineState, engineUpdate: new Date() });
 				},
 				onGameOver: engineState => {
+					const record = engineState.chronox.map(ch => ({
+						id: ch.id,
+						actor: {
+							name: ch.actor.name,
+							player: ch.actor.player.getName(),
+							sex: ch.actor.sex.id,
+							archetype: ch.actor.archetype.id,
+							skillset: ch.actor.skillset.id,
+							mainHand: ch.actor.mainHand.id,
+							offHand: ch.actor.offHand.id,
+							armor: ch.actor.armor.id
+						},
+						movePhase: {
+							initialPosition: ch.movePhase.initialPosition.id,
+							target: ch.movePhase.target.id
+						},
+						actionPhase: {
+							action: (ch.actionPhase.action ? ch.actionPhase.action.title : null),
+							effectTarget: (ch.actionPhase.effectTarget ? ch.actionPhase.effectTarget.id : null),
+							reactions: ch.actionPhase.reactions.map(r => ({
+								id: r.id,
+								reactor: {
+									name: r.reactor.name,
+									player: r.reactor.player.getName(),
+									sex: r.reactor.sex.id,
+									archetype: r.reactor.archetype.id,
+									skillset: r.reactor.skillset.id,
+									mainHand: r.reactor.mainHand.id,
+									offHand: r.reactor.offHand.id,
+									armor: r.reactor.armor.id
+								},
+								action: (r.action ? r.action.title : null),
+								evasionTarget: (r.evasionTarget ? r.evasionTarget.id : null),
+								result: r.result
+							}))
+						},
+						directPhase: {
+							target: (ch.directPhase.target ? ch.directPhase.target.id : null)
+						}
+					}));
+
+					console.log('Chronox', record);
 					throw new Error('TODO: Game Over');
 
 					this.setState(

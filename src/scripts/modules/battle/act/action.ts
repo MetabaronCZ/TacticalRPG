@@ -9,11 +9,11 @@ import { formatTile } from 'modules/format';
 import Logger from 'modules/logger';
 import Tile from 'modules/geometry/tile';
 import Character from 'modules/character';
-import ActReaction from 'modules/battle/act/reaction';
 import { IBattleInfo } from 'modules/battle/battle-info';
 import CharacterAction from 'modules/battle/character-action';
 import { resolveDirection } from 'modules/geometry/direction';
 import { getDamageInfo, isBackAttacked } from 'modules/battle/damage';
+import ActReaction, { IActReactionRecord } from 'modules/battle/act/reaction';
 
 interface IActActionEvents {
 	onStart: (action: ActAction) => void;
@@ -34,6 +34,12 @@ interface IActActionEvents {
 	onReactionEnd: (reaction: ActReaction) => void;
 
 	onBattleInfo: (info: IBattleInfo) => void;
+}
+
+export interface IActActionRecord {
+	readonly action: CharacterAction|null;
+	readonly effectTarget: Tile|null;
+	readonly reactions: IActReactionRecord[];
 }
 
 export type ActActionState = 'INIT' | 'IDLE' | 'SELECTED' | 'CONFIRMED' | 'REACTION' | 'ANIMATION' | 'DONE';
@@ -246,6 +252,14 @@ class ActAction {
 		this.events.onReset(this);
 	}
 
+	public serialize(): IActActionRecord {
+		return {
+			action: this.action,
+			effectTarget: this.effectTarget,
+			reactions: this.reactions.map(reaction => reaction.serialize())
+		};
+	}
+
 	private startReact(reaction: ActReaction) {
 		const { state, actor } = this;
 
@@ -276,12 +290,15 @@ class ActAction {
 
 		// animate skill action
 		const skillAnim = new Animation(timing, step => {
+			const reaction = this.reactions[step.number];
 			const target = effectTargets[step.number];
 			const targetPos = target.position;
 			const info: IBattleInfo[] = [];
 
 			if (!targetPos.isContained(effectArea)) {
 				// target has been pushed from or evaded skill action
+				reaction.setResult('MISS');
+
 				info.push({
 					text: 'Evaded',
 					type: 'ACTION',
@@ -415,6 +432,8 @@ class ActAction {
 					target.applyDamage(damage.physical, damage.magical, damageStatus);
 
 					if (target.status.has('DYING')) {
+						reaction.setResult('KILL');
+
 						info.push({
 							text: 'Dying',
 							type: 'ACTION',
@@ -432,6 +451,7 @@ class ActAction {
 							});
 						}
 					}
+					reaction.setResult('HIT');
 				}
 			}
 

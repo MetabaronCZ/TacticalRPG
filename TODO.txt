@@ -1,19 +1,23 @@
+BUGS
+----------------------------------------------------------------------------------------------------------
+--	dead postavy provadeji Direct fazi po PASS akci >> invalid DirectPhase state DONE
+
+
 TODO
 ----------------------------------------------------------------------------------------------------------
+>>	implementovat GameSummary (game state po skonceni hry)
 --	pridat AI logiku: snazit se dostat k utoku ze zadu nebo z boku
 	- pripadne nahodny pohyb v ramci dostrelu, aby nestali postavy pul hry na miste
 --	AICharacter: pohyb podle melee vs ranged vs support role
 	- vybrano AIPlayerem
 	- prioritizace skillu (healing -> Revive)
 --	pasivni skilly
---	implementovat GameSummary (game state po skonceni hry)
 --	implementovat Sudden death mode (aby nedoslo ke stavu, kdy zbyvaji jen S-typy, ktere evaduji vsechny utoky)
 ??	AP utoky (psycho / water magic / AP strike)
-??	pridat skilly pro doplneni ARM, ESH
-		- Repair Armor (engineering skill)
-		- Refill Energy Shield (mage skill)
-		- dat jako skill nejake nove zbrani (Engeneering kit, apod.)
-		- nebo udelat specializace, ktere posdtavam pridaji Speciality Skills (neco jako classy)
+??	Specializace:
+	- P-type: Tank (prida Provoke skill), ...
+	- S-type: Engineer (skill na opravu brneni), ...
+	- M-type: Alchemist (skilly na hazeni elem. bomb), ...
 ??	upravit targetArea a effectArea, aby braly v uvahu i prevyseni utocnika a cile
 	- u strelnych zbrani pridat dostrel a effect areu pri strelbe dolu
 ??	pridat random grid generation

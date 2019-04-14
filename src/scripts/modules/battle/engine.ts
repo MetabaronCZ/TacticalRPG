@@ -4,13 +4,14 @@ import AIPresets from 'data/ai-presets';
 import * as config from 'data/game-config';
 
 import Logger from 'modules/logger';
-import Act from 'modules/battle/act';
 import Tile from 'modules/geometry/tile';
 import Order from 'modules/battle/order';
 import AIPlayer from 'modules/ai/player';
 import Character from 'modules/character';
 import Player from 'modules/battle/player';
+import Chronox from 'modules/battle/chronox';
 import { getTile } from 'modules/geometry/tiles';
+import Act, { IActRecord } from 'modules/battle/act';
 import { IBattleInfo } from 'modules/battle/battle-info';
 import { DirectionID } from 'modules/geometry/direction';
 import { PartyData } from 'modules/party-creation/party-data';
@@ -26,6 +27,7 @@ export interface IEngineState {
 	players: Array<Player|AIPlayer>;
 	characters: Character[];
 	order: Character[];
+	chronox: IActRecord[];
 	battleInfo: IBattleInfo[];
 }
 
@@ -54,6 +56,7 @@ class Engine {
 	private actors: Character[] = [];
 	private act: Act|null = null;
 	private order: Order;
+	private chronox: Chronox;
 
 	constructor(conf: IEngineProps) {
 		this.players = this.createPlayers(conf);
@@ -63,6 +66,8 @@ class Engine {
 			.reduce((a, b) => a.concat(b));
 
 		this.order = new Order(this.players);
+		this.chronox = new Chronox();
+
 		this.events = this.prepareEvents(conf.events);
 	}
 
@@ -116,7 +121,7 @@ class Engine {
 		}
 
 		// order actors
-		const orderChars = order.get();
+		const orderChars = order.serialize();
 		this.actors = actors.sort((a, b) => orderChars.indexOf(a) - orderChars.indexOf(b));
 
 		this.startAct();
@@ -148,6 +153,10 @@ class Engine {
 			onUpdate: act => events.onUpdate(this.getState()),
 			onBattleInfo: info => this.onInfo(info),
 			onEnd: act => {
+				// store Act record
+				const record = act.serialize();
+				this.chronox.store(record);
+
 				// run next act
 				this.act = null;
 				this.startAct();
@@ -281,7 +290,8 @@ class Engine {
 			act: this.act,
 			players: this.players,
 			characters: this.characters,
-			order: this.order.get(),
+			order: this.order.serialize(),
+			chronox: this.chronox.serialize(),
 			battleInfo: this.battleInfo
 		};
 	}

@@ -15,7 +15,16 @@ interface IActReactionEvents {
 	onEnd: (reaction: ActReaction) => void;
 }
 
+export interface IActReactionRecord {
+	readonly id: number;
+	readonly reactor: Character;
+	readonly action: CharacterAction|null;
+	readonly evasionTarget: Tile|null;
+	readonly result: ActReactionResult|null;
+}
+
 export type ActReactionState = 'INIT' | 'IDLE' | 'SELECTED' | 'EVASION' | 'BLOCK' | 'DONE';
+export type ActReactionResult = 'MISS' | 'HIT' | 'KILL';
 
 class ActReaction {
 	private readonly id: number;
@@ -28,6 +37,7 @@ class ActReaction {
 	private action: CharacterAction|null = null;
 	private evasionTarget: Tile|null = null; // selected evasion tile
 	private evasionTargets: Tile[] = []; // possible evasion tiles of reacting character
+	private result: ActReactionResult|null = null;
 
 	constructor(id: number, reactor: Character, isBackAttack: boolean, obstacles: Tile[], events: IActReactionEvents) {
 		this.id = id;
@@ -63,6 +73,10 @@ class ActReaction {
 
 	public getEvasionTargets(): Tile[] {
 		return this.evasionTargets;
+	}
+
+	public getResult(): ActReactionResult|null {
+		return this.result;
 	}
 
 	public start() {
@@ -177,6 +191,20 @@ class ActReaction {
 		this.evasionTargets = [];
 
 		this.events.onReset(this);
+	}
+
+	public setResult(result: ActReactionResult) {
+		this.result = result;
+	}
+
+	public serialize(): IActReactionRecord {
+		return {
+			id: this.id,
+			reactor: this.reactor,
+			action: this.action,
+			evasionTarget: this.evasionTarget,
+			result: this.result
+		};
 	}
 
 	private evasionStart() {
