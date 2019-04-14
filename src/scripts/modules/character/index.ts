@@ -20,13 +20,14 @@ import { SkillID, Ultimate } from 'modules/skill/skill-data';
 import { StatusEffectID } from 'modules/battle/status-effect';
 import CharacterAction from 'modules/battle/character-action';
 import BaseAttributes from 'modules/character/base-attributes';
-import { CharacterData } from 'modules/character-creation/character-data';
+import { CharacterData, ICharacterData } from 'modules/character-creation/character-data';
 
 type ISkillCooldowns = Partial<{
 	[id in SkillID]: number | Ultimate;
 }>;
 
 class Character {
+	public readonly data: ICharacterData;
 	public readonly name: string;
 	public readonly sex: ISexData;
 	public readonly archetype: IArchetypeData;
@@ -51,6 +52,7 @@ class Character {
 	constructor(character: CharacterData, position: Tile, direction: DirectionID, player: Player) {
 		const data = character.serialize();
 
+		this.data = data;
 		this.name = data.name;
 		this.sex = Sexes.get(data.sex);
 		this.archetype = Archetypes.get(data.archetype);

@@ -1,6 +1,17 @@
+BUGS
+----------------------------------------------------------------------------------------------------------
+--	pri kontrole, jestli jde udelat EVASION, brat v potaz i DYING charactery kolem
+	- reakce se nabizi, i kdyz neni kolem kam jit
+
+
 TODO
 ----------------------------------------------------------------------------------------------------------
 >>	implementovat GameSummary (game state po skonceni hry)
+--	EVASION udelat drazsi nez BLOCK
+--	pri vyberu reakce hracem by se melo zobrazit i info, jaky utok byl pouzit a kym
+--	CharacterAction: refaktorovat "id" na "type"
+	- "id" generovat z typu akce + Skill.id[]
+--	pro AI Acty pridat funkcni tlacitko pro zastaveni + krokovani
 --	pridat AI logiku: snazit se dostat k utoku ze zadu nebo z boku
 	- pripadne nahodny pohyb v ramci dostrelu, aby nestali postavy pul hry na miste
 --	AICharacter: pohyb podle melee vs ranged vs support role
@@ -22,6 +33,7 @@ TODO
 	- pokud hra trva prilis dlouho (kolik ticku?) budou od urcite chvile pravidelne mizet okruzni policka gridu
 	- postavy na nich zemrou
 	- vyresi stavy typu: healer versus slabe melee
+	- udelat konfigurovatelne (kdy zacne, jak dlouho bude trvat, interval mezi rusenim poli)
 
 
 LONG TERM
@@ -42,6 +54,6 @@ LONG TERM
 --	Skore
 
 --	Chronox
-	- trackovat rozhodnuti
-	- pripravit replay (ulozeni na konci souboje + moznost krokovani, jako u sachu)
-	- pripravit moznost jit o krok (Act) zpet primo ve hre (udelat konfigurovatelne - pro single play)
+	OK	trackovat rozhodnuti
+	--	pripravit replay (ulozeni na konci souboje + moznost krokovani, jako u sachu)
+	--	pripravit moznost jit o krok (Act) zpet primo ve hre (udelat konfigurovatelne - pro single play)

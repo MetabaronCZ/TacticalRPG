@@ -17,8 +17,8 @@ interface IActMoveEvents {
 }
 
 export interface IActMoveRecord {
-	readonly initialPosition: Tile;
-	readonly target: Tile;
+	readonly initialPosition: string;
+	readonly target: string;
 }
 
 export type ActMoveState = 'INIT' | 'IDLE' | 'SELECTED' | 'ANIMATION';
@@ -131,8 +131,8 @@ class ActMove {
 
 	public serialize(): IActMoveRecord {
 		return {
-			initialPosition: this.initialPosition,
-			target: this.target
+			initialPosition: this.initialPosition.id,
+			target: this.target.id
 		};
 	}
 

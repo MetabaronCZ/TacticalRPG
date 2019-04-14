@@ -11,7 +11,7 @@ interface IActDirectEvents {
 }
 
 export interface IActDirectRecord {
-	readonly target: Tile|null;
+	readonly target: string|null;
 }
 
 export type ActDirectState = 'INIT' | 'IDLE' | 'DONE';
@@ -97,7 +97,7 @@ class ActDirect {
 
 	public serialize(): IActDirectRecord {
 		return {
-			target: this.target
+			target: (this.target ? this.target.id : null)
 		};
 	}
 

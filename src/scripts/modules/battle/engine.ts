@@ -4,22 +4,22 @@ import AIPresets from 'data/ai-presets';
 import * as config from 'data/game-config';
 
 import Logger from 'modules/logger';
+import Act from 'modules/battle/act';
 import Tile from 'modules/geometry/tile';
 import Order from 'modules/battle/order';
 import AIPlayer from 'modules/ai/player';
 import Character from 'modules/character';
 import Player from 'modules/battle/player';
-import Chronox from 'modules/battle/chronox';
 import { getTile } from 'modules/geometry/tiles';
-import Act, { IActRecord } from 'modules/battle/act';
 import { IBattleInfo } from 'modules/battle/battle-info';
 import { DirectionID } from 'modules/geometry/direction';
-import { PartyData } from 'modules/party-creation/party-data';
+import { PartyData, IPartyData } from 'modules/party-creation/party-data';
 import CharacterAction from 'modules/battle/character-action';
 import CharacterCreationForm from 'modules/character-creation';
 import { getRandomNames } from 'modules/random-name-generator';
+import Chronox, { IChronoxRecord, IChronoxConfig } from 'modules/battle/chronox';
 import { PlayerConfig } from 'modules/battle-configuration/player-config';
-import { CharacterData } from 'modules/character-creation/character-data';
+import { CharacterData, ICharacterData } from 'modules/character-creation/character-data';
 
 export interface IEngineState {
 	tick: number;
@@ -27,7 +27,7 @@ export interface IEngineState {
 	players: Array<Player|AIPlayer>;
 	characters: Character[];
 	order: Character[];
-	chronox: IActRecord[];
+	chronox: IChronoxRecord|null;
 	battleInfo: IBattleInfo[];
 }
 
@@ -66,9 +66,14 @@ class Engine {
 			.reduce((a, b) => a.concat(b));
 
 		this.order = new Order(this.players);
-		this.chronox = new Chronox();
+
+		const chronoxData = this.prepareChronoxData(conf);
+		this.chronox = new Chronox(chronoxData);
 
 		this.events = this.prepareEvents(conf.events);
+
+		// set player order
+		this.players = randomizeArray(this.players);
 	}
 
 	public start() {
@@ -271,7 +276,45 @@ class Engine {
 			}
 		});
 
-		return randomizeArray(pl);
+		return pl;
+	}
+
+	private prepareChronoxData(conf: IEngineProps): IChronoxConfig {
+		const characters: ICharacterData[] = [];
+
+		this.players.forEach(pl => {
+			pl.getCharacters().forEach(char => {
+				characters.push(char.data);
+			});
+		});
+
+		const players = conf.players.map((pl, p) => ({
+			...pl.serialize(),
+			party: p + ''
+		}));
+
+		return {
+			characters,
+			players,
+			parties: this.players.map((pl, p) => {
+				const chars = pl.getCharacters();
+
+				const party: IPartyData = conf.parties[p] ? conf.parties[p].serialize() : {
+					id: '',
+					name: 'UNKNOWN',
+					creationDate: Date.now(),
+					lastUpdate: Date.now(),
+					slots: []
+				};
+				return {
+					...party,
+					id: p + '',
+					slots: Array(config.maxPartySize).fill(null).map((slot, s) => {
+						return chars[s] ? chars[s].data.id : null;
+					})
+				};
+			})
+		};
 	}
 
 	private checkWinConditions(): boolean {

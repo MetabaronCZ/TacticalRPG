@@ -37,8 +37,8 @@ interface IActActionEvents {
 }
 
 export interface IActActionRecord {
-	readonly action: CharacterAction|null;
-	readonly effectTarget: Tile|null;
+	readonly action: string|null;
+	readonly effectTarget: string|null;
 	readonly reactions: IActReactionRecord[];
 }
 
@@ -254,8 +254,8 @@ class ActAction {
 
 	public serialize(): IActActionRecord {
 		return {
-			action: this.action,
-			effectTarget: this.effectTarget,
+			action: (this.action ? this.action.title : null),
+			effectTarget: (this.effectTarget ? this.effectTarget.id : null),
 			reactions: this.reactions.map(reaction => reaction.serialize())
 		};
 	}

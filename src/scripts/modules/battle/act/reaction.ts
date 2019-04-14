@@ -7,9 +7,9 @@ import CharacterAction from 'modules/battle/character-action';
 interface IActReactionEvents {
 	onStart: (reaction: ActReaction) => void;
 	onSelected: (reaction: ActReaction) => void;
-	onBlock: (reaction: ActReaction) => void;
 	onEvasionStart: (reaction: ActReaction) => void;
 	onEvasionEnd: (reaction: ActReaction) => void;
+	onBlock: (reaction: ActReaction) => void;
 	onReset: (reaction: ActReaction) => void;
 	onPass: (reaction: ActReaction) => void;
 	onEnd: (reaction: ActReaction) => void;
@@ -17,9 +17,9 @@ interface IActReactionEvents {
 
 export interface IActReactionRecord {
 	readonly id: number;
-	readonly reactor: Character;
-	readonly action: CharacterAction|null;
-	readonly evasionTarget: Tile|null;
+	readonly reactor: string;
+	readonly action: string|null;
+	readonly evasionTarget: string|null;
 	readonly result: ActReactionResult|null;
 }
 
@@ -200,10 +200,10 @@ class ActReaction {
 	public serialize(): IActReactionRecord {
 		return {
 			id: this.id,
-			reactor: this.reactor,
-			action: this.action,
-			evasionTarget: this.evasionTarget,
-			result: this.result
+			result: this.result,
+			reactor: this.reactor.data.id,
+			action: (this.action ? this.action.title : null),
+			evasionTarget: (this.evasionTarget ? this.evasionTarget.id : null)
 		};
 	}
 
@@ -250,10 +250,6 @@ class ActReaction {
 				Logger.info(`ActReaction onReactionSelected: "${action ? action.title : '-'}"`);
 				events.onSelected(reaction);
 			},
-			onBlock: reaction => {
-				Logger.info('ActReaction onBlock');
-				events.onBlock(reaction);
-			},
 			onEvasionStart: reaction => {
 				Logger.info('ActReaction onEvasionStart');
 				events.onEvasionStart(reaction);
@@ -262,6 +258,10 @@ class ActReaction {
 				const tgt = reaction.getEvasionTarget();
 				Logger.info(`ActReaction onEvasionEnd: ${formatTile(tgt)}`);
 				events.onEvasionEnd(reaction);
+			},
+			onBlock: reaction => {
+				Logger.info('ActReaction onBlock');
+				events.onBlock(reaction);
 			},
 			onReset: reaction => {
 				Logger.info('ActReaction onReset');

@@ -22,7 +22,7 @@ export interface IActEvents {
 
 export interface IActRecord {
 	readonly id: number;
-	readonly actor: Character;
+	readonly actor: string;
 	readonly skipped: boolean;
 	readonly movePhase: IActMoveRecord;
 	readonly actionPhase: IActActionRecord;
@@ -308,8 +308,8 @@ class Act {
 	public serialize(): IActRecord {
 		return {
 			id: this.id,
-			actor: this.actor,
 			skipped: this.skipped,
+			actor: this.actor.data.id,
 			movePhase: this.movePhase.serialize(),
 			actionPhase: this.actionPhase.serialize(),
 			directPhase: this.directPhase.serialize()
