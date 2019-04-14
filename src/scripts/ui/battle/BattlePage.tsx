@@ -58,6 +58,7 @@ class BattlePageContainer extends React.Component<IProps, IState> {
 				onGameOver: engineState => {
 					const record = engineState.chronox.map(ch => ({
 						id: ch.id,
+						skipped: ch.skipped,
 						actor: {
 							name: ch.actor.name,
 							player: ch.actor.player.getName(),

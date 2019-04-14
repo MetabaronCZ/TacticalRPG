@@ -10,11 +10,12 @@ import ActMove, { IActMoveRecord } from 'modules/battle/act/movement';
 import ActAction, { IActActionRecord } from 'modules/battle/act/action';
 import ActDirect, { IActDirectRecord } from 'modules/battle/act/direction';
 
-type ActPhase = 'INIT' | 'IDLE' | 'MOVEMENT' | 'ACTION' | 'DIRECTION';
+type ActPhase = 'INIT' | 'IDLE' | 'SKIPPING' | 'MOVEMENT' | 'ACTION' | 'DIRECTION';
 
 export interface IActEvents {
 	onStart: (act: Act) => void;
 	onUpdate: (act: Act) => void;
+	onSkip: (act: Act) => void;
 	onEnd: (act: Act) => void;
 	onBattleInfo: (info: IBattleInfo) => void;
 }
@@ -22,6 +23,7 @@ export interface IActEvents {
 export interface IActRecord {
 	readonly id: number;
 	readonly actor: Character;
+	readonly skipped: boolean;
 	readonly movePhase: IActMoveRecord;
 	readonly actionPhase: IActActionRecord;
 	readonly directPhase: IActDirectRecord;
@@ -39,6 +41,7 @@ class Act {
 
 	private phase: ActPhase = 'INIT';
 	private actions: CharacterAction[] = [];
+	private skipped: boolean = false;
 
 	constructor(id: number, actor: Character, characters: Character[], events: IActEvents) {
 		this.id = id;
@@ -147,15 +150,13 @@ class Act {
 		actor.startAct();
 		this.events.onStart(this);
 
-		this.movePhase.start();
-
-		if (actor.status.has('DYING')) {
-			// pass any actions for dying character
-			setTimeout(() => {
-				const passAction = CharacterActions.getPassAction();
-				this.selectAction(passAction);
-			});
-		}
+		setTimeout(() => { // prevent race condition
+			if (actor.status.has('DYING')) {
+				this.skip();
+			} else {
+				this.movePhase.start();
+			}
+		});
 	}
 
 	public selectTile(tile: Tile) {
@@ -308,16 +309,28 @@ class Act {
 		return {
 			id: this.id,
 			actor: this.actor,
+			skipped: this.skipped,
 			movePhase: this.movePhase.serialize(),
 			actionPhase: this.actionPhase.serialize(),
 			directPhase: this.directPhase.serialize()
 		};
 	}
 
+	private skip() {
+		this.phase = 'SKIPPING';
+		this.skipped = true;
+
+		this.events.onSkip(this);
+
+		setTimeout(() => { // prevent race condition
+			this.end();
+		});
+	}
+
 	private end() {
 		const { phase, actor } = this;
 
-		if ('DIRECTION' !== phase) {
+		if ('DIRECTION' !== phase && 'SKIPPING' !== phase) {
 			throw new Error('Could not end act: invalid phase ' + phase);
 		}
 
@@ -484,6 +497,10 @@ class Act {
 				events.onStart(act);
 			},
 			onUpdate: events.onUpdate,
+			onSkip: act => {
+				Logger.info('Act onSkip');
+				events.onSkip(act);
+			},
 			onEnd: act => {
 				Logger.info('Act onEnd');
 				events.onEnd(act);

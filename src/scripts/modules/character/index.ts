@@ -92,28 +92,21 @@ class Character {
 	// updates on every game tick
 	public update(onInfo: IOnBattleInfo) {
 		if (this.dead) {
-			return;
+			throw new Error('Cannot update dead character');
 		}
 
 		// update status effects
 		this.status.update(this, onInfo);
 
-		if (!this.status.has('DYING')) {
-			// update CT
-			const { SPD, CT } = this.attributes;
-			this.attributes.set('CT', CT + SPD);
-		}
+		// update CT
+		const { SPD, CT } = this.attributes;
+		this.attributes.set('CT', CT + SPD);
 	}
 
 	// update on character act start
 	public startAct() {
 		if (this.dead) {
 			throw new Error('Character cannot start act: dead state');
-		}
-
-		if (this.status.has('DYING')) {
-			// pass if character is dying
-			return;
 		}
 
 		// regenerate actor AP
@@ -138,11 +131,6 @@ class Character {
 	public endAct() {
 		if (this.dead) {
 			throw new Error('Character cannot end act: dead or dying');
-		}
-
-		if (this.status.has('DYING')) {
-			// pass if character is dying
-			return;
 		}
 
 		// update character CT

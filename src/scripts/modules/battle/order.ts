@@ -21,7 +21,7 @@ class Order {
 
 	public update() {
 		const { players, characters } = this;
-		const liveChars = characters.filter(char => !char.isDead() && !char.status.has('DYING'));
+		const liveChars = characters.filter(char => !char.isDead());
 
 		if (liveChars.length < 2) {
 			this.order = liveChars;

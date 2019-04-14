@@ -105,7 +105,9 @@ class Engine {
 
 		// update characters
 		characters.forEach(char => {
-			char.update(this.onInfo.bind(this));
+			if (!char.isDead()) {
+				char.update(this.onInfo.bind(this));
+			}
 		});
 
 		// update order
@@ -149,9 +151,10 @@ class Engine {
 
 		// create new character act
 		this.act = new Act(this.actNumber, actor, characters, {
+			onBattleInfo: info => this.onInfo(info),
 			onStart: act => events.onUpdate(this.getState()),
 			onUpdate: act => events.onUpdate(this.getState()),
-			onBattleInfo: info => this.onInfo(info),
+			onSkip: act => events.onUpdate(this.getState()),
 			onEnd: act => {
 				// store Act record
 				const record = act.serialize();
