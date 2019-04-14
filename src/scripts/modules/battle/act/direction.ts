@@ -57,10 +57,12 @@ class ActDirect {
 
 		this.events.onStart(this);
 
-		if (!actor.canAct()) {
-			// force direction to end
-			this.select(this.target);
-		}
+		setTimeout(() => { // prevent race condition
+			if (!actor.canAct()) {
+				// force direction to end
+				this.select(this.target);
+			}
+		});
 	}
 
 	public select(tile: Tile|null) {

@@ -1,6 +1,6 @@
 BUGS
 ----------------------------------------------------------------------------------------------------------
---	dead postavy provadeji Direct fazi po PASS akci >> invalid DirectPhase state DONE
+--	dead postavy maji nekolikanasobny Act
 
 
 TODO

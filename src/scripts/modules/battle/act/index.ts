@@ -331,6 +331,11 @@ class Act {
 	private updateActions() {
 		const { actor, movePhase, actionPhase, directPhase } = this;
 
+		if (actor.status.has('DYING')) {
+			this.actions = [];
+			return;
+		}
+
 		switch (this.phase) {
 			case 'MOVEMENT': {
 				this.actions = [];
