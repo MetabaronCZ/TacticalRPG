@@ -4,18 +4,10 @@ import { withRouter, RouteComponentProps } from 'react-router';
 
 import { gotoRoute } from 'core/navigation';
 import { withContext, IContext } from 'context';
-import Engine, { IEngineState } from 'modules/battle/engine';
 
 import BattleUI from 'ui/battle/BattleUI';
-
-const txtExitConfirm = 'Do you realy want to exit and lost your game progress?';
-
-const exit = (history: History) => () => {
-	 // go to Main Menu
-	if (window.confirm(txtExitConfirm)) {
-		gotoRoute(history, 'ROOT');
-	}
-};
+import Chronox from 'modules/battle/chronox';
+import Engine, { IEngineState } from 'modules/battle/engine';
 
 type IProps = RouteComponentProps<any> & IContext;
 
@@ -24,19 +16,12 @@ interface IState {
 	engineUpdate: Date|null;
 }
 
+const onExit = (history: History) => () => {
+	gotoRoute(history, 'BATTLE_SUMMARY');
+};
+
 class BattlePageContainer extends React.Component<IProps, IState> {
-	public state: IState = {
-		engineState: {
-			tick: 0,
-			act: null,
-			battleInfo: [],
-			characters: [],
-			players: [],
-			order: [],
-			chronox: null
-		},
-		engineUpdate: null
-	};
+	public state: IState;
 	private engine: Engine;
 
 	constructor(props: IProps) {
@@ -56,13 +41,17 @@ class BattlePageContainer extends React.Component<IProps, IState> {
 					this.setState({ engineState, engineUpdate: new Date() });
 				},
 				onGameOver: engineState => {
-					console.log('Chronox', engineState.chronox);
-					throw new Error('TODO: Game Over');
+					const record = engineState.chronox;
 
-					this.setState(
-						state => ({ engineState, engineUpdate: new Date() }),
-						() => exit(props.history)
-					);
+					if (null === record) {
+						throw new Error('Cannot properly end the game: Invalid Chronox record');
+					}
+					Chronox.saveRecord(record);
+
+					this.setState(state => ({
+						engineState,
+						engineUpdate: new Date()
+					}));
 				},
 				onBattleInfo: info => {
 					this.setState(state => ({
@@ -75,6 +64,11 @@ class BattlePageContainer extends React.Component<IProps, IState> {
 				},
 			}
 		});
+
+		this.state = {
+			engineState: this.engine.getState(),
+			engineUpdate: null
+		};
 	}
 
 	public componentDidMount() {
@@ -82,16 +76,20 @@ class BattlePageContainer extends React.Component<IProps, IState> {
 	}
 
 	public render() {
+		const { history } = this.props;
+		const { engineState, engineUpdate } = this.state;
+
 		const engine = this.engine;
 		const onTileSelect = engine.selectTile.bind(engine);
 		const onActionSelect = engine.selectAction.bind(engine);
 
 		return (
 			<BattleUI
-				engineState={this.state.engineState}
-				engineUpdate={this.state.engineUpdate}
+				engineState={engineState}
+				engineUpdate={engineUpdate}
 				onTileSelect={onTileSelect}
 				onActionSelect={onActionSelect}
+				onExit={onExit(history)}
 			/>
 		);
 	}

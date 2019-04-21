@@ -13,15 +13,16 @@ import Player from 'modules/battle/player';
 import { getTile } from 'modules/geometry/tiles';
 import { IBattleInfo } from 'modules/battle/battle-info';
 import { DirectionID } from 'modules/geometry/direction';
-import { PartyData, IPartyData } from 'modules/party-creation/party-data';
 import CharacterAction from 'modules/battle/character-action';
 import CharacterCreationForm from 'modules/character-creation';
 import { getRandomNames } from 'modules/random-name-generator';
-import Chronox, { IChronoxRecord, IChronoxConfig } from 'modules/battle/chronox';
 import { PlayerConfig } from 'modules/battle-configuration/player-config';
+import { PartyData, IPartyData } from 'modules/party-creation/party-data';
+import Chronox, { IChronoxRecord, IChronoxConfig } from 'modules/battle/chronox';
 import { CharacterData, ICharacterData } from 'modules/character-creation/character-data';
 
 export interface IEngineState {
+	running: boolean;
 	tick: number;
 	act: Act|null;
 	players: Array<Player|AIPlayer>;
@@ -51,6 +52,7 @@ class Engine {
 	private readonly battleInfo: IBattleInfo[] = [];
 	private readonly events: IEngineEvents;
 
+	private running = true;
 	private tick = 0; // game update counter
 	private actNumber = 0; // act ID
 	private actors: Character[] = [];
@@ -85,6 +87,9 @@ class Engine {
 		if (null === this.act) {
 			throw new Error('Could not select tile: invalid act');
 		}
+		if (!this.running) {
+			return;
+		}
 		this.act.selectTile(tile);
 	}
 
@@ -92,14 +97,31 @@ class Engine {
 		if (null === this.act) {
 			throw new Error('Could not select action: invalid act');
 		}
+		if (!this.running) {
+			return;
+		}
 		this.act.selectAction(action);
 	}
 
+	public getState(): IEngineState {
+		return {
+			running: this.running,
+			tick: this.tick,
+			act: this.act,
+			players: this.players,
+			characters: this.characters,
+			order: this.order.serialize(),
+			chronox: this.chronox.serialize(),
+			battleInfo: this.battleInfo
+		};
+	}
+
 	private update() {
-		if (null !== this.act) {
-			throw new Error('Could not update engine: a act is in progress');
+		if (!this.running) {
+			return;
 		}
 		if (this.checkWinConditions()) {
+			this.running = false;
 			this.events.onGameOver(this.getState());
 			return;
 		}
@@ -166,7 +188,6 @@ class Engine {
 				this.chronox.store(record);
 
 				// run next act
-				this.act = null;
 				this.startAct();
 			}
 		});
@@ -290,7 +311,7 @@ class Engine {
 
 		const players = conf.players.map((pl, p) => ({
 			...pl.serialize(),
-			party: p + ''
+			party: 'PARTY-' + p
 		}));
 
 		return {
@@ -308,7 +329,7 @@ class Engine {
 				};
 				return {
 					...party,
-					id: p + '',
+					id: 'PARTY-' + p,
 					slots: Array(config.maxPartySize).fill(null).map((slot, s) => {
 						return chars[s] ? chars[s].data.id : null;
 					})
@@ -328,18 +349,6 @@ class Engine {
 			}
 		}
 		return false;
-	}
-
-	private getState(): IEngineState {
-		return {
-			tick: this.tick,
-			act: this.act,
-			players: this.players,
-			characters: this.characters,
-			order: this.order.serialize(),
-			chronox: this.chronox.serialize(),
-			battleInfo: this.battleInfo
-		};
 	}
 
 	private prepareEvents(events: IEngineEvents): IEngineEvents {

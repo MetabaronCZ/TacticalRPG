@@ -53,9 +53,6 @@ class Players extends React.Component<IProps, IState> {
 
 							<tbody>
 								{pl.getCharacters().map((char, c) => {
-									if (char.isDead()) {
-										return;
-									}
 									const isDying = char.status.has('DYING');
 									const isActive = !!(act && act.getActor() === char);
 									const state = (isDying ? 'is-dying' : (isActive ? 'is-active' : ''));
@@ -76,21 +73,33 @@ class Players extends React.Component<IProps, IState> {
 												<strong>{char.name}</strong>
 											</td>
 
-											<td className="Players-item-characters-item-row Players-item-characters-item-row--number">
-												{formatInteger(HP, 3)} <span className="Players-item-characters-item-base">/ {formatInteger(baseHP, 3)}</span>
-											</td>
+											{
+												char.isDead()
+													? (
+														<td className="Players-item-characters-item-row" colSpan={4}>
+															Dead
+														</td>
+													)
+													: (
+														<React.Fragment>
+															<td className="Players-item-characters-item-row Players-item-characters-item-row--number">
+																{formatInteger(HP, 3)} <span className="Players-item-characters-item-base">/ {formatInteger(baseHP, 3)}</span>
+															</td>
 
-											<td className="Players-item-characters-item-row Players-item-characters-item-row--number">
-												{formatInteger(AP, 2)} <span className="Players-item-characters-item-base">/ {formatInteger(baseAP, 2)}</span>
-											</td>
+															<td className="Players-item-characters-item-row Players-item-characters-item-row--number">
+																{formatInteger(AP, 2)} <span className="Players-item-characters-item-base">/ {formatInteger(baseAP, 2)}</span>
+															</td>
 
-											<td className="Players-item-characters-item-row Players-item-characters-item-row--number">
-												{formatInteger(ARM, 3)} <span className="Players-item-characters-item-base">/ {formatInteger(baseARM, 3)}</span>
-											</td>
+															<td className="Players-item-characters-item-row Players-item-characters-item-row--number">
+																{formatInteger(ARM, 3)} <span className="Players-item-characters-item-base">/ {formatInteger(baseARM, 3)}</span>
+															</td>
 
-											<td className="Players-item-characters-item-row Players-item-characters-item-row--number">
-												{formatInteger(ESH, 3)} <span className="Players-item-characters-item-base">/ {formatInteger(baseESH, 3)}</span>
-											</td>
+															<td className="Players-item-characters-item-row Players-item-characters-item-row--number">
+																{formatInteger(ESH, 3)} <span className="Players-item-characters-item-base">/ {formatInteger(baseESH, 3)}</span>
+															</td>
+														</React.Fragment>
+													)
+											}
 										</tr>
 									);
 								})}
