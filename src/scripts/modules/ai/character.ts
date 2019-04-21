@@ -41,41 +41,43 @@ class AICharacter {
 		if (!this.moved) {
 			this.moved = true;
 
-			// get closest enemy
-			const pos = char.position;
-			const targets: Array<{ path: Tile[]; character: Character; }> = [];
+			if (char.canMove()) {
+				// get closest enemy
+				const pos = char.position;
+				const targets: Array<{ path: Tile[]; character: Character; }> = [];
 
-			// find all paths to enemies
-			enemy.forEach(e => {
-				if (e.isDead() || e.status.has('DYING')) {
-					return;
-				}
-				const sideTiles = e.position.getSideTiles();
+				// find all paths to enemies
+				enemy.forEach(e => {
+					if (e.isDead() || e.status.has('DYING')) {
+						return;
+					}
+					const sideTiles = e.position.getSideTiles();
 
-				for (const tile of sideTiles) {
-					if (!tile.isContained(obstacles)) {
-						try {
-							const enemyPath = getShortestPath(pos, tile, obstacles);
-							targets.push({ path: enemyPath, character: e });
-						} catch (err) {
-							// tile is not accessible
+					for (const tile of sideTiles) {
+						if (!tile.isContained(obstacles)) {
+							try {
+								const enemyPath = getShortestPath(pos, tile, obstacles);
+								targets.push({ path: enemyPath, character: e });
+							} catch (err) {
+								// tile is not accessible
+							}
 						}
 					}
-				}
-			});
+				});
 
-			if (targets.length) {
-				// find closest target
-				const sortedTargets = targets.sort((a, b) => a.path.length - b.path.length);
-				this.target = sortedTargets[0].character;
+				if (targets.length) {
+					// find closest target
+					const sortedTargets = targets.sort((a, b) => a.path.length - b.path.length);
+					this.target = sortedTargets[0].character;
 
-				const path = sortedTargets[0].path.slice(1); // path without actor position
-				const movePath = path.filter(tile => tile.isContained(movable));
+					const path = sortedTargets[0].path.slice(1); // path without actor position
+					const movePath = path.filter(tile => tile.isContained(movable));
 
-				if (movePath.length) {
-					const moveTarget = movePath[movePath.length - 1];
-					onTileSelect(moveTarget);
-					return;
+					if (movePath.length) {
+						const moveTarget = movePath[movePath.length - 1];
+						onTileSelect(moveTarget);
+						return;
+					}
 				}
 			}
 		}
@@ -102,12 +104,13 @@ class AICharacter {
 		if (!passAction) {
 			throw new Error('AI character actions does not contain pass action');
 		}
-		if (isBackAttacked) {
+		const char = this.character;
+		const ap = char.attributes.AP;
+
+		if (isBackAttacked || !char.canAct()) {
 			onSelect(passAction);
 			return;
 		}
-		const char = this.character;
-		const ap = char.attributes.AP;
 
 		// find first applicable reaction
 		for (const action of actions) {
@@ -144,7 +147,7 @@ class AICharacter {
 	public onDirect(directable: Tile[], onSelect: IOnTileSelect) {
 		const char = this.character;
 
-		if (char.isDead()) {
+		if (char.isDead() || !char.canAct()) {
 			return;
 		}
 		const pos = char.position;
@@ -171,17 +174,17 @@ class AICharacter {
 		if (!passAction) {
 			throw new Error('AI character actions does not contain pass action');
 		}
+		const char = this.character;
+		const pos = char.position;
+		const ap = char.attributes.AP;
 
 		// reset move state
 		this.moved = false;
 
-		if (!this.target) {
+		if (!this.target || !char.canAct()) {
 			onSelect(passAction);
 			return;
 		}
-		const char = this.character;
-		const pos = char.position;
-		const ap = char.attributes.AP;
 
 		// find first skill to attack chosen target
 		for (const action of actions) {

@@ -1,11 +1,6 @@
-BUGS
-----------------------------------------------------------------------------------------------------------
---	stunned AI does not make any action
-
-
 TODO
 ----------------------------------------------------------------------------------------------------------
->>	implementovat GameSummary (game state po skonceni hry)
+>>	nastylovat GameSummary
 --	EVASION udelat drazsi nez BLOCK
 --	pri vyberu reakce hracem by se melo zobrazit i info, jaky utok byl pouzit a kym
 --	CharacterAction: refaktorovat "id" na "type"
