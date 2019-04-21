@@ -425,10 +425,11 @@ class Act {
 						const reactor = reaction.getReactor();
 						const reactionState = reaction.getState();
 						const isBackAttacked = reaction.isBackAttacked();
+						const canEvade = reaction.canEvade();
 
 						switch (reactionState) {
 							case 'IDLE': {
-								const actions = CharacterActions.getReactiveActions(reactor, isBackAttacked);
+								const actions = CharacterActions.getReactiveActions(reactor, isBackAttacked, canEvade);
 
 								if (!reactor.isAI()) {
 									// player chooses reaction

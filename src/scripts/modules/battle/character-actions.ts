@@ -143,7 +143,7 @@ export const getSkillConfirmActions = (action: CharacterAction, targets: Charact
 	return actions;
 };
 
-export const getReactiveActions = (character: Character, isBackAttack: boolean): CharacterAction[] => {
+export const getReactiveActions = (character: Character, isBackAttack: boolean, canEvade: boolean): CharacterAction[] => {
 	const { offHand, armor, status } = character;
 	const isDisarmed = status.has('DISARM');
 	const AP = character.attributes.AP;
@@ -159,7 +159,7 @@ export const getReactiveActions = (character: Character, isBackAttack: boolean):
 	if ('LIGHT' === armor.id) {
 		const skill = new Skill('EVADE');
 		const cost = getCost(skill);
-		const isActive = (AP >= cost && !isBackAttack && canMove);
+		const isActive = (AP >= cost && !isBackAttack && canMove && canEvade);
 
 		const action = new CharacterAction('REACTION', skill.title, cost, 0, isActive, [skill]);
 		actions.push(action);

@@ -59,6 +59,10 @@ class ActReaction {
 		return this.isBackAttack;
 	}
 
+	public canEvade(): boolean {
+		return this.reactor.position.getSideTiles(this.obstacles).length > 0;
+	}
+
 	public getReactor(): Character {
 		return this.reactor;
 	}

@@ -1,7 +1,6 @@
 BUGS
 ----------------------------------------------------------------------------------------------------------
---	pri kontrole, jestli jde udelat EVASION, brat v potaz i DYING charactery kolem
-	- reakce se nabizi, i kdyz neni kolem kam jit
+--	stunned AI does not make any action
 
 
 TODO
