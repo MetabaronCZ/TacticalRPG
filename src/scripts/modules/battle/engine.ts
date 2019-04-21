@@ -299,7 +299,7 @@ class Engine {
 			parties: this.players.map((pl, p) => {
 				const chars = pl.getCharacters();
 
-				const party: IPartyData = conf.parties[p] ? conf.parties[p].serialize() : {
+				const party: IPartyData = (conf.parties.length > p) ? conf.parties[p].serialize() : {
 					id: '',
 					name: 'UNKNOWN',
 					creationDate: Date.now(),
