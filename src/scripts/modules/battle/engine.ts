@@ -375,6 +375,9 @@ class Engine {
 
 		// remove battle info item after fixed amount of time
 		setTimeout(() => {
+			if (!this.running) {
+				return;
+			}
 			for (let i = 0, imax = battleInfo.length; i < imax; i++) {
 				if (battleInfo[i] === info) {
 					battleInfo.splice(i, 1);

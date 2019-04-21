@@ -1,6 +1,7 @@
 TODO
 ----------------------------------------------------------------------------------------------------------
 >>	nastylovat GameSummary
+	- vybrat trojice nejlepsich postav (most kills, most healing, most tiles moved)
 --	EVASION udelat drazsi nez BLOCK
 --	pri vyberu reakce hracem by se melo zobrazit i info, jaky utok byl pouzit a kym
 --	CharacterAction: refaktorovat "id" na "type"
@@ -39,15 +40,12 @@ LONG TERM
 
 --	vyrovnani atributu
 	- postavy, zbrane, brneni, skilly
-	? drazsi reaktivni skilly
 
 --	AI
+	- GOAP
 	- urovne obtiznosti (nastaveni AI)
 	- kooperace postav
-
---	Skore
 
 --	Chronox
 	OK	trackovat rozhodnuti
 	--	pripravit replay (ulozeni na konci souboje + moznost krokovani, jako u sachu)
-	--	pripravit moznost jit o krok (Act) zpet primo ve hre (udelat konfigurovatelne - pro single play)
