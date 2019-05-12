@@ -175,7 +175,7 @@ class Act {
 				switch (actionState) {
 					case 'IDLE':
 					case 'SELECTED': {
-						const prevTarget = actionPhase.getEffectTarget();
+						const prevTarget = actionPhase.getTarget();
 
 						// confirm target on double selection
 						if (prevTarget === tile) {

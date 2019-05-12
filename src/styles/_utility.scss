@@ -6,6 +6,10 @@
 	}
 }
 
+.u-disabled {
+	color: $color-grey;
+}
+
 // margins
 .u-mt-1 { margin-top: 1*$vu; }
 .u-mt-2 { margin-top: 2*$vu; }
@@ -27,6 +31,16 @@
 .u-mr-3 { margin-right: 3*$vu; }
 .u-mr-4 { margin-right: 4*$vu; }
 
-.u-disabled {
-	color: $color-grey;
+// alignment
+.u-align-left { text-align: left; }
+.u-align-right { text-align: right; }
+.u-align-center { text-align: center; }
+.u-align-top { vertical-align: top; }
+.u-align-bottom { vertical-align: bottom; }
+.u-align-middle { vertical-align: middle; }
+
+// adapt table column width to its content
+.u-tableColumnFit {
+	width: 1px;
+	white-space: nowrap;
 }

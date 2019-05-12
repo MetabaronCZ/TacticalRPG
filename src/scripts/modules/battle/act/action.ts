@@ -6,13 +6,14 @@ import { getIntersection, getRandomItem } from 'core/array';
 import { formatNumber, randomNumberBetween } from 'core/number';
 
 import { formatTile } from 'modules/format';
+import { resolveDirection } from 'modules/geometry/direction';
+import { getDamageInfo, isBackAttacked } from 'modules/battle/damage';
+
 import Logger from 'modules/logger';
 import Tile from 'modules/geometry/tile';
 import Character from 'modules/character';
 import { IBattleInfo } from 'modules/battle/battle-info';
 import CharacterAction from 'modules/battle/character-action';
-import { resolveDirection } from 'modules/geometry/direction';
-import { getDamageInfo, isBackAttacked } from 'modules/battle/damage';
 import ActReaction, { IActReactionRecord } from 'modules/battle/act/reaction';
 
 interface IActActionEvents {
@@ -38,7 +39,7 @@ interface IActActionEvents {
 
 export interface IActActionRecord {
 	readonly action: string|null;
-	readonly effectTarget: string|null;
+	readonly target: string|null;
 	readonly reactions: IActReactionRecord[];
 }
 
@@ -55,9 +56,10 @@ class ActAction {
 	private reaction: ActReaction|null = null; // current reaction phase
 	private reactions: ActReaction[] = []; // action reactor phases
 	private area: Tile[] = []; // skill range tiles
+	private target: Tile|null = null; // selected skill target
 	private targets: Tile[] = []; // targetable tiles
 	private effectArea: Tile[] = []; // targeted skill effect area
-	private effectTarget: Tile|null = null; // selected skill target
+	private effectTarget: Character|null = null; // targeted character
 	private effectTargets: Character[] = []; // targeted skill affected characters
 
 	constructor(actor: Character, characters: Character[], events: IActActionEvents) {
@@ -82,11 +84,15 @@ class ActAction {
 		return this.targets;
 	}
 
+	public getTarget(): Tile|null {
+		return this.target;
+	}
+
 	public getEffectArea(): Tile[] {
 		return this.effectArea;
 	}
 
-	public getEffectTarget(): Tile|null {
+	public getEffectTarget(): Character|null {
 		return this.effectTarget;
 	}
 
@@ -152,23 +158,25 @@ class ActAction {
 		// get skill effect area
 		const effectAreas = skills.map(s => s.getEffectArea(actor.position, target));
 		const effectArea = getIntersection(effectAreas, pos => pos.id);
+		const effectTarget = characters.find(char => target === char.position) || null;
 		const effectTargets = skills[0].getTargets(actor, characters, effectArea);
 
-		this.effectTarget = target;
+		this.target = target;
 		this.effectArea = effectArea;
+		this.effectTarget = effectTarget;
 		this.effectTargets = effectTargets;
 
 		this.events.onSelect(this);
 	}
 
 	public confirm() {
-		const { actor, state, action, characters, effectTarget, effectTargets, events } = this;
+		const { actor, state, action, characters, target, effectTargets, events } = this;
 
 		if ('SELECTED' !== state) {
 			throw new Error('Could not confirm action: invalid state ' + state);
 		}
 
-		if (null === action || null === effectTarget || !effectTargets.length || !action.isActive()) {
+		if (null === action || null === target || !effectTargets.length || !action.isActive()) {
 			throw new Error('Could not confirm action: invalid action data');
 		}
 		this.state = 'CONFIRMED';
@@ -244,6 +252,7 @@ class ActAction {
 		this.reaction = null;
 		this.reactions = [];
 		this.area = [];
+		this.target = null;
 		this.targets = [];
 		this.effectArea = [];
 		this.effectTarget = null;
@@ -255,7 +264,7 @@ class ActAction {
 	public serialize(): IActActionRecord {
 		return {
 			action: (this.action ? this.action.title : null),
-			effectTarget: (this.effectTarget ? this.effectTarget.id : null),
+			target: (this.effectTarget ? this.effectTarget.data.id : null),
 			reactions: this.reactions.map(reaction => reaction.serialize())
 		};
 	}
@@ -290,15 +299,12 @@ class ActAction {
 
 		// animate skill action
 		const skillAnim = new Animation(timing, step => {
-			const reaction = this.reactions[step.number];
 			const target = effectTargets[step.number];
 			const targetPos = target.position;
 			const info: IBattleInfo[] = [];
 
 			if (!targetPos.isContained(effectArea)) {
 				// target has been pushed from or evaded skill action
-				reaction.setResult('MISS');
-
 				info.push({
 					text: 'Evaded',
 					type: 'ACTION',
@@ -432,8 +438,6 @@ class ActAction {
 					target.applyDamage(damage.physical, damage.magical, damageStatus);
 
 					if (target.status.has('DYING')) {
-						reaction.setResult('KILL');
-
 						info.push({
 							text: 'Dying',
 							type: 'ACTION',
@@ -451,7 +455,6 @@ class ActAction {
 							});
 						}
 					}
-					reaction.setResult('HIT');
 				}
 			}
 
@@ -490,7 +493,7 @@ class ActAction {
 				events.onReset(action);
 			},
 			onSelect: (action: ActAction) => {
-				const tgt = action.getEffectTarget();
+				const tgt = action.getTarget();
 				Logger.info(`ActAction onSelect: "${formatTile(tgt)}"`);
 				events.onSelect(action);
 			},

@@ -59,7 +59,7 @@ const getTileType = (tile: Tile, act: Act|null): TileType => {
 					break;
 
 				case 'SELECTED': {
-					const tgt = actionPhase.getEffectTarget();
+					const tgt = actionPhase.getTarget();
 
 					if (tile.isContained(actionPhase.getEffectArea())) {
 						type = 'actionEffectArea';

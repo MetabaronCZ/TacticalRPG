@@ -1,8 +1,9 @@
 import { formatTile } from 'modules/format';
+import { resolveDirection, findTileFrom } from 'modules/geometry/direction';
+
 import Logger from 'modules/logger';
 import Tile from 'modules/geometry/tile';
 import Character from 'modules/character';
-import { resolveDirection, findTileFrom } from 'modules/geometry/direction';
 
 interface IActDirectEvents {
 	onStart: (direct: ActDirect) => void;
@@ -97,7 +98,7 @@ class ActDirect {
 
 	public serialize(): IActDirectRecord {
 		return {
-			target: (this.target ? this.target.id : null)
+			target: (this.target ? formatTile(this.target) : null)
 		};
 	}
 

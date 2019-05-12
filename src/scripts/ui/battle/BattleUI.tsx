@@ -49,7 +49,7 @@ const BattleUI: React.SFC<IBattleUIProps> = ({ engineState, engineUpdate, onTile
 									? <ActUI act={act} onActionSelect={onActionSelect}/>
 									: (
 										<React.Fragment>
-											<h2 className="Heading Heading--h2">Game Over</h2>
+											<h2 className="Heading">Game Over</h2>
 											<Button text="Show summary" onClick={onExit} />
 										</React.Fragment>
 									)

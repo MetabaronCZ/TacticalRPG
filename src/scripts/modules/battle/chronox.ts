@@ -22,7 +22,7 @@ class Chronox {
 	private readonly characters: ICharacterData[];
 	private readonly players: IPlayerConfig[];
 	private readonly parties: IPartyData[];
-	private readonly timeline: IActRecord[] = [];
+	private readonly timeline: IActRecord[] = []; // character decision records
 
 	constructor(config: IChronoxConfig) {
 		this.characters = config.characters;
@@ -30,7 +30,7 @@ class Chronox {
 		this.parties = config.parties;
 	}
 
-	public static loadRocord(): IChronoxRecord {
+	public static loadRecord(): IChronoxRecord {
 		const data = sessionStorage.getItem(KEY);
 
 		if (!data) {
