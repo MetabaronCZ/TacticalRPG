@@ -110,7 +110,7 @@ const getStatusModifier = (defender: Character): number => {
 };
 
 const getStatusEffects = (attacker: Character, defender: Character, skill: Skill): IStatusEffect[] => {
-	const statuses = skill.status.map(id => StatusEffects.get(id)());
+	const statuses = skill.status.map(id => StatusEffects.get(id)(attacker, 0, 0));
 	const { STR: attSTR, MAG: attMAG } = attacker.attributes;
 	const { VIT: defVIT, SPR: defSPR } = defender.attributes;
 	const effects: IStatusEffect[] = [];

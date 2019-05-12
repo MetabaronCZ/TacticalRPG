@@ -221,7 +221,7 @@ class ActReaction {
 			throw new Error('Could not start to evade: invalid state ' + state);
 		}
 		this.state = 'DONE';
-		this.reactor.status.apply(block);
+		this.reactor.status.apply(this.reactor, block);
 
 		this.events.onBlock(this);
 

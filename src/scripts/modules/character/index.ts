@@ -7,6 +7,7 @@ import { characterCTLimit } from 'data/game-config';
 import Tile from 'modules/geometry/tile';
 import AIPlayer from 'modules/ai/player';
 import Player from 'modules/battle/player';
+import Score from 'modules/character/score';
 import { ISexData } from 'modules/character/sex';
 import Skillset from 'modules/character/skillset';
 import StatusEffect from 'modules/character/status';
@@ -47,6 +48,8 @@ class Character {
 	public direction: DirectionID;
 	public cooldowns: ISkillCooldowns = {}; // skill cooldowns
 
+	public score: Score;
+
 	private dead: boolean = false;
 
 	constructor(character: CharacterData, position: Tile, direction: DirectionID, player: Player) {
@@ -71,6 +74,8 @@ class Character {
 		this.position = position;
 		this.direction = direction;
 		this.status = new StatusEffect();
+
+		this.score = new Score();
 	}
 
 	public isDead(): boolean {
@@ -140,7 +145,7 @@ class Character {
 		this.attributes.set('CT', CT % characterCTLimit);
 	}
 
-	public applyDamage(physical: number, magical: number, effectIds: StatusEffectID[] = []) {
+	public applyDamage(attacker: Character, physical: number, magical: number, effectIds: StatusEffectID[] = []) {
 		const { attributes, status } = this;
 
 		if (this.dead || status.has('DYING')) {
@@ -150,6 +155,7 @@ class Character {
 		let newARM = ARM - physical;
 		let newESH = ESH - magical;
 		let newHP = HP;
+		let damage = 0;
 
 		if (newARM < 0) {
 			newHP += newARM;
@@ -160,37 +166,47 @@ class Character {
 			newHP += newESH;
 			newESH = 0;
 		}
+		newHP = newHP > 0 ? newHP : 0;
+
 		attributes.set('ARM', newARM);
 		attributes.set('ESH', newESH);
-		attributes.set('HP', newHP > 0 ? newHP : 0);
+		attributes.set('HP', newHP);
+
+		damage += ARM - newARM;
+		damage += ESH - newESH;
+		damage += HP - newHP;
+
+		attacker.score.setDamage(this, damage);
 
 		// apply damage status effects
 		for (const effect of effectIds) {
-			status.apply(effect, physical, magical);
+			status.apply(attacker, effect, physical, magical);
 		}
 
 		// set DYING status if mortally wounded
 		if (attributes.HP <= 0) {
 			status.removeAll();
-			status.apply('DYING');
+			status.apply(attacker, 'DYING');
+			attacker.score.setKill(this);
 		}
 	}
 
-	public applyHealing(healing: number, effectIds: StatusEffectID[] = []) {
+	public applyHealing(healer: Character, healing: number, effectIds: StatusEffectID[] = []) {
 		if (this.dead || this.status.has('DYING')) {
 			throw new Error('Cannot apply healing: dead or dying');
 		}
-		const newHP = this.attributes.HP + healing;
-		const maxHP = this.baseAttributes.HP;
+		const healable = this.baseAttributes.HP - this.attributes.HP;
+		const healed = healable > healing ? healing : healable;
 
-		this.attributes.set('HP', newHP < maxHP ? newHP : maxHP);
+		this.attributes.set('HP', healed);
+		healer.score.setHealing(this, healed);
 
 		for (const effect of effectIds) {
-			this.status.apply(effect, 0, healing);
+			this.status.apply(healer, effect, 0, healing);
 		}
 	}
 
-	public revive() {
+	public revive(healer: Character) {
 		if (!this.status.has('DYING')) {
 			throw new Error('Illegal character revive attempt');
 		}
@@ -198,6 +214,8 @@ class Character {
 
 		this.attributes.set('HP', this.baseAttributes.HP);
 		this.attributes.set('CT', 0);
+
+		healer.score.setRevive(this);
 	}
 
 	public die() {

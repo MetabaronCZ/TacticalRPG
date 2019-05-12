@@ -3,8 +3,6 @@ import { IPartyData } from 'modules/party-creation/party-data';
 import { IPlayerConfig } from 'modules/battle-configuration/player-config';
 import { ICharacterData } from 'modules/character-creation/character-data';
 
-const KEY = 'chronox';
-
 export interface IChronoxConfig {
 	characters: ICharacterData[];
 	players: IPlayerConfig[];
@@ -28,23 +26,6 @@ class Chronox {
 		this.characters = config.characters;
 		this.players = config.players;
 		this.parties = config.parties;
-	}
-
-	public static loadRecord(): IChronoxRecord {
-		const data = sessionStorage.getItem(KEY);
-
-		if (!data) {
-			throw new Error('Could not create Chronox: No save data');
-		}
-		try {
-			return JSON.parse(data) as IChronoxRecord;
-		} catch (err) {
-			throw new Error('Could not create Chronox: Invalid save data');
-		}
-	}
-
-	public static saveRecord(record: IChronoxRecord) {
-		sessionStorage.setItem(KEY, JSON.stringify(record));
 	}
 
 	public store(record: IActRecord) {

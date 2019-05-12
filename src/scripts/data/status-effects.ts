@@ -1,9 +1,10 @@
 import DataList from 'core/data-list';
 import { formatNumber } from 'core/number';
 
+import Character from 'modules/character';
 import { IStatusEffect, StatusEffectID } from 'modules/battle/status-effect';
 
-type StatusEffectFun = (phy?: number, mag?: number) => IStatusEffect;
+type StatusEffectFun = (source: Character, phy: number, mag: number) => IStatusEffect;
 
 const StatusEffects = new DataList<StatusEffectID, StatusEffectFun>({
 	CRIPPLE: () => ({
@@ -22,7 +23,7 @@ const StatusEffects = new DataList<StatusEffectID, StatusEffectFun>({
 		type: 'PHYSICAL',
 		duration: 100
 	}),
-	BLEED: (phy = 0) => ({
+	BLEED: (src, phy) => ({
 		id: 'BLEED',
 		title: 'Bleed',
 		effect: 'Wounded',
@@ -30,14 +31,14 @@ const StatusEffects = new DataList<StatusEffectID, StatusEffectFun>({
 		type: 'PHYSICAL',
 		duration: 33,
 		repeat: 3,
-		apply: (char, cb) => {
+		apply: (tgt, cb) => {
 			const dmg = Math.floor(phy / 2);
-			char.applyDamage(dmg, 0);
+			tgt.applyDamage(src, dmg, 0);
 
 			cb({
 				text: formatNumber(dmg),
 				type: 'DAMAGE',
-				position: char.position
+				position: tgt.position
 			});
 		}
 	}),
@@ -49,7 +50,7 @@ const StatusEffects = new DataList<StatusEffectID, StatusEffectFun>({
 		type: 'PHYSICAL',
 		duration: 100
 	}),
-	BURN: (phy = 0, mag = 0) => ({
+	BURN: (src, phy, mag) => ({
 		id: 'BURN',
 		title: 'Burn',
 		effect: 'Burning',
@@ -57,15 +58,15 @@ const StatusEffects = new DataList<StatusEffectID, StatusEffectFun>({
 		type: 'MAGICAL',
 		duration: 33,
 		repeat: 3,
-		apply: (char, cb) => {
+		apply: (tgt, cb) => {
 			const dmg = Math.floor(mag / 2);
-			char.applyDamage(0, dmg);
+			tgt.applyDamage(src, 0, dmg);
 
 			cb({
 				text: formatNumber(dmg),
 				type: 'DAMAGE',
 				element: 'FIRE',
-				position: char.position
+				position: tgt.position
 			});
 		}
 	}),
@@ -118,7 +119,7 @@ const StatusEffects = new DataList<StatusEffectID, StatusEffectFun>({
 			});
 		}
 	}),
-	REGEN: (phy = 0, mag = 0) => ({
+	REGEN: (src, phy, mag) => ({
 		id: 'REGEN',
 		title: 'Regen',
 		effect: 'Rejuvenating',
@@ -126,14 +127,14 @@ const StatusEffects = new DataList<StatusEffectID, StatusEffectFun>({
 		type: 'SUPPORT',
 		duration: 33,
 		repeat: 3,
-		apply: (char, cb) => {
+		apply: (tgt, cb) => {
 			const healing = Math.floor(mag / 2);
-			char.applyHealing(healing);
+			tgt.applyHealing(src, healing);
 
 			cb({
 				text: formatNumber(healing),
 				type: 'HEALING',
-				position: char.position
+				position: tgt.position
 			});
 		}
 	}),

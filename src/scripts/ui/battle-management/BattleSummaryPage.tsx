@@ -3,8 +3,9 @@ import { History } from 'history';
 import { withRouter, RouteComponentProps } from 'react-router';
 
 import { gotoRoute } from 'core/navigation';
+
 import { IActRecord } from 'modules/battle/act';
-import Chronox, { IChronoxRecord } from 'modules/battle/chronox';
+import Summary, { ISummary, IScoreRecord } from 'modules/battle/summary';
 import { ICharacterData } from 'modules/character-creation/character-data';
 
 import Page from 'ui/common/Page';
@@ -12,10 +13,12 @@ import Button from 'ui/common/Button';
 import Separator from 'ui/common/Separator';
 import ButtonRow from 'ui/common/ButtonRow';
 
+const topListSize = 5; // maximum items of diplayed top kills, damage, ...
+
 type IProps = RouteComponentProps<any>;
 
 interface IState {
-	record: IChronoxRecord|null;
+	record: ISummary|null;
 }
 
 const exit = (history: History) => () => {
@@ -29,6 +32,17 @@ interface IRecordAnalysis {
 	move: string;
 	action: string;
 	reactions: string[];
+}
+
+interface IScoreItem {
+	readonly name: string;
+	readonly amount: number;
+}
+
+interface IScoreAnalysis {
+	kills: IScoreItem[];
+	damage: IScoreItem[];
+	healing: IScoreItem[];
 }
 
 const getRowInfo = (characters: ICharacterData[], record: IActRecord): IRecordAnalysis => {
@@ -80,13 +94,51 @@ const getRowInfo = (characters: ICharacterData[], record: IActRecord): IRecordAn
 	return result;
 };
 
+const analyzeScore = (score: IScoreRecord, characters: ICharacterData[]): IScoreAnalysis => {
+	const result: IScoreAnalysis = {
+		kills: [],
+		damage: [],
+		healing: []
+	};
+	for (const id in score) {
+		const char = characters.find(ch => id === ch.id);
+		const data = score[id];
+
+		if (!char) {
+			throw new Error('Invalid score record character ID');
+		}
+		if (data.kills > 0) {
+			result.kills.push({ name: char.name, amount: data.kills });
+		}
+		if (data.damage > 0) {
+			result.damage.push({ name: char.name, amount: data.damage });
+		}
+		if (data.healing > 0) {
+			result.healing.push({ name: char.name, amount: data.healing });
+		}
+	}
+	result.kills = result.kills
+		.sort((a, b) => b.amount - a.amount)
+		.slice(0, topListSize);
+
+	result.damage = result.damage
+		.sort((a, b) => b.amount - a.amount)
+		.slice(0, topListSize);
+
+	result.healing = result.healing
+		.sort((a, b) => b.amount - a.amount)
+		.slice(0, topListSize);
+
+	return result;
+};
+
 class BattleSummaryPage extends React.Component<IProps, IState> {
 	public state: IState = {
 		record: null
 	};
 
 	public componentDidMount() {
-		const record = Chronox.loadRecord();
+		const record = Summary.load();
 		this.setState({ record });
 	}
 
@@ -101,33 +153,65 @@ class BattleSummaryPage extends React.Component<IProps, IState> {
 				</Page>
 			);
 		}
-		const winner = '???';
+		const { chronox, score, winner } = record;
+		const winPlayer = chronox.players[winner].name;
+		const scoreAnalysis = analyzeScore(score, chronox.characters);
 
 		return (
 			<Page heading="Summary">
 				<h2 className="Heading">
-					Player "{winner}" won!
+					Player "{winPlayer}" won!
 				</h2>
 
-				{record.players.map((pl, p) => {
-					const party = record.parties.find(pt => pl.party === pt.id);
+				{chronox.players.map((pl, p) => {
+					const party = chronox.parties.find(pt => pl.party === pt.id);
 
 					const slots = party
-						? party.slots.map(sl => record.characters.find(char => sl === char.id))
+						? party.slots.map(sl => chronox.characters.find(char => sl === char.id))
 						: [];
 
 					const characters = slots.map(sl => sl ? sl.name : null).filter(char => null !== char);
 
 					return (
-						<div key={p}>
-							<div className="Paragraph">
-								<strong>Player "{pl.name}" ({pl.control})</strong>
-								<br />
-								{characters.join(', ')}
-							</div>
+						<div className="Paragraph" key={p}>
+							<strong>Player "{pl.name}" ({pl.control})</strong>
+							<br />
+							{characters.join(', ')}
 						</div>
 					);
 				})}
+
+				<h2 className="Heading">
+					Score
+				</h2>
+
+				<ul className="List">
+					<li className="List-row List-row--header">
+						<div className="List-row-column">Top kills</div>
+						<div className="List-row-column">Top damage</div>
+						<div className="List-row-column">Top healing</div>
+					</li>
+
+					<li className="List-row">
+						<div className="List-row-column">
+							{scoreAnalysis.kills.map((item, i) => (
+								<div key={i}>{i + 1}. {item.name}: {item.amount}x</div>
+							))}
+						</div>
+
+						<div className="List-row-column">
+							{scoreAnalysis.damage.map((item, i) => (
+								<div key={i}>{i + 1}. {item.name}: {item.amount}</div>
+							))}
+						</div>
+
+						<div className="List-row-column">
+							{scoreAnalysis.healing.map((item, i) => (
+								<div key={i}>{i + 1}. {item.name}: {item.amount}</div>
+							))}
+						</div>
+					</li>
+				</ul>
 
 				<h2 className="Heading">
 					Decisions timeline
@@ -142,11 +226,11 @@ class BattleSummaryPage extends React.Component<IProps, IState> {
 						<div className="List-row-column">Reaction/s</div>
 					</li>
 
-					{record.timeline.map((t, i) => {
+					{chronox.timeline.map((t, i) => {
 						if (t.skipped) {
 							return;
 						}
-						const item = getRowInfo(record.characters, t);
+						const item = getRowInfo(chronox.characters, t);
 
 						return (
 							<li className="List-row u-align-top" key={i}>

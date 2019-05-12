@@ -6,7 +6,8 @@ import { gotoRoute } from 'core/navigation';
 import { withContext, IContext } from 'context';
 
 import BattleUI from 'ui/battle/BattleUI';
-import Chronox from 'modules/battle/chronox';
+
+import Summary from 'modules/battle/summary';
 import Engine, { IEngineState } from 'modules/battle/engine';
 
 type IProps = RouteComponentProps<any> & IContext;
@@ -40,13 +41,13 @@ class BattlePageContainer extends React.Component<IProps, IState> {
 				onUpdate: engineState => {
 					this.setState({ engineState, engineUpdate: new Date() });
 				},
-				onGameOver: engineState => {
+				onGameOver: (engineState, winner) => {
 					const record = engineState.chronox;
 
 					if (null === record) {
 						throw new Error('Cannot properly end the game: Invalid Chronox record');
 					}
-					Chronox.saveRecord(record);
+					Summary.save(record, engineState.characters, winner);
 
 					this.setState(state => ({
 						engineState,

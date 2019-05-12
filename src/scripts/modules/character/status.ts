@@ -15,9 +15,9 @@ class Status {
 		return this.items;
 	}
 
-	public apply(effectId: StatusEffectID, physical?: number, magical?: number) {
+	public apply(source: Character, effectId: StatusEffectID, physical = 0, magical = 0) {
 		const effect = StatusEffects.get(effectId);
-		this.items.push(effect(physical, magical));
+		this.items.push(effect(source, physical, magical));
 	}
 
 	public remove(effectId: StatusEffectID) {
@@ -28,7 +28,7 @@ class Status {
 		this.items = [];
 	}
 
-	public update(character: Character, cb: IOnBattleInfo) {
+	public update(char: Character, cb: IOnBattleInfo) {
 		for (const item of this.items) {
 			item.duration = item.duration || 0;
 			item.repeat = item.repeat || 0;
@@ -36,11 +36,11 @@ class Status {
 			item.duration--;
 
 			if (item.duration <= 0) {
-				item.duration = StatusEffects.get(item.id)().duration;
+				item.duration = StatusEffects.get(item.id)(char, 0, 0).duration;
 				item.repeat--;
 
 				if (item.apply) {
-					item.apply(character, cb);
+					item.apply(char, cb);
 				}
 
 				if (item.repeat <= 0) {
@@ -49,7 +49,7 @@ class Status {
 					cb({
 						text: `${item.title} ended`,
 						type: 'ACTION',
-						position: character.position
+						position: char.position
 					});
 				}
 			}

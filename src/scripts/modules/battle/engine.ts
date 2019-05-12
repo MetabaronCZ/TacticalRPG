@@ -35,7 +35,7 @@ export interface IEngineState {
 interface IEngineEvents {
 	onStart: (state: IEngineState) => void;
 	onUpdate: (state: IEngineState) => void;
-	onGameOver: (state: IEngineState) => void;
+	onGameOver: (state: IEngineState, winner: number) => void;
 	onBattleInfo: (state: IBattleInfo[]) => void;
 }
 
@@ -120,9 +120,11 @@ class Engine {
 		if (!this.running) {
 			return;
 		}
-		if (this.checkWinConditions()) {
+		const winner = this.getWinner();
+
+		if (null !== winner) {
 			this.running = false;
-			this.events.onGameOver(this.getState());
+			this.events.onGameOver(this.getState(), winner);
 			return;
 		}
 		const { characters, order } = this;
@@ -338,17 +340,18 @@ class Engine {
 		};
 	}
 
-	private checkWinConditions(): boolean {
-		const { players } = this;
+	private getWinner(): number|null {
+		const len = this.players.length;
 
-		for (const pl of players) {
-			const liveChars = pl.getCharacters().filter(char => !char.isDead() && !char.status.has('DYING'));
+		for (let p = 0; p < len; p++) {
+			const liveChars = this.players[p].getCharacters()
+				.filter(char => !char.isDead() && !char.status.has('DYING'));
 
 			if (0 === liveChars.length) {
-				return true;
+				return len - 1 - p;
 			}
 		}
-		return false;
+		return null;
 	}
 
 	private prepareEvents(events: IEngineEvents): IEngineEvents {
@@ -358,9 +361,10 @@ class Engine {
 				events.onStart(state);
 			},
 			onUpdate: events.onUpdate,
-			onGameOver: state => {
+			onGameOver: (state, winner) => {
 				Logger.info('Engine onGameOver');
-				events.onGameOver(state);
+				Logger.info(`Player "${this.players[winner].getName()}" won!`);
+				events.onGameOver(state, winner);
 			},
 			onBattleInfo: events.onBattleInfo
 		};

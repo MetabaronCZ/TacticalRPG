@@ -340,7 +340,7 @@ class ActAction {
 								if (!target.status.has('DYING')) {
 									continue;
 								}
-								target.revive();
+								target.revive(actor);
 
 								info.push({
 									text: 'Revived',
@@ -358,7 +358,7 @@ class ActAction {
 								const magBonus = actor.mainHand.magical + actor.offHand.magical;
 								let healing = (actor.attributes.MAG + magBonus) * skill.magical;
 								healing = healing > 0 ? Math.round(healing) : 0;
-								target.applyHealing(healing, skill.status);
+								target.applyHealing(actor, healing, skill.status);
 
 								info.push({
 									text: formatNumber(healing),
@@ -368,7 +368,7 @@ class ActAction {
 
 								for (const id of skill.status) {
 									info.push({
-										text: StatusEffects.get(id)().effect,
+										text: StatusEffects.get(id)(actor, 0, 0).effect,
 										type: 'BUFF',
 										position: targetPos
 									});
@@ -435,7 +435,7 @@ class ActAction {
 					}
 
 					// apply skill damage / statuses to target
-					target.applyDamage(damage.physical, damage.magical, damageStatus);
+					target.applyDamage(actor, damage.physical, damage.magical, damageStatus);
 
 					if (target.status.has('DYING')) {
 						info.push({
