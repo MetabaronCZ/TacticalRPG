@@ -18,7 +18,7 @@ interface IAIActStartData {
 
 class AIPlayer extends Player {
 	// private readonly config: IAIConfig;
-	private enemy?: Player|AIPlayer;
+	private enemy?: Player | AIPlayer;
 	private ally: AICharacter[] = [];
 
 	constructor(id: number, name: string, config: IAIConfig) {
@@ -26,7 +26,7 @@ class AIPlayer extends Player {
 		// this.config = config;
 	}
 
-	public setEnemy(enemy: Player|AIPlayer) {
+	public setEnemy(enemy: Player | AIPlayer) {
 		this.enemy = enemy;
 	}
 

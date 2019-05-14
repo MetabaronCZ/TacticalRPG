@@ -38,8 +38,8 @@ interface IActActionEvents {
 }
 
 export interface IActActionRecord {
-	readonly action: string|null;
-	readonly target: string|null;
+	readonly action: string | null;
+	readonly target: string | null;
 	readonly reactions: IActReactionRecord[];
 }
 
@@ -52,14 +52,14 @@ class ActAction {
 	private readonly events: IActActionEvents;
 
 	private state: ActActionState = 'INIT';
-	private action: CharacterAction|null = null;
-	private reaction: ActReaction|null = null; // current reaction phase
+	private action: CharacterAction | null = null;
+	private reaction: ActReaction | null = null; // current reaction phase
 	private reactions: ActReaction[] = []; // action reactor phases
 	private area: Tile[] = []; // skill range tiles
-	private target: Tile|null = null; // selected skill target
+	private target: Tile | null = null; // selected skill target
 	private targets: Tile[] = []; // targetable tiles
 	private effectArea: Tile[] = []; // targeted skill effect area
-	private effectTarget: Character|null = null; // targeted character
+	private effectTarget: Character | null = null; // targeted character
 	private effectTargets: Character[] = []; // targeted skill affected characters
 
 	constructor(actor: Character, characters: Character[], events: IActActionEvents) {
@@ -72,7 +72,7 @@ class ActAction {
 		return this.state;
 	}
 
-	public getAction(): CharacterAction|null {
+	public getAction(): CharacterAction | null {
 		return this.action;
 	}
 
@@ -84,7 +84,7 @@ class ActAction {
 		return this.targets;
 	}
 
-	public getTarget(): Tile|null {
+	public getTarget(): Tile | null {
 		return this.target;
 	}
 
@@ -92,7 +92,7 @@ class ActAction {
 		return this.effectArea;
 	}
 
-	public getEffectTarget(): Character|null {
+	public getEffectTarget(): Character | null {
 		return this.effectTarget;
 	}
 
@@ -100,7 +100,7 @@ class ActAction {
 		return this.effectTargets;
 	}
 
-	public getReaction(): ActReaction|null {
+	public getReaction(): ActReaction | null {
 		return this.reaction;
 	}
 

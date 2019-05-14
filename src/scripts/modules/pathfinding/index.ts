@@ -1,7 +1,7 @@
 import Tile from 'modules/geometry/tile';
 
 export interface IGraph {
-	[id: string]: Tile|null;
+	[id: string]: Tile | null;
 }
 
 export interface ICostMap {
@@ -13,7 +13,7 @@ export const getPriority = (a: Tile, b: Tile): number => {
 };
 
 export const constructPath = (start: Tile, target: Tile, graph: IGraph): Tile[] => {
-	let curr: Tile|null = target;
+	let curr: Tile | null = target;
 	const path: Tile[] = [];
 
 	while (curr !== start) {

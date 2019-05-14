@@ -24,7 +24,7 @@ import FormSelect from 'ui/common/FormSelect';
 import FormSelectItem from 'ui/common/FormSelectItem';
 
 interface ICharacterCreationUIProps {
-	readonly character: CharacterData|null;
+	readonly character: CharacterData | null;
 	readonly onBack: () => void;
 	readonly onSubmit: (data: CharacterData) => void;
 }

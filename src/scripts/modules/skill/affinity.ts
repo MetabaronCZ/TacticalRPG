@@ -1,7 +1,7 @@
 import { SkillElement } from 'modules/skill/skill-data';
 
 type IElementAffinityTable = {
-	[E in SkillElement]: SkillElement|null;
+	[E in SkillElement]: SkillElement | null;
 };
 
 export const ElementAffinityTable: IElementAffinityTable = {

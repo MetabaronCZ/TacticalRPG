@@ -5,11 +5,11 @@ import Character from 'modules/character';
 import Player from 'modules/battle/player';
 
 class Order {
-	private players: Array<Player|AIPlayer> = [];
+	private players: Array<Player | AIPlayer> = [];
 	private characters: Character[] = [];
 	private order: Character[] = [];
 
-	constructor(players: Array<Player|AIPlayer>) {
+	constructor(players: Array<Player | AIPlayer>) {
 		this.characters = players.map(pl => pl.getCharacters()).reduce((a, b) => a.concat(b));
 		this.players = players;
 		this.update();

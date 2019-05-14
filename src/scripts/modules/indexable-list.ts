@@ -8,7 +8,7 @@ class IndexableList<T extends IndexableData> {
 		this.data = data;
 	}
 
-	public getById(id: string): T|null {
+	public getById(id: string): T | null {
 		return this.data.find(item => item.id === id) || null;
 	}
 

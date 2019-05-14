@@ -1,17 +1,17 @@
 TODO
 ----------------------------------------------------------------------------------------------------------
+--	zkusit refaktorovat pouziti Player|AIPlayer jen na Player
 --	pri vyberu reakce hracem by se melo zobrazit i info, jaky utok byl pouzit a kym
 --	CharacterAction: refaktorovat "id" na "type"
 	- "id" generovat z typu akce + Skill.id[]
---	pro AI Acty pridat funkcni tlacitko pro zastaveni + krokovani
+--	pro AI Act pridat tlacitko pro zastaveni + krokovani, pripadne potvrzeni akce
 --	pridat AI logiku: snazit se dostat k utoku ze zadu nebo z boku
-	- pripadne nahodny pohyb v ramci dostrelu, aby nestali postavy pul hry na miste
---	AICharacter: pohyb podle melee vs ranged vs support role
-	- vybrano AIPlayerem
+	- pripadne nahodny pohyb v ramci dostrelu, aby vsichni nestali pul hry na stejnem miste
+--	AICharacter: pohyb/akce podle melee / ranged / support role
+	- vybira AIPlayer
 	- prioritizace skillu (healing -> Revive)
 --	pasivni skilly
 --	implementovat Sudden death mode (aby nedoslo ke stavu, kdy zbyvaji jen S-typy, ktere evaduji vsechny utoky)
-??	sjednotit zapis typu: "a|b" vs "a | b"
 ??	AP utoky (psycho / water magic / AP strike)
 ??	Specializace:
 	- P-type: Tank (prida Provoke skill), ...
@@ -22,11 +22,6 @@ TODO
 ??	pridat random grid generation
 	- udelat konfigurovatelne v BattleManagment
 	- moznost vyberu BASE, TERRAIN, HEIGHTMAP, RANDOM a CUSTOM (moznost nastavit parametry generovani)
-??	zapracovat (konfigurovatelny) odpocet do konce hry
-	- pokud hra trva prilis dlouho (kolik ticku?) budou od urcite chvile pravidelne mizet okruzni policka gridu
-	- postavy na nich zemrou
-	- vyresi stavy typu: healer versus slabe melee
-	- udelat konfigurovatelne (kdy zacne, jak dlouho bude trvat, interval mezi rusenim poli)
 
 
 LONG TERM

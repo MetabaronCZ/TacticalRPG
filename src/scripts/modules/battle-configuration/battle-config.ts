@@ -21,7 +21,7 @@ const playerPool = Array(maxPlayers).fill(0);
 export class BattleConfig {
 	@observable.shallow public players: PlayerConfig[] = [];
 
-	constructor(data: IBattleConfig|null) {
+	constructor(data: IBattleConfig | null) {
 		// init player slots
 		this.players = playerPool.map((_, i) => {
 			const conf: IPlayerConfig = {
@@ -62,7 +62,7 @@ export class BattleConfig {
 	}
 
 	@action
-	public update(data: IBattleConfig|null) {
+	public update(data: IBattleConfig | null) {
 		if (null === data) {
 			return;
 		}

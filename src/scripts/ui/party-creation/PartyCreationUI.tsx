@@ -27,7 +27,7 @@ interface IPartyCreationUIProps {
 	readonly onSubmit: (party: PartyData) => void;
 }
 
-const getLabel = (i: number, id: string|null) => (
+const getLabel = (i: number, id: string | null) => (
 	<React.Fragment>
 		Character {i + 1} {
 			id
@@ -100,7 +100,7 @@ class PartyCreationUI extends React.Component<IPartyCreationUIProps> {
 		);
 	}
 
-	private onChange = (attr: IPartyDataEditable, i: number|null) => (e: SyntheticEvent<any>) => {
+	private onChange = (attr: IPartyDataEditable, i: number | null) => (e: SyntheticEvent<any>) => {
 		this.form.change(attr, i, e.currentTarget.value);
 	}
 
@@ -114,7 +114,7 @@ class PartyCreationUI extends React.Component<IPartyCreationUIProps> {
 		}
 	}
 
-	private renderPartyItem = (id: string|null, i: number) => {
+	private renderPartyItem = (id: string | null, i: number) => {
 		const character = id ? this.props.characters.getById(id) : null;
 		const filtered = this.form.filterCharacters(character);
 		const info = formatCharacter(character);

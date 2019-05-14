@@ -13,7 +13,7 @@ import Button from 'ui/common/Button';
 
 interface IBattleUIProps {
 	engineState: IEngineState;
-	engineUpdate: Date|null;
+	engineUpdate: Date | null;
 	onTileSelect: (tile: Tile) => void;
 	onActionSelect: (action: CharacterAction) => void;
 	onExit: () => void;

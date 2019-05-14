@@ -13,6 +13,7 @@
         "indent": [true, "tabs", 4],
         "trailing-comma": [true, { "esSpecCompliant": true }],
         "member-ordering": [true, { "order": "fields-first" }],
+        "whitespace": [true, "check-type-operator"],
         "jsx-no-multiline-js": false
     }
 }

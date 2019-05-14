@@ -48,11 +48,11 @@ const init = () => {
 
 init();
 
-export const getTileByID = (id: string): Tile|null => {
+export const getTileByID = (id: string): Tile | null => {
 	return tiles[id] || null;
 };
 
-export const getTile = (x: number, y: number): Tile|null => {
+export const getTile = (x: number, y: number): Tile | null => {
 	return getTileByID(getTileID(x, y));
 };
 

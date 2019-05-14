@@ -4,7 +4,7 @@ import { getTile } from 'modules/geometry/tiles';
 export type DirectionID = 'TOP' | 'LEFT' | 'RIGHT' | 'BOTTOM';
 
 type IByDirectionTable = {
-	[T in DirectionID]: (tile: Tile) => Tile|null;
+	[T in DirectionID]: (tile: Tile) => Tile | null;
 };
 
 const byDirectionTable: IByDirectionTable = {
@@ -28,6 +28,6 @@ export const resolveDirection = (source: Tile, target: Tile): DirectionID => {
 	}
 };
 
-export const findTileFrom = (source: Tile, dir: DirectionID): Tile|null => {
+export const findTileFrom = (source: Tile, dir: DirectionID): Tile | null => {
 	return byDirectionTable[dir](source);
 };

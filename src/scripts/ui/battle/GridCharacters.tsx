@@ -9,8 +9,8 @@ import Player from 'modules/battle/player';
 const itemSize = 100 / gridSize;
 
 interface IGridChactersProps {
-	actor: Character|null;
-	players: Array<Player|AIPlayer>;
+	actor: Character | null;
+	players: Array<Player | AIPlayer>;
 	characters: Character[];
 }
 

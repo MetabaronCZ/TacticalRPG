@@ -18,8 +18,8 @@ interface IActReactionEvents {
 export interface IActReactionRecord {
 	readonly id: number;
 	readonly reactor: string;
-	readonly action: string|null;
-	readonly evasionTarget: string|null;
+	readonly action: string | null;
+	readonly evasionTarget: string | null;
 }
 
 export type ActReactionState = 'INIT' | 'IDLE' | 'SELECTED' | 'EVASION' | 'BLOCK' | 'DONE';
@@ -32,8 +32,8 @@ class ActReaction {
 	private readonly events: IActReactionEvents;
 
 	private state: ActReactionState = 'INIT';
-	private action: CharacterAction|null = null;
-	private evasionTarget: Tile|null = null; // selected evasion tile
+	private action: CharacterAction | null = null;
+	private evasionTarget: Tile | null = null; // selected evasion tile
 	private evasionTargets: Tile[] = []; // possible evasion tiles of reacting character
 
 	constructor(id: number, reactor: Character, isBackAttack: boolean, obstacles: Tile[], events: IActReactionEvents) {
@@ -64,11 +64,11 @@ class ActReaction {
 		return this.reactor;
 	}
 
-	public getAction(): CharacterAction|null {
+	public getAction(): CharacterAction | null {
 		return this.action;
 	}
 
-	public getEvasionTarget(): Tile|null {
+	public getEvasionTarget(): Tile | null {
 		return this.evasionTarget;
 	}
 

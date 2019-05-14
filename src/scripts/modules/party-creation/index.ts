@@ -25,7 +25,7 @@ class PartyCreation {
 	}
 
 	@action
-	public change(field: IPartyDataEditable, i: number|null, value: string) {
+	public change(field: IPartyDataEditable, i: number | null, value: string) {
 		const party = this.state.party;
 
 		if ('name' === field) {
@@ -39,7 +39,7 @@ class PartyCreation {
 	}
 
 	@action
-	public get(): PartyData|null {
+	public get(): PartyData | null {
 		const party = this.state.party;
 		const validation = party.validate();
 
@@ -50,7 +50,7 @@ class PartyCreation {
 		return party;
 	}
 
-	public filterCharacters(character: CharacterData|null): CharacterData[] {
+	public filterCharacters(character: CharacterData | null): CharacterData[] {
 		const characters = this.characters;
 
 		if (!characters.length) {

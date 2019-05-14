@@ -21,7 +21,7 @@ interface IBlockValue {
 interface IDamageInfo {
 	physical: number;
 	magical: number;
-	blockModifier: IBlockValue|null;
+	blockModifier: IBlockValue | null;
 	elementalModifier: number;
 	directionModifier: number;
 	statusModifier: number;
@@ -50,7 +50,7 @@ const getDirectionalMadifier = (attacker: Character, defender: Character): numbe
 	return backAttackMod;
 };
 
-const getBlockValue = (defender: Character): IBlockValue|null => {
+const getBlockValue = (defender: Character): IBlockValue | null => {
 	const hasShield = ('SHIELD' === defender.offHand.type);
 
 	if (hasShield) {

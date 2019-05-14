@@ -3,7 +3,7 @@ import { letters } from 'core/string';
 import Tile from 'modules/geometry/tile';
 import { CharacterData } from 'modules/character-creation/character-data';
 
-export const formatTile = (tile: Tile|null) => {
+export const formatTile = (tile: Tile | null) => {
 	if (null === tile) {
 		return '-';
 	}
@@ -12,7 +12,7 @@ export const formatTile = (tile: Tile|null) => {
 
 export const formatTiles = (arr: Tile[]) => `[ ${arr.map(tile => formatTile(tile)).join(', ')} ]`;
 
-export const formatCharacter = (character: CharacterData|null): string => {
+export const formatCharacter = (character: CharacterData | null): string => {
 	if (!character) {
 		return '';
 	}

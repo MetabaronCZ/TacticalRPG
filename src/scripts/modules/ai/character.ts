@@ -20,7 +20,7 @@ interface IOnActionConf {
 class AICharacter {
 	private character: Character;
 	private moved = false;
-	private target: Character|null = null; // skill target character
+	private target: Character | null = null; // skill target character
 
 	constructor(character: Character) {
 		this.character = character;

@@ -12,8 +12,8 @@ import GridCharacters from 'ui/battle/GridCharacters';
 import GridBattleInfo from 'ui/battle/GridBattleInfo';
 
 interface IGridProps {
-	act: Act|null;
-	players: Array<Player|AIPlayer>;
+	act: Act | null;
+	players: Array<Player | AIPlayer>;
 	characters: Character[];
 	battleInfo: IBattleInfo[];
 	onTileSelect: (tile: Tile) => void;

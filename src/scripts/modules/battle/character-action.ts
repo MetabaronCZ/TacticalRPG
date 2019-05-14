@@ -9,11 +9,11 @@ class CharacterAction {
 	public readonly id: CharacterActionID;
 	public readonly cost: number;
 	public readonly title: string;
-	public readonly cooldown: number|Ultimate;
+	public readonly cooldown: number | Ultimate;
 	public readonly skills: Skill[];
 	private active: boolean;
 
-	constructor(id: CharacterActionID, title: string, cost = 0, cooldown: number|Ultimate = 0, isActive = true, skills: Skill[] = []) {
+	constructor(id: CharacterActionID, title: string, cost = 0, cooldown: number | Ultimate = 0, isActive = true, skills: Skill[] = []) {
 		this.id = id;
 		this.cost = cost;
 		this.title = title;

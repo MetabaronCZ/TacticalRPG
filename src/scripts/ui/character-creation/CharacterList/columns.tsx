@@ -15,7 +15,7 @@ import { IOnMoveDown, IOnMoveUp, IOnDelete } from 'ui/character-creation/Charact
 interface IColumn {
 	readonly title?: string;
 	readonly name: string;
-	readonly value: (char: CharacterData|null, i: number) => React.ReactNode;
+	readonly value: (char: CharacterData | null, i: number) => React.ReactNode;
 	readonly editable?: boolean;
 }
 

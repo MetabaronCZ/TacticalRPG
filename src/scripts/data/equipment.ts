@@ -11,8 +11,10 @@ type IWieldIndexTable = {
 	[id in WieldID]: number;
 };
 
-type IArchetypeEquipRow = [0|1, 0|1, 0|1, 0|1, 0|1, 0|1];
-type IWieldEquipRow = [0|1, 0|1, 0|1, 0|1];
+type bool = 0 | 1;
+
+type IArchetypeEquipRow = [bool, bool, bool, bool, bool, bool];
+type IWieldEquipRow = [bool, bool, bool, bool];
 
 type IWeaponEquipArchTable = {
 	[id in WeaponID]: IArchetypeEquipRow;

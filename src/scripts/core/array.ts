@@ -1,5 +1,5 @@
 // return array of random items from given array
-export const getRandomItems = <T>(arr: T[], count = 1): T[]|null => {
+export const getRandomItems = <T>(arr: T[], count = 1): T[] | null => {
 	if (count > arr.length) {
 		return null;
 	}
@@ -16,7 +16,7 @@ export const getRandomItems = <T>(arr: T[], count = 1): T[]|null => {
 };
 
 // return random array item
-export const getRandomItem = <T>(arr: T[]): T|null => {
+export const getRandomItem = <T>(arr: T[]): T | null => {
 	const ranItems = getRandomItems(arr, 1);
 	return ranItems ? ranItems[0] : null;
 };

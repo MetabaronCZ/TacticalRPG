@@ -9,7 +9,7 @@ import { getTiles } from 'modules/geometry/tiles';
 const itemSize = 100 / gridSize;
 
 interface IGridBaseProps {
-	act: Act|null;
+	act: Act | null;
 	onSelect: (tile: Tile) => void;
 }
 
@@ -21,7 +21,7 @@ type TileType =
 	'reactors' | 'reactionEvasible' | 'reactor' |
 	'directable' | 'directTarget';
 
-const getTileType = (tile: Tile, act: Act|null): TileType => {
+const getTileType = (tile: Tile, act: Act | null): TileType => {
 	let type: TileType = 'default';
 
 	if (null === act) {

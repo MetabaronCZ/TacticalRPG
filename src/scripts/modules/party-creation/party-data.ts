@@ -8,7 +8,7 @@ import { CharacterData } from 'modules/character-creation/character-data';
 
 interface IPartyConfig {
 	readonly name: string;
-	readonly slots: Array<string|null>;  // list of character IDs or empty slots
+	readonly slots: Array<string | null>;  // list of character IDs or empty slots
 }
 
 export type IPartyDataEditable = keyof IPartyConfig;
@@ -17,7 +17,7 @@ export type IPartyData = IPartyConfig & IIndexableData;
 export class PartyData extends IndexableData {
 	@observable private data = {
 		name: '',
-		slots: Array(maxPartySize).fill(null) as Array<string|null>
+		slots: Array(maxPartySize).fill(null) as Array<string | null>
 	};
 
 	constructor(conf: Partial<IPartyData> = {}, characters: CharacterData[] = []) {
@@ -69,7 +69,7 @@ export class PartyData extends IndexableData {
 	}
 
 	@computed
-	public get slots(): Array<string|null> {
+	public get slots(): Array<string | null> {
 		return this.data.slots;
 	}
 
@@ -92,7 +92,7 @@ export class PartyData extends IndexableData {
 	}
 
 	@action
-	public setSlot(id: string|null, slot: number) {
+	public setSlot(id: string | null, slot: number) {
 		if (slot < 0 || slot >= maxPartySize) {
 			throw new Error(`Could not set character: invalid slot "${slot}"`);
 		}

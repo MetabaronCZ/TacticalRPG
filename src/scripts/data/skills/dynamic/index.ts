@@ -4,7 +4,7 @@ import { DynamicSkillID } from 'modules/skill/dynamic';
 import { WeaponID } from 'modules/equipment/weapon-data';
 import { ISkillData, SkillElement } from 'modules/skill/skill-data';
 
-const weaponSkillData: { [id in WeaponID]: ISkillData|null; } = {
+const weaponSkillData: { [id in WeaponID]: ISkillData | null; } = {
 	NONE: null,
 	FISTS: weaponSkills.FST_ATTACK,
 	DAGGER: weaponSkills.DGR_ATTACK,

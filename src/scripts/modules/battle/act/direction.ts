@@ -12,7 +12,7 @@ interface IActDirectEvents {
 }
 
 export interface IActDirectRecord {
-	readonly target: string|null;
+	readonly target: string | null;
 }
 
 export type ActDirectState = 'INIT' | 'IDLE' | 'DONE';
@@ -23,7 +23,7 @@ class ActDirect {
 
 	private state: ActDirectState = 'INIT';
 	private targets: Tile[] = []; // tiles character can be directed to
-	private target: Tile|null = null; // tiles character is directed to
+	private target: Tile | null = null; // tiles character is directed to
 
 	constructor(actor: Character, events: IActDirectEvents) {
 		this.actor = actor;
@@ -38,7 +38,7 @@ class ActDirect {
 		return this.targets;
 	}
 
-	public getTarget(): Tile|null {
+	public getTarget(): Tile | null {
 		return this.target;
 	}
 
@@ -66,7 +66,7 @@ class ActDirect {
 		});
 	}
 
-	public select(tile: Tile|null) {
+	public select(tile: Tile | null) {
 		const { state, actor, targets } = this;
 
 		if ('IDLE' !== state) {

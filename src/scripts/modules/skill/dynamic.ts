@@ -16,7 +16,7 @@ export type DynamicSkillID =
 	'BOW_FIR' | 'BOW_ICE' | 'BOW_WND' | 'BOW_ERT' | 'BOW_THU' | 'BOW_WAT' | 'BOW_DRK' | 'BOW_HOL' | 'BOW_PSY' |
 	'GUN_FIR' | 'GUN_ICE' | 'GUN_WND' | 'GUN_ERT' | 'GUN_THU' | 'GUN_WAT' | 'GUN_DRK' | 'GUN_HOL' | 'GUN_PSY';
 
-export const getDynamicSkillID = (weapon: IWeaponData, skillset: Skillset): DynamicSkillID|null => {
+export const getDynamicSkillID = (weapon: IWeaponData, skillset: Skillset): DynamicSkillID | null => {
 	const id = dynamicSkillTable[weapon.id][skillset.element];
 	return (null !== id ? id as DynamicSkillID : null);
 };

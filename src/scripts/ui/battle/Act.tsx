@@ -7,7 +7,7 @@ import CharacterAction from 'modules/battle/character-action';
 import Actions from 'ui/battle/Actions';
 
 interface IActUIProps {
-	act: Act|null;
+	act: Act | null;
 	onActionSelect: (action: CharacterAction) => void;
 }
 

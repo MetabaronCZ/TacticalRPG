@@ -18,7 +18,7 @@ const topListSize = 5; // maximum items of diplayed top kills, damage, ...
 type IProps = RouteComponentProps<any>;
 
 interface IState {
-	record: ISummary|null;
+	record: ISummary | null;
 }
 
 const exit = (history: History) => () => {

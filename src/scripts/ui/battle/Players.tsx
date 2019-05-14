@@ -10,12 +10,12 @@ import CharacterBadge from 'ui/battle/CharacterBadge';
 import ArchetypeIco from 'ui/common/ArchetypeIco';
 
 interface IProps {
-	act: Act|null;
-	players: Array<Player|AIPlayer>;
+	act: Act | null;
+	players: Array<Player | AIPlayer>;
 }
 
 interface IState {
-	visibleBadge: [number, number]|null;
+	visibleBadge: [number, number] | null;
 }
 
 class Players extends React.Component<IProps, IState> {

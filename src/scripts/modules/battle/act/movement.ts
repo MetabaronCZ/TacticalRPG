@@ -62,7 +62,7 @@ class ActMove {
 		return this.costMap;
 	}
 
-	public getTarget(): Tile|null {
+	public getTarget(): Tile | null {
 		return this.target;
 	}
 

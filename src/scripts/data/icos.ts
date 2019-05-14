@@ -5,7 +5,7 @@ export type IcoID = 'default' |
 	'success';
 
 type IIcos = {
-	readonly [id in IcoID]: string|null;
+	readonly [id in IcoID]: string | null;
 };
 
 export const Icos: IIcos = {

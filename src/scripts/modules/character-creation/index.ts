@@ -23,7 +23,7 @@ interface ICharacterCreation {
 class CharacterCreation {
 	@observable public state: ICharacterCreation;
 
-	constructor(data: CharacterData|null) {
+	constructor(data: CharacterData | null) {
 		this.state = {
 			character: new CharacterData(data ? data.serialize() : {}),
 			validation: {
@@ -41,7 +41,7 @@ class CharacterCreation {
 	}
 
 	@action
-	public get(): CharacterData|null {
+	public get(): CharacterData | null {
 		const character = this.state.character;
 		const validation = character.validate();
 

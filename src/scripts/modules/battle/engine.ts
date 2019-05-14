@@ -24,11 +24,11 @@ import { CharacterData, ICharacterData } from 'modules/character-creation/charac
 export interface IEngineState {
 	running: boolean;
 	tick: number;
-	act: Act|null;
-	players: Array<Player|AIPlayer>;
+	act: Act | null;
+	players: Array<Player | AIPlayer>;
 	characters: Character[];
 	order: Character[];
-	chronox: IChronoxRecord|null;
+	chronox: IChronoxRecord | null;
 	battleInfo: IBattleInfo[];
 }
 
@@ -47,7 +47,7 @@ interface IEngineProps {
 }
 
 class Engine {
-	private readonly players: Array<Player|AIPlayer> = [];
+	private readonly players: Array<Player | AIPlayer> = [];
 	private readonly characters: Character[] = [];
 	private readonly battleInfo: IBattleInfo[] = [];
 	private readonly events: IEngineEvents;
@@ -56,7 +56,7 @@ class Engine {
 	private tick = 0; // game update counter
 	private actNumber = 0; // act ID
 	private actors: Character[] = [];
-	private act: Act|null = null;
+	private act: Act | null = null;
 	private order: Order;
 	private chronox: Chronox;
 
@@ -197,7 +197,7 @@ class Engine {
 		this.act.start();
 	}
 
-	private createPlayers(conf: IEngineProps): Array<Player|AIPlayer> {
+	private createPlayers(conf: IEngineProps): Array<Player | AIPlayer> {
 		const { players, parties, characters } = conf;
 
 		if (config.maxPlayers !== players.length) {
@@ -206,7 +206,7 @@ class Engine {
 		const pl = players.map((plConfig, p) => {
 			const { name, party, control, aiSettings } = plConfig;
 			const charData: CharacterData[] = [];
-			let player: Player|AIPlayer;
+			let player: Player | AIPlayer;
 
 			if ('AI' === control) {
 				// AI player
@@ -259,7 +259,7 @@ class Engine {
 
 			// create characters
 			const chars = charData.map((data, i) => {
-				let tile: Tile|null;
+				let tile: Tile | null;
 				let dir: DirectionID;
 
 				// set position / orientation
@@ -340,7 +340,7 @@ class Engine {
 		};
 	}
 
-	private getWinner(): Player|null {
+	private getWinner(): Player | null {
 		const liveChars = this.players.map(pl => {
 			const live = pl.getCharacters().filter(char => !char.isDead() && !char.status.has('DYING'));
 			return {

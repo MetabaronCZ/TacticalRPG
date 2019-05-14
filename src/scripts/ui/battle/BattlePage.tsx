@@ -14,7 +14,7 @@ type IProps = RouteComponentProps<any> & IContext;
 
 interface IState {
 	engineState: IEngineState;
-	engineUpdate: Date|null;
+	engineUpdate: Date | null;
 }
 
 const onExit = (history: History) => () => {
