@@ -21,8 +21,8 @@ class AIPlayer extends Player {
 	private enemy?: Player|AIPlayer;
 	private ally: AICharacter[] = [];
 
-	constructor(name: string, config: IAIConfig) {
-		super(name);
+	constructor(id: number, name: string, config: IAIConfig) {
+		super(id, name);
 		// this.config = config;
 	}
 

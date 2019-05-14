@@ -37,7 +37,7 @@ class Players extends React.Component<IProps, IState> {
 					<div className="Players-item" key={p}>
 						<h3 className="Heading">
 							<span className={'Players-item-ico Players-item-ico--player-' + p} />
-							{pl.getName()} ({pl instanceof AIPlayer ? 'AI' : 'HUMAN'} Player)
+							{pl.name} ({pl instanceof AIPlayer ? 'AI' : 'HUMAN'} Player)
 						</h3>
 
 						<table className="Players-item-characters">

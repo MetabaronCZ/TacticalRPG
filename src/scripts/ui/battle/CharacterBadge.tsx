@@ -16,7 +16,7 @@ const CharacterBadge: React.SFC<IProps> = ({ character }) => {
 
 	return (
 		<div className="u-mt-3">
-			{character.player.getName()} > {character.name} {Icos[sex.id.toLowerCase() as IcoID]}
+			{character.player.name} > {character.name} {Icos[sex.id.toLowerCase() as IcoID]}
 			{' '}
 			<ArchetypeIco archetype={archetype.id} />
 			{' '}

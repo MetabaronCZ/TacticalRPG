@@ -174,7 +174,7 @@ class BattleSummaryPage extends React.Component<IProps, IState> {
 
 					return (
 						<div className="Paragraph" key={p}>
-							<strong>Player "{pl.name}" ({pl.control})</strong>
+							<strong>Player "{pl.name}"</strong>
 							<br />
 							{characters.join(', ')}
 						</div>

@@ -1,23 +1,17 @@
 import Character from 'modules/character';
 
 class Player {
+	public readonly id: number;
+	public readonly name: string;
 	protected characters: Character[] = [];
-	private name: string;
 
-	constructor(name: string) {
+	constructor(id: number, name: string) {
+		this.id = id;
 		this.name = name;
-	}
-
-	public getName(): string {
-		return this.name;
 	}
 
 	public getCharacters(): Character[] {
 		return this.characters;
-	}
-
-	public setName(name: string) {
-		this.name = name;
 	}
 
 	public setCharacters(characters: Character[]) {

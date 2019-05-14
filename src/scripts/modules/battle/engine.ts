@@ -35,7 +35,7 @@ export interface IEngineState {
 interface IEngineEvents {
 	onStart: (state: IEngineState) => void;
 	onUpdate: (state: IEngineState) => void;
-	onGameOver: (state: IEngineState, winner: number) => void;
+	onGameOver: (state: IEngineState, winner: Player) => void;
 	onBattleInfo: (state: IBattleInfo[]) => void;
 }
 
@@ -216,11 +216,11 @@ class Engine {
 				if ('CUSTOM' !== preset) {
 					aiConf = AIPresets.get(preset).config;
 				}
-				player = new AIPlayer(name, aiConf);
+				player = new AIPlayer(p, name, aiConf);
 
 			} else {
 				// human controlled player
-				player = new Player(name);
+				player = new Player(p, name);
 			}
 
 			// get character data
@@ -293,7 +293,7 @@ class Engine {
 				const enemy = pl.find(p => p !== player);
 
 				if (!enemy) {
-					throw new Error(`Could not find enemy for AI player "${player.getName()}"`);
+					throw new Error(`Could not find enemy for AI player "${player.name}"`);
 				}
 				player.setEnemy(enemy);
 			}
@@ -340,16 +340,20 @@ class Engine {
 		};
 	}
 
-	private getWinner(): number|null {
-		const len = this.players.length;
+	private getWinner(): Player|null {
+		const liveChars = this.players.map(pl => {
+			const live = pl.getCharacters().filter(char => !char.isDead() && !char.status.has('DYING'));
+			return {
+				player: pl,
+				count: live.length
+			};
+		});
 
-		for (let p = 0; p < len; p++) {
-			const liveChars = this.players[p].getCharacters()
-				.filter(char => !char.isDead() && !char.status.has('DYING'));
-
-			if (0 === liveChars.length) {
-				return len - 1 - p;
-			}
+		if (0 === liveChars[0].count) {
+			return liveChars[1].player;
+		}
+		if (0 === liveChars[1].count) {
+			return liveChars[0].player;
 		}
 		return null;
 	}
@@ -363,7 +367,7 @@ class Engine {
 			onUpdate: events.onUpdate,
 			onGameOver: (state, winner) => {
 				Logger.info('Engine onGameOver');
-				Logger.info(`Player "${this.players[winner].getName()}" won!`);
+				Logger.info(`Player "${winner.name}" won!`);
 				events.onGameOver(state, winner);
 			},
 			onBattleInfo: events.onBattleInfo

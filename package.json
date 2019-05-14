@@ -15,16 +15,16 @@
     "@babel/preset-react": "^7.0.0",
     "@types/history": "^4.7.2",
     "@types/node": "^10.14.6",
-    "@types/react": "^16.8.15",
+    "@types/react": "^16.8.17",
     "@types/react-dom": "^16.8.4",
     "@types/react-router": "^4.4.5",
-    "@types/react-router-dom": "^4.3.2",
+    "@types/react-router-dom": "^4.3.3",
     "@types/uuid": "^3.4.4",
     "autoprefixer": "^9.5.1",
     "awesome-typescript-loader": "^5.2.1",
     "cssnano": "^4.1.10",
     "del": "^4.1.1",
-    "gulp": "^4.0.1",
+    "gulp": "^4.0.2",
     "gulp-changed": "^3.2.0",
     "gulp-postcss": "^8.0.0",
     "gulp-sass": "^4.0.2",
@@ -36,7 +36,7 @@
     "tslint-react": "^4.0.0",
     "typescript": "^3.4.5",
     "uglifyjs-webpack-plugin": "^2.1.2",
-    "webpack": "^4.30.0"
+    "webpack": "^4.31.0"
   },
   "dependencies": {
     "mobx": "^5.9.4",
