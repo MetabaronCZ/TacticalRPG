@@ -26,7 +26,7 @@ const miscSkills: { [id in MiscSkillID]: ISkillData; } = {
 	},
 	EVADE: {
 		title: 'Evade',
-		cost: 2,
+		cost: 4,
 		type: 'REACTIVE',
 		range: 1,
 		area: 'SINGLE',
