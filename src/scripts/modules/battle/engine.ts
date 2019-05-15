@@ -25,7 +25,7 @@ export interface IEngineState {
 	running: boolean;
 	tick: number;
 	act: Act | null;
-	players: Array<Player | AIPlayer>;
+	players: Player[];
 	characters: Character[];
 	order: Character[];
 	chronox: IChronoxRecord | null;
@@ -47,7 +47,7 @@ interface IEngineProps {
 }
 
 class Engine {
-	private readonly players: Array<Player | AIPlayer> = [];
+	private readonly players: Player[] = [];
 	private readonly characters: Character[] = [];
 	private readonly battleInfo: IBattleInfo[] = [];
 	private readonly events: IEngineEvents;
@@ -197,7 +197,7 @@ class Engine {
 		this.act.start();
 	}
 
-	private createPlayers(conf: IEngineProps): Array<Player | AIPlayer> {
+	private createPlayers(conf: IEngineProps): Player[] {
 		const { players, parties, characters } = conf;
 
 		if (config.maxPlayers !== players.length) {
@@ -206,7 +206,7 @@ class Engine {
 		const pl = players.map((plConfig, p) => {
 			const { name, party, control, aiSettings } = plConfig;
 			const charData: CharacterData[] = [];
-			let player: Player | AIPlayer;
+			let player: Player;
 
 			if ('AI' === control) {
 				// AI player

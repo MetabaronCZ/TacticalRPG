@@ -11,7 +11,7 @@ import ArchetypeIco from 'ui/common/ArchetypeIco';
 
 interface IProps {
 	act: Act | null;
-	players: Array<Player | AIPlayer>;
+	players: Player[];
 }
 
 interface IState {
