@@ -7,11 +7,22 @@ type IByDirectionTable = {
 	[T in DirectionID]: (tile: Tile) => Tile | null;
 };
 
+type IOpositeDirectionTable = {
+	[T in DirectionID]: DirectionID;
+};
+
 const byDirectionTable: IByDirectionTable = {
 	TOP:    ({ x, y }) => getTile(x, y - 1),
 	BOTTOM: ({ x, y }) => getTile(x, y + 1),
 	LEFT:   ({ x, y }) => getTile(x - 1, y),
 	RIGHT:  ({ x, y }) => getTile(x + 1, y)
+};
+
+const opositeDirectionTable: IOpositeDirectionTable = {
+	TOP: 'BOTTOM',
+	BOTTOM: 'TOP',
+	LEFT: 'RIGHT',
+	RIGHT: 'LEFT'
 };
 
 export const resolveDirection = (source: Tile, target: Tile): DirectionID => {
@@ -30,4 +41,8 @@ export const resolveDirection = (source: Tile, target: Tile): DirectionID => {
 
 export const findTileFrom = (source: Tile, dir: DirectionID): Tile | null => {
 	return byDirectionTable[dir](source);
+};
+
+export const getOpositeDirection = (dir: DirectionID): DirectionID => {
+	return opositeDirectionTable[dir];
 };

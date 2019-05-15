@@ -5,7 +5,9 @@ import Character from 'modules/character';
 import { getShortestPath } from 'modules/pathfinding';
 import CharacterAction from 'modules/battle/character-action';
 import { IOnActionSelect, IOnTileSelect } from 'modules/ai/player';
-import { findTileFrom, resolveDirection } from 'modules/geometry/direction';
+import {
+	findTileFrom, resolveDirection, getOpositeDirection
+} from 'modules/geometry/direction';
 
 interface IOnActionConf {
 	actions: CharacterAction[];
@@ -16,6 +18,28 @@ interface IOnActionConf {
 	onTileSelect: IOnTileSelect;
 	onActionSelect: IOnActionSelect;
 }
+
+type TargetSide = 'FRONT' | 'SIDE' | 'BEHIND';
+
+interface ITargetInfo {
+	character: Character;
+	side: TargetSide;
+	path: Tile[];
+}
+
+const getSide = (char: Character, tile: Tile): TargetSide => {
+	const pos = char.position;
+	const front = char.direction;
+	const behind = getOpositeDirection(char.direction);
+
+	if (tile === findTileFrom(pos, front)) {
+		return 'FRONT';
+	}
+	if (tile === findTileFrom(pos, behind)) {
+		return 'BEHIND';
+	}
+	return 'SIDE';
+};
 
 class AICharacter {
 	private character: Character;
@@ -44,7 +68,7 @@ class AICharacter {
 			if (char.canMove()) {
 				// get closest enemy
 				const pos = char.position;
-				const targets: Array<{ path: Tile[]; character: Character; }> = [];
+				let targets: ITargetInfo[] = [];
 
 				// find all paths to enemies
 				enemy.forEach(e => {
@@ -53,15 +77,43 @@ class AICharacter {
 					}
 					const sideTiles = e.position.getSideTiles();
 
-					for (const tile of sideTiles) {
-						if (!tile.isContained(obstacles)) {
-							try {
-								const enemyPath = getShortestPath(pos, tile, obstacles);
-								targets.push({ path: enemyPath, character: e });
-							} catch (err) {
-								// tile is not accessible
-							}
+					const paths: Array<ITargetInfo | null> = sideTiles.map(tile => {
+						if (tile.isContained(obstacles)) {
+							return null;
 						}
+						let enemyPath: Tile[] | null = null;
+
+						try {
+							enemyPath = getShortestPath(pos, tile, obstacles);
+						} catch (err) {
+							// tile is not accessible
+						}
+						if (!enemyPath) {
+							return null;
+						}
+						return {
+							character: e,
+							path: enemyPath,
+							side: getSide(e, tile)
+						};
+					});
+
+					const behindPaths: ITargetInfo[] = paths.filter((path): path is ITargetInfo => {
+						return null !== path && 'BEHIND' === path.side;
+					});
+
+					const sidePaths: ITargetInfo[] = paths.filter((path): path is ITargetInfo => {
+						return null !== path && 'SIDE' === path.side;
+					});
+
+					// prioritize paths leading behind enemy
+					if (behindPaths.length) {
+						targets = targets.concat(behindPaths);
+					} else if (sidePaths.length) {
+						targets = targets.concat(sidePaths);
+					} else {
+						const otherPaths = paths.filter((path): path is ITargetInfo => null !== path);
+						targets = targets.concat(otherPaths);
 					}
 				});
 

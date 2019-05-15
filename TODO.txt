@@ -1,9 +1,8 @@
 TODO
 ----------------------------------------------------------------------------------------------------------
+--	AICharacter: pokud vybrana cesta nekonci na Tile, ze ktereho se da utocit, skoncit na posledni utocne pozici
 --	pri vyberu reakce hracem by se melo zobrazit i info, jaky utok byl pouzit a kym
 --	pro AI Act pridat tlacitko pro zastaveni + krokovani, pripadne potvrzeni akce
---	pridat AI logiku: snazit se dostat k utoku ze zadu nebo z boku
-	- pripadne nahodny pohyb v ramci dostrelu, aby vsichni nestali pul hry na stejnem miste
 --	AICharacter: pohyb/akce podle melee / ranged / support role
 	- vybira AIPlayer
 	- prioritizace skillu (healing -> Revive)
