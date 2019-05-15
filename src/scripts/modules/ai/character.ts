@@ -99,7 +99,7 @@ class AICharacter {
 	}
 
 	public onReaction(actions: CharacterAction[], isBackAttacked: boolean, obstacles: Tile[], onSelect: IOnActionSelect) {
-		const passAction = actions.find(act => 'DONT_REACT' === act.id);
+		const passAction = actions.find(act => 'DONT_REACT' === act.type);
 
 		if (!passAction) {
 			throw new Error('AI character actions does not contain pass action');
@@ -169,7 +169,7 @@ class AICharacter {
 	}
 
 	private selectAction(actions: CharacterAction[], ally: Character[], enemy: Character[], onSelect: IOnActionSelect) {
-		const passAction = actions.find(act => 'PASS' === act.id);
+		const passAction = actions.find(act => 'PASS' === act.type);
 
 		if (!passAction) {
 			throw new Error('AI character actions does not contain pass action');

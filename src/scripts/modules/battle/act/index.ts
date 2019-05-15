@@ -214,7 +214,7 @@ class Act {
 	public selectAction(action: CharacterAction) {
 		const { actor, phase, actionPhase, characters } = this;
 
-		switch (action.id) {
+		switch (action.type) {
 			case 'ATTACK':
 			case 'DOUBLE_ATTACK':
 			case 'WEAPON':
@@ -301,7 +301,7 @@ class Act {
 			}
 
 			default:
-				throw new Error('Unsupported action: ' + action.id);
+				throw new Error('Unsupported action: ' + action.type);
 		}
 	}
 

@@ -61,7 +61,7 @@ class AIPlayer extends Player {
 	}
 
 	public onActionConfirm(actions: CharacterAction[], onSelect: IOnActionSelect) {
-		const confirmAction = actions.find(act => 'CONFIRM' === act.id);
+		const confirmAction = actions.find(act => 'CONFIRM' === act.type);
 
 		if (!confirmAction) {
 			throw new Error('AI character actions does not contain confirm action');

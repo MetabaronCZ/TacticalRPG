@@ -25,7 +25,7 @@ const Actions: React.SFC<IActionsProps> = ({ actions, onSelect }) => {
 									<strong>{action.title}</strong>
 								</a>
 								<div className="u-text-small">
-									{action.id} ({action.cost}AP)
+									{action.type} ({action.cost}AP)
 								</div>
 							</div>
 						)

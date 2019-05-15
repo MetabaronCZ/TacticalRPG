@@ -1,8 +1,6 @@
 TODO
 ----------------------------------------------------------------------------------------------------------
 --	pri vyberu reakce hracem by se melo zobrazit i info, jaky utok byl pouzit a kym
---	CharacterAction: refaktorovat "id" na "type"
-	- "id" generovat z typu akce + Skill.id[]
 --	pro AI Act pridat tlacitko pro zastaveni + krokovani, pripadne potvrzeni akce
 --	pridat AI logiku: snazit se dostat k utoku ze zadu nebo z boku
 	- pripadne nahodny pohyb v ramci dostrelu, aby vsichni nestali pul hry na stejnem miste
