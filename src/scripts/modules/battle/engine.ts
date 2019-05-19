@@ -69,13 +69,13 @@ class Engine {
 
 		this.order = new Order(this.players);
 
-		const chronoxData = this.prepareChronoxData(conf);
+		// set player order / initiative
+		this.players = randomizeArray(this.players);
+
+		const chronoxData = this.prepareChronoxData(conf, this.players.map(pl => pl.id));
 		this.chronox = new Chronox(chronoxData);
 
 		this.events = this.prepareEvents(conf.events);
-
-		// set player order
-		this.players = randomizeArray(this.players);
 	}
 
 	public start() {
@@ -302,7 +302,7 @@ class Engine {
 		return pl;
 	}
 
-	private prepareChronoxData(conf: IEngineProps): IChronoxConfig {
+	private prepareChronoxData(conf: IEngineProps, initiative: number[]): IChronoxConfig {
 		const characters: ICharacterData[] = [];
 
 		this.players.forEach(pl => {
@@ -317,6 +317,7 @@ class Engine {
 		}));
 
 		return {
+			initiative,
 			characters,
 			players,
 			parties: this.players.map((pl, p) => {

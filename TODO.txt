@@ -1,6 +1,5 @@
 TODO
 ----------------------------------------------------------------------------------------------------------
---	do Chronox zaznamu pridat i iniciativu
 --	AICharacter: pokud vybrana cesta nekonci na Tile, ze ktereho se da utocit, skoncit na posledni utocne pozici
 --	pri vyberu reakce hracem by se melo zobrazit i info, jaky utok byl pouzit a kym
 --	pro AI Act pridat tlacitko pro zastaveni + krokovani, pripadne potvrzeni akce
@@ -17,11 +16,6 @@ TODO
 	- P-type: Tank (prida Provoke skill), ...
 	- S-type: Engineer (skill na opravu brneni), ...
 	- M-type: Alchemist (skilly na hazeni elem. bomb), ...
-??	upravit targetArea a effectArea, aby braly v uvahu i prevyseni utocnika a cile
-	- u strelnych zbrani pridat dostrel a effect areu pri strelbe dolu
-??	pridat random grid generation
-	- udelat konfigurovatelne v BattleManagment
-	- moznost vyberu BASE, TERRAIN, HEIGHTMAP, RANDOM a CUSTOM (moznost nastavit parametry generovani)
 
 
 LONG TERM
