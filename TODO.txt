@@ -1,5 +1,6 @@
 TODO
 ----------------------------------------------------------------------------------------------------------
+--	do Chronox zaznamu pridat i iniciativu
 --	AICharacter: pokud vybrana cesta nekonci na Tile, ze ktereho se da utocit, skoncit na posledni utocne pozici
 --	pri vyberu reakce hracem by se melo zobrazit i info, jaky utok byl pouzit a kym
 --	pro AI Act pridat tlacitko pro zastaveni + krokovani, pripadne potvrzeni akce
@@ -7,6 +8,9 @@ TODO
 	- vybira AIPlayer
 	- prioritizace skillu (healing -> Revive)
 --	pasivni skilly
+--	pokud je v Actor[] vice postav stejneho hrace
+	- melo by jit vybrat, kdo z nich bude jednat driv
+	- mela by se objevit moznost koordinovaneho utoku (basic attacky obou postav)
 --	implementovat Sudden death mode (aby nedoslo ke stavu, kdy zbyvaji jen S-typy, ktere evaduji vsechny utoky)
 ??	AP utoky (psycho / water magic / AP strike)
 ??	Specializace:
