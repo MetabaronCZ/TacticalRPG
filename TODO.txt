@@ -1,5 +1,17 @@
 TODO
 ----------------------------------------------------------------------------------------------------------
+--	rework systemu obrany
+	- VIT urcuje pocet HP (base + 0, base + 50, base + 100)
+	- SPR urcuje pocet MP (0, 50, 100)
+		- MP se regeneruji +10% na zacatku Actu
+	- Heavy armor - 50% redukce physical dmg
+	- Light armor - reakcni skill Evasion
+	- Magical armor
+		- 50% redukce magical dmg
+		- reakcni skill Energy shield (pouzije MP na redukci dmg -> 1dmg = 1MP)
+	- magic skilly budou pouzivat MP
+	- dynamic skilly budou pouzivat AP i MP
+	- stity budou ubirat fixni dmg jako dosud
 --	AICharacter: pokud vybrana cesta nekonci na Tile, ze ktereho se da utocit, skoncit na posledni utocne pozici
 --	pri vyberu reakce hracem by se melo zobrazit i info, jaky utok byl pouzit a kym
 --	pro AI Act pridat tlacitko pro zastaveni + krokovani, pripadne potvrzeni akce
@@ -9,7 +21,7 @@ TODO
 --	pasivni skilly
 --	pokud je v Actor[] vice postav stejneho hrace
 	- melo by jit vybrat, kdo z nich bude jednat driv
-	- mela by se objevit moznost koordinovaneho utoku (basic attacky obou postav)
+	- mela by se objevit moznost koordinovaneho utoku (basic attacky obou postav, ukonci Acty postav)
 --	implementovat Sudden death mode (aby nedoslo ke stavu, kdy zbyvaji jen S-typy, ktere evaduji vsechny utoky)
 ??	AP utoky (psycho / water magic / AP strike)
 ??	Specializace:
