@@ -9,15 +9,15 @@
     "watch": "gulp dev"
   },
   "devDependencies": {
-    "@babel/core": "^7.4.4",
+    "@babel/core": "^7.4.5",
     "@babel/plugin-syntax-dynamic-import": "^7.2.0",
-    "@babel/preset-env": "^7.4.4",
+    "@babel/preset-env": "^7.4.5",
     "@babel/preset-react": "^7.0.0",
     "@types/history": "^4.7.2",
     "@types/node": "^10.14.7",
-    "@types/react": "^16.8.18",
+    "@types/react": "^16.8.19",
     "@types/react-dom": "^16.8.4",
-    "@types/react-router": "^4.4.5",
+    "@types/react-router": "^5.0.1",
     "@types/react-router-dom": "^4.3.3",
     "@types/uuid": "^3.4.4",
     "autoprefixer": "^9.5.1",
@@ -25,7 +25,7 @@
     "cssnano": "^4.1.10",
     "del": "^4.1.1",
     "gulp": "^4.0.2",
-    "gulp-changed": "^3.2.0",
+    "gulp-changed": "^4.0.0",
     "gulp-postcss": "^8.0.0",
     "gulp-sass": "^4.0.2",
     "gulp-stylelint": "^9.0.0",
@@ -34,9 +34,9 @@
     "tslint": "^5.16.0",
     "tslint-loader": "^3.5.4",
     "tslint-react": "^4.0.0",
-    "typescript": "^3.4.5",
+    "typescript": "^3.5.1",
     "uglifyjs-webpack-plugin": "^2.1.3",
-    "webpack": "^4.32.0"
+    "webpack": "^4.32.2"
   },
   "dependencies": {
     "mobx": "^5.9.4",
