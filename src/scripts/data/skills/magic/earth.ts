@@ -4,7 +4,7 @@ import { EarthMagicSkillID } from 'modules/skill/magic';
 const earthMagic: { [id in EarthMagicSkillID]: ISkillData; } = {
 	ERT_BOULDER: {
 		title: 'Boulder',
-		cost: 2,
+		mpCost: 10,
 		type: 'ACTIVE',
 		grade: 1,
 		range: 4,
@@ -16,7 +16,7 @@ const earthMagic: { [id in EarthMagicSkillID]: ISkillData; } = {
 	},
 	ERT_EARTH_SPIKE: {
 		title: 'Earth Spike',
-		cost: 2,
+		mpCost: 10,
 		type: 'ACTIVE',
 		grade: 1,
 		range: 4,
@@ -30,7 +30,7 @@ const earthMagic: { [id in EarthMagicSkillID]: ISkillData; } = {
 	},
 	ERT_EARTHQUAKE: {
 		title: 'Earthquake',
-		cost: 4,
+		mpCost: 20,
 		type: 'ACTIVE',
 		grade: 2,
 		range: 4,
@@ -44,7 +44,7 @@ const earthMagic: { [id in EarthMagicSkillID]: ISkillData; } = {
 	},
 	ERT_STONE_SKIN: {
 		title: 'Stone Skin',
-		cost: 0,
+		mpCost: 0,
 		type: 'PASSIVE',
 		grade: 1,
 		range: 0,

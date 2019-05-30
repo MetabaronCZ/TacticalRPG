@@ -28,6 +28,7 @@ interface IActActionEvents {
 	onReactionStart: (reaction: ActReaction) => void;
 	onReactionSelected: (reaction: ActReaction) => void;
 	onReactionBlock: (reaction: ActReaction) => void;
+	onReactionShield: (reaction: ActReaction) => void;
 	onReactionEvasionStart: (reaction: ActReaction) => void;
 	onReactionEvasionEnd: (reaction: ActReaction) => void;
 	onReactionPass: (reaction: ActReaction) => void;
@@ -193,6 +194,7 @@ class ActAction {
 					onStart:			reaction => events.onReactionStart(reaction),
 					onSelected:			reaction => events.onReactionSelected(reaction),
 					onBlock:			reaction => events.onReactionBlock(reaction),
+					onShield:			reaction => events.onReactionShield(reaction),
 					onEvasionStart:		reaction => events.onReactionEvasionStart(reaction),
 					onEvasionEnd:		reaction => events.onReactionEvasionEnd(reaction),
 					onPass:				reaction => events.onReactionPass(reaction),
@@ -392,6 +394,17 @@ class ActAction {
 						});
 					}
 
+					// show energy shield info
+					if (null !== damage.shieldModifier) {
+						target.status.remove('ENERGY_SHIELD');
+
+						info.push({
+							text: `Shielded (${damage.shieldModifier.cost} MP)`,
+							type: 'ACTION',
+							position: targetPos
+						});
+					}
+
 					if (1 !== damage.directionModifier && !info.find(i => 'Back attack' === i.text)) {
 						info.push({
 							text: 'Back attack',
@@ -435,7 +448,8 @@ class ActAction {
 					}
 
 					// apply skill damage / statuses to target
-					target.applyDamage(actor, damage.physical, damage.magical, damageStatus);
+					const mpDamage = (damage.shieldModifier ? damage.shieldModifier.cost : 0);
+					target.applyDamage(actor, damage.physical, damage.magical, mpDamage, damageStatus);
 
 					if (target.status.has('DYING')) {
 						info.push({
@@ -465,7 +479,14 @@ class ActAction {
 					events.onBattleInfo(info[infoStep.number]);
 				});
 
+				// visualise battle info
 				infoAnim.start();
+
+				// log battle info
+				info.forEach(i => {
+					const elm = (i.element ? `(${i.element})` : '');
+					Logger.info(`ActAction battle: ${i.type} ${i.text} ${elm}`);
+				});
 			}
 
 			events.onAnimation(this, step);
@@ -517,6 +538,7 @@ class ActAction {
 			onReactionStart: events.onReactionStart,
 			onReactionSelected: events.onReactionSelected,
 			onReactionBlock: events.onReactionBlock,
+			onReactionShield: events.onReactionShield,
 			onReactionEvasionStart: events.onReactionEvasionStart,
 			onReactionEvasionEnd: events.onReactionEvasionEnd,
 			onReactionPass: events.onReactionPass,

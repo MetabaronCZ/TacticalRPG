@@ -4,7 +4,7 @@ import { IceMagicSkillID } from 'modules/skill/magic';
 const iceMagic: { [id in IceMagicSkillID]: ISkillData; } = {
 	ICE_ICE_SPEAR: {
 		title: 'Ice Spear',
-		cost: 2,
+		mpCost: 10,
 		type: 'ACTIVE',
 		grade: 1,
 		range: 4,
@@ -16,7 +16,7 @@ const iceMagic: { [id in IceMagicSkillID]: ISkillData; } = {
 	},
 	ICE_FREEZE: {
 		title: 'Freeze',
-		cost: 2,
+		mpCost: 10,
 		type: 'ACTIVE',
 		grade: 1,
 		range: 4,
@@ -30,7 +30,7 @@ const iceMagic: { [id in IceMagicSkillID]: ISkillData; } = {
 	},
 	ICE_BLIZZARD: {
 		title: 'Blizzard',
-		cost: 4,
+		mpCost: 20,
 		type: 'ACTIVE',
 		grade: 2,
 		range: 4,
@@ -43,7 +43,7 @@ const iceMagic: { [id in IceMagicSkillID]: ISkillData; } = {
 	},
 	ICE_FROST_AURA: {
 		title: 'Frost Aura',
-		cost: 0,
+		mpCost: 0,
 		type: 'PASSIVE',
 		grade: 1,
 		range: 1,

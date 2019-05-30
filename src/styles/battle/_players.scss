@@ -31,7 +31,8 @@
 			&-item {
 				&-row {
 					&.Players-item-characters-item-row--number {
-						padding-left: $vu;
+						@extend .u-tableColumnFit;
+						padding-left: 2*$vu;
 						text-align: right;
 					}
 				}

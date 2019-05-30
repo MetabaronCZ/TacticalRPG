@@ -2,7 +2,7 @@ import Sexes from 'data/sexes';
 import Armors from 'data/armors';
 import Weapons from 'data/weapons';
 import Archetypes from 'data/archetypes';
-import { characterCTLimit } from 'data/game-config';
+import { characterCTLimit, mpRegen } from 'data/game-config';
 
 import Tile from 'modules/geometry/tile';
 import AIPlayer from 'modules/ai/player';
@@ -115,10 +115,18 @@ class Character {
 		if (this.dead) {
 			throw new Error('Character cannot start act: dead state');
 		}
+		const { AP, MP } = this.baseAttributes;
 
 		// regenerate actor AP
-		const { AP } = this.baseAttributes;
 		this.attributes.set('AP', AP);
+
+		// regenerate actor MP
+		let newMP = this.attributes.MP + MP * mpRegen;
+		newMP = Math.floor(newMP);
+		newMP = Math.max(0, newMP);
+		newMP = Math.min(newMP, MP);
+
+		this.attributes.set('MP', newMP);
 
 		// update skill cooldowns
 		for (const id of Object.keys(this.cooldowns) as SkillID[]) {
@@ -145,36 +153,21 @@ class Character {
 		this.attributes.set('CT', CT % characterCTLimit);
 	}
 
-	public applyDamage(attacker: Character, physical: number, magical: number, effectIds: StatusEffectID[] = []) {
+	public applyDamage(attacker: Character, physical: number, magical: number, mana: number, effectIds: StatusEffectID[] = []) {
 		const { attributes, status } = this;
 
 		if (this.dead || status.has('DYING')) {
 			throw new Error('Cannot apply damage: dead or dying');
 		}
-		const { HP, ARM, ESH } = attributes;
-		let newARM = ARM - physical;
-		let newESH = ESH - magical;
-		let newHP = HP;
-		let damage = 0;
+		const damage = physical + magical;
+		let newHP = attributes.HP - damage;
+		let newMP = attributes.MP - mana;
 
-		if (newARM < 0) {
-			newHP += newARM;
-			newARM = 0;
-		}
-
-		if (newESH < 0) {
-			newHP += newESH;
-			newESH = 0;
-		}
 		newHP = newHP > 0 ? newHP : 0;
+		newMP = newMP > 0 ? newMP : 0;
 
-		attributes.set('ARM', newARM);
-		attributes.set('ESH', newESH);
 		attributes.set('HP', newHP);
-
-		damage += ARM - newARM;
-		damage += ESH - newESH;
-		damage += HP - newHP;
+		attributes.set('MP', newMP);
 
 		attacker.score.setDamage(this, damage);
 
@@ -232,8 +225,11 @@ class Character {
 			this.cooldowns[skill.id] = ('ULTIMATE' === cd ? cd : cd + 1);
 		}
 
-		// reduce AP
-		this.attributes.set('AP', this.attributes.AP - cost);
+		// reduce AP, MP
+		if (null !== cost) {
+			this.attributes.set('AP', this.attributes.AP - cost.AP);
+			this.attributes.set('MP', this.attributes.MP - cost.MP);
+		}
 	}
 }
 

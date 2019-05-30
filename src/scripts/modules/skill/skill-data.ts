@@ -18,7 +18,8 @@ export type SkillCooldown = 0 | 1 | 2 | Ultimate;
 
 export interface ISkillData {
 	readonly title: string;
-	readonly cost: number;
+	readonly apCost?: number;
+	readonly mpCost?: number;
 	readonly type: SkillType;
 	readonly grade?: SkillGrade;
 	readonly range: SkillRange;
@@ -29,6 +30,7 @@ export interface ISkillData {
 	readonly isFixedDamage?: boolean;
 	readonly physical: number;
 	readonly magical: number;
+	readonly block?: number;
 	readonly status?: StatusEffectID[];
 	readonly cooldown?: SkillCooldown;
 }

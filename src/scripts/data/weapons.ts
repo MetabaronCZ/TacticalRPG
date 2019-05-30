@@ -134,8 +134,9 @@ const Weapons = new DataList<WeaponID, IWeaponData>({
 		description: '',
 		type: 'SHIELD',
 		skills: ['SHD_SMALL_BLOCK'],
-		physical: 10,
-		magical: 10
+		physical: 0,
+		magical: 0,
+		block: 10
 	},
 	SHIELD_LARGE: {
 		id: 'SHIELD_LARGE',
@@ -143,8 +144,9 @@ const Weapons = new DataList<WeaponID, IWeaponData>({
 		description: '',
 		type: 'SHIELD',
 		skills: ['SHD_LARGE_BLOCK'],
-		physical: 30,
-		magical: 30
+		physical: 0,
+		magical: 0,
+		block: 30
 	}
 });
 

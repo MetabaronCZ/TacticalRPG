@@ -11,8 +11,8 @@ interface IProps {
 
 const CharacterBadge: React.SFC<IProps> = ({ character }) => {
 	const { archetype, sex, skillset, mainHand, offHand, armor, status } = character;
-	const { HP, AP, ARM, ESH } = character.attributes;
-	const { HP: baseHP, AP: baseAP, ARM: baseARM, ESH: baseESH } = character.baseAttributes;
+	const { HP, AP, MP } = character.attributes;
+	const { HP: baseHP, AP: baseAP, MP: baseMP } = character.baseAttributes;
 
 	return (
 		<div className="u-mt-3">
@@ -32,15 +32,12 @@ const CharacterBadge: React.SFC<IProps> = ({ character }) => {
 						<td>HP: {formatInteger(HP, 3)} <span className="u-disabled">/ {formatInteger(baseHP, 3)}</span></td>
 						<td>
 							<div className="u-ml-1">
-								AP: {formatInteger(AP, 2)} <span className="u-disabled">/ {formatInteger(baseAP, 2)}</span>
+								MP: {formatInteger(MP, 3)} <span className="u-disabled">/ {formatInteger(baseMP, 3)}</span>
 							</div>
 						</td>
-					</tr>
-					<tr>
-						<td>ARM: {formatInteger(ARM, 3)} <span className="u-disabled">/ {formatInteger(baseARM, 3)}</span></td>
 						<td>
 							<div className="u-ml-1">
-								ESH: {formatInteger(ESH, 3)} <span className="u-disabled">/ {formatInteger(baseESH, 3)}</span>
+								AP: {formatInteger(AP, 2)} <span className="u-disabled">/ {formatInteger(baseAP, 2)}</span>
 							</div>
 						</td>
 					</tr>

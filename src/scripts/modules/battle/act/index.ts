@@ -95,6 +95,7 @@ class Act {
 			onReactionStart: reaction => this.update(),
 			onReactionSelected: reaction => this.update(),
 			onReactionBlock: reaction => this.update(),
+			onReactionShield: reaction => this.update(),
 			onReactionEvasionStart: reaction => this.update(),
 			onReactionEvasionEnd: reaction => this.update(),
 			onReactionPass: reaction => this.update(),

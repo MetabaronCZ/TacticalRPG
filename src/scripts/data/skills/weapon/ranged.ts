@@ -4,7 +4,7 @@ import { RangedWeaponSkillID } from 'modules/skill/weapon';
 const rangedSkills: { [id in RangedWeaponSkillID]: ISkillData; } = {
 	BOW_ATTACK: {
 		title: 'Attack',
-		cost: 2,
+		apCost: 2,
 		type: 'ACTIVE',
 		range: 4,
 		area: 'SINGLE',
@@ -14,7 +14,7 @@ const rangedSkills: { [id in RangedWeaponSkillID]: ISkillData; } = {
 	},
 	BOW_CHARGE: {
 		title: 'Charge',
-		cost: 4,
+		apCost: 4,
 		type: 'ACTIVE',
 		range: 4,
 		area: 'SINGLE',
@@ -25,7 +25,7 @@ const rangedSkills: { [id in RangedWeaponSkillID]: ISkillData; } = {
 	},
 	GUN_ATTACK: {
 		title: 'Attack',
-		cost: 1,
+		apCost: 1,
 		type: 'ACTIVE',
 		range: 4,
 		area: 'SINGLE',
@@ -37,7 +37,7 @@ const rangedSkills: { [id in RangedWeaponSkillID]: ISkillData; } = {
 	},
 	GUN_CRIPPLE: {
 		title: 'Cripple',
-		cost: 2,
+		apCost: 2,
 		type: 'ACTIVE',
 		range: 4,
 		area: 'SINGLE',

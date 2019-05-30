@@ -4,7 +4,7 @@ import { Wield2HWeaponSkillID } from 'modules/skill/weapon';
 const wield2HSkills: { [id in Wield2HWeaponSkillID]: ISkillData; } = {
 	SPR_ATTACK: {
 		title: 'Attack',
-		cost: 2,
+		apCost: 2,
 		type: 'ACTIVE',
 		range: 2,
 		area: 'LINE',
@@ -15,7 +15,7 @@ const wield2HSkills: { [id in Wield2HWeaponSkillID]: ISkillData; } = {
 	},
 	SPR_THRUST: {
 		title: 'Thrust',
-		cost: 4,
+		apCost: 4,
 		type: 'ACTIVE',
 		range: 2,
 		area: 'LINE',
@@ -27,7 +27,7 @@ const wield2HSkills: { [id in Wield2HWeaponSkillID]: ISkillData; } = {
 	},
 	S2H_ATTACK: {
 		title: 'Attack',
-		cost: 2,
+		apCost: 2,
 		type: 'ACTIVE',
 		range: 1,
 		area: 'SINGLE',
@@ -37,7 +37,7 @@ const wield2HSkills: { [id in Wield2HWeaponSkillID]: ISkillData; } = {
 	},
 	S2H_CLEAVE: {
 		title: 'Cleave',
-		cost: 4,
+		apCost: 4,
 		type: 'ACTIVE',
 		range: 1,
 		area: 'NEIGHBOURS',
@@ -48,7 +48,7 @@ const wield2HSkills: { [id in Wield2HWeaponSkillID]: ISkillData; } = {
 	},
 	A2H_ATTACK: {
 		title: 'Attack',
-		cost: 2,
+		apCost: 2,
 		type: 'ACTIVE',
 		range: 1,
 		area: 'SINGLE',
@@ -58,7 +58,7 @@ const wield2HSkills: { [id in Wield2HWeaponSkillID]: ISkillData; } = {
 	},
 	A2H_WHIRLWIND: {
 		title: 'Whirlwind',
-		cost: 4,
+		apCost: 4,
 		type: 'ACTIVE',
 		range: 1,
 		area: 'NEIGHBOURS',
@@ -69,7 +69,7 @@ const wield2HSkills: { [id in Wield2HWeaponSkillID]: ISkillData; } = {
 	},
 	H2H_ATTACK: {
 		title: 'Attack',
-		cost: 2,
+		apCost: 2,
 		type: 'ACTIVE',
 		range: 1,
 		area: 'SINGLE',
@@ -79,7 +79,7 @@ const wield2HSkills: { [id in Wield2HWeaponSkillID]: ISkillData; } = {
 	},
 	H2H_SHOCKWAVE: {
 		title: 'Shockwave',
-		cost: 4,
+		apCost: 4,
 		type: 'ACTIVE',
 		range: 1,
 		area: 'CROSS',

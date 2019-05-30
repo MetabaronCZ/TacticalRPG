@@ -4,7 +4,7 @@ import { HolyMagicSkillID } from 'modules/skill/magic';
 const holyMagic: { [id in HolyMagicSkillID]: ISkillData; } = {
 	HOL_HEAL: {
 		title: 'Heal',
-		cost: 2,
+		mpCost: 10,
 		type: 'ACTIVE',
 		grade: 1,
 		range: 4,
@@ -16,7 +16,7 @@ const holyMagic: { [id in HolyMagicSkillID]: ISkillData; } = {
 	},
 	HOL_REMEDY: {
 		title: 'Remedy',
-		cost: 2,
+		mpCost: 10,
 		type: 'ACTIVE',
 		grade: 1,
 		range: 4,
@@ -28,7 +28,7 @@ const holyMagic: { [id in HolyMagicSkillID]: ISkillData; } = {
 	},
 	HOL_REGENERATE: {
 		title: 'Regenerate',
-		cost: 2,
+		mpCost: 10,
 		type: 'ACTIVE',
 		grade: 1,
 		range: 4,
@@ -42,7 +42,7 @@ const holyMagic: { [id in HolyMagicSkillID]: ISkillData; } = {
 	},
 	HOL_GROUP_HEAL: {
 		title: 'Group Heal',
-		cost: 4,
+		mpCost: 20,
 		type: 'ACTIVE',
 		grade: 2,
 		range: 4,
@@ -55,7 +55,7 @@ const holyMagic: { [id in HolyMagicSkillID]: ISkillData; } = {
 	},
 	HOL_HOLY_AURA: {
 		title: 'Holy Aura',
-		cost: 0,
+		mpCost: 0,
 		type: 'PASSIVE',
 		grade: 1,
 		range: 0,
@@ -67,7 +67,7 @@ const holyMagic: { [id in HolyMagicSkillID]: ISkillData; } = {
 	},
 	HOL_REVIVE: {
 		title: 'Revive',
-		cost: 2,
+		mpCost: 20,
 		type: 'ACTIVE',
 		grade: 2,
 		range: 4,

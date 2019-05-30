@@ -20,6 +20,7 @@ export const maxCharacterNameLength = 16;
 export const characterCTLimit = 100;
 export const maxJumpHeight = 1;
 export const characterBBox = 0.5; // character bounding box radius
+export const mpRegen = 0.1; // character mana regenerated fraction
 
 // party
 export const maxPartySize = 8; // maximum character count in one party

@@ -4,7 +4,7 @@ import { WaterMagicSkillID } from 'modules/skill/magic';
 const waterMagic: { [id in WaterMagicSkillID]: ISkillData; } = {
 	WAT_SPLASH: {
 		title: 'Splash',
-		cost: 2,
+		mpCost: 10,
 		type: 'ACTIVE',
 		grade: 1,
 		range: 4,
@@ -16,7 +16,7 @@ const waterMagic: { [id in WaterMagicSkillID]: ISkillData; } = {
 	},
 	WAT_SILENCE: {
 		title: 'Silence',
-		cost: 2,
+		mpCost: 10,
 		type: 'ACTIVE',
 		grade: 1,
 		range: 4,
@@ -30,7 +30,7 @@ const waterMagic: { [id in WaterMagicSkillID]: ISkillData; } = {
 	},
 	WAT_FLOOD: {
 		title: 'Flood',
-		cost: 4,
+		mpCost: 20,
 		type: 'ACTIVE',
 		grade: 2,
 		range: 4,
@@ -43,7 +43,7 @@ const waterMagic: { [id in WaterMagicSkillID]: ISkillData; } = {
 	},
 	WAT_WATER_AURA: {
 		title: 'Water Aura',
-		cost: 0,
+		mpCost: 0,
 		type: 'PASSIVE',
 		grade: 1,
 		range: 0,

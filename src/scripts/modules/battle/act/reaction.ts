@@ -10,6 +10,7 @@ interface IActReactionEvents {
 	onEvasionStart: (reaction: ActReaction) => void;
 	onEvasionEnd: (reaction: ActReaction) => void;
 	onBlock: (reaction: ActReaction) => void;
+	onShield: (reaction: ActReaction) => void;
 	onReset: (reaction: ActReaction) => void;
 	onPass: (reaction: ActReaction) => void;
 	onEnd: (reaction: ActReaction) => void;
@@ -117,6 +118,10 @@ class ActReaction {
 				this.evasionStart();
 				break;
 
+			case 'ENERGY_SHIELD':
+				this.shield();
+				break;
+
 			case 'SHD_SMALL_BLOCK':
 				this.block('BLOCK_SMALL');
 				break;
@@ -149,7 +154,7 @@ class ActReaction {
 		this.evasionTarget = target;
 
 		const skills = action.skills;
-		const cost = skills[0].cost;
+		const cost = skills[0].apCost;
 
 		// update reacting character
 		const { AP } = reactor.attributes;
@@ -203,7 +208,7 @@ class ActReaction {
 		const { state, reactor, obstacles } = this;
 
 		if ('SELECTED' !== state) {
-			throw new Error('Could not start to evade: invalid state ' + state);
+			throw new Error('Could not start evasion reaction: invalid state ' + state);
 		}
 		this.state = 'EVASION';
 
@@ -218,12 +223,29 @@ class ActReaction {
 		const { state } = this;
 
 		if ('SELECTED' !== state) {
-			throw new Error('Could not start to evade: invalid state ' + state);
+			throw new Error('Could not start block reaction: invalid state ' + state);
 		}
 		this.state = 'DONE';
 		this.reactor.status.apply(this.reactor, block);
 
 		this.events.onBlock(this);
+
+		// run second event after update (prevent race condition)
+		setTimeout(() => {
+			this.events.onEnd(this);
+		});
+	}
+
+	private shield() {
+		const { state } = this;
+
+		if ('SELECTED' !== state) {
+			throw new Error('Could not start energy shield reaction: invalid state ' + state);
+		}
+		this.state = 'DONE';
+		this.reactor.status.apply(this.reactor, 'ENERGY_SHIELD');
+
+		this.events.onShield(this);
 
 		// run second event after update (prevent race condition)
 		setTimeout(() => {
@@ -254,6 +276,10 @@ class ActReaction {
 			onBlock: reaction => {
 				Logger.info('ActReaction onBlock');
 				events.onBlock(reaction);
+			},
+			onShield: reaction => {
+				Logger.info('ActReaction onShield');
+				events.onShield(reaction);
 			},
 			onReset: reaction => {
 				Logger.info('ActReaction onReset');

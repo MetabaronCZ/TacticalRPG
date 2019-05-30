@@ -8,6 +8,7 @@ import { IOnActionSelect, IOnTileSelect } from 'modules/ai/player';
 import {
 	findTileFrom, resolveDirection, getOpositeDirection
 } from 'modules/geometry/direction';
+import { canUseSkill } from 'modules/battle/character-actions';
 
 interface IOnActionConf {
 	actions: CharacterAction[];
@@ -157,7 +158,7 @@ class AICharacter {
 			throw new Error('AI character actions does not contain pass action');
 		}
 		const char = this.character;
-		const ap = char.attributes.AP;
+		const { AP, MP } = char.attributes;
 
 		if (isBackAttacked || !char.canAct()) {
 			onSelect(passAction);
@@ -166,7 +167,7 @@ class AICharacter {
 
 		// find first applicable reaction
 		for (const action of actions) {
-			if (!action.skills.length || !action.isActive || action.cost > ap) {
+			if (!action.skills.length || !action.isActive() || !canUseSkill(action.cost, AP, MP)) {
 				continue;
 			}
 			const skill = action.skills[0];
@@ -228,7 +229,7 @@ class AICharacter {
 		}
 		const char = this.character;
 		const pos = char.position;
-		const ap = char.attributes.AP;
+		const { AP, MP } = char.attributes;
 
 		// reset move state
 		this.moved = false;
@@ -240,7 +241,7 @@ class AICharacter {
 
 		// find first skill to attack chosen target
 		for (const action of actions) {
-			if (!action.skills.length || !action.isActive() || action.cost > ap) {
+			if (!action.skills.length || !action.isActive() || !canUseSkill(action.cost, AP, MP)) {
 				continue;
 			}
 			const skillTarget = action.skills[0].target;

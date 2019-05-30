@@ -4,7 +4,7 @@ import { FireMagicSkillID } from 'modules/skill/magic';
 const fireMagic: { [id in FireMagicSkillID]: ISkillData; } = {
 	FIR_FIREBALL: {
 		title: 'Fireball',
-		cost: 2,
+		mpCost: 10,
 		type: 'ACTIVE',
 		grade: 1,
 		range: 4,
@@ -16,7 +16,7 @@ const fireMagic: { [id in FireMagicSkillID]: ISkillData; } = {
 	},
 	FIR_BURN: {
 		title: 'Burn',
-		cost: 2,
+		mpCost: 10,
 		type: 'ACTIVE',
 		grade: 1,
 		range: 4,
@@ -30,7 +30,7 @@ const fireMagic: { [id in FireMagicSkillID]: ISkillData; } = {
 	},
 	FIR_FIRESTORM: {
 		title: 'Firestorm',
-		cost: 4,
+		mpCost: 20,
 		type: 'ACTIVE',
 		grade: 2,
 		range: 4,
@@ -43,7 +43,7 @@ const fireMagic: { [id in FireMagicSkillID]: ISkillData; } = {
 	},
 	FIR_FIRE_AURA: {
 		title: 'Fire Aura',
-		cost: 0,
+		mpCost: 0,
 		type: 'PASSIVE',
 		grade: 1,
 		range: 0,

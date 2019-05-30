@@ -1,10 +1,19 @@
 import React, { SyntheticEvent } from 'react';
-import CharacterAction from 'modules/battle/character-action';
+import CharacterAction, { ICharacterActionCost } from 'modules/battle/character-action';
 
 interface IActionsProps {
 	actions: CharacterAction[];
 	onSelect: (action: CharacterAction) => void;
 }
+
+const formatCost = (cost: ICharacterActionCost | null): string => {
+	if (null === cost) {
+		return '';
+	}
+	const costArray = [cost.AP ? `${cost.AP} AP` : '', cost.MP ? `${cost.MP} MP` : ''];
+	const result = costArray.filter(c => '' !== c).join(', ');
+	return result ? `(${result})` : '';
+};
 
 const Actions: React.SFC<IActionsProps> = ({ actions, onSelect }) => {
 	const onClick = (action: CharacterAction) => (e: SyntheticEvent) => {
@@ -25,7 +34,7 @@ const Actions: React.SFC<IActionsProps> = ({ actions, onSelect }) => {
 									<strong>{action.title}</strong>
 								</a>
 								<div className="u-text-small">
-									{action.type} ({action.cost}AP)
+									{action.type} {formatCost(action.cost)}
 								</div>
 							</div>
 						)

@@ -18,10 +18,9 @@ class BaseAttributes implements IAttributes {
 	public get SPR(): number { return this.values.SPR; }
 
 	public get HP(): number { return this.values.HP; }
+	public get MP(): number { return this.values.MP; }
 	public get AP(): number { return this.values.AP; }
 	public get CT(): number { return this.values.CT; }
-	public get ARM(): number { return this.values.ARM; }
-	public get ESH(): number { return this.values.ESH; }
 }
 
 export default BaseAttributes;

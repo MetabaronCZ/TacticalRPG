@@ -4,7 +4,7 @@ import { PsychokinesisSkillID } from 'modules/skill/magic';
 const psychokinesis: { [id in PsychokinesisSkillID]: ISkillData; } = {
 	PSY_KINETIC_STRIKE: {
 		title: 'Kinetic Strike',
-		cost: 2,
+		mpCost: 10,
 		type: 'ACTIVE',
 		grade: 1,
 		range: 4,
@@ -16,7 +16,7 @@ const psychokinesis: { [id in PsychokinesisSkillID]: ISkillData; } = {
 	},
 	PSY_CONFUSION: {
 		title: 'Confusion',
-		cost: 2,
+		mpCost: 10,
 		type: 'ACTIVE',
 		grade: 1,
 		range: 4,
@@ -30,7 +30,7 @@ const psychokinesis: { [id in PsychokinesisSkillID]: ISkillData; } = {
 	},
 	PSY_PSYCHODOME: {
 		title: 'Psychodome',
-		cost: 0,
+		mpCost: 0,
 		type: 'PASSIVE',
 		grade: 1,
 		range: 0,

@@ -4,7 +4,7 @@ import { WindMagicSkillID } from 'modules/skill/magic';
 const windMagic: { [id in WindMagicSkillID]: ISkillData; } = {
 	WND_AIR_BLAST: {
 		title: 'Air Blast',
-		cost: 2,
+		mpCost: 10,
 		type: 'ACTIVE',
 		grade: 1,
 		range: 4,
@@ -16,7 +16,7 @@ const windMagic: { [id in WindMagicSkillID]: ISkillData; } = {
 	},
 	WND_JET_STREAM: {
 		title: 'Jet Stream',
-		cost: 2,
+		mpCost: 10,
 		type: 'ACTIVE',
 		grade: 1,
 		range: 4,
@@ -29,7 +29,7 @@ const windMagic: { [id in WindMagicSkillID]: ISkillData; } = {
 	},
 	WND_TORNADO: {
 		title: 'Tornado',
-		cost: 4,
+		mpCost: 20,
 		type: 'ACTIVE',
 		grade: 2,
 		range: 4,
@@ -42,7 +42,7 @@ const windMagic: { [id in WindMagicSkillID]: ISkillData; } = {
 	},
 	WND_WIND_AURA: {
 		title: 'Wind Aura',
-		cost: 0,
+		mpCost: 0,
 		type: 'PASSIVE',
 		grade: 1,
 		range: 0,

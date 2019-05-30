@@ -45,9 +45,8 @@ class Players extends React.Component<IProps, IState> {
 								<tr>
 									<th>Name</th>
 									<th className="Players-item-characters-heading">HP</th>
+									<th className="Players-item-characters-heading">MP</th>
 									<th className="Players-item-characters-heading">AP</th>
-									<th className="Players-item-characters-heading">ARM</th>
-									<th className="Players-item-characters-heading">ESH</th>
 								</tr>
 							</thead>
 
@@ -57,8 +56,8 @@ class Players extends React.Component<IProps, IState> {
 									const isActive = !!(act && act.getActor() === char);
 									const state = (isDying ? 'is-dying' : (isActive ? 'is-active' : ''));
 
-									const { HP, AP, ARM, ESH } = char.attributes;
-									const { HP: baseHP, AP: baseAP, ARM: baseARM, ESH: baseESH } = char.baseAttributes;
+									const { HP, AP, MP } = char.attributes;
+									const { HP: baseHP, AP: baseAP, MP: baseMP } = char.baseAttributes;
 
 									return (
 										<tr
@@ -87,15 +86,11 @@ class Players extends React.Component<IProps, IState> {
 															</td>
 
 															<td className="Players-item-characters-item-row Players-item-characters-item-row--number">
+																{formatInteger(MP, 3)} <span className="Players-item-characters-item-base">/ {formatInteger(baseMP, 3)}</span>
+															</td>
+
+															<td className="Players-item-characters-item-row Players-item-characters-item-row--number">
 																{formatInteger(AP, 2)} <span className="Players-item-characters-item-base">/ {formatInteger(baseAP, 2)}</span>
-															</td>
-
-															<td className="Players-item-characters-item-row Players-item-characters-item-row--number">
-																{formatInteger(ARM, 3)} <span className="Players-item-characters-item-base">/ {formatInteger(baseARM, 3)}</span>
-															</td>
-
-															<td className="Players-item-characters-item-row Players-item-characters-item-row--number">
-																{formatInteger(ESH, 3)} <span className="Players-item-characters-item-base">/ {formatInteger(baseESH, 3)}</span>
 															</td>
 														</React.Fragment>
 													)

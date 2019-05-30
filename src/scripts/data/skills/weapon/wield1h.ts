@@ -4,7 +4,7 @@ import { Wield1HWeaponSkillID } from 'modules/skill/weapon';
 const wield1HSkills: { [id in Wield1HWeaponSkillID]: ISkillData; } = {
 	S1H_ATTACK: {
 		title: 'Attack',
-		cost: 1,
+		apCost: 1,
 		type: 'ACTIVE',
 		range: 1,
 		area: 'SINGLE',
@@ -14,7 +14,7 @@ const wield1HSkills: { [id in Wield1HWeaponSkillID]: ISkillData; } = {
 	},
 	S1H_BLEED: {
 		title: 'Bleed',
-		cost: 2,
+		apCost: 2,
 		type: 'ACTIVE',
 		range: 1,
 		area: 'SINGLE',
@@ -26,7 +26,7 @@ const wield1HSkills: { [id in Wield1HWeaponSkillID]: ISkillData; } = {
 	},
 	A1H_ATTACK: {
 		title: 'Attack',
-		cost: 1,
+		apCost: 1,
 		type: 'ACTIVE',
 		range: 1,
 		area: 'SINGLE',
@@ -36,7 +36,7 @@ const wield1HSkills: { [id in Wield1HWeaponSkillID]: ISkillData; } = {
 	},
 	A1H_SMASH: {
 		title: 'Smash',
-		cost: 2,
+		apCost: 2,
 		type: 'ACTIVE',
 		range: 1,
 		area: 'SINGLE',
@@ -47,7 +47,7 @@ const wield1HSkills: { [id in Wield1HWeaponSkillID]: ISkillData; } = {
 	},
 	H1H_ATTACK: {
 		title: 'Attack',
-		cost: 1,
+		apCost: 1,
 		type: 'ACTIVE',
 		range: 1,
 		area: 'SINGLE',
@@ -57,7 +57,7 @@ const wield1HSkills: { [id in Wield1HWeaponSkillID]: ISkillData; } = {
 	},
 	H1H_STUN: {
 		title: 'Stun',
-		cost: 2,
+		apCost: 2,
 		type: 'ACTIVE',
 		range: 1,
 		area: 'SINGLE',

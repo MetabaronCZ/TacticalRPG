@@ -19,4 +19,5 @@ export interface IWeaponData {
 	readonly skills: WeaponSkillID[];
 	readonly physical: number;
 	readonly magical: number;
+	readonly block?: number;
 }

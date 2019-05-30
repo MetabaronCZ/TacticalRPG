@@ -4,7 +4,7 @@ import { SmallWeaponSkillID } from 'modules/skill/weapon';
 const smallSkills: { [id in SmallWeaponSkillID]: ISkillData; } = {
 	FST_ATTACK: {
 		title: 'Attack',
-		cost: 2,
+		apCost: 2,
 		type: 'ACTIVE',
 		range: 1,
 		area: 'SINGLE',
@@ -14,7 +14,7 @@ const smallSkills: { [id in SmallWeaponSkillID]: ISkillData; } = {
 	},
 	FST_DISARM: {
 		title: 'Disarm',
-		cost: 2,
+		apCost: 2,
 		type: 'ACTIVE',
 		range: 1,
 		area: 'SINGLE',
@@ -26,7 +26,7 @@ const smallSkills: { [id in SmallWeaponSkillID]: ISkillData; } = {
 	},
 	DGR_ATTACK: {
 		title: 'Attack',
-		cost: 1,
+		apCost: 1,
 		type: 'ACTIVE',
 		range: 1,
 		area: 'SINGLE',
@@ -36,7 +36,7 @@ const smallSkills: { [id in SmallWeaponSkillID]: ISkillData; } = {
 	},
 	DGR_STAB: {
 		title: 'Stab',
-		cost: 2,
+		apCost: 2,
 		type: 'ACTIVE',
 		range: 1,
 		area: 'SINGLE',

@@ -6,12 +6,11 @@ export type AttributeID =
 	'SPD' | // speed
 	'MOV' | // movement
 	'MAG' | // magic
-	'SPR' |  // spirit
+	'SPR' | // spirit
 	'HP' |  // hit points / life
+	'MP' |  // magical points / mana
 	'AP' |  // action points / stamina
-	'CT' |  // charge time
-	'ARM' | // armor
-	'ESH';  // energy shield
+	'CT';   // charge time
 
 export type IAttributes = {
 	[attr in AttributeID]: number;
@@ -20,6 +19,9 @@ export type IAttributes = {
 class Attributes extends BaseAttributes {
 	// set attribute value
 	public set(attr: AttributeID, value: number) {
+		if (value < 0) {
+			throw new Error(`Attribute ${attr} was set to invalid value: ${value}`);
+		}
 		this.values[attr] = value;
 	}
 }

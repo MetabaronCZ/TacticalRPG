@@ -33,7 +33,7 @@ const StatusEffects = new DataList<StatusEffectID, StatusEffectFun>({
 		repeat: 3,
 		apply: (tgt, cb) => {
 			const dmg = Math.floor(phy / 2);
-			tgt.applyDamage(src, dmg, 0);
+			tgt.applyDamage(src, dmg, 0, 0);
 
 			cb({
 				text: formatNumber(dmg),
@@ -60,7 +60,7 @@ const StatusEffects = new DataList<StatusEffectID, StatusEffectFun>({
 		repeat: 3,
 		apply: (tgt, cb) => {
 			const dmg = Math.floor(mag / 2);
-			tgt.applyDamage(src, 0, dmg);
+			tgt.applyDamage(src, 0, dmg, 0);
 
 			cb({
 				text: formatNumber(dmg),
@@ -159,7 +159,14 @@ const StatusEffects = new DataList<StatusEffectID, StatusEffectFun>({
 		effect: 'Blocked',
 		description: 'Shield based damage reduction',
 		type: 'SUPPORT'
-	})
+	}),
+	ENERGY_SHIELD: () => ({
+		id: 'ENERGY_SHIELD',
+		title: 'Energy Shield',
+		effect: 'Shielded',
+		description: 'Mana based energy shield damage reduction',
+		type: 'SUPPORT'
+	}),
 });
 
 export default StatusEffects;

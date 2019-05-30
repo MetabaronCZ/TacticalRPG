@@ -1,8 +1,11 @@
+import miscSkills from 'data/skills/misc';
 import weaponSkills from 'data/skills/weapon';
 
 import { DynamicSkillID } from 'modules/skill/dynamic';
 import { WeaponID } from 'modules/equipment/weapon-data';
 import { ISkillData, SkillElement } from 'modules/skill/skill-data';
+
+const dynamicSkill = miscSkills.DYNAMIC_SKILL;
 
 const weaponSkillData: { [id in WeaponID]: ISkillData | null; } = {
 	NONE: null,
@@ -29,18 +32,18 @@ const getData = (title: string, weapon: WeaponID, element: SkillElement): ISkill
 	if (null === data) {
 		throw new Error(`Invalid weapon given for Dynamic skill definition: ${weapon}`);
 	}
+	const wpnApCost = data.apCost || 0;
+	const dynApCost = dynamicSkill.apCost || 0;
+	const dynMpCost = dynamicSkill.mpCost || 0;
+
 	return {
+		...dynamicSkill,
 		title,
 		element,
-		grade: 1,
-		cost: data.cost + 1,
-		type: 'ACTIVE',
+		apCost: wpnApCost + dynApCost,
+		mpCost: dynMpCost,
 		range: data.range,
 		area: data.area,
-		target: 'ENEMY',
-		physical: 0.5,
-		magical: 0.5,
-		cooldown: 1,
 		hitScan: data.hitScan,
 		isFixedDamage: data.isFixedDamage
 	};

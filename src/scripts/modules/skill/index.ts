@@ -84,7 +84,8 @@ const reactableSkillTargets: SkillTarget[] = ['ANY', 'ENEMY'];
 class Skill implements ISkillData {
 	public readonly id: SkillID;
 	public readonly title: string;
-	public readonly cost: number; // AP cost
+	public readonly apCost: number;
+	public readonly mpCost: number;
 	public readonly type: SkillType;
 	public readonly grade: SkillGrade;
 	public readonly range: SkillRange;
@@ -95,6 +96,7 @@ class Skill implements ISkillData {
 	public readonly isFixedDamage: boolean;
 	public readonly physical: number; // damage modifier [%]
 	public readonly magical: number; // magical damage modifier [%]
+	public readonly block: number; // block modifier [%]
 	public readonly status: StatusEffectID[]; // status effects added to attack
 	public readonly cooldown: SkillCooldown;
 	public readonly isAttackSkill: boolean;
@@ -103,7 +105,8 @@ class Skill implements ISkillData {
 		const data = Skills.get(id);
 		this.id = id;
 		this.title = data.title;
-		this.cost = data.cost;
+		this.apCost = data.apCost || 0;
+		this.mpCost = data.mpCost || 0;
 		this.type = data.type;
 		this.grade = data.grade || 0;
 		this.range = data.range;
@@ -114,6 +117,7 @@ class Skill implements ISkillData {
 		this.isFixedDamage = data.isFixedDamage || false;
 		this.physical = data.physical;
 		this.magical = data.magical;
+		this.block = data.block || 1;
 		this.status = data.status || [];
 		this.cooldown = data.cooldown || 0;
 		this.isAttackSkill = (-1 !== attackSkills.indexOf(this.id));

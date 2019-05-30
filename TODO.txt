@@ -1,19 +1,11 @@
 TODO
 ----------------------------------------------------------------------------------------------------------
---	rework systemu obrany
-	- VIT urcuje pocet HP (base + 0, base + 50, base + 100)
-	- SPR urcuje pocet MP (0, 50, 100)
-		- MP se regeneruji +10% na zacatku Actu
-	- Heavy armor - 50% redukce physical dmg
-	- Light armor - reakcni skill Evasion
-	- Magical armor
-		- 50% redukce magical dmg
-		- reakcni skill Energy shield (pouzije MP na redukci dmg -> 1dmg = 1MP)
-	- magic skilly budou pouzivat MP
-	- dynamic skilly budou pouzivat AP i MP
-	- stity budou ubirat fixni dmg jako dosud
---	AICharacter: pokud vybrana cesta nekonci na Tile, ze ktereho se da utocit, skoncit na posledni utocne pozici
+--	refaktorovat "character-actions.ts"; sjednotit kontroly isAtive
 --	pri vyberu reakce hracem by se melo zobrazit i info, jaky utok byl pouzit a kym
+	--	zobrazovat damage info pred CONFIRM akci
+	--	v damage infu zobrazovat utok (phy, mag) + modifikatory; neovlivneno akcemi defendera (zadne jeste nejsou pred reakci)
+	--	logovat damage output + vysledne damage (uz je)
+--	AICharacter: pokud vybrana cesta nekonci na Tile, ze ktereho se da utocit, skoncit na posledni utocne pozici
 --	pro AI Act pridat tlacitko pro zastaveni + krokovani, pripadne potvrzeni akce
 --	AICharacter: pohyb/akce podle melee / ranged / support role
 	- vybira AIPlayer
