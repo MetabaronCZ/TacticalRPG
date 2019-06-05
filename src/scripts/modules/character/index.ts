@@ -17,14 +17,14 @@ import { IArmorData } from 'modules/equipment/armor-data';
 import { IOnBattleInfo } from 'modules/battle/battle-info';
 import { IWeaponData } from 'modules/equipment/weapon-data';
 import { IArchetypeData } from 'modules/character/archetype';
-import { SkillID, Ultimate } from 'modules/skill/skill-data';
 import { StatusEffectID } from 'modules/battle/status-effect';
 import CharacterAction from 'modules/battle/character-action';
 import BaseAttributes from 'modules/character/base-attributes';
+import { SkillID, SkillCooldown } from 'modules/skill/skill-data';
 import { CharacterData, ICharacterData } from 'modules/character-creation/character-data';
 
-type ISkillCooldowns = Partial<{
-	[id in SkillID]: number | Ultimate;
+export type ISkillCooldowns = Partial<{
+	[id in SkillID]: SkillCooldown;
 }>;
 
 class Character {
@@ -134,7 +134,7 @@ class Character {
 
 			if ('ULTIMATE' !== cd) {
 				if (cd > 1) {
-					this.cooldowns[id] = cd - 1;
+					this.cooldowns[id] = cd - 1 as SkillCooldown;
 				} else {
 					delete this.cooldowns[id];
 				}
@@ -222,7 +222,7 @@ class Character {
 		// put skills on cooldown
 		for (const skill of action.skills) {
 			const cd = skill.cooldown;
-			this.cooldowns[skill.id] = ('ULTIMATE' === cd ? cd : cd + 1);
+			this.cooldowns[skill.id] = ('ULTIMATE' === cd ? cd : cd + 1) as SkillCooldown;
 		}
 
 		// reduce AP, MP

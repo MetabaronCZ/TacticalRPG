@@ -19,14 +19,14 @@ const Actions: React.SFC<IActionsProps> = ({ actions, onSelect }) => {
 	const onClick = (action: CharacterAction) => (e: SyntheticEvent) => {
 		e.preventDefault();
 
-		if (action.isActive()) {
+		if (action.active) {
 			onSelect(action);
 		}
 	};
 	return (
 		<ul className="Actions">
 			{actions.map((action, i) => (
-				<li className={`Actions-item ${!action.isActive() ? 'is-disabled' : ''}`} key={i}>
+				<li className={`Actions-item ${!action.active ? 'is-disabled' : ''}`} key={i}>
 					{0 === action.cooldown
 						? (
 							<div>

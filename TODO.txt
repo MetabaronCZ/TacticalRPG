@@ -1,6 +1,5 @@
 TODO
 ----------------------------------------------------------------------------------------------------------
---	refaktorovat "character-actions.ts"; sjednotit kontroly isAtive
 --	pri vyberu reakce hracem by se melo zobrazit i info, jaky utok byl pouzit a kym
 	--	zobrazovat damage info pred CONFIRM akci
 	--	v damage infu zobrazovat utok (phy, mag) + modifikatory; neovlivneno akcemi defendera (zadne jeste nejsou pred reakci)

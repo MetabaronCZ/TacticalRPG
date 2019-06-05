@@ -116,7 +116,7 @@ class ActAction {
 			throw new Error('Could not start action: invalid state ' + state);
 		}
 
-		if (!action.isActive() || !action.skills.length) {
+		if (!action.active || !action.skills.length) {
 			throw new Error('Could not start action: invalid action');
 		}
 		this.action = action;
@@ -141,7 +141,7 @@ class ActAction {
 			throw new Error('Could not select action target: invalid state ' + state);
 		}
 
-		if (null === action || !action.isActive()) {
+		if (null === action || !action.active) {
 			throw new Error('Could not select action target: invalid action');
 		}
 
@@ -177,7 +177,7 @@ class ActAction {
 			throw new Error('Could not confirm action: invalid state ' + state);
 		}
 
-		if (null === action || null === target || !effectTargets.length || !action.isActive()) {
+		if (null === action || null === target || !effectTargets.length || !action.active) {
 			throw new Error('Could not confirm action: invalid action data');
 		}
 		this.state = 'CONFIRMED';
@@ -294,7 +294,7 @@ class ActAction {
 		}
 		this.state = 'ANIMATION';
 
-		if (!effectTargets.length || null === action || !action.isActive()) {
+		if (!effectTargets.length || null === action || !action.active) {
 			throw new Error('Could not run action animation: invalid data');
 		}
 		const timing = Array(effectTargets.length).fill(skillAnimDuration);
