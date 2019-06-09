@@ -8,7 +8,7 @@
 		"noEmitHelpers": true, // disable emitting inline helper functions
 		"removeComments": true,
 		"experimentalDecorators": true, // alow ES7 decorators (MobX)
-		"allowSyntheticDefaultImports": true,
+		"esModuleInterop": true, // required for Jest tests
 		"baseUrl": "./src/scripts",
 		"sourceMap": true,
 		"jsx": "react",
@@ -22,5 +22,6 @@
 	},
 	"compileOnSave": false,
 	"files": ["./src/scripts/index.tsx"],
-	"exclude": ["node_modules"]
+	"include": ["./tests/**/*.ts", "./tests/**/*.tsx"],
+	"exclude": ["node_modules", "dist"]
 }
