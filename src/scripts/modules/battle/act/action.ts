@@ -125,7 +125,7 @@ class ActAction {
 		// update actor values
 		const skills = action.skills;
 		const skillAreas = skills.map(skill => skill.getTargetable(actor.position, obstacles));
-		const targetable = getIntersection(skillAreas, pos => pos.id);
+		const targetable = getIntersection(skillAreas);
 		const targets = skills[0].getTargets(actor, characters, targetable);
 
 		this.area = targetable;
@@ -158,7 +158,7 @@ class ActAction {
 
 		// get skill effect area
 		const effectAreas = skills.map(s => s.getEffectArea(actor.position, target));
-		const effectArea = getIntersection(effectAreas, pos => pos.id);
+		const effectArea = getIntersection(effectAreas);
 		const effectTarget = characters.find(char => target === char.position) || null;
 		const effectTargets = skills[0].getTargets(actor, characters, effectArea);
 

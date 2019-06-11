@@ -1,4 +1,4 @@
-import { randomizeArray } from 'core/array';
+import { getRandomized } from 'core/array';
 import PriorityQueue from 'core/priority-queue';
 
 import { maxJumpHeight } from 'data/game-config';
@@ -29,7 +29,7 @@ export const getShortestPath = (start: Tile, target: Tile, obstacles: Tile[]): T
 			break;
 		}
 		let neighbours = curr.getSideTiles(obstacles);
-		neighbours = randomizeArray(neighbours);
+		neighbours = getRandomized(neighbours);
 
 		for (const n of neighbours) {
 			const heightCost = Math.abs(curr.z - n.z);

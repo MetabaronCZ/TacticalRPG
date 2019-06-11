@@ -249,7 +249,7 @@ class AICharacter {
 			}
 			const obstacles = ally.map(a => a.position);
 			const skillAreas = action.skills.map(skill => skill.getTargetable(pos, obstacles));
-			const targetable = getIntersection(skillAreas, p => p.id);
+			const targetable = getIntersection(skillAreas);
 			const targets = action.skills[0].getTargets(char, enemy, targetable);
 
 			if (-1 !== targets.indexOf(this.target)) {

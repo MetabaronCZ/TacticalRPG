@@ -1,89 +1,55 @@
-// return array of random items from given array
-export const getRandomItems = <T>(arr: T[], count = 1): T[] | null => {
-	if (count > arr.length) {
-		return null;
-	}
-	const res = [];
-	arr = arr.slice(0);
+import { randomNumberBetween } from 'core/number';
 
-	while (count && arr.length) {
-		const ran = Math.floor(Math.random() * arr.length);
-		res.push( arr.splice(ran, 1)[0] );
-		count--;
-	}
-
-	return res;
+// return array of unique items
+export const getUniqueItems = <T>(arr: T[]): T[] => {
+	const unique = new Set(arr);
+	return Array.from(unique);
 };
 
 // return random array item
 export const getRandomItem = <T>(arr: T[]): T | null => {
-	const ranItems = getRandomItems(arr, 1);
-	return ranItems ? ranItems[0] : null;
+	if (!arr.length) {
+		return null;
+	}
+	const index = randomNumberBetween(0, arr.length - 1);
+	return arr[index];
 };
 
 // return randomized array
-export const randomizeArray = <T>(arr: T[]): T[] => {
-	const randomized: T[] = [];
+export const getRandomized = <T>(arr: T[]): T[] => {
 	const copy = arr.slice(0);
+	const result: T[] = [];
 
 	while (copy.length) {
-		const item = getRandomItem(copy);
-
-		if (null === item) {
-			break;
-		}
-		const i = copy.indexOf(item);
-		randomized.push(item);
-		copy.splice(i, 1);
+		const index = randomNumberBetween(0, copy.length - 1);
+		result.push(copy[index]);
+		copy.splice(index, 1);
 	}
-	return randomized;
-};
-
-// return union of multiple arrays
-export const getUnion = <T>(arrays: T[][]): T[] => {
-	if (!arrays.length) {
-		return [];
-	}
-	if (1 === arrays.length) {
-		return arrays[0].slice(0);
-	}
-	const union: T[] = [];
-
-	for (const arr of arrays) {
-		for (const a of arr) {
-			if (-1 === union.indexOf(a)) {
-				union.push(a);
-			}
-		}
-	}
-	return union;
+	return result;
 };
 
 // return intersection of multiple arrays
-export const getIntersection = <T>(arrays: T[][], getId: (value: T) => string): T[] => {
-	if (!arrays.length) {
+export const getIntersection = <T>(arrays: T[][]): T[] => {
+	const len = arrays.length;
+
+	if (0 === len) {
 		return [];
 	}
-	if (1 === arrays.length) {
+	if (1 === len) {
 		return arrays[0].slice(0);
 	}
-	const ref: { [id: string]: [number, T] } = {};
-	const intersection: T[] = [];
+	const items = arrays.reduce((a, b) => a.concat(b));
+	const unique = getUniqueItems(items);
+	const result: T[] = [];
 
-	for (const arr of arrays) {
-		for (const a of arr) {
-			const id = getId(a);
-			ref[id] = ref[id] || [0, a];
-			ref[id][0]++;
+	for (const item of unique) {
+		const counts = arrays.map(arr => arr.filter(i => i === item).length);
+		let commonCount = counts.reduce((a, b) => a < b ? a : b);
+
+		while (commonCount) {
+			result.push(item);
+			commonCount--;
 		}
 	}
-
-	for (const r in ref) {
-		const [count, value] = ref[r];
-
-		if (count === arrays.length) {
-			intersection.push(value);
-		}
-	}
-	return intersection;
+	return result;
 };

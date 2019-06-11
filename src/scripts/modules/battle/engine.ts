@@ -1,4 +1,4 @@
-import { randomizeArray } from 'core/array';
+import { getRandomized } from 'core/array';
 
 import AIPresets from 'data/ai-presets';
 import * as config from 'data/game-config';
@@ -70,7 +70,7 @@ class Engine {
 		this.order = new Order(this.players);
 
 		// set player order / initiative
-		this.players = randomizeArray(this.players);
+		this.players = getRandomized(this.players);
 
 		const chronoxData = this.prepareChronoxData(conf, this.players.map(pl => pl.id));
 		this.chronox = new Chronox(chronoxData);

@@ -1,5 +1,8 @@
-// get random integer between other integers
-export const randomNumberBetween = (from: number, to: number) => {
+// get random integer in interval <from, to> (including "from", "to")
+export const randomNumberBetween = (from: number, to: number): number => {
+	if (to < from) {
+		throw new Error(`Could not find integer in interval from ${from} to ${to}`);
+	}
 	return Math.floor(Math.random() * (to - from + 1) + from);
 };
 
