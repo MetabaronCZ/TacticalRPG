@@ -1,6 +1,4 @@
-import { getRandomItem } from 'core/array';
-
-type DataListIterator<T, U> = (key: T, value: U, i: number) => void;
+type DataListIterator<T, U, V> = (key: T, value: U, i: number) => V;
 
 type IDataList<T extends string, U> = {
 	[k in T]: U;
@@ -17,14 +15,6 @@ class DataList<T extends string, U> {
 		return this.data[item];
 	}
 
-	public getRandomID(): T | null {
-		return getRandomItem(this.keys());
-	}
-
-	public getRandomItem(): U | null {
-		return getRandomItem(this.values());
-	}
-
 	public keys(): T[] {
 		return Object.keys(this.data) as T[];
 	}
@@ -37,15 +27,15 @@ class DataList<T extends string, U> {
 		return this.keys().map(key => [key, this.get(key)] as [T, U]);
 	}
 
-	public map(cb: DataListIterator<T, U>) {
+	public map<V>(cb: DataListIterator<T, U, V>): V[] {
 		return this.entries().map(([key, value], i) => cb(key, value, i));
 	}
 
-	public each(cb: DataListIterator<T, U>) {
-		return this.entries().forEach(([key, value], i) => cb(key, value, i));
+	public each(cb: DataListIterator<T, U, void>) {
+		this.entries().forEach(([key, value], i) => cb(key, value, i));
 	}
 
-	public filter(cb: DataListIterator<T, U>): Array<[T, U]> {
+	public filter(cb: DataListIterator<T, U, boolean>): Array<[T, U]> {
 		return this.entries().filter(([key, value], i) => cb(key, value, i));
 	}
 }

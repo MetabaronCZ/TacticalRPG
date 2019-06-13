@@ -56,8 +56,13 @@ class CharacterCreation {
 	public randomize(): CharacterData {
 		const char = this.state.character;
 
-		char.setSex(Sexes.getRandomID() || 'MALE');
-		char.setArchetype(Archetypes.getRandomID() || 'PP');
+		const sexes = Sexes.keys();
+		const sex = getRandomItem(sexes);
+		char.setSex(sex || 'MALE');
+
+		const archetypes = Archetypes.keys();
+		const archetype = getRandomItem(archetypes);
+		char.setArchetype(archetype || 'PP');
 
 		const skillsets = this.getSkillsetIDs().filter(id => 'NONE' !== id);
 		const skillset = getRandomItem(skillsets);
