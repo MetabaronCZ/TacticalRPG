@@ -1,13 +1,30 @@
-import { getAttributes } from 'data/attributes';
+import { Arch2AttTable, attributeFormulas } from 'data/attributes';
 
 import Character from 'modules/character';
-import { IAttributes } from 'modules/character/attributes';
+import { IAttributes, AttributeID } from 'modules/character/attributes';
 
 class BaseAttributes implements IAttributes {
-	protected values: IAttributes;
+	protected values: IAttributes = {
+		STR: 0,
+		VIT: 0,
+		SPD: 0,
+		MOV: 0,
+		MAG: 0,
+		SPR: 0,
+		HP: 0,
+		MP: 0,
+		AP: 0,
+		CT: 0
+	};
 
 	constructor(character: Character) {
-		this.values = getAttributes(character);
+		const archetype = character.archetype.id;
+		const { P, S, M } = Arch2AttTable[archetype];
+
+		for (const key in attributeFormulas) {
+			const attr = key as AttributeID;
+			this.values[attr] = attributeFormulas[attr](P, S, M);
+		}
 	}
 
 	public get STR(): number { return this.values.STR; }
