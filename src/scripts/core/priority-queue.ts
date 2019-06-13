@@ -25,7 +25,7 @@ class PriorityQueue<T> {
 		values.unshift([priority, value]);
 	}
 
-	public get() {
+	public get(): T | undefined {
 		const value = this.values.shift();
 		return value ? value[1] : undefined;
 	}
