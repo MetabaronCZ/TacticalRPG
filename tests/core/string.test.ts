@@ -1,7 +1,7 @@
 import { firstLetterToUpper } from 'core/string';
 
 describe('core.string', () => {
-	describe('#firstLetterToUpper', () => {
+	describe('#firstLetterToUpper()', () => {
 		test('it returns same string with first letter capitalized', () => {
 			const data: string[] = [
 				'', 'test', 'TEST', 'Test', 'tEST'

@@ -17,7 +17,7 @@ const hasNavigated = (history: MemoryHistory, path: string): boolean => {
 };
 
 describe('core.navigation', () => {
-	describe('#goto', () => {
+	describe('#goto()', () => {
 		test('it navigates to given URL', () => {
 			const history = createHistory();
 			expect(history.entries.length).toEqual(0);
@@ -29,7 +29,7 @@ describe('core.navigation', () => {
 		});
 	});
 
-	describe('#gotoRoute', () => {
+	describe('#gotoRoute()', () => {
 		test('it navigates to given route', () => {
 			const history = createHistory();
 			expect(history.entries.length).toEqual(0);
@@ -42,7 +42,7 @@ describe('core.navigation', () => {
 		});
 	});
 
-	describe('#gotoFn', () => {
+	describe('#gotoFn()', () => {
 		test('it returns function which navigates to given route', () => {
 			const history = createHistory();
 			expect(history.entries.length).toEqual(0);

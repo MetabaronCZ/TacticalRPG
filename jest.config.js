@@ -5,7 +5,7 @@ module.exports = {
   verbose: true,
   roots: [pathScripts, pathTests],
   preset: 'ts-jest',
-  testEnvironment: 'node',
+  testEnvironment: 'jsdom',
   moduleDirectories: ['node_modules', pathScripts],
   setupFilesAfterEnv: [`${pathTests}/setup.js`]
 };

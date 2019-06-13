@@ -16,16 +16,12 @@ class Animation {
 	private currentStep = 0;
 
 	constructor(timing: AnimationTiming, handler: AnimationHandler) {
-		if (!timing.length || !handler) {
-			throw new Error('Animation initialized with wrong arguments');
+		if (!timing.length) {
+			throw new Error('Animation initialized with invalid timing');
 		}
 		this.timing = timing;
 		this.handler = handler;
 		this.stepsCount = timing.length;
-	}
-
-	public duration() {
-		return this.timing.length;
 	}
 
 	public start() {
@@ -34,7 +30,7 @@ class Animation {
 
 	private step() {
 		const step = this.currentStep;
-		const max = this.duration() - 1;
+		const max = this.timing.length - 1;
 		const duration = this.timing[step];
 
 		this.handler({
@@ -45,7 +41,7 @@ class Animation {
 			isLast: (max === step)
 		});
 
-		setTimeout(() => {
+		window.setTimeout(() => {
 			if (step < max) {
 				this.currentStep++;
 				this.step();

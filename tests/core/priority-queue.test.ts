@@ -1,7 +1,7 @@
 import PriorityQueue from 'core/priority-queue';
 
 describe('core.PriorityQueue', () => {
-	describe('#size', () => {
+	describe('#size()', () => {
 		test('it returns correct size of PriorityQueue', () => {
 			const q = new PriorityQueue();
 			expect(q.size()).toEqual(0);
@@ -15,7 +15,7 @@ describe('core.PriorityQueue', () => {
 		});
 	});
 
-	describe('#get', () => {
+	describe('#get()', () => {
 		test('it returns and removes first item of PriorityQueue', () => {
 			const q = new PriorityQueue();
 			expect(q.get()).toEqual(undefined);
@@ -36,7 +36,7 @@ describe('core.PriorityQueue', () => {
 		});
 	});
 
-	describe('#push', () => {
+	describe('#push()', () => {
 		test('it adds an item to queue', () => {
 			const q = new PriorityQueue();
 			expect(q.size()).toEqual(0);

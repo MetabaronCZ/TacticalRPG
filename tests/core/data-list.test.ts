@@ -1,7 +1,7 @@
 import DataList from 'core/data-list';
 
 describe('core.DataList', () => {
-	describe('#get', () => {
+	describe('#get()', () => {
 		test('it returns correct item to given key', () => {
 			type Keys = 'A' | 'B' | 'C';
 
@@ -25,7 +25,7 @@ describe('core.DataList', () => {
 		});
 	});
 
-	describe('#keys', () => {
+	describe('#keys()', () => {
 		test('it returns empty array if input data is empty', () => {
 			const list = new DataList({});
 			const keys = list.keys();
@@ -46,7 +46,7 @@ describe('core.DataList', () => {
 		});
 	});
 
-	describe('#values', () => {
+	describe('#values()', () => {
 		test('it returns empty array if input data is empty', () => {
 			const list = new DataList({});
 			const values = list.values();
@@ -79,7 +79,7 @@ describe('core.DataList', () => {
 		});
 	});
 
-	describe('#entries', () => {
+	describe('#entries()', () => {
 		test('it returns empty array if input data is empty', () => {
 			const list = new DataList({});
 			const entries = list.entries();
@@ -101,7 +101,7 @@ describe('core.DataList', () => {
 		});
 	});
 
-	describe('#map', () => {
+	describe('#map()', () => {
 		test('it returns empty array if input data is empty', () => {
 			const list = new DataList({});
 			const mapped = list.map((key, value, i) => [key, value, i]);
@@ -122,7 +122,7 @@ describe('core.DataList', () => {
 		});
 	});
 
-	describe('#each', () => {
+	describe('#each()', () => {
 		test('it does not execute given function if input is empty', () => {
 			const list = new DataList({});
 			const fn = jest.fn();
@@ -147,7 +147,7 @@ describe('core.DataList', () => {
 		});
 	});
 
-	describe('#filter', () => {
+	describe('#filter()', () => {
 		test('it does not execute given function if input is empty', () => {
 			const list = new DataList({});
 			const fn = jest.fn();

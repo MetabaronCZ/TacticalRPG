@@ -1,7 +1,7 @@
 import { getRandomItem, getUniqueItems, getRandomized, getIntersection } from 'core/array';
 
 describe('core.array', () => {
-	describe('#getUniqueItems', () => {
+	describe('#getUniqueItems()', () => {
 		const data = [
 			[[5], /* >> */ [5]],
 			[[1, 1, 1, 1, 1], /* >> */ [1]],
@@ -27,7 +27,7 @@ describe('core.array', () => {
 		});
 	});
 
-	describe('#getRandomItem', () => {
+	describe('#getRandomItem()', () => {
 		const data = [0, 1, -1, 'A', [1, 2, 3], undefined, null];
 
 		test('it returns null when array is empty', () => {
@@ -46,7 +46,7 @@ describe('core.array', () => {
 		});
 	});
 
-	describe('#getRandomized', () => {
+	describe('#getRandomized()', () => {
 		const data: any[][] = [
 			[],
 			[1],
@@ -78,7 +78,7 @@ describe('core.array', () => {
 		});
 	});
 
-	describe('#getIntersection', () => {
+	describe('#getIntersection()', () => {
 		test('it returns empty array if no input given', () => {
 			const result = getIntersection([]);
 			expect(result.length).toEqual(0);

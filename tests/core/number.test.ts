@@ -1,7 +1,7 @@
 import { randomNumberBetween, formatNumber, formatInteger } from 'core/number';
 
 describe('core.number', () => {
-	describe('#randomNumberBetween', () => {
+	describe('#randomNumberBetween()', () => {
 		test('it throws error when "from" is greater than "to"', () => {
 			const fn = () => randomNumberBetween(10, 1);
 			expect(fn).toThrowError();
@@ -27,7 +27,7 @@ describe('core.number', () => {
 		});
 	});
 
-	describe('#formatNumber', () => {
+	describe('#formatNumber()', () => {
 		test('it returns correctly formatted number as string', () => {
 			const data: Array<[number, string]> = [
 				[0, '0'], [1, '1'], [2178, '2,178'], [15001, '15,001'], [17528798, '17,528,798'],
@@ -56,7 +56,7 @@ describe('core.number', () => {
 		});
 	});
 
-	describe('#formatInteger', () => {
+	describe('#formatInteger()', () => {
 		const fn = (i: number, c: number) => () => formatInteger(i, c);
 
 		test('it throws if input cipher count is bigger than requested', () => {
