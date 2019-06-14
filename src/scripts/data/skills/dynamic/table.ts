@@ -10,7 +10,7 @@ type DynamicSkillTable = {
 
 const dynamicSkillTable: DynamicSkillTable = {
 	NONE:         { NONE: null, FIRE: null, ICE: null, WIND: null, EARTH: null, THUNDER: null, WATER: null, DARK: null, HOLY: null, PSYCHIC: null },
-	MACE:         { NONE: null, FIRE: null, ICE: null, WIND: null, EARTH: null, THUNDER: null, WATER: null, DARK: null, HOLY: null, PSYCHIC: null },
+	ROD:          { NONE: null, FIRE: null, ICE: null, WIND: null, EARTH: null, THUNDER: null, WATER: null, DARK: null, HOLY: null, PSYCHIC: null },
 	STAFF:        { NONE: null, FIRE: null, ICE: null, WIND: null, EARTH: null, THUNDER: null, WATER: null, DARK: null, HOLY: null, PSYCHIC: null },
 	SHIELD_SMALL: { NONE: null, FIRE: null, ICE: null, WIND: null, EARTH: null, THUNDER: null, WATER: null, DARK: null, HOLY: null, PSYCHIC: null },
 	SHIELD_LARGE: { NONE: null, FIRE: null, ICE: null, WIND: null, EARTH: null, THUNDER: null, WATER: null, DARK: null, HOLY: null, PSYCHIC: null },

@@ -14,6 +14,25 @@ TODO
 --	pokud je v Actor[] vice postav stejneho hrace
 	- melo by jit vybrat, kdo z nich bude jednat driv
 	- mela by se objevit moznost koordinovaneho utoku (basic attacky obou postav, ukonci Acty postav)
+--	pridat pocasi (v zavislosti na arene)
+	- na zacatku vybrat nahodnou arenu
+	- v zavislosti na arene se behem souboje muze spustit ArenaEffect
+	- efekt je specificky pro kazdou arenu a trva nahodnou dobu v urcitem rozmezi
+	- efekt zpusobi dmg+ bonus pro skilly daneho elementu, dmg- pro afinni element, pripadne jine efekty
+		- NONE
+		- WIND
+		- EARTH
+		- WATER
+		- DARK
+		- PSYCHIC
+
+		? Swamp/Wetlands
+		- Volcano >> Eruption [FIRE]
+		- Highland >> Thunderstorm [THUNDER]
+		- Mountain peak/Canyon >> ??? [WIND]
+		- Tundra/Arctic >> Snowstorm [ICE]
+		? Dunes
+		- Cathedral >> Hymn of the Cherubim [HOLY]
 --	implementovat Sudden death mode (aby nedoslo ke stavu, kdy zbyvaji jen S-typy, ktere evaduji vsechny utoky)
 
 

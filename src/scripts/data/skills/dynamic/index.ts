@@ -18,7 +18,7 @@ const weaponSkillData: { [id in WeaponID]: ISkillData | null; } = {
 	SWORD_2H: weaponSkills.S2H_ATTACK,
 	AXE_2H: weaponSkills.A2H_ATTACK,
 	HAMMER_2H: weaponSkills.H2H_ATTACK,
-	MACE: null,
+	ROD: null,
 	STAFF: null,
 	BOW: weaponSkills.BOW_ATTACK,
 	GUN: weaponSkills.GUN_ATTACK,

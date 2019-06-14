@@ -4,7 +4,7 @@ export type WeaponID =
 	'NONE' |
 	'FISTS' | 'DAGGER' | 'SWORD_1H' | 'AXE_1H' | 'HAMMER_1H' |
 	'SPEAR' | 'SWORD_2H' | 'AXE_2H' | 'HAMMER_2H' |
-	'MACE' | 'STAFF' |
+	'ROD' | 'STAFF' |
 	'BOW' | 'GUN' |
 	'SHIELD_SMALL' | 'SHIELD_LARGE';
 

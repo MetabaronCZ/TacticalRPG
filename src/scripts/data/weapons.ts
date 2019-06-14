@@ -92,9 +92,9 @@ const Weapons = new DataList<WeaponID, IWeaponData>({
 		physical: 30,
 		magical: 0
 	},
-	MACE: {
-		id: 'MACE',
-		title: 'Mace',
+	ROD: {
+		id: 'ROD',
+		title: 'Rod',
 		description: '',
 		type: 'MAGICAL',
 		skills: [],

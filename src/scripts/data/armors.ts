@@ -11,7 +11,7 @@ const Armors = new DataList<ArmorID, IArmorData>({
 	},
 	MAGICAL: {
 		id: 'MAGICAL',
-		title: 'Magical',
+		title: 'Magical armor',
 		description: '',
 		physical: 1,
 		magical: 0.5
