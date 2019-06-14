@@ -47,12 +47,12 @@ const Weapons = new DataList<WeaponID, IWeaponData>({
 		physical: 20,
 		magical: 0
 	},
-	HAMMER_1H: {
-		id: 'HAMMER_1H',
-		title: '1H Hammer',
+	MACE_1H: {
+		id: 'MACE_1H',
+		title: '1H Mace',
 		description: '',
 		type: 'ONE_HANDED',
-		skills: ['H1H_ATTACK', 'H1H_STUN'],
+		skills: ['M1H_ATTACK', 'M1H_STUN'],
 		physical: 20,
 		magical: 0
 	},
@@ -83,12 +83,12 @@ const Weapons = new DataList<WeaponID, IWeaponData>({
 		physical: 30,
 		magical: 0
 	},
-	HAMMER_2H: {
-		id: 'HAMMER_2H',
-		title: '2H Hammer',
+	MACE_2H: {
+		id: 'MACE_2H',
+		title: '2H Mace',
 		description: '',
 		type: 'TWO_HANDED',
-		skills: ['H2H_ATTACK', 'H2H_SHOCKWAVE'],
+		skills: ['M2H_ATTACK', 'M2H_SHOCKWAVE'],
 		physical: 30,
 		magical: 0
 	},

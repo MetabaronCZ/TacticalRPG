@@ -67,7 +67,7 @@ const wield2HSkills: { [id in Wield2HWeaponSkillID]: ISkillData; } = {
 		magical: 0,
 		cooldown: 1
 	},
-	H2H_ATTACK: {
+	M2H_ATTACK: {
 		title: 'Attack',
 		apCost: 2,
 		type: 'ACTIVE',
@@ -77,7 +77,7 @@ const wield2HSkills: { [id in Wield2HWeaponSkillID]: ISkillData; } = {
 		physical: 1,
 		magical: 0,
 	},
-	H2H_SHOCKWAVE: {
+	M2H_SHOCKWAVE: {
 		title: 'Shockwave',
 		apCost: 4,
 		type: 'ACTIVE',

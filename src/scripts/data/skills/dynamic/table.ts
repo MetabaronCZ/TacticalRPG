@@ -63,17 +63,17 @@ const dynamicSkillTable: DynamicSkillTable = {
 		HOLY: 'A1H_HOL',
 		PSYCHIC: 'A1H_PSY'
 	},
-	HAMMER_1H: {
+	MACE_1H: {
 		NONE: null,
-		FIRE: 'H1H_FIR',
-		ICE: 'H1H_ICE',
-		WIND: 'H1H_WND',
-		EARTH: 'H1H_ERT',
-		THUNDER: 'H1H_THU',
-		WATER: 'H1H_WAT',
-		DARK: 'H1H_DRK',
-		HOLY: 'H1H_HOL',
-		PSYCHIC: 'H1H_PSY'
+		FIRE: 'M1H_FIR',
+		ICE: 'M1H_ICE',
+		WIND: 'M1H_WND',
+		EARTH: 'M1H_ERT',
+		THUNDER: 'M1H_THU',
+		WATER: 'M1H_WAT',
+		DARK: 'M1H_DRK',
+		HOLY: 'M1H_HOL',
+		PSYCHIC: 'M1H_PSY'
 	},
 	SPEAR: {
 		NONE: null,
@@ -111,17 +111,17 @@ const dynamicSkillTable: DynamicSkillTable = {
 		HOLY: 'A2H_HOL',
 		PSYCHIC: 'A2H_PSY'
 	},
-	HAMMER_2H: {
+	MACE_2H: {
 		NONE: null,
-		FIRE: 'H2H_FIR',
-		ICE: 'H2H_ICE',
-		WIND: 'H2H_WND',
-		EARTH: 'H2H_ERT',
-		THUNDER: 'H2H_THU',
-		WATER: 'H2H_WAT',
-		DARK: 'H2H_DRK',
-		HOLY: 'H2H_HOL',
-		PSYCHIC: 'H2H_PSY'
+		FIRE: 'M2H_FIR',
+		ICE: 'M2H_ICE',
+		WIND: 'M2H_WND',
+		EARTH: 'M2H_ERT',
+		THUNDER: 'M2H_THU',
+		WATER: 'M2H_WAT',
+		DARK: 'M2H_DRK',
+		HOLY: 'M2H_HOL',
+		PSYCHIC: 'M2H_PSY'
 	},
 	BOW: {
 		NONE: null,

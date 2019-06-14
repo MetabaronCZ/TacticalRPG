@@ -45,7 +45,7 @@ const wield1HSkills: { [id in Wield1HWeaponSkillID]: ISkillData; } = {
 		magical: 0,
 		cooldown: 1
 	},
-	H1H_ATTACK: {
+	M1H_ATTACK: {
 		title: 'Attack',
 		apCost: 1,
 		type: 'ACTIVE',
@@ -55,7 +55,7 @@ const wield1HSkills: { [id in Wield1HWeaponSkillID]: ISkillData; } = {
 		physical: 1,
 		magical: 0,
 	},
-	H1H_STUN: {
+	M1H_STUN: {
 		title: 'Stun',
 		apCost: 2,
 		type: 'ACTIVE',

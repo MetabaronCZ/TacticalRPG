@@ -12,13 +12,13 @@ export type ShieldWeaponSkillID =
 export type Wield1HWeaponSkillID =
 	'S1H_ATTACK' | 'S1H_BLEED' |
 	'A1H_ATTACK' | 'A1H_SMASH' |
-	'H1H_ATTACK' | 'H1H_STUN';
+	'M1H_ATTACK' | 'M1H_STUN';
 
 export type Wield2HWeaponSkillID =
 	'SPR_ATTACK' | 'SPR_THRUST' |
 	'S2H_ATTACK' | 'S2H_CLEAVE' |
 	'A2H_ATTACK' | 'A2H_WHIRLWIND' |
-	'H2H_ATTACK' | 'H2H_SHOCKWAVE';
+	'M2H_ATTACK' | 'M2H_SHOCKWAVE';
 
 export type WeaponSkillID =
 	SmallWeaponSkillID |
