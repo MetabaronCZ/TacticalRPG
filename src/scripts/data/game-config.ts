@@ -28,7 +28,6 @@ export const maxPartyNameLength = 16; // maximum party name length
 export const randomPartyID = 'RANDOM_PARTY';
 
 // player
-export const maxPlayers = 2;
 export const playerMaxNameLength = 16;
 
 // validation

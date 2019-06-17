@@ -1,6 +1,6 @@
 import { observable, action } from 'mobx';
 
-import { randomPartyID, maxPlayers } from 'data/game-config';
+import { randomPartyID } from 'data/game-config';
 
 import { IAISettings } from 'modules/ai/settings';
 import IndexableList from 'modules/indexable-list';
@@ -24,7 +24,7 @@ class BattleConfiguration {
 			validation: {
 				isValid: true,
 				errors: {
-					players: Array(maxPlayers).fill({})
+					players: [{}, {}]
 				}
 			}
 		};

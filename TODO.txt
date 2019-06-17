@@ -1,3 +1,10 @@
+BUG
+----------------------------------------------------------------------------------------------------------
+--	pokud se AI nemuze dostat protivnikovi do zad, udela PASS
+	- kdyz zbydou jen postavy v tomto stavu, dela se PASS do nekonecna
+
+
+
 TODO
 ----------------------------------------------------------------------------------------------------------
 --	pri vyberu reakce hracem by se melo zobrazit i info, jaky utok byl pouzit a kym

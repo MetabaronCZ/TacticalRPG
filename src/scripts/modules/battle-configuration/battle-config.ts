@@ -1,29 +1,35 @@
 import { observable, action } from 'mobx';
 
-import { maxPlayers, randomPartyID } from 'data/game-config';
+import { randomPartyID } from 'data/game-config';
 import { PlayerConfig, IPlayerConfig, IPlayerConfigEditable } from 'modules/battle-configuration/player-config';
 
+type PlayerEditable = {
+	[attr in IPlayerConfigEditable]?: string;
+};
+
+type PlayerEditableList = [PlayerEditable, PlayerEditable];
+
+export type PlayerConfigList = [PlayerConfig, PlayerConfig];
+
 export interface IBattleConfig {
-	players: IPlayerConfig[];
+	players: PlayerConfigList;
 }
 
 export interface IBattleConfigValidation {
 	isValid: boolean;
 	errors: {
-		players: Array<{
-			[attr in IPlayerConfigEditable]?: string;
-		}>;
+		players: PlayerEditableList;
 	};
 }
 
-const playerPool = Array(maxPlayers).fill(0);
+const playerPool = [0, 1];
 
 export class BattleConfig {
-	@observable.shallow public players: PlayerConfig[] = [];
+	@observable.shallow public players: PlayerConfigList;
 
 	constructor(data: IBattleConfig | null) {
 		// init player slots
-		this.players = playerPool.map((_, i) => {
+		const players = playerPool.map(i => {
 			const conf: IPlayerConfig = {
 				name: `Player ${i + 1}`,
 				control: 'HUMAN',
@@ -36,6 +42,8 @@ export class BattleConfig {
 			return new PlayerConfig(conf);
 		});
 
+		this.players = players as PlayerConfigList;
+
 		this.update(data);
 	}
 
@@ -45,7 +53,7 @@ export class BattleConfig {
 		const validation: IBattleConfigValidation = {
 			isValid: true,
 			errors: {
-				players: playerPool.map(_ => ({}))
+				players: [{}, {}]
 			}
 		};
 
@@ -66,17 +74,19 @@ export class BattleConfig {
 		if (null === data) {
 			return;
 		}
-		this.players = this.players.map((pl, i) => {
+		const players = this.players.map((pl, i) => {
 			return new PlayerConfig({
 				...pl.serialize(),
 				...data.players[i]
 			});
 		});
+
+		this.players = players as PlayerConfigList;
 	}
 
 	public serialize(): IBattleConfig {
 		return {
-			players: this.players.map(pl => pl.serialize())
+			players: this.players.map(pl => pl.serialize()) as PlayerConfigList
 		};
 	}
 }

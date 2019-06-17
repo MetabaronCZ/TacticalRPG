@@ -16,16 +16,18 @@ import { DirectionID } from 'modules/geometry/direction';
 import CharacterAction from 'modules/battle/character-action';
 import CharacterCreationForm from 'modules/character-creation';
 import { getRandomNames } from 'modules/random-name-generator';
-import { PlayerConfig } from 'modules/battle-configuration/player-config';
 import { PartyData, IPartyData } from 'modules/party-creation/party-data';
-import Chronox, { IChronoxRecord, IChronoxConfig } from 'modules/battle/chronox';
+import { PlayerConfigList } from 'modules/battle-configuration/battle-config';
 import { CharacterData, ICharacterData } from 'modules/character-creation/character-data';
+import Chronox, { IChronoxRecord, IChronoxConfig, ChronoxPlayerList } from 'modules/battle/chronox';
+
+type PlayerList = [Player, Player];
 
 export interface IEngineState {
 	running: boolean;
 	tick: number;
 	act: Act | null;
-	players: Player[];
+	players: PlayerList;
 	characters: Character[];
 	order: Character[];
 	chronox: IChronoxRecord | null;
@@ -41,13 +43,13 @@ interface IEngineEvents {
 
 interface IEngineProps {
 	readonly characters: CharacterData[];
-	readonly players: PlayerConfig[];
+	readonly players: PlayerConfigList;
 	readonly parties: PartyData[];
 	readonly events: IEngineEvents;
 }
 
 class Engine {
-	private readonly players: Player[] = [];
+	private readonly players: PlayerList;
 	private readonly characters: Character[] = [];
 	private readonly battleInfo: IBattleInfo[] = [];
 	private readonly events: IEngineEvents;
@@ -70,7 +72,7 @@ class Engine {
 		this.order = new Order(this.players);
 
 		// set player order / initiative
-		this.players = getRandomized(this.players);
+		this.players = getRandomized(this.players) as PlayerList;
 
 		const chronoxData = this.prepareChronoxData(conf, this.players.map(pl => pl.id));
 		this.chronox = new Chronox(chronoxData);
@@ -197,12 +199,9 @@ class Engine {
 		this.act.start();
 	}
 
-	private createPlayers(conf: IEngineProps): Player[] {
+	private createPlayers(conf: IEngineProps): PlayerList {
 		const { players, parties, characters } = conf;
 
-		if (config.maxPlayers !== players.length) {
-			throw new Error(`Game must have exactly ${config.maxPlayers} players`);
-		}
 		const pl = players.map((plConfig, p) => {
 			const { name, party, control, aiSettings } = plConfig;
 			const charData: CharacterData[] = [];
@@ -299,7 +298,7 @@ class Engine {
 			}
 		});
 
-		return pl;
+		return pl as PlayerList;
 	}
 
 	private prepareChronoxData(conf: IEngineProps, initiative: number[]): IChronoxConfig {
@@ -319,7 +318,7 @@ class Engine {
 		return {
 			initiative,
 			characters,
-			players,
+			players: players as ChronoxPlayerList,
 			parties: this.players.map((pl, p) => {
 				const chars = pl.getCharacters();
 

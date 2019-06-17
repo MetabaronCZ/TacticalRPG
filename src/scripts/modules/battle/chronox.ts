@@ -3,17 +3,19 @@ import { IPartyData } from 'modules/party-creation/party-data';
 import { IPlayerConfig } from 'modules/battle-configuration/player-config';
 import { ICharacterData } from 'modules/character-creation/character-data';
 
+export type ChronoxPlayerList =  [IPlayerConfig, IPlayerConfig];
+
 export interface IChronoxConfig {
 	initiative: number[];
 	characters: ICharacterData[];
-	players: IPlayerConfig[];
+	players: ChronoxPlayerList;
 	parties: IPartyData[];
 }
 
 export interface IChronoxRecord {
 	initiative: number[];
 	characters: ICharacterData[];
-	players: IPlayerConfig[];
+	players: ChronoxPlayerList;
 	parties: IPartyData[];
 	timeline: IActRecord[];
 }
@@ -21,7 +23,7 @@ export interface IChronoxRecord {
 class Chronox {
 	private readonly initiative: number[];
 	private readonly characters: ICharacterData[];
-	private readonly players: IPlayerConfig[];
+	private readonly players: ChronoxPlayerList;
 	private readonly parties: IPartyData[];
 	private readonly timeline: IActRecord[] = []; // character decision records
 
