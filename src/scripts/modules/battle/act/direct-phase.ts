@@ -31,6 +31,10 @@ class DirectPhase extends ActPhase<IActDirectRecord> {
 		this.onEvent = onEvent;
 	}
 
+	public getActor(): Character {
+		return this.actor;
+	}
+
 	public getPhase(): Phase {
 		return this.phase;
 	}

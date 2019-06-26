@@ -64,6 +64,10 @@ class MovePhase extends ActPhase<IActMoveRecord> {
 		this.obstacles = getTiles().filter(tile => tile.isContained(obstacles) || !tile.isContained(this.movable));
 	}
 
+	public getActor(): Character {
+		return this.actor;
+	}
+
 	public getPhase(): Phase {
 		return this.phase;
 	}

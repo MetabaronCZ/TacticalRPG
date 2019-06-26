@@ -1,7 +1,6 @@
 import React from 'react';
 
 import Act from 'modules/battle/act';
-import Character from 'modules/character';
 import CharacterAction from 'modules/battle/character-action';
 
 import Actions from 'ui/battle/Actions';
@@ -15,17 +14,12 @@ const ActUI: React.SFC<IActUIProps> = ({ act, onActionSelect }) => {
 	if (null === act) {
 		return <div>Waiting for act data...</div>;
 	}
-	const actor = act.actor;
-	const actionPhase = act.phases.ACTION;
-	const reaction = actionPhase.getReaction();
-	const actions = act.getActions();
 	const actingChar = act.getActingCharacter();
-	const actionCharacters: Character[] = [actor];
+	const actions = act.getActions();
 
-	if (reaction) {
-		actionCharacters.push(reaction.reactor);
+	if (!actingChar) {
+		return <React.Fragment />;
 	}
-
 	return (
 		<React.Fragment>
 			<h3 className="Heading">

@@ -9,20 +9,23 @@ import AIPlayer from 'modules/ai/player';
 import Character from 'modules/character';
 import { IBattleInfo } from 'modules/battle/battle-info';
 import CharacterAction from 'modules/battle/character-action';
-import { ReactionPhaseEvents } from 'modules/battle/act/reaction-phase';
 import MovePhase, { MovePhaseEvents, IActMoveRecord } from 'modules/battle/act/move-phase';
-import ActionPhase, { IActActionRecord, ActionPhaseEvents } from 'modules/battle/act/action-phase';
-import DirectPhase, { IActDirectRecord, DirectPhaseEvents } from 'modules/battle/act/direct-phase';
+import ActionPhase, { ActionPhaseEvents, IActActionRecord } from 'modules/battle/act/action-phase';
+import ReactionPhase, { ReactionPhaseEvents, IActReactionRecord } from 'modules/battle/act/reaction-phase';
+import CombatPhase, { CombatPhaseEvents, IActCombatRecord } from 'modules/battle/act/combat-phase';
+import DirectPhase, { DirectPhaseEvents, IActDirectRecord } from 'modules/battle/act/direct-phase';
 
-type PhaseID = 'MOVE' | 'ACTION' | 'DIRECTION';
+type PhaseID = 'MOVE' | 'ACTION' | 'REACTION' | 'COMBAT' | 'DIRECTION';
 
 interface IPhases {
 	MOVE: MovePhase;
 	ACTION: ActionPhase;
+	REACTION: ReactionPhase;
 	DIRECTION: DirectPhase;
+	COMBAT: CombatPhase;
 }
 
-export type ActPhaseEvent = 'BATTLE_INFO' | MovePhaseEvents | ActionPhaseEvents | ReactionPhaseEvents | DirectPhaseEvents;
+export type ActPhaseEvent = 'BATTLE_INFO' | MovePhaseEvents | ActionPhaseEvents | ReactionPhaseEvents | CombatPhaseEvents | DirectPhaseEvents;
 export type IOnActPhaseEvent = (event: ActPhaseEvent, data?: Character | CharacterAction | Tile | IBattleInfo | null) => void;
 
 export interface IActEvents {
@@ -39,7 +42,9 @@ export interface IActRecord {
 	readonly skipped: boolean;
 	readonly movePhase: IActMoveRecord;
 	readonly actionPhase: IActActionRecord;
+	readonly reactionPhase: IActReactionRecord;
 	readonly directPhase: IActDirectRecord;
+	readonly combatPhase: IActCombatRecord;
 }
 
 class Act {
@@ -65,7 +70,9 @@ class Act {
 		this.phases = {
 			MOVE: new MovePhase(actor, characters, this.onPhaseEvent),
 			ACTION: new ActionPhase(actor, characters, this.onPhaseEvent),
-			DIRECTION: new DirectPhase(actor, characters, this.onPhaseEvent)
+			REACTION: new ReactionPhase(actor, characters, this.onPhaseEvent),
+			DIRECTION: new DirectPhase(actor, characters, this.onPhaseEvent),
+			COMBAT: new CombatPhase(actor, characters, this.onPhaseEvent)
 		};
 
 		this.events.onStart(this);
@@ -87,14 +94,17 @@ class Act {
 		return this.phase;
 	}
 
-	public getActingCharacter(): Character {
-		const { actor, phase, phases } = this;
-		const reaction = phases.ACTION.getReaction();
-		return ('ACTION' === phase && reaction ? reaction.reactor : actor);
-	}
-
 	public getActions(): CharacterAction[] {
 		return this.actions;
+	}
+
+	public getActingCharacter(): Character | null {
+		const { actor, phase, phases } = this;
+
+		if (null === phase) {
+			return actor;
+		}
+		return phases[phase].getActor();
 	}
 
 	public selectTile(tile: Tile) {
@@ -122,7 +132,9 @@ class Act {
 			actor: this.actor.data.id,
 			movePhase: this.phases.MOVE.serialize(),
 			actionPhase: this.phases.ACTION.serialize(),
-			directPhase: this.phases.DIRECTION.serialize()
+			reactionPhase: this.phases.REACTION.serialize(),
+			directPhase: this.phases.DIRECTION.serialize(),
+			combatPhase: this.phases.COMBAT.serialize()
 		};
 	}
 
@@ -145,10 +157,11 @@ class Act {
 
 	private prepareActions(): CharacterAction[] {
 		const { actor, phases } = this;
+		const { MOVE, ACTION, REACTION } = phases;
 
 		switch (this.phase) {
 			case 'MOVE':
-				switch (phases.MOVE.getPhase()) {
+				switch (MOVE.getPhase()) {
 					case 'IDLE':
 						// default character actions
 						return getIdleActions(actor);
@@ -158,68 +171,76 @@ class Act {
 				}
 
 			case 'ACTION':
-				switch (phases.ACTION.getPhase()) {
+				switch (ACTION.getPhase()) {
 					case 'IDLE':
 						// default character actions
 						return getIdleActions(actor);
 
 					case 'TARGETING':
 						// confirm actions
-						const action = phases.ACTION.getAction();
-						const hasTargets = phases.ACTION.getEffectTargets().length > 0;
+						const action = ACTION.getAction();
+						const hasTargets = ACTION.getEffectTargets().length > 0;
 
 						if (null === action) {
 							throw new Error('Could not get actions: no active action');
 						}
 						return getSkillConfirmActions(action, hasTargets);
 
-					case 'REACTING':
-						// reaction actions
-						const reaction = phases.ACTION.getReaction();
+					default:
+						return [];
+				}
 
-						if (null === reaction) {
-							throw new Error('Could not get reaction actions: no reaction');
-						}
-						const { reactor, backAttacked } = reaction;
-						const obstacles = this.characters.map(char => char.position);
-						const canEvade = reactor.canEvade(obstacles);
+			case 'REACTION':
+				const reaction = REACTION.getReaction();
 
-						switch (reaction.getPhase()) {
-							case 'IDLE':
-								return getReactiveActions(reactor, backAttacked, canEvade);
+				if (null === reaction) {
+					throw new Error('Could not get reaction actions: no reaction');
+				}
+				const { reactor, combat } = reaction;
+				const obstacles = this.characters.map(char => char.position);
+				const canEvade = reactor.canEvade(obstacles);
 
-							case 'EVASION':
-								return getEvasiveActions();
+				switch (reaction.phase) {
+					case 'IDLE':
+						return getReactiveActions(reactor, combat.attack.backAttack, canEvade);
 
-							default:
-								return [];
-						}
+					case 'EVASION':
+						return getEvasiveActions();
 
 					default:
 						return [];
 				}
 
 			case 'DIRECTION':
+			case 'COMBAT':
 			default:
 				return [];
 		}
 	}
 
 	private update() {
-		let actingCharacter = this.getActingCharacter();
+		let char = this.getActingCharacter();
+
+		if (null === char) {
+			throw new Error('Could not update Act data: invalid acting character');
+		}
 		const actions = this.prepareActions();
 
-		if (!actingCharacter.isAI()) {
+		if (!char.isAI()) {
 			// set actions for player
 			this.actions = actions;
 		}
 		this.events.onUpdate(this);
 
 		setTimeout(() => { // prevent race condition
-			actingCharacter = this.getActingCharacter();
+			char = this.getActingCharacter();
 
-			if (actingCharacter.isAI()) {
-				const player = actingCharacter.player as AIPlayer;
+			if (null === char) {
+				throw new Error('Could not update Act data: invalid acting character');
+			}
+			if (char.isAI()) {
+				// let AI act
+				const player = char.player as AIPlayer;
 				player.act(this, actions);
 			}
 		});
@@ -233,7 +254,7 @@ class Act {
 			this.events.onBattleInfo(data as IBattleInfo);
 			return;
 		}
-		const { MOVE, ACTION, DIRECTION } = phases;
+		const { MOVE, ACTION, REACTION, DIRECTION, COMBAT } = phases;
 
 		switch (phase) {
 			case 'MOVE':
@@ -263,72 +284,95 @@ class Act {
 				}
 
 			case 'ACTION':
-				switch (ACTION.getPhase()) {
-					case 'REACTING':
-						// handle reaction events
-						const reaction = ACTION.getReaction();
+				switch (evt) {
+					case 'ACTION_SELECTED':
+						this.log('Action selected: ' + (data as CharacterAction).title);
+						this.log('Select action target...');
+						this.update();
+						return;
 
-						if (!reaction) {
-							throw new Error('Invalid action data: no reaction');
-						}
-						const { reactor } = reaction;
+					case 'ACTION_TARGETED':
+						this.log('Action target selected ' + (data ? (data as Character).name : ''));
+						this.update();
+						return;
 
-						switch (evt) {
-							case 'REACTION_IDLE':
-								this.log('Select reaction...', reactor);
-								this.update();
-								return;
+					case 'ACTION_PASSED':
+						// start direction phase
+						this.log('Action passed');
 
-							case 'REACTION_EVADING':
-								this.log('Select evasion target...', reactor);
-								this.update();
-								return;
+						this.phase = 'DIRECTION';
+						DIRECTION.start();
+						return;
 
-							case 'REACTION_FINISHED':
-								this.log('Reaction selected: ' + (data as CharacterAction).title, reactor);
-								this.update();
-								return;
+					case 'ACTION_CANCELLED':
+						// start move phase
+						this.log('Action cancelled');
 
-							default:
-								return; // do nothing
-						}
+						this.phase = 'MOVE';
+						MOVE.start();
+						return;
+
+					case 'ACTION_DONE':
+						// start reaction phase
+						this.log('Action confirmed');
+
+						this.phase = 'REACTION';
+						REACTION.start(ACTION.getCombatInfo());
+						return;
 
 					default:
-						// handle default action events
-						switch (evt) {
-							case 'ACTION_SELECTED':
-								this.log('Action selected: ' + (data as CharacterAction).title);
-								this.log('Select action target...');
-								this.update();
-								return;
+						return; // do nothing
+				}
 
-							case 'ACTION_TARGETED':
-								this.log('Action target selected ' + (data ? (data as Character).name : ''));
-								this.update();
-								return;
+			case 'REACTION':
+				switch (evt) {
+					case 'REACTION_IDLE':
+						this.log('Select reaction...');
+						this.update();
+						return;
 
-							case 'ACTION_ANIMATION':
-								this.update();
-								return;
+					case 'REACTION_EVADING':
+						this.log('Select evasion target...');
+						this.update();
+						return;
 
-							case 'ACTION_PASSED':
-								this.log('Action passed');
-							case 'ACTION_DONE':
-								// start direction phase
-								this.phase = 'DIRECTION';
-								DIRECTION.start();
-								return;
+					case 'REACTION_FINISHED':
+						this.log('Reaction selected: ' + (data as CharacterAction).title);
+						return;
 
-							case 'ACTION_CANCELLED':
-								// start move phase
-								this.phase = 'MOVE';
-								this.log('Action cancelled');
-								MOVE.start();
-								return;
+					case 'REACTION_DONE':
+						const action = ACTION.getAction();
+						const effectArea = ACTION.getEffectArea();
+						const targets = ACTION.getEffectTargets();
 
-							default:
-								return; // do nothing
+						if (!action || !effectArea.length || !targets.length) {
+							throw new Error('Could start combat phase: invalid action phase data');
 						}
+						this.phase = 'COMBAT';
+						this.log('Combat begins...');
+						COMBAT.start(action, effectArea, targets);
+						return;
+
+					default:
+						return; // do nothing
+				}
+
+			case 'COMBAT':
+				switch (evt) {
+					case 'COMBAT_ANIMATION':
+						this.update();
+						return;
+
+					case 'COMBAT_DONE':
+						// start direction phase
+						this.log('Combat finished');
+
+						this.phase = 'DIRECTION';
+						DIRECTION.start();
+						return;
+
+					default:
+						return; // do nothing
 				}
 
 			case 'DIRECTION':
@@ -372,8 +416,9 @@ class Act {
 		};
 	}
 
-	private log(msg: string, character = this.actor) {
-		Logger.info(`${character.name} - ${msg}`);
+	private log(msg: string) {
+		const char = this.getActingCharacter();
+		Logger.info(`${char ? char.name : '???'} - ${msg}`);
 	}
 }
 

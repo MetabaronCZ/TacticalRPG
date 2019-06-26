@@ -46,46 +46,52 @@ const getTileType = (tile: Tile, act: Act | null): TileType => {
 
 		case 'ACTION': {
 			const actionPhase = act.phases.ACTION;
-			const reactionPhase = actionPhase.getReaction();
 
-			switch (actionPhase.getPhase()) {
-				case 'TARGETING': {
-					const tgt = actionPhase.getTarget();
+			if ('TARGETING' === actionPhase.getPhase()) {
+				const tgt = actionPhase.getTarget();
 
+				if (tgt) {
+					// action with target selected
 					if (tile.isContained(actionPhase.getEffectArea())) {
 						type = 'actionEffectArea';
-					} else if (tile.isContained(actionPhase.getArea())) {
-						type = 'actionRange';
 					}
-
-					if (tile.isContained(actionPhase.getEffectTargets().map(char => char.position))) {
-						type = 'actionEffectTargets';
-					} else if (tile.isContained(actionPhase.getTargetable())) {
+					if (tile.isContained(actionPhase.getTargetable())) {
 						type = 'actionTargetable';
 					}
-
 					if (tile === tgt) {
 						type = 'actionEffectTarget';
 					}
-					break;
-				}
 
-				case 'REACTING':
-					if (null !== reactionPhase) {
-						const { reactor } = reactionPhase;
-						const reactors = actionPhase.getReactions().map(reaction => reaction.reactor.position);
-
-						if (tile.isContained(reactors)) {
-							type = 'reactors';
-						}
-						if (tile.isContained(reactionPhase.getEvasible())) {
-							type = 'reactionEvasible';
-						}
-						if (tile === reactor.position) {
-							type = 'reactor';
-						}
+				} else {
+					// action without target selected
+					if (tile.isContained(actionPhase.getArea())) {
+						type = 'actionRange';
 					}
-					break;
+					if (tile.isContained(actionPhase.getTargetable())) {
+						type = 'actionTargetable';
+					}
+				}
+			}
+			break;
+		}
+
+		case 'REACTION': {
+			const reactionPhase = act.phases.REACTION;
+			const reaction = reactionPhase.getReaction();
+
+			if (null !== reaction) {
+				const { reactor } = reaction;
+				const reactors = reactionPhase.getReactions().map(r => r.reactor.position);
+
+				if (tile.isContained(reactors)) {
+					type = 'reactors';
+				}
+				if (tile.isContained(reaction.evasible)) {
+					type = 'reactionEvasible';
+				}
+				if (tile === reactor.position) {
+					type = 'reactor';
+				}
 			}
 			break;
 		}

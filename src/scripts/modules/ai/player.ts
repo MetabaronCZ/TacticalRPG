@@ -43,7 +43,7 @@ class AIPlayer extends Player {
 
 	public act(act: Act, actions: CharacterAction[]) {
 		const { actor, phases } = act;
-		const { MOVE, ACTION, DIRECTION } = phases;
+		const { MOVE, ACTION, REACTION, DIRECTION } = phases;
 
 		switch (act.getPhase()) {
 			case 'MOVE':
@@ -66,27 +66,26 @@ class AIPlayer extends Player {
 						}
 						return;
 
-					case 'REACTING':
-						const reaction = ACTION.getReaction();
+					default:
+						return; // do nothing
+				}
 
-						if (null === reaction) {
-							throw new Error('AI Could not react: invalid reaction');
-						}
-						const { reactor, backAttacked } = reaction;
+			case 'REACTION':
+				const reaction = REACTION.getReaction();
 
-						switch (reaction.getPhase()) {
-							case 'IDLE':
-								this.onReaction(reactor, actions, backAttacked);
-								return;
+				if (null === reaction) {
+					throw new Error('AI Could not react: invalid reaction');
+				}
+				const { reactor, phase, combat, evasible } = reaction;
 
-							case 'EVASION':
-								const evasible = reaction.getEvasible();
-								this.onEvasion(reactor, evasible);
-								return;
+				switch (phase) {
+					case 'IDLE':
+						this.onReaction(reactor, actions, combat.attack.backAttack);
+						return;
 
-							default:
-								return; // do nothing
-						}
+					case 'EVASION':
+						this.onEvasion(reactor, evasible);
+						return;
 
 					default:
 						return; // do nothing

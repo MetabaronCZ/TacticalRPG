@@ -6,6 +6,18 @@ BUG
 
 TODO
 ----------------------------------------------------------------------------------------------------------
+--	COMBAT faze:
+	- udrzet hodnoty Combat; predat do Chronox
+	- pote pouzit pri ziskavani statistik v BattleSummary
+	- udrzet i hodnotu KILLED nebo REVIVED pro reactory
+--	MOVE faze:
+	- umoznit menit moveTarget behem animace
+	- postava dokonci aktualni move step
+	- vytvori se a spusti nova animace z aktualni pozice
+	- behem dokonceni stepu je mozne menit dal pozici:
+		- nova animace se nastavi do promenne a spusti az po skonceni stepu
+--	sjednotit nazvy direct/direction, move/movement, apod.
+--	porovnavani s null prevest na !x
 --	pri vyberu reakce hracem by se melo zobrazit i info, jaky utok byl pouzit a kym
 	--	zobrazovat damage info pred CONFIRM akci
 	--	v damage infu zobrazovat utok (phy, mag) + modifikatory; neovlivneno akcemi defendera (zadne jeste nejsou pred reakci)
@@ -13,24 +25,6 @@ TODO
 	OK	pokud je vybran cil, melo by se vypocitat IDamageInfo
 	--	to info vizualizovat
 	--	ukazat i backattack a elemental affnitu
---	refactor fazi II:
-	- faze: MOVE, ACTION, REACTION, COMBAT, DIRECTION
-	+ ACTION faze:
-		- skloubit effectTargets, damageInfo, reactions, active reaction
-	+ REACTION faze:
-		- udrzet hodnoty pro vybranou reakci
-	+ COMBAT faze:
-		- udrzet hodnoty Combat; predat do Chronox
-		- pote pouzit pri ziskavani statistik v BattleSummary
-		- udrzet i hodnotu KILLED nebo REVIVED pro reactory
-	+ MOVE faze:
-		- umoznit menit moveTarget behem animace
-		- postava dokonci aktualni move step
-		- vytvori se a spusti nova animace z aktualni pozice
-		- behem dokonceni stepu je mozne menit dal pozici:
-			- nova animace se nastavi do promenne a spusti az po skonceni stepu
-	? COUNTER faze ???
-		- po COMBAT fazi
 --	rozlisovat healing a damaging skilly
 	? nebo rozlisovat reactable skilly
 	- behem reakce u healing skillu by mela byt jen moznost DONT_REACT
@@ -42,6 +36,8 @@ TODO
 --	AICharacter: pohyb/akce podle melee / ranged / support role
 	- vybira AIPlayer
 	- prioritizace skillu (healing role -> Revive)
+--	spelly pro DARK magic
+--	prejmenovat Kinetic strike spell na neco jineho (je to stejne s DYNAMIC skillem)
 ??	schopnost pouzit Reaction skill by mela zaviset na rychlosti obou postav
 	- defenderSpd >= AttackerSpd -> defender muze pouzit Reaction skilly
 ??	Counter reaction skill >> bude to mainHand weapon Attack skill

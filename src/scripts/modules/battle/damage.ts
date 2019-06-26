@@ -23,8 +23,10 @@ interface IShieldValue {
 
 export interface ICombatInfo {
 	attack: {
+		character: Character;
 		backAttack: boolean;
 		damage: Array<{
+			skill: Skill;
 			physical: number;
 			magical: number;
 			status: IStatusEffect[];
@@ -32,6 +34,7 @@ export interface ICombatInfo {
 		}>
 	};
 	defense: {
+		character: Character;
 		physical: number;
 		magical: number;
 		block: number | null;
@@ -216,8 +219,10 @@ const getStatusEffects = (attacker: Character, defender: Character, skill: Skill
 export const getCombatInfo = (attacker: Character, defender: Character, skills: Skill[]): ICombatInfo => {
 	return {
 		attack: {
+			character: attacker,
 			backAttack: isBackAttacked(attacker, defender),
 			damage: skills.map(skill => ({
+				skill,
 				physical: getPhysicalDamage(attacker, skill),
 				magical: getMagicalDamage(attacker, skill),
 				status: getStatusEffects(attacker, defender, skill),
@@ -225,6 +230,7 @@ export const getCombatInfo = (attacker: Character, defender: Character, skills: 
 			}))
 		},
 		defense: {
+			character: defender,
 			physical: defender.armor.physical,
 			magical: defender.armor.magical,
 			block: getBlock(defender),

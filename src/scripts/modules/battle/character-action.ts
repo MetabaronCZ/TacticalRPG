@@ -77,6 +77,9 @@ class CharacterAction {
 			this.cooldown = getCooldown(skills, character.cooldowns);
 			this.active = isActive(character, this.cost, this.cooldown);
 		}
+
+		// remove DOUBLE_ATTTACK from skills (not needed after computations)
+		this.skills = this.skills.filter(skill => 'DOUBLE_ATTACK' !== skill.id);
 	}
 }
 

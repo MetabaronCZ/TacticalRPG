@@ -41,6 +41,8 @@ export const getIdleActions = (character: Character): CharacterAction[] => {
 	// DOUBLE ATTACK action
 	if (attackSkillList.length > 1) {
 		const doubleAttack = new Skill('DOUBLE_ATTACK');
+
+		// add DOUBLE_ATTACK to skills only for computations
 		const skills = [...attackSkillList, doubleAttack];
 
 		const action = new CharacterAction('DOUBLE_ATTACK', doubleAttack.title, character, skills);
