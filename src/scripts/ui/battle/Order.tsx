@@ -12,7 +12,7 @@ interface IOrderProps {
 
 const getState = (act: Act | null, char: Character): string => {
 	const isDying = char.status.has('DYING');
-	const isActive = !!(act && act.getActor() === char);
+	const isActive = !!(act && act.actor === char);
 	return (isDying ? 'dying' : (isActive ? 'active' : ''));
 };
 

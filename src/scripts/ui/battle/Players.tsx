@@ -53,7 +53,7 @@ class Players extends React.Component<IProps, IState> {
 							<tbody>
 								{pl.getCharacters().map((char, c) => {
 									const isDying = char.status.has('DYING');
-									const isActive = !!(act && act.getActor() === char);
+									const isActive = !!(act && act.actor === char);
 									const state = (isDying ? 'is-dying' : (isActive ? 'is-active' : ''));
 
 									const { HP, AP, MP } = char.attributes;

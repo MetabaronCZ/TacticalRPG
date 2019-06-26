@@ -1,16 +1,29 @@
+import { formatTile } from 'modules/format';
+import {
+	getIdleActions, getSkillConfirmActions, getReactiveActions, getEvasiveActions
+} from 'modules/battle/character-actions';
+
 import Logger from 'modules/logger';
 import Tile from 'modules/geometry/tile';
 import AIPlayer from 'modules/ai/player';
 import Character from 'modules/character';
 import { IBattleInfo } from 'modules/battle/battle-info';
 import CharacterAction from 'modules/battle/character-action';
-import * as CharacterActions from 'modules/battle/character-actions';
+import { ReactionPhaseEvents } from 'modules/battle/act/reaction-phase';
+import MovePhase, { MovePhaseEvents, IActMoveRecord } from 'modules/battle/act/move-phase';
+import ActionPhase, { IActActionRecord, ActionPhaseEvents } from 'modules/battle/act/action-phase';
+import DirectPhase, { IActDirectRecord, DirectPhaseEvents } from 'modules/battle/act/direct-phase';
 
-import ActMove, { IActMoveRecord } from 'modules/battle/act/movement';
-import ActAction, { IActActionRecord } from 'modules/battle/act/action';
-import ActDirect, { IActDirectRecord } from 'modules/battle/act/direction';
+type PhaseID = 'MOVE' | 'ACTION' | 'DIRECTION';
 
-type ActPhase = 'INIT' | 'IDLE' | 'SKIPPING' | 'MOVEMENT' | 'ACTION' | 'DIRECTION';
+interface IPhases {
+	MOVE: MovePhase;
+	ACTION: ActionPhase;
+	DIRECTION: DirectPhase;
+}
+
+export type ActPhaseEvent = 'BATTLE_INFO' | MovePhaseEvents | ActionPhaseEvents | ReactionPhaseEvents | DirectPhaseEvents;
+export type IOnActPhaseEvent = (event: ActPhaseEvent, data?: Character | CharacterAction | Tile | IBattleInfo | null) => void;
 
 export interface IActEvents {
 	onStart: (act: Act) => void;
@@ -30,18 +43,15 @@ export interface IActRecord {
 }
 
 class Act {
-	private readonly id: number;
-	private readonly actor: Character;
-	private readonly characters: Character[];
+	public readonly id: number;
+	public readonly actor: Character;
+	public readonly phases: IPhases;
 	private readonly events: IActEvents;
+	private readonly characters: Character[];
 
-	private readonly movePhase: ActMove;
-	private actionPhase: ActAction;
-	private readonly directPhase: ActDirect;
-
-	private phase: ActPhase = 'INIT';
-	private actions: CharacterAction[] = [];
+	private phase: PhaseID | null = null;
 	private skipped: boolean = false;
+	private actions: CharacterAction[] = [];
 
 	constructor(id: number, actor: Character, characters: Character[], events: IActEvents) {
 		this.id = id;
@@ -49,261 +59,60 @@ class Act {
 		this.characters = characters;
 		this.events = this.prepareEvents(events);
 
-		this.movePhase = new ActMove(actor, characters, {
-			onStart: move => {
-				this.phase = 'MOVEMENT';
-				this.update();
-			},
-			onSelect: move => this.update(),
-			onAnimation: (move, step) => this.update(),
-			onEnd: move => this.update()
-		});
+		// prepare actor to act
+		actor.startAct();
 
-		this.directPhase = new ActDirect(actor, {
-			onStart: direct => {
-				this.phase = 'DIRECTION';
-				this.update();
-			},
-			onSelect: direct => this.update(),
-			onEnd: direct => {
-				this.update();
-				this.end();
+		this.phases = {
+			MOVE: new MovePhase(actor, characters, this.onPhaseEvent),
+			ACTION: new ActionPhase(actor, characters, this.onPhaseEvent),
+			DIRECTION: new DirectPhase(actor, characters, this.onPhaseEvent)
+		};
+
+		this.events.onStart(this);
+
+		setTimeout(() => { // prevent race condition
+			if (actor.status.has('DYING')) {
+				// skip this Act
+				this.skip();
+
+			} else {
+				// start move phase
+				this.phase = 'MOVE';
+				this.phases.MOVE.start();
 			}
 		});
-
-		this.actionPhase = new ActAction(actor, characters, {
-			onStart: action => {
-				this.phase = 'ACTION';
-				this.update();
-			},
-			onReset: action => {
-				this.phase = 'MOVEMENT';
-				this.update();
-			},
-			onSelect: action => this.update(),
-			onConfirm: action => this.update(),
-			onPass: action => {
-				this.phase = 'ACTION';
-				this.update();
-			},
-			onAnimation: (action, step) => this.update(),
-			onEnd: action => {
-				this.update();
-				this.directPhase.start();
-			},
-
-			onReactionStart: reaction => this.update(),
-			onReactionSelected: reaction => this.update(),
-			onReactionBlock: reaction => this.update(),
-			onReactionShield: reaction => this.update(),
-			onReactionEvasionStart: reaction => this.update(),
-			onReactionEvasionEnd: reaction => this.update(),
-			onReactionPass: reaction => this.update(),
-			onReactionReset: reaction => this.update(),
-			onReactionEnd: reaction => this.update(),
-
-			onBattleInfo: this.events.onBattleInfo
-		});
 	}
 
-	public getId(): number {
-		return this.id;
-	}
-
-	public getActor(): Character {
-		return this.actor;
+	public getPhase(): PhaseID | null {
+		return this.phase;
 	}
 
 	public getActingCharacter(): Character {
-		const reaction = this.actionPhase.getReaction();
-		const isReaction = ('ACTION' === this.phase && reaction && 'DONE' !== reaction.getState());
-		return (isReaction && reaction ? reaction.getReactor() : this.actor);
+		const { actor, phase, phases } = this;
+		const reaction = phases.ACTION.getReaction();
+		return ('ACTION' === phase && reaction ? reaction.reactor : actor);
 	}
 
 	public getActions(): CharacterAction[] {
 		return this.actions;
 	}
 
-	public getPhase(): ActPhase {
-		return this.phase;
-	}
-
-	public getMovePhase(): ActMove {
-		return this.movePhase;
-	}
-
-	public getActionPhase(): ActAction {
-		return this.actionPhase;
-	}
-
-	public getDirectPhase(): ActDirect {
-		return this.directPhase;
-	}
-
-	public start() {
-		const { phase, actor } = this;
-
-		if ('INIT' !== phase) {
-			throw new Error('Could not init act: invalid phase ' + phase);
-		}
-		this.phase = 'IDLE';
-
-		actor.startAct();
-		this.events.onStart(this);
-
-		setTimeout(() => { // prevent race condition
-			if (actor.status.has('DYING')) {
-				this.skip();
-			} else {
-				this.movePhase.start();
-			}
-		});
-	}
-
 	public selectTile(tile: Tile) {
-		const { phase, actionPhase, movePhase, directPhase } = this;
+		const { phase } = this;
 
-		switch (phase) {
-			case 'MOVEMENT':
-				// select movement target
-				movePhase.selectTarget(tile);
-				return;
-
-			case 'ACTION':
-				// select skill target
-				const actionState = actionPhase.getState();
-
-				switch (actionState) {
-					case 'IDLE':
-					case 'SELECTED': {
-						const prevTarget = actionPhase.getTarget();
-
-						// confirm target on double selection
-						if (prevTarget === tile) {
-							actionPhase.confirm();
-						} else {
-							actionPhase.selectTarget(tile);
-						}
-						return;
-					}
-
-					case 'REACTION':
-						const reaction = actionPhase.getReaction();
-
-						if (null === reaction) {
-							throw new Error('Could not select reaction target: invalid reaction');
-						}
-						if ('EVASION' === reaction.getState()) {
-							reaction.selectEvasionTarget(tile);
-						}
-						return;
-
-					default:
-						return; // do nothing
-				}
-
-			case 'DIRECTION':
-				// select direction
-				directPhase.select(tile);
-				return;
-
-			default:
-				return; // do nothing
+		if (null === phase) {
+			throw new Error('Could not select tile: invalid phase ' + phase);
 		}
+		this.phases[phase].selectTile(tile);
 	}
 
 	public selectAction(action: CharacterAction) {
-		const { actor, phase, actionPhase, characters } = this;
+		const { phase } = this;
 
-		switch (action.type) {
-			case 'ATTACK':
-			case 'DOUBLE_ATTACK':
-			case 'WEAPON':
-			case 'MAGIC':
-			case 'DYNAMIC': {
-				// start action
-				if ('MOVEMENT' !== phase) {
-					throw new Error('Could not select action: invalid phase ' + phase);
-				}
-				const allies = characters.filter(char => char.player === actor.player);
-				const obstacles = allies.map(char => char.position);
-				actionPhase.start(action, obstacles);
-				return;
-			}
-
-			case 'PASS': {
-				// start direct
-				if ('MOVEMENT' !== phase) {
-					throw new Error('Could not pass act: invalid phase ' + phase);
-				}
-				actionPhase.pass(action);
-				return;
-			}
-
-			case 'REACTION': {
-				// select reaction action
-				if ('ACTION' !== phase) {
-					throw new Error('Could not select reaction: invalid phase ' + phase);
-				}
-				const reaction = actionPhase.getReaction();
-
-				if (null === reaction) {
-					throw new Error('Could not select reaction: invalid reaction');
-				}
-				reaction.selectAction(action);
-				return;
-			}
-
-			case 'DONT_REACT': {
-				// cancel react phase
-				if ('ACTION' !== phase) {
-					throw new Error('Could not cancel reaction: invalid phase ' + phase);
-				}
-				actionPhase.passReaction(action);
-				return;
-			}
-
-			case 'CONFIRM': {
-				// confirm selected action
-				if ('ACTION' !== phase) {
-					throw new Error('Could not confirm action: invalid phase ' + phase);
-				}
-				actionPhase.confirm();
-				return;
-			}
-
-			case 'BACK': {
-				// cancel selected action
-				if ('ACTION' !== phase) {
-					throw new Error('Could not cancel action: invalid phase ' + phase);
-				}
-				const actionState = actionPhase.getState();
-
-				switch (actionState) {
-					case 'IDLE':
-					case 'SELECTED':
-						// remove current action >> goto move phase
-						this.actionPhase.reset();
-						return;
-
-					case 'REACTION':
-						// reset selected reaction
-						const reaction = actionPhase.getReaction();
-
-						if (null === reaction) {
-							throw new Error('Could not reset reaction: invalid reaction');
-						}
-						reaction.reset();
-						return;
-
-					default:
-						return; // do nothing
-				}
-			}
-
-			default:
-				throw new Error('Unsupported action: ' + action.type);
+		if (null === phase) {
+			throw new Error('Could not select action: invalid phase ' + phase);
 		}
+		this.phases[phase].selectAction(action);
 	}
 
 	public serialize(): IActRecord {
@@ -311,16 +120,14 @@ class Act {
 			id: this.id,
 			skipped: this.skipped,
 			actor: this.actor.data.id,
-			movePhase: this.movePhase.serialize(),
-			actionPhase: this.actionPhase.serialize(),
-			directPhase: this.directPhase.serialize()
+			movePhase: this.phases.MOVE.serialize(),
+			actionPhase: this.phases.ACTION.serialize(),
+			directPhase: this.phases.DIRECTION.serialize()
 		};
 	}
 
 	private skip() {
-		this.phase = 'SKIPPING';
 		this.skipped = true;
-
 		this.events.onSkip(this);
 
 		setTimeout(() => { // prevent race condition
@@ -329,186 +136,244 @@ class Act {
 	}
 
 	private end() {
-		const { phase, actor } = this;
-
-		if ('DIRECTION' !== phase && 'SKIPPING' !== phase) {
-			throw new Error('Could not end act: invalid phase ' + phase);
+		if (!this.actor.isDead()) {
+			this.actor.endAct();
 		}
-
-		if (!actor.isDead()) {
-			actor.endAct();
-			this.update();
-		}
+		this.phase = null;
 		this.events.onEnd(this);
 	}
 
-	private updateActions() {
-		const { actor, movePhase, actionPhase, directPhase } = this;
-
-		if (actor.status.has('DYING')) {
-			this.actions = [];
-			return;
-		}
+	private prepareActions(): CharacterAction[] {
+		const { actor, phases } = this;
 
 		switch (this.phase) {
-			case 'MOVEMENT': {
-				this.actions = [];
-
-				if ('IDLE' === movePhase.getState()) {
-					const actions = CharacterActions.getIdleActions(actor);
-
-					if (!actor.isAI()) {
-						// player move and/or choose actions
-						this.actions = actions;
-
-					} else {
-						// let AI decide
-						(actor.player as AIPlayer).onAction({
-							actor,
-							actions,
-							movable: movePhase.getMovable(),
-							onTileSelect: tile => this.selectTile(tile),
-							onActionSelect: action => this.selectAction(action)
-						});
-					}
-				}
-				break;
-			}
-
-			case 'ACTION': {
-				switch (actionPhase.getState()) {
-					case 'IDLE': {
-						const actions = CharacterActions.getSkillActions();
-						this.actions = [];
-
-						if (!actor.isAI()) {
-							// player chooses action target
-							this.actions = actions;
-
-						} else {
-							// let AI choose target
-							const player = actor.player as AIPlayer;
-							player.onActionTarget(actor, actionPhase.getTargetable(), tile => this.selectTile(tile));
-						}
-						break;
-					}
-
-					case 'SELECTED': {
-						const action = actionPhase.getAction();
-
-						if (null === action) {
-							throw new Error('Could not update actions: no action');
-						}
-						this.actions = [];
-
-						const actions = CharacterActions.getSkillConfirmActions(action, actionPhase.getEffectTargets());
-
-						if (!actor.isAI()) {
-							// player decide action confirmation
-							this.actions = actions;
-
-						} else {
-							// let AI confirm action
-							const player = actor.player as AIPlayer;
-							player.onActionConfirm(actions, a => this.selectAction(a));
-						}
-						break;
-					}
-
-					case 'REACTION': {
-						const reaction = actionPhase.getReaction();
-
-						if (null === reaction) {
-							throw new Error('Could not set react actions: invalid reaction');
-						}
-						this.actions = [];
-
-						const reactor = reaction.getReactor();
-						const reactionState = reaction.getState();
-						const isBackAttacked = reaction.isBackAttacked();
-						const canEvade = reaction.canEvade();
-
-						switch (reactionState) {
-							case 'IDLE': {
-								const actions = CharacterActions.getReactiveActions(reactor, isBackAttacked, canEvade);
-
-								if (!reactor.isAI()) {
-									// player chooses reaction
-									this.actions = actions;
-
-								} else {
-									// let AI choose reaction
-									const player = reactor.player as AIPlayer;
-									player.onReaction(reactor, actions, isBackAttacked, r => this.selectAction(r));
-								}
-								break;
-							}
-
-							case 'EVASION': {
-								const actions = CharacterActions.getEvasiveActions();
-
-								if (!reactor.isAI()) {
-									// player chooses reaction
-									this.actions = actions;
-
-								} else {
-									// let AI choose reaction
-									const player = reactor.player as AIPlayer;
-									player.onEvasion(reactor, reaction.getEvasionTargets(), tile => this.selectTile(tile));
-								}
-								break;
-							}
-
-							default:
-								// pass
-						}
-						break;
-					}
+			case 'MOVE':
+				switch (phases.MOVE.getPhase()) {
+					case 'IDLE':
+						// default character actions
+						return getIdleActions(actor);
 
 					default:
-						this.actions = [];
+						return [];
 				}
-				break;
-			}
+
+			case 'ACTION':
+				switch (phases.ACTION.getPhase()) {
+					case 'IDLE':
+						// default character actions
+						return getIdleActions(actor);
+
+					case 'TARGETING':
+						// confirm actions
+						const action = phases.ACTION.getAction();
+						const hasTargets = phases.ACTION.getEffectTargets().length > 0;
+
+						if (null === action) {
+							throw new Error('Could not get actions: no active action');
+						}
+						return getSkillConfirmActions(action, hasTargets);
+
+					case 'REACTING':
+						// reaction actions
+						const reaction = phases.ACTION.getReaction();
+
+						if (null === reaction) {
+							throw new Error('Could not get reaction actions: no reaction');
+						}
+						const { reactor, backAttacked } = reaction;
+						const obstacles = this.characters.map(char => char.position);
+						const canEvade = reactor.canEvade(obstacles);
+
+						switch (reaction.getPhase()) {
+							case 'IDLE':
+								return getReactiveActions(reactor, backAttacked, canEvade);
+
+							case 'EVASION':
+								return getEvasiveActions();
+
+							default:
+								return [];
+						}
+
+					default:
+						return [];
+				}
 
 			case 'DIRECTION':
-				this.actions = [];
-
-				if ('IDLE' === directPhase.getState()) {
-					if (actor.isAI()) {
-						const player = actor.player as AIPlayer;
-						player.onDirect(actor, directPhase.getDirectable(), tile => this.selectTile(tile));
-					}
-				}
-				break;
-
 			default:
-				this.actions = [];
+				return [];
 		}
 	}
 
 	private update() {
-		this.updateActions();
+		let actingCharacter = this.getActingCharacter();
+		const actions = this.prepareActions();
+
+		if (!actingCharacter.isAI()) {
+			// set actions for player
+			this.actions = actions;
+		}
 		this.events.onUpdate(this);
+
+		setTimeout(() => { // prevent race condition
+			actingCharacter = this.getActingCharacter();
+
+			if (actingCharacter.isAI()) {
+				const player = actingCharacter.player as AIPlayer;
+				player.act(this, actions);
+			}
+		});
+	}
+
+	private onPhaseEvent: IOnActPhaseEvent = (evt, data) => {
+		const { phase, phases } = this;
+
+		if ('BATTLE_INFO' === evt) {
+			// handle battle info messages
+			this.events.onBattleInfo(data as IBattleInfo);
+			return;
+		}
+		const { MOVE, ACTION, DIRECTION } = phases;
+
+		switch (phase) {
+			case 'MOVE':
+				switch (evt) {
+					case 'MOVE_SUSPENDED':
+						// start action phase
+						this.phase = 'ACTION';
+						ACTION.start(data as CharacterAction);
+						return;
+
+					case 'MOVE_IDLE':
+						this.log('Select move target or an action...');
+						this.update();
+						return;
+
+					case 'MOVE_SELECTED':
+						this.log('Moving to ' + formatTile(data as Tile));
+						this.update();
+						return;
+
+					case 'MOVE_ANIMATION':
+						this.update();
+						return;
+
+					default:
+						return; // do nothing
+				}
+
+			case 'ACTION':
+				switch (ACTION.getPhase()) {
+					case 'REACTING':
+						// handle reaction events
+						const reaction = ACTION.getReaction();
+
+						if (!reaction) {
+							throw new Error('Invalid action data: no reaction');
+						}
+						const { reactor } = reaction;
+
+						switch (evt) {
+							case 'REACTION_IDLE':
+								this.log('Select reaction...', reactor);
+								this.update();
+								return;
+
+							case 'REACTION_EVADING':
+								this.log('Select evasion target...', reactor);
+								this.update();
+								return;
+
+							case 'REACTION_FINISHED':
+								this.log('Reaction selected: ' + (data as CharacterAction).title, reactor);
+								this.update();
+								return;
+
+							default:
+								return; // do nothing
+						}
+
+					default:
+						// handle default action events
+						switch (evt) {
+							case 'ACTION_SELECTED':
+								this.log('Action selected: ' + (data as CharacterAction).title);
+								this.log('Select action target...');
+								this.update();
+								return;
+
+							case 'ACTION_TARGETED':
+								this.log('Action target selected ' + (data ? (data as Character).name : ''));
+								this.update();
+								return;
+
+							case 'ACTION_ANIMATION':
+								this.update();
+								return;
+
+							case 'ACTION_PASSED':
+								this.log('Action passed');
+							case 'ACTION_DONE':
+								// start direction phase
+								this.phase = 'DIRECTION';
+								DIRECTION.start();
+								return;
+
+							case 'ACTION_CANCELLED':
+								// start move phase
+								this.phase = 'MOVE';
+								this.log('Action cancelled');
+								MOVE.start();
+								return;
+
+							default:
+								return; // do nothing
+						}
+				}
+
+			case 'DIRECTION':
+				switch (evt) {
+					case 'DIRECTION_IDLE':
+						this.log('Select direction target...');
+						this.update();
+						return;
+
+					case 'DIRECTION_SELECTED':
+						// finish Act
+						this.log('Direction set to ' + formatTile(data as Tile));
+						this.end();
+						return;
+
+					default:
+						return; // do nothing
+				}
+
+			default:
+				return; // do nothing
+		}
 	}
 
 	private prepareEvents(events: IActEvents): IActEvents {
 		return {
 			onStart: act => {
-				Logger.info(`Act onStart: "${act.getActor().name}"`);
+				this.log('Act started');
 				events.onStart(act);
 			},
 			onUpdate: events.onUpdate,
 			onSkip: act => {
-				Logger.info('Act onSkip');
+				this.log('Act skipped');
 				events.onSkip(act);
 			},
 			onEnd: act => {
-				Logger.info('Act onEnd');
+				this.log('Act ended');
 				events.onEnd(act);
 			},
 			onBattleInfo: events.onBattleInfo
 		};
+	}
+
+	private log(msg: string, character = this.actor) {
+		Logger.info(`${character.name} - ${msg}`);
 	}
 }
 

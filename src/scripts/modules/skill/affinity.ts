@@ -1,5 +1,7 @@
 import { SkillElement } from 'modules/skill/skill-data';
 
+export type Affinity = 'ELEMENTAL_WEAK' | 'ELEMENTAL_NEUTRAL' | 'ELEMENTAL_STRONG';
+
 type IElementAffinityTable = {
 	[E in SkillElement]: SkillElement | null;
 };

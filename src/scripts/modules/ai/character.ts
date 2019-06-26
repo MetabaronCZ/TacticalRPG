@@ -1,13 +1,12 @@
 import { getRandomItem, getIntersection } from 'core/array';
 
+import { getShortestPath } from 'modules/pathfinding';
+import { findTileFrom, resolveDirection, getOpositeDirection } from 'modules/geometry/direction';
+
 import Tile from 'modules/geometry/tile';
 import Character from 'modules/character';
-import { getShortestPath } from 'modules/pathfinding';
 import CharacterAction from 'modules/battle/character-action';
 import { IOnActionSelect, IOnTileSelect } from 'modules/ai/player';
-import {
-	findTileFrom, resolveDirection, getOpositeDirection
-} from 'modules/geometry/direction';
 
 interface IOnActionConf {
 	actions: CharacterAction[];
@@ -15,8 +14,6 @@ interface IOnActionConf {
 	ally: Character[];
 	enemy: Character[];
 	obstacles: Tile[];
-	onTileSelect: IOnTileSelect;
-	onActionSelect: IOnActionSelect;
 }
 
 type TargetSide = 'FRONT' | 'SIDE' | 'BEHIND';
@@ -42,12 +39,17 @@ const getSide = (char: Character, tile: Tile): TargetSide => {
 };
 
 class AICharacter {
-	private character: Character;
+	private readonly character: Character;
+	private readonly selectTile: IOnTileSelect;
+	private readonly selectAction: IOnActionSelect;
+
 	private moved = false;
 	private target: Character | null = null; // skill target character
 
-	constructor(character: Character) {
+	constructor(character: Character, selectTile: IOnTileSelect, selectAction: IOnActionSelect) {
 		this.character = character;
+		this.selectTile = selectTile;
+		this.selectAction = selectAction;
 	}
 
 	public getCharacter(): Character {
@@ -55,7 +57,7 @@ class AICharacter {
 	}
 
 	public onAction(conf: IOnActionConf) {
-		const { actions, movable, ally, enemy, obstacles, onTileSelect, onActionSelect } = conf;
+		const { actions, movable, ally, enemy, obstacles } = conf;
 		const char = this.character;
 
 		if (char.isDead()) {
@@ -127,17 +129,16 @@ class AICharacter {
 
 					if (movePath.length) {
 						const moveTarget = movePath[movePath.length - 1];
-						onTileSelect(moveTarget);
+						this.selectTile(moveTarget);
 						return;
 					}
 				}
 			}
 		}
-
-		this.selectAction(actions, ally, enemy, onActionSelect);
+		this.chooseAction(actions, ally, enemy);
 	}
 
-	public onActionTarget(targetable: Tile[], onSelect: IOnTileSelect) {
+	public onActionTarget(targetable: Tile[]) {
 		let target = this.target ? this.target.position : null;
 
 		if (!target || !target.isContained(targetable)) {
@@ -147,10 +148,10 @@ class AICharacter {
 		if (!target || !target.isContained(targetable)) {
 			throw new Error('AI character couold not target skill: no targetable tiles');
 		}
-		onSelect(target);
+		this.selectTile(target);
 	}
 
-	public onReaction(actions: CharacterAction[], isBackAttacked: boolean, obstacles: Tile[], onSelect: IOnActionSelect) {
+	public onReaction(actions: CharacterAction[], isBackAttacked: boolean, obstacles: Tile[]) {
 		const passAction = actions.find(act => 'DONT_REACT' === act.type);
 
 		if (!passAction) {
@@ -159,7 +160,7 @@ class AICharacter {
 		const char = this.character;
 
 		if (isBackAttacked || !char.canAct()) {
-			onSelect(passAction);
+			this.selectAction(passAction);
 			return;
 		}
 
@@ -178,24 +179,24 @@ class AICharacter {
 					continue;
 				}
 			}
-			onSelect(action);
+			this.selectAction(action);
 			return;
 		}
 
 		// no reaction available
-		onSelect(passAction);
+		this.selectAction(passAction);
 	}
 
-	public onEvasion(evasible: Tile[], onSelect: IOnTileSelect) {
+	public onEvasion(evasible: Tile[]) {
 		const evasionTarget = getRandomItem(evasible);
 
 		if (!evasionTarget) {
 			throw new Error('AI character could not react: no evasion targets');
 		}
-		onSelect(evasionTarget);
+		this.selectTile(evasionTarget);
 	}
 
-	public onDirect(directable: Tile[], onSelect: IOnTileSelect) {
+	public onDirect(directable: Tile[]) {
 		const char = this.character;
 
 		if (char.isDead() || !char.canAct()) {
@@ -216,10 +217,10 @@ class AICharacter {
 		if (!directTarget) {
 			throw new Error('AI could not direct');
 		}
-		onSelect(directTarget);
+		this.selectTile(directTarget);
 	}
 
-	private selectAction(actions: CharacterAction[], ally: Character[], enemy: Character[], onSelect: IOnActionSelect) {
+	private chooseAction(actions: CharacterAction[], ally: Character[], enemy: Character[]) {
 		const passAction = actions.find(act => 'PASS' === act.type);
 
 		if (!passAction) {
@@ -232,7 +233,7 @@ class AICharacter {
 		this.moved = false;
 
 		if (!this.target || !char.canAct()) {
-			onSelect(passAction);
+			this.selectAction(passAction);
 			return;
 		}
 
@@ -253,13 +254,13 @@ class AICharacter {
 			const targets = action.skills[0].getTargets(char, enemy, targetable);
 
 			if (-1 !== targets.indexOf(this.target)) {
-				onSelect(action);
+				this.selectAction(action);
 				return;
 			}
 		}
 
 		// enemy is not targetable
-		onSelect(passAction);
+		this.selectAction(passAction);
 	}
 }
 

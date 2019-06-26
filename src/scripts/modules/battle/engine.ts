@@ -195,8 +195,6 @@ class Engine {
 				this.startAct();
 			}
 		});
-
-		this.act.start();
 	}
 
 	private createPlayers(conf: IEngineProps): PlayerList {
@@ -215,7 +213,9 @@ class Engine {
 				if ('CUSTOM' !== preset) {
 					aiConf = AIPresets.get(preset).config;
 				}
-				player = new AIPlayer(p, name, aiConf);
+				const selectTile = (tile: Tile) => this.selectTile(tile);
+				const selectAction = (action: CharacterAction) => this.selectAction(action);
+				player = new AIPlayer(p, name, aiConf, selectTile, selectAction);
 
 			} else {
 				// human controlled player

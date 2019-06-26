@@ -96,6 +96,10 @@ class Character {
 		return this.canAct() && !status.has('CRIPPLE');
 	}
 
+	public canEvade(obstacles: Tile[] = []): boolean {
+		return this.position.getSideTiles(obstacles).length > 0;
+	}
+
 	// updates on every game tick
 	public update(onInfo: IOnBattleInfo) {
 		if (this.dead) {
@@ -188,10 +192,15 @@ class Character {
 		if (this.dead || this.status.has('DYING')) {
 			throw new Error('Cannot apply healing: dead or dying');
 		}
-		const healable = this.baseAttributes.HP - this.attributes.HP;
-		const healed = healable > healing ? healing : healable;
+		const { HP } = this.attributes;
+		const { HP: maxHP } = this.baseAttributes;
 
-		this.attributes.set('HP', healed);
+		let newHP = HP + healing;
+		newHP = newHP > maxHP ? maxHP : newHP;
+
+		const healed = newHP - HP;
+
+		this.attributes.set('HP', newHP);
 		healer.score.setHealing(this, healed);
 
 		for (const effect of effectIds) {

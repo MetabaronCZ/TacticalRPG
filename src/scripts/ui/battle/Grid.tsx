@@ -19,7 +19,7 @@ interface IGridProps {
 }
 
 const Grid: React.SFC<IGridProps> = ({ act, players, characters, battleInfo, onTileSelect }) => {
-	const actor = act ? act.getActor() : null;
+	const actor = act ? act.actor : null;
 
 	return (
 		<ul className="Grid">

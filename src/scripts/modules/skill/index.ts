@@ -143,7 +143,7 @@ class Skill implements ISkillData {
 		return -1 !== reactableSkillTargets.indexOf(this.target);
 	}
 
-	public getTargetable(source: Tile, obstacles: Tile[]): Tile[] {
+	public getTargetable(source: Tile, hitScanObstacles: Tile[]): Tile[] {
 		const { target, range, area, hitScan } = this;
 
 		if ('NONE' === target) {
@@ -167,7 +167,7 @@ class Skill implements ISkillData {
 
 		// apply hit-scan filter
 		if (hitScan) {
-			targetable = getVisible(targetable, source, obstacles);
+			targetable = getVisible(targetable, source, hitScanObstacles);
 		}
 		return targetable;
 	}

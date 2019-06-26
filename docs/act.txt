@@ -1,0 +1,101 @@
+ACT PHASES
+---------------------------------------
+-> IDLE // default
+    #clickTile(t) // select move target
+        ? t == movable
+            -> MOVE_ANIMATION
+                -> IDLE
+
+    #clickAction(a) // select action
+        ? a == skill
+            -> ACTION_TARGETING
+                #clickTile(t) // select action target
+                    ? t == targetable
+                        -> ACTION_CONFIRM
+                            #clickTile(t) // select other target
+                                ? t == targetable
+                                    -> ACTION_CONFIRM
+
+                            #clickAction(a) // confirm action
+                                ? a == confirm
+                                    -> ACTION_ANIMATION
+                                        -> [@REACTION]
+                                            -> @DIRECTIONING
+                                                -> END
+
+                                ? a == back
+                                    -> IDLE
+
+                #clickAction(a)
+                    ? a == back
+                        -> IDLE
+
+        ? a == pass
+            -> @DIRECTIONING
+                -> END
+
+---
+@DIRECTIONING :=
+    -> DIRECTION
+        #clickTile(t) // select direct target
+            ? t == directable
+                -> NEXT...
+
+@REACTION :=
+    -> REACTION_SELECT
+        #clickAction(a) // select reaction
+            ? a == block || energy shield
+                -> NEXT...
+
+            ? a == evasion
+                -> EVASION_TARGETING
+                    #clickTile(t) // select evasion target
+                        ? t == evasible
+                            -> EVASION_ANIMATION
+                                -> NEXT...
+
+                    #clickAction(a)
+                        ? a == back
+                            -> REACTION_SELECT
+
+            ? a == pass
+                -> NEXT...
+
+---------------------------------------
+Act phases list:
+    IDLE
+    MOVE_ANIMATION
+    ACTION_TARGETING
+    ACTION_CONFIRM
+    ACTION_ANIMATION
+    REACTION_SELECT
+    EVASION_TARGETING
+    DIRECTION
+
+---------------------------------------
+Act state:
+- actor
+- actions
+
+- moveOrigin
+- movable
+- moveTarget
+- movePath
+
+- action
+- actionArea
+- actionTargetable
+- actionTarget
+- actionEffectArea
+- actionEffectTargets
+
+- directable
+- directTarget
+
+- reactor
+- reactions: [
+    - reactor
+    - reaction
+    - reactionEvasible
+    - reactionEvasionTarget
+]

@@ -1,8 +1,7 @@
 BUG
 ----------------------------------------------------------------------------------------------------------
 --	pokud se AI nemuze dostat protivnikovi do zad, udela PASS
-	- kdyz zbydou jen postavy v tomto stavu, dela se PASS do nekonecna
-
+	- kdyz zbydou jen postavy v tomto stavu, delaji PASS do nekonecna
 
 
 TODO
@@ -11,19 +10,47 @@ TODO
 	--	zobrazovat damage info pred CONFIRM akci
 	--	v damage infu zobrazovat utok (phy, mag) + modifikatory; neovlivneno akcemi defendera (zadne jeste nejsou pred reakci)
 	--	logovat damage output + vysledne damage (uz je)
+	OK	pokud je vybran cil, melo by se vypocitat IDamageInfo
+	--	to info vizualizovat
+	--	ukazat i backattack a elemental affnitu
+--	refactor fazi II:
+	- faze: MOVE, ACTION, REACTION, COMBAT, DIRECTION
+	+ ACTION faze:
+		- skloubit effectTargets, damageInfo, reactions, active reaction
+	+ REACTION faze:
+		- udrzet hodnoty pro vybranou reakci
+	+ COMBAT faze:
+		- udrzet hodnoty Combat; predat do Chronox
+		- pote pouzit pri ziskavani statistik v BattleSummary
+		- udrzet i hodnotu KILLED nebo REVIVED pro reactory
+	+ MOVE faze:
+		- umoznit menit moveTarget behem animace
+		- postava dokonci aktualni move step
+		- vytvori se a spusti nova animace z aktualni pozice
+		- behem dokonceni stepu je mozne menit dal pozici:
+			- nova animace se nastavi do promenne a spusti az po skonceni stepu
+	? COUNTER faze ???
+		- po COMBAT fazi
+--	rozlisovat healing a damaging skilly
+	? nebo rozlisovat reactable skilly
+	- behem reakce u healing skillu by mela byt jen moznost DONT_REACT
+--	AIPlayer by mel mit k dispozici instanci enginu
+	- mel by tedy i metody selectTile / selectAction
+	- mohl by kdykoliv zjistit stav hry (coz Player vidi v UI)
 --	AICharacter: pokud vybrana cesta nekonci na Tile, ze ktereho se da utocit, skoncit na posledni utocne pozici
 --	pro AI Act pridat tlacitko pro zastaveni + krokovani, pripadne potvrzeni akce
 --	AICharacter: pohyb/akce podle melee / ranged / support role
 	- vybira AIPlayer
 	- prioritizace skillu (healing role -> Revive)
+??	schopnost pouzit Reaction skill by mela zaviset na rychlosti obou postav
+	- defenderSpd >= AttackerSpd -> defender muze pouzit Reaction skilly
 ??	Counter reaction skill >> bude to mainHand weapon Attack skill
 ??	pasivni skilly
 ??	pokud je v Actor[] vice postav stejneho hrace
 	- melo by jit vybrat, kdo z nich bude jednat driv
 	- mela by se objevit moznost koordinovaneho utoku (basic attacky obou postav, ukonci Acty postav)
-??	pridat pocasi (v zavislosti na arene)
-	- na zacatku vybrat nahodnou arenu
-	- v zavislosti na arene se behem souboje muze spustit ArenaEffect
+??	pridat arenu / pocasi 
+	- v zavislosti na arene se behem souboje muze spustit ArenaEffect (zmena pocasi)
 	- efekt je specificky pro kazdou arenu a trva nahodnou dobu v urcitem rozmezi
 	- efekt zpusobi dmg+ bonus pro skilly daneho elementu, dmg- pro afinni element, pripadne jine efekty
 		- Greenfield >> none
@@ -38,6 +65,10 @@ TODO
 		? Cathedral >> Hymn of the Cherubim [HOLY]
 		? ??? >> Dark Vortex [DARK]
 		? ??? >> Chaos storm [PSYCHIC]
+	+ typ pocasi, zacatek a konec efektu pridat do vysledneho Chronox zaznamu
+	+ upravit BattleConfig, aby mu slo vnutit i nastaveni pocasi
+	+ u replay funkce pozdeji nacitat i pocasi z Chronox zaznamu
+	+ v BattleConfig page umoznit vyber areny (pripadne kdy ma zacit nebo skoncit jeji efekt)
 ??	implementovat Sudden death mode (aby nedoslo ke stavu, kdy zbyvaji jen S-typy, ktere evaduji vsechny utoky)
 	- nebo po case na mapu vyvolat OP NPC, ktere bude nahodne utocit na postavy obou hracu
 

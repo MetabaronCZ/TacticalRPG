@@ -28,8 +28,8 @@ const getTileType = (tile: Tile, act: Act | null): TileType => {
 		return type;
 	}
 	switch (act.getPhase()) {
-		case 'MOVEMENT': {
-			const move = act.getMovePhase();
+		case 'MOVE': {
+			const move = act.phases.MOVE;
 			const tgt = move.getTarget();
 
 			if (tile.isContained(move.getMovable())) {
@@ -45,43 +45,40 @@ const getTileType = (tile: Tile, act: Act | null): TileType => {
 		}
 
 		case 'ACTION': {
-			const actionPhase = act.getActionPhase();
+			const actionPhase = act.phases.ACTION;
 			const reactionPhase = actionPhase.getReaction();
 
-			switch (actionPhase.getState()) {
-				case 'IDLE':
-					if (tile.isContained(actionPhase.getArea())) {
-						type = 'actionRange';
-					}
-					if (tile.isContained(actionPhase.getTargetable())) {
-						type = 'actionTargetable';
-					}
-					break;
-
-				case 'SELECTED': {
+			switch (actionPhase.getPhase()) {
+				case 'TARGETING': {
 					const tgt = actionPhase.getTarget();
 
 					if (tile.isContained(actionPhase.getEffectArea())) {
 						type = 'actionEffectArea';
+					} else if (tile.isContained(actionPhase.getArea())) {
+						type = 'actionRange';
 					}
+
 					if (tile.isContained(actionPhase.getEffectTargets().map(char => char.position))) {
 						type = 'actionEffectTargets';
+					} else if (tile.isContained(actionPhase.getTargetable())) {
+						type = 'actionTargetable';
 					}
+
 					if (tile === tgt) {
 						type = 'actionEffectTarget';
 					}
 					break;
 				}
 
-				case 'REACTION':
+				case 'REACTING':
 					if (null !== reactionPhase) {
-						const reactor = reactionPhase.getReactor();
-						const reactors = actionPhase.getReactions().map(char => char.getReactor().position);
+						const { reactor } = reactionPhase;
+						const reactors = actionPhase.getReactions().map(reaction => reaction.reactor.position);
 
 						if (tile.isContained(reactors)) {
 							type = 'reactors';
 						}
-						if (tile.isContained(reactionPhase.getEvasionTargets())) {
+						if (tile.isContained(reactionPhase.getEvasible())) {
 							type = 'reactionEvasible';
 						}
 						if (tile === reactor.position) {
@@ -94,7 +91,7 @@ const getTileType = (tile: Tile, act: Act | null): TileType => {
 		}
 
 		case 'DIRECTION': {
-			const direct = act.getDirectPhase();
+			const direct = act.phases.DIRECTION;
 			const tgt = direct.getTarget();
 
 			if (tile.isContained(direct.getDirectable())) {

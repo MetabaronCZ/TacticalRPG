@@ -96,11 +96,11 @@ export const getIdleActions = (character: Character): CharacterAction[] => {
 	return actions;
 };
 
-export const getSkillConfirmActions = (action: CharacterAction, targets: Character[] = []): CharacterAction[] => {
+export const getSkillConfirmActions = (action: CharacterAction, hasTargets: boolean): CharacterAction[] => {
 	const actions: CharacterAction[] = [];
 
 	// confirm skill action
-	if (targets.length) {
+	if (hasTargets) {
 		const confirmAction = getConfirmAction(action.title, action.cost);
 		actions.push(confirmAction);
 	}
@@ -168,6 +168,5 @@ export const getReactiveActions = (character: Character, isBackAttack: boolean, 
 	return actions;
 };
 
-export const getSkillActions = (): CharacterAction[] => [getBackAction()];
 export const getEvasiveActions = (): CharacterAction[] => [getBackAction()];
 export const getDirectActions = (): CharacterAction[] => [getDirectAction()];
