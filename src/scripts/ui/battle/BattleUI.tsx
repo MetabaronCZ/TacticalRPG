@@ -32,10 +32,6 @@ const BattleUI: React.SFC<IBattleUIProps> = ({ engineState, engineUpdate, onTile
 		<div className="BattleUI">
 			<Order act={act} characters={order} players={players} />
 
-			<h2 className="BattleUI-heading">
-				ACT {act.id} ({engineUpdate.toLocaleTimeString()}) [Tick {tick}]
-			</h2>
-
 			<table className="BattleUI-table">
 				<tbody>
 					<tr>

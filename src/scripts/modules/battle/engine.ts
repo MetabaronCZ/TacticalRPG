@@ -181,7 +181,12 @@ class Engine {
 		order.update();
 
 		// create new character act
-		this.act = new Act(this.actNumber, actor, characters, {
+		const actID = this.actNumber;
+		const now = new Date();
+
+		Logger.info(`ACT ${actID} (${now.toLocaleTimeString()}) [Tick ${this.tick}]`);
+
+		this.act = new Act(actID, actor, characters, {
 			onBattleInfo: info => this.onInfo(info),
 			onStart: act => events.onUpdate(this.getState()),
 			onUpdate: act => events.onUpdate(this.getState()),
