@@ -15,10 +15,10 @@ import ReactionPhase, { ReactionPhaseEvents, IActReactionRecord } from 'modules/
 import CombatPhase, { CombatPhaseEvents, IActCombatRecord } from 'modules/battle/act/combat-phase';
 import DirectPhase, { DirectPhaseEvents, IActDirectRecord } from 'modules/battle/act/direct-phase';
 
-type PhaseID = 'MOVE' | 'ACTION' | 'REACTION' | 'COMBAT' | 'DIRECTION';
+type PhaseID = 'MOVEMENT' | 'ACTION' | 'REACTION' | 'COMBAT' | 'DIRECTION';
 
 interface IPhases {
-	MOVE: MovePhase;
+	MOVEMENT: MovePhase;
 	ACTION: ActionPhase;
 	REACTION: ReactionPhase;
 	DIRECTION: DirectPhase;
@@ -40,11 +40,11 @@ export interface IActRecord {
 	readonly id: number;
 	readonly actor: string;
 	readonly skipped: boolean;
-	readonly movePhase: IActMoveRecord;
+	readonly movementPhase: IActMoveRecord;
 	readonly actionPhase: IActActionRecord;
 	readonly reactionPhase: IActReactionRecord;
-	readonly directPhase: IActDirectRecord;
 	readonly combatPhase: IActCombatRecord;
+	readonly directionPhase: IActDirectRecord;
 }
 
 class Act {
@@ -68,7 +68,7 @@ class Act {
 		actor.startAct();
 
 		this.phases = {
-			MOVE: new MovePhase(actor, characters, this.onPhaseEvent),
+			MOVEMENT: new MovePhase(actor, characters, this.onPhaseEvent),
 			ACTION: new ActionPhase(actor, characters, this.onPhaseEvent),
 			REACTION: new ReactionPhase(actor, characters, this.onPhaseEvent),
 			DIRECTION: new DirectPhase(actor, characters, this.onPhaseEvent),
@@ -84,8 +84,8 @@ class Act {
 
 			} else {
 				// start move phase
-				this.phase = 'MOVE';
-				this.phases.MOVE.start();
+				this.phase = 'MOVEMENT';
+				this.phases.MOVEMENT.start();
 			}
 		});
 	}
@@ -130,10 +130,10 @@ class Act {
 			id: this.id,
 			skipped: this.skipped,
 			actor: this.actor.data.id,
-			movePhase: this.phases.MOVE.serialize(),
+			movementPhase: this.phases.MOVEMENT.serialize(),
 			actionPhase: this.phases.ACTION.serialize(),
 			reactionPhase: this.phases.REACTION.serialize(),
-			directPhase: this.phases.DIRECTION.serialize(),
+			directionPhase: this.phases.DIRECTION.serialize(),
 			combatPhase: this.phases.COMBAT.serialize()
 		};
 	}
@@ -157,11 +157,11 @@ class Act {
 
 	private prepareActions(): CharacterAction[] {
 		const { actor, phases } = this;
-		const { MOVE, ACTION, REACTION } = phases;
+		const { MOVEMENT, ACTION, REACTION } = phases;
 
 		switch (this.phase) {
-			case 'MOVE':
-				switch (MOVE.getPhase()) {
+			case 'MOVEMENT':
+				switch (MOVEMENT.getPhase()) {
 					case 'IDLE':
 						// default character actions
 						return getIdleActions(actor);
@@ -254,10 +254,10 @@ class Act {
 			this.events.onBattleInfo(data as IBattleInfo);
 			return;
 		}
-		const { MOVE, ACTION, REACTION, DIRECTION, COMBAT } = phases;
+		const { MOVEMENT, ACTION, REACTION, DIRECTION, COMBAT } = phases;
 
 		switch (phase) {
-			case 'MOVE':
+			case 'MOVEMENT':
 				switch (evt) {
 					case 'MOVE_SUSPENDED':
 						// start action phase
@@ -308,8 +308,8 @@ class Act {
 						// start move phase
 						this.log('Action cancelled');
 
-						this.phase = 'MOVE';
-						MOVE.start();
+						this.phase = 'MOVEMENT';
+						MOVEMENT.start();
 						return;
 
 					case 'ACTION_DONE':

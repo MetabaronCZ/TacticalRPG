@@ -43,12 +43,12 @@ class AIPlayer extends Player {
 
 	public act(act: Act, actions: CharacterAction[]) {
 		const { actor, phases } = act;
-		const { MOVE, ACTION, REACTION, DIRECTION } = phases;
+		const { MOVEMENT, ACTION, REACTION, DIRECTION } = phases;
 
 		switch (act.getPhase()) {
-			case 'MOVE':
-				if ('IDLE' === MOVE.getPhase()) {
-					const movable = MOVE.getMovable();
+			case 'MOVEMENT':
+				if ('IDLE' === MOVEMENT.getPhase()) {
+					const movable = MOVEMENT.getMovable();
 					this.onAction({ actor, actions, movable });
 				}
 				return;

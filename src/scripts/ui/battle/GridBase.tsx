@@ -28,8 +28,8 @@ const getTileType = (tile: Tile, act: Act | null): TileType => {
 		return type;
 	}
 	switch (act.getPhase()) {
-		case 'MOVE': {
-			const move = act.phases.MOVE;
+		case 'MOVEMENT': {
+			const move = act.phases.MOVEMENT;
 			const tgt = move.getTarget();
 
 			if (tile.isContained(move.getMovable())) {

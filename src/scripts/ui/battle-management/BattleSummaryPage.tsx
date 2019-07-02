@@ -63,7 +63,7 @@ const getRowInfo = (characters: ICharacterData[], record: IActRecord): IRecordAn
 	if (record.skipped) {
 		return result;
 	}
-	const { movePhase, actionPhase, reactionPhase } = record;
+	const { movementPhase: movePhase, actionPhase, reactionPhase } = record;
 
 	if (movePhase.initialPosition !== movePhase.target) {
 		result.move = `${movePhase.initialPosition} → ${movePhase.target}`;
