@@ -4,7 +4,7 @@ import Tile from 'modules/geometry/tile';
 import { CharacterData } from 'modules/character-creation/character-data';
 
 export const formatTile = (tile: Tile | null) => {
-	if (null === tile) {
+	if (!tile) {
 		return '-';
 	}
 	return `(${letters[tile.x]}, ${tile.y + 1})`;

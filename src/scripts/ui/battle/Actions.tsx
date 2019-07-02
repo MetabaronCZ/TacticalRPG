@@ -7,7 +7,7 @@ interface IActionsProps {
 }
 
 const formatCost = (cost: ICharacterActionCost | null): string => {
-	if (null === cost) {
+	if (!cost) {
 		return '';
 	}
 	const costArray = [cost.AP ? `${cost.AP} AP` : '', cost.MP ? `${cost.MP} MP` : ''];

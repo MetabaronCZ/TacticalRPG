@@ -158,7 +158,7 @@ class ReactionPhase extends ActPhase<IActReactionRecord> {
 		}
 		const reaction = this.getReaction();
 
-		if (null === reaction) {
+		if (!reaction) {
 			// all targets have reacted
 			this.phase = 'DONE';
 			this.onEvent('REACTION_DONE');
@@ -266,7 +266,7 @@ class ReactionPhase extends ActPhase<IActReactionRecord> {
 			throw new Error('Could not set evasion target: invalid phase ' + phase);
 		}
 
-		if (null === action) {
+		if (!action) {
 			throw new Error('Could not set evasion target: invalid action');
 		}
 

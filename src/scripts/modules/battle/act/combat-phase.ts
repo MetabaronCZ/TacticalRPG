@@ -92,7 +92,7 @@ class CombatPhase extends ActPhase<IActCombatRecord> {
 								const statuses = target.status.get().filter(s => 'SUPPORT' !== s.type);
 								const status = getRandomItem(statuses);
 
-								if (null !== status) {
+								if (status) {
 									target.status.remove(status.id);
 								}
 								info.push({
@@ -147,7 +147,7 @@ class CombatPhase extends ActPhase<IActCombatRecord> {
 				const damage = getDamage(actor, target, skill);
 				const damageStatus = damage.status.map(status => status.id);
 
-				if (null !== damage.blocked) {
+				if (damage.blocked) {
 					// damage reduced by shield block
 					target.status.remove('BLOCK_SMALL');
 					target.status.remove('BLOCK_LARGE');
@@ -159,7 +159,7 @@ class CombatPhase extends ActPhase<IActCombatRecord> {
 					});
 				}
 
-				if (null !== damage.shielded) {
+				if (damage.shielded) {
 					// damage reduced by energy shield
 					target.status.remove('ENERGY_SHIELD');
 

@@ -78,7 +78,7 @@ export class PartyData extends IndexableData {
 		const characters: string[] = [];
 
 		for (const id of this.data.slots) {
-			if (null !== id) {
+			if (id) {
 				characters.push(id);
 			}
 		}

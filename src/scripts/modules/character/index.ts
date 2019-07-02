@@ -235,7 +235,7 @@ class Character {
 		}
 
 		// reduce AP, MP
-		if (null !== cost) {
+		if (cost) {
 			this.attributes.set('AP', this.attributes.AP - cost.AP);
 			this.attributes.set('MP', this.attributes.MP - cost.MP);
 		}

@@ -86,7 +86,7 @@ class Engine {
 	}
 
 	public selectTile(tile: Tile) {
-		if (null === this.act) {
+		if (!this.act) {
 			throw new Error('Could not select tile: invalid act');
 		}
 		if (!this.running) {
@@ -96,7 +96,7 @@ class Engine {
 	}
 
 	public selectAction(action: CharacterAction) {
-		if (null === this.act) {
+		if (!this.act) {
 			throw new Error('Could not select action: invalid act');
 		}
 		if (!this.running) {
@@ -124,7 +124,7 @@ class Engine {
 		}
 		const winner = this.getWinner();
 
-		if (null !== winner) {
+		if (winner) {
 			this.running = false;
 			this.events.onGameOver(this.getState(), winner);
 			return;
@@ -270,7 +270,7 @@ class Engine {
 					dir = 'BOTTOM';
 				}
 
-				if (null === tile) {
+				if (!tile) {
 					throw new Error('Invalid tile given');
 				}
 				const char = new Character(data, tile, dir, player);

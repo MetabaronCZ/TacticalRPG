@@ -17,7 +17,7 @@ export const constructPath = (start: Tile, target: Tile, graph: IGraph): Tile[] 
 	const path: Tile[] = [];
 
 	while (curr !== start) {
-		if (null === curr) {
+		if (!curr) {
 			break;
 		}
 		path.push(curr);

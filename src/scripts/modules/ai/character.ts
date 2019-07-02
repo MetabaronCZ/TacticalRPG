@@ -101,11 +101,11 @@ class AICharacter {
 					});
 
 					const behindPaths: ITargetInfo[] = paths.filter((path): path is ITargetInfo => {
-						return null !== path && 'BEHIND' === path.side;
+						return !!path && 'BEHIND' === path.side;
 					});
 
 					const sidePaths: ITargetInfo[] = paths.filter((path): path is ITargetInfo => {
-						return null !== path && 'SIDE' === path.side;
+						return !!path && 'SIDE' === path.side;
 					});
 
 					// prioritize paths leading behind enemy

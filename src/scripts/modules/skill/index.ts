@@ -40,7 +40,7 @@ const areaTable: IAreaTable = {
 		for (let i = 1; i <= range; i++ ) {
 			const tile = getTile(source.x + i * dirX, source.y + i * dirY);
 
-			if (null !== tile) {
+			if (tile) {
 				area.push(tile);
 			}
 		}
@@ -69,7 +69,7 @@ const getCircleArea = (center: Tile, radius: number): Tile[] => {
 				];
 
 				for (const tile of tiles) {
-					if (null !== tile && -1 === circle.indexOf(tile)) {
+					if (tile && -1 === circle.indexOf(tile)) {
 						circle.push(tile);
 					}
 				}

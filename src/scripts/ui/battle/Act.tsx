@@ -11,7 +11,7 @@ interface IActUIProps {
 }
 
 const ActUI: React.SFC<IActUIProps> = ({ act, onActionSelect }) => {
-	if (null === act) {
+	if (!act) {
 		return <div>Waiting for act data...</div>;
 	}
 	const actingChar = act.getActingCharacter();

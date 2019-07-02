@@ -24,7 +24,7 @@ type TileType =
 const getTileType = (tile: Tile, act: Act | null): TileType => {
 	let type: TileType = 'default';
 
-	if (null === act) {
+	if (!act) {
 		return type;
 	}
 	switch (act.getPhase()) {
@@ -79,7 +79,7 @@ const getTileType = (tile: Tile, act: Act | null): TileType => {
 			const reactionPhase = act.phases.REACTION;
 			const reaction = reactionPhase.getReaction();
 
-			if (null !== reaction) {
+			if (reaction) {
 				const { reactor } = reaction;
 				const reactors = reactionPhase.getReactions().map(r => r.reactor.position);
 

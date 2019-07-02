@@ -69,8 +69,8 @@ const getRowInfo = (characters: ICharacterData[], record: IActRecord): IRecordAn
 		result.move = `${movePhase.initialPosition} → ${movePhase.target}`;
 	}
 
-	if (null !== actionPhase.action) {
-		if (null !== actionPhase.target) {
+	if (actionPhase.action) {
+		if (actionPhase.target) {
 			const target = characters.find(char => actionPhase.target === char.id);
 
 			if (!target) {

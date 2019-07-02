@@ -20,12 +20,12 @@ interface IBattleUIProps {
 }
 
 const BattleUI: React.SFC<IBattleUIProps> = ({ engineState, engineUpdate, onTileSelect, onActionSelect, onExit }) => {
-	if (null === engineUpdate) {
+	if (!engineUpdate) {
 		return <p className="Paragraph">Loading...</p>;
 	}
 	const { players, characters, order, act, tick, running, battleInfo } = engineState;
 
-	if (null === act) {
+	if (!act) {
 		return <p className="Paragraph">Waiting for act to start [Tick {tick}]...</p>;
 	}
 	return (

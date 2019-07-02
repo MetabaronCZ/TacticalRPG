@@ -29,7 +29,7 @@ const weaponSkillData: { [id in WeaponID]: ISkillData | null; } = {
 const getData = (title: string, weapon: WeaponID, element: SkillElement): ISkillData => {
 	const data = weaponSkillData[weapon];
 
-	if (null === data) {
+	if (!data) {
 		throw new Error(`Invalid weapon given for Dynamic skill definition: ${weapon}`);
 	}
 	const wpnApCost = data.apCost || 0;

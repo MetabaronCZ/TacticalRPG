@@ -34,7 +34,7 @@ const init = () => {
 				const nID = getTileID(posX + x, posY + y);
 				const n = tiles[nID] || null;
 
-				if (null !== n) {
+				if (n) {
 					neighbours.push(n);
 				}
 			}

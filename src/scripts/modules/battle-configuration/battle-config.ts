@@ -71,7 +71,7 @@ export class BattleConfig {
 
 	@action
 	public update(data: IBattleConfig | null) {
-		if (null === data) {
+		if (!data) {
 			return;
 		}
 		const players = this.players.map((pl, i) => {

@@ -16,7 +16,6 @@ TODO
 	- vytvori se a spusti nova animace z aktualni pozice
 	- behem dokonceni stepu je mozne menit dal pozici:
 		- nova animace se nastavi do promenne a spusti az po skonceni stepu
---	porovnavani s null prevest na !x
 --	pri vyberu reakce hracem by se melo zobrazit i info, jaky utok byl pouzit a kym
 	--	zobrazovat damage info pred CONFIRM akci
 	--	v damage infu zobrazovat utok (phy, mag) + modifikatory; neovlivneno akcemi defendera (zadne jeste nejsou pred reakci)

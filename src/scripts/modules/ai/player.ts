@@ -73,7 +73,7 @@ class AIPlayer extends Player {
 			case 'REACTION':
 				const reaction = REACTION.getReaction();
 
-				if (null === reaction) {
+				if (!reaction) {
 					throw new Error('AI Could not react: invalid reaction');
 				}
 				const { reactor, phase, combat, evasible } = reaction;

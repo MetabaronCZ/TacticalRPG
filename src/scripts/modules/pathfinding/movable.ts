@@ -52,7 +52,7 @@ export const getMovableTiles = (start: Tile, obstacles: Tile[], max: number): IM
 	for (const id in costMap) {
 		const tile = getTileByID(id);
 
-		if (null === tile) {
+		if (!tile) {
 			throw new Error('Tile lost during movable computation');
 		}
 		movable.push(tile);

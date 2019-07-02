@@ -256,7 +256,7 @@ export const getDamage = (attacker: Character, defender: Character, skill: Skill
 	// shield block
 	const blocked = getBlockValue(physical, magical, block);
 
-	if (null !== blocked) {
+	if (blocked) {
 		physical -= blocked.physical;
 		magical -= blocked.magical;
 	}
@@ -264,7 +264,7 @@ export const getDamage = (attacker: Character, defender: Character, skill: Skill
 	// energy shield
 	const shielded = getShieldValue(physical, magical, shield);
 
-	if (null !== shielded) {
+	if (shielded) {
 		physical -= shielded.physical;
 		magical -= shielded.magical;
 	}

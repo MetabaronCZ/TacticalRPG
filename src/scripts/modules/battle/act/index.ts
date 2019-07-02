@@ -101,7 +101,7 @@ class Act {
 	public getActingCharacter(): Character | null {
 		const { actor, phase, phases } = this;
 
-		if (null === phase) {
+		if (!phase) {
 			return actor;
 		}
 		return phases[phase].getActor();
@@ -110,7 +110,7 @@ class Act {
 	public selectTile(tile: Tile) {
 		const { phase } = this;
 
-		if (null === phase) {
+		if (!phase) {
 			throw new Error('Could not select tile: invalid phase ' + phase);
 		}
 		this.phases[phase].selectTile(tile);
@@ -119,7 +119,7 @@ class Act {
 	public selectAction(action: CharacterAction) {
 		const { phase } = this;
 
-		if (null === phase) {
+		if (!phase) {
 			throw new Error('Could not select action: invalid phase ' + phase);
 		}
 		this.phases[phase].selectAction(action);
@@ -181,7 +181,7 @@ class Act {
 						const action = ACTION.getAction();
 						const hasTargets = ACTION.getEffectTargets().length > 0;
 
-						if (null === action) {
+						if (!action) {
 							throw new Error('Could not get actions: no active action');
 						}
 						return getSkillConfirmActions(action, hasTargets);
@@ -193,7 +193,7 @@ class Act {
 			case 'REACTION':
 				const reaction = REACTION.getReaction();
 
-				if (null === reaction) {
+				if (!reaction) {
 					throw new Error('Could not get reaction actions: no reaction');
 				}
 				const { reactor, combat } = reaction;
@@ -221,7 +221,7 @@ class Act {
 	private update() {
 		let char = this.getActingCharacter();
 
-		if (null === char) {
+		if (!char) {
 			throw new Error('Could not update Act data: invalid acting character');
 		}
 		const actions = this.prepareActions();
@@ -235,7 +235,7 @@ class Act {
 		setTimeout(() => { // prevent race condition
 			char = this.getActingCharacter();
 
-			if (null === char) {
+			if (!char) {
 				throw new Error('Could not update Act data: invalid acting character');
 			}
 			if (char.isAI()) {

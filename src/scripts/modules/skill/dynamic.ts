@@ -18,5 +18,5 @@ export type DynamicSkillID =
 
 export const getDynamicSkillID = (weapon: IWeaponData, skillset: Skillset): DynamicSkillID | null => {
 	const id = dynamicSkillTable[weapon.id][skillset.element];
-	return (null !== id ? id as DynamicSkillID : null);
+	return (id ? id as DynamicSkillID : null);
 };

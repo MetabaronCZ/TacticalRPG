@@ -67,7 +67,7 @@ export const getIdleActions = (character: Character): CharacterAction[] => {
 		for (const wpn of [mainHand, offHand]) {
 			const skillID = getDynamicSkillID(wpn, skillset);
 
-			if (null !== skillID) {
+			if (skillID) {
 				if (skillIds.find(id => id === skillID)) {
 					continue;
 				}
