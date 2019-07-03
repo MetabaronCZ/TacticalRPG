@@ -26,6 +26,7 @@ class Players extends React.Component<IProps, IState> {
 	public render() {
 		const { players, act } = this.props;
 		const { visibleBadge } = this.state;
+		const actingCharacter = act ? act.getActingCharacter() : null;
 
 		const badgeCharacter = visibleBadge
 			? players[visibleBadge[0]].getCharacters().find((char, c) => c === visibleBadge[1])
@@ -52,10 +53,18 @@ class Players extends React.Component<IProps, IState> {
 
 							<tbody>
 								{pl.getCharacters().map((char, c) => {
-									const isDying = char.status.has('DYING');
-									const isActive = !!(act && act.actor === char);
-									const state = (isDying ? 'is-dying' : (isActive ? 'is-active' : ''));
+									const isActor = (!!act && act.actor === char);
+									let state = '';
 
+									if (isActor) {
+										state = 'is-actor';
+									}
+									if (actingCharacter === char) {
+										state = 'is-active';
+									}
+									if (char.status.has('DYING')) {
+										state = 'is-dying';
+									}
 									const { HP, AP, MP } = char.attributes;
 									const { HP: baseHP, AP: baseAP, MP: baseMP } = char.baseAttributes;
 

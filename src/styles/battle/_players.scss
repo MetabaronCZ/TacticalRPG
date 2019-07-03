@@ -41,6 +41,7 @@
 					color: $color-grey;
 				}
 
+				&.is-actor { background-color: $color-blue-dark; }
 				&.is-active { background-color: $color-black; }
 				&.is-dying { background-color: $color-red-dark; }
 			}
