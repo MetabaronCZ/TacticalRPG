@@ -17,6 +17,12 @@ TODO
 	OK	pokud je vybran cil, melo by se vypocitat IDamageInfo
 	--	to info vizualizovat
 	--	ukazat i backattack a elemental affnitu
+	--	behem MOVEMENT faze by mely jit vybrat vsechny postavy
+		- s tim ze se ukaze jejich CharacterBadge s infem
+		- pokud neni vybrany Actor, tak se ukazuje jen Back action a  nezvyraznuji pole pro movement
+		- Back action vybere Actora
+		? moznost vybrat i ostatni pole >> ukaze se info o policku (Tile)
+		? v takovem pripade by melo byt zobrazeno info o Tile i pri vyberu Charactera
 --	rozlisovat healing a damaging skilly
 	? nebo rozlisovat reactable skilly
 	- behem reakce u healing skillu by mela byt jen moznost DONT_REACT
@@ -43,7 +49,7 @@ TODO
 	- efekt zpusobi dmg+ bonus pro skilly daneho elementu, dmg- pro afinni element, pripadne jine efekty
 		- Greenfield >> none
 		- Beach >> none
-		- Dunes >> none
+		- Dunes >> Sandstorm [skill range -1]
 		- Volcano >> Eruption [FIRE]
 		- Swamp/Wetlands >> Rain [WATER]
 		- Tundra/Arctic >> Snowstorm [ICE]

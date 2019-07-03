@@ -14,7 +14,7 @@ export const randomNumberBetween = (from: number, to: number): number => {
 export const formatNumber = (n: number): string => n.toLocaleString();
 
 // format integer to fixed cipher count
-export const formatInteger = (nr: number, ciphers: number): string => {
+export const formatInteger = (nr: number, ciphers: number, char = '0'): string => {
 	if (nr < 0) {
 		throw new Error('Input number must by non-negative');
 	}
@@ -26,6 +26,6 @@ export const formatInteger = (nr: number, ciphers: number): string => {
 	if (result.length > ciphers) {
 		throw new Error('Ciphers count should be at least input number ciphers count');
 	}
-	const fill = Array(ciphers - result.length).fill(0).join('');
+	const fill = Array(ciphers - result.length).fill(char).join('');
 	return fill + result;
 };

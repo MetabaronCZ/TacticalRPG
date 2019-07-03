@@ -80,7 +80,7 @@ describe('core.number', () => {
 			expect(fn(0.1, 3)).toThrowError();
 		});
 
-		test('it correctly prepends input with zeros', () => {
+		test('it correctly prepends input with zeros by default', () => {
 			const data: Array<[number, number, string]> = [
 				[0, 1, '0'], [0, 2, '00'],
 				[7, 1, '7'], [7, 2, '07'], [7, 5, '00007'],
@@ -88,6 +88,18 @@ describe('core.number', () => {
 			];
 			for (const [input, cipher, result] of data) {
 				const nr = formatInteger(input, cipher);
+				expect(nr).toEqual(result);
+			}
+		});
+
+		test('it correctly prepends input with given character', () => {
+			const data: Array<[number, number, string, string]> = [
+				[0, 1, '+', '0'],
+				[0, 2, '+', '+0'],
+				[12, 4, 'U', 'UU12']
+			];
+			for (const [input, cipher, char, result] of data) {
+				const nr = formatInteger(input, cipher, char);
 				expect(nr).toEqual(result);
 			}
 		});

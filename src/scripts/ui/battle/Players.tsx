@@ -37,7 +37,7 @@ class Players extends React.Component<IProps, IState> {
 					<div className="Players-item" key={p}>
 						<h3 className="Heading">
 							<span className={'Players-item-ico Players-item-ico--player-' + p} />
-							{pl.name} ({pl instanceof AIPlayer ? 'AI' : 'HUMAN'} Player)
+							{pl.name}{pl instanceof AIPlayer ? ' (AI)' : ''}
 						</h3>
 
 						<table className="Players-item-characters">
@@ -86,7 +86,7 @@ class Players extends React.Component<IProps, IState> {
 															</td>
 
 															<td className="Players-item-characters-item-row Players-item-characters-item-row--number">
-																{formatInteger(MP, 3)} <span className="Players-item-characters-item-base">/ {formatInteger(baseMP, 3)}</span>
+																{baseMP > 0 ? formatInteger(MP, 3) : '−−−'} <span className="Players-item-characters-item-base">/ {baseMP > 0 ? formatInteger(baseMP, 3) : '−−−'}</span>
 															</td>
 
 															<td className="Players-item-characters-item-row Players-item-characters-item-row--number">
