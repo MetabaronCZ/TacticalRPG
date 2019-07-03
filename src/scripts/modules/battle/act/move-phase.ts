@@ -52,13 +52,15 @@ class MovePhase extends ActPhase<IActMoveRecord> {
 		this.onEvent = onEvent;
 		this.initialAP = AP;
 		this.initialPosition = pos;
-
-		const range = Math.min(MOV, AP);
-		const movable = getMovableTiles(pos, obstacles, range);
-
 		this.moveTarget = pos;
-		this.movable = movable.tiles;
-		this.costMap = movable.costMap;
+
+		if (actor.canMove()) {
+			const range = Math.min(MOV, AP);
+			const movable = getMovableTiles(pos, obstacles, range);
+
+			this.movable = movable.tiles;
+			this.costMap = movable.costMap;
+		}
 
 		// create barrier tiles for A* algorithm
 		this.obstacles = getTiles().filter(tile => tile.isContained(obstacles) || !tile.isContained(this.movable));

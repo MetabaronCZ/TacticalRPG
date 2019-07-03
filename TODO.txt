@@ -8,7 +8,6 @@ TODO
 ----------------------------------------------------------------------------------------------------------
 --	behem REACTION faze zobrazovat v Players.tsx i aktivniho reactora
 --	!!! u CharacterActions.getReactiveActions() brat v uvahu i Character.canAct()
---	u STUNNED / cannotMove() postav nezobrazovat pole pro pohyb
 ??	mela by block (large, small) reakce zabranit i status efektum?
 	- podle jake formule
 --	COMBAT faze:
