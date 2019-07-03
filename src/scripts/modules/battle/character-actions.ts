@@ -7,7 +7,7 @@ import CharacterAction, { ICharacterActionCost } from 'modules/battle/character-
 
 export const getDontReactAction = (): CharacterAction => new CharacterAction('DONT_REACT', 'Don\'t react');
 export const getDirectAction = (): CharacterAction => new CharacterAction('DIRECT', 'Direct');
-export const getBackAction = (): CharacterAction => new CharacterAction('BACK', 'Cancel action');
+export const getCancelAction = (): CharacterAction => new CharacterAction('BACK', 'Cancel action');
 export const getPassAction = (): CharacterAction => new CharacterAction('PASS', 'End turn');
 
 export const getConfirmAction = (title = 'Confirm', cost: ICharacterActionCost | null): CharacterAction => {
@@ -108,7 +108,7 @@ export const getSkillConfirmActions = (action: CharacterAction, hasTargets: bool
 	}
 
 	// cancel skill action
-	actions.push(getBackAction());
+	actions.push(getCancelAction());
 
 	return actions;
 };
@@ -124,7 +124,7 @@ export const getReactiveActions = (character: Character, isBackAttack: boolean, 
 		const skill = new Skill('EVADE');
 		const action = new CharacterAction('REACTION', skill.title, character, [skill]);
 
-		if (isBackAttack || !canMove || !canEvade) {
+		if (action.isActive() && (isBackAttack || !canMove || !canEvade)) {
 			action.setActive('CANT_ACT');
 		}
 		actions.push(action);
@@ -145,7 +145,7 @@ export const getReactiveActions = (character: Character, isBackAttack: boolean, 
 
 		const action = new CharacterAction('REACTION', title, character, [skill]);
 
-		if (isBackAttack) {
+		if (action.isActive() && isBackAttack) {
 			action.setActive('CANT_ACT');
 		}
 		actions.push(action);
@@ -161,7 +161,7 @@ export const getReactiveActions = (character: Character, isBackAttack: boolean, 
 		if (isBackAttack) {
 			action.setActive('CANT_ACT');
 		}
-		if (0 === MP) {
+		if (action.isActive() && 0 === MP) {
 			action.setActive('OUT_OF_MP');
 		}
 		actions.push(action);
@@ -173,5 +173,5 @@ export const getReactiveActions = (character: Character, isBackAttack: boolean, 
 	return actions;
 };
 
-export const getEvasiveActions = (): CharacterAction[] => [getBackAction()];
+export const getEvasiveActions = (): CharacterAction[] => [getCancelAction()];
 export const getDirectActions = (): CharacterAction[] => [getDirectAction()];

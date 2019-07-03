@@ -6,9 +6,8 @@ BUG
 
 TODO
 ----------------------------------------------------------------------------------------------------------
---	!!! u CharacterActions.getReactiveActions() brat v uvahu i Character.canAct()
 ??	mela by block (large, small) reakce zabranit i status efektum?
-	- podle jake formule
+	- podle jake formule?
 --	COMBAT faze:
 	- udrzet hodnoty Combat; predat do Chronox
 	- pote pouzit pri ziskavani statistik v BattleSummary

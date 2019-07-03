@@ -60,6 +60,7 @@ class CharacterAction {
 			this.cost = getCost(skills, character.status);
 			this.cooldown = getCooldown(skills, character.cooldowns);
 		}
+		this.active = this.isUsable(true);
 
 		// remove DOUBLE_ATTTACK from skills (not needed after computations)
 		this.skills = this.skills.filter(skill => 'DOUBLE_ATTACK' !== skill.id);
@@ -70,10 +71,10 @@ class CharacterAction {
 		return true === usable;
 	}
 
-	public isUsable(): true | CharacterActionReason {
+	public isUsable(initial = false): true | CharacterActionReason {
 		const { active, cooldown, character, cost } = this;
 
-		if (true !== active) {
+		if (!initial && true !== active) {
 			return active;
 		}
 

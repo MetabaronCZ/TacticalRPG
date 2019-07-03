@@ -1,0 +1,41 @@
+Attributes
+------------------------------------------------
+P - Power (Str, Vit)
+S - Speed (Spd, Mov)
+M - Magic (Mag, Spr)
+
+
+Archetypes
+------------------------------------------------
+PP - Warrior
+PS - Fighter
+PM - Magi-knight
+SS - Scout
+SM - Spellblade
+MM - Mage
+
+
+Character classes
+------------------------------------------------
+PP  Barbarian       STR
+    Knight          VIT
+PS  Warrior         VIT + SPD
+    Archer          SPD + MOV
+PM  Paladin         VIT + SPR
+    Dark Knight     STR + MAG
+SS  Rogue           SPD     
+    Machinist       MOV
+SM  Monk            SPD + SPR
+    Alchemist       MOV + MAG
+MM  Sorcerer        MAG
+    Priest          SPR
+
+Character Role
+------------------------------------------------
+            P           S           M
+Tank        Knight      Warrior     Paladin
+Healer      Paladin     Monk        Priest
+Melee DPS   Barbarian   Warrior     Dark Knight
+Agile DPS   Archer      Rogue       Monk
+Ranged DPS  Archer      Machinist   Alchemist
+Magic DPS   Dark Knight Alchemist   Sorcerer
