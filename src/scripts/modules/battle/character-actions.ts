@@ -125,7 +125,7 @@ export const getReactiveActions = (character: Character, isBackAttack: boolean, 
 		const action = new CharacterAction('REACTION', skill.title, character, [skill]);
 
 		if (isBackAttack || !canMove || !canEvade) {
-			action.active = false;
+			action.setActive('CANT_ACT');
 		}
 		actions.push(action);
 	}
@@ -146,7 +146,7 @@ export const getReactiveActions = (character: Character, isBackAttack: boolean, 
 		const action = new CharacterAction('REACTION', title, character, [skill]);
 
 		if (isBackAttack) {
-			action.active = false;
+			action.setActive('CANT_ACT');
 		}
 		actions.push(action);
 	}
@@ -158,8 +158,11 @@ export const getReactiveActions = (character: Character, isBackAttack: boolean, 
 
 		const action = new CharacterAction('REACTION', title, character, [skill]);
 
-		if (isBackAttack || 0 === MP) {
-			action.active = false;
+		if (isBackAttack) {
+			action.setActive('CANT_ACT');
+		}
+		if (0 === MP) {
+			action.setActive('OUT_OF_MP');
 		}
 		actions.push(action);
 	}

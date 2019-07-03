@@ -127,8 +127,8 @@ class ActionPhase extends ActPhase<IActActionRecord> {
 	}
 
 	public selectAction(action: CharacterAction) {
-		if (!action.active) {
-			throw new Error('Could not select action: action no active');
+		if (!action.isActive()) {
+			throw new Error('Could not select action: action not active');
 		}
 		switch (this.phase) {
 			case 'IDLE':
@@ -194,7 +194,7 @@ class ActionPhase extends ActPhase<IActActionRecord> {
 		}
 		const action = this.state.action;
 
-		if (!action || !action.data.active) {
+		if (!action || !action.data.isActive()) {
 			throw new Error('Could not select action target: invalid action');
 		}
 		const targets = this.getTargetable();

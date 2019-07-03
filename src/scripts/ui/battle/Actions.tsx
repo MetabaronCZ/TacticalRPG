@@ -12,8 +12,6 @@ interface IButtons {
 	[id: number]: HTMLElement | null;
 }
 
-const isActiveAction = (action: CharacterAction) => action.active && 0 === action.cooldown;
-
 const formatCost = (cost: ICharacterActionCost | null): string => {
 	if (!cost) {
 		return '';
@@ -28,7 +26,7 @@ const Actions: React.SFC<IActionsProps> = ({ actions, onSelect }) => {
 	const onClick = (action: CharacterAction, id: number) => (e: SyntheticEvent) => {
 		e.preventDefault();
 
-		if (isActiveAction(action)) {
+		if (action.isActive()) {
 			onSelect(action);
 		}
 		const button = buttons[id];
@@ -40,12 +38,33 @@ const Actions: React.SFC<IActionsProps> = ({ actions, onSelect }) => {
 	return (
 		<ul className="Actions">
 			{actions.map((action, i) => {
-				const active = isActiveAction(action);
+				const usable = action.isUsable();
 				const cd = action.cooldown;
+				let info = formatCost(action.cost);
+
+				switch (usable) {
+					case 'CANT_ACT':
+					case 'DISARMED':
+					case 'SILENCED':
+						info = 'N/A';
+						break;
+
+					case 'COOLDOWN':
+						if ('ULTIMATE' === cd) {
+							info = 'Used';
+						} else {
+							info = `${cd} ${1 === cd ? 'turn' : 'turns'}`;
+						}
+						break;
+
+					default:
+						// do nothing
+				}
+
 				return (
 					<li className="Actions-item" key={i}>
 						<button
-							className={`ActionButton ${!active ? 'is-disabled' : ''}`}
+							className={`ActionButton ${true !== usable ? 'is-disabled' : ''}`}
 							type="button"
 							ref={elm => buttons[i] = elm}
 							onClick={onClick(action, i)}
@@ -55,13 +74,7 @@ const Actions: React.SFC<IActionsProps> = ({ actions, onSelect }) => {
 							</span>
 
 							<span className="ActionButton-cost">
-								{active
-									? formatCost(action.cost)
-									: (0 === cd
-										? 'N/A'
-										: ('ULTIMATE' === cd ? 'Ultimate skill used' : `${cd} ${1 === cd ? 'turn' : 'turns'}`)
-									)
-								}
+								{info}
 							</span>
 						</button>
 					</li>

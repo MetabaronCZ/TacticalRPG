@@ -3,6 +3,9 @@ import Status from 'modules/character/status';
 import { SkillCooldown } from 'modules/skill/skill-data';
 import Character, { ISkillCooldowns } from 'modules/character';
 
+export type CharacterActionReason =
+	'COOLDOWN' | 'CANT_ACT' | 'OUT_OF_AP' | 'OUT_OF_MP' | 'DISARMED' | 'SILENCED';
+
 export interface ICharacterActionCost {
 	AP: number;
 	MP: number;
@@ -38,48 +41,79 @@ const getCooldown = (skills: Skill[], cooldowns: ISkillCooldowns): SkillCooldown
 	return cd;
 };
 
-const isActive = (character: Character, cost: ICharacterActionCost, cooldown: SkillCooldown): boolean => {
-	if (0 !== cooldown) {
-		// skills on cooldown
-		return false;
-	}
-	const { AP, MP } = character.attributes;
-
-	if (AP < cost.AP || MP < cost.MP) {
-		// cannot afford to use skills
-		return false;
-	}
-	const isDisarmed = character.status.has('DISARM');
-	const isSilenced = character.status.has('SILENCE');
-
-	if (!character.canAct() || (cost.AP && isDisarmed) || (cost.MP && isSilenced)) {
-		// invalid character status
-		return false;
-	}
-	return true;
-};
-
 class CharacterAction {
 	public readonly type: CharacterActionType;
 	public readonly title: string;
 	public readonly skills: Skill[] = [];
 	public readonly cooldown: SkillCooldown = 0;
 	public cost: ICharacterActionCost | null = null;
-	public active: boolean = true;
+	private readonly character?: Character;
+	private active: true | CharacterActionReason = true;
 
 	constructor(type: CharacterActionType, title: string, character?: Character, skills: Skill[] = []) {
 		this.type = type;
 		this.title = title;
 		this.skills = skills;
+		this.character = character;
 
 		if (character) {
 			this.cost = getCost(skills, character.status);
 			this.cooldown = getCooldown(skills, character.cooldowns);
-			this.active = isActive(character, this.cost, this.cooldown);
 		}
 
 		// remove DOUBLE_ATTTACK from skills (not needed after computations)
 		this.skills = this.skills.filter(skill => 'DOUBLE_ATTACK' !== skill.id);
+	}
+
+	public isActive(): boolean {
+		const usable = this.isUsable();
+		return true === usable;
+	}
+
+	public isUsable(): true | CharacterActionReason {
+		const { active, cooldown, character, cost } = this;
+
+		if (true !== active) {
+			return active;
+		}
+
+		if (0 !== cooldown) {
+			return 'COOLDOWN';
+		}
+
+		if (character) {
+			if (!character.canAct()) {
+				return 'CANT_ACT';
+			}
+
+			if (cost) {
+				const { AP, MP } = character.attributes;
+				const isDisarmed = character.status.has('DISARM');
+				const isSilenced = character.status.has('SILENCE');
+
+				if (AP < cost.AP) {
+					return 'OUT_OF_AP';
+				}
+
+				if (MP < cost.MP) {
+					return 'OUT_OF_MP';
+				}
+
+				if (cost.AP && isDisarmed) {
+					return 'DISARMED';
+				}
+
+				if (cost.MP && isSilenced) {
+					return 'SILENCED';
+				}
+			}
+		}
+
+		return true;
+	}
+
+	public setActive(value: true | CharacterActionReason) {
+		this.active = value;
 	}
 }
 

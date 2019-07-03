@@ -166,7 +166,7 @@ class AICharacter {
 
 		// find first applicable reaction
 		for (const action of actions) {
-			if (!action.skills.length || !action.active) {
+			if (!action.skills.length || !action.isActive()) {
 				continue;
 			}
 			const skill = action.skills[0];
@@ -239,7 +239,7 @@ class AICharacter {
 
 		// find first skill to attack chosen target
 		for (const action of actions) {
-			if (!action.skills.length || !action.active) {
+			if (!action.skills.length || !action.isActive()) {
 				continue;
 			}
 			const skillTarget = action.skills[0].target;

@@ -79,7 +79,7 @@ class ReactionPhase extends ActPhase<IActReactionRecord> {
 	}
 
 	public selectAction(action: CharacterAction) {
-		if (!action.active) {
+		if (!action.isActive()) {
 			throw new Error('Could not select reaction: action not active');
 		}
 		const reaction = this.getReaction();
@@ -178,7 +178,7 @@ class ReactionPhase extends ActPhase<IActReactionRecord> {
 		if ('IDLE' !== phase) {
 			throw new Error('Could not set reaction: invalid phase ' + phase);
 		}
-		if (!action.active || !action.skills.length) {
+		if (!action.isActive() || !action.skills.length) {
 			throw new Error('Could not react: invalid action');
 		}
 
