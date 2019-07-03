@@ -6,6 +6,16 @@ BUG
 
 TODO
 ----------------------------------------------------------------------------------------------------------
+--	CharacterAction.active
+	- predelat na metodu:
+		public isActive = () => this.active && 0 === this.cooldown;
+	- melo by jit zjistit i proc neni aktivni (vracet true | 'COOLDOWN' | 'NOT_ENOUGH_MP' | ...)
+		- v Actions.tsx podle toho ukazovat v pripade malo AP/MP "cost" misto "N/A"
+--	behem REACTION faze zobrazovat v Players.tsx i aktivniho reactora
+--	!!! u CharacterActions.getReactiveActions() brat v uvahu i Character.canAct()
+--	u STUNNED / cannotMove() postav nezobrazovat pole pro pohyb
+??	mela by block (large, small) reakce zabranit i status efektum?
+	- podle jake formule
 --	COMBAT faze:
 	- udrzet hodnoty Combat; predat do Chronox
 	- pote pouzit pri ziskavani statistik v BattleSummary
@@ -23,6 +33,7 @@ TODO
 		- Back action vybere Actora
 		? moznost vybrat i ostatni pole >> ukaze se info o policku (Tile)
 		? v takovem pripade by melo byt zobrazeno info o Tile i pri vyberu Charactera
+--	nezobrazovat reaktivni skilly u reakci na support skilly -> rovnou je provest
 --	rozlisovat healing a damaging skilly
 	? nebo rozlisovat reactable skilly
 	- behem reakce u healing skillu by mela byt jen moznost DONT_REACT

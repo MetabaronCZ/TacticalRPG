@@ -43,7 +43,7 @@ class Players extends React.Component<IProps, IState> {
 						<table className="Players-item-characters">
 							<thead>
 								<tr>
-									<th>Name</th>
+									<th>Character</th>
 									<th className="Players-item-characters-heading">HP</th>
 									<th className="Players-item-characters-heading">MP</th>
 									<th className="Players-item-characters-heading">AP</th>

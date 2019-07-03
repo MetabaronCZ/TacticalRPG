@@ -1,11 +1,7 @@
 .Actions {
-	margin-left: 1em;
+	list-style-type: none;
 
 	&-item {
-		margin-bottom: 2*$vu;
-
-		&.is-disabled {
-			color: $color-grey;
-		}
+		margin-bottom: $vu;
 	}
 }

@@ -5,9 +5,9 @@ import { WeaponSkillID } from 'modules/skill/weapon';
 import { getDynamicSkillID } from 'modules/skill/dynamic';
 import CharacterAction, { ICharacterActionCost } from 'modules/battle/character-action';
 
-export const getDontReactAction = (): CharacterAction => new CharacterAction('DONT_REACT', 'Pass');
+export const getDontReactAction = (): CharacterAction => new CharacterAction('DONT_REACT', 'Don\'t react');
 export const getDirectAction = (): CharacterAction => new CharacterAction('DIRECT', 'Direct');
-export const getBackAction = (): CharacterAction => new CharacterAction('BACK', 'Back');
+export const getBackAction = (): CharacterAction => new CharacterAction('BACK', 'Cancel action');
 export const getPassAction = (): CharacterAction => new CharacterAction('PASS', 'End turn');
 
 export const getConfirmAction = (title = 'Confirm', cost: ICharacterActionCost | null): CharacterAction => {

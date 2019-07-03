@@ -6,7 +6,6 @@
 	margin-bottom: 4*$vu;
 
 	&-item {
-		@extend .u-text-default;
 		flex: 1 0 auto;
 		padding: $vu;
 		margin-right: 2px;
@@ -14,6 +13,14 @@
 
 		&:last-child {
 			margin-right: 0;
+		}
+
+		&-title {
+			@extend .u-text-default;
+		}
+
+		&-info {
+			@extend .u-text-small;
 		}
 
 		&.Order-item--type0 {

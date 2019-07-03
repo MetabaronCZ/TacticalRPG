@@ -378,7 +378,7 @@ class Act {
 			case 'DIRECTION':
 				switch (evt) {
 					case 'DIRECTION_IDLE':
-						this.log('Select direction target...');
+						this.log('Select direction...');
 						this.update();
 						return;
 

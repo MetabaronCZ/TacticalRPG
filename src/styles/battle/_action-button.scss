@@ -1,0 +1,43 @@
+.ActionButton {
+	$border-size: 2px;
+	display: flex;
+	align-items: center;
+	width: 100%;
+	padding: $vu/2 $vu;
+	border-radius: $border-radius-default;
+	border: $border-size solid $color-yellow;
+	color: $color-grey-dark;
+	background: $color-yellow;
+	cursor: pointer;
+
+	&:hover,
+	&:focus {
+		background: transparent;
+		color: $color-yellow;
+	}
+
+	&-title {
+		@extend .u-text-default, .u-weight-bold;
+		flex: 1 0 auto;
+		text-align: left;
+	}
+
+	&-cost {
+		@extend .u-text-small, .u-weight-bold;
+		flex: 1 0 auto;
+		text-align: right;
+		padding-left: $vu;
+	}
+
+	&.is-disabled {
+		border-color: $color-grey;
+		color: $color-grey-dark;
+		background: $color-grey;
+
+		&:hover,
+		&:focus {
+			background: transparent;
+			color: $color-grey;
+		}
+	}
+}

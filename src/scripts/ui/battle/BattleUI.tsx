@@ -39,16 +39,17 @@ const BattleUI: React.SFC<IBattleUIProps> = ({ engineState, engineUpdate, onTile
 							<Players act={act} players={players} />
 						</td>
 
-						<td className="BattleUI-table-column">
-							{
-								running
-									? <ActUI act={act} onActionSelect={onActionSelect}/>
-									: (
-										<React.Fragment>
-											<h2 className="Heading">Game Over</h2>
-											<Button text="Show summary" onClick={onExit} />
-										</React.Fragment>
-									)
+						<td className="BattleUI-table-column" />
+
+						<td className="BattleUI-table-column BattleUI-table-column--actions">
+							{running
+								? <ActUI act={act} onActionSelect={onActionSelect}/>
+								: (
+									<React.Fragment>
+										<h2 className="Heading">Game Over</h2>
+										<Button text="Show summary" onClick={onExit} />
+									</React.Fragment>
+								)
 							}
 						</td>
 
