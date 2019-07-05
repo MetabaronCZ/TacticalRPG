@@ -54,6 +54,10 @@ const BattleUI: React.SFC<IBattleUIProps> = ({ engineState, engineUpdate, onTile
 						</td>
 
 						<td className="BattleUI-table-column BattleUI-table-column--grid">
+							<p className="Paragraph u-align-center">
+								{act.getInfo() || '\u00A0'}
+							</p>
+
 							<GridCoordinates>
 								<Grid
 									act={act}

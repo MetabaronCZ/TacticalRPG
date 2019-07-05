@@ -6,12 +6,11 @@ BUG
 
 TODO
 ----------------------------------------------------------------------------------------------------------
-??	mela by block (large, small) reakce zabranit i status efektum?
-	- podle jake formule?
 --	COMBAT faze:
 	- udrzet hodnoty Combat; predat do Chronox
 	- pote pouzit pri ziskavani statistik v BattleSummary
 	- udrzet i hodnotu KILLED nebo REVIVED pro reactory
+--	pod grid pridat legendu s vyznamem podbarvenych poli
 --	pri vyberu reakce hracem by se melo zobrazit i info, jaky utok byl pouzit a kym
 	--	zobrazovat damage info pred CONFIRM akci
 	--	v damage infu zobrazovat utok (phy, mag) + modifikatory; neovlivneno akcemi defendera (zadne jeste nejsou pred reakci)
@@ -39,6 +38,8 @@ TODO
 	- prioritizace skillu (healing role -> Revive)
 --	spelly pro DARK magic
 --	prejmenovat Kinetic strike spell na neco jineho (je to stejne s DYNAMIC skillem)
+??	mela by block (large, small) reakce zabranit i status efektum?
+	- podle jake formule?
 ??	schopnost pouzit Reaction skill by mela zaviset na rychlosti obou postav
 	- defenderSpd >= AttackerSpd -> defender muze pouzit Reaction skilly
 ??	Counter reaction skill >> bude to mainHand weapon Attack skill

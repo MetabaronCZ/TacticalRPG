@@ -57,6 +57,7 @@ class Act {
 	private phase: PhaseID | null = null;
 	private skipped: boolean = false;
 	private actions: CharacterAction[] = [];
+	private info: string = '';
 
 	constructor(id: number, actor: Character, characters: Character[], events: IActEvents) {
 		this.id = id;
@@ -105,6 +106,10 @@ class Act {
 			return actor;
 		}
 		return phases[phase].getActor();
+	}
+
+	public getInfo(): string {
+		return this.info;
 	}
 
 	public selectTile(tile: Tile) {
@@ -266,11 +271,13 @@ class Act {
 						return;
 
 					case 'MOVE_IDLE':
-						this.log('Select move target or an action...');
+						this.info = 'Select move target or an action...';
+						this.log(this.info);
 						this.update();
 						return;
 
 					case 'MOVE_SELECTED':
+						this.info = '';
 						this.log('Moving to ' + formatTile(data as Tile));
 						this.update();
 						return;
@@ -286,12 +293,14 @@ class Act {
 			case 'ACTION':
 				switch (evt) {
 					case 'ACTION_SELECTED':
+						this.info = 'Select action target...';
 						this.log('Action selected: ' + (data as CharacterAction).title);
-						this.log('Select action target...');
+						this.log(this.info);
 						this.update();
 						return;
 
 					case 'ACTION_TARGETED':
+						this.info = '';
 						this.log('Action target selected ' + (data ? (data as Character).name : ''));
 						this.update();
 						return;
@@ -327,12 +336,14 @@ class Act {
 			case 'REACTION':
 				switch (evt) {
 					case 'REACTION_IDLE':
-						this.log('Select reaction...');
+						this.info = 'Select reaction...';
+						this.log(this.info);
 						this.update();
 						return;
 
 					case 'REACTION_EVADING':
-						this.log('Select evasion target...');
+						this.info = 'Select evasion target...';
+						this.log(this.info);
 						this.update();
 						return;
 
@@ -349,7 +360,8 @@ class Act {
 							throw new Error('Could start combat phase: invalid action phase data');
 						}
 						this.phase = 'COMBAT';
-						this.log('Combat begins...');
+						this.info = 'Combat begins...';
+						this.log(this.info);
 						COMBAT.start(action, effectArea, targets);
 						return;
 
@@ -378,12 +390,14 @@ class Act {
 			case 'DIRECTION':
 				switch (evt) {
 					case 'DIRECTION_IDLE':
-						this.log('Select direction...');
+						this.info = 'Select direction...';
+						this.log(this.info);
 						this.update();
 						return;
 
 					case 'DIRECTION_SELECTED':
 						// finish Act
+						this.info = '';
 						this.log('Direction set to ' + formatTile(data as Tile));
 						this.end();
 						return;

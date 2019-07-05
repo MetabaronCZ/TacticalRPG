@@ -3,7 +3,7 @@
 	display: flex;
 	align-items: center;
 	width: 100%;
-	padding: $vu/2 $vu;
+	padding: ($vu/2 - $border-size) $vu;
 	border-radius: $border-radius-default;
 	border: $border-size solid $color-yellow;
 	color: $color-grey-dark;
