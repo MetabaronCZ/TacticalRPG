@@ -6,7 +6,6 @@ BUG
 
 TODO
 ----------------------------------------------------------------------------------------------------------
---	odebrat getCombatInfo (pouzivat jen IDamage)
 ??	co delat pokud postava dostane stejny status vicekrat
 	1) pridat duration k aktualnimu statusu
 	2) status ignorovat
@@ -14,6 +13,7 @@ TODO
 --	refaktorovat StatusEffecty na instance classy
 	- misto soucasneho stavu, kdy je stejne vytvari funkce
 --	DARK_AURA by mela delat 50% damage reflection (do vzdalenosti SkillArea)
+--	pokud je AI actor a USER reactor pridat potvrzeni (tlacitko) pred COMBAT fazi
 --	COMBAT faze:
 	- udrzet hodnoty Combat; predat do Chronox
 	- pote pouzit pri ziskavani statistik v BattleSummary
