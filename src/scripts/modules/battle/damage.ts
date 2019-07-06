@@ -172,15 +172,20 @@ const getMagicalDamage = (attacker: Character, skill: Skill): number => {
 	return (attacker.attributes.MAG + weaponDamage) * skill.magical;
 };
 
-const getStatusModifier = (defender: Character): number => {
-	const { status } = defender;
+const getStatusModifier = (attacker: Character, defender: Character): number => {
 	let mod = 1;
 
-	if (status.has('SHOCK')) {
+	if (defender.status.has('SHOCK')) {
 		mod *= 2;
 	}
-	if (status.has('IRON_SKIN')) {
+	if (defender.status.has('IRON_SKIN')) {
 		mod /= 2;
+	}
+	if (attacker.status.has('BERSERK')) {
+		mod *= 2;
+	}
+	if (defender.status.has('BERSERK')) {
+		mod *= 2;
 	}
 	return mod;
 };
@@ -235,7 +240,7 @@ export const getCombatInfo = (attacker: Character, defender: Character, skills: 
 			magical: defender.armor.magical,
 			block: getBlock(defender),
 			shield: getShield(defender),
-			statusModifier: getStatusModifier(defender)
+			statusModifier: getStatusModifier(attacker, defender)
 		}
 	};
 };

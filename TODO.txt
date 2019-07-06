@@ -6,8 +6,14 @@ BUG
 
 TODO
 ----------------------------------------------------------------------------------------------------------
+--	odebrat getCombatInfo (pouzivat jen IDamage)
+??	co delat pokud postava dostane stejny status vicekrat
+	1) pridat duration k aktualnimu statusu
+	2) status ignorovat
 --	prejmenovat Kinetic strike spell na neco jineho (je to stejne s DYNAMIC skillem)
---	spelly pro DARK magic
+--	refaktorovat StatusEffecty na instance classy
+	- misto soucasneho stavu, kdy je stejne vytvari funkce
+--	DARK_AURA by mela delat 50% damage reflection (do vzdalenosti SkillArea)
 --	COMBAT faze:
 	- udrzet hodnoty Combat; predat do Chronox
 	- pote pouzit pri ziskavani statistik v BattleSummary

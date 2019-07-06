@@ -2,8 +2,8 @@ import { ISkillData } from 'modules/skill/skill-data';
 import { PsychokinesisSkillID } from 'modules/skill/magic';
 
 const psychokinesis: { [id in PsychokinesisSkillID]: ISkillData; } = {
-	PSY_KINETIC_STRIKE: {
-		title: 'Kinetic Strike',
+	PSY_MINDBLAST: {
+		title: 'Mindblast',
 		mpCost: 10,
 		type: 'ACTIVE',
 		grade: 1,

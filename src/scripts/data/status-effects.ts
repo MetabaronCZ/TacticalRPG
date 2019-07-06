@@ -70,6 +70,14 @@ const StatusEffects = new DataList<StatusEffectID, StatusEffectFun>({
 			});
 		}
 	}),
+	BERSERK: () => ({
+		id: 'BERSERK',
+		title: 'Berserk',
+		effect: 'Berserking',
+		description: 'Damage given and damage taken doubled',
+		type: 'MAGICAL',
+		duration: 100
+	}),
 	SHOCK: () => ({
 		id: 'SHOCK',
 		title: 'Shock',
