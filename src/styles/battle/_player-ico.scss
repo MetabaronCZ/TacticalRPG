@@ -1,0 +1,8 @@
+.PlayerIco {
+	display: block;
+	height: 4px;
+	margin-bottom: 2*$vu;
+
+	&.PlayerIco--player0 { background-color: tomato; }
+	&.PlayerIco--player1 { background-color: darkviolet; }
+}

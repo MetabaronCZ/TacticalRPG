@@ -1,0 +1,58 @@
+.Bar {
+	$border-size: 2px;
+	position: relative;
+	height: 2*$vu;
+	background: $color-black;
+	border-radius: $border-radius-default;
+	border: $border-size solid $color-yellow;
+
+	&-amount {
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: 100%;
+		transition: 300ms width;
+	}
+
+	&-decrease {
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: 100%;
+		transition: 300ms width;
+		transition-delay: 100ms;
+		background: $color-red;
+	}
+
+	&-increase {
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: 100%;
+		background: $color-white;
+	}
+
+	&,
+	&.Bar--green {
+		.Bar-amount {
+			background-color: $color-green;
+		}
+	}
+
+	&.Bar--blue {
+		.Bar-amount {
+			background-color: $color-blue;
+		}
+	}
+
+	&.Bar--yellow {
+		.Bar-amount {
+			background-color: $color-yellow;
+		}
+	}
+
+	&.is-disabled {
+		background-color: $color-grey-dark;
+		border-color: $color-grey;
+	}
+}

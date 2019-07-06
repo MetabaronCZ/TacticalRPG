@@ -149,9 +149,6 @@ class CombatPhase extends ActPhase<IActCombatRecord> {
 
 				if (damage.blocked) {
 					// damage reduced by shield block
-					target.status.remove('BLOCK_SMALL');
-					target.status.remove('BLOCK_LARGE');
-
 					info.push({
 						text: 'Blocked',
 						type: 'ACTION',
@@ -161,8 +158,6 @@ class CombatPhase extends ActPhase<IActCombatRecord> {
 
 				if (damage.shielded) {
 					// damage reduced by energy shield
-					target.status.remove('ENERGY_SHIELD');
-
 					info.push({
 						text: `Shielded (${damage.shielded.cost} MP)`,
 						type: 'ACTION',
@@ -253,6 +248,12 @@ class CombatPhase extends ActPhase<IActCombatRecord> {
 				// finalize step
 				actor.act(action);
 
+				for (const target of targets) {
+					// remove reactive statuses
+					target.status.remove('BLOCK_SMALL');
+					target.status.remove('BLOCK_LARGE');
+					target.status.remove('ENERGY_SHIELD');
+				}
 				this.phase = 'DONE';
 				this.onEvent('COMBAT_DONE');
 				return;

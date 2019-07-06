@@ -32,7 +32,7 @@ export class BattleConfig {
 		const players = playerPool.map(i => {
 			const conf: IPlayerConfig = {
 				name: `Player ${i + 1}`,
-				control: 'HUMAN',
+				control: 'USER',
 				party: randomPartyID,
 				aiSettings: {
 					preset: 'RANK_1',

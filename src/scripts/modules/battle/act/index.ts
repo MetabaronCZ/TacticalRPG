@@ -183,13 +183,8 @@ class Act {
 
 					case 'TARGETING':
 						// confirm actions
-						const action = ACTION.getAction();
 						const hasTargets = ACTION.getEffectTargets().length > 0;
-
-						if (!action) {
-							throw new Error('Could not get actions: no active action');
-						}
-						return getSkillConfirmActions(action, hasTargets);
+						return getSkillConfirmActions(hasTargets);
 
 					default:
 						return [];
@@ -207,7 +202,7 @@ class Act {
 
 				switch (reaction.phase) {
 					case 'IDLE':
-						return getReactiveActions(reactor, combat.attack.backAttack, canEvade);
+						return getReactiveActions(reactor, combat[0].backAttack, canEvade);
 
 					case 'EVASION':
 						return getEvasiveActions();
@@ -271,13 +266,13 @@ class Act {
 						return;
 
 					case 'MOVE_IDLE':
-						this.info = 'Select move target or an action...';
+						this.info = 'Move on grid or select an action:';
 						this.log(this.info);
 						this.update();
 						return;
 
 					case 'MOVE_SELECTED':
-						this.info = '';
+						this.info = 'Moving ...';
 						this.log('Moving to ' + formatTile(data as Tile));
 						this.update();
 						return;
@@ -293,7 +288,7 @@ class Act {
 			case 'ACTION':
 				switch (evt) {
 					case 'ACTION_SELECTED':
-						this.info = 'Select action target...';
+						this.info = 'Select action target on grid.';
 						this.log('Action selected: ' + (data as CharacterAction).title);
 						this.log(this.info);
 						this.update();
@@ -336,13 +331,13 @@ class Act {
 			case 'REACTION':
 				switch (evt) {
 					case 'REACTION_IDLE':
-						this.info = 'Select reaction...';
+						this.info = 'Select reaction:';
 						this.log(this.info);
 						this.update();
 						return;
 
 					case 'REACTION_EVADING':
-						this.info = 'Select evasion target...';
+						this.info = 'Select evasion target on grid.';
 						this.log(this.info);
 						this.update();
 						return;
@@ -360,7 +355,7 @@ class Act {
 							throw new Error('Could start combat phase: invalid action phase data');
 						}
 						this.phase = 'COMBAT';
-						this.info = 'Combat begins...';
+						this.info = 'Combat in progress...';
 						this.log(this.info);
 						COMBAT.start(action, effectArea, targets);
 						return;
@@ -390,7 +385,7 @@ class Act {
 			case 'DIRECTION':
 				switch (evt) {
 					case 'DIRECTION_IDLE':
-						this.info = 'Select direction...';
+						this.info = 'Select new direction on grid.';
 						this.log(this.info);
 						this.update();
 						return;

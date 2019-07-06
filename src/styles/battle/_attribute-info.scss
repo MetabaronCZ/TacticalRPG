@@ -1,0 +1,17 @@
+.AttributeInfo {
+	display: flex;
+	align-items: center;
+
+	&-label {
+		flex: 0 0 40px;
+	}
+
+	&-bar {
+		flex: 1 0 auto;
+	}
+	
+	&-value {
+		flex: 0 0 80px;
+		text-align: right;
+	}
+}

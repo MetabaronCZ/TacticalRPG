@@ -6,7 +6,7 @@ import { playerMaxNameLength, randomPartyID, textInputRegex } from 'data/game-co
 import { IAISettings } from 'modules/ai/settings';
 import { IPartyData } from 'modules/party-creation/party-data';
 
-export type PlayerControlID = 'HUMAN' | 'AI';
+export type PlayerControlID = 'USER' | 'AI';
 
 export interface IPlayerControlData {
 	title: string;
@@ -24,7 +24,7 @@ export type IPlayerConfigEditable = keyof IPlayerConfig;
 export class PlayerConfig implements IPlayerConfig {
 	@observable private data: IPlayerConfig = {
 		name: 'Player',
-		control: 'HUMAN',
+		control: 'USER',
 		party: randomPartyID,
 		aiSettings: {
 			preset: 'RANK_1',

@@ -5,8 +5,8 @@ import {
 } from 'modules/battle-configuration/player-config';
 
 const PlayerControl = new DataList<PlayerControlID, IPlayerControlData>({
-	HUMAN: {
-		title: 'Human'
+	USER: {
+		title: 'User'
 	},
 	AI: {
 		title: 'Computer'

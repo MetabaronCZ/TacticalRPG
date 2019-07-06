@@ -4,12 +4,17 @@ import Tile from 'modules/geometry/tile';
 import Character from 'modules/character';
 import ActPhase from 'modules/battle/act/phase';
 import { IOnActPhaseEvent } from 'modules/battle/act';
+import { getDamage, IDamage } from 'modules/battle/damage';
 import CharacterAction from 'modules/battle/character-action';
-import { getCombatInfo, ICombatInfo } from 'modules/battle/damage';
 
 export interface IActActionRecord {
 	readonly action: string | null;
 	readonly target: string | null;
+}
+
+export interface IEffectTargetData {
+	character: Character;
+	damage: IDamage[];
 }
 
 interface IActionPhaseState {
@@ -20,9 +25,8 @@ interface IActionPhaseState {
 		target?: {
 			tile: Tile;
 			character: Character | null;
-			combatInfo: ICombatInfo[];
 			effectArea: Tile[];
-			effectTargets: Character[];
+			effectTargets: IEffectTargetData[];
 		}
 	};
 }
@@ -95,13 +99,13 @@ class ActionPhase extends ActPhase<IActActionRecord> {
 	public getEffectTargets(): Character[] {
 		const { action } = this.state;
 		const target = action ? action.target : null;
-		return target ? target.effectTargets : [];
+		return target ? target.effectTargets.map(eff => eff.character) : [];
 	}
 
-	public getCombatInfo(): ICombatInfo[] {
+	public getCombatInfo(): IEffectTargetData[] {
 		const { action } = this.state;
 		const target = action ? action.target : null;
-		return target ? target.combatInfo : [];
+		return target ? target.effectTargets : [];
 	}
 
 	public start(action: CharacterAction) {
@@ -208,13 +212,19 @@ class ActionPhase extends ActPhase<IActActionRecord> {
 		// get skill effect area
 		const effectAreas = skills.map(s => s.getEffectArea(actor.position, tile));
 		const effectArea = getIntersection(effectAreas);
-		const effectTargets = skills[0].getTargets(actor, characters, effectArea);
 		const effectTarget = characters.find(char => tile === char.position) || null;
-		const combatInfo = effectTargets.map(reactor => getCombatInfo(actor, reactor, skills));
+
+		const effectTargets = skills[0]
+			.getTargets(actor, characters, effectArea)
+			.map(tgt => {
+				return {
+					character: tgt,
+					damage: skills.map(skill => getDamage(actor, tgt, skill))
+				};
+			});
 
 		action.target = {
 			tile,
-			combatInfo,
 			effectArea,
 			effectTargets,
 			character: effectTarget

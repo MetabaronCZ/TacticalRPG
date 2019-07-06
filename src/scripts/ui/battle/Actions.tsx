@@ -1,5 +1,5 @@
 import React, { SyntheticEvent } from 'react';
-import CharacterAction, { ICharacterActionCost } from 'modules/battle/character-action';
+import CharacterAction, { formatCost } from 'modules/battle/character-action';
 
 type IOnSelect = (action: CharacterAction) => void;
 
@@ -11,14 +11,6 @@ interface IActionsProps {
 interface IButtons {
 	[id: number]: HTMLElement | null;
 }
-
-const formatCost = (cost: ICharacterActionCost | null): string => {
-	if (!cost) {
-		return '';
-	}
-	const costArray = [cost.AP ? `${cost.AP} AP` : '', cost.MP ? `${cost.MP} MP` : ''];
-	return costArray.filter(c => '' !== c).join(' | ');
-};
 
 const Actions: React.SFC<IActionsProps> = ({ actions, onSelect }) => {
 	const buttons: IButtons = {};

@@ -15,6 +15,14 @@ export type CharacterActionType =
 	'ATTACK' | 'DOUBLE_ATTACK' | 'WEAPON' | 'MAGIC' | 'DYNAMIC' |
 	'PASS' | 'REACTION' | 'DONT_REACT' | 'DIRECT' | 'CONFIRM' | 'BACK';
 
+export const formatCost = (cost: ICharacterActionCost | null): string => {
+	if (!cost) {
+		return '';
+	}
+	const costArray = [cost.AP ? `${cost.AP} AP` : '', cost.MP ? `${cost.MP} MP` : ''];
+	return costArray.filter(c => '' !== c).join(' | ');
+};
+
 const getCost = (skills: Skill[], status: Status): ICharacterActionCost => {
 	const apCost = skills.map(s => s.apCost).reduce((a, b) => a + b);
 	const mpCost = skills.map(s => s.mpCost).reduce((a, b) => a + b);

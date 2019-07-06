@@ -3,18 +3,13 @@ import Character from 'modules/character';
 import { SkillID } from 'modules/skill/skill-data';
 import { WeaponSkillID } from 'modules/skill/weapon';
 import { getDynamicSkillID } from 'modules/skill/dynamic';
-import CharacterAction, { ICharacterActionCost } from 'modules/battle/character-action';
+import CharacterAction from 'modules/battle/character-action';
 
 export const getDontReactAction = (): CharacterAction => new CharacterAction('DONT_REACT', 'Don\'t react');
-export const getDirectAction = (): CharacterAction => new CharacterAction('DIRECT', 'Direct');
+export const getConfirmAction = (): CharacterAction => new CharacterAction('CONFIRM', 'Confirm action');
 export const getCancelAction = (): CharacterAction => new CharacterAction('BACK', 'Cancel action');
 export const getPassAction = (): CharacterAction => new CharacterAction('PASS', 'End turn');
-
-export const getConfirmAction = (title = 'Confirm', cost: ICharacterActionCost | null): CharacterAction => {
-	const action = new CharacterAction('CONFIRM', title);
-	action.cost = cost;
-	return action;
-};
+export const getDirectAction = (): CharacterAction => new CharacterAction('DIRECT', 'Direct');
 
 export const getIdleActions = (character: Character): CharacterAction[] => {
 	const { mainHand, offHand, skillset } = character;
@@ -98,13 +93,12 @@ export const getIdleActions = (character: Character): CharacterAction[] => {
 	return actions;
 };
 
-export const getSkillConfirmActions = (action: CharacterAction, hasTargets: boolean): CharacterAction[] => {
+export const getSkillConfirmActions = (hasTargets: boolean): CharacterAction[] => {
 	const actions: CharacterAction[] = [];
 
 	// confirm skill action
 	if (hasTargets) {
-		const confirmAction = getConfirmAction(action.title, action.cost);
-		actions.push(confirmAction);
+		actions.push(getConfirmAction());
 	}
 
 	// cancel skill action

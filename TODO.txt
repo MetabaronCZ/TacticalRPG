@@ -6,24 +6,19 @@ BUG
 
 TODO
 ----------------------------------------------------------------------------------------------------------
+--	prejmenovat Kinetic strike spell na neco jineho (je to stejne s DYNAMIC skillem)
+--	spelly pro DARK magic
 --	COMBAT faze:
 	- udrzet hodnoty Combat; predat do Chronox
 	- pote pouzit pri ziskavani statistik v BattleSummary
 	- udrzet i hodnotu KILLED nebo REVIVED pro reactory
 --	pod grid pridat legendu s vyznamem podbarvenych poli
---	pri vyberu reakce hracem by se melo zobrazit i info, jaky utok byl pouzit a kym
-	--	zobrazovat damage info pred CONFIRM akci
-	--	v damage infu zobrazovat utok (phy, mag) + modifikatory; neovlivneno akcemi defendera (zadne jeste nejsou pred reakci)
-	--	logovat damage output + vysledne damage (uz je)
-	OK	pokud je vybran cil, melo by se vypocitat IDamageInfo
-	--	to info vizualizovat
-	--	ukazat i backattack a elemental affnitu
-	--	behem MOVEMENT faze by mely jit vybrat vsechny postavy
-		- s tim ze se ukaze jejich CharacterBadge s infem
-		- pokud neni vybrany Actor, tak se ukazuje jen Back action a  nezvyraznuji pole pro movement
-		- Back action vybere Actora
-		? moznost vybrat i ostatni pole >> ukaze se info o policku (Tile)
-		? v takovem pripade by melo byt zobrazeno info o Tile i pri vyberu Charactera
+--	behem MOVEMENT faze by mely jit vybrat vsechny postavy
+	- s tim ze se ukaze jejich CharacterBadge s infem
+	- pokud neni vybrany Actor, tak se ukazuje jen Back action a  nezvyraznuji pole pro movement
+	- Back action vybere Actora
+	? moznost vybrat i ostatni pole >> ukaze se info o policku (Tile)
+	? v takovem pripade by melo byt zobrazeno info o Tile i pri vyberu Charactera
 --	nezobrazovat reaktivni skilly u reakci na support skilly -> rovnou je provest
 --	rozlisovat healing a damaging skilly
 	? nebo rozlisovat reactable skilly
@@ -36,8 +31,8 @@ TODO
 --	AICharacter: pohyb/akce podle melee / ranged / support role
 	- vybira AIPlayer
 	- prioritizace skillu (healing role -> Revive)
---	spelly pro DARK magic
---	prejmenovat Kinetic strike spell na neco jineho (je to stejne s DYNAMIC skillem)
+??	prejit na HEXA-grid (vytvorit jako SVG)
+	- https://www.redblobgames.com/grids/hexagons/
 ??	mela by block (large, small) reakce zabranit i status efektum?
 	- podle jake formule?
 ??	schopnost pouzit Reaction skill by mela zaviset na rychlosti obou postav

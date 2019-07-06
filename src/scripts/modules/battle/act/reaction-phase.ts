@@ -3,10 +3,11 @@ import { resolveDirection } from 'modules/geometry/direction';
 import Tile from 'modules/geometry/tile';
 import Character from 'modules/character';
 import ActPhase from 'modules/battle/act/phase';
-import { ICombatInfo } from 'modules/battle/damage';
+import { IDamage } from 'modules/battle/damage';
 import { IOnActPhaseEvent } from 'modules/battle/act';
 import { StatusEffectID } from 'modules/battle/status-effect';
 import CharacterAction from 'modules/battle/character-action';
+import { IEffectTargetData } from 'modules/battle/act/action-phase';
 
 export interface IActReactionRecord {
 	reactions: Array<{
@@ -27,7 +28,7 @@ export type ReactionPhaseEvents =
 
 interface IReaction {
 	readonly reactor: Character;
-	readonly combat: ICombatInfo;
+	readonly combat: IDamage[];
 	phase: IReactionPhase;
 	action: CharacterAction | null;
 	evasible: Tile[];
@@ -114,7 +115,7 @@ class ReactionPhase extends ActPhase<IActReactionRecord> {
 		}
 	}
 
-	public start(combatInfo: ICombatInfo[]) {
+	public start(combatInfo: IEffectTargetData[]) {
 		const { phase } = this;
 
 		if ('SUSPENDED' !== phase) {
@@ -127,8 +128,8 @@ class ReactionPhase extends ActPhase<IActReactionRecord> {
 
 		this.reactions = combatInfo.map(info => ({
 			phase: 'SUSPENDED',
-			reactor: info.defense.character,
-			combat: info,
+			reactor: info.character,
+			combat: info.damage,
 			action: null,
 			evasible: [],
 			evasionTarget: null
@@ -182,7 +183,7 @@ class ReactionPhase extends ActPhase<IActReactionRecord> {
 			throw new Error('Could not react: invalid action');
 		}
 
-		if (combat.attack.backAttack) {
+		if (combat[0].backAttack) {
 			throw new Error('Cannot react if back attacked');
 		}
 		reaction.action = action;

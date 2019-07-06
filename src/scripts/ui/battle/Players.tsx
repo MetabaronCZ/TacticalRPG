@@ -6,8 +6,10 @@ import Act from 'modules/battle/act';
 import AIPlayer from 'modules/ai/player';
 import Player from 'modules/battle/player';
 
-import CharacterBadge from 'ui/battle/CharacterBadge';
 import ArchetypeIco from 'ui/common/ArchetypeIco';
+
+import PlayerIco from 'ui/battle/PlayerIco';
+import CharacterBadge from 'ui/battle/CharacterBadge';
 
 interface IProps {
 	act: Act | null;
@@ -37,7 +39,7 @@ class Players extends React.Component<IProps, IState> {
 				{players.map((pl, p) => (
 					<div className="Players-item" key={p}>
 						<h3 className="Heading">
-							<span className={'Players-item-ico Players-item-ico--player-' + p} />
+							<PlayerIco player={pl} />
 							{pl.name}{pl instanceof AIPlayer ? ' (AI)' : ''}
 						</h3>
 
@@ -95,7 +97,14 @@ class Players extends React.Component<IProps, IState> {
 															</td>
 
 															<td className="Players-item-characters-item-row Players-item-characters-item-row--number">
-																{baseMP > 0 ? formatInteger(MP, 3) : '−−−'} <span className="Players-item-characters-item-base">/ {baseMP > 0 ? formatInteger(baseMP, 3) : '−−−'}</span>
+																{baseMP > 0
+																	? (
+																		<span>
+																			{formatInteger(MP, 3)} <span className="Players-item-characters-item-base">/ {formatInteger(baseMP, 3)}</span>
+																		</span>
+																	)
+																	: <span className="u-disabled">N/A</span>
+																}
 															</td>
 
 															<td className="Players-item-characters-item-row Players-item-characters-item-row--number">

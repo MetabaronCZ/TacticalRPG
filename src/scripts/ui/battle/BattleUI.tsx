@@ -4,12 +4,14 @@ import Tile from 'modules/geometry/tile';
 import { IEngineState } from 'modules/battle/engine';
 import CharacterAction from 'modules/battle/character-action';
 
+import Button from 'ui/common/Button';
+
 import Grid from 'ui/battle/Grid';
-import ActUI from 'ui/battle/Act';
 import Order from 'ui/battle/Order';
 import Players from 'ui/battle/Players';
+import ActorUI from 'ui/battle/ActorUI';
+import ReactorUI from 'ui/battle/ReactorUI';
 import GridCoordinates from 'ui/battle/GridCoordinates';
-import Button from 'ui/common/Button';
 
 interface IBattleUIProps {
 	engineState: IEngineState;
@@ -32,45 +34,41 @@ const BattleUI: React.SFC<IBattleUIProps> = ({ engineState, engineUpdate, onTile
 		<div className="BattleUI">
 			<Order act={act} characters={order} players={players} />
 
-			<table className="BattleUI-table">
-				<tbody>
-					<tr>
-						<td className="BattleUI-table-column BattleUI-table-column--players">
-							<Players act={act} players={players} />
-						</td>
+			<div className="BattleUI-layout">
+				<div className="BattleUI-layout-column BattleUI-layout-column--players">
+					<Players act={act} players={players} />
+				</div>
 
-						<td className="BattleUI-table-column" />
+				<div className="BattleUI-layout-column BattleUI-layout-column--actor">
+					{running
+						? <ActorUI act={act} onActionSelect={onActionSelect} />
+						: (
+							<React.Fragment>
+								<h2 className="Heading">Game Over</h2>
+								<Button text="Show summary" onClick={onExit} />
+							</React.Fragment>
+						)
+					}
+				</div>
 
-						<td className="BattleUI-table-column BattleUI-table-column--actions">
-							{running
-								? <ActUI act={act} onActionSelect={onActionSelect}/>
-								: (
-									<React.Fragment>
-										<h2 className="Heading">Game Over</h2>
-										<Button text="Show summary" onClick={onExit} />
-									</React.Fragment>
-								)
-							}
-						</td>
+				<div className="BattleUI-layout-column BattleUI-layout-column--grid">
+					<GridCoordinates>
+						<Grid
+							act={act}
+							players={players}
+							characters={characters}
+							battleInfo={battleInfo}
+							onTileSelect={onTileSelect}
+						/>
+					</GridCoordinates>
+				</div>
 
-						<td className="BattleUI-table-column BattleUI-table-column--grid">
-							<p className="Paragraph u-align-center">
-								{act.getInfo() || '\u00A0'}
-							</p>
-
-							<GridCoordinates>
-								<Grid
-									act={act}
-									players={players}
-									characters={characters}
-									battleInfo={battleInfo}
-									onTileSelect={onTileSelect}
-								/>
-							</GridCoordinates>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+				<div className="BattleUI-layout-column BattleUI-layout-column--reactor">
+					{running && (
+						<ReactorUI act={act} onActionSelect={onActionSelect} />
+					)}
+				</div>
+			</div>
 		</div>
 	);
 };

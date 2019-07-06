@@ -80,7 +80,7 @@ class AIPlayer extends Player {
 
 				switch (phase) {
 					case 'IDLE':
-						this.onReaction(reactor, actions, combat.attack.backAttack);
+						this.onReaction(reactor, actions, combat[0].backAttack);
 						return;
 
 					case 'EVASION':
