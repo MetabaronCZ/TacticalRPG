@@ -21,7 +21,11 @@ class Status {
 	}
 
 	public remove(effectId: StatusEffectID) {
-		this.items = this.items.filter(item => item.id !== effectId);
+		const i = this.items.findIndex(item => effectId === item.id);
+
+		if (-1 !== i) {
+			this.items.splice(i, 1);
+		}
 	}
 
 	public removeAll() {
