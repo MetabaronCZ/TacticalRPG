@@ -40,7 +40,7 @@ const CharactertInfo: React.SFC<IProps> = ({ character: char }) => {
 
 			{st.length > 0 && (
 				<p className="Paragraph">
-					<strong>Status:</strong> {st.map(s => `${s.effect} (${s.duration})`).join(', ')}
+					<strong>Status:</strong> {st.map(s => `${s.effect} (${s.duration.value})`).join(', ')}
 				</p>
 			)}
 		</React.Fragment>

@@ -44,7 +44,7 @@ const CharacterBadge: React.SFC<IProps> = ({ character }) => {
 				</tbody>
 			</table>
 
-			Status: {status.get().map(st => `${st.effect} (${st.duration})`).join(', ')}
+			Status: {status.get().map(st => `${st.effect} (${st.duration.value})`).join(', ')}
 		</div>
 	);
 };

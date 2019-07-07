@@ -13,7 +13,9 @@ const StatusEffects = new DataList<StatusEffectID, StatusEffectFun>({
 		effect: 'Crippled',
 		description: 'Cannot move',
 		type: 'PHYSICAL',
-		duration: 100
+		multi: 'RENEW',
+		duration: { value: 100, max: 100 },
+		repeat: { value: 0, max: 0 }
 	}),
 	DISARM: () => ({
 		id: 'DISARM',
@@ -21,7 +23,9 @@ const StatusEffects = new DataList<StatusEffectID, StatusEffectFun>({
 		effect: 'Disarmed',
 		description: 'Cannot use weapon attacks and skills',
 		type: 'PHYSICAL',
-		duration: 100
+		multi: 'RENEW',
+		duration: { value: 100, max: 100 },
+		repeat: { value: 0, max: 0 }
 	}),
 	BLEED: (src, phy) => ({
 		id: 'BLEED',
@@ -29,8 +33,9 @@ const StatusEffects = new DataList<StatusEffectID, StatusEffectFun>({
 		effect: 'Wounded',
 		description: 'Physical damage over time',
 		type: 'PHYSICAL',
-		duration: 33,
-		repeat: 3,
+		multi: 'STACK',
+		duration: { value: 33, max: 33 },
+		repeat: { value: 3, max: 3 },
 		apply: (tgt, cb) => {
 			const dmg = Math.floor(phy / 2);
 			tgt.applyDamage(src, dmg, 0, 0);
@@ -48,7 +53,9 @@ const StatusEffects = new DataList<StatusEffectID, StatusEffectFun>({
 		effect: 'Stunned',
 		description: 'Cannot act',
 		type: 'PHYSICAL',
-		duration: 100
+		multi: 'RENEW',
+		duration: { value: 100, max: 100 },
+		repeat: { value: 0, max: 0 }
 	}),
 	BURN: (src, phy, mag) => ({
 		id: 'BURN',
@@ -56,8 +63,9 @@ const StatusEffects = new DataList<StatusEffectID, StatusEffectFun>({
 		effect: 'Burning',
 		description: 'Fire elemental damage over time',
 		type: 'MAGICAL',
-		duration: 33,
-		repeat: 3,
+		multi: 'STACK',
+		duration: { value: 33, max: 33 },
+		repeat: { value: 3, max: 3 },
 		apply: (tgt, cb) => {
 			const dmg = Math.floor(mag / 2);
 			tgt.applyDamage(src, 0, dmg, 0);
@@ -76,7 +84,9 @@ const StatusEffects = new DataList<StatusEffectID, StatusEffectFun>({
 		effect: 'Berserking',
 		description: 'Damage given and damage taken doubled',
 		type: 'MAGICAL',
-		duration: 100
+		multi: 'RENEW',
+		duration: { value: 100, max: 100 },
+		repeat: { value: 0, max: 0 }
 	}),
 	SHOCK: () => ({
 		id: 'SHOCK',
@@ -84,7 +94,9 @@ const StatusEffects = new DataList<StatusEffectID, StatusEffectFun>({
 		effect: 'Shocked',
 		description: 'Halves damage reduction ability',
 		type: 'MAGICAL',
-		duration: 100
+		multi: 'RENEW',
+		duration: { value: 100, max: 100 },
+		repeat: { value: 0, max: 0 }
 	}),
 	FREEZE: () => ({
 		id: 'FREEZE',
@@ -92,7 +104,9 @@ const StatusEffects = new DataList<StatusEffectID, StatusEffectFun>({
 		effect: 'Frozen',
 		description: 'Cannot act',
 		type: 'MAGICAL',
-		duration: 100
+		multi: 'RENEW',
+		duration: { value: 100, max: 100 },
+		repeat: { value: 0, max: 0 }
 	}),
 	CONFUSION: () => ({
 		id: 'CONFUSION',
@@ -100,7 +114,9 @@ const StatusEffects = new DataList<StatusEffectID, StatusEffectFun>({
 		effect: 'Confused',
 		description: 'Weapon and magical skill cost doubled',
 		type: 'MAGICAL',
-		duration: 100
+		multi: 'RENEW',
+		duration: { value: 100, max: 100 },
+		repeat: { value: 0, max: 0 }
 	}),
 	SILENCE: () => ({
 		id: 'SILENCE',
@@ -108,7 +124,9 @@ const StatusEffects = new DataList<StatusEffectID, StatusEffectFun>({
 		effect: 'Silenced',
 		description: 'Cannot use magical skills',
 		type: 'MAGICAL',
-		duration: 100
+		multi: 'RENEW',
+		duration: { value: 100, max: 100 },
+		repeat: { value: 0, max: 0 }
 	}),
 	DYING: () => ({
 		id: 'DYING',
@@ -116,7 +134,9 @@ const StatusEffects = new DataList<StatusEffectID, StatusEffectFun>({
 		effect: 'Dying',
 		description: 'Incapacitated',
 		type: 'PHYSICAL',
-		duration: 100,
+		multi: 'IGNORE',
+		duration: { value: 100, max: 100 },
+		repeat: { value: 0, max: 0 },
 		apply: (char, cb) => {
 			char.die();
 
@@ -133,8 +153,9 @@ const StatusEffects = new DataList<StatusEffectID, StatusEffectFun>({
 		effect: 'Rejuvenating',
 		description: 'Healing over time',
 		type: 'SUPPORT',
-		duration: 33,
-		repeat: 3,
+		multi: 'STACK',
+		duration: { value: 33, max: 33 },
+		repeat: { value: 3, max: 3 },
 		apply: (tgt, cb) => {
 			const healing = Math.floor(mag / 2);
 			tgt.applyHealing(src, healing);
@@ -152,28 +173,39 @@ const StatusEffects = new DataList<StatusEffectID, StatusEffectFun>({
 		effect: 'Hardened',
 		description: 'Doubles damage reduction ability',
 		type: 'SUPPORT',
-		duration: 100
+		multi: 'RENEW',
+		duration: { value: 100, max: 100 },
+		repeat: { value: 0, max: 0 }
 	}),
 	BLOCK_SMALL: () => ({
 		id: 'BLOCK_SMALL',
 		title: 'Block',
 		effect: 'Blocked',
 		description: 'Shield based damage reduction',
-		type: 'SUPPORT'
+		type: 'SUPPORT',
+		multi: 'IGNORE',
+		duration: { value: 0, max: 0 },
+		repeat: { value: 0, max: 0 }
 	}),
 	BLOCK_LARGE: () => ({
 		id: 'BLOCK_LARGE',
 		title: 'Block',
 		effect: 'Blocked',
 		description: 'Shield based damage reduction',
-		type: 'SUPPORT'
+		type: 'SUPPORT',
+		multi: 'IGNORE',
+		duration: { value: 0, max: 0 },
+		repeat: { value: 0, max: 0 }
 	}),
 	ENERGY_SHIELD: () => ({
 		id: 'ENERGY_SHIELD',
 		title: 'Energy Shield',
 		effect: 'Shielded',
 		description: 'Mana based energy shield damage reduction',
-		type: 'SUPPORT'
+		type: 'SUPPORT',
+		multi: 'IGNORE',
+		duration: { value: 0, max: 0 },
+		repeat: { value: 0, max: 0 }
 	})
 });
 

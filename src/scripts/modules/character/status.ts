@@ -16,8 +16,33 @@ class Status {
 	}
 
 	public apply(source: Character, effectId: StatusEffectID, physical = 0, magical = 0) {
-		const effect = StatusEffects.get(effectId);
-		this.items.push(effect(source, physical, magical));
+		const effect = StatusEffects.get(effectId)(source, physical, magical);
+		const existing = this.items.find(item => effectId === item.id);
+
+		if (!existing) {
+			// add new StatusEffect
+			this.items.push(effect);
+			return;
+		}
+		switch (effect.multi) {
+			case 'RENEW':
+				// add duration and repeat values of existing effect
+				existing.duration.value = effect.duration.max;
+				existing.repeat.value = effect.repeat.max;
+				return;
+
+			case 'STACK':
+				// add another stack of this effect
+				this.items.push(effect);
+				return;
+
+			case 'IGNORE':
+				// only one instance of this effect can be active
+				return;
+
+			default:
+				throw new Error('Invalid StatusEffect.multi value: ' + effect.multi);
+		}
 	}
 
 	public remove(effect: IStatusEffect) {
@@ -34,20 +59,17 @@ class Status {
 
 	public update(char: Character, cb: IOnBattleInfo) {
 		for (const item of this.items) {
-			item.duration = item.duration || 0;
-			item.repeat = item.repeat || 0;
+			item.duration.value--;
 
-			item.duration--;
-
-			if (item.duration <= 0) {
-				item.duration = StatusEffects.get(item.id)(char, 0, 0).duration;
-				item.repeat--;
+			if (item.duration.value <= 0) {
+				item.duration.value = StatusEffects.get(item.id)(char, 0, 0).duration.max;
+				item.repeat.value--;
 
 				if (item.apply) {
 					item.apply(char, cb);
 				}
 
-				if (item.repeat <= 0) {
+				if (item.repeat.value <= 0) {
 					this.remove(item);
 
 					cb({

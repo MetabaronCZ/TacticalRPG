@@ -11,12 +11,19 @@ export type StatusEffectDuration = 0 | 33 | 100;  // game ticks
 export type StatusEffectRepeat = 0 | 3;
 
 export interface IStatusEffect {
-	id: StatusEffectID;
-	type: StatusEffectType;
-	title: string;
-	effect: string;
-	description?: string;
-	duration?: StatusEffectDuration;
-	repeat?: StatusEffectRepeat;
+	readonly id: StatusEffectID;
+	readonly type: StatusEffectType;
+	readonly title: string;
+	readonly effect: string;
+	readonly multi: 'RENEW' | 'STACK' | 'IGNORE';
+	readonly description?: string;
+	readonly duration: {
+		value: number;
+		readonly max: StatusEffectDuration;
+	};
+	readonly repeat: {
+		value: number;
+		readonly max: StatusEffectRepeat;
+	};
 	apply?: (character: Character, cb: IOnBattleInfo) => void;
 }
