@@ -6,16 +6,35 @@ BUG
 
 TODO
 ----------------------------------------------------------------------------------------------------------
-??	co delat pokud postava dostane stejny status vicekrat
-	1) pridat duration k aktualnimu statusu
-	2) status ignorovat
---	prejmenovat Kinetic strike spell na neco jineho (je to stejne s DYNAMIC skillem)
---	refaktorovat StatusEffecty na instance classy
-	- misto soucasneho stavu, kdy je stejne vytvari funkce
---	DARK_AURA by mela delat 50% damage reflection (do vzdalenosti SkillArea)
---	pokud je AI actor a USER reactor pridat potvrzeni (tlacitko) pred COMBAT fazi
+>>	refaktorovat StatusEffecty na class instance
+	--	misto soucasneho stavu, kdy instance stejne vytvari funkce
+	--	pridat attribut StatusEffect.multi = UPGRADE | STACK | IGNORE
+		- UPGRADE (prodlouzi duration pokud status uz na postave je):
+			CRIPPLE
+			DISARM
+			STUN
+			BERSERK
+			SHOCK
+			FREEZE
+			CONFUSION
+			SILENCE
+			IRON_SKIN
+
+		- STACK (muze byt na postave nekolikrat):
+			BLEED
+			BURN
+			REGEN
+
+		- IGNORE (neprida se, pokud na postave uz nejaky je):
+			DYING
+			BLOCK_SMALL
+			BLOCK_LARGE
+			ENERGY_SHIELD
+
+--	pokud actor je AI a reactor je USER, pridat potvrzeni (tlacitko) pred COMBAT fazi
 --	COMBAT faze:
 	- udrzet hodnoty Combat; predat do Chronox
+	- priradit vysledek reakce Reaction.result (EVADED, BLOCKED, SHIELDED, DAMAGED, KILLED, HEALED, BUFFED, REVIVED, ???)
 	- pote pouzit pri ziskavani statistik v BattleSummary
 	- udrzet i hodnotu KILLED nebo REVIVED pro reactory
 --	pod grid pridat legendu s vyznamem podbarvenych poli
@@ -45,6 +64,7 @@ TODO
 	- defenderSpd >= AttackerSpd -> defender muze pouzit Reaction skilly
 ??	Counter reaction skill >> bude to mainHand weapon Attack skill
 ??	pasivni skilly
+	--	DARK_AURA by mela delat 50% damage reflection (do vzdalenosti SkillArea)
 ??	pokud je v Actor[] vice postav stejneho hrace
 	- melo by jit vybrat, kdo z nich bude jednat driv
 	- mela by se objevit moznost koordinovaneho utoku (basic attacky obou postav, ukonci Acty postav)

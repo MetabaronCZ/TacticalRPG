@@ -174,7 +174,7 @@ const StatusEffects = new DataList<StatusEffectID, StatusEffectFun>({
 		effect: 'Shielded',
 		description: 'Mana based energy shield damage reduction',
 		type: 'SUPPORT'
-	}),
+	})
 });
 
 export default StatusEffects;
