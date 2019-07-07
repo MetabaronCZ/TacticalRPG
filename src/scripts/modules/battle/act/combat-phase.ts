@@ -90,13 +90,13 @@ class CombatPhase extends ActPhase<IActCombatRecord> {
 							if (!targetDead && !targetDying) {
 								// remove one bad status
 								const statuses = target.status.get().filter(s => 'SUPPORT' !== s.type);
-								const status = getRandomItem(statuses);
+								const effect = getRandomItem(statuses);
 
-								if (status) {
-									target.status.remove(status.id);
+								if (effect) {
+									target.status.remove(effect);
 								}
 								info.push({
-									text: `${status ? status.title : 'No'} status healed`,
+									text: `${effect ? effect.title : 'No'} status healed`,
 									type: 'HEALING',
 									position: targetPos
 								});
@@ -250,9 +250,9 @@ class CombatPhase extends ActPhase<IActCombatRecord> {
 
 				for (const target of targets) {
 					// remove reactive statuses
-					target.status.remove('BLOCK_SMALL');
-					target.status.remove('BLOCK_LARGE');
-					target.status.remove('ENERGY_SHIELD');
+					target.status.removeByID('BLOCK_SMALL');
+					target.status.removeByID('BLOCK_LARGE');
+					target.status.removeByID('ENERGY_SHIELD');
 				}
 				this.phase = 'DONE';
 				this.onEvent('COMBAT_DONE');

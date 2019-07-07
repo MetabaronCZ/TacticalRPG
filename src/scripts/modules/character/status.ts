@@ -20,12 +20,12 @@ class Status {
 		this.items.push(effect(source, physical, magical));
 	}
 
-	public remove(effectId: StatusEffectID) {
-		const i = this.items.findIndex(item => effectId === item.id);
+	public remove(effect: IStatusEffect) {
+		this.items = this.items.filter(item => effect !== item);
+	}
 
-		if (-1 !== i) {
-			this.items.splice(i, 1);
-		}
+	public removeByID(effectID: StatusEffectID) {
+		this.items = this.items.filter(item => effectID !== item.id);
 	}
 
 	public removeAll() {
@@ -48,7 +48,7 @@ class Status {
 				}
 
 				if (item.repeat <= 0) {
-					this.remove(item.id);
+					this.remove(item);
 
 					cb({
 						text: `${item.title} ended`,
