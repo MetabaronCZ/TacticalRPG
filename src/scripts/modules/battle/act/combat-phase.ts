@@ -133,7 +133,7 @@ class CombatPhase extends ActPhase<IActCombatRecord> {
 
 								for (const id of skill.status) {
 									info.push({
-										text: StatusEffects.get(id)(actor, 0, 0).effect,
+										text: StatusEffects.get(id).effect,
 										type: 'BUFF',
 										position: targetPos
 									});

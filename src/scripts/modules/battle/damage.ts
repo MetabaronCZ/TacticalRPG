@@ -1,12 +1,11 @@
 import Skills from 'data/skills';
 import Weapons from 'data/weapons';
 import * as DMG from 'data/damage';
-import StatusEffects from 'data/status-effects';
 
 import Skill from 'modules/skill';
 import Character from 'modules/character';
 import { Vector2D } from 'modules/geometry/vector';
-import { IStatusEffect } from 'modules/battle/status-effect';
+import StatusEffect from 'modules/battle/status-effect';
 import { ElementAffinityTable, Affinity } from 'modules/skill/affinity';
 import { SkillID, SkillElement, ISkillData } from 'modules/skill/skill-data';
 
@@ -31,7 +30,7 @@ export interface IDamage {
 	backAttack: boolean;
 	blocked: IBlockValue | null;
 	shielded: IShieldValue | null;
-	status: IStatusEffect[];
+	status: StatusEffect[];
 }
 
 const isBackAttacked = (attacker: Character, defender: Character): boolean => {
@@ -168,11 +167,11 @@ const getStatusModifier = (attacker: Character, defender: Character): number => 
 	return mod;
 };
 
-const getStatusEffects = (attacker: Character, defender: Character, skill: Skill): IStatusEffect[] => {
-	const statuses = skill.status.map(id => StatusEffects.get(id)(attacker, 0, 0));
+const getStatusEffects = (attacker: Character, defender: Character, skill: Skill): StatusEffect[] => {
+	const statuses = skill.status.map(id => new StatusEffect(id, attacker));
 	const { STR: attSTR, MAG: attMAG } = attacker.attributes;
 	const { VIT: defVIT, SPR: defSPR } = defender.attributes;
-	const effects: IStatusEffect[] = [];
+	const effects: StatusEffect[] = [];
 
 	for (const status of statuses) {
 		switch (status.type) {

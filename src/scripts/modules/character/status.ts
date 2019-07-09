@@ -1,22 +1,20 @@
-import StatusEffects from 'data/status-effects';
-
 import Character from 'modules/character';
 import { IOnBattleInfo } from 'modules/battle/battle-info';
-import { IStatusEffect, StatusEffectID } from 'modules/battle/status-effect';
+import StatusEffect, { StatusEffectID } from 'modules/battle/status-effect';
 
 class Status {
-	private items: IStatusEffect[] = [];
+	private items: StatusEffect[] = [];
 
 	public has(effectId: StatusEffectID): boolean {
 		return !!this.items.find(item => effectId === item.id);
 	}
 
-	public get(): IStatusEffect[] {
+	public get(): StatusEffect[] {
 		return this.items;
 	}
 
-	public apply(source: Character, effectId: StatusEffectID, physical = 0, magical = 0) {
-		const effect = StatusEffects.get(effectId)(source, physical, magical);
+	public apply(caster: Character, effectId: StatusEffectID, physical = 0, magical = 0) {
+		const effect = new StatusEffect(effectId, caster, physical, magical);
 		const existing = this.items.find(item => effectId === item.id);
 
 		if (!existing) {
@@ -24,15 +22,15 @@ class Status {
 			this.items.push(effect);
 			return;
 		}
-		switch (effect.multi) {
+		switch (existing.multi) {
 			case 'RENEW':
-				// add duration and repeat values of existing effect
-				existing.duration.value = effect.duration.max;
-				existing.repeat.value = effect.repeat.max;
+				// reset values of existing effect
+				existing.duration.value = existing.duration.max;
+				existing.repeat.value = existing.repeat.max;
 				return;
 
 			case 'STACK':
-				// add another stack of this effect
+				// add another stack of effect
 				this.items.push(effect);
 				return;
 
@@ -41,11 +39,11 @@ class Status {
 				return;
 
 			default:
-				throw new Error('Invalid StatusEffect.multi value: ' + effect.multi);
+				throw new Error('Invalid StatusEffect.multi value: ' + existing.multi);
 		}
 	}
 
-	public remove(effect: IStatusEffect) {
+	public remove(effect: StatusEffect) {
 		this.items = this.items.filter(item => effect !== item);
 	}
 
@@ -62,7 +60,7 @@ class Status {
 			item.duration.value--;
 
 			if (item.duration.value <= 0) {
-				item.duration.value = StatusEffects.get(item.id)(char, 0, 0).duration.max;
+				item.duration.value = item.duration.max;
 				item.repeat.value--;
 
 				if (item.apply) {
