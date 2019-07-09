@@ -21,11 +21,13 @@ interface IShieldValue {
 }
 
 export interface IDamage {
-	attacker: Character;
-	defender: Character;
+	type: 'DAMAGE' | 'SUPPORT';
+	caster: Character;
+	target: Character;
 	skill: Skill;
 	physical: number;
 	magical: number;
+	healing: number;
 	affinity: Affinity;
 	backAttack: boolean;
 	blocked: IBlockValue | null;
@@ -167,8 +169,12 @@ const getStatusModifier = (attacker: Character, defender: Character): number => 
 	return mod;
 };
 
-const getStatusEffects = (attacker: Character, defender: Character, skill: Skill): StatusEffect[] => {
+const getStatusEffects = (attacker: Character, defender: Character, skill: Skill, isSupport: boolean): StatusEffect[] => {
 	const statuses = skill.status.map(id => new StatusEffect(id, attacker));
+
+	if (isSupport) {
+		return statuses;
+	}
 	const { STR: attSTR, MAG: attMAG } = attacker.attributes;
 	const { VIT: defVIT, SPR: defSPR } = defender.attributes;
 	const effects: StatusEffect[] = [];
@@ -198,21 +204,42 @@ const getStatusEffects = (attacker: Character, defender: Character, skill: Skill
 	return effects;
 };
 
-export const getDamage = (attacker: Character, defender: Character, skill: Skill): IDamage => {
-	// damage
-	let physical = getPhysicalDamage(attacker, skill);
-	let magical = getMagicalDamage(attacker, skill);
+export const getDamage = (caster: Character, target: Character, skill: Skill): IDamage => {
+	const isSupport = (caster.player === target.player);
+
+	const result: IDamage = {
+		type: 'DAMAGE',
+		caster,
+		target,
+		skill,
+		physical: 0,
+		magical: 0,
+		healing: 0,
+		affinity: 'ELEMENTAL_NEUTRAL',
+		backAttack: false,
+		blocked: null,
+		shielded: null,
+		status: getStatusEffects(caster, target, skill, isSupport)
+	};
+	if (isSupport) {
+		result.type = 'SUPPORT';
+		result.healing = getMagicalDamage(caster, skill);
+		return result;
+	}
+	// handle damaging skill
+	let physical = getPhysicalDamage(caster, skill);
+	let magical = getMagicalDamage(caster, skill);
 
 	// elemental affnity
-	const affinity = getAffinity(skill.element, defender.skillset.element);
+	const affinity = getAffinity(skill.element, target.skillset.element);
 	const affinityMod = getAffinityModifier(affinity);
 
 	// directional modifier
-	const backAttack = isBackAttacked(attacker, defender);
+	const backAttack = isBackAttacked(caster, target);
 	const directionMod = getDirectionalModifier(backAttack);
 
 	// shield block
-	const block = getBlock(defender);
+	const block = getBlock(target);
 	const blocked = getBlockValue(physical, magical, block);
 
 	if (blocked) {
@@ -221,7 +248,7 @@ export const getDamage = (attacker: Character, defender: Character, skill: Skill
 	}
 
 	// energy shield
-	const shield = getShield(defender);
+	const shield = getShield(target);
 	const shielded = getShieldValue(physical, magical, shield);
 
 	if (shielded) {
@@ -230,31 +257,27 @@ export const getDamage = (attacker: Character, defender: Character, skill: Skill
 	}
 
 	// status modifiers
-	const status = getStatusEffects(attacker, defender, skill);
-	const statusModifier = getStatusModifier(attacker, defender);
+	const statusModifier = getStatusModifier(caster, target);
 
 	if (physical > 0) {
-		physical *= directionMod * statusModifier * defender.armor.physical;
+		physical *= directionMod * statusModifier * target.armor.physical;
 	}
 
 	if (magical > 0) {
-		magical *= directionMod * statusModifier * affinityMod * defender.armor.magical;
+		magical *= directionMod * statusModifier * affinityMod * target.armor.magical;
 	}
 
 	// clamp values
 	physical = physical > 0 ? Math.round(physical) : 0;
 	magical = magical > 0 ? Math.round(magical) : 0;
 
-	return {
-		attacker,
-		defender,
-		skill,
-		physical,
-		magical,
-		affinity,
-		backAttack,
-		blocked,
-		shielded,
-		status
-	};
+	// update result
+	result.physical = physical;
+	result.magical = magical;
+	result.affinity = affinity;
+	result.backAttack = backAttack;
+	result.blocked = blocked;
+	result.shielded = shielded;
+
+	return result;
 };

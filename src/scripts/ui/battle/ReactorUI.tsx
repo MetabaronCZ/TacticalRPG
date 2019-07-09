@@ -1,17 +1,23 @@
 import React from 'react';
 
+import { affinityData } from 'data/damage';
+
 import Act from 'modules/battle/act';
+import StatusEffect from 'modules/battle/status-effect';
 import CharacterAction from 'modules/battle/character-action';
 
 import Actions from 'ui/battle/Actions';
 import ActionInfo from 'ui/battle/ActionInfo';
 import CharacterInfo from 'ui/battle/CharacterInfo';
-import { affinityData } from 'data/damage';
 
 interface IProps {
 	act: Act | null;
 	onActionSelect: (action: CharacterAction) => void;
 }
+
+const formatStatus = (status: StatusEffect[]) => {
+	return status.map(st => st.title).join(', ') || 'none';
+};
 
 const ReactorUI: React.SFC<IProps> = ({ act, onActionSelect }) => {
 	if (!act) {
@@ -35,24 +41,28 @@ const ReactorUI: React.SFC<IProps> = ({ act, onActionSelect }) => {
 			<CharacterInfo character={reactor} />
 			<hr className="Separator" />
 
-			{combat[0].backAttack && (
-				<p className="Paragraph">Back attacked!</p>
-			)}
-
 			{combat.map((skill, s) => {
+				if ('SUPPORT' === skill.type) {
+					return (
+						<div className="Paragraph" key={s}>
+							<div><strong>Skill:</strong> {skill.skill.title}</div>
+							<div><strong>Healing:</strong> {skill.healing}</div>
+							<div><strong>Status:</strong> {formatStatus(skill.status)}</div>
+						</div>
+					);
+				}
 				const elm = skill.skill.element;
 				return (
-					<p className="Paragraph" key={s}>
-						<strong>Skill:</strong> {skill.skill.title}
-						<br />
-						<strong>Affinity:</strong> {affinityData[skill.affinity].title}
-						<br />
-						<strong>Physical:</strong> {skill.physical}
-						<br />
-						<strong>Magical:</strong> {skill.magical} {'NONE' !== elm ? `(${elm})` : ''}
-						<br />
-						<strong>Status:</strong> {skill.status.map(st => st.title).join(', ')}
-					</p>
+					<div className="Paragraph" key={s}>
+						<div><strong>Skill:</strong> {skill.skill.title}</div>
+						<div><strong>Physical:</strong> {skill.physical}</div>
+						<div><strong>Magical:</strong> {skill.magical} {'NONE' !== elm ? `(${elm})` : ''}</div>
+						<div><strong>Status:</strong> {formatStatus(skill.status)}</div>
+						{combat[0].backAttack && (
+							<div>&rsaquo;&nbsp;Back attack</div>
+						)}
+						<div>&rsaquo;&nbsp;{affinityData[skill.affinity].title}</div>
+					</div>
 				);
 			})}
 			<hr className="Separator" />

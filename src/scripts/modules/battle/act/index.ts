@@ -199,10 +199,11 @@ class Act {
 				const { reactor, combat } = reaction;
 				const obstacles = this.characters.map(char => char.position);
 				const canEvade = reactor.canEvade(obstacles);
+				const isSupport = !!combat.find(dmg => 'SUPPORT' === dmg.type);
 
 				switch (reaction.phase) {
 					case 'IDLE':
-						return getReactiveActions(reactor, combat[0].backAttack, canEvade);
+						return getReactiveActions(reactor, combat[0].backAttack, canEvade, isSupport);
 
 					case 'EVASION':
 						return getEvasiveActions();

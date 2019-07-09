@@ -157,7 +157,7 @@ class Character {
 		this.attributes.set('CT', CT % characterCTLimit);
 	}
 
-	public applyDamage(attacker: Character, physical: number, magical: number, mana: number, effectIds: StatusEffectID[] = []) {
+	public onDamage(attacker: Character, physical: number, magical: number, mana: number, effects: StatusEffectID[] = []) {
 		const { attributes, status } = this;
 
 		if (this.dead || status.has('DYING')) {
@@ -176,7 +176,7 @@ class Character {
 		attacker.score.setDamage(this, damage);
 
 		// apply damage status effects
-		for (const effect of effectIds) {
+		for (const effect of effects) {
 			status.apply(attacker, effect, physical, magical);
 		}
 
@@ -188,7 +188,7 @@ class Character {
 		}
 	}
 
-	public applyHealing(healer: Character, healing: number, effectIds: StatusEffectID[] = []) {
+	public onHealing(healer: Character, healing: number, effects: StatusEffectID[] = []) {
 		if (this.dead || this.status.has('DYING')) {
 			throw new Error('Cannot apply healing: dead or dying');
 		}
@@ -203,12 +203,12 @@ class Character {
 		this.attributes.set('HP', newHP);
 		healer.score.setHealing(this, healed);
 
-		for (const effect of effectIds) {
+		for (const effect of effects) {
 			this.status.apply(healer, effect, 0, healing);
 		}
 	}
 
-	public revive(healer: Character) {
+	public onRevive(healer: Character) {
 		if (!this.status.has('DYING')) {
 			throw new Error('Illegal character revive attempt');
 		}

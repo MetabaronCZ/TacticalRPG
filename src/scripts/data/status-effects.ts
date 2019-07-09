@@ -30,7 +30,7 @@ const StatusEffects = new DataList<StatusEffectID, IStatusEffect>({
 		repeat: 3,
 		apply: (src, tgt, phy, mag, cb) => {
 			const dmg = Math.floor(phy / 2);
-			tgt.applyDamage(src, dmg, 0, 0);
+			tgt.onDamage(src, dmg, 0, 0);
 
 			cb({
 				text: formatNumber(dmg),
@@ -57,7 +57,7 @@ const StatusEffects = new DataList<StatusEffectID, IStatusEffect>({
 		repeat: 3,
 		apply: (src, tgt, phy, mag, cb) => {
 			const dmg = Math.floor(mag / 2);
-			tgt.applyDamage(src, 0, dmg, 0);
+			tgt.onDamage(src, 0, dmg, 0);
 
 			cb({
 				text: formatNumber(dmg),
@@ -134,7 +134,7 @@ const StatusEffects = new DataList<StatusEffectID, IStatusEffect>({
 		repeat: 3,
 		apply: (src, tgt, phy, mag, cb) => {
 			const healing = Math.floor(mag / 2);
-			tgt.applyHealing(src, healing);
+			tgt.onHealing(src, healing);
 
 			cb({
 				text: formatNumber(healing),

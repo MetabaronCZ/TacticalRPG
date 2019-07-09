@@ -10,6 +10,7 @@ export const getConfirmAction = (): CharacterAction => new CharacterAction('CONF
 export const getCancelAction = (): CharacterAction => new CharacterAction('BACK', 'Cancel action');
 export const getPassAction = (): CharacterAction => new CharacterAction('PASS', 'End turn');
 export const getDirectAction = (): CharacterAction => new CharacterAction('DIRECT', 'Direct');
+export const getContinueAction = (): CharacterAction => new CharacterAction('DONT_REACT', 'Continue');
 
 export const getIdleActions = (character: Character): CharacterAction[] => {
 	const { mainHand, offHand, skillset } = character;
@@ -107,7 +108,10 @@ export const getSkillConfirmActions = (hasTargets: boolean): CharacterAction[] =
 	return actions;
 };
 
-export const getReactiveActions = (character: Character, isBackAttack: boolean, canEvade: boolean): CharacterAction[] => {
+export const getReactiveActions = (character: Character, isBackAttack: boolean, canEvade: boolean, isSupport: boolean): CharacterAction[] => {
+	if (isSupport) {
+		return [getContinueAction()];
+	}
 	const { offHand, armor } = character;
 	const { MP } = character.attributes;
 	const canMove = character.canMove();

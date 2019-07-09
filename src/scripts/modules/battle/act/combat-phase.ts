@@ -3,10 +3,9 @@ import { getRandomItem } from 'core/array';
 import { formatNumber, randomNumberBetween } from 'core/number';
 
 import { affinityData } from 'data/damage';
-import StatusEffects from 'data/status-effects';
 import { skillAnimDuration } from 'data/game-config';
 
-import { getDamage } from 'modules/battle/damage';
+import { getDamage, IDamage } from 'modules/battle/damage';
 
 import Logger from 'modules/logger';
 import Tile from 'modules/geometry/tile';
@@ -64,166 +63,32 @@ class CombatPhase extends ActPhase<IActCombatRecord> {
 		const timing = Array(skills.length).fill(skillAnimDuration);
 
 		const skillAnim = new Animation(timing, step => {
-			const skill = skills[step.number];
 			const info: IBattleInfo[] = [];
 
 			for (const target of targets) {
-				const targetPos = target.position;
-				const targetDead = target.isDead();
-				const targetDying = target.status.has('DYING');
+				const damage = getDamage(actor, target, skills[step.number]);
+				const { position } = damage.target;
 
-				if (!targetPos.isContained(effectArea)) {
+				if (!position.isContained(effectArea)) {
 					// target has been pushed / evaded from skill effect area
 					info.push({
 						text: 'Evaded',
 						type: 'ACTION',
-						position: targetPos
-					});
-
-					continue;
-				}
-
-				if ('SELF' === skill.target || 'ALLY' === skill.target) {
-					// non-damaging skill used
-					switch (skill.id) {
-						case 'HOL_REMEDY':
-							if (!targetDead && !targetDying) {
-								// remove one bad status
-								const statuses = target.status.get().filter(s => 'SUPPORT' !== s.type);
-								const effect = getRandomItem(statuses);
-
-								if (effect) {
-									target.status.remove(effect);
-								}
-								info.push({
-									text: `${effect ? effect.title : 'No'} status healed`,
-									type: 'HEALING',
-									position: targetPos
-								});
-							}
-							break;
-
-						case 'HOL_REVIVE':
-							if (targetDying) {
-								// revive target
-								target.revive(actor);
-
-								info.push({
-									text: 'Revived',
-									type: 'BUFF',
-									position: targetPos
-								});
-							}
-							break;
-
-						default:
-							if (!targetDead && !targetDying) {
-								// apply healing to target
-								const magBonus = actor.mainHand.magical + actor.offHand.magical;
-								let healing = (actor.attributes.MAG + magBonus) * skill.magical;
-
-								healing = healing > 0 ? Math.round(healing) : 0;
-								target.applyHealing(actor, healing, skill.status);
-
-								info.push({
-									text: formatNumber(healing),
-									type: 'HEALING',
-									position: targetPos
-								});
-
-								for (const id of skill.status) {
-									info.push({
-										text: StatusEffects.get(id).effect,
-										type: 'BUFF',
-										position: targetPos
-									});
-								}
-							}
-					}
-					continue;
-				}
-
-				// get battle info
-				const damage = getDamage(actor, target, skill);
-				const damageStatus = damage.status.map(status => status.id);
-
-				if (damage.blocked) {
-					// damage reduced by shield block
-					info.push({
-						text: 'Blocked',
-						type: 'ACTION',
-						position: targetPos
-					});
-				}
-
-				if (damage.shielded) {
-					// damage reduced by energy shield
-					info.push({
-						text: `Shielded (${damage.shielded.cost} MP)`,
-						type: 'ACTION',
-						position: targetPos
-					});
-				}
-
-				if (damage.backAttack) {
-					// back attacked
-					info.push({
-						text: 'Back attack',
-						type: 'ACTION',
-						position: targetPos
-					});
-				}
-
-				if (skill.physical) {
-					// physical damage done
-					info.push({
-						text: formatNumber(damage.physical),
-						type: 'DAMAGE',
-						position: targetPos
-					});
-				}
-
-				if (skill.magical) {
-					// magical damage done
-					if (damage.affinity !== 'ELEMENTAL_NEUTRAL') {
-						const affinity = affinityData[damage.affinity];
-
-						info.push({
-							text: affinity.title,
-							type: 'ACTION',
-							position: targetPos
-						});
-					}
-					info.push({
-						text: formatNumber(damage.magical),
-						type: 'DAMAGE',
-						element: skill.element,
-						position: targetPos
-					});
-				}
-
-				// apply skill damage / statuses to target
-				const mpDamage = (damage.shielded ? damage.shielded.cost : 0);
-				target.applyDamage(actor, damage.physical, damage.magical, mpDamage, damageStatus);
-
-				if (targetDying) {
-					info.push({
-						text: 'Dying',
-						type: 'ACTION',
-						position: targetPos
+						position
 					});
 					continue;
 				}
+				switch (damage.type) {
+					case 'SUPPORT':
+						this.handleSupport(damage, info);
+						break;
 
-				if (damage.status.length) {
-					// add skill effects
-					for (const status of damage.status) {
-						info.push({
-							text: status.effect,
-							type: 'DEBUFF',
-							position: targetPos
-						});
-					}
+					case 'DAMAGE':
+						this.handleDamage(damage, info);
+						break;
+
+					default:
+						throw new Error('Invalid combat info type: ' + damage.type);
 				}
 			}
 
@@ -256,7 +121,6 @@ class CombatPhase extends ActPhase<IActCombatRecord> {
 				}
 				this.phase = 'DONE';
 				this.onEvent('COMBAT_DONE');
-				return;
 			}
 		});
 
@@ -276,6 +140,149 @@ class CombatPhase extends ActPhase<IActCombatRecord> {
 		return {
 			results: this.combatResults
 		};
+	}
+
+	private handleSupport(damage: IDamage, info: IBattleInfo[]) {
+		const { caster, target, skill, healing, status } = damage;
+		const isDying = target.status.has('DYING');
+		const isDead = target.isDead();
+		const { position } = target;
+
+		switch (skill.id) {
+			case 'HOL_REMEDY':
+				if (!isDead && !isDying) {
+					// remove one bad status
+					const harmfulStatuses = target.status.get().filter(s => 'SUPPORT' !== s.type);
+					const effect = getRandomItem(harmfulStatuses);
+
+					if (effect) {
+						target.status.remove(effect);
+					}
+					info.push({
+						text: `${effect ? effect.title : 'No'} status healed`,
+						type: 'HEALING',
+						position
+					});
+				}
+				return;
+
+			case 'HOL_REVIVE':
+				if (isDying) {
+					// revive target
+					target.onRevive(caster);
+
+					info.push({
+						text: 'Revived',
+						type: 'BUFF',
+						position
+					});
+				}
+				return;
+
+			default:
+				if (!isDead && !isDying) {
+					// apply healing to target
+					const statuses = status.map(item => item.id);
+					target.onHealing(caster, healing, statuses);
+
+					info.push({
+						text: formatNumber(healing),
+						type: 'HEALING',
+						position
+					});
+
+					for (const item of status) {
+						info.push({
+							text: item.effect,
+							type: 'BUFF',
+							position
+						});
+					}
+				}
+				return;
+		}
+	}
+
+	private handleDamage(damage: IDamage, info: IBattleInfo[]) {
+		const { caster, target, skill, blocked, shielded, affinity, status } = damage;
+		const targetDying = target.status.has('DYING');
+		const { position } = target;
+
+		// damage reduced by shield block
+		if (blocked) {
+			info.push({
+				text: 'Blocked',
+				type: 'ACTION',
+				position
+			});
+		}
+
+		// damage reduced by energy shield
+		if (shielded) {
+			info.push({
+				text: `Shielded (${shielded.cost} MP)`,
+				type: 'ACTION',
+				position
+			});
+		}
+
+		// back attacked
+		if (damage.backAttack) {
+			info.push({
+				text: 'Back attack',
+				type: 'ACTION',
+				position
+			});
+		}
+
+		// physical damage done
+		if (skill.physical) {
+			info.push({
+				text: formatNumber(damage.physical),
+				type: 'DAMAGE',
+				position
+			});
+		}
+
+		// magical damage done
+		if (skill.magical) {
+			if (affinity !== 'ELEMENTAL_NEUTRAL') {
+				info.push({
+					text: affinityData[affinity].title,
+					type: 'ACTION',
+					position
+				});
+			}
+			info.push({
+				text: formatNumber(damage.magical),
+				type: 'DAMAGE',
+				element: skill.element,
+				position
+			});
+		}
+
+		// apply skill damage / statuses to target
+		const statuses = status.map(item => item.id);
+		const mpDamage = (shielded ? shielded.cost : 0);
+		target.onDamage(caster, damage.physical, damage.magical, mpDamage, statuses);
+
+		if (targetDying) {
+			info.push({
+				text: 'Dying',
+				type: 'ACTION',
+				position
+			});
+			return;
+		}
+
+		// add skill effects
+		for (const item of status) {
+			info.push({
+				text: item.effect,
+				type: 'DEBUFF',
+				position
+			});
+		}
 	}
 }
 

@@ -6,11 +6,10 @@ BUG
 
 TODO
 ----------------------------------------------------------------------------------------------------------
---	nedelat kontrolu pro HEALING a buffy (SPR, VIT) vyvolane na allies
---	nezobrazovat reaktivni skilly u reakci na support skilly -> rovnou je provest
---	rozlisovat healing a damaging skilly
-	? nebo rozlisovat reactable skilly
-	- behem reakce u healing skillu by mela byt jen moznost DONT_REACT
+??	preformulovat Action/s -> Command/s a Action pouzivat misto Combat/Damage
+--	combat info by se melo ukazat uz po vybrani cile akce
+	--	potom v ReactorUI nic nerenderovat, pokud je reactor AI
+	--	zaroven nebude treba mit CONTINUE u healing akci a po CONFIRM je rovnou provest
 --	pod grid pridat legendu s vyznamem podbarvenych poli
 --	pokud actor je AI a reactor je USER, pridat potvrzeni (tlacitko) pred COMBAT fazi
 --	COMBAT faze:
