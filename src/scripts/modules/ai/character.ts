@@ -5,11 +5,11 @@ import { findTileFrom, resolveDirection, getOpositeDirection } from 'modules/geo
 
 import Tile from 'modules/geometry/tile';
 import Character from 'modules/character';
-import CharacterAction from 'modules/battle/character-action';
-import { IOnActionSelect, IOnTileSelect } from 'modules/ai/player';
+import Command from 'modules/battle/command';
+import { IOnCommandSelect, IOnTileSelect } from 'modules/ai/player';
 
-interface IOnActionConf {
-	actions: CharacterAction[];
+interface IOnCommandConf {
+	commands: Command[];
 	movable: Tile[];
 	ally: Character[];
 	enemy: Character[];
@@ -41,23 +41,23 @@ const getSide = (char: Character, tile: Tile): TargetSide => {
 class AICharacter {
 	private readonly character: Character;
 	private readonly selectTile: IOnTileSelect;
-	private readonly selectAction: IOnActionSelect;
+	private readonly selectCommand: IOnCommandSelect;
 
 	private moved = false;
 	private target: Character | null = null; // skill target character
 
-	constructor(character: Character, selectTile: IOnTileSelect, selectAction: IOnActionSelect) {
+	constructor(character: Character, selectTile: IOnTileSelect, selectCommand: IOnCommandSelect) {
 		this.character = character;
 		this.selectTile = selectTile;
-		this.selectAction = selectAction;
+		this.selectCommand = selectCommand;
 	}
 
 	public getCharacter(): Character {
 		return this.character;
 	}
 
-	public onAction(conf: IOnActionConf) {
-		const { actions, movable, ally, enemy, obstacles } = conf;
+	public onCommand(conf: IOnCommandConf) {
+		const { commands, movable, ally, enemy, obstacles } = conf;
 		const char = this.character;
 
 		if (char.isDead()) {
@@ -135,10 +135,10 @@ class AICharacter {
 				}
 			}
 		}
-		this.chooseAction(actions, ally, enemy);
+		this.chooseCommand(commands, ally, enemy);
 	}
 
-	public onActionTarget(targetable: Tile[]) {
+	public onCommandTarget(targetable: Tile[]) {
 		let target = this.target ? this.target.position : null;
 
 		if (!target || !target.isContained(targetable)) {
@@ -151,25 +151,25 @@ class AICharacter {
 		this.selectTile(target);
 	}
 
-	public onReaction(actions: CharacterAction[], isBackAttacked: boolean, obstacles: Tile[]) {
-		const passAction = actions.find(act => 'DONT_REACT' === act.type);
+	public onReaction(commands: Command[], isBackAttacked: boolean, obstacles: Tile[]) {
+		const passCommand = commands.find(act => 'DONT_REACT' === act.type);
 
-		if (!passAction) {
-			throw new Error('AI character actions does not contain pass action');
+		if (!passCommand) {
+			throw new Error('AI character commands does not contain pass command');
 		}
 		const char = this.character;
 
 		if (isBackAttacked || !char.canAct()) {
-			this.selectAction(passAction);
+			this.selectCommand(passCommand);
 			return;
 		}
 
 		// find first applicable reaction
-		for (const action of actions) {
-			if (!action.skills.length || !action.isActive()) {
+		for (const command of commands) {
+			if (!command.skills.length || !command.isActive()) {
 				continue;
 			}
-			const skill = action.skills[0];
+			const skill = command.skills[0];
 
 			if ('EVADE' === skill.id) {
 				// get evasible tiles
@@ -179,12 +179,12 @@ class AICharacter {
 					continue;
 				}
 			}
-			this.selectAction(action);
+			this.selectCommand(command);
 			return;
 		}
 
 		// no reaction available
-		this.selectAction(passAction);
+		this.selectCommand(passCommand);
 	}
 
 	public onEvasion(evasible: Tile[]) {
@@ -220,11 +220,11 @@ class AICharacter {
 		this.selectTile(directTarget);
 	}
 
-	private chooseAction(actions: CharacterAction[], ally: Character[], enemy: Character[]) {
-		const passAction = actions.find(act => 'PASS' === act.type);
+	private chooseCommand(commands: Command[], ally: Character[], enemy: Character[]) {
+		const passCommand = commands.find(act => 'PASS' === act.type);
 
-		if (!passAction) {
-			throw new Error('AI character actions does not contain pass action');
+		if (!passCommand) {
+			throw new Error('AI character commands does not contain pass command');
 		}
 		const char = this.character;
 		const pos = char.position;
@@ -233,34 +233,34 @@ class AICharacter {
 		this.moved = false;
 
 		if (!this.target || !char.canAct()) {
-			this.selectAction(passAction);
+			this.selectCommand(passCommand);
 			return;
 		}
 
 		// find first skill to attack chosen target
-		for (const action of actions) {
-			if (!action.skills.length || !action.isActive()) {
+		for (const command of commands) {
+			if (!command.skills.length || !command.isActive()) {
 				continue;
 			}
-			const skillTarget = action.skills[0].target;
+			const skillTarget = command.skills[0].target;
 
 			if ('ENEMY' !== skillTarget && 'ANY' !== skillTarget) {
 				// ignore non applicable skills
 				continue;
 			}
 			const obstacles = ally.map(a => a.position);
-			const skillAreas = action.skills.map(skill => skill.getTargetable(pos, obstacles));
+			const skillAreas = command.skills.map(skill => skill.getTargetable(pos, obstacles));
 			const targetable = getIntersection(skillAreas);
-			const targets = action.skills[0].getTargets(char, enemy, targetable);
+			const targets = command.skills[0].getTargets(char, enemy, targetable);
 
 			if (-1 !== targets.indexOf(this.target)) {
-				this.selectAction(action);
+				this.selectCommand(command);
 				return;
 			}
 		}
 
 		// enemy is not targetable
-		this.selectAction(passAction);
+		this.selectCommand(passCommand);
 	}
 }
 

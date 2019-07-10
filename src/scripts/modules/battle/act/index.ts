@@ -1,32 +1,32 @@
 import { formatTile } from 'modules/format';
 import {
-	getIdleActions, getSkillConfirmActions, getReactiveActions, getEvasiveActions
-} from 'modules/battle/character-actions';
+	getIdleCommands, getSkillConfirmCommands, getReactiveCommands, getEvasiveCommands
+} from 'modules/battle/commands';
 
 import Logger from 'modules/logger';
 import Tile from 'modules/geometry/tile';
 import AIPlayer from 'modules/ai/player';
 import Character from 'modules/character';
+import Command from 'modules/battle/command';
 import { IBattleInfo } from 'modules/battle/battle-info';
-import CharacterAction from 'modules/battle/character-action';
 import MovePhase, { MovePhaseEvents, IActMoveRecord } from 'modules/battle/act/move-phase';
-import ActionPhase, { ActionPhaseEvents, IActActionRecord } from 'modules/battle/act/action-phase';
+import CommandPhase, { CommandPhaseEvents, IActCommandRecord } from 'modules/battle/act/command-phase';
 import ReactionPhase, { ReactionPhaseEvents, IActReactionRecord } from 'modules/battle/act/reaction-phase';
 import CombatPhase, { CombatPhaseEvents, IActCombatRecord } from 'modules/battle/act/combat-phase';
 import DirectPhase, { DirectPhaseEvents, IActDirectRecord } from 'modules/battle/act/direct-phase';
 
-type PhaseID = 'MOVEMENT' | 'ACTION' | 'REACTION' | 'COMBAT' | 'DIRECTION';
+type PhaseID = 'MOVEMENT' | 'COMMAND' | 'REACTION' | 'COMBAT' | 'DIRECTION';
 
 interface IPhases {
 	MOVEMENT: MovePhase;
-	ACTION: ActionPhase;
+	COMMAND: CommandPhase;
 	REACTION: ReactionPhase;
 	DIRECTION: DirectPhase;
 	COMBAT: CombatPhase;
 }
 
-export type ActPhaseEvent = 'BATTLE_INFO' | MovePhaseEvents | ActionPhaseEvents | ReactionPhaseEvents | CombatPhaseEvents | DirectPhaseEvents;
-export type IOnActPhaseEvent = (event: ActPhaseEvent, data?: Character | CharacterAction | Tile | IBattleInfo | null) => void;
+export type ActPhaseEvent = 'BATTLE_INFO' | MovePhaseEvents | CommandPhaseEvents | ReactionPhaseEvents | CombatPhaseEvents | DirectPhaseEvents;
+export type IOnActPhaseEvent = (event: ActPhaseEvent, data?: Character | Command | Tile | IBattleInfo | null) => void;
 
 export interface IActEvents {
 	onStart: (act: Act) => void;
@@ -41,7 +41,7 @@ export interface IActRecord {
 	readonly actor: string;
 	readonly skipped: boolean;
 	readonly movementPhase: IActMoveRecord;
-	readonly actionPhase: IActActionRecord;
+	readonly commandPhase: IActCommandRecord;
 	readonly reactionPhase: IActReactionRecord;
 	readonly combatPhase: IActCombatRecord;
 	readonly directionPhase: IActDirectRecord;
@@ -56,7 +56,7 @@ class Act {
 
 	private phase: PhaseID | null = null;
 	private skipped: boolean = false;
-	private actions: CharacterAction[] = [];
+	private commands: Command[] = [];
 	private info: string = '';
 
 	constructor(id: number, actor: Character, characters: Character[], events: IActEvents) {
@@ -70,7 +70,7 @@ class Act {
 
 		this.phases = {
 			MOVEMENT: new MovePhase(actor, characters, this.onPhaseEvent),
-			ACTION: new ActionPhase(actor, characters, this.onPhaseEvent),
+			COMMAND: new CommandPhase(actor, characters, this.onPhaseEvent),
 			REACTION: new ReactionPhase(actor, characters, this.onPhaseEvent),
 			DIRECTION: new DirectPhase(actor, characters, this.onPhaseEvent),
 			COMBAT: new CombatPhase(actor, characters, this.onPhaseEvent)
@@ -95,8 +95,8 @@ class Act {
 		return this.phase;
 	}
 
-	public getActions(): CharacterAction[] {
-		return this.actions;
+	public getCommands(): Command[] {
+		return this.commands;
 	}
 
 	public getActingCharacter(): Character | null {
@@ -121,13 +121,13 @@ class Act {
 		this.phases[phase].selectTile(tile);
 	}
 
-	public selectAction(action: CharacterAction) {
+	public selectCommand(command: Command) {
 		const { phase } = this;
 
 		if (!phase) {
-			throw new Error('Could not select action: invalid phase ' + phase);
+			throw new Error('Could not select command: invalid phase ' + phase);
 		}
-		this.phases[phase].selectAction(action);
+		this.phases[phase].selectCommand(command);
 	}
 
 	public serialize(): IActRecord {
@@ -136,7 +136,7 @@ class Act {
 			skipped: this.skipped,
 			actor: this.actor.data.id,
 			movementPhase: this.phases.MOVEMENT.serialize(),
-			actionPhase: this.phases.ACTION.serialize(),
+			commandPhase: this.phases.COMMAND.serialize(),
 			reactionPhase: this.phases.REACTION.serialize(),
 			directionPhase: this.phases.DIRECTION.serialize(),
 			combatPhase: this.phases.COMBAT.serialize()
@@ -160,31 +160,31 @@ class Act {
 		this.events.onEnd(this);
 	}
 
-	private prepareActions(): CharacterAction[] {
+	private prepareCommands(): Command[] {
 		const { actor, phases } = this;
-		const { MOVEMENT, ACTION, REACTION } = phases;
+		const { MOVEMENT, COMMAND, REACTION } = phases;
 
 		switch (this.phase) {
 			case 'MOVEMENT':
 				switch (MOVEMENT.getPhase()) {
 					case 'IDLE':
-						// default character actions
-						return getIdleActions(actor);
+						// default character commands
+						return getIdleCommands(actor);
 
 					default:
 						return [];
 				}
 
-			case 'ACTION':
-				switch (ACTION.getPhase()) {
+			case 'COMMAND':
+				switch (COMMAND.getPhase()) {
 					case 'IDLE':
-						// default character actions
-						return getIdleActions(actor);
+						// default character command
+						return getIdleCommands(actor);
 
 					case 'TARGETING':
-						// confirm actions
-						const hasTargets = ACTION.getEffectTargets().length > 0;
-						return getSkillConfirmActions(hasTargets);
+						// confirm command
+						const hasTargets = COMMAND.getEffectTargets().length > 0;
+						return getSkillConfirmCommands(hasTargets);
 
 					default:
 						return [];
@@ -194,7 +194,7 @@ class Act {
 				const reaction = REACTION.getReaction();
 
 				if (!reaction) {
-					throw new Error('Could not get reaction actions: no reaction');
+					throw new Error('Could not get reaction commands: no reaction');
 				}
 				const { reactor, combat } = reaction;
 				const obstacles = this.characters.map(char => char.position);
@@ -203,10 +203,10 @@ class Act {
 
 				switch (reaction.phase) {
 					case 'IDLE':
-						return getReactiveActions(reactor, combat[0].backAttack, canEvade, isSupport);
+						return getReactiveCommands(reactor, combat[0].backAttack, canEvade, isSupport);
 
 					case 'EVASION':
-						return getEvasiveActions();
+						return getEvasiveCommands();
 
 					default:
 						return [];
@@ -220,29 +220,29 @@ class Act {
 	}
 
 	private update() {
-		let char = this.getActingCharacter();
+		let character = this.getActingCharacter();
 
-		if (!char) {
+		if (!character) {
 			throw new Error('Could not update Act data: invalid acting character');
 		}
-		const actions = this.prepareActions();
+		const commands = this.prepareCommands();
 
-		if (!char.isAI()) {
-			// set actions for player
-			this.actions = actions;
+		if (!character.isAI()) {
+			// set commands for player
+			this.commands = commands;
 		}
 		this.events.onUpdate(this);
 
 		setTimeout(() => { // prevent race condition
-			char = this.getActingCharacter();
+			character = this.getActingCharacter();
 
-			if (!char) {
+			if (!character) {
 				throw new Error('Could not update Act data: invalid acting character');
 			}
-			if (char.isAI()) {
+			if (character.isAI()) {
 				// let AI act
-				const player = char.player as AIPlayer;
-				player.act(this, actions);
+				const player = character.player as AIPlayer;
+				player.act(this, commands);
 			}
 		});
 	}
@@ -255,19 +255,19 @@ class Act {
 			this.events.onBattleInfo(data as IBattleInfo);
 			return;
 		}
-		const { MOVEMENT, ACTION, REACTION, DIRECTION, COMBAT } = phases;
+		const { MOVEMENT, COMMAND, REACTION, DIRECTION, COMBAT } = phases;
 
 		switch (phase) {
 			case 'MOVEMENT':
 				switch (evt) {
 					case 'MOVE_SUSPENDED':
-						// start action phase
-						this.phase = 'ACTION';
-						ACTION.start(data as CharacterAction);
+						// start command phase
+						this.phase = 'COMMAND';
+						COMMAND.start(data as Command);
 						return;
 
 					case 'MOVE_IDLE':
-						this.info = 'Move on grid or select an action:';
+						this.info = 'Move on grid or select a command:';
 						this.log(this.info);
 						this.update();
 						return;
@@ -286,43 +286,43 @@ class Act {
 						return; // do nothing
 				}
 
-			case 'ACTION':
+			case 'COMMAND':
 				switch (evt) {
-					case 'ACTION_SELECTED':
-						this.info = 'Select action target on grid.';
-						this.log('Action selected: ' + (data as CharacterAction).title);
+					case 'COMMAND_SELECTED':
+						this.info = 'Select command target on grid.';
+						this.log('Command selected: ' + (data as Command).title);
 						this.log(this.info);
 						this.update();
 						return;
 
-					case 'ACTION_TARGETED':
+					case 'COMMAND_TARGETED':
 						this.info = '';
-						this.log('Action target selected ' + (data ? (data as Character).name : ''));
+						this.log('Command target selected ' + (data ? (data as Character).name : ''));
 						this.update();
 						return;
 
-					case 'ACTION_PASSED':
+					case 'COMMAND_PASSED':
 						// start direction phase
-						this.log('Action passed');
+						this.log('Command passed');
 
 						this.phase = 'DIRECTION';
 						DIRECTION.start();
 						return;
 
-					case 'ACTION_CANCELLED':
+					case 'COMMAND_CANCELLED':
 						// start move phase
-						this.log('Action cancelled');
+						this.log('Command cancelled');
 
 						this.phase = 'MOVEMENT';
 						MOVEMENT.start();
 						return;
 
-					case 'ACTION_DONE':
+					case 'COMMAND_DONE':
 						// start reaction phase
-						this.log('Action confirmed');
+						this.log('Command confirmed');
 
 						this.phase = 'REACTION';
-						REACTION.start(ACTION.getCombatInfo());
+						REACTION.start(COMMAND.getCombatInfo());
 						return;
 
 					default:
@@ -344,21 +344,21 @@ class Act {
 						return;
 
 					case 'REACTION_FINISHED':
-						this.log('Reaction selected: ' + (data as CharacterAction).title);
+						this.log('Reaction selected: ' + (data as Command).title);
 						return;
 
 					case 'REACTION_DONE':
-						const action = ACTION.getAction();
-						const effectArea = ACTION.getEffectArea();
-						const targets = ACTION.getEffectTargets();
+						const command = COMMAND.getCommand();
+						const effectArea = COMMAND.getEffectArea();
+						const targets = COMMAND.getEffectTargets();
 
-						if (!action || !effectArea.length || !targets.length) {
-							throw new Error('Could start combat phase: invalid action phase data');
+						if (!command || !effectArea.length || !targets.length) {
+							throw new Error('Could start combat phase: invalid command phase data');
 						}
 						this.phase = 'COMBAT';
 						this.info = 'Combat in progress...';
 						this.log(this.info);
-						COMBAT.start(action, effectArea, targets);
+						COMBAT.start(command, effectArea, targets);
 						return;
 
 					default:

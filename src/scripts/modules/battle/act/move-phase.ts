@@ -8,9 +8,9 @@ import { ICostMap, getMovableTiles, getShortestPath } from 'modules/pathfinding'
 
 import Tile from 'modules/geometry/tile';
 import Character from 'modules/character';
+import Command from 'modules/battle/command';
 import ActPhase from 'modules/battle/act/phase';
 import { IOnActPhaseEvent } from 'modules/battle/act';
-import CharacterAction from 'modules/battle/character-action';
 
 type Phase = 'SUSPENDED' | 'IDLE' | 'ANIMATION';
 
@@ -122,10 +122,10 @@ class MovePhase extends ActPhase<IActMoveRecord> {
 		this.animate();
 	}
 
-	public selectAction(action: CharacterAction) {
+	public selectCommand(command: Command) {
 		if ('IDLE' === this.phase) {
 			this.phase = 'SUSPENDED';
-			this.onEvent('MOVE_SUSPENDED', action);
+			this.onEvent('MOVE_SUSPENDED', command);
 		}
 	}
 

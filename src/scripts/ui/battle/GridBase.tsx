@@ -16,8 +16,8 @@ interface IGridBaseProps {
 type TileType =
 	'default' |
 	'movable' | 'movePath' | 'moveTarget' |
-	'actionRange' | 'actionTargetable' |
-	'actionEffectArea' | 'actionEffectTargets' | 'actionEffectTarget' |
+	'commandRange' | 'commandTargetable' |
+	'commandEffectArea' | 'commandEffectTargets' | 'commandEffectTarget' |
 	'reactors' | 'reactionEvasible' | 'reactor' |
 	'directable' | 'directTarget';
 
@@ -44,31 +44,31 @@ const getTileType = (tile: Tile, act: Act | null): TileType => {
 			break;
 		}
 
-		case 'ACTION': {
-			const actionPhase = act.phases.ACTION;
+		case 'COMMAND': {
+			const commandPhase = act.phases.COMMAND;
 
-			if ('TARGETING' === actionPhase.getPhase()) {
-				const tgt = actionPhase.getTarget();
+			if ('TARGETING' === commandPhase.getPhase()) {
+				const tgt = commandPhase.getTarget();
 
 				if (tgt) {
-					// action with target selected
-					if (tile.isContained(actionPhase.getEffectArea())) {
-						type = 'actionEffectArea';
+					// command with target selected
+					if (tile.isContained(commandPhase.getEffectArea())) {
+						type = 'commandEffectArea';
 					}
-					if (tile.isContained(actionPhase.getTargetable())) {
-						type = 'actionTargetable';
+					if (tile.isContained(commandPhase.getTargetable())) {
+						type = 'commandTargetable';
 					}
 					if (tile === tgt) {
-						type = 'actionEffectTarget';
+						type = 'commandEffectTarget';
 					}
 
 				} else {
-					// action without target selected
-					if (tile.isContained(actionPhase.getArea())) {
-						type = 'actionRange';
+					// command without target selected
+					if (tile.isContained(commandPhase.getArea())) {
+						type = 'commandRange';
 					}
-					if (tile.isContained(actionPhase.getTargetable())) {
-						type = 'actionTargetable';
+					if (tile.isContained(commandPhase.getTargetable())) {
+						type = 'commandTargetable';
 					}
 				}
 			}

@@ -2,17 +2,17 @@ import Act from 'modules/battle/act';
 import Tile from 'modules/geometry/tile';
 import Character from 'modules/character';
 import Player from 'modules/battle/player';
+import Command from 'modules/battle/command';
 import AICharacter from 'modules/ai/character';
 import { IAIConfig } from 'modules/ai/settings';
-import CharacterAction from 'modules/battle/character-action';
 
 export type IOnTileSelect = (tile: Tile) => void;
-export type IOnActionSelect = (action: CharacterAction) => void;
+export type IOnCommandSelect = (command: Command) => void;
 
 interface IAIActStartData {
 	actor: Character;
-	actions: CharacterAction[];
 	movable: Tile[];
+	commands: Command[];
 }
 
 class AIPlayer extends Player {
@@ -20,13 +20,13 @@ class AIPlayer extends Player {
 	private enemy?: Player;
 	private ally: AICharacter[] = [];
 	private selectTile: (tile: Tile) => void;
-	private selectAction: (action: CharacterAction) => void;
+	private selectCommand: (command: Command) => void;
 
-	constructor(id: number, name: string, config: IAIConfig, selectTile: IOnTileSelect, selectAction: IOnActionSelect) {
+	constructor(id: number, name: string, config: IAIConfig, selectTile: IOnTileSelect, selectCommand: IOnCommandSelect) {
 		super(id, name);
 		// this.config = config;
 		this.selectTile = selectTile;
-		this.selectAction = selectAction;
+		this.selectCommand = selectCommand;
 	}
 
 	public setEnemy(enemy: Player) {
@@ -37,32 +37,32 @@ class AIPlayer extends Player {
 		super.setCharacters(characters);
 
 		this.ally = this.characters.map(char => {
-			return new AICharacter(char, this.selectTile, this.selectAction);
+			return new AICharacter(char, this.selectTile, this.selectCommand);
 		});
 	}
 
-	public act(act: Act, actions: CharacterAction[]) {
+	public act(act: Act, commands: Command[]) {
 		const { actor, phases } = act;
-		const { MOVEMENT, ACTION, REACTION, DIRECTION } = phases;
+		const { MOVEMENT, COMMAND, REACTION, DIRECTION } = phases;
 
 		switch (act.getPhase()) {
 			case 'MOVEMENT':
 				if ('IDLE' === MOVEMENT.getPhase()) {
 					const movable = MOVEMENT.getMovable();
-					this.onAction({ actor, actions, movable });
+					this.onCommand({ actor, commands, movable });
 				}
 				return;
 
-			case 'ACTION':
-				switch (ACTION.getPhase()) {
+			case 'COMMAND':
+				switch (COMMAND.getPhase()) {
 					case 'TARGETING':
-						const targetable = ACTION.getTargetable();
-						const target = ACTION.getTarget();
+						const targetable = COMMAND.getTargetable();
+						const target = COMMAND.getTarget();
 
 						if (target) {
-							this.onActionConfirm(actions);
+							this.onCommandConfirm(commands);
 						} else {
-							this.onActionTarget(actor, targetable);
+							this.onCommandTarget(actor, targetable);
 						}
 						return;
 
@@ -80,7 +80,7 @@ class AIPlayer extends Player {
 
 				switch (phase) {
 					case 'IDLE':
-						this.onReaction(reactor, actions, combat[0].backAttack);
+						this.onReaction(reactor, commands, combat[0].backAttack);
 						return;
 
 					case 'EVASION':
@@ -101,10 +101,10 @@ class AIPlayer extends Player {
 		}
 	}
 
-	public onAction(conf: IAIActStartData) {
-		const { actor, actions, movable } = conf;
+	public onCommand(conf: IAIActStartData) {
+		const { actor, commands, movable } = conf;
 
-		if (actor.isDead() || !actions.length) {
+		if (actor.isDead() || !commands.length) {
 			return;
 		}
 		const char = this.getCharacter(actor);
@@ -112,33 +112,33 @@ class AIPlayer extends Player {
 		const ally = this.ally.map(a => a.getCharacter());
 		const enemy = (this.enemy ? this.enemy.getCharacters() : []);
 
-		char.onAction({ actions, movable, ally, enemy, obstacles });
+		char.onCommand({ commands, movable, ally, enemy, obstacles });
 	}
 
-	public onActionTarget(actor: Character, targetable: Tile[]) {
+	public onCommandTarget(actor: Character, targetable: Tile[]) {
 		if (actor.isDead()) {
 			return;
 		}
 		const char = this.getCharacter(actor);
-		char.onActionTarget(targetable);
+		char.onCommandTarget(targetable);
 	}
 
-	public onActionConfirm(actions: CharacterAction[]) {
-		const confirmAction = actions.find(act => 'CONFIRM' === act.type);
+	public onCommandConfirm(commands: Command[]) {
+		const confirmCommand = commands.find(act => 'CONFIRM' === act.type);
 
-		if (!confirmAction) {
-			throw new Error('AI character actions does not contain confirm action');
+		if (!confirmCommand) {
+			throw new Error('AI character commands does not contain confirm command');
 		}
-		this.selectAction(confirmAction);
+		this.selectCommand(confirmCommand);
 	}
 
-	public onReaction(reactor: Character, actions: CharacterAction[], isBackAttacked: boolean) {
+	public onReaction(reactor: Character, commands: Command[], isBackAttacked: boolean) {
 		if (reactor.isDead()) {
 			return;
 		}
 		const char = this.getCharacter(reactor);
 		const obstacles = this.getObstacles();
-		char.onReaction(actions, isBackAttacked, obstacles);
+		char.onReaction(commands, isBackAttacked, obstacles);
 	}
 
 	public onEvasion(actor: Character, evasible: Tile[]) {

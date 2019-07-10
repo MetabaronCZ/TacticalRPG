@@ -3,9 +3,9 @@ import { findTileFrom, resolveDirection } from 'modules/geometry/direction';
 
 import Tile from 'modules/geometry/tile';
 import Character from 'modules/character';
+import Command from 'modules/battle/command';
 import ActPhase from 'modules/battle/act/phase';
 import { IOnActPhaseEvent } from 'modules/battle/act';
-import CharacterAction from 'modules/battle/character-action';
 
 export interface IActDirectRecord {
 	readonly target: string | null;
@@ -90,7 +90,7 @@ class DirectPhase extends ActPhase<IActDirectRecord> {
 		this.onEvent('DIRECTION_SELECTED', tile);
 	}
 
-	public selectAction(action: CharacterAction) {
+	public selectCommand(command: Command) {
 		// do nothing
 	}
 

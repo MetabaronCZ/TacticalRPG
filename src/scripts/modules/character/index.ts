@@ -18,7 +18,7 @@ import { IOnBattleInfo } from 'modules/battle/battle-info';
 import { IWeaponData } from 'modules/equipment/weapon-data';
 import { IArchetypeData } from 'modules/character/archetype';
 import { StatusEffectID } from 'modules/battle/status-effect';
-import CharacterAction from 'modules/battle/character-action';
+import Command from 'modules/battle/command';
 import BaseAttributes from 'modules/character/base-attributes';
 import { SkillID, SkillCooldown } from 'modules/skill/skill-data';
 import { CharacterData, ICharacterData } from 'modules/character-creation/character-data';
@@ -225,11 +225,11 @@ class Character {
 		this.dead = true;
 	}
 
-	public act(action: CharacterAction) {
-		const { cost} = action;
+	public act(command: Command) {
+		const { cost, skills } = command;
 
 		// put skills on cooldown
-		for (const skill of action.skills) {
+		for (const skill of skills) {
 			const cd = skill.cooldown;
 			this.cooldowns[skill.id] = ('ULTIMATE' === cd ? cd : cd + 1) as SkillCooldown;
 		}

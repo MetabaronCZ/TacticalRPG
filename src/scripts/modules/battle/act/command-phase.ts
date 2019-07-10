@@ -2,13 +2,13 @@ import { getIntersection } from 'core/array';
 
 import Tile from 'modules/geometry/tile';
 import Character from 'modules/character';
+import Command from 'modules/battle/command';
 import ActPhase from 'modules/battle/act/phase';
 import { IOnActPhaseEvent } from 'modules/battle/act';
 import { getDamage, IDamage } from 'modules/battle/damage';
-import CharacterAction from 'modules/battle/character-action';
 
-export interface IActActionRecord {
-	readonly action: string | null;
+export interface IActCommandRecord {
+	readonly command: string | null;
 	readonly target: string | null;
 }
 
@@ -17,9 +17,9 @@ export interface IEffectTargetData {
 	damage: IDamage[];
 }
 
-interface IActionPhaseState {
-	action?: {
-		data: CharacterAction;
+interface IState {
+	command?: {
+		data: Command;
 		area: Tile[];
 		targetable: Tile[];
 		target?: {
@@ -33,18 +33,18 @@ interface IActionPhaseState {
 
 type Phase = 'SUSPENDED' | 'IDLE' | 'TARGETING' | 'DONE';
 
-export type ActionPhaseEvents =
-	'ACTION_SELECTED' |
-	'ACTION_PASSED' |
-	'ACTION_CANCELLED' |
-	'ACTION_TARGETED' |
-	'ACTION_DONE';
+export type CommandPhaseEvents =
+	'COMMAND_SELECTED' |
+	'COMMAND_PASSED' |
+	'COMMAND_CANCELLED' |
+	'COMMAND_TARGETED' |
+	'COMMAND_DONE';
 
-class ActionPhase extends ActPhase<IActActionRecord> {
+class CommandPhase extends ActPhase<IActCommandRecord> {
 	private readonly actor: Character;
 	private readonly characters: Character[];
 	private readonly onEvent: IOnActPhaseEvent;
-	private state: IActionPhaseState = {};
+	private state: IState = {};
 	private phase: Phase = 'SUSPENDED';
 
 	constructor(actor: Character, characters: Character[], onEvent: IOnActPhaseEvent) {
@@ -63,59 +63,59 @@ class ActionPhase extends ActPhase<IActActionRecord> {
 		return this.phase;
 	}
 
-	public getAction(): CharacterAction | null {
-		const { action } = this.state;
-		return action ? action.data : null;
+	public getCommand(): Command | null {
+		const { command } = this.state;
+		return command ? command.data : null;
 	}
 
 	public getArea(): Tile[] {
-		const { action } = this.state;
-		return action ? action.area : [];
+		const { command } = this.state;
+		return command ? command.area : [];
 	}
 
 	public getTargetable(): Tile[] {
-		const { action } = this.state;
-		return action ? action.targetable : [];
+		const { command } = this.state;
+		return command ? command.targetable : [];
 	}
 
 	public getTarget(): Tile | null {
-		const { action } = this.state;
-		const target = action ? action.target : null;
+		const { command } = this.state;
+		const target = command ? command.target : null;
 		return target ? target.tile : null;
 	}
 
 	public getEffectArea(): Tile[] {
-		const { action } = this.state;
-		const target = action ? action.target : null;
+		const { command } = this.state;
+		const target = command ? command.target : null;
 		return target ? target.effectArea : [];
 	}
 
 	public getEffectTarget(): Character | null {
-		const { action } = this.state;
-		const target = action ? action.target : null;
+		const { command } = this.state;
+		const target = command ? command.target : null;
 		return target ? target.character : null;
 	}
 
 	public getEffectTargets(): Character[] {
-		const { action } = this.state;
-		const target = action ? action.target : null;
+		const { command } = this.state;
+		const target = command ? command.target : null;
 		return target ? target.effectTargets.map(eff => eff.character) : [];
 	}
 
 	public getCombatInfo(): IEffectTargetData[] {
-		const { action } = this.state;
-		const target = action ? action.target : null;
+		const { command } = this.state;
+		const target = command ? command.target : null;
 		return target ? target.effectTargets : [];
 	}
 
-	public start(action: CharacterAction) {
+	public start(command: Command) {
 		const { phase } = this;
 
 		if ('SUSPENDED' !== phase) {
-			throw new Error('Could not start action phase: invalid phase ' + phase);
+			throw new Error('Could not start command phase: invalid phase ' + phase);
 		}
 		this.phase = 'IDLE';
-		this.selectAction(action);
+		this.selectCommand(command);
 	}
 
 	public selectTile(tile: Tile) {
@@ -130,29 +130,29 @@ class ActionPhase extends ActPhase<IActActionRecord> {
 		}
 	}
 
-	public selectAction(action: CharacterAction) {
-		if (!action.isActive()) {
-			throw new Error('Could not select action: action not active');
+	public selectCommand(command: Command) {
+		if (!command.isActive()) {
+			throw new Error('Could not select command: command not active');
 		}
 		switch (this.phase) {
 			case 'IDLE':
-				switch (action.type) {
+				switch (command.type) {
 					case 'ATTACK':
 					case 'DOUBLE_ATTACK':
 					case 'WEAPON':
 					case 'MAGIC':
 					case 'DYNAMIC': {
-						// set new action phase
-						if (!action.skills.length) {
-							throw new Error('Could not select action: action has no skills');
+						// set new command phase
+						if (!command.skills.length) {
+							throw new Error('Could not select command: no skills');
 						}
-						this.set(action);
+						this.set(command);
 						return;
 					}
 
 					case 'PASS':
-						// skip action phase
-						this.pass(action);
+						// skip command phase
+						this.pass(command);
 						return;
 
 					default:
@@ -160,14 +160,14 @@ class ActionPhase extends ActPhase<IActActionRecord> {
 				}
 
 			case 'TARGETING':
-				switch (action.type) {
+				switch (command.type) {
 					case 'CONFIRM':
-						// confirm selected action
+						// confirm selected command
 						this.confirm();
 						return;
 
 					case 'BACK':
-						// cancel selected action
+						// cancel selected command
 						this.cancel();
 						return;
 
@@ -181,11 +181,11 @@ class ActionPhase extends ActPhase<IActActionRecord> {
 		}
 	}
 
-	public serialize(): IActActionRecord {
-		const action = this.getAction();
+	public serialize(): IActCommandRecord {
+		const command = this.getCommand();
 		const target = this.getEffectTarget();
 		return {
-			action: (action ? action.title : null),
+			command: (command ? command.title : null),
 			target: (target ? target.data.id : null)
 		};
 	}
@@ -194,12 +194,12 @@ class ActionPhase extends ActPhase<IActActionRecord> {
 		const { actor, phase, characters } = this;
 
 		if ('TARGETING' !== phase) {
-			throw new Error('Could not set action target: invalid phase ' + phase);
+			throw new Error('Could not set command target: invalid phase ' + phase);
 		}
-		const action = this.state.action;
+		const { command } = this.state;
 
-		if (!action || !action.data.isActive()) {
-			throw new Error('Could not select action target: invalid action');
+		if (!command || !command.data.isActive()) {
+			throw new Error('Could not select command target: invalid command');
 		}
 		const targets = this.getTargetable();
 
@@ -207,7 +207,7 @@ class ActionPhase extends ActPhase<IActActionRecord> {
 			// tile not targetable
 			return;
 		}
-		const { skills } = action.data;
+		const { skills } = command.data;
 
 		// get skill effect area
 		const effectAreas = skills.map(s => s.getEffectArea(actor.position, tile));
@@ -223,75 +223,75 @@ class ActionPhase extends ActPhase<IActActionRecord> {
 				};
 			});
 
-		action.target = {
+		command.target = {
 			tile,
 			effectArea,
 			effectTargets,
 			character: effectTarget
 		};
 
-		this.onEvent('ACTION_TARGETED', effectTarget);
+		this.onEvent('COMMAND_TARGETED', effectTarget);
 	}
 
-	private set(action: CharacterAction) {
+	private set(command: Command) {
 		const { actor, characters, phase } = this;
 
 		if ('IDLE' !== phase) {
-			throw new Error('Could not set action: invalid phase ' + phase);
+			throw new Error('Could not set command: invalid phase ' + phase);
 		}
 		const allies = characters.filter(char => char.player === actor.player);
 		const hitScanObstacles = allies.map(char => char.position);
 
-		const skills = action.skills;
+		const { skills } = command;
 		const skillAreas = skills.map(skill => skill.getTargetable(actor.position, hitScanObstacles));
 		const area = getIntersection(skillAreas);
 		const targets = skills[0].getTargets(actor, characters, area);
 		const targetable = targets.map(char => char.position);
 
-		this.state.action = {
-			data: action,
+		this.state.command = {
+			data: command,
 			area,
 			targetable
 		};
 		this.phase = 'TARGETING';
-		this.onEvent('ACTION_SELECTED', action);
+		this.onEvent('COMMAND_SELECTED', command);
 	}
 
-	private pass(action: CharacterAction) {
+	private pass(command: Command) {
 		const { phase } = this;
 
 		if ('IDLE' !== phase) {
-			throw new Error('Could not pass: invalid phase ' + phase);
+			throw new Error('Could not pass command: invalid phase ' + phase);
 		}
-		this.state.action = {
-			data: action,
+		this.state.command = {
+			data: command,
 			area: [],
 			targetable: []
 		};
-		this.onEvent('ACTION_PASSED');
+		this.onEvent('COMMAND_PASSED');
 	}
 
 	private cancel() {
 		const { phase } = this;
 
 		if ('TARGETING' !== phase) {
-			throw new Error('Could not cancel action: invalid phase ' + phase);
+			throw new Error('Could not cancel command: invalid phase ' + phase);
 		}
-		delete this.state.action;
+		delete this.state.command;
 
 		this.phase = 'SUSPENDED';
-		this.onEvent('ACTION_CANCELLED');
+		this.onEvent('COMMAND_CANCELLED');
 	}
 
 	private confirm() {
 		const { phase } = this;
 
 		if ('TARGETING' !== phase) {
-			throw new Error('Could not confirm action: invalid phase ' + phase);
+			throw new Error('Could not confirm command: invalid phase ' + phase);
 		}
 		this.phase = 'DONE';
-		this.onEvent('ACTION_DONE');
+		this.onEvent('COMMAND_DONE');
 	}
 }
 
-export default ActionPhase;
+export default CommandPhase;

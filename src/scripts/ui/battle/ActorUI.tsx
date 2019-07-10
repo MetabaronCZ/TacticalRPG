@@ -1,31 +1,31 @@
 import React from 'react';
 
 import Act from 'modules/battle/act';
-import CharacterAction from 'modules/battle/character-action';
+import Command from 'modules/battle/command';
 
-import Actions from 'ui/battle/Actions';
-import ActionInfo from 'ui/battle/ActionInfo';
+import Commands from 'ui/battle/Commands';
+import CommandInfo from 'ui/battle/CommandInfo';
 import CharacterInfo from 'ui/battle/CharacterInfo';
 
 interface IProps {
 	act: Act | null;
-	onActionSelect: (action: CharacterAction) => void;
+	onCommandSelect: (command: Command) => void;
 }
 
-const ActorUI: React.SFC<IProps> = ({ act, onActionSelect }) => {
+const ActorUI: React.SFC<IProps> = ({ act, onCommandSelect }) => {
 	if (!act) {
 		return <React.Fragment />;
 	}
 	const { actor } = act;
-	const action = act.phases.ACTION.getAction();
+	const command = act.phases.COMMAND.getCommand();
 	const reactions = act.phases.REACTION.getReactions();
 
-	let actions = act.getActions();
+	let commands = act.getCommands();
 	let info = act.getInfo();
 
 	if ('REACTION' === act.getPhase()) {
 		info = '';
-		actions = [];
+		commands = [];
 	}
 	return (
 		<div className="CharacterBox">
@@ -33,9 +33,9 @@ const ActorUI: React.SFC<IProps> = ({ act, onActionSelect }) => {
 
 			<hr className="Separator" />
 
-			{!!action && (
+			{!!command && (
 				<React.Fragment>
-					<ActionInfo action={action} />
+					<CommandInfo command={command} />
 					<hr className="Separator" />
 				</React.Fragment>
 			)}
@@ -46,11 +46,11 @@ const ActorUI: React.SFC<IProps> = ({ act, onActionSelect }) => {
 						<strong>Targets:</strong>
 						<br/>
 						{reactions.map((tgt, t) => {
-							const { reactor, action: reactionAction } = tgt;
+							const { reactor, command: reactionCommand } = tgt;
 							let txt = '...';
 
-							if (reactionAction) {
-								txt = reactionAction.title;
+							if (reactionCommand) {
+								txt = reactionCommand.title;
 							}
 							return (
 								<div key={t}>
@@ -68,7 +68,7 @@ const ActorUI: React.SFC<IProps> = ({ act, onActionSelect }) => {
 			)}
 
 			{!actor.isAI() && (
-				<Actions actions={actions} onSelect={onActionSelect} />
+				<Commands commands={commands} onSelect={onCommandSelect} />
 			)}
 		</div>
 	);

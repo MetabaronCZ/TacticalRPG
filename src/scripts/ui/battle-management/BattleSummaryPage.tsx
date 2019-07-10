@@ -30,7 +30,7 @@ interface IRecordAnalysis {
 	actor: ICharacterData;
 	skipped: boolean;
 	move: string;
-	action: string;
+	command: string;
 	reactions: string[];
 }
 
@@ -56,29 +56,29 @@ const getRowInfo = (characters: ICharacterData[], record: IActRecord): IRecordAn
 		actor,
 		skipped: record.skipped,
 		move: '-',
-		action: '-',
+		command: '-',
 		reactions: []
 	};
 
 	if (record.skipped) {
 		return result;
 	}
-	const { movementPhase: movePhase, actionPhase, reactionPhase } = record;
+	const { movementPhase: movePhase, commandPhase, reactionPhase } = record;
 
 	if (movePhase.initialPosition !== movePhase.target) {
 		result.move = `${movePhase.initialPosition} → ${movePhase.target}`;
 	}
 
-	if (actionPhase.action) {
-		if (actionPhase.target) {
-			const target = characters.find(char => actionPhase.target === char.id);
+	if (commandPhase.command) {
+		if (commandPhase.target) {
+			const target = characters.find(char => commandPhase.target === char.id);
 
 			if (!target) {
-				throw new Error('Invalid character ID in record action target');
+				throw new Error('Invalid character ID in record command target');
 			}
-			result.action = `${actionPhase.action} → ${target.name}`;
+			result.command = `${commandPhase.command} → ${target.name}`;
 		} else {
-			result.action = actionPhase.action;
+			result.command = commandPhase.command;
 		}
 	}
 
@@ -86,9 +86,9 @@ const getRowInfo = (characters: ICharacterData[], record: IActRecord): IRecordAn
 		const reactor = characters.find(char => reaction.reactor === char.id);
 
 		if (!reactor) {
-			throw new Error('Invalid reactor ID in record action');
+			throw new Error('Invalid reactor ID in record reaction');
 		}
-		result.reactions.push(`${reactor.name} → ${reaction.action}`);
+		result.reactions.push(`${reactor.name} → ${reaction.command}`);
 	}
 
 	return result;
@@ -222,7 +222,7 @@ class BattleSummaryPage extends React.Component<IProps, IState> {
 						<div className="List-row-column">Act</div>
 						<div className="List-row-column">Actor</div>
 						<div className="List-row-column">Move</div>
-						<div className="List-row-column">Action</div>
+						<div className="List-row-column">Command</div>
 						<div className="List-row-column">Reaction/s</div>
 					</li>
 
@@ -247,7 +247,7 @@ class BattleSummaryPage extends React.Component<IProps, IState> {
 								</div>
 
 								<div className="List-row-column u-tableColumnFit">
-									{item.action}
+									{item.command}
 								</div>
 
 								<div className="List-row-column">

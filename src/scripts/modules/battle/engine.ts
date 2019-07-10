@@ -3,6 +3,9 @@ import { getRandomized } from 'core/array';
 import AIPresets from 'data/ai-presets';
 import * as config from 'data/game-config';
 
+import { getTile } from 'modules/geometry/tiles';
+import { getRandomNames } from 'modules/random-name-generator';
+
 import Logger from 'modules/logger';
 import Act from 'modules/battle/act';
 import Tile from 'modules/geometry/tile';
@@ -10,12 +13,10 @@ import Order from 'modules/battle/order';
 import AIPlayer from 'modules/ai/player';
 import Character from 'modules/character';
 import Player from 'modules/battle/player';
-import { getTile } from 'modules/geometry/tiles';
+import Command from 'modules/battle/command';
 import { IBattleInfo } from 'modules/battle/battle-info';
 import { DirectionID } from 'modules/geometry/direction';
-import CharacterAction from 'modules/battle/character-action';
 import CharacterCreationForm from 'modules/character-creation';
-import { getRandomNames } from 'modules/random-name-generator';
 import { PartyData, IPartyData } from 'modules/party-creation/party-data';
 import { PlayerConfigList } from 'modules/battle-configuration/battle-config';
 import { CharacterData, ICharacterData } from 'modules/character-creation/character-data';
@@ -95,14 +96,14 @@ class Engine {
 		this.act.selectTile(tile);
 	}
 
-	public selectAction(action: CharacterAction) {
+	public selectCommand(command: Command) {
 		if (!this.act) {
-			throw new Error('Could not select action: invalid act');
+			throw new Error('Could not select command: invalid act');
 		}
 		if (!this.running) {
 			return;
 		}
-		this.act.selectAction(action);
+		this.act.selectCommand(command);
 	}
 
 	public getState(): IEngineState {
@@ -218,8 +219,8 @@ class Engine {
 					aiConf = AIPresets.get(preset).config;
 				}
 				const selectTile = (tile: Tile) => this.selectTile(tile);
-				const selectAction = (action: CharacterAction) => this.selectAction(action);
-				player = new AIPlayer(p, name, aiConf, selectTile, selectAction);
+				const selectCommand = (cmd: Command) => this.selectCommand(cmd);
+				player = new AIPlayer(p, name, aiConf, selectTile, selectCommand);
 
 			} else {
 				// human controlled player

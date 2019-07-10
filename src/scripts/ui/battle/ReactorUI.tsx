@@ -3,23 +3,23 @@ import React from 'react';
 import { affinityData } from 'data/damage';
 
 import Act from 'modules/battle/act';
+import Command from 'modules/battle/command';
 import StatusEffect from 'modules/battle/status-effect';
-import CharacterAction from 'modules/battle/character-action';
 
-import Actions from 'ui/battle/Actions';
-import ActionInfo from 'ui/battle/ActionInfo';
+import Commands from 'ui/battle/Commands';
+import CommandInfo from 'ui/battle/CommandInfo';
 import CharacterInfo from 'ui/battle/CharacterInfo';
 
 interface IProps {
 	act: Act | null;
-	onActionSelect: (action: CharacterAction) => void;
+	onCommandSelect: (command: Command) => void;
 }
 
 const formatStatus = (status: StatusEffect[]) => {
 	return status.map(st => st.title).join(', ') || 'none';
 };
 
-const ReactorUI: React.SFC<IProps> = ({ act, onActionSelect }) => {
+const ReactorUI: React.SFC<IProps> = ({ act, onCommandSelect }) => {
 	if (!act) {
 		return <React.Fragment />;
 	}
@@ -28,13 +28,13 @@ const ReactorUI: React.SFC<IProps> = ({ act, onActionSelect }) => {
 	if (!reaction) {
 		return <React.Fragment />;
 	}
-	const { reactor, action, combat } = reaction;
-	let actions = act.getActions();
+	const { reactor, command, combat } = reaction;
+	let commands = act.getCommands();
 	let info = act.getInfo();
 
 	if ('REACTION' !== act.getPhase()) {
 		info = '';
-		actions = [];
+		commands = [];
 	}
 	return (
 		<div className="CharacterBox">
@@ -67,9 +67,9 @@ const ReactorUI: React.SFC<IProps> = ({ act, onActionSelect }) => {
 			})}
 			<hr className="Separator" />
 
-			{!!action && (
+			{!!command && (
 				<React.Fragment>
-					<ActionInfo action={action} />
+					<CommandInfo command={command} />
 					<hr className="Separator" />
 				</React.Fragment>
 			)}
@@ -79,7 +79,7 @@ const ReactorUI: React.SFC<IProps> = ({ act, onActionSelect }) => {
 			)}
 
 			{!reactor.isAI() && (
-				<Actions actions={actions} onSelect={onActionSelect} />
+				<Commands commands={commands} onSelect={onCommandSelect} />
 			)}
 		</div>
 	);

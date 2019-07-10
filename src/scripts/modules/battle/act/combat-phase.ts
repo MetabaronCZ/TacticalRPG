@@ -10,10 +10,10 @@ import { getDamage, IDamage } from 'modules/battle/damage';
 import Logger from 'modules/logger';
 import Tile from 'modules/geometry/tile';
 import Character from 'modules/character';
+import Command from 'modules/battle/command';
 import ActPhase from 'modules/battle/act/phase';
 import { IOnActPhaseEvent } from 'modules/battle/act';
 import { IBattleInfo } from 'modules/battle/battle-info';
-import CharacterAction from 'modules/battle/character-action';
 
 export interface IActCombatRecord {
 	readonly results: ICombatResult[];
@@ -51,7 +51,7 @@ class CombatPhase extends ActPhase<IActCombatRecord> {
 		return this.phase;
 	}
 
-	public start(action: CharacterAction, effectArea: Tile[], targets: Character[]) {
+	public start(command: Command, effectArea: Tile[], targets: Character[]) {
 		const { actor, phase } = this;
 
 		if ('SUSPENDED' !== phase) {
@@ -59,7 +59,7 @@ class CombatPhase extends ActPhase<IActCombatRecord> {
 		}
 		this.phase = 'ANIMATION';
 
-		const { skills } = action;
+		const { skills } = command;
 		const timing = Array(skills.length).fill(skillAnimDuration);
 
 		const skillAnim = new Animation(timing, step => {
@@ -100,7 +100,7 @@ class CombatPhase extends ActPhase<IActCombatRecord> {
 					this.onEvent('BATTLE_INFO', i);
 
 					const elm = (i.element ? `(${i.element})` : '');
-					Logger.info(`ActAction battle: ${i.type} ${i.text} ${elm}`);
+					Logger.info(`ActCombat: ${i.type} ${i.text} ${elm}`);
 				});
 
 				// start battle info animation
@@ -111,7 +111,7 @@ class CombatPhase extends ActPhase<IActCombatRecord> {
 
 			if (step.isLast) {
 				// finalize step
-				actor.act(action);
+				actor.act(command);
 
 				for (const target of targets) {
 					// remove reactive statuses
@@ -132,7 +132,7 @@ class CombatPhase extends ActPhase<IActCombatRecord> {
 		// do nothing
 	}
 
-	public selectAction(action: CharacterAction) {
+	public selectCommand(command: Command) {
 		// do nothing
 	}
 

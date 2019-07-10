@@ -2,17 +2,17 @@ import { resolveDirection } from 'modules/geometry/direction';
 
 import Tile from 'modules/geometry/tile';
 import Character from 'modules/character';
+import Command from 'modules/battle/command';
 import ActPhase from 'modules/battle/act/phase';
 import { IDamage } from 'modules/battle/damage';
 import { IOnActPhaseEvent } from 'modules/battle/act';
 import { StatusEffectID } from 'modules/battle/status-effect';
-import CharacterAction from 'modules/battle/character-action';
-import { IEffectTargetData } from 'modules/battle/act/action-phase';
+import { IEffectTargetData } from 'modules/battle/act/command-phase';
 
 export interface IActReactionRecord {
 	reactions: Array<{
 		readonly reactor: string;
-		readonly action: string | null;
+		readonly command: string | null;
 		readonly evasionTarget: string | null;
 	}>;
 }
@@ -30,7 +30,7 @@ interface IReaction {
 	readonly reactor: Character;
 	readonly combat: IDamage[];
 	phase: IReactionPhase;
-	action: CharacterAction | null;
+	command: Command | null;
 	evasible: Tile[];
 	evasionTarget: Tile | null;
 }
@@ -79,9 +79,9 @@ class ReactionPhase extends ActPhase<IActReactionRecord> {
 		}
 	}
 
-	public selectAction(action: CharacterAction) {
-		if (!action.isActive()) {
-			throw new Error('Could not select reaction: action not active');
+	public selectCommand(command: Command) {
+		if (!command.isActive()) {
+			throw new Error('Could not select reaction: command not active');
 		}
 		const reaction = this.getReaction();
 
@@ -90,13 +90,13 @@ class ReactionPhase extends ActPhase<IActReactionRecord> {
 		}
 		switch (reaction.phase) {
 			case 'IDLE':
-				switch (action.type) {
+				switch (command.type) {
 					case 'REACTION':
-						this.react(reaction, action);
+						this.react(reaction, command);
 						return;
 
 					case 'DONT_REACT':
-						this.pass(reaction, action);
+						this.pass(reaction, command);
 						return;
 
 					default:
@@ -104,7 +104,7 @@ class ReactionPhase extends ActPhase<IActReactionRecord> {
 				}
 
 			case 'EVASION':
-				if ('BACK' === action.type) {
+				if ('BACK' === command.type) {
 					this.cancelEvasion(reaction);
 				}
 				return;
@@ -130,7 +130,7 @@ class ReactionPhase extends ActPhase<IActReactionRecord> {
 			phase: 'SUSPENDED',
 			reactor: info.character,
 			combat: info.damage,
-			action: null,
+			command: null,
 			evasible: [],
 			evasionTarget: null
 		}));
@@ -140,10 +140,10 @@ class ReactionPhase extends ActPhase<IActReactionRecord> {
 
 	public serialize(): IActReactionRecord {
 		return {
-			reactions: this.reactions.map(({ reactor, action, evasionTarget }) => {
+			reactions: this.reactions.map(({ reactor, command, evasionTarget }) => {
 				const reaction = {
 					reactor: reactor.data.id,
-					action: (action ? action.title : null),
+					command: (command ? command.title : null),
 					evasionTarget: (evasionTarget ? evasionTarget.id : null)
 				};
 				return reaction;
@@ -173,22 +173,22 @@ class ReactionPhase extends ActPhase<IActReactionRecord> {
 		this.onEvent('REACTION_IDLE');
 	}
 
-	private react(reaction: IReaction, action: CharacterAction) {
+	private react(reaction: IReaction, command: Command) {
 		const { phase, combat } = reaction;
 
 		if ('IDLE' !== phase) {
 			throw new Error('Could not set reaction: invalid phase ' + phase);
 		}
-		if (!action.isActive() || !action.skills.length) {
-			throw new Error('Could not react: invalid action');
+		if (!command.isActive() || !command.skills.length) {
+			throw new Error('Could not react: invalid command');
 		}
 
 		if (combat[0].backAttack) {
 			throw new Error('Cannot react if back attacked');
 		}
-		reaction.action = action;
+		reaction.command = command;
 
-		const skill = action.skills[0];
+		const skill = command.skills[0];
 
 		switch (skill.id) {
 			case 'ENERGY_SHIELD':
@@ -229,19 +229,19 @@ class ReactionPhase extends ActPhase<IActReactionRecord> {
 			throw new Error('Could not cancel evasion: invalid phase ' + phase);
 		}
 		reaction.phase = 'IDLE';
-		reaction.action = null;
+		reaction.command = null;
 		reaction.evasible = [];
 
 		this.onEvent('REACTION_IDLE');
 	}
 
-	private pass(reaction: IReaction, action: CharacterAction) {
+	private pass(reaction: IReaction, command: Command) {
 		const { phase } = reaction;
 
 		if ('IDLE' !== phase) {
 			throw new Error('Could not pass reaction: invalid phase ' + phase);
 		}
-		reaction.action = action;
+		reaction.command = command;
 		this.finish(reaction);
 	}
 
@@ -261,14 +261,14 @@ class ReactionPhase extends ActPhase<IActReactionRecord> {
 	}
 
 	private setEvasionTarget(reaction: IReaction, tile: Tile) {
-		const { action, reactor, phase, evasible } = reaction;
+		const { command, reactor, phase, evasible } = reaction;
 
 		if ('EVASION' !== phase) {
 			throw new Error('Could not set evasion target: invalid phase ' + phase);
 		}
 
-		if (!action) {
-			throw new Error('Could not set evasion target: invalid action');
+		if (!command) {
+			throw new Error('Could not set evasion target: invalid command');
 		}
 
 		if (!tile.isContained(evasible)) {
@@ -277,7 +277,7 @@ class ReactionPhase extends ActPhase<IActReactionRecord> {
 		}
 		reaction.evasionTarget = tile;
 
-		const skill = action.skills[0];
+		const skill = command.skills[0];
 
 		// update reacting character
 		const { AP } = reactor.attributes;
@@ -293,7 +293,7 @@ class ReactionPhase extends ActPhase<IActReactionRecord> {
 	}
 
 	private finish(reaction: IReaction) {
-		this.onEvent('REACTION_FINISHED', reaction.action);
+		this.onEvent('REACTION_FINISHED', reaction.command);
 
 		this.reaction++;
 		this.startReact();

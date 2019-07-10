@@ -25,12 +25,12 @@
 		&.GridTiles-item--movePath { @include mx-grid-tile($blue-bg, $blue-border); }
 		&.GridTiles-item--moveTarget { @include mx-grid-tile($yellow-bg, $yellow-border); }
 
-		&.GridTiles-item--actionRange { @include mx-grid-tile($green-bg, $green-border); }
-		&.GridTiles-item--actionTargetable { @include mx-grid-tile($blue-bg, $blue-border); }
+		&.GridTiles-item--commandRange { @include mx-grid-tile($green-bg, $green-border); }
+		&.GridTiles-item--commandTargetable { @include mx-grid-tile($blue-bg, $blue-border); }
 
-		&.GridTiles-item--actionEffectArea { @include mx-grid-tile($green-bg, $green-border); }
-		&.GridTiles-item--actionEffectTargets { @include mx-grid-tile($blue-bg, $blue-border); }
-		&.GridTiles-item--actionEffectTarget { @include mx-grid-tile($yellow-bg, $yellow-border); }
+		&.GridTiles-item--commandEffectArea { @include mx-grid-tile($green-bg, $green-border); }
+		&.GridTiles-item--commandEffectTargets { @include mx-grid-tile($blue-bg, $blue-border); }
+		&.GridTiles-item--commandEffectTarget { @include mx-grid-tile($yellow-bg, $yellow-border); }
 
 		&.GridTiles-item--reactors { @include mx-grid-tile($blue-bg, $blue-border); }
 		&.GridTiles-item--reactionEvasible { @include mx-grid-tile($green-bg, $green-border); }

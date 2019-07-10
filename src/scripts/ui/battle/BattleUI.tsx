@@ -2,7 +2,7 @@ import React from 'react';
 
 import Tile from 'modules/geometry/tile';
 import { IEngineState } from 'modules/battle/engine';
-import CharacterAction from 'modules/battle/character-action';
+import Command from 'modules/battle/command';
 
 import Button from 'ui/common/Button';
 
@@ -17,11 +17,11 @@ interface IBattleUIProps {
 	engineState: IEngineState;
 	engineUpdate: Date | null;
 	onTileSelect: (tile: Tile) => void;
-	onActionSelect: (action: CharacterAction) => void;
+	onCommandSelect: (command: Command) => void;
 	onExit: () => void;
 }
 
-const BattleUI: React.SFC<IBattleUIProps> = ({ engineState, engineUpdate, onTileSelect, onActionSelect, onExit }) => {
+const BattleUI: React.SFC<IBattleUIProps> = ({ engineState, engineUpdate, onTileSelect, onCommandSelect: onCommandSelect, onExit }) => {
 	if (!engineUpdate) {
 		return <p className="Paragraph">Loading...</p>;
 	}
@@ -41,7 +41,7 @@ const BattleUI: React.SFC<IBattleUIProps> = ({ engineState, engineUpdate, onTile
 
 				<div className="BattleUI-layout-column BattleUI-layout-column--actor">
 					{running
-						? <ActorUI act={act} onActionSelect={onActionSelect} />
+						? <ActorUI act={act} onCommandSelect={onCommandSelect} />
 						: (
 							<React.Fragment>
 								<h2 className="Heading">Game Over</h2>
@@ -65,7 +65,7 @@ const BattleUI: React.SFC<IBattleUIProps> = ({ engineState, engineUpdate, onTile
 
 				<div className="BattleUI-layout-column BattleUI-layout-column--reactor">
 					{running && (
-						<ReactorUI act={act} onActionSelect={onActionSelect} />
+						<ReactorUI act={act} onCommandSelect={onCommandSelect} />
 					)}
 				</div>
 			</div>
