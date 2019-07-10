@@ -6,8 +6,8 @@ BUG
 
 TODO
 ----------------------------------------------------------------------------------------------------------
---	combat info by se melo ukazat uz po vybrani cile akce
-	--	zaroven nebude treba mit CONTINUE u healing akci a po CONFIRM je rovnou provest
+--	pri najeti na postavu na Gridu:
+	- ukazat plne jmeno, HP, MP, AP
 --	pod grid pridat legendu s vyznamem podbarvenych poli
 --	COMBAT faze:
 	- udrzet hodnoty Combat; predat do Chronox

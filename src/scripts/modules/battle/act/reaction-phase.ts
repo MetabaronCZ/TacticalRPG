@@ -8,6 +8,7 @@ import { ICombatInfo } from 'modules/battle/combat';
 import { IOnActPhaseEvent } from 'modules/battle/act';
 import { StatusEffectID } from 'modules/battle/status-effect';
 import { IEffectTargetData } from 'modules/battle/act/command-phase';
+import { getContinueCommand } from 'modules/battle/commands';
 
 export interface IActReactionRecord {
 	reactions: Array<{
@@ -170,7 +171,16 @@ class ReactionPhase extends ActPhase<IActReactionRecord> {
 		// turn actor to face active reactor
 		actor.direction = resolveDirection(actor.position, reaction.reactor.position);
 
-		this.onEvent('REACTION_IDLE');
+		const isSupport = !!reaction.combat.find(item => 'SUPPORT' === item.type);
+
+		if (isSupport) {
+			// force reaction pass
+			const passAction = getContinueCommand();
+			this.pass(reaction, passAction);
+		} else {
+			// wait for reaction selection
+			this.onEvent('REACTION_IDLE');
+		}
 	}
 
 	private react(reaction: IReaction, command: Command) {
