@@ -2,10 +2,10 @@ import Animation from 'core/animation';
 import { getRandomItem } from 'core/array';
 import { formatNumber, randomNumberBetween } from 'core/number';
 
-import { affinityData } from 'data/damage';
+import { affinityData } from 'data/combat';
 import { skillAnimDuration } from 'data/game-config';
 
-import { getDamage, IDamage } from 'modules/battle/damage';
+import { getCombatInfo, ICombatInfo } from 'modules/battle/combat';
 
 import Logger from 'modules/logger';
 import Tile from 'modules/geometry/tile';
@@ -20,7 +20,8 @@ export interface IActCombatRecord {
 }
 
 export interface ICombatResult {
-	readonly x?: any;
+	readonly character: string;
+	readonly result: 'DAMAGED' | 'HEALED' | 'KILLED' | 'REVIVED';
 }
 
 type Phase = 'SUSPENDED' | 'ANIMATION' | 'DONE';
@@ -66,8 +67,8 @@ class CombatPhase extends ActPhase<IActCombatRecord> {
 			const info: IBattleInfo[] = [];
 
 			for (const target of targets) {
-				const damage = getDamage(actor, target, skills[step.number]);
-				const { position } = damage.target;
+				const combat = getCombatInfo(actor, target, skills[step.number]);
+				const { position } = combat.target;
 
 				if (!position.isContained(effectArea)) {
 					// target has been pushed / evaded from skill effect area
@@ -78,17 +79,17 @@ class CombatPhase extends ActPhase<IActCombatRecord> {
 					});
 					continue;
 				}
-				switch (damage.type) {
+				switch (combat.type) {
 					case 'SUPPORT':
-						this.handleSupport(damage, info);
+						this.handleSupport(combat, info);
 						break;
 
 					case 'DAMAGE':
-						this.handleDamage(damage, info);
+						this.handleDamage(combat, info);
 						break;
 
 					default:
-						throw new Error('Invalid combat info type: ' + damage.type);
+						throw new Error('Invalid combat info type: ' + combat.type);
 				}
 			}
 
@@ -142,8 +143,8 @@ class CombatPhase extends ActPhase<IActCombatRecord> {
 		};
 	}
 
-	private handleSupport(damage: IDamage, info: IBattleInfo[]) {
-		const { caster, target, skill, healing, status } = damage;
+	private handleSupport(combat: ICombatInfo, info: IBattleInfo[]) {
+		const { caster, target, skill, healing, status } = combat;
 		const isDying = target.status.has('DYING');
 		const isDead = target.isDead();
 		const { position } = target;
@@ -203,8 +204,8 @@ class CombatPhase extends ActPhase<IActCombatRecord> {
 		}
 	}
 
-	private handleDamage(damage: IDamage, info: IBattleInfo[]) {
-		const { caster, target, skill, blocked, shielded, affinity, status } = damage;
+	private handleDamage(combat: ICombatInfo, info: IBattleInfo[]) {
+		const { caster, target, skill, blocked, shielded, affinity, status } = combat;
 		const targetDying = target.status.has('DYING');
 		const { position } = target;
 
@@ -227,7 +228,7 @@ class CombatPhase extends ActPhase<IActCombatRecord> {
 		}
 
 		// back attacked
-		if (damage.backAttack) {
+		if (combat.backAttack) {
 			info.push({
 				text: 'Back attack',
 				type: 'ACTION',
@@ -238,7 +239,7 @@ class CombatPhase extends ActPhase<IActCombatRecord> {
 		// physical damage done
 		if (skill.physical) {
 			info.push({
-				text: formatNumber(damage.physical),
+				text: formatNumber(combat.physical),
 				type: 'DAMAGE',
 				position
 			});
@@ -254,7 +255,7 @@ class CombatPhase extends ActPhase<IActCombatRecord> {
 				});
 			}
 			info.push({
-				text: formatNumber(damage.magical),
+				text: formatNumber(combat.magical),
 				type: 'DAMAGE',
 				element: skill.element,
 				position
@@ -264,7 +265,7 @@ class CombatPhase extends ActPhase<IActCombatRecord> {
 		// apply skill damage / statuses to target
 		const statuses = status.map(item => item.id);
 		const mpDamage = (shielded ? shielded.cost : 0);
-		target.onDamage(caster, damage.physical, damage.magical, mpDamage, statuses);
+		target.onDamage(caster, combat.physical, combat.magical, mpDamage, statuses);
 
 		if (targetDying) {
 			info.push({

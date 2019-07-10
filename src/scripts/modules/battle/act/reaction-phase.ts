@@ -4,7 +4,7 @@ import Tile from 'modules/geometry/tile';
 import Character from 'modules/character';
 import Command from 'modules/battle/command';
 import ActPhase from 'modules/battle/act/phase';
-import { IDamage } from 'modules/battle/damage';
+import { ICombatInfo } from 'modules/battle/combat';
 import { IOnActPhaseEvent } from 'modules/battle/act';
 import { StatusEffectID } from 'modules/battle/status-effect';
 import { IEffectTargetData } from 'modules/battle/act/command-phase';
@@ -28,7 +28,7 @@ export type ReactionPhaseEvents =
 
 interface IReaction {
 	readonly reactor: Character;
-	readonly combat: IDamage[];
+	readonly combat: ICombatInfo[];
 	phase: IReactionPhase;
 	command: Command | null;
 	evasible: Tile[];
@@ -129,7 +129,7 @@ class ReactionPhase extends ActPhase<IActReactionRecord> {
 		this.reactions = combatInfo.map(info => ({
 			phase: 'SUSPENDED',
 			reactor: info.character,
-			combat: info.damage,
+			combat: info.combat,
 			command: null,
 			evasible: [],
 			evasionTarget: null

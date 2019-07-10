@@ -5,7 +5,7 @@ import Character from 'modules/character';
 import Command from 'modules/battle/command';
 import ActPhase from 'modules/battle/act/phase';
 import { IOnActPhaseEvent } from 'modules/battle/act';
-import { getDamage, IDamage } from 'modules/battle/damage';
+import { getCombatInfo, ICombatInfo } from 'modules/battle/combat';
 
 export interface IActCommandRecord {
 	readonly command: string | null;
@@ -14,7 +14,7 @@ export interface IActCommandRecord {
 
 export interface IEffectTargetData {
 	character: Character;
-	damage: IDamage[];
+	combat: ICombatInfo[];
 }
 
 interface IState {
@@ -216,12 +216,10 @@ class CommandPhase extends ActPhase<IActCommandRecord> {
 
 		const effectTargets = skills[0]
 			.getTargets(actor, characters, effectArea)
-			.map(tgt => {
-				return {
-					character: tgt,
-					damage: skills.map(skill => getDamage(actor, tgt, skill))
-				};
-			});
+			.map(tgt => ({
+				character: tgt,
+				combat: skills.map(skill => getCombatInfo(actor, tgt, skill))
+			}));
 
 		command.target = {
 			tile,

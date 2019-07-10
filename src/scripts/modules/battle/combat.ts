@@ -1,6 +1,6 @@
 import Skills from 'data/skills';
 import Weapons from 'data/weapons';
-import * as DMG from 'data/damage';
+import * as DMG from 'data/combat';
 
 import Skill from 'modules/skill';
 import Character from 'modules/character';
@@ -20,7 +20,7 @@ interface IShieldValue {
 	cost: number;
 }
 
-export interface IDamage {
+export interface ICombatInfo {
 	type: 'DAMAGE' | 'SUPPORT';
 	caster: Character;
 	target: Character;
@@ -60,18 +60,18 @@ const getDirectionalModifier = (backAttacked: boolean): number => {
 	return backAttacked ? DMG.backAttackModifier : 1;
 };
 
-const getBlock = (defender: Character): number | null => {
-	const hasShield = ('SHIELD' === defender.offHand.type);
+const getBlock = (character: Character): number | null => {
+	const hasShield = ('SHIELD' === character.offHand.type);
 
 	if (hasShield) {
-		const shield = defender.offHand;
+		const shield = character.offHand;
 		let skill: ISkillData | null = null;
 
-		if (defender.status.has('BLOCK_SMALL')) {
+		if (character.status.has('BLOCK_SMALL')) {
 			skill = Skills.get('SHD_SMALL_BLOCK');
 		}
 
-		if (defender.status.has('BLOCK_LARGE')) {
+		if (character.status.has('BLOCK_LARGE')) {
 			skill = Skills.get('SHD_LARGE_BLOCK');
 		}
 
@@ -101,11 +101,11 @@ const getBlockValue = (physical: number, magical: number, block: number | null):
 	};
 };
 
-const getShield = (defender: Character): number | null => {
-	if (!defender.status.has('ENERGY_SHIELD')) {
+const getShield = (character: Character): number | null => {
+	if (!character.status.has('ENERGY_SHIELD')) {
 		return null;
 	}
-	return defender.attributes.MP;
+	return character.attributes.MP;
 };
 
 const getShieldValue = (physical: number, magical: number, shield: number | null): IShieldValue | null => {
@@ -128,7 +128,7 @@ const getShieldValue = (physical: number, magical: number, shield: number | null
 	};
 };
 
-const getPhysicalDamage = (attacker: Character, skill: Skill): number => {
+const getPhysicalDamage = (character: Character, skill: Skill): number => {
 	if (0 === skill.physical) {
 		return 0;
 	}
@@ -138,17 +138,17 @@ const getPhysicalDamage = (attacker: Character, skill: Skill): number => {
 	if (skill.isFixedDamage) {
 		return skill.physical;
 	} else {
-		return (attacker.attributes.STR + weaponDamage) * skill.physical;
+		return (character.attributes.STR + weaponDamage) * skill.physical;
 	}
 };
 
-const getMagicalDamage = (attacker: Character, skill: Skill): number => {
+const getMagicalDamage = (character: Character, skill: Skill): number => {
 	if (0 === skill.magical) {
 		return 0;
 	}
-	const { mainHand, offHand } = attacker;
+	const { mainHand, offHand } = character;
 	const weaponDamage = mainHand.magical + offHand.magical;
-	return (attacker.attributes.MAG + weaponDamage) * skill.magical;
+	return (character.attributes.MAG + weaponDamage) * skill.magical;
 };
 
 const getStatusModifier = (attacker: Character, defender: Character): number => {
@@ -169,14 +169,14 @@ const getStatusModifier = (attacker: Character, defender: Character): number => 
 	return mod;
 };
 
-const getStatusEffects = (attacker: Character, defender: Character, skill: Skill, isSupport: boolean): StatusEffect[] => {
-	const statuses = skill.status.map(id => new StatusEffect(id, attacker));
+const getStatusEffects = (caster: Character, target: Character, skill: Skill, isSupport: boolean): StatusEffect[] => {
+	const statuses = skill.status.map(id => new StatusEffect(id, caster));
 
 	if (isSupport) {
 		return statuses;
 	}
-	const { STR: attSTR, MAG: attMAG } = attacker.attributes;
-	const { VIT: defVIT, SPR: defSPR } = defender.attributes;
+	const { STR: attSTR, MAG: attMAG } = caster.attributes;
+	const { VIT: defVIT, SPR: defSPR } = target.attributes;
 	const effects: StatusEffect[] = [];
 
 	for (const status of statuses) {
@@ -204,10 +204,10 @@ const getStatusEffects = (attacker: Character, defender: Character, skill: Skill
 	return effects;
 };
 
-export const getDamage = (caster: Character, target: Character, skill: Skill): IDamage => {
+export const getCombatInfo = (caster: Character, target: Character, skill: Skill): ICombatInfo => {
 	const isSupport = (caster.player === target.player);
 
-	const result: IDamage = {
+	const result: ICombatInfo = {
 		type: 'DAMAGE',
 		caster,
 		target,

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { affinityData } from 'data/damage';
+import { affinityData } from 'data/combat';
 
 import Act from 'modules/battle/act';
 import Command from 'modules/battle/command';

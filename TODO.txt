@@ -6,8 +6,6 @@ BUG
 
 TODO
 ----------------------------------------------------------------------------------------------------------
->>	preformulovat Action/s -> Command/s
-	--	Action pouzivat misto Combat/Damage
 --	combat info by se melo ukazat uz po vybrani cile akce
 	--	potom v ReactorUI nic nerenderovat, pokud je reactor AI
 	--	zaroven nebude treba mit CONTINUE u healing akci a po CONFIRM je rovnou provest
