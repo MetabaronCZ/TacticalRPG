@@ -8,14 +8,11 @@ import CommandInfo from 'ui/battle/CommandInfo';
 import CharacterInfo from 'ui/battle/CharacterInfo';
 
 interface IProps {
-	act: Act | null;
+	act: Act;
 	onCommandSelect: (command: Command) => void;
 }
 
 const ActorUI: React.SFC<IProps> = ({ act, onCommandSelect }) => {
-	if (!act) {
-		return <React.Fragment />;
-	}
 	const { actor } = act;
 	const command = act.phases.COMMAND.getCommand();
 	const reactions = act.phases.REACTION.getReactions();

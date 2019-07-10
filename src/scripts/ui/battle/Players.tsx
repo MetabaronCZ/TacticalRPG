@@ -12,7 +12,7 @@ import PlayerIco from 'ui/battle/PlayerIco';
 import CharacterBadge from 'ui/battle/CharacterBadge';
 
 interface IProps {
-	act: Act | null;
+	act: Act;
 	players: Player[];
 }
 
@@ -28,7 +28,7 @@ class Players extends React.Component<IProps, IState> {
 	public render() {
 		const { players, act } = this.props;
 		const { visibleBadge } = this.state;
-		const actingCharacter = act ? act.getActingCharacter() : null;
+		const actingCharacter = act.getActingCharacter();
 
 		const badgeCharacter = visibleBadge
 			? players[visibleBadge[0]].getCharacters().find((char, c) => c === visibleBadge[1])
@@ -55,7 +55,7 @@ class Players extends React.Component<IProps, IState> {
 
 							<tbody>
 								{pl.getCharacters().map((char, c) => {
-									const isActor = (!!act && act.actor === char);
+									const isActor = (act.actor === char);
 									let state = '';
 
 									if (isActor) {

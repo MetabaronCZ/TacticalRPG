@@ -10,6 +10,7 @@ import Grid from 'ui/battle/Grid';
 import Order from 'ui/battle/Order';
 import Players from 'ui/battle/Players';
 import ActorUI from 'ui/battle/ActorUI';
+import TargetUI from 'ui/battle/TargetUI';
 import ReactorUI from 'ui/battle/ReactorUI';
 import GridCoordinates from 'ui/battle/GridCoordinates';
 
@@ -65,7 +66,9 @@ const BattleUI: React.SFC<IBattleUIProps> = ({ engineState, engineUpdate, onTile
 
 				<div className="BattleUI-layout-column BattleUI-layout-column--reactor">
 					{running && (
-						<ReactorUI act={act} onCommandSelect={onCommandSelect} />
+						'COMMAND' === act.getPhase()
+							? <TargetUI act={act} />
+							: <ReactorUI act={act} onCommandSelect={onCommandSelect} />
 					)}
 				</div>
 			</div>

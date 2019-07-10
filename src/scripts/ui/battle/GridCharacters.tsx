@@ -8,7 +8,7 @@ import Player from 'modules/battle/player';
 const itemSize = 100 / gridSize;
 
 interface IGridChactersProps {
-	actor: Character | null;
+	actor: Character;
 	players: Player[];
 	characters: Character[];
 }

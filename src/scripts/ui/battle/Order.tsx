@@ -5,14 +5,14 @@ import Character from 'modules/character';
 import Player from 'modules/battle/player';
 
 interface IOrderProps {
-	act: Act | null;
+	act: Act;
 	players: Player[];
 	characters: Character[];
 }
 
-const getState = (act: Act | null, char: Character): string => {
+const getState = (act: Act, char: Character): string => {
 	const isDying = char.status.has('DYING');
-	const isActive = !!(act && act.actor === char);
+	const isActive = (act.actor === char);
 	return (isDying ? 'dying' : (isActive ? 'active' : ''));
 };
 

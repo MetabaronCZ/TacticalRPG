@@ -1,12 +1,10 @@
 import React from 'react';
 
-import { affinityData } from 'data/combat';
-
 import Act from 'modules/battle/act';
 import Command from 'modules/battle/command';
-import StatusEffect from 'modules/battle/status-effect';
 
 import Commands from 'ui/battle/Commands';
+import CombatInfo from 'ui/battle/CombatInfo';
 import CommandInfo from 'ui/battle/CommandInfo';
 import CharacterInfo from 'ui/battle/CharacterInfo';
 
@@ -14,10 +12,6 @@ interface IProps {
 	act: Act | null;
 	onCommandSelect: (command: Command) => void;
 }
-
-const formatStatus = (status: StatusEffect[]) => {
-	return status.map(st => st.title).join(', ') || 'none';
-};
 
 const ReactorUI: React.SFC<IProps> = ({ act, onCommandSelect }) => {
 	if (!act) {
@@ -41,30 +35,7 @@ const ReactorUI: React.SFC<IProps> = ({ act, onCommandSelect }) => {
 			<CharacterInfo character={reactor} />
 			<hr className="Separator" />
 
-			{combat.map((skill, s) => {
-				if ('SUPPORT' === skill.type) {
-					return (
-						<div className="Paragraph" key={s}>
-							<div><strong>Skill:</strong> {skill.skill.title}</div>
-							<div><strong>Healing:</strong> {skill.healing}</div>
-							<div><strong>Status:</strong> {formatStatus(skill.status)}</div>
-						</div>
-					);
-				}
-				const elm = skill.skill.element;
-				return (
-					<div className="Paragraph" key={s}>
-						<div><strong>Skill:</strong> {skill.skill.title}</div>
-						<div><strong>Physical:</strong> {skill.physical}</div>
-						<div><strong>Magical:</strong> {skill.magical} {'NONE' !== elm ? `(${elm})` : ''}</div>
-						<div><strong>Status:</strong> {formatStatus(skill.status)}</div>
-						{combat[0].backAttack && (
-							<div>&rsaquo;&nbsp;Back attack</div>
-						)}
-						<div>&rsaquo;&nbsp;{affinityData[skill.affinity].title}</div>
-					</div>
-				);
-			})}
+			<CombatInfo combat={combat} />
 			<hr className="Separator" />
 
 			{!!command && (

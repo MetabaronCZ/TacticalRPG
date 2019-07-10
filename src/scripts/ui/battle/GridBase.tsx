@@ -9,7 +9,7 @@ import { getTiles } from 'modules/geometry/tiles';
 const itemSize = 100 / gridSize;
 
 interface IGridBaseProps {
-	act: Act | null;
+	act: Act;
 	onSelect: (tile: Tile) => void;
 }
 
@@ -21,12 +21,9 @@ type TileType =
 	'reactors' | 'reactionEvasible' | 'reactor' |
 	'directable' | 'directTarget';
 
-const getTileType = (tile: Tile, act: Act | null): TileType => {
+const getTileType = (tile: Tile, act: Act): TileType => {
 	let type: TileType = 'default';
 
-	if (!act) {
-		return type;
-	}
 	switch (act.getPhase()) {
 		case 'MOVEMENT': {
 			const move = act.phases.MOVEMENT;
@@ -118,7 +115,7 @@ const GridBase: React.SFC<IGridBaseProps> = ({ act, onSelect }) => {
 		return [tile, getTileType(tile, act)] as [Tile, TileType];
 	});
 
-	const actingChar = act ? act.getActingCharacter() : null;
+	const actingChar = act.getActingCharacter();
 
 	const onClick = (tile: Tile) => () => {
 		if (actingChar && !actingChar.isAI()) {

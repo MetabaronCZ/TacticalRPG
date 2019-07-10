@@ -11,7 +11,7 @@ import GridCharacters from 'ui/battle/GridCharacters';
 import GridBattleInfo from 'ui/battle/GridBattleInfo';
 
 interface IGridProps {
-	act: Act | null;
+	act: Act;
 	players: Player[];
 	characters: Character[];
 	battleInfo: IBattleInfo[];
@@ -19,8 +19,7 @@ interface IGridProps {
 }
 
 const Grid: React.SFC<IGridProps> = ({ act, players, characters, battleInfo, onTileSelect }) => {
-	const actor = act ? act.actor : null;
-
+	const { actor } = act;
 	return (
 		<ul className="Grid">
 			<li className="Grid-item">
