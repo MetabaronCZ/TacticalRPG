@@ -23,7 +23,7 @@ const Grid: React.SFC<IGridProps> = ({ act, players, characters, battleInfo, onT
 	return (
 		<ul className="Grid">
 			<li className="Grid-item">
-				<GridBase act={act} onSelect={onTileSelect} />
+				<GridBase act={act} characters={characters} onSelect={onTileSelect} />
 			</li>
 
 			<li className="Grid-item">

@@ -38,5 +38,24 @@
 
 		&.GridTiles-item--directable { @include mx-grid-tile($green-bg, $green-border); }
 		&.GridTiles-item--directTarget { @include mx-grid-tile($yellow-bg, $yellow-border); }
+
+		&-tooltip {
+			@extend .u-text-default;
+			position: absolute;
+			bottom: 100%;
+			z-index: 100;
+			display: none;
+			width: 200px;
+			padding: $vu 2*$vu;
+			background: $color-black;
+			border-radius: $border-radius-default;
+			text-align: left;
+		}
+
+		&:hover {
+			.GridTiles-item-tooltip {
+				display: block;
+			}
+		}
 	}
 }

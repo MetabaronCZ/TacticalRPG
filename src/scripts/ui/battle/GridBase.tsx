@@ -4,14 +4,19 @@ import { gridSize } from 'data/game-config';
 
 import Act from 'modules/battle/act';
 import Tile from 'modules/geometry/tile';
+import Character from 'modules/character';
 import { getTiles } from 'modules/geometry/tiles';
 
 const itemSize = 100 / gridSize;
+const tileList = getTiles();
 
 interface IGridBaseProps {
 	act: Act;
+	characters: Character[];
 	onSelect: (tile: Tile) => void;
 }
+
+type GridTile = [Tile, TileType, Character | null];
 
 type TileType =
 	'default' |
@@ -110,9 +115,33 @@ const getTileType = (tile: Tile, act: Act): TileType => {
 	return type;
 };
 
-const GridBase: React.SFC<IGridBaseProps> = ({ act, onSelect }) => {
-	const tiles = getTiles().map(tile => {
-		return [tile, getTileType(tile, act)] as [Tile, TileType];
+const renderTooltip = (char: Character | null) => {
+	if (!char) {
+		return;
+	}
+	const { HP, AP, MP } = char.attributes;
+	const { HP: baseHP, AP: baseAP, MP: baseMP } = char.baseAttributes;
+
+	return (
+		<div className="GridTiles-item-tooltip">
+			<strong>{char.name}</strong>
+			<br />
+			HP: {HP}/<span className="u-text-small">{baseHP}</span>
+			<br />
+			{baseMP > 0
+				? <span>MP: {MP}/<span className="u-text-small">{baseMP}</span></span>
+				: <span>MP: N/A</span>
+			}
+			<br />
+			AP: {AP}/<span className="u-text-small">{baseAP}</span>
+		</div>
+	);
+};
+
+const GridBase: React.SFC<IGridBaseProps> = ({ act, characters, onSelect }) => {
+	const tiles: GridTile[] = tileList.map(tile => {
+		const char = characters.find(ch => tile === ch.position) || null;
+		return [tile, getTileType(tile, act), char];
 	});
 
 	const actingChar = act.getActingCharacter();
@@ -125,7 +154,7 @@ const GridBase: React.SFC<IGridBaseProps> = ({ act, onSelect }) => {
 
 	return (
 		<div className="GridTiles">
-			{tiles.map(([tile, type], i) => {
+			{tiles.map(([tile, type, char], i) => {
 				const { x, y } = tile;
 				return (
 					<div
@@ -140,7 +169,9 @@ const GridBase: React.SFC<IGridBaseProps> = ({ act, onSelect }) => {
 						}
 						onClick={onClick(tile)}
 						key={i}
-					/>
+					>
+						{renderTooltip(char)}
+					</div>
 				);
 			})}
 		</div>
