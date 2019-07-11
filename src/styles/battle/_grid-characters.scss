@@ -7,6 +7,7 @@
 
 	&-item {
 		position: absolute;
+		transition: 150ms top, left;
 
 		&-visual {
 			width: 100%;
