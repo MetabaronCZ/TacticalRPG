@@ -3,24 +3,22 @@ import React from 'react';
 import Act from 'modules/battle/act';
 import Command from 'modules/battle/command';
 
+import EmptyUI from 'ui/battle/EmptyUI';
 import Commands from 'ui/battle/Commands';
 import CombatInfo from 'ui/battle/CombatInfo';
 import CommandInfo from 'ui/battle/CommandInfo';
 import CharacterInfo from 'ui/battle/CharacterInfo';
 
 interface IProps {
-	act: Act | null;
+	act: Act;
 	onCommandSelect: (command: Command) => void;
 }
 
 const ReactorUI: React.SFC<IProps> = ({ act, onCommandSelect }) => {
-	if (!act) {
-		return <React.Fragment />;
-	}
 	const reaction = act.phases.REACTION.getReaction();
 
 	if (!reaction) {
-		return <React.Fragment />;
+		return <EmptyUI />;
 	}
 	const { reactor, command, combat } = reaction;
 	let commands = act.getCommands();
