@@ -1,0 +1,34 @@
+.GridLegend {
+	margin-top: 2*$vu;
+
+	&-list {
+		list-style-type: none;
+
+		&-item {
+			/* */
+		}
+	}
+
+	&-ico {
+		display: inline-block;
+		width: 2*$vu;
+		height: 2*$vu;
+		vertical-align: middle;
+		margin-right: $vu;
+		margin-bottom: $vu/4;
+
+		&.GridLegend-ico--player-0,
+		&.GridLegend-ico--player-1 {
+			border-radius: 100%;
+		}
+
+		&.GridLegend-ico--player-0 { background-color: $player-0-color-main; }
+		&.GridLegend-ico--player-1 { background-color: $player-1-color-main; }
+
+		@each $item, $colors in $tiles {
+			&.GridLegend-ico--tile-#{$item} {
+				background-color: nth($colors, 1);
+			}
+		}
+	}
+}

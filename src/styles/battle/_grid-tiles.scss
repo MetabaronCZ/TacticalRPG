@@ -6,38 +6,15 @@
 	height: 100%;
 
 	&-item {
-		$black-bg: #000;
-		$black-border: #444;
-		$green-bg: #084;
-		$green-border: #063;
-		$blue-bg: #04d;
-		$blue-border: #02b;
-		$yellow-bg: #dc0;
-		$yellow-border: #b90;
-
 		position: absolute;
 		box-sizing: border-box;
 		border: 1px solid $color-grey;
 
-		&.GridTiles-item--default { @include mx-grid-tile($black-bg, $black-border); }
-
-		&.GridTiles-item--movable { @include mx-grid-tile($green-bg, $green-border); }
-		&.GridTiles-item--movePath { @include mx-grid-tile($blue-bg, $blue-border); }
-		&.GridTiles-item--moveTarget { @include mx-grid-tile($yellow-bg, $yellow-border); }
-
-		&.GridTiles-item--commandRange { @include mx-grid-tile($green-bg, $green-border); }
-		&.GridTiles-item--commandTargetable { @include mx-grid-tile($blue-bg, $blue-border); }
-
-		&.GridTiles-item--commandEffectArea { @include mx-grid-tile($green-bg, $green-border); }
-		&.GridTiles-item--commandEffectTargets { @include mx-grid-tile($blue-bg, $blue-border); }
-		&.GridTiles-item--commandEffectTarget { @include mx-grid-tile($yellow-bg, $yellow-border); }
-
-		&.GridTiles-item--reactors { @include mx-grid-tile($blue-bg, $blue-border); }
-		&.GridTiles-item--reactionEvasible { @include mx-grid-tile($green-bg, $green-border); }
-		&.GridTiles-item--reactor { @include mx-grid-tile($yellow-bg, $yellow-border); }
-
-		&.GridTiles-item--directable { @include mx-grid-tile($green-bg, $green-border); }
-		&.GridTiles-item--directTarget { @include mx-grid-tile($yellow-bg, $yellow-border); }
+		@each $item, $colors in $tiles {
+			&.GridTiles-item--#{$item} {
+				@include mx-grid-tile(nth($colors, 1), nth($colors, 2));
+			}
+		}
 
 		&-tooltip {
 			display: none;

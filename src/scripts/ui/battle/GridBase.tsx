@@ -20,7 +20,7 @@ interface IGridBaseProps {
 
 type GridTile = [Tile, TileType, Character | null];
 
-type TileType =
+export type TileType =
 	'default' |
 	'movable' | 'movePath' | 'moveTarget' |
 	'commandRange' | 'commandTargetable' |
@@ -28,7 +28,7 @@ type TileType =
 	'reactors' | 'reactionEvasible' | 'reactor' |
 	'directable' | 'directTarget';
 
-const getTileType = (tile: Tile, act: Act): TileType => {
+export const getTileType = (tile: Tile, act: Act): TileType => {
 	let type: TileType = 'default';
 
 	switch (act.getPhase()) {

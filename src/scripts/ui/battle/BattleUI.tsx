@@ -1,8 +1,8 @@
 import React from 'react';
 
 import Tile from 'modules/geometry/tile';
-import { IEngineState } from 'modules/battle/engine';
 import Command from 'modules/battle/command';
+import { IEngineState } from 'modules/battle/engine';
 
 import Button from 'ui/common/Button';
 
@@ -11,6 +11,7 @@ import Order from 'ui/battle/Order';
 import ActorUI from 'ui/battle/ActorUI';
 import TargetUI from 'ui/battle/TargetUI';
 import ReactorUI from 'ui/battle/ReactorUI';
+import GridLegend from 'ui/battle/GreidLegend';
 import GridCoordinates from 'ui/battle/GridCoordinates';
 
 interface IBattleUIProps {
@@ -57,6 +58,8 @@ const BattleUI: React.SFC<IBattleUIProps> = ({ engineState, engineUpdate, onTile
 							onTileSelect={onTileSelect}
 						/>
 					</GridCoordinates>
+
+					<GridLegend act={act} players={players} />
 				</div>
 
 				<div className="BattleUI-layout-column BattleUI-layout-column--reactor">
