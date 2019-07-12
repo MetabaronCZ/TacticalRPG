@@ -7,20 +7,19 @@ import { characterCTLimit, mpRegen } from 'data/game-config';
 import Tile from 'modules/geometry/tile';
 import AIPlayer from 'modules/ai/player';
 import Player from 'modules/battle/player';
-import Score from 'modules/character/score';
+import Command from 'modules/battle/command';
+import Status from 'modules/character/status';
 import { ISexData } from 'modules/character/sex';
 import Skillset from 'modules/character/skillset';
-import StatusEffect from 'modules/character/status';
 import Attributes from 'modules/character/attributes';
 import { DirectionID } from 'modules/geometry/direction';
 import { IArmorData } from 'modules/equipment/armor-data';
 import { IOnBattleInfo } from 'modules/battle/battle-info';
 import { IWeaponData } from 'modules/equipment/weapon-data';
 import { IArchetypeData } from 'modules/character/archetype';
-import { StatusEffectID } from 'modules/battle/status-effect';
-import Command from 'modules/battle/command';
 import BaseAttributes from 'modules/character/base-attributes';
 import { SkillID, SkillCooldown } from 'modules/skill/skill-data';
+import { StatusEffectID, IOnStatus } from 'modules/battle/status-effect';
 import { CharacterData, ICharacterData } from 'modules/character-creation/character-data';
 
 export type ISkillCooldowns = Partial<{
@@ -37,8 +36,8 @@ class Character {
 	public readonly baseAttributes: BaseAttributes;
 
 	public readonly player: Player;
+	public readonly status: Status;
 	public readonly skillset: Skillset;
-	public readonly status: StatusEffect;
 
 	public readonly mainHand: IWeaponData;
 	public readonly offHand: IWeaponData;
@@ -47,8 +46,6 @@ class Character {
 	public position: Tile;
 	public direction: DirectionID;
 	public cooldowns: ISkillCooldowns = {}; // skill cooldowns
-
-	public score: Score;
 
 	private dead: boolean = false;
 
@@ -73,9 +70,7 @@ class Character {
 
 		this.position = position;
 		this.direction = direction;
-		this.status = new StatusEffect();
-
-		this.score = new Score();
+		this.status = new Status();
 	}
 
 	public isDead(): boolean {
@@ -157,7 +152,7 @@ class Character {
 		this.attributes.set('CT', CT % characterCTLimit);
 	}
 
-	public onDamage(attacker: Character, physical: number, magical: number, mana: number, effects: StatusEffectID[] = []) {
+	public onDamage(physical: number, magical: number, mana: number, effects: StatusEffectID[], onStatus: IOnStatus) {
 		const { attributes, status } = this;
 
 		if (this.dead || status.has('DYING')) {
@@ -173,22 +168,22 @@ class Character {
 		attributes.set('HP', newHP);
 		attributes.set('MP', newMP);
 
-		attacker.score.setDamage(this, damage);
+		onStatus(damage);
 
 		// apply damage status effects
 		for (const effect of effects) {
-			status.apply(attacker, effect, physical, magical);
+			status.apply(effect, physical, magical, onStatus);
 		}
 
 		// set DYING status if mortally wounded
 		if (attributes.HP <= 0) {
 			status.removeAll();
-			status.apply(attacker, 'DYING');
-			attacker.score.setKill(this);
+			status.apply('DYING', 0, 0);
+			onStatus(0, true);
 		}
 	}
 
-	public onHealing(healer: Character, healing: number, effects: StatusEffectID[] = []) {
+	public onHealing(healing: number, effects: StatusEffectID[] = [], onStatus: IOnStatus) {
 		if (this.dead || this.status.has('DYING')) {
 			throw new Error('Cannot apply healing: dead or dying');
 		}
@@ -201,14 +196,14 @@ class Character {
 		const healed = newHP - HP;
 
 		this.attributes.set('HP', newHP);
-		healer.score.setHealing(this, healed);
+		onStatus(healed);
 
 		for (const effect of effects) {
-			this.status.apply(healer, effect, 0, healing);
+			this.status.apply(effect, 0, healing, onStatus);
 		}
 	}
 
-	public onRevive(healer: Character) {
+	public onRevive(onStatus: IOnStatus) {
 		if (!this.status.has('DYING')) {
 			throw new Error('Illegal character revive attempt');
 		}
@@ -216,8 +211,7 @@ class Character {
 
 		this.attributes.set('HP', this.baseAttributes.HP);
 		this.attributes.set('CT', 0);
-
-		healer.score.setRevive(this);
+		onStatus(0, true);
 	}
 
 	public die() {

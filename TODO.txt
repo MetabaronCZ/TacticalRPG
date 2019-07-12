@@ -6,11 +6,6 @@ BUG
 
 TODO
 ----------------------------------------------------------------------------------------------------------
---	COMBAT faze:
-	- udrzet hodnoty Combat; predat do Chronox
-	- priradit vysledek reakce Reaction.result (EVADED, BLOCKED, SHIELDED, DAMAGED, KILLED, HEALED, BUFFED, REVIVED, ???)
-	- pote pouzit pri ziskavani statistik v BattleSummary
-	- udrzet i hodnotu KILLED nebo REVIVED pro reactory
 --	do CharacterCreation pridat nahled hodnot postavy
 	? u zbrani a vyzbroje pridat elementy, damage, redukce, apod.
 --	AIPlayer by mel mit k dispozici instanci enginu

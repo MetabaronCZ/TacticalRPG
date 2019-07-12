@@ -170,7 +170,7 @@ const getStatusModifier = (attacker: Character, defender: Character): number => 
 };
 
 const getStatusEffects = (caster: Character, target: Character, skill: Skill, isSupport: boolean): StatusEffect[] => {
-	const statuses = skill.status.map(id => new StatusEffect(id, caster));
+	const statuses = skill.status.map(id => new StatusEffect(id));
 
 	if (isSupport) {
 		return statuses;

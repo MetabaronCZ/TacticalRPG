@@ -5,7 +5,7 @@ import { withRouter, RouteComponentProps } from 'react-router';
 import { gotoRoute } from 'core/navigation';
 
 import { IActRecord } from 'modules/battle/act';
-import Summary, { ISummary, IScoreRecord } from 'modules/battle/summary';
+import Summary, { ISummary } from 'modules/battle/summary';
 import { ICharacterData } from 'modules/character-creation/character-data';
 
 import Page from 'ui/common/Page';
@@ -26,12 +26,24 @@ const exit = (history: History) => () => {
 };
 
 interface IRecordAnalysis {
-	id: number;
-	actor: ICharacterData;
-	skipped: boolean;
+	readonly id: number;
+	readonly actor: ICharacterData;
+	readonly skipped: boolean;
 	move: string;
 	command: string;
 	reactions: string[];
+	results: string[];
+}
+
+interface IScoreData {
+	[id: string]: IScoreDataItem;
+}
+
+interface IScoreDataItem {
+	readonly name: string;
+	kills: number;
+	damage: number;
+	healing: number;
 }
 
 interface IScoreItem {
@@ -57,16 +69,17 @@ const getRowInfo = (characters: ICharacterData[], record: IActRecord): IRecordAn
 		skipped: record.skipped,
 		move: '-',
 		command: '-',
-		reactions: []
+		reactions: [],
+		results: []
 	};
 
 	if (record.skipped) {
 		return result;
 	}
-	const { movementPhase: movePhase, commandPhase, reactionPhase } = record;
+	const { movementPhase, commandPhase, reactionPhase, combatPhase } = record;
 
-	if (movePhase.initialPosition !== movePhase.target) {
-		result.move = `${movePhase.initialPosition} → ${movePhase.target}`;
+	if (movementPhase.initialPosition !== movementPhase.target) {
+		result.move = `${movementPhase.initialPosition} → ${movementPhase.target}`;
 	}
 
 	if (commandPhase.command) {
@@ -91,32 +104,68 @@ const getRowInfo = (characters: ICharacterData[], record: IActRecord): IRecordAn
 		result.reactions.push(`${reactor.name} → ${reaction.command}`);
 	}
 
+	for (const item of combatPhase.results) {
+		let txt = '';
+
+		if (item.damaged > 0) {
+			txt = item.damaged + ' damage';
+		}
+		if (item.healed > 0) {
+			txt = item.healed + ' healing';
+		}
+		if (item.revived) {
+			txt = 'Revived';
+		}
+		if (item.killed) {
+			txt = 'Killed';
+		}
+		if (txt) {
+			result.results.push(txt);
+		}
+	}
 	return result;
 };
 
-const analyzeScore = (score: IScoreRecord, characters: ICharacterData[]): IScoreAnalysis => {
+const analyzeScore = (timeline: IActRecord[], characters: ICharacterData[]): IScoreAnalysis => {
 	const result: IScoreAnalysis = {
 		kills: [],
 		damage: [],
 		healing: []
 	};
-	for (const id in score) {
-		const char = characters.find(ch => id === ch.id);
-		const data = score[id];
+	const scoreData: IScoreData = {};
 
-		if (!char) {
+	// agregate character data from each Act
+	for (const act of timeline) {
+		const actor = characters.find(ch => act.actor === ch.id);
+
+		if (!actor) {
 			throw new Error('Invalid score record character ID');
 		}
-		if (data.kills > 0) {
-			result.kills.push({ name: char.name, amount: data.kills });
-		}
-		if (data.damage > 0) {
-			result.damage.push({ name: char.name, amount: data.damage });
-		}
-		if (data.healing > 0) {
-			result.healing.push({ name: char.name, amount: data.healing });
+		const results = act.combatPhase.results;
+
+		scoreData[actor.id] = scoreData[actor.id] || {
+			name: actor.name,
+			kills: 0,
+			damage: 0,
+			healing: 0
+		};
+		const data = scoreData[actor.id];
+
+		for (const res of results) {
+			data.damage += res.damaged;
+			data.healing += res.healed;
+			data.kills += (res.killed ? 1 : 0);
 		}
 	}
+
+	// create result array
+	for (const id in scoreData) {
+		const { name, kills, damage, healing } = scoreData[id];
+		result.kills.push({ name, amount: kills });
+		result.damage.push({ name, amount: damage });
+		result.healing.push({ name, amount: healing });
+	}
+
 	result.kills = result.kills
 		.sort((a, b) => b.amount - a.amount)
 		.slice(0, topListSize);
@@ -153,9 +202,9 @@ class BattleSummaryPage extends React.Component<IProps, IState> {
 				</Page>
 			);
 		}
-		const { chronox, score, winner } = record;
+		const { chronox, winner } = record;
 		const winPlayer = chronox.players[winner].name;
-		const scoreAnalysis = analyzeScore(score, chronox.characters);
+		const scoreAnalysis = analyzeScore(chronox.timeline, chronox.characters);
 
 		return (
 			<Page heading="Summary">
@@ -223,7 +272,8 @@ class BattleSummaryPage extends React.Component<IProps, IState> {
 						<div className="List-row-column">Actor</div>
 						<div className="List-row-column">Move</div>
 						<div className="List-row-column">Command</div>
-						<div className="List-row-column">Reaction/s</div>
+						<div className="List-row-column">Reaction</div>
+						<div className="List-row-column">Result</div>
 					</li>
 
 					{chronox.timeline.map((t, i) => {
@@ -251,7 +301,15 @@ class BattleSummaryPage extends React.Component<IProps, IState> {
 								</div>
 
 								<div className="List-row-column">
-									{item.reactions.length ? item.reactions.join(', ') : '-'}
+									{item.reactions.map((reaction, r) => (
+										<div key={r}>{reaction}</div>
+									))}
+								</div>
+
+								<div className="List-row-column">
+									{item.results.map((result, r) => (
+										<div key={r}>{result}</div>
+									))}
 								</div>
 							</li>
 						);

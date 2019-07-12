@@ -21,7 +21,10 @@ export interface IActCombatRecord {
 
 export interface ICombatResult {
 	readonly character: string;
-	readonly result: 'DAMAGED' | 'HEALED' | 'KILLED' | 'REVIVED';
+	damaged: number;
+	healed: number;
+	killed: boolean;
+	revived: boolean;
 }
 
 type Phase = 'SUSPENDED' | 'ANIMATION' | 'DONE';
@@ -63,11 +66,23 @@ class CombatPhase extends ActPhase<IActCombatRecord> {
 		const { skills } = command;
 		const timing = Array(skills.length).fill(skillAnimDuration);
 
+		// prepare results object
+		for (const tgt of targets) {
+			this.combatResults.push({
+				character: tgt.data.id,
+				damaged: 0,
+				healed: 0,
+				killed: false,
+				revived: false
+			});
+		}
+
 		const skillAnim = new Animation(timing, step => {
 			const info: IBattleInfo[] = [];
 
 			for (const target of targets) {
 				const combat = getCombatInfo(actor, target, skills[step.number]);
+				const result = this.combatResults[step.number];
 				const { position } = combat.target;
 
 				if (!position.isContained(effectArea)) {
@@ -81,11 +96,11 @@ class CombatPhase extends ActPhase<IActCombatRecord> {
 				}
 				switch (combat.type) {
 					case 'SUPPORT':
-						this.handleSupport(combat, info);
+						this.handleSupport(combat, result, info);
 						break;
 
 					case 'DAMAGE':
-						this.handleDamage(combat, info);
+						this.handleDamage(combat, result, info);
 						break;
 
 					default:
@@ -143,8 +158,8 @@ class CombatPhase extends ActPhase<IActCombatRecord> {
 		};
 	}
 
-	private handleSupport(combat: ICombatInfo, info: IBattleInfo[]) {
-		const { caster, target, skill, healing, status } = combat;
+	private handleSupport(combat: ICombatInfo, result: ICombatResult, info: IBattleInfo[]) {
+		const { target, skill, healing, status } = combat;
 		const isDying = target.status.has('DYING');
 		const isDead = target.isDead();
 		const { position } = target;
@@ -170,7 +185,9 @@ class CombatPhase extends ActPhase<IActCombatRecord> {
 			case 'HOL_REVIVE':
 				if (isDying) {
 					// revive target
-					target.onRevive(caster);
+					target.onRevive((amount, revived) => {
+						result.revived = result.revived || !revived;
+					});
 
 					info.push({
 						text: 'Revived',
@@ -184,7 +201,9 @@ class CombatPhase extends ActPhase<IActCombatRecord> {
 				if (!isDead && !isDying) {
 					// apply healing to target
 					const statuses = status.map(item => item.id);
-					target.onHealing(caster, healing, statuses);
+					target.onHealing(healing, statuses, healed => {
+						result.healed += healed;
+					});
 
 					info.push({
 						text: formatNumber(healing),
@@ -204,9 +223,8 @@ class CombatPhase extends ActPhase<IActCombatRecord> {
 		}
 	}
 
-	private handleDamage(combat: ICombatInfo, info: IBattleInfo[]) {
-		const { caster, target, skill, blocked, shielded, affinity, status } = combat;
-		const targetDying = target.status.has('DYING');
+	private handleDamage(combat: ICombatInfo, result: ICombatResult, info: IBattleInfo[]) {
+		const { target, skill, blocked, shielded, affinity, status } = combat;
 		const { position } = target;
 
 		// damage reduced by shield block
@@ -265,9 +283,13 @@ class CombatPhase extends ActPhase<IActCombatRecord> {
 		// apply skill damage / statuses to target
 		const statuses = status.map(item => item.id);
 		const mpDamage = (shielded ? shielded.cost : 0);
-		target.onDamage(caster, combat.physical, combat.magical, mpDamage, statuses);
 
-		if (targetDying) {
+		target.onDamage(combat.physical, combat.magical, mpDamage, statuses, (dmg, killed) => {
+			result.damaged += dmg;
+			result.killed = result.killed || !!killed;
+		});
+
+		if (target.status.has('DYING')) {
 			info.push({
 				text: 'Dying',
 				type: 'ACTION',

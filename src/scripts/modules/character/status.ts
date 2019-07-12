@@ -1,6 +1,6 @@
 import Character from 'modules/character';
 import { IOnBattleInfo } from 'modules/battle/battle-info';
-import StatusEffect, { StatusEffectID } from 'modules/battle/status-effect';
+import StatusEffect, { StatusEffectID, IOnStatus } from 'modules/battle/status-effect';
 
 class Status {
 	private items: StatusEffect[] = [];
@@ -13,8 +13,8 @@ class Status {
 		return this.items;
 	}
 
-	public apply(caster: Character, effectId: StatusEffectID, physical = 0, magical = 0) {
-		const effect = new StatusEffect(effectId, caster, physical, magical);
+	public apply(effectId: StatusEffectID, physical = 0, magical = 0, onStatus?: IOnStatus) {
+		const effect = new StatusEffect(effectId, physical, magical, onStatus);
 		const existing = this.items.find(item => effectId === item.id);
 
 		if (!existing) {

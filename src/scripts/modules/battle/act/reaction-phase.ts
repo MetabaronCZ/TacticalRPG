@@ -228,7 +228,7 @@ class ReactionPhase extends ActPhase<IActReactionRecord> {
 		if ('IDLE' !== phase) {
 			throw new Error('Could not react: invalid state ' + phase);
 		}
-		reactor.status.apply(reactor, effect);
+		reactor.status.apply(effect);
 		this.finish(reaction);
 	}
 

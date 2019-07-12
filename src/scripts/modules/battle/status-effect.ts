@@ -4,12 +4,14 @@ import Character from 'modules/character';
 import { IOnBattleInfo } from 'modules/battle/battle-info';
 
 type StatusEffectApplyFun = (
-	src: Character,
 	tgt: Character,
 	phy: number,
 	mag: number,
-	cb: IOnBattleInfo
+	onStatus: IOnStatus,
+	onInfo: IOnBattleInfo
 ) => void;
+
+export type IOnStatus = (value: number, condition?: boolean) => void;
 
 export type StatusEffectID =
 	'CRIPPLE' | 'DISARM' | 'BLEED' | 'STUN' | 'DYING' |
@@ -47,12 +49,12 @@ class StatusEffect {
 		value: number;
 		readonly max: StatusEffectRepeat;
 	};
-	private readonly caster: Character;
 	private readonly physical: number;
 	private readonly magical: number;
+	private readonly onStatus: IOnStatus;
 	private readonly applyFun?: StatusEffectApplyFun;
 
-	constructor(id: StatusEffectID, caster: Character, physical = 0, magical = 0) {
+	constructor(id: StatusEffectID, physical = 0, magical = 0, onStatus?: IOnStatus) {
 		const data = StatusEffects.get(id);
 		this.id = id;
 		this.type = data.type;
@@ -68,17 +70,17 @@ class StatusEffect {
 			value: data.repeat || 0,
 			max: data.repeat || 0
 		};
-		this.caster = caster;
+		this.onStatus = (onStatus ? onStatus : () => void(0));
 		this.physical = physical;
 		this.magical = magical;
 		this.applyFun = data.apply;
 	}
 
-	public apply(target: Character, cb: IOnBattleInfo) {
-		const { caster, physical, magical, applyFun } = this;
+	public apply(target: Character, onInfo: IOnBattleInfo) {
+		const { physical, magical, applyFun, onStatus } = this;
 
 		if (applyFun) {
-			applyFun(caster, target, physical, magical, cb);
+			applyFun(target, physical, magical, onStatus, onInfo);
 		}
 	}
 }
