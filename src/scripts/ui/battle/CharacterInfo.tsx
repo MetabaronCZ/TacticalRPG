@@ -3,7 +3,6 @@ import React from 'react';
 import { Icos, IcoID } from 'data/icos';
 import Character from 'modules/character';
 
-import PlayerIco from 'ui/battle/PlayerIco';
 import ArchetypeIco from 'ui/common/ArchetypeIco';
 import AttributeInfo from 'ui/battle/AttributeInfo';
 
@@ -18,8 +17,6 @@ const CharactertInfo: React.SFC<IProps> = ({ character: char }) => {
 	const st = status.get();
 	return (
 		<React.Fragment>
-			<PlayerIco player={char.player} />
-
 			<h1 className="Heading">
 				{char.name}
 			</h1>

@@ -8,20 +8,12 @@ TODO
 ----------------------------------------------------------------------------------------------------------
 --	do CharacterCreation pridat nahled hodnot postavy
 	? u zbrani a vyzbroje pridat elementy, damage, redukce, apod.
---	AIPlayer by mel mit k dispozici instanci enginu
-	- mel by tedy i metody selectTile / selectAction
-	- mohl by kdykoliv zjistit stav hry (coz Player vidi v UI)
 --	AICharacter: pokud vybrana cesta nekonci na Tile, ze ktereho se da utocit, skoncit na posledni utocne pozici
---	pro AI Act pridat tlacitko pro zastaveni + krokovani, pripadne potvrzeni akce
 --	AICharacter: pohyb/akce podle melee / ranged / support role
 	- vybira AIPlayer
 	- prioritizace skillu (healing role -> Revive)
 ??	prejit na HEXA-grid (vytvorit jako SVG)
 	- https://www.redblobgames.com/grids/hexagons/
-??	mela by block (large, small) reakce zabranit i status efektum?
-	- podle jake formule?
-??	schopnost pouzit Reaction skill by mela zaviset na rychlosti obou postav
-	- defenderSpd >= AttackerSpd -> defender muze pouzit Reaction skilly
 ??	Counter reaction skill >> bude to mainHand weapon Attack skill
 ??	pasivni skilly
 	--	DARK_AURA by mela delat 50% damage reflection (do vzdalenosti SkillArea)

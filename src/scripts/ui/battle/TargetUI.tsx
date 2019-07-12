@@ -20,6 +20,8 @@ const ReactorUI: React.SFC<IProps> = ({ act }) => {
 	}
 	return (
 		<div className="CharacterBox">
+			<div className={`CharacterBox-player CharacterBox-player--player${target.player.id}`} />
+
 			<CharacterInfo character={target} />
 			<hr className="Separator" />
 

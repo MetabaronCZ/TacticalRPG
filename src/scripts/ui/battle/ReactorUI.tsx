@@ -30,6 +30,8 @@ const ReactorUI: React.SFC<IProps> = ({ act, onCommandSelect }) => {
 	}
 	return (
 		<div className="CharacterBox">
+			<div className={`CharacterBox-player CharacterBox-player--player${reactor.player.id}`} />
+
 			<CharacterInfo character={reactor} />
 			<hr className="Separator" />
 

@@ -1,8 +1,11 @@
 .PlayerIco {
-	display: block;
-	height: 4px;
-	margin-bottom: 2*$vu;
+	display: inline-block;
+	width: 4px;
+	height: 2*$vu;
 	background-color: $color-grey;
+	vertical-align: bottom;
+	margin-right: $vu;
+	margin-bottom: 4px;
 
 	&.PlayerIco--player0 { background-color: $player-0-color-main; }
 	&.PlayerIco--player1 { background-color: $player-1-color-main; }

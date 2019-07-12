@@ -26,8 +26,9 @@ const ActorUI: React.SFC<IProps> = ({ act, onCommandSelect }) => {
 	}
 	return (
 		<div className="CharacterBox">
-			<CharacterInfo character={actor} />
+			<div className={`CharacterBox-player CharacterBox-player--player${actor.player.id}`} />
 
+			<CharacterInfo character={actor} />
 			<hr className="Separator" />
 
 			{!!command && (

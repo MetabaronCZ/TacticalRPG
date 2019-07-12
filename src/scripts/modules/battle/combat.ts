@@ -169,26 +169,23 @@ const getStatusModifier = (attacker: Character, defender: Character): number => 
 	return mod;
 };
 
-const getStatusEffects = (caster: Character, target: Character, skill: Skill, isSupport: boolean): StatusEffect[] => {
+const getStatusEffects = (caster: Character, target: Character, skill: Skill, phy = 0, mag = 0, isGuarding = false): StatusEffect[] => {
 	const statuses = skill.status.map(id => new StatusEffect(id));
+	const effects: StatusEffect[] = [];
 
-	if (isSupport) {
-		return statuses;
-	}
 	const { STR: attSTR, MAG: attMAG } = caster.attributes;
 	const { VIT: defVIT, SPR: defSPR } = target.attributes;
-	const effects: StatusEffect[] = [];
 
 	for (const status of statuses) {
 		switch (status.type) {
 			case 'PHYSICAL':
-				if (attSTR >= defVIT) {
+				if (attSTR >= defVIT && (!isGuarding || phy > 0)) {
 					effects.push(status);
 				}
 				break;
 
 			case 'MAGICAL':
-				if (attMAG >= defSPR) {
+				if (attMAG >= defSPR && (!isGuarding || mag > 0)) {
 					effects.push(status);
 				}
 				break;
@@ -219,7 +216,7 @@ export const getCombatInfo = (caster: Character, target: Character, skill: Skill
 		backAttack: false,
 		blocked: null,
 		shielded: null,
-		status: getStatusEffects(caster, target, skill, isSupport)
+		status: getStatusEffects(caster, target, skill)
 	};
 	if (isSupport) {
 		result.type = 'SUPPORT';
@@ -271,6 +268,10 @@ export const getCombatInfo = (caster: Character, target: Character, skill: Skill
 	physical = physical > 0 ? Math.round(physical) : 0;
 	magical = magical > 0 ? Math.round(magical) : 0;
 
+	// resolve status application
+	const isGuarding = !!(shielded || blocked);
+	const status = getStatusEffects(caster, target, skill, physical, magical, isGuarding);
+
 	// update result
 	result.physical = physical;
 	result.magical = magical;
@@ -278,6 +279,7 @@ export const getCombatInfo = (caster: Character, target: Character, skill: Skill
 	result.backAttack = backAttack;
 	result.blocked = blocked;
 	result.shielded = shielded;
+	result.status = status;
 
 	return result;
 };

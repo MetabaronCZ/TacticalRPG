@@ -181,6 +181,25 @@ const analyzeScore = (timeline: IActRecord[], characters: ICharacterData[]): ISc
 	return result;
 };
 
+const renderScoreItem = (items: IScoreItem[], postfix = '') => {
+	if (!items.length) {
+		return <React.Fragment />;
+	}
+	return (
+		<table className="Table Table--plain">
+			<tbody>
+				{items.map((item, i) => (
+					<tr key={i}>
+						<td>{i + 1}.</td>
+						<td>{item.name}:</td>
+						<td>{item.amount}{postfix}</td>
+					</tr>
+				))}
+			</tbody>
+		</table>
+	);
+};
+
 class BattleSummaryPage extends React.Component<IProps, IState> {
 	public state: IState = {
 		record: null
@@ -243,21 +262,15 @@ class BattleSummaryPage extends React.Component<IProps, IState> {
 
 					<li className="List-row">
 						<div className="List-row-column">
-							{scoreAnalysis.kills.map((item, i) => (
-								<div key={i}>{i + 1}. {item.name}: {item.amount}x</div>
-							))}
+							{renderScoreItem(scoreAnalysis.kills, 'x')}
 						</div>
 
 						<div className="List-row-column">
-							{scoreAnalysis.damage.map((item, i) => (
-								<div key={i}>{i + 1}. {item.name}: {item.amount}</div>
-							))}
+							{renderScoreItem(scoreAnalysis.damage)}
 						</div>
 
 						<div className="List-row-column">
-							{scoreAnalysis.healing.map((item, i) => (
-								<div key={i}>{i + 1}. {item.name}: {item.amount}</div>
-							))}
+							{renderScoreItem(scoreAnalysis.healing)}
 						</div>
 					</li>
 				</ul>
@@ -284,7 +297,7 @@ class BattleSummaryPage extends React.Component<IProps, IState> {
 
 						return (
 							<li className="List-row u-align-top" key={i}>
-								<div className="List-row-column u-tableColumnFit">
+								<div className="List-row-column u-tableColumnFit u-align-right">
 									{item.id}.
 								</div>
 

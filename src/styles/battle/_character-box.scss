@@ -1,0 +1,10 @@
+.CharacterBox {
+	&-player {
+		height: 4px;
+		margin-bottom: 2*$vu;
+		background-color: $color-grey;
+	
+		&.CharacterBox-player--player0 { background-color: $player-0-color-main; }
+		&.CharacterBox-player--player1 { background-color: $player-1-color-main; }
+	}
+}
