@@ -1,10 +1,9 @@
 .Bar {
-	$border-size: 2px;
 	position: relative;
-	height: 2*$vu;
+	height: $vu;
 	background: $color-black;
 	border-radius: $border-radius-default;
-	border: $border-size solid $color-yellow;
+	border: 1px solid $color-yellow;
 
 	&-amount {
 		position: absolute;
@@ -34,18 +33,24 @@
 
 	&,
 	&.Bar--green {
+		border-color: $color-green;
+
 		.Bar-amount {
 			background-color: $color-green;
 		}
 	}
 
 	&.Bar--blue {
+		border-color: $color-blue;
+
 		.Bar-amount {
 			background-color: $color-blue;
 		}
 	}
 
 	&.Bar--yellow {
+		border-color: $color-yellow;
+
 		.Bar-amount {
 			background-color: $color-yellow;
 		}

@@ -23,7 +23,7 @@ const GridCharacters: React.SFC<IGridChactersProps> = ({ actor, characters, play
 			const dir = char.direction.toLowerCase();
 
 			let visualCls = 'GridCharacters-item-visual';
-			visualCls += ' GridCharacters-item-visual--player-' + players.indexOf(char.player);
+			visualCls += ' GridCharacters-item-visual--player-' + char.player.id;
 
 			if (actor === char) {
 				visualCls += ' is-selected';

@@ -7,6 +7,8 @@ import Tile from 'modules/geometry/tile';
 import Character from 'modules/character';
 import { getTiles } from 'modules/geometry/tiles';
 
+import CharacterTooltip from 'ui/battle/CharacterTooltip';
+
 const itemSize = 100 / gridSize;
 const tileList = getTiles();
 
@@ -115,29 +117,6 @@ const getTileType = (tile: Tile, act: Act): TileType => {
 	return type;
 };
 
-const renderTooltip = (char: Character | null) => {
-	if (!char) {
-		return;
-	}
-	const { HP, AP, MP } = char.attributes;
-	const { HP: baseHP, AP: baseAP, MP: baseMP } = char.baseAttributes;
-
-	return (
-		<div className="GridTiles-item-tooltip">
-			<strong>{char.name}</strong>
-			<br />
-			HP: {HP}/<span className="u-text-small">{baseHP}</span>
-			<br />
-			{baseMP > 0
-				? <span>MP: {MP}/<span className="u-text-small">{baseMP}</span></span>
-				: <span>MP: N/A</span>
-			}
-			<br />
-			AP: {AP}/<span className="u-text-small">{baseAP}</span>
-		</div>
-	);
-};
-
 const GridBase: React.SFC<IGridBaseProps> = ({ act, characters, onSelect }) => {
 	const tiles: GridTile[] = tileList.map(tile => {
 		const char = characters.find(ch => tile === ch.position) || null;
@@ -151,7 +130,6 @@ const GridBase: React.SFC<IGridBaseProps> = ({ act, characters, onSelect }) => {
 			onSelect(tile);
 		}
 	};
-
 	return (
 		<div className="GridTiles">
 			{tiles.map(([tile, type, char], i) => {
@@ -170,7 +148,11 @@ const GridBase: React.SFC<IGridBaseProps> = ({ act, characters, onSelect }) => {
 						onClick={onClick(tile)}
 						key={i}
 					>
-						{renderTooltip(char)}
+						{!!char && (
+							<div className="GridTiles-item-tooltip">
+								<CharacterTooltip character={char} />
+							</div>
+						)}
 					</div>
 				);
 			})}

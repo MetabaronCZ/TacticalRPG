@@ -12,12 +12,6 @@ TODO
 	- priradit vysledek reakce Reaction.result (EVADED, BLOCKED, SHIELDED, DAMAGED, KILLED, HEALED, BUFFED, REVIVED, ???)
 	- pote pouzit pri ziskavani statistik v BattleSummary
 	- udrzet i hodnotu KILLED nebo REVIVED pro reactory
---	behem MOVEMENT faze by mely jit vybrat vsechny postavy
-	- s tim ze se ukaze jejich CharacterBadge s infem
-	- pokud neni vybrany Actor, tak se ukazuje jen Back action a  nezvyraznuji pole pro movement
-	- Back action vybere Actora
-	? moznost vybrat i ostatni pole >> ukaze se info o policku (Tile)
-	? v takovem pripade by melo byt zobrazeno info o Tile i pri vyberu Charactera
 --	do CharacterCreation pridat nahled hodnot postavy
 	? u zbrani a vyzbroje pridat elementy, damage, redukce, apod.
 --	AIPlayer by mel mit k dispozici instanci enginu

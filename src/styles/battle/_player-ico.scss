@@ -3,6 +3,6 @@
 	height: 4px;
 	margin-bottom: 2*$vu;
 
-	&.PlayerIco--player0 { background-color: tomato; }
-	&.PlayerIco--player1 { background-color: darkviolet; }
+	&.PlayerIco--player0 { background-color: $player-0-color-main; }
+	&.PlayerIco--player1 { background-color: $player-1-color-main; }
 }

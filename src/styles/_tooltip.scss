@@ -1,0 +1,23 @@
+.Tooltip {
+	@extend .u-text-default;
+	position: absolute;
+	bottom: 100%;
+	z-index: 100;
+	padding: $vu 2*$vu;
+	margin-bottom: $vu;
+	background: $color-black;
+	border-radius: $border-radius-default;
+	text-align: left;
+	pointer-events: none;
+
+	&::after {
+		position: absolute;
+		top: 100%;
+		left: $vu;
+		content: " ";
+		width: 0;
+		height: 0;
+		border: $vu solid transparent;
+		border-top-color: $color-black;
+	}
+}

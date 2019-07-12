@@ -20,13 +20,13 @@
 			border: 4px solid $color-grey;
 
 			&.GridCharacters-item-visual--player-0 {
-				border-color: darkorchid;
-				background-color: darkviolet;
+				border-color: $player-0-color-secondary;
+				background-color: $player-0-color-main;
 			}
 
 			&.GridCharacters-item-visual--player-1 {
-				border-color: salmon;
-				background-color: tomato;
+				border-color: $player-1-color-secondary;
+				background-color: $player-1-color-main;
 			}
 
 			&.is-selected {

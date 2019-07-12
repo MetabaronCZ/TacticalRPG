@@ -1,4 +1,6 @@
 import React from 'react';
+
+import BarValue from 'ui/battle/BarValue';
 import Bar, { BarColor } from 'ui/battle/Bar';
 
 interface IProps {
@@ -21,10 +23,7 @@ const AttributeInfo: React.SFC<IProps> = ({ label, color, value, max, disabled }
 			</div>
 
 			<div className="AttributeInfo-value">
-				{max > 0
-					? `${value} / ${max}`
-					: <span className="u-disabled">N/A</span>
-				}
+				<BarValue value={value} max={max} />
 			</div>
 		</div>
 	);

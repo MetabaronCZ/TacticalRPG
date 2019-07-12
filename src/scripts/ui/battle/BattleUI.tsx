@@ -8,7 +8,6 @@ import Button from 'ui/common/Button';
 
 import Grid from 'ui/battle/Grid';
 import Order from 'ui/battle/Order';
-import Players from 'ui/battle/Players';
 import ActorUI from 'ui/battle/ActorUI';
 import TargetUI from 'ui/battle/TargetUI';
 import ReactorUI from 'ui/battle/ReactorUI';
@@ -36,10 +35,6 @@ const BattleUI: React.SFC<IBattleUIProps> = ({ engineState, engineUpdate, onTile
 			<Order act={act} characters={order} players={players} />
 
 			<div className="BattleUI-layout">
-				<div className="BattleUI-layout-column BattleUI-layout-column--players">
-					<Players act={act} players={players} />
-				</div>
-
 				<div className="BattleUI-layout-column BattleUI-layout-column--actor">
 					{running
 						? <ActorUI act={act} onCommandSelect={onCommandSelect} />

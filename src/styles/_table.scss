@@ -1,0 +1,13 @@
+.Table {
+	&.Table--plain {
+		td,
+		th {
+			padding: 0 0 0 $vu;
+			white-space: nowrap;
+
+			&:first-child {
+				padding-left: 0;
+			}
+		}
+	}
+}

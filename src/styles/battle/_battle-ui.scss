@@ -8,12 +8,6 @@
 		justify-content: center;
 
 		&-column {
-			&.BattleUI-layout-column--players {
-				display: none;
-				flex: 1 0 auto;
-				padding-right: 50px;
-			}
-
 			&.BattleUI-layout-column--actor {
 				flex: 0 0 400px;
 			}
@@ -26,12 +20,6 @@
 			&.BattleUI-layout-column--reactor {
 				flex: 0 0 400px;
 			}
-		}
-	}
-
-	@media screen and (min-width: 1800px) {
-		&-layout-column.BattleUI-layout-column--players {
-			display: block;
 		}
 	}
 }
