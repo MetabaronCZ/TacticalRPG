@@ -1,0 +1,9 @@
+.CharacterPreview {
+	padding: $vu 2*$vu;
+	background: $color-grey-darker;
+	border-radius: $border-radius-default;
+
+	> *:last-child {
+		margin-bottom: 0;
+	}
+}

@@ -36,7 +36,7 @@ const CharacterPreview: React.SFC<IProps> = ({ character }) => {
 	});
 
 	return (
-		<div>
+		<div className="CharacterPreview">
 			<p className="Paragraph">
 				<strong>{name || '?????'}</strong>
 				{' '}
