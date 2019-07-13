@@ -190,9 +190,9 @@ const renderScoreItem = (items: IScoreItem[], postfix = '') => {
 			<tbody>
 				{items.map((item, i) => (
 					<tr key={i}>
-						<td>{i + 1}.</td>
-						<td>{item.name}:</td>
-						<td>{item.amount}{postfix}</td>
+						<td className="Table-column">{i + 1}.</td>
+						<td className="Table-column">{item.name}:</td>
+						<td className="Table-column">{item.amount}{postfix}</td>
 					</tr>
 				))}
 			</tbody>

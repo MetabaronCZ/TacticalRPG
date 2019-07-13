@@ -6,8 +6,10 @@ BUG
 
 TODO
 ----------------------------------------------------------------------------------------------------------
---	do CharacterCreation pridat nahled hodnot postavy
-	? u zbrani a vyzbroje pridat elementy, damage, redukce, apod.
+--	v CharacterCreation u inputu s Character.name pridat tlacitko s generovanim nahodneho jmena
+--	refaktorovat uchovani Player, playerID, initiative ve Chronox
+	- aby slo lepe rekonstruovat v BattleSummary
+	- v BattleSummary zobrazovat u postav PlayerIco
 --	AICharacter: pokud vybrana cesta nekonci na Tile, ze ktereho se da utocit, skoncit na posledni utocne pozici
 --	AICharacter: pohyb/akce podle melee / ranged / support role
 	- vybira AIPlayer

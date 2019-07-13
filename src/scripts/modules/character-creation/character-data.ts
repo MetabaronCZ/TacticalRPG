@@ -7,7 +7,11 @@ import Armors from 'data/armors';
 import Weapons from 'data/weapons';
 import Skillsets from 'data/skillsets';
 import Archetypes from 'data/archetypes';
-import { maxCharacterNameLength, textInputRegex } from 'data/game-config';
+
+import {
+	maxCharacterNameLength,
+	textInputRegex, maxPartyNameLength
+} from 'data/game-config';
 
 import {
 	WeaponEquipTableArch, WeaponEquipTableWield,
@@ -16,6 +20,7 @@ import {
 } from 'data/equipment';
 
 import { SexID, ISexData } from 'modules/character/sex';
+import { getRandomNames } from 'modules/random-name-generator';
 import { IEquipSlot, WieldID } from 'modules/equipment/wield-data';
 import { ArmorID, IArmorData } from 'modules/equipment/armor-data';
 import { WeaponID, IWeaponData } from 'modules/equipment/weapon-data';
@@ -38,7 +43,7 @@ export type ICharacterData = IIndexableData & ICharacterConfig;
 
 export class CharacterData extends IndexableData {
 	@observable private data = {
-		name: '',
+		name: getRandomNames(1, maxPartyNameLength)[0],
 		sex: Sexes.get('MALE'),
 		archetype: Archetypes.get('PP'),
 		skillset: Skillsets.get('NONE'),

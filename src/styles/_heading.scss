@@ -12,4 +12,9 @@
 		@extend .u-text-larger;
 		border-bottom-style: solid;
 	}
+
+	&.Heading--small {
+		@extend .u-text-default;
+		padding-bottom: ($vu - $border-size);
+	}
 }

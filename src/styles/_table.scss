@@ -1,9 +1,13 @@
 .Table {
+	margin-bottom: 2*$vu;
+
 	&.Table--plain {
-		td,
-		th {
+		.Table-column {
+			@extend .u-text-default, .u-weight-regular;
+			color: $color-yellow;
 			padding: 0 0 0 $vu;
 			white-space: nowrap;
+			vertical-align: top;
 
 			&:first-child {
 				padding-left: 0;

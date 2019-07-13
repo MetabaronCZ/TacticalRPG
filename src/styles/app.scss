@@ -17,6 +17,10 @@
 @import "heading";
 @import "paragraph";
 @import "error-box";
+@import "list";
+@import "table";
+@import "tooltip";
+@import "layout";
 
 // forms
 @import "forms/form";
@@ -33,9 +37,6 @@
 @import "page-wrapper";
 @import "page";
 @import "main-menu";
-@import "list";
-@import "table";
-@import "tooltip";
 @import "player-ico";
 @import "archetype-ico";
 @import "archetype-selection";

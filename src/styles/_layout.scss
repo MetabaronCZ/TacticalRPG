@@ -1,0 +1,17 @@
+.Layout {
+	&-row {
+		display: flex;
+		flex-direction: row;
+		margin: 0 (-$vu);
+	}
+
+	&-column {
+		flex: 1 0 auto;
+		padding: 0 $vu;
+
+		&.u-col-1-2 {
+			width: 50%;
+			flex-basis: 50%;
+		}
+	}
+}

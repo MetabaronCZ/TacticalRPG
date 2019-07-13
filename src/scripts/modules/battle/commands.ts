@@ -150,7 +150,7 @@ export const getReactiveCommands = (character: Character, isBackAttack: boolean,
 	}
 
 	// ENERGY SHIELD command
-	if (character.archetype.type.M) {
+	if ('MAGICAL' === armor.id) {
 		const skill = new Skill('ENERGY_SHIELD');
 		const title = `${skill.title} ${MP}`;
 

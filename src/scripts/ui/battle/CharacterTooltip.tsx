@@ -30,18 +30,22 @@ const CharacterTooltip: React.SFC<IProps> = ({ character: char }) => {
 			<table className="Table Table--plain">
 				<tbody>
 					<tr>
-						<td>HP:</td>
-						<td><BarValue value={HP} max={baseHP} /></td>
-						<td className="u-disabled">|</td>
-						<td>MH:</td>
-						<td>{char.mainHand.title}</td>
+						<td className="Table-column">HP:</td>
+						<td className="Table-column"><BarValue value={HP} max={baseHP} /></td>
+						<td className="Table-column">
+							<span className="u-disabled">|</span>
+						</td>
+						<td className="Table-column">MH:</td>
+						<td className="Table-column">{char.mainHand.title}</td>
 					</tr>
 					<tr>
-						<td>MP:</td>
-						<td><BarValue value={MP} max={baseMP} /></td>
-						<td className="u-disabled">|</td>
-						<td>OH:</td>
-						<td>
+						<td className="Table-column">MP:</td>
+						<td className="Table-column"><BarValue value={MP} max={baseMP} /></td>
+						<td className="Table-column">
+							<span className="u-disabled">|</span>
+						</td>
+						<td className="Table-column">OH:</td>
+						<td className="Table-column">
 							{'NONE' !== char.offHand.id
 								? char.offHand.title
 								: <span className="u-disabled">{char.mainHand.title}</span>
@@ -49,11 +53,13 @@ const CharacterTooltip: React.SFC<IProps> = ({ character: char }) => {
 						</td>
 					</tr>
 					<tr>
-						<td>AP:</td>
-						<td><BarValue value={AP} max={baseAP} /></td>
-						<td className="u-disabled">|</td>
-						<td>AR:</td>
-						<td>{char.armor.title}</td>
+						<td className="Table-column">AP:</td>
+						<td className="Table-column"><BarValue value={AP} max={baseAP} /></td>
+						<td className="Table-column">
+							<span className="u-disabled">|</span>
+						</td>
+						<td className="Table-column">AR:</td>
+						<td className="Table-column">{char.armor.title}</td>
 					</tr>
 				</tbody>
 			</table>

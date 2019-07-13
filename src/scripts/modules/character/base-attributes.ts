@@ -5,16 +5,11 @@ import { IAttributes, AttributeID } from 'modules/character/attributes';
 
 class BaseAttributes implements IAttributes {
 	protected values: IAttributes = {
-		STR: 0,
-		VIT: 0,
-		SPD: 0,
-		MOV: 0,
-		MAG: 0,
-		SPR: 0,
-		HP: 0,
-		MP: 0,
-		AP: 0,
-		CT: 0
+		STR: 0, VIT: 0,
+		MAG: 0, SPR: 0,
+		SPD: 0, MOV: 0,
+		HP: 0, MP: 0,
+		AP: 0, CT: 0
 	};
 
 	constructor(character: Character) {
