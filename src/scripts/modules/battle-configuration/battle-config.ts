@@ -1,15 +1,15 @@
 import { observable, action } from 'mobx';
 
 import { randomPartyID } from 'data/game-config';
-import { PlayerConfig, IPlayerConfig, IPlayerConfigEditable } from 'modules/battle-configuration/player-config';
+import { PlayerData, IPlayerConfig, IPlayerDataEditable } from 'modules/battle-configuration/player-data';
 
 type PlayerEditable = {
-	[attr in IPlayerConfigEditable]?: string;
+	[attr in IPlayerDataEditable]?: string;
 };
 
 type PlayerEditableList = [PlayerEditable, PlayerEditable];
 
-export type PlayerConfigList = [PlayerConfig, PlayerConfig];
+export type PlayerConfigList = [PlayerData, PlayerData];
 
 export interface IBattleConfig {
 	players: PlayerConfigList;
@@ -39,7 +39,7 @@ export class BattleConfig {
 					config: {}
 				}
 			};
-			return new PlayerConfig(conf);
+			return new PlayerData(i, conf);
 		});
 
 		this.players = players as PlayerConfigList;
@@ -75,7 +75,7 @@ export class BattleConfig {
 			return;
 		}
 		const players = this.players.map((pl, i) => {
-			return new PlayerConfig({
+			return new PlayerData(i, {
 				...pl.serialize(),
 				...data.players[i]
 			});

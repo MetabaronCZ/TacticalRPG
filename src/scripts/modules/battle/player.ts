@@ -1,15 +1,15 @@
 import Character from 'modules/character';
-import { IPlayerConfig } from 'modules/battle-configuration/player-config';
+import { IPlayerData } from 'modules/battle-configuration/player-data';
 
 class Player {
-	public readonly data: IPlayerConfig;
 	public readonly id: number;
 	public readonly name: string;
+	public readonly data: IPlayerData;
 	protected characters: Character[] = [];
 
-	constructor(id: number, data: IPlayerConfig) {
-		this.id = id;
+	constructor(data: IPlayerData) {
 		this.data = data;
+		this.id = data.id;
 		this.name = data.name;
 	}
 

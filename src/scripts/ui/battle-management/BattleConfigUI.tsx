@@ -9,7 +9,7 @@ import { PartyData } from 'modules/party-creation/party-data';
 import BattleConfiguration from 'modules/battle-configuration';
 import { BattleConfig } from 'modules/battle-configuration/battle-config';
 import { CharacterData } from 'modules/character-creation/character-data';
-import { IPlayerConfigEditable } from 'modules/battle-configuration/player-config';
+import { IPlayerDataEditable } from 'modules/battle-configuration/player-data';
 
 import Form from 'ui/common/Form';
 import Button from 'ui/common/Button';
@@ -120,7 +120,7 @@ class BattleConfigUI extends React.Component<IBattleConfigUIProps> {
 		);
 	}
 
-	private onChange = (player: number, name: IPlayerConfigEditable) => (e: SyntheticEvent<any>) => {
+	private onChange = (player: number, name: IPlayerDataEditable) => (e: SyntheticEvent<any>) => {
 		this.form.onPlayerChange(name, player, e.currentTarget.value);
 	}
 

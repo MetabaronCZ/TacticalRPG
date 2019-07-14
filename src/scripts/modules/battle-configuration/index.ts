@@ -7,7 +7,7 @@ import IndexableList from 'modules/indexable-list';
 import { PartyData } from 'modules/party-creation/party-data';
 import { CharacterData } from 'modules/character-creation/character-data';
 import { BattleConfig, IBattleConfigValidation } from 'modules/battle-configuration/battle-config';
-import { IPlayerConfigEditable, PlayerConfig, PlayerControlID } from 'modules/battle-configuration/player-config';
+import { IPlayerDataEditable, PlayerData, PlayerControlID } from 'modules/battle-configuration/player-data';
 
 interface IBattleConfiguration {
 	config: BattleConfig;
@@ -42,7 +42,7 @@ class BattleConfiguration {
 	}
 
 	@action
-	public onPlayerChange(field: IPlayerConfigEditable, i: number, value: string) {
+	public onPlayerChange(field: IPlayerDataEditable, i: number, value: string) {
 		const config = this.state.config;
 		const player = config.players[i];
 
@@ -81,7 +81,7 @@ class BattleConfiguration {
 		next(config);
 	}
 
-	public getPartyCharacters(player: PlayerConfig, characters: CharacterData[] = []): IndexableList<CharacterData> {
+	public getPartyCharacters(player: PlayerData, characters: CharacterData[] = []): IndexableList<CharacterData> {
 		const chars: CharacterData[] = [];
 
 		if (randomPartyID !== player.party) {

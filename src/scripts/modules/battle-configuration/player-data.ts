@@ -19,9 +19,15 @@ export interface IPlayerConfig {
 	aiSettings: IAISettings;
 }
 
-export type IPlayerConfigEditable = keyof IPlayerConfig;
+interface IPlayerIndexable {
+	id: number;
+}
+export type IPlayerDataEditable = keyof IPlayerConfig;
+export type IPlayerData = IPlayerIndexable & IPlayerConfig;
 
-export class PlayerConfig implements IPlayerConfig {
+export class PlayerData implements IPlayerData {
+	public readonly id: number;
+
 	@observable private data: IPlayerConfig = {
 		name: 'Player',
 		control: 'USER',
@@ -32,8 +38,9 @@ export class PlayerConfig implements IPlayerConfig {
 		}
 	};
 
-	constructor(data: Partial<IPlayerConfig>) {
-		const conf: IPlayerConfig = { ...this.data, ...data };
+	constructor(id: number, data: Partial<IPlayerData>) {
+		const conf: IPlayerData = { ...this.data, ...data, id };
+		this.id = conf.id;
 		this.setName(conf.name);
 		this.setParty(conf.party);
 		this.setControl(conf.control);
@@ -86,9 +93,9 @@ export class PlayerConfig implements IPlayerConfig {
 		this.data.aiSettings = settings;
 	}
 
-	public validate(): IValidation<IPlayerConfigEditable> {
+	public validate(): IValidation<IPlayerDataEditable> {
 		const { name } = this;
-		const errors: { [field in IPlayerConfigEditable]?: string; } = {};
+		const errors: { [field in IPlayerDataEditable]?: string; } = {};
 
 		if (name.length < 1 || name.length > playerMaxNameLength) {
 			errors.name = `Name should contain 1 to ${playerMaxNameLength} characters`;
@@ -102,8 +109,8 @@ export class PlayerConfig implements IPlayerConfig {
 		};
 	}
 
-	public serialize(): IPlayerConfig {
-		const { name, party, control, aiSettings } = this;
-		return { name, party, control, aiSettings };
+	public serialize(): IPlayerData {
+		const { id, name, party, control, aiSettings } = this;
+		return { id, name, party, control, aiSettings };
 	}
 }

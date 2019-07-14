@@ -32,12 +32,12 @@
 .u-mr-4 { margin-right: 4*$vu; }
 
 // alignment
-.u-align-left { text-align: left; }
-.u-align-right { text-align: right; }
-.u-align-center { text-align: center; }
-.u-align-top { vertical-align: top; }
-.u-align-bottom { vertical-align: bottom; }
-.u-align-middle { vertical-align: middle; }
+.u-align-left { text-align: left !important; }
+.u-align-right { text-align: right !important; }
+.u-align-center { text-align: center !important; }
+.u-align-top { vertical-align: top !important; }
+.u-align-bottom { vertical-align: bottom !important; }
+.u-align-middle { vertical-align: middle !important; }
 
 // adapt table column width to its content
 .u-tableColumnFit {

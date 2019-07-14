@@ -6,11 +6,6 @@ BUG
 
 TODO
 ----------------------------------------------------------------------------------------------------------
-??	PlayerConfig predelat na PlayerData podle vzoru CharacterData
-	- misto string ID nechat number (viz Player)
-	- do Chronox posilat IPlayerData, kde bude i ID
-	- winnerID posilat ne jako poradi, ale jako IPlayerData.id
-	- v BattleSummary pracovat s IPlayerData.id
 --	AICharacter: pokud vybrana cesta nekonci na Tile, ze ktereho se da utocit, skoncit na posledni utocne pozici
 --	AICharacter: pohyb/akce podle melee / ranged / support role
 	- vybira AIPlayer

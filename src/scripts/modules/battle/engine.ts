@@ -221,11 +221,11 @@ class Engine {
 				}
 				const selectTile = (tile: Tile) => this.selectTile(tile);
 				const selectCommand = (cmd: Command) => this.selectCommand(cmd);
-				player = new AIPlayer(p, data, aiConf, selectTile, selectCommand);
+				player = new AIPlayer(data, aiConf, selectTile, selectCommand);
 
 			} else {
 				// human controlled player
-				player = new Player(p, data);
+				player = new Player(data);
 			}
 
 			// get character data

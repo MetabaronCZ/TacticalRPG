@@ -7,14 +7,14 @@ import { getIdleCommands, getReactiveCommands } from 'modules/battle/commands';
 
 import Character from 'modules/character';
 import Player from 'modules/battle/player';
-import { PlayerConfig } from 'modules/battle-configuration/player-config';
+import { PlayerData } from 'modules/battle-configuration/player-data';
 import { CharacterData } from 'modules/character-creation/character-data';
 
 import ArchetypeIco from 'ui/common/ArchetypeIco';
 
 const dummyTile = getTiles()[0];
-const dummyPlayerConfig = new PlayerConfig({});
-const dummyPlayer = new Player(0, dummyPlayerConfig);
+const dummyPlayerConfig = new PlayerData(0, {});
+const dummyPlayer = new Player(dummyPlayerConfig);
 
 const getDummyCharacter = (character: CharacterData): Character => {
 	return new Character(character, dummyTile, 'BOTTOM', dummyPlayer);

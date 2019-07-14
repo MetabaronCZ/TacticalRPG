@@ -14,7 +14,7 @@ import Separator from 'ui/common/Separator';
 import ButtonRow from 'ui/common/ButtonRow';
 import PlayerIco from 'ui/common/PlayerIco';
 import { IPartyData } from 'modules/party-creation/party-data';
-import { IPlayerConfig } from 'modules/battle-configuration/player-config';
+import { IPlayerConfig } from 'modules/battle-configuration/player-data';
 
 const topListSize = 5; // maximum items of diplayed top kills, damage, ...
 
@@ -153,16 +153,16 @@ const analyzeScore = (timeline: IActRecord[], characters: ICharacterData[], play
 		if (!actor) {
 			throw new Error('Invalid score record character ID');
 		}
-		const player = players.find(pl => pl.characters.find(char => actor.id === char.id));
+		const playerData = players.find(pl => pl.characters.find(char => actor.id === char.id));
 
-		if (!player) {
+		if (!playerData) {
 			throw new Error('Invalid score record player data');
 		}
 		const results = act.combatPhase.results;
 
 		scoreData[actor.id] = scoreData[actor.id] || {
 			name: actor.name,
-			player: player.id,
+			player: playerData.id,
 			kills: 0,
 			damage: 0,
 			healing: 0
@@ -257,9 +257,12 @@ class BattleSummaryPage extends React.Component<IProps, IState> {
 			);
 		}
 		const { chronox, winner } = record;
-		const winPlayer = chronox.players[winner];
+		const winPlayer = chronox.players.find(pl => winner === pl.id);
 
-		const playerData = chronox.players.map((pl, p) => {
+		if (!winPlayer) {
+			throw new Error('Invalid winner ID: ' + winner);
+		}
+		const playerData = chronox.players.map(pl => {
 			const party = chronox.parties.find(pt => pl.party === pt.id);
 
 			const characters = party
@@ -267,7 +270,7 @@ class BattleSummaryPage extends React.Component<IProps, IState> {
 				: [];
 
 			return {
-				id: p,
+				id: pl.id,
 				player: pl,
 				party,
 				characters: characters.filter(char => !!char) as ICharacterData[]
@@ -285,7 +288,7 @@ class BattleSummaryPage extends React.Component<IProps, IState> {
 
 				{playerData.map((data, d) => (
 					<div className="Paragraph" key={d}>
-						<PlayerIco id={d} />
+						<PlayerIco id={data.id} />
 						<strong>Player "{data.player.name}"</strong>
 						<br />
 						{data.characters.map(char => char ? char.name : '?????').join(', ')}
@@ -304,15 +307,15 @@ class BattleSummaryPage extends React.Component<IProps, IState> {
 					</li>
 
 					<li className="List-row">
-						<div className="List-row-column">
+						<div className="List-row-column u-align-top">
 							{renderScoreItem(scoreAnalysis.kills, 'x')}
 						</div>
 
-						<div className="List-row-column">
+						<div className="List-row-column u-align-top">
 							{renderScoreItem(scoreAnalysis.damage)}
 						</div>
 
-						<div className="List-row-column">
+						<div className="List-row-column u-align-top">
 							{renderScoreItem(scoreAnalysis.healing)}
 						</div>
 					</li>

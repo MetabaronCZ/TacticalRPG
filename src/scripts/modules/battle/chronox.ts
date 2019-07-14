@@ -2,11 +2,11 @@ import { maxPartySize } from 'data/game-config';
 
 import { IActRecord } from 'modules/battle/act';
 import { PlayerList } from 'modules/battle/engine';
+import { IPlayerData } from 'modules/battle-configuration/player-data';
 import { IPartyData, PartyData } from 'modules/party-creation/party-data';
-import { IPlayerConfig } from 'modules/battle-configuration/player-config';
 import { ICharacterData } from 'modules/character-creation/character-data';
 
-export type ChronoxPlayerList =  [IPlayerConfig, IPlayerConfig];
+export type ChronoxPlayerList =  [IPlayerData, IPlayerData];
 
 export interface IChronoxConfig {
 	characters: ICharacterData[];

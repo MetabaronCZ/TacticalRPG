@@ -5,7 +5,7 @@ import Player from 'modules/battle/player';
 import Command from 'modules/battle/command';
 import AICharacter from 'modules/ai/character';
 import { IAIConfig } from 'modules/ai/settings';
-import { IPlayerConfig } from 'modules/battle-configuration/player-config';
+import { IPlayerData } from 'modules/battle-configuration/player-data';
 
 export type IOnTileSelect = (tile: Tile) => void;
 export type IOnCommandSelect = (command: Command) => void;
@@ -23,8 +23,9 @@ class AIPlayer extends Player {
 	private selectTile: (tile: Tile) => void;
 	private selectCommand: (command: Command) => void;
 
-	constructor(id: number, data: IPlayerConfig, ai: IAIConfig, selectTile: IOnTileSelect, selectCommand: IOnCommandSelect) {
-		super(id, data);
+	constructor(data: IPlayerData, ai: IAIConfig, selectTile: IOnTileSelect, selectCommand: IOnCommandSelect) {
+		super(data);
+
 		// this.config = ai;
 		this.selectTile = selectTile;
 		this.selectCommand = selectCommand;
