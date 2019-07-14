@@ -5,8 +5,8 @@ import { findTileFrom, resolveDirection, getOpositeDirection } from 'modules/geo
 
 import Tile from 'modules/geometry/tile';
 import Character from 'modules/character';
+import Engine from 'modules/battle/engine';
 import Command from 'modules/battle/command';
-import { IOnCommandSelect, IOnTileSelect } from 'modules/ai/player';
 
 interface IOnCommandConf {
 	readonly commands: Command[];
@@ -40,16 +40,14 @@ const getSide = (char: Character, tile: Tile): TargetSide => {
 
 class AICharacter {
 	private readonly character: Character;
-	private readonly selectTile: IOnTileSelect;
-	private readonly selectCommand: IOnCommandSelect;
+	private readonly engine: Engine;
 
 	private moved = false;
 	private target: Character | null = null; // skill target character
 
-	constructor(character: Character, selectTile: IOnTileSelect, selectCommand: IOnCommandSelect) {
+	constructor(character: Character, engine: Engine) {
 		this.character = character;
-		this.selectTile = selectTile;
-		this.selectCommand = selectCommand;
+		this.engine = engine;
 	}
 
 	public getCharacter(): Character {
@@ -129,7 +127,7 @@ class AICharacter {
 
 					if (movePath.length) {
 						const moveTarget = movePath[movePath.length - 1];
-						this.selectTile(moveTarget);
+						this.engine.selectTile(moveTarget);
 						return;
 					}
 				}
@@ -148,7 +146,7 @@ class AICharacter {
 		if (!target || !target.isContained(targetable)) {
 			throw new Error('AI character couold not target skill: no targetable tiles');
 		}
-		this.selectTile(target);
+		this.engine.selectTile(target);
 	}
 
 	public onReaction(commands: Command[], isBackAttacked: boolean, obstacles: Tile[]) {
@@ -160,7 +158,7 @@ class AICharacter {
 		const char = this.character;
 
 		if (isBackAttacked || !char.canAct()) {
-			this.selectCommand(passCommand);
+			this.engine.selectCommand(passCommand);
 			return;
 		}
 
@@ -179,12 +177,12 @@ class AICharacter {
 					continue;
 				}
 			}
-			this.selectCommand(command);
+			this.engine.selectCommand(command);
 			return;
 		}
 
 		// no reaction available
-		this.selectCommand(passCommand);
+		this.engine.selectCommand(passCommand);
 	}
 
 	public onEvasion(evasible: Tile[]) {
@@ -193,7 +191,7 @@ class AICharacter {
 		if (!evasionTarget) {
 			throw new Error('AI character could not react: no evasion targets');
 		}
-		this.selectTile(evasionTarget);
+		this.engine.selectTile(evasionTarget);
 	}
 
 	public onDirect(directable: Tile[]) {
@@ -217,7 +215,7 @@ class AICharacter {
 		if (!directTarget) {
 			throw new Error('AI could not direct');
 		}
-		this.selectTile(directTarget);
+		this.engine.selectTile(directTarget);
 	}
 
 	private chooseCommand(commands: Command[], ally: Character[], enemy: Character[]) {
@@ -233,7 +231,7 @@ class AICharacter {
 		this.moved = false;
 
 		if (!this.target || !char.canAct()) {
-			this.selectCommand(passCommand);
+			this.engine.selectCommand(passCommand);
 			return;
 		}
 
@@ -254,13 +252,13 @@ class AICharacter {
 			const targets = command.skills[0].getTargets(char, enemy, targetable);
 
 			if (-1 !== targets.indexOf(this.target)) {
-				this.selectCommand(command);
+				this.engine.selectCommand(command);
 				return;
 			}
 		}
 
 		// enemy is not targetable
-		this.selectCommand(passCommand);
+		this.engine.selectCommand(passCommand);
 	}
 }
 

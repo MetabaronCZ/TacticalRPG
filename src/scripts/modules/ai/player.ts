@@ -35,15 +35,13 @@ class AIPlayer extends Player {
 		if ('CUSTOM' !== preset) {
 			this.config = AIPresets.get(preset).config;
 		}
-		const selectTile = engine.selectTile.bind(engine);
-		const selectCommand = engine.selectCommand.bind(engine);
 
 		this.ally = this.characters.map(char => {
-			return new AICharacter(char, selectTile, selectCommand);
+			return new AICharacter(char, engine);
 		});
 	}
 
-	public act(act: Act, commands: Command[]) {
+	public update(act: Act, commands: Command[]) {
 		const { actor, phases } = act;
 		const { MOVEMENT, COMMAND, REACTION, DIRECTION } = phases;
 

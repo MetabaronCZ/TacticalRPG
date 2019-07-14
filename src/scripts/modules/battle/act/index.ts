@@ -242,7 +242,7 @@ class Act {
 			if (character.isAI()) {
 				// let AI act
 				const player = character.player as AIPlayer;
-				player.act(this, commands);
+				player.update(this, commands);
 			}
 		});
 	}
