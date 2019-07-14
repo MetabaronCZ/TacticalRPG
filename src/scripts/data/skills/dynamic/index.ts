@@ -7,7 +7,11 @@ import { ISkillData, SkillElement } from 'modules/skill/skill-data';
 
 const dynamicSkill = miscSkills.DYNAMIC_SKILL;
 
-const weaponSkillData: { [id in WeaponID]: ISkillData | null; } = {
+type WeaponSkillDataTable = {
+	readonly [id in WeaponID]: ISkillData | null;
+};
+
+const weaponSkillData: WeaponSkillDataTable = {
 	NONE: null,
 	FISTS: weaponSkills.FST_ATTACK,
 	DAGGER: weaponSkills.DGR_ATTACK,

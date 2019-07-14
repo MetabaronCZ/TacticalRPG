@@ -6,7 +6,7 @@ import BarValue from 'ui/battle/BarValue';
 import ArchetypeIco from 'ui/common/ArchetypeIco';
 
 interface IProps {
-	character: Character;
+	readonly character: Character;
 }
 
 const CharacterTooltip: React.SFC<IProps> = ({ character: char }) => {

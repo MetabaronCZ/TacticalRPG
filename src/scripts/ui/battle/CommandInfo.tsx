@@ -2,7 +2,7 @@ import React from 'react';
 import Command, { formatCost } from 'modules/battle/command';
 
 interface IProps {
-	command: Command;
+	readonly command: Command;
 }
 
 const CommandInfo: React.SFC<IProps> = ({ command }) => (

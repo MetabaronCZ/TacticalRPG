@@ -15,7 +15,7 @@ class Order {
 	}
 
 	public serialize(): Character[] {
-		return this.order;
+		return [...this.order];
 	}
 
 	public update() {

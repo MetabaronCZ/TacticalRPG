@@ -28,18 +28,18 @@ export interface IEngineState {
 	running: boolean;
 	tick: number;
 	act: Act | null;
-	players: PlayerList;
-	characters: Character[];
 	order: Character[];
-	chronox: IChronoxRecord | null;
 	battleInfo: IBattleInfo[];
+	readonly players: PlayerList;
+	readonly characters: Character[];
+	readonly chronox: IChronoxRecord;
 }
 
 interface IEngineEvents {
-	onStart: (state: IEngineState) => void;
-	onUpdate: (state: IEngineState) => void;
-	onGameOver: (state: IEngineState, winner: Player) => void;
-	onBattleInfo: (state: IBattleInfo[]) => void;
+	readonly onStart: (state: IEngineState) => void;
+	readonly onUpdate: (state: IEngineState) => void;
+	readonly onGameOver: (state: IEngineState, winner: Player) => void;
+	readonly onBattleInfo: (state: IBattleInfo[]) => void;
 }
 
 interface IEngineProps {

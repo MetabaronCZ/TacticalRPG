@@ -8,8 +8,8 @@ import CommandInfo from 'ui/battle/CommandInfo';
 import CharacterInfo from 'ui/battle/CharacterInfo';
 
 interface IProps {
-	act: Act;
-	onCommandSelect: (command: Command) => void;
+	readonly act: Act;
+	readonly onCommandSelect: (command: Command) => void;
 }
 
 const ActorUI: React.SFC<IProps> = ({ act, onCommandSelect }) => {
@@ -42,7 +42,7 @@ const ActorUI: React.SFC<IProps> = ({ act, onCommandSelect }) => {
 				<React.Fragment>
 					<div>
 						<strong>Targets:</strong>
-						<br/>
+						<br />
 						{reactions.map((tgt, t) => {
 							const { reactor, command: reactionCommand } = tgt;
 							let txt = '...';

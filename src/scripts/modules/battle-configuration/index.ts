@@ -16,7 +16,7 @@ interface IBattleConfiguration {
 
 class BattleConfiguration {
 	@observable public state: IBattleConfiguration;
-	public parties: PartyData[];
+	public readonly parties: PartyData[];
 
 	constructor(data?: BattleConfig, parties: PartyData[] = []) {
 		this.state = {

@@ -6,7 +6,7 @@ import { ArchetypeID } from 'modules/character/archetype';
 type ArchetypeSize = 'default' | 'large';
 
 type IArchetypeIcoSizes = {
-	[size in ArchetypeSize]: string;
+	readonly [size in ArchetypeSize]: string;
 };
 
 interface IArchetypeIcoProps {
@@ -29,7 +29,12 @@ const ArchetypeIco: React.SFC<IArchetypeIcoProps> = props => {
 		`ArchetypeIco--primary${archetype[0]}`,
 		`ArchetypeIco--secondary${archetype[1]}`
 	];
-	return <span className={cls.join(' ')} title={`${archetype} Archetype (${archData.title})`} />;
+	return (
+		<span
+			className={cls.join(' ')}
+			title={`${archetype} Archetype (${archData.title})`}
+		/>
+	);
 };
 
 export default ArchetypeIco;

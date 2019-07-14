@@ -11,18 +11,18 @@ import Order from 'ui/battle/Order';
 import ActorUI from 'ui/battle/ActorUI';
 import TargetUI from 'ui/battle/TargetUI';
 import ReactorUI from 'ui/battle/ReactorUI';
-import GridLegend from 'ui/battle/GreidLegend';
+import GridLegend from 'ui/battle/GridLegend';
 import GridCoordinates from 'ui/battle/GridCoordinates';
 
 interface IBattleUIProps {
-	engineState: IEngineState;
-	engineUpdate: Date | null;
-	onTileSelect: (tile: Tile) => void;
-	onCommandSelect: (command: Command) => void;
-	onExit: () => void;
+	readonly engineState: IEngineState;
+	readonly engineUpdate: Date | null;
+	readonly onTileSelect: (tile: Tile) => void;
+	readonly onCommandSelect: (command: Command) => void;
+	readonly onExit: () => void;
 }
 
-const BattleUI: React.SFC<IBattleUIProps> = ({ engineState, engineUpdate, onTileSelect, onCommandSelect: onCommandSelect, onExit }) => {
+const BattleUI: React.SFC<IBattleUIProps> = ({ engineState, engineUpdate, onTileSelect, onCommandSelect, onExit }) => {
 	if (!engineUpdate) {
 		return <p className="Paragraph">Loading...</p>;
 	}
@@ -52,7 +52,6 @@ const BattleUI: React.SFC<IBattleUIProps> = ({ engineState, engineUpdate, onTile
 					<GridCoordinates>
 						<Grid
 							act={act}
-							players={players}
 							characters={characters}
 							battleInfo={battleInfo}
 							onTileSelect={onTileSelect}

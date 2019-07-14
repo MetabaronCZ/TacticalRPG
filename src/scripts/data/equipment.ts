@@ -4,11 +4,11 @@ import { WeaponID } from 'modules/equipment/weapon-data';
 import { ArchetypeID } from 'modules/character/archetype';
 
 type IArchetypeIndexTable = {
-	[id in ArchetypeID]: number;
+	readonly [id in ArchetypeID]: number;
 };
 
 type IWieldIndexTable = {
-	[id in WieldID]: number;
+	readonly [id in WieldID]: number;
 };
 
 type bool = 0 | 1;
@@ -17,15 +17,15 @@ type IArchetypeEquipRow = [bool, bool, bool, bool, bool, bool];
 type IWieldEquipRow = [bool, bool, bool, bool];
 
 type IWeaponEquipArchTable = {
-	[id in WeaponID]: IArchetypeEquipRow;
+	readonly [id in WeaponID]: IArchetypeEquipRow;
 };
 
 type IWeaponEquipWieldTable = {
-	[id in WeaponID]: IWieldEquipRow;
+	readonly [id in WeaponID]: IWieldEquipRow;
 };
 
 type IArmorEquipTable = {
-	[id in ArmorID]: IArchetypeEquipRow;
+	readonly [id in ArmorID]: IArchetypeEquipRow;
 };
 
 export const ArchetypeIndexTable: IArchetypeIndexTable = {

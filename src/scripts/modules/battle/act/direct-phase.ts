@@ -40,7 +40,7 @@ class DirectPhase extends ActPhase<IActDirectRecord> {
 	}
 
 	public getDirectable(): Tile[] {
-		return this.directable;
+		return [...this.directable];
 	}
 
 	public getTarget(): Tile | null {

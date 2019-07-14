@@ -4,11 +4,11 @@ import { getTile } from 'modules/geometry/tiles';
 export type DirectionID = 'TOP' | 'LEFT' | 'RIGHT' | 'BOTTOM';
 
 type IByDirectionTable = {
-	[T in DirectionID]: (tile: Tile) => Tile | null;
+	readonly [T in DirectionID]: (tile: Tile) => Tile | null;
 };
 
 type IOpositeDirectionTable = {
-	[T in DirectionID]: DirectionID;
+	readonly [T in DirectionID]: DirectionID;
 };
 
 const byDirectionTable: IByDirectionTable = {

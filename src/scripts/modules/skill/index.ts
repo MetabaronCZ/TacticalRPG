@@ -11,11 +11,11 @@ import {
 } from 'modules/skill/skill-data';
 
 type ITargetTable = {
-	[id in SkillTarget]: (character: Character, actor: Character) => boolean;
+	readonly [id in SkillTarget]: (character: Character, actor: Character) => boolean;
 };
 
 type IAreaTable = {
-	[id in SkillArea]: (source: Tile, target: Tile, range: SkillRange) => Tile[];
+	readonly [id in SkillArea]: (source: Tile, target: Tile, range: SkillRange) => Tile[];
 };
 
 // SkillTarget based targetable logic
@@ -173,16 +173,15 @@ class Skill implements ISkillData {
 	}
 
 	public getTargets(actor: Character, characters: Character[], targetable: Tile[]): Character[] {
-		return characters
-			.filter(char => {
-				const isDying = char.status.has('DYING');
-				return (
-					!char.isDead() &&
-					char.position.isContained(targetable) &&
-					targetTable[this.target](char, actor) && // character is targetable
-					('HOL_REVIVE' === this.id ? isDying : !isDying)
-				);
-			});
+		return characters.filter(char => {
+			const isDying = char.status.has('DYING');
+			return (
+				!char.isDead() &&
+				char.position.isContained(targetable) &&
+				targetTable[this.target](char, actor) && // character is targetable
+				('HOL_REVIVE' === this.id ? isDying : !isDying)
+			);
+		});
 	}
 
 	public getEffectArea(source: Tile, target: Tile): Tile[] {

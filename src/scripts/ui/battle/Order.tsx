@@ -5,9 +5,9 @@ import Character from 'modules/character';
 import Player from 'modules/battle/player';
 
 interface IOrderProps {
-	act: Act;
-	players: Player[];
-	characters: Character[];
+	readonly act: Act;
+	readonly players: Player[];
+	readonly characters: Character[];
 }
 
 const getState = (act: Act, char: Character): string => {

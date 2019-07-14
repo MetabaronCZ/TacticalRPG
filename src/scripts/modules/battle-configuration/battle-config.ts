@@ -12,7 +12,7 @@ type PlayerEditableList = [PlayerEditable, PlayerEditable];
 export type PlayerConfigList = [PlayerData, PlayerData];
 
 export interface IBattleConfig {
-	players: PlayerConfigList;
+	readonly players: PlayerConfigList;
 }
 
 export interface IBattleConfigValidation {

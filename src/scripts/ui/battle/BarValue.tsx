@@ -3,8 +3,8 @@ import React from 'react';
 const cipherCnt = 3; // number of cipher to display
 
 interface IProps {
-	value: number;
-	max: number;
+	readonly value: number;
+	readonly max: number;
 }
 
 const BarValue: React.SFC<IProps> = ({ value, max }) => {

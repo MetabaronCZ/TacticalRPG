@@ -70,7 +70,7 @@ export class PartyData extends IndexableData {
 
 	@computed
 	public get slots(): Array<string | null> {
-		return this.data.slots;
+		return [...this.data.slots];
 	}
 
 	@computed

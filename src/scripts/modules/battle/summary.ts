@@ -3,8 +3,8 @@ import { IChronoxRecord } from 'modules/battle/chronox';
 const KEY = 'chronox';
 
 export interface ISummary {
-	chronox: IChronoxRecord;
-	winner: number;
+	readonly chronox: IChronoxRecord;
+	readonly winner: number;
 }
 
 class Summary {

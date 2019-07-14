@@ -6,7 +6,7 @@ import { ICombatInfo } from 'modules/battle/combat';
 import StatusEffect from 'modules/battle/status-effect';
 
 interface IProps {
-	combat: ICombatInfo[];
+	readonly combat: ICombatInfo[];
 }
 
 const formatStatus = (status: StatusEffect[]) => {

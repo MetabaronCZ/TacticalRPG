@@ -21,7 +21,7 @@ const getDummyCharacter = (character: CharacterData): Character => {
 };
 
 interface IProps {
-	character: CharacterData;
+	readonly character: CharacterData;
 }
 
 const CharacterPreview: React.SFC<IProps> = ({ character }) => {
@@ -49,10 +49,9 @@ const CharacterPreview: React.SFC<IProps> = ({ character }) => {
 				{' '}
 				{archetype.title}
 				{' '}
-				{(archetype.type.M && 'NONE' !== skillset.id)
-					? `(${skillset.title})`
-					: ''
-				}
+				{(archetype.type.M && 'NONE' !== skillset.id) && (
+					<span>({skillset.title})</span>
+				)}
 			</p>
 
 			<h3 className="Heading Heading--small">

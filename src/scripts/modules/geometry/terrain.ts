@@ -1,7 +1,7 @@
 export type Terrain = 'DEFAULT' | 'WATER';
 
 type ITerrainCostTable = {
-	[id in Terrain]: number;
+	readonly [id in Terrain]: number;
 };
 
 const terrainCostTable: ITerrainCostTable = {

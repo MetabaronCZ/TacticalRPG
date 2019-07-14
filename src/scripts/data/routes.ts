@@ -1,7 +1,7 @@
 import { RouteID } from 'modules/route';
 
 export type Paths = {
-	[id in RouteID]: string;
+	readonly [id in RouteID]: string;
 };
 
 export const paths: Paths = {

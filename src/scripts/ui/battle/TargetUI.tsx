@@ -7,7 +7,7 @@ import CombatInfo from 'ui/battle/CombatInfo';
 import CharacterInfo from 'ui/battle/CharacterInfo';
 
 interface IProps {
-	act: Act;
+	readonly act: Act;
 }
 
 const ReactorUI: React.SFC<IProps> = ({ act }) => {

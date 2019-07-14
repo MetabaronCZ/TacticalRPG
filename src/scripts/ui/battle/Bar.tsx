@@ -3,9 +3,9 @@ import React from 'react';
 export type BarColor = 'green' | 'blue' | 'yellow';
 
 interface IProps {
-	value: number;
-	color?: BarColor;
-	disabled?: boolean;
+	readonly value: number;
+	readonly color?: BarColor;
+	readonly disabled?: boolean;
 }
 
 const Bar: React.SFC<IProps> = ({ value, color = 'green', disabled = false }) => {

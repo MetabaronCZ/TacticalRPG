@@ -11,17 +11,17 @@ export type IOnTileSelect = (tile: Tile) => void;
 export type IOnCommandSelect = (command: Command) => void;
 
 interface IAIActStartData {
-	actor: Character;
-	movable: Tile[];
-	commands: Command[];
+	readonly actor: Character;
+	readonly movable: Tile[];
+	readonly commands: Command[];
 }
 
 class AIPlayer extends Player {
 	// private readonly config: IAIConfig;
 	private enemy?: Player;
 	private ally: AICharacter[] = [];
-	private selectTile: (tile: Tile) => void;
-	private selectCommand: (command: Command) => void;
+	private readonly selectTile: (tile: Tile) => void;
+	private readonly selectCommand: (command: Command) => void;
 
 	constructor(data: IPlayerData, ai: IAIConfig, selectTile: IOnTileSelect, selectCommand: IOnCommandSelect) {
 		super(data);

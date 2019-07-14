@@ -7,7 +7,7 @@ export const berserkAttackModifier = 2;
 export const berserkDefenseModifier = 2;
 
 type AffinityModifierTable = {
-	[aff in Affinity]: number
+	readonly [aff in Affinity]: number
 };
 
 export const affinityModifierTable: AffinityModifierTable = {
@@ -17,8 +17,8 @@ export const affinityModifierTable: AffinityModifierTable = {
 };
 
 type AffinityData = {
-	[id in Affinity]: {
-		title: string;
+	readonly [id in Affinity]: {
+		readonly title: string;
 	};
 };
 

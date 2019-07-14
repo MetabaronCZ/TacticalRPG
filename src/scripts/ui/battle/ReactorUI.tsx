@@ -10,8 +10,8 @@ import CommandInfo from 'ui/battle/CommandInfo';
 import CharacterInfo from 'ui/battle/CharacterInfo';
 
 interface IProps {
-	act: Act;
-	onCommandSelect: (command: Command) => void;
+	readonly act: Act;
+	readonly onCommandSelect: (command: Command) => void;
 }
 
 const ReactorUI: React.SFC<IProps> = ({ act, onCommandSelect }) => {

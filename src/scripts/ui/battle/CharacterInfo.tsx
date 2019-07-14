@@ -7,7 +7,7 @@ import ArchetypeIco from 'ui/common/ArchetypeIco';
 import AttributeInfo from 'ui/battle/AttributeInfo';
 
 interface IProps {
-	character: Character;
+	readonly character: Character;
 }
 
 const CharactertInfo: React.SFC<IProps> = ({ character: char }) => {

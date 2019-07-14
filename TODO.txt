@@ -6,6 +6,7 @@ BUG
 
 TODO
 ----------------------------------------------------------------------------------------------------------
+--	Engine.running = true by mel byt az po zavolani start() metody
 --	AICharacter: pokud vybrana cesta nekonci na Tile, ze ktereho se da utocit, skoncit na posledni utocne pozici
 --	AICharacter: pohyb/akce podle melee / ranged / support role
 	- vybira AIPlayer

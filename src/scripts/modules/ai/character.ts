@@ -9,19 +9,19 @@ import Command from 'modules/battle/command';
 import { IOnCommandSelect, IOnTileSelect } from 'modules/ai/player';
 
 interface IOnCommandConf {
-	commands: Command[];
-	movable: Tile[];
-	ally: Character[];
-	enemy: Character[];
-	obstacles: Tile[];
+	readonly commands: Command[];
+	readonly movable: Tile[];
+	readonly ally: Character[];
+	readonly enemy: Character[];
+	readonly obstacles: Tile[];
 }
 
 type TargetSide = 'FRONT' | 'SIDE' | 'BEHIND';
 
 interface ITargetInfo {
-	character: Character;
-	side: TargetSide;
-	path: Tile[];
+	readonly character: Character;
+	readonly side: TargetSide;
+	readonly path: Tile[];
 }
 
 const getSide = (char: Character, tile: Tile): TargetSide => {

@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface IProps {
-	id: number;
+	readonly id: number;
 }
 
 const PlayerIco: React.SFC<IProps> = ({ id }) => (

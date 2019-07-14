@@ -5,7 +5,7 @@ import { gridSize } from 'data/game-config';
 import { IBattleInfo, BattleInfoType } from 'modules/battle/battle-info';
 
 interface IGridBattleInfo {
-	info: IBattleInfo[];
+	readonly info: IBattleInfo[];
 }
 
 const itemSize = 100 / gridSize;

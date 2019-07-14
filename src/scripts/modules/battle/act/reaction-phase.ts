@@ -66,7 +66,7 @@ class ReactionPhase extends ActPhase<IActReactionRecord> {
 	}
 
 	public getReactions(): IReaction[] {
-		return this.reactions;
+		return [...this.reactions];
 	}
 
 	public selectTile(tile: Tile) {

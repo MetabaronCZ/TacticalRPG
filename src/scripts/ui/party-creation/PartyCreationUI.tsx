@@ -29,15 +29,13 @@ interface IPartyCreationUIProps {
 
 const getLabel = (i: number, id: string | null) => (
 	<React.Fragment>
-		Character {i + 1} {
-			id
-				? (
-					<React.Fragment>
-						(<Link href={getPath('CHARACTER_EDIT', id)}>Edit</Link>)
-					</React.Fragment>
-				)
-				: ''
-		}
+		Character {i + 1}
+		{' '}
+		{!!id && (
+			<React.Fragment>
+				(<Link href={getPath('CHARACTER_EDIT', id)}>Edit</Link>)
+			</React.Fragment>
+		)}
 	</React.Fragment>
 );
 
@@ -57,7 +55,7 @@ class PartyCreationUI extends React.Component<IPartyCreationUIProps> {
 
 		return (
 			<Form onSubmit={this.onSubmit}>
-				{validation.errors.slots && (
+				{!!validation.errors.slots && (
 					<p className="ErrorBox">
 						{validation.errors.slots}
 					</p>
@@ -115,7 +113,7 @@ class PartyCreationUI extends React.Component<IPartyCreationUIProps> {
 	}
 
 	private renderPartyItem = (id: string | null, i: number) => {
-		const character = id ? this.props.characters.getById(id) : null;
+		const character = (id ? this.props.characters.getById(id) : null);
 		const filtered = this.form.filterCharacters(character);
 		const info = formatCharacter(character);
 		const fieldId = `f-character-${i}`;

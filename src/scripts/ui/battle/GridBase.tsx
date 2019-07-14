@@ -13,9 +13,9 @@ const itemSize = 100 / gridSize;
 const tileList = getTiles();
 
 interface IGridBaseProps {
-	act: Act;
-	characters: Character[];
-	onSelect: (tile: Tile) => void;
+	readonly act: Act;
+	readonly characters: Character[];
+	readonly onSelect: (tile: Tile) => void;
 }
 
 type GridTile = [Tile, TileType, Character | null];

@@ -75,7 +75,7 @@ class MovePhase extends ActPhase<IActMoveRecord> {
 	}
 
 	public getMovable(): Tile[] {
-		return this.movable;
+		return [...this.movable];
 	}
 
 	public getMoveCostMap(): ICostMap {
@@ -87,7 +87,7 @@ class MovePhase extends ActPhase<IActMoveRecord> {
 	}
 
 	public getPath(): Tile[] {
-		return this.movePath;
+		return [...this.movePath];
 	}
 
 	public getInitialPosition(): Tile {

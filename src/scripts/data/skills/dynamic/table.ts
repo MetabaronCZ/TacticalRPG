@@ -3,8 +3,8 @@ import { SkillElement } from 'modules/skill/skill-data';
 import { WeaponID } from 'modules/equipment/weapon-data';
 
 type DynamicSkillTable = {
-	[wpn in WeaponID]: {
-		[elm in SkillElement]: DynamicSkillID | null;
+	readonly [wpn in WeaponID]: {
+		readonly [elm in SkillElement]: DynamicSkillID | null;
 	};
 };
 

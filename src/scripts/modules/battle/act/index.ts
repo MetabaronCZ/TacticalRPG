@@ -18,22 +18,22 @@ import DirectPhase, { DirectPhaseEvents, IActDirectRecord } from 'modules/battle
 type PhaseID = 'MOVEMENT' | 'COMMAND' | 'REACTION' | 'COMBAT' | 'DIRECTION';
 
 interface IPhases {
-	MOVEMENT: MovePhase;
-	COMMAND: CommandPhase;
-	REACTION: ReactionPhase;
-	DIRECTION: DirectPhase;
-	COMBAT: CombatPhase;
+	readonly MOVEMENT: MovePhase;
+	readonly COMMAND: CommandPhase;
+	readonly REACTION: ReactionPhase;
+	readonly DIRECTION: DirectPhase;
+	readonly COMBAT: CombatPhase;
 }
 
 export type ActPhaseEvent = 'BATTLE_INFO' | MovePhaseEvents | CommandPhaseEvents | ReactionPhaseEvents | CombatPhaseEvents | DirectPhaseEvents;
 export type IOnActPhaseEvent = (event: ActPhaseEvent, data?: Character | Command | Tile | IBattleInfo | null) => void;
 
 export interface IActEvents {
-	onStart: (act: Act) => void;
-	onUpdate: (act: Act) => void;
-	onSkip: (act: Act) => void;
-	onEnd: (act: Act) => void;
-	onBattleInfo: (info: IBattleInfo) => void;
+	readonly onStart: (act: Act) => void;
+	readonly onUpdate: (act: Act) => void;
+	readonly onSkip: (act: Act) => void;
+	readonly onEnd: (act: Act) => void;
+	readonly onBattleInfo: (info: IBattleInfo) => void;
 }
 
 export interface IActRecord {
@@ -96,7 +96,7 @@ class Act {
 	}
 
 	public getCommands(): Command[] {
-		return this.commands;
+		return [...this.commands];
 	}
 
 	public getActingCharacter(): Character | null {

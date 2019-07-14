@@ -4,8 +4,8 @@ import Command, { formatCost } from 'modules/battle/command';
 type IOnSelect = (command: Command) => void;
 
 interface IProps {
-	commands: Command[];
-	onSelect: IOnSelect;
+	readonly commands: Command[];
+	readonly onSelect: IOnSelect;
 }
 
 interface IButtons {

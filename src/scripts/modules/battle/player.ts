@@ -14,7 +14,7 @@ class Player {
 	}
 
 	public getCharacters(): Character[] {
-		return this.characters;
+		return [...this.characters];
 	}
 
 	public setCharacters(characters: Character[]) {

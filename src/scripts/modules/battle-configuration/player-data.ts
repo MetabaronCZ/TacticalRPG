@@ -9,7 +9,7 @@ import { IPartyData } from 'modules/party-creation/party-data';
 export type PlayerControlID = 'USER' | 'AI';
 
 export interface IPlayerControlData {
-	title: string;
+	readonly title: string;
 }
 
 export interface IPlayerConfig {
@@ -20,7 +20,7 @@ export interface IPlayerConfig {
 }
 
 interface IPlayerIndexable {
-	id: number;
+	readonly id: number;
 }
 export type IPlayerDataEditable = keyof IPlayerConfig;
 export type IPlayerData = IPlayerIndexable & IPlayerConfig;

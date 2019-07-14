@@ -10,7 +10,7 @@ class Status {
 	}
 
 	public get(): StatusEffect[] {
-		return this.items;
+		return [...this.items];
 	}
 
 	public apply(effectId: StatusEffectID, physical = 0, magical = 0, onStatus?: IOnStatus) {

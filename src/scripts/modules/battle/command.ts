@@ -7,8 +7,8 @@ export type CommandReason =
 	'COOLDOWN' | 'CANT_ACT' | 'OUT_OF_AP' | 'OUT_OF_MP' | 'DISARMED' | 'SILENCED';
 
 export interface ICommandCost {
-	AP: number;
-	MP: number;
+	readonly AP: number;
+	readonly MP: number;
 }
 
 export type CommandType =
@@ -55,14 +55,14 @@ class Command {
 	public readonly skills: Skill[] = [];
 	public readonly cooldown: SkillCooldown = 0;
 	public cost: ICommandCost | null = null;
-	private readonly character?: Character;
+	private readonly character: Character | null;
 	private active: true | CommandReason = true;
 
 	constructor(type: CommandType, title: string, character?: Character, skills: Skill[] = []) {
 		this.type = type;
 		this.title = title;
 		this.skills = skills;
-		this.character = character;
+		this.character = character || null;
 
 		if (character) {
 			this.cost = getCost(skills, character.status);

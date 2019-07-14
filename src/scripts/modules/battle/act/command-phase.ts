@@ -13,20 +13,20 @@ export interface IActCommandRecord {
 }
 
 export interface IEffectTargetData {
-	character: Character;
-	combat: ICombatInfo[];
+	readonly character: Character;
+	readonly combat: ICombatInfo[];
 }
 
 interface IState {
 	command?: {
-		data: Command;
-		area: Tile[];
-		targetable: Tile[];
+		readonly data: Command;
+		readonly area: Tile[];
+		readonly targetable: Tile[];
 		target?: {
-			tile: Tile;
-			character: Character | null;
-			effectArea: Tile[];
-			effectTargets: IEffectTargetData[];
+			readonly tile: Tile;
+			readonly character: Character | null;
+			readonly effectArea: Tile[];
+			readonly effectTargets: IEffectTargetData[];
 		}
 	};
 }
@@ -70,12 +70,12 @@ class CommandPhase extends ActPhase<IActCommandRecord> {
 
 	public getArea(): Tile[] {
 		const { command } = this.state;
-		return command ? command.area : [];
+		return command ? [...command.area] : [];
 	}
 
 	public getTargetable(): Tile[] {
 		const { command } = this.state;
-		return command ? command.targetable : [];
+		return command ? [...command.targetable] : [];
 	}
 
 	public getTarget(): Tile | null {
@@ -87,7 +87,7 @@ class CommandPhase extends ActPhase<IActCommandRecord> {
 	public getEffectArea(): Tile[] {
 		const { command } = this.state;
 		const target = command ? command.target : null;
-		return target ? target.effectArea : [];
+		return target ? [...target.effectArea] : [];
 	}
 
 	public getEffectTarget(): Character | null {
@@ -105,7 +105,7 @@ class CommandPhase extends ActPhase<IActCommandRecord> {
 	public getCombatInfo(): IEffectTargetData[] {
 		const { command } = this.state;
 		const target = command ? command.target : null;
-		return target ? target.effectTargets : [];
+		return target ? [...target.effectTargets] : [];
 	}
 
 	public start(command: Command) {

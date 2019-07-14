@@ -10,12 +10,12 @@ import { getUniqueItems } from 'core/array';
 const tileList = getTiles();
 
 interface IProps {
-	act: Act;
-	players: Player[];
+	readonly act: Act;
+	readonly players: Player[];
 }
 
 type TileTypeData = {
-	[type in TileType]: string;
+	readonly [type in TileType]: string;
 };
 
 const tileTypeData: TileTypeData = {

@@ -10,14 +10,14 @@ import { ElementAffinityTable, Affinity } from 'modules/skill/affinity';
 import { SkillID, SkillElement, ISkillData } from 'modules/skill/skill-data';
 
 interface IBlockValue {
-	physical: number;
-	magical: number;
+	readonly physical: number;
+	readonly magical: number;
 }
 
 interface IShieldValue {
-	physical: number;
-	magical: number;
-	cost: number;
+	readonly physical: number;
+	readonly magical: number;
+	readonly cost: number;
 }
 
 export interface ICombatInfo {

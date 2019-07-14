@@ -63,10 +63,10 @@ interface IScoreAnalysis {
 }
 
 interface IPlayerData {
-	id: number;
-	party: IPartyData;
-	player: IPlayerConfig;
-	characters: ICharacterData[];
+	readonly id: number;
+	readonly party: IPartyData;
+	readonly player: IPlayerConfig;
+	readonly characters: ICharacterData[];
 }
 
 const getRowInfo = (characters: ICharacterData[], record: IActRecord): IRecordAnalysis => {

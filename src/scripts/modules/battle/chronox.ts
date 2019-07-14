@@ -9,16 +9,16 @@ import { ICharacterData } from 'modules/character-creation/character-data';
 export type ChronoxPlayerList =  [IPlayerData, IPlayerData];
 
 export interface IChronoxConfig {
-	characters: ICharacterData[];
-	players: ChronoxPlayerList;
-	parties: IPartyData[];
+	readonly characters: ICharacterData[];
+	readonly players: ChronoxPlayerList;
+	readonly parties: IPartyData[];
 }
 
 export interface IChronoxRecord {
-	characters: ICharacterData[];
-	players: ChronoxPlayerList;
-	parties: IPartyData[];
-	timeline: IActRecord[];
+	readonly characters: ICharacterData[];
+	readonly players: ChronoxPlayerList;
+	readonly parties: IPartyData[];
+	readonly timeline: IActRecord[];
 }
 
 class Chronox {

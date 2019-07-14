@@ -8,8 +8,8 @@ import FormSelect from 'ui/common/FormSelect';
 import FormSelectItem from 'ui/common/FormSelectItem';
 
 interface IProps {
-	settings: IAISettings;
-	onChange: (settings: IAISettings) => void;
+	readonly settings: IAISettings;
+	readonly onChange: (settings: IAISettings) => void;
 }
 
 class AISettingsUI extends React.Component<IProps, IAISettings> {

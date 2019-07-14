@@ -3,17 +3,15 @@ import React from 'react';
 import { gridSize } from 'data/game-config';
 
 import Character from 'modules/character';
-import Player from 'modules/battle/player';
 
 const itemSize = 100 / gridSize;
 
 interface IGridChactersProps {
-	actor: Character;
-	players: Player[];
-	characters: Character[];
+	readonly actor: Character;
+	readonly characters: Character[];
 }
 
-const GridCharacters: React.SFC<IGridChactersProps> = ({ actor, characters, players }) => (
+const GridCharacters: React.SFC<IGridChactersProps> = ({ actor, characters }) => (
 	<div className="GridCharacters">
 		{characters.map((char, i) => {
 			if (char.isDead()) {
