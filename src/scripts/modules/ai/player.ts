@@ -3,6 +3,7 @@ import AIPresets from 'data/ai-presets';
 import Act from 'modules/battle/act';
 import Tile from 'modules/geometry/tile';
 import Character from 'modules/character';
+import Engine from 'modules/battle/engine';
 import Command from 'modules/battle/command';
 import AICharacter from 'modules/ai/character';
 import { IAIConfig, IAISettings } from 'modules/ai/settings';
@@ -20,30 +21,26 @@ interface IAIActStartData {
 
 class AIPlayer extends Player {
 	public readonly config: IAIConfig;
-	private enemy?: Player;
-	private ally: AICharacter[];
-	private readonly selectTile: (tile: Tile) => void;
-	private readonly selectCommand: (command: Command) => void;
+	private readonly ally: AICharacter[];
+	private readonly engine: Engine;
 
-	constructor(player: IPlayerData, characters: IPlayerCharacterSetup[], ai: IAISettings, selectTile: IOnTileSelect, selectCommand: IOnCommandSelect) {
+	constructor(player: IPlayerData, characters: IPlayerCharacterSetup[], ai: IAISettings, engine: Engine) {
 		super(player, characters);
 
-		const { preset, config } = ai;
-		this.config = config;
+		this.config = ai.config;
+		this.engine = engine;
+
+		const { preset } = ai;
 
 		if ('CUSTOM' !== preset) {
 			this.config = AIPresets.get(preset).config;
 		}
-		this.selectTile = selectTile;
-		this.selectCommand = selectCommand;
+		const selectTile = engine.selectTile.bind(engine);
+		const selectCommand = engine.selectCommand.bind(engine);
 
 		this.ally = this.characters.map(char => {
-			return new AICharacter(char, this.selectTile, this.selectCommand);
+			return new AICharacter(char, selectTile, selectCommand);
 		});
-	}
-
-	public setEnemy(enemy: Player) {
-		this.enemy = enemy;
 	}
 
 	public act(act: Act, commands: Command[]) {
@@ -115,7 +112,7 @@ class AIPlayer extends Player {
 		const char = this.getCharacter(actor);
 		const obstacles = this.getObstacles();
 		const ally = this.ally.map(a => a.getCharacter());
-		const enemy = (this.enemy ? this.enemy.getCharacters() : []);
+		const enemy = this.getEnemy().getCharacters();
 
 		char.onCommand({ commands, movable, ally, enemy, obstacles });
 	}
@@ -134,7 +131,7 @@ class AIPlayer extends Player {
 		if (!confirmCommand) {
 			throw new Error('AI character commands does not contain confirm command');
 		}
-		this.selectCommand(confirmCommand);
+		this.engine.selectCommand(confirmCommand);
 	}
 
 	public onReaction(reactor: Character, commands: Command[], isBackAttacked: boolean) {
@@ -172,11 +169,20 @@ class AIPlayer extends Player {
 	}
 
 	private getObstacles(): Tile[] {
-		const enemy = this.enemy ? this.enemy.getCharacters() : [];
+		const enemy = this.getEnemy();
 		return [
 			...this.ally.map(ch => ch.getCharacter().position),
-			...enemy.map(ch => ch.position)
+			...enemy.getCharacters().map(ch => ch.position)
 		];
+	}
+
+	private getEnemy(): Player {
+		const enemy = this.engine.getState().players.find(pl => pl !== this);
+
+		if (!enemy) {
+			throw new Error('AIPlayer could not find his enemy');
+		}
+		return enemy;
 	}
 }
 

@@ -269,26 +269,9 @@ class Engine {
 			});
 
 			if ('AI' === control) {
-				// AI player
-				const selectTile = (tile: Tile) => this.selectTile(tile);
-				const selectCommand = (cmd: Command) => this.selectCommand(cmd);
-				return new AIPlayer(player, setup, aiSettings, selectTile, selectCommand);
-
+				return new AIPlayer(player, setup, aiSettings, this);
 			} else {
-				// user controlled player
 				return new Player(player, setup);
-			}
-		});
-
-		// set enemy for AI players
-		pl.forEach(player => {
-			if (player instanceof AIPlayer) {
-				const enemy = pl.find(p => p !== player);
-
-				if (!enemy) {
-					throw new Error(`Could not find enemy for AI player "${player.name}"`);
-				}
-				player.setEnemy(enemy);
 			}
 		});
 
