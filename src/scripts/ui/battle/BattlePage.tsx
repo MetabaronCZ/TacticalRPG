@@ -47,7 +47,8 @@ class BattlePageContainer extends React.Component<IProps, IState> {
 					if (!record) {
 						throw new Error('Cannot properly end the game: Invalid Chronox record');
 					}
-					Summary.save(record, winner.id);
+					const winnerID = engineState.players.indexOf(winner);
+					Summary.save(record, winnerID);
 
 					this.setState(state => ({
 						engineState,

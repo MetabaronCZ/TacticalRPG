@@ -16,13 +16,13 @@ import Player from 'modules/battle/player';
 import Command from 'modules/battle/command';
 import { IBattleInfo } from 'modules/battle/battle-info';
 import { DirectionID } from 'modules/geometry/direction';
+import { PartyData } from 'modules/party-creation/party-data';
 import CharacterCreationForm from 'modules/character-creation';
-import { PartyData, IPartyData } from 'modules/party-creation/party-data';
+import Chronox, { IChronoxRecord } from 'modules/battle/chronox';
+import { CharacterData } from 'modules/character-creation/character-data';
 import { PlayerConfigList } from 'modules/battle-configuration/battle-config';
-import { CharacterData, ICharacterData } from 'modules/character-creation/character-data';
-import Chronox, { IChronoxRecord, IChronoxConfig, ChronoxPlayerList } from 'modules/battle/chronox';
 
-type PlayerList = [Player, Player];
+export type PlayerList = [Player, Player];
 
 export interface IEngineState {
 	running: boolean;
@@ -72,11 +72,8 @@ class Engine {
 
 		this.order = new Order(this.players);
 
-		// set player order / initiative
-		this.players = getRandomized(this.players) as PlayerList;
-
-		const chronoxData = this.prepareChronoxData(conf, this.players.map(pl => pl.id));
-		this.chronox = new Chronox(chronoxData);
+		const chronoxConf = Chronox.getConfig(this.players, conf.parties);
+		this.chronox = new Chronox(chronoxConf);
 
 		this.events = this.prepareEvents(conf.events);
 	}
@@ -203,10 +200,14 @@ class Engine {
 	}
 
 	private createPlayers(conf: IEngineProps): PlayerList {
-		const { players, parties, characters } = conf;
+		const { parties, characters } = conf;
+
+		// set player order / initiative
+		const players = getRandomized(conf.players);
 
 		const pl = players.map((plConfig, p) => {
-			const { name, party, control, aiSettings } = plConfig;
+			const data = plConfig.serialize();
+			const { name, party, control, aiSettings } = data;
 			const charData: CharacterData[] = [];
 			let player: Player;
 
@@ -220,11 +221,11 @@ class Engine {
 				}
 				const selectTile = (tile: Tile) => this.selectTile(tile);
 				const selectCommand = (cmd: Command) => this.selectCommand(cmd);
-				player = new AIPlayer(p, name, aiConf, selectTile, selectCommand);
+				player = new AIPlayer(p, data, aiConf, selectTile, selectCommand);
 
 			} else {
 				// human controlled player
-				player = new Player(p, name);
+				player = new Player(p, data);
 			}
 
 			// get character data
@@ -262,7 +263,7 @@ class Engine {
 			}
 
 			// create characters
-			const chars = charData.map((data, i) => {
+			const chars = charData.map((d, i) => {
 				let tile: Tile | null;
 				let dir: DirectionID;
 
@@ -278,7 +279,7 @@ class Engine {
 				if (!tile) {
 					throw new Error('Invalid tile given');
 				}
-				const char = new Character(data, tile, dir, player);
+				const char = new Character(d, tile, dir, player);
 
 				// set small random initial CP
 				const ct = Math.floor((config.characterCTLimit / 10) * Math.random());
@@ -304,45 +305,6 @@ class Engine {
 		});
 
 		return pl as PlayerList;
-	}
-
-	private prepareChronoxData(conf: IEngineProps, initiative: number[]): IChronoxConfig {
-		const characters: ICharacterData[] = [];
-
-		this.players.forEach(pl => {
-			pl.getCharacters().forEach(char => {
-				characters.push(char.data);
-			});
-		});
-
-		const players = conf.players.map((pl, p) => ({
-			...pl.serialize(),
-			party: 'PARTY-' + p
-		}));
-
-		return {
-			initiative,
-			characters,
-			players: players as ChronoxPlayerList,
-			parties: this.players.map((pl, p) => {
-				const chars = pl.getCharacters();
-
-				const party: IPartyData = (conf.parties.length > p) ? conf.parties[p].serialize() : {
-					id: '',
-					name: 'UNKNOWN',
-					creationDate: Date.now(),
-					lastUpdate: Date.now(),
-					slots: []
-				};
-				return {
-					...party,
-					id: 'PARTY-' + p,
-					slots: Array(config.maxPartySize).fill(null).map((slot, s) => {
-						return chars[s] ? chars[s].data.id : null;
-					})
-				};
-			})
-		};
 	}
 
 	private getWinner(): Player | null {

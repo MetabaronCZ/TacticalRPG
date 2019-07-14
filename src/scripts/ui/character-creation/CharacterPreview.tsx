@@ -2,16 +2,19 @@ import React from 'react';
 
 import { Icos, IcoID } from 'data/icos';
 
+import { getTiles } from 'modules/geometry/tiles';
+import { getIdleCommands, getReactiveCommands } from 'modules/battle/commands';
+
 import Character from 'modules/character';
 import Player from 'modules/battle/player';
-import { getTiles } from 'modules/geometry/tiles';
+import { PlayerConfig } from 'modules/battle-configuration/player-config';
 import { CharacterData } from 'modules/character-creation/character-data';
 
 import ArchetypeIco from 'ui/common/ArchetypeIco';
-import { getIdleCommands, getReactiveCommands } from 'modules/battle/commands';
 
 const dummyTile = getTiles()[0];
-const dummyPlayer = new Player(0, 'A');
+const dummyPlayerConfig = new PlayerConfig({});
+const dummyPlayer = new Player(0, dummyPlayerConfig);
 
 const getDummyCharacter = (character: CharacterData): Character => {
 	return new Character(character, dummyTile, 'BOTTOM', dummyPlayer);

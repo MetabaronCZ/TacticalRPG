@@ -12,6 +12,9 @@ import Page from 'ui/common/Page';
 import Button from 'ui/common/Button';
 import Separator from 'ui/common/Separator';
 import ButtonRow from 'ui/common/ButtonRow';
+import PlayerIco from 'ui/common/PlayerIco';
+import { IPartyData } from 'modules/party-creation/party-data';
+import { IPlayerConfig } from 'modules/battle-configuration/player-config';
 
 const topListSize = 5; // maximum items of diplayed top kills, damage, ...
 
@@ -41,6 +44,7 @@ interface IScoreData {
 
 interface IScoreDataItem {
 	readonly name: string;
+	readonly player: number;
 	kills: number;
 	damage: number;
 	healing: number;
@@ -49,12 +53,20 @@ interface IScoreDataItem {
 interface IScoreItem {
 	readonly name: string;
 	readonly amount: number;
+	readonly player: number;
 }
 
 interface IScoreAnalysis {
 	kills: IScoreItem[];
 	damage: IScoreItem[];
 	healing: IScoreItem[];
+}
+
+interface IPlayerData {
+	id: number;
+	party: IPartyData;
+	player: IPlayerConfig;
+	characters: ICharacterData[];
 }
 
 const getRowInfo = (characters: ICharacterData[], record: IActRecord): IRecordAnalysis => {
@@ -126,7 +138,7 @@ const getRowInfo = (characters: ICharacterData[], record: IActRecord): IRecordAn
 	return result;
 };
 
-const analyzeScore = (timeline: IActRecord[], characters: ICharacterData[]): IScoreAnalysis => {
+const analyzeScore = (timeline: IActRecord[], characters: ICharacterData[], players: IPlayerData[]): IScoreAnalysis => {
 	const result: IScoreAnalysis = {
 		kills: [],
 		damage: [],
@@ -141,14 +153,21 @@ const analyzeScore = (timeline: IActRecord[], characters: ICharacterData[]): ISc
 		if (!actor) {
 			throw new Error('Invalid score record character ID');
 		}
+		const player = players.find(pl => pl.characters.find(char => actor.id === char.id));
+
+		if (!player) {
+			throw new Error('Invalid score record player data');
+		}
 		const results = act.combatPhase.results;
 
 		scoreData[actor.id] = scoreData[actor.id] || {
 			name: actor.name,
+			player: player.id,
 			kills: 0,
 			damage: 0,
 			healing: 0
-		};
+		} as IScoreDataItem;
+
 		const data = scoreData[actor.id];
 
 		for (const res of results) {
@@ -160,10 +179,17 @@ const analyzeScore = (timeline: IActRecord[], characters: ICharacterData[]): ISc
 
 	// create result array
 	for (const id in scoreData) {
-		const { name, kills, damage, healing } = scoreData[id];
-		result.kills.push({ name, amount: kills });
-		result.damage.push({ name, amount: damage });
-		result.healing.push({ name, amount: healing });
+		const { name, player, kills, damage, healing } = scoreData[id];
+
+		if (kills > 0) {
+			result.kills.push({ name, player, amount: kills });
+		}
+		if (damage) {
+			result.damage.push({ name, player, amount: damage });
+		}
+		if (healing) {
+			result.healing.push({ name, player, amount: healing });
+		}
 	}
 
 	result.kills = result.kills
@@ -190,9 +216,18 @@ const renderScoreItem = (items: IScoreItem[], postfix = '') => {
 			<tbody>
 				{items.map((item, i) => (
 					<tr key={i}>
-						<td className="Table-column">{i + 1}.</td>
-						<td className="Table-column">{item.name}:</td>
-						<td className="Table-column">{item.amount}{postfix}</td>
+						<td className="Table-column">
+							{i + 1}.
+						</td>
+
+						<td className="Table-column">
+							<PlayerIco id={item.player} />
+							{item.name}:
+						</td>
+
+						<td className="Table-column">
+							{item.amount}{postfix}
+						</td>
 					</tr>
 				))}
 			</tbody>
@@ -222,32 +257,40 @@ class BattleSummaryPage extends React.Component<IProps, IState> {
 			);
 		}
 		const { chronox, winner } = record;
-		const winPlayer = chronox.players[winner].name;
-		const scoreAnalysis = analyzeScore(chronox.timeline, chronox.characters);
+		const winPlayer = chronox.players[winner];
+
+		const playerData = chronox.players.map((pl, p) => {
+			const party = chronox.parties.find(pt => pl.party === pt.id);
+
+			const characters = party
+				? party.slots.map(sl => chronox.characters.find(char => sl === char.id))
+				: [];
+
+			return {
+				id: p,
+				player: pl,
+				party,
+				characters: characters.filter(char => !!char) as ICharacterData[]
+			} as IPlayerData;
+		});
+
+		const scoreAnalysis = analyzeScore(chronox.timeline, chronox.characters, playerData);
 
 		return (
 			<Page heading="Summary">
 				<h2 className="Heading">
-					Player "{winPlayer}" won!
+					<PlayerIco id={winner} />
+					Player "{winPlayer.name}" won!
 				</h2>
 
-				{chronox.players.map((pl, p) => {
-					const party = chronox.parties.find(pt => pl.party === pt.id);
-
-					const slots = party
-						? party.slots.map(sl => chronox.characters.find(char => sl === char.id))
-						: [];
-
-					const characters = slots.map(sl => sl ? sl.name : null).filter(char => null !== char);
-
-					return (
-						<div className="Paragraph" key={p}>
-							<strong>Player "{pl.name}"</strong>
-							<br />
-							{characters.join(', ')}
-						</div>
-					);
-				})}
+				{playerData.map((data, d) => (
+					<div className="Paragraph" key={d}>
+						<PlayerIco id={d} />
+						<strong>Player "{data.player.name}"</strong>
+						<br />
+						{data.characters.map(char => char ? char.name : '?????').join(', ')}
+					</div>
+				))}
 
 				<h2 className="Heading">
 					Score
@@ -295,6 +338,13 @@ class BattleSummaryPage extends React.Component<IProps, IState> {
 						}
 						const item = getRowInfo(chronox.characters, t);
 
+						const player = playerData.find(data => {
+							return !!data.characters.find(char => char && char.id === item.actor.id);
+						});
+
+						if (!player) {
+							throw new Error('Invalid Character or Player data');
+						}
 						return (
 							<li className="List-row u-align-top" key={i}>
 								<div className="List-row-column u-tableColumnFit u-align-right">
@@ -302,6 +352,7 @@ class BattleSummaryPage extends React.Component<IProps, IState> {
 								</div>
 
 								<div className="List-row-column u-tableColumnFit">
+									<PlayerIco id={player.id} />
 									{item.actor.name}
 								</div>
 

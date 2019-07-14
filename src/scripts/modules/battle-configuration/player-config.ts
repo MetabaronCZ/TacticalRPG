@@ -32,11 +32,12 @@ export class PlayerConfig implements IPlayerConfig {
 		}
 	};
 
-	constructor(data: IPlayerConfig) {
-		this.setName(data.name);
-		this.setParty(data.party);
-		this.setControl(data.control);
-		this.setAISettings(data.aiSettings);
+	constructor(data: Partial<IPlayerConfig>) {
+		const conf: IPlayerConfig = { ...this.data, ...data };
+		this.setName(conf.name);
+		this.setParty(conf.party);
+		this.setControl(conf.control);
+		this.setAISettings(conf.aiSettings);
 	}
 
 	public isValidParty(partyID: string, parties: IPartyData[]): boolean {
