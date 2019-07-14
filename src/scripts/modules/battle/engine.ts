@@ -55,7 +55,7 @@ class Engine {
 	private readonly battleInfo: IBattleInfo[] = [];
 	private readonly events: IEngineEvents;
 
-	private running = true;
+	private running = false;
 	private tick = 0; // game update counter
 	private actNumber = 0; // act ID
 	private actors: Character[] = [];
@@ -79,6 +79,11 @@ class Engine {
 	}
 
 	public start() {
+		if (this.running) {
+			return;
+		}
+		this.running = true;
+
 		this.events.onStart(this.getState());
 		this.update();
 	}
