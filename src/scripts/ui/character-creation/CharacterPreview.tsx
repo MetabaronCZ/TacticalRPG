@@ -14,7 +14,7 @@ import ArchetypeIco from 'ui/common/ArchetypeIco';
 
 const dummyTile = getTiles()[0];
 const dummyPlayerConfig = new PlayerData(0, {});
-const dummyPlayer = new Player(dummyPlayerConfig);
+const dummyPlayer = new Player(dummyPlayerConfig, []);
 
 const getDummyCharacter = (character: CharacterData): Character => {
 	return new Character(character, dummyTile, 'BOTTOM', dummyPlayer);

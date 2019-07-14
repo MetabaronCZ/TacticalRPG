@@ -1,6 +1,5 @@
 import { getRandomized } from 'core/array';
 
-import AIPresets from 'data/ai-presets';
 import * as config from 'data/game-config';
 
 import { getTile } from 'modules/geometry/tiles';
@@ -12,7 +11,7 @@ import Tile from 'modules/geometry/tile';
 import Order from 'modules/battle/order';
 import AIPlayer from 'modules/ai/player';
 import Character from 'modules/character';
-import Player from 'modules/battle/player';
+import Player, { IPlayerCharacterSetup } from 'modules/battle/player';
 import Command from 'modules/battle/command';
 import { IBattleInfo } from 'modules/battle/battle-info';
 import { DirectionID } from 'modules/geometry/direction';
@@ -208,34 +207,16 @@ class Engine {
 		const { parties, characters } = conf;
 
 		// set player order / initiative
-		const players = getRandomized(conf.players);
+		const playerData = getRandomized(conf.players);
 
-		const pl = players.map((plConfig, p) => {
-			const data = plConfig.serialize();
-			const { name, party, control, aiSettings } = data;
+		const pl = playerData.map((plData, p) => {
+			const player = plData.serialize();
+			const { name, party, control, aiSettings } = player;
 			const charData: CharacterData[] = [];
-			let player: Player;
-
-			if ('AI' === control) {
-				// AI player
-				const preset = aiSettings.preset;
-				let aiConf = aiSettings.config;
-
-				if ('CUSTOM' !== preset) {
-					aiConf = AIPresets.get(preset).config;
-				}
-				const selectTile = (tile: Tile) => this.selectTile(tile);
-				const selectCommand = (cmd: Command) => this.selectCommand(cmd);
-				player = new AIPlayer(data, aiConf, selectTile, selectCommand);
-
-			} else {
-				// human controlled player
-				player = new Player(data);
-			}
 
 			// get character data
 			if (config.randomPartyID === party) {
-				// random generated party
+				// randomly generated party
 				const charNames = getRandomNames(config.maxPartySize, config.maxPartyNameLength);
 
 				for (const n of charNames) {
@@ -267,34 +248,36 @@ class Engine {
 				}
 			}
 
-			// create characters
-			const chars = charData.map((d, i) => {
-				let tile: Tile | null;
-				let dir: DirectionID;
+			// create character setup
+			const setup: IPlayerCharacterSetup[] = charData.map((data, i) => {
+				let position: Tile | null;
+				let direction: DirectionID;
 
 				// set position / orientation
 				if (0 === p) {
-					tile = getTile(i + 2, config.gridSize - 1);
-					dir = 'TOP';
+					position = getTile(i + 2, config.gridSize - 1);
+					direction = 'TOP';
 				} else {
-					tile = getTile(i + 2, 0);
-					dir = 'BOTTOM';
+					position = getTile(i + 2, 0);
+					direction = 'BOTTOM';
 				}
 
-				if (!tile) {
+				if (!position) {
 					throw new Error('Invalid tile given');
 				}
-				const char = new Character(d, tile, dir, player);
-
-				// set small random initial CP
-				const ct = Math.floor((config.characterCTLimit / 10) * Math.random());
-				char.attributes.set('CT', ct);
-
-				return char;
+				return { data, position, direction } as IPlayerCharacterSetup;
 			});
 
-			player.setCharacters(chars);
-			return player;
+			if ('AI' === control) {
+				// AI player
+				const selectTile = (tile: Tile) => this.selectTile(tile);
+				const selectCommand = (cmd: Command) => this.selectCommand(cmd);
+				return new AIPlayer(player, setup, aiSettings, selectTile, selectCommand);
+
+			} else {
+				// user controlled player
+				return new Player(player, setup);
+			}
 		});
 
 		// set enemy for AI players

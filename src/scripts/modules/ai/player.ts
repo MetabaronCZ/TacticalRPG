@@ -1,10 +1,12 @@
+import AIPresets from 'data/ai-presets';
+
 import Act from 'modules/battle/act';
 import Tile from 'modules/geometry/tile';
 import Character from 'modules/character';
-import Player from 'modules/battle/player';
 import Command from 'modules/battle/command';
 import AICharacter from 'modules/ai/character';
-import { IAIConfig } from 'modules/ai/settings';
+import { IAIConfig, IAISettings } from 'modules/ai/settings';
+import Player, { IPlayerCharacterSetup } from 'modules/battle/player';
 import { IPlayerData } from 'modules/battle-configuration/player-data';
 
 export type IOnTileSelect = (tile: Tile) => void;
@@ -17,30 +19,31 @@ interface IAIActStartData {
 }
 
 class AIPlayer extends Player {
-	// private readonly config: IAIConfig;
+	public readonly config: IAIConfig;
 	private enemy?: Player;
-	private ally: AICharacter[] = [];
+	private ally: AICharacter[];
 	private readonly selectTile: (tile: Tile) => void;
 	private readonly selectCommand: (command: Command) => void;
 
-	constructor(data: IPlayerData, ai: IAIConfig, selectTile: IOnTileSelect, selectCommand: IOnCommandSelect) {
-		super(data);
+	constructor(player: IPlayerData, characters: IPlayerCharacterSetup[], ai: IAISettings, selectTile: IOnTileSelect, selectCommand: IOnCommandSelect) {
+		super(player, characters);
 
-		// this.config = ai;
+		const { preset, config } = ai;
+		this.config = config;
+
+		if ('CUSTOM' !== preset) {
+			this.config = AIPresets.get(preset).config;
+		}
 		this.selectTile = selectTile;
 		this.selectCommand = selectCommand;
-	}
-
-	public setEnemy(enemy: Player) {
-		this.enemy = enemy;
-	}
-
-	public setCharacters(characters: Character[]) {
-		super.setCharacters(characters);
 
 		this.ally = this.characters.map(char => {
 			return new AICharacter(char, this.selectTile, this.selectCommand);
 		});
+	}
+
+	public setEnemy(enemy: Player) {
+		this.enemy = enemy;
 	}
 
 	public act(act: Act, commands: Command[]) {
