@@ -220,31 +220,32 @@ class Act {
 	}
 
 	private update() {
-		let character = this.getActingCharacter();
+		let char = this.getActingCharacter();
 
-		if (!character) {
+		if (!char) {
 			throw new Error('Could not update Act data: invalid acting character');
 		}
-		const commands = this.prepareCommands();
-
-		if (!character.isAI()) {
+		if (!char.isAI()) {
 			// set commands for player
-			this.commands = commands;
-		}
-		this.events.onUpdate(this);
+			this.commands = this.prepareCommands();
+			this.events.onUpdate(this);
 
-		setTimeout(() => { // prevent race condition
-			character = this.getActingCharacter();
+		} else {
+			// let AI act
+			this.commands = [];
+			this.events.onUpdate(this);
 
-			if (!character) {
-				throw new Error('Could not update Act data: invalid acting character');
-			}
-			if (character.isAI()) {
-				// let AI act
-				const player = character.player as AIPlayer;
+			setTimeout(() => { // prevent racing condition
+				char = this.getActingCharacter();
+
+				if (!char) {
+					throw new Error('Could not update Act data: invalid acting character');
+				}
+				const commands = this.prepareCommands();
+				const player = char.player as AIPlayer;
 				player.update(this, commands);
-			}
-		});
+			});
+		}
 	}
 
 	private onPhaseEvent: IOnActPhaseEvent = (evt, data) => {

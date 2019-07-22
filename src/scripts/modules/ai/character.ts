@@ -3,18 +3,12 @@ import { getRandomItem, getIntersection } from 'core/array';
 import { getShortestPath } from 'modules/pathfinding';
 import { findTileFrom, resolveDirection, getOpositeDirection } from 'modules/geometry/direction';
 
+import Act from 'modules/battle/act';
 import Tile from 'modules/geometry/tile';
+import AIPlayer from 'modules/ai/player';
 import Character from 'modules/character';
 import Engine from 'modules/battle/engine';
 import Command from 'modules/battle/command';
-
-interface IOnCommandConf {
-	readonly commands: Command[];
-	readonly movable: Tile[];
-	readonly ally: Character[];
-	readonly enemy: Character[];
-	readonly obstacles: Tile[];
-}
 
 type TargetSide = 'FRONT' | 'SIDE' | 'BEHIND';
 
@@ -25,21 +19,22 @@ interface ITargetInfo {
 }
 
 const getSide = (char: Character, tile: Tile): TargetSide => {
-	const pos = char.position;
-	const front = char.direction;
-	const behind = getOpositeDirection(char.direction);
+	const { position, direction } = char;
 
-	if (tile === findTileFrom(pos, front)) {
+	const front = direction;
+	const behind = getOpositeDirection(direction);
+
+	if (tile === findTileFrom(position, front)) {
 		return 'FRONT';
 	}
-	if (tile === findTileFrom(pos, behind)) {
+	if (tile === findTileFrom(position, behind)) {
 		return 'BEHIND';
 	}
 	return 'SIDE';
 };
 
 class AICharacter {
-	private readonly character: Character;
+	public readonly character: Character;
 	private readonly engine: Engine;
 
 	private moved = false;
@@ -50,17 +45,82 @@ class AICharacter {
 		this.engine = engine;
 	}
 
-	public getCharacter(): Character {
-		return this.character;
+	public update(act: Act, commands: Command[]) {
+		const { MOVEMENT, COMMAND, REACTION, DIRECTION } = act.phases;
+
+		switch (act.getPhase()) {
+			case 'MOVEMENT':
+				if ('IDLE' === MOVEMENT.getPhase()) {
+					const movable = MOVEMENT.getMovable();
+					this.onCommand(commands, movable);
+				}
+				return;
+
+			case 'COMMAND':
+				switch (COMMAND.getPhase()) {
+					case 'TARGETING':
+						const targetable = COMMAND.getTargetable();
+						const target = COMMAND.getTarget();
+
+						if (target) {
+							// confirm selected command
+							const confirm = commands.find(cmd => 'CONFIRM' === cmd.type);
+
+							if (!confirm) {
+								throw new Error('AI character commands does not contain confirm command');
+							}
+							this.engine.selectCommand(confirm);
+
+						} else {
+							// target selected command skill
+							this.onCommandTarget(targetable);
+						}
+						return;
+
+					default:
+						return; // do nothing
+				}
+
+			case 'REACTION':
+				const reaction = REACTION.getReaction();
+
+				if (!reaction) {
+					throw new Error('AI Could not react: invalid reaction');
+				}
+				const { phase, combat, evasible } = reaction;
+
+				switch (phase) {
+					case 'IDLE':
+						this.onReaction(commands, combat[0].backAttack);
+						return;
+
+					case 'EVASION':
+						this.onEvasion(evasible);
+						return;
+
+					default:
+						return; // do nothing
+				}
+
+			case 'DIRECTION':
+				const directable = DIRECTION.getDirectable();
+				this.onDirect(directable);
+				return;
+
+			default:
+				return; // do nothing
+		}
 	}
 
-	public onCommand(conf: IOnCommandConf) {
-		const { commands, movable, ally, enemy, obstacles } = conf;
+	public onCommand(commands: Command[], movable: Tile[]) {
 		const char = this.character;
 
 		if (char.isDead()) {
 			return;
 		}
+		const player = char.player as AIPlayer;
+		const obstacles = player.getObstacles();
+		const enemy = player.getEnemy();
 
 		if (!this.moved) {
 			this.moved = true;
@@ -133,7 +193,7 @@ class AICharacter {
 				}
 			}
 		}
-		this.chooseCommand(commands, ally, enemy);
+		this.chooseCommand(commands);
 	}
 
 	public onCommandTarget(targetable: Tile[]) {
@@ -149,7 +209,7 @@ class AICharacter {
 		this.engine.selectTile(target);
 	}
 
-	public onReaction(commands: Command[], isBackAttacked: boolean, obstacles: Tile[]) {
+	public onReaction(commands: Command[], isBackAttacked: boolean) {
 		const passCommand = commands.find(act => 'DONT_REACT' === act.type);
 
 		if (!passCommand) {
@@ -161,6 +221,8 @@ class AICharacter {
 			this.engine.selectCommand(passCommand);
 			return;
 		}
+		const player = this.character.player as AIPlayer;
+		const obstacles = player.getObstacles();
 
 		// find first applicable reaction
 		for (const command of commands) {
@@ -218,7 +280,7 @@ class AICharacter {
 		this.engine.selectTile(directTarget);
 	}
 
-	private chooseCommand(commands: Command[], ally: Character[], enemy: Character[]) {
+	private chooseCommand(commands: Command[]) {
 		const passCommand = commands.find(act => 'PASS' === act.type);
 
 		if (!passCommand) {
@@ -226,6 +288,10 @@ class AICharacter {
 		}
 		const char = this.character;
 		const pos = char.position;
+
+		const player = char.player as AIPlayer;
+		const ally = player.getCharacters();
+		const enemy = player.getEnemy();
 
 		// reset move state
 		this.moved = false;

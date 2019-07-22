@@ -12,7 +12,7 @@ import Command from 'modules/battle/command';
 import ActPhase from 'modules/battle/act/phase';
 import { IOnActPhaseEvent } from 'modules/battle/act';
 
-type Phase = 'SUSPENDED' | 'IDLE' | 'ANIMATION';
+type Phase = 'SUSPENDED' | 'IDLE' | 'SELECTED' | 'ANIMATION';
 
 export type MovePhaseEvents =
 	'MOVE_IDLE' |
@@ -115,6 +115,8 @@ class MovePhase extends ActPhase<IActMoveRecord> {
 		if (path.length < 2) {
 			return;
 		}
+		this.phase = 'SELECTED';
+
 		this.moveTarget = tile;
 		this.movePath = path;
 
@@ -139,7 +141,7 @@ class MovePhase extends ActPhase<IActMoveRecord> {
 	private animate() {
 		const { actor, phase, movePath, costMap } = this;
 
-		if ('IDLE' !== phase) {
+		if ('SELECTED' !== phase) {
 			throw new Error('Could not animate movement: invalid phase ' + phase);
 		}
 		this.phase = 'ANIMATION';

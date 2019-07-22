@@ -6,6 +6,15 @@ BUG
 
 TODO
 ----------------------------------------------------------------------------------------------------------
+!!	vypocet MOVEMENT.movable by mel brat v potaz:
+	- maxCost (AP postavy)
+	- postih na pohyb (CRIPPLE status)
+--	kontrola viteze by mela byt po skoncxeni Actu
+	- ted je to az po Actu vsech akteru, kteri jsou na rade ve stejnou dobu
+--	refaktorovat Engine eventy, aby korektne nastavovaly state UI komponente
+	--	necpat tam cely Engine.getState() najednou
+	??	pouzit MobX i na Engine, Act, ActPhase[]
+	--	refaktorovat hotfix "setTimeout" kvuli racing condition v React.setState()
 --	AICharacter: pokud vybrana cesta nekonci na Tile, ze ktereho se da utocit, skoncit na posledni utocne pozici
 --	AICharacter: pohyb/akce podle melee / ranged / support role
 	- vybira AIPlayer
