@@ -114,13 +114,16 @@ class CombatPhase extends ActPhase<IActCombatRecord> {
 				const infoAnim = new Animation(infoTiming, infoStep => {
 					const i = info[infoStep.number];
 					this.onEvent('BATTLE_INFO', i);
-
-					const elm = (i.element ? `(${i.element})` : '');
-					Logger.info(`ActCombat: ${i.type} ${i.text} ${elm}`);
 				});
 
 				// start battle info animation
 				infoAnim.start();
+
+				// log info to console
+				for (const i of info) {
+					const elm = (i.element ? `(${i.element})` : '');
+					Logger.info(`ActCombat: ${i.type} ${i.text} ${elm}`);
+				}
 			}
 
 			this.onEvent('COMBAT_ANIMATION');

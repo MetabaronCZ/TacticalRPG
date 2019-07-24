@@ -11,13 +11,13 @@ import Tile from 'modules/geometry/tile';
 import Order from 'modules/battle/order';
 import AIPlayer from 'modules/ai/player';
 import Character from 'modules/character';
-import Player, { IPlayerCharacterSetup } from 'modules/battle/player';
 import Command from 'modules/battle/command';
 import { IBattleInfo } from 'modules/battle/battle-info';
 import { DirectionID } from 'modules/geometry/direction';
 import { PartyData } from 'modules/party-creation/party-data';
 import CharacterCreationForm from 'modules/character-creation';
 import Chronox, { IChronoxRecord } from 'modules/battle/chronox';
+import Player, { IPlayerCharacterSetup } from 'modules/battle/player';
 import { CharacterData } from 'modules/character-creation/character-data';
 import { PlayerConfigList } from 'modules/battle-configuration/battle-config';
 
@@ -124,13 +124,6 @@ class Engine {
 		if (!this.running) {
 			return;
 		}
-		const winner = this.getWinner();
-
-		if (winner) {
-			this.running = false;
-			this.events.onGameOver(this.getState(), winner);
-			return;
-		}
 		const { characters, order } = this;
 
 		// update game tick counter
@@ -197,8 +190,17 @@ class Engine {
 				const record = act.serialize();
 				this.chronox.store(record);
 
-				// run next act
-				this.startAct();
+				const winner = this.getWinner();
+
+				if (winner) {
+					// finish game
+					this.running = false;
+					this.events.onGameOver(this.getState(), winner);
+
+				} else {
+					// run next act
+					this.startAct();
+				}
 			}
 		});
 	}
