@@ -25,6 +25,7 @@ export interface ICombatResult {
 	healed: number;
 	killed: boolean;
 	revived: boolean;
+	evaded: boolean;
 }
 
 type Phase = 'SUSPENDED' | 'ANIMATION' | 'DONE';
@@ -73,7 +74,8 @@ class CombatPhase extends ActPhase<IActCombatRecord> {
 				damaged: 0,
 				healed: 0,
 				killed: false,
-				revived: false
+				revived: false,
+				evaded: false
 			});
 		}
 
@@ -87,6 +89,8 @@ class CombatPhase extends ActPhase<IActCombatRecord> {
 
 				if (!position.isContained(effectArea)) {
 					// target has been pushed / evaded from skill effect area
+					result.evaded = true;
+
 					info.push({
 						text: 'Evaded',
 						type: 'ACTION',

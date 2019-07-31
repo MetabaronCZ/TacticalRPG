@@ -117,8 +117,11 @@ const getRowInfo = (characters: ICharacterData[], record: IActRecord): IRecordAn
 	}
 
 	for (const item of combatPhase.results) {
-		let txt = '';
+		let txt = '-';
 
+		if (item.evaded) {
+			txt = 'Evaded';
+		}
 		if (item.damaged > 0) {
 			txt = item.damaged + ' damage';
 		}
@@ -131,9 +134,7 @@ const getRowInfo = (characters: ICharacterData[], record: IActRecord): IRecordAn
 		if (item.killed) {
 			txt = 'Killed';
 		}
-		if (txt) {
-			result.results.push(txt);
-		}
+		result.results.push(txt);
 	}
 	return result;
 };

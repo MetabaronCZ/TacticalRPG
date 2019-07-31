@@ -16,16 +16,12 @@ import GridCoordinates from 'ui/battle/GridCoordinates';
 
 interface IBattleUIProps {
 	readonly engineState: IEngineState;
-	readonly engineUpdate: Date | null;
 	readonly onTileSelect: (tile: Tile) => void;
 	readonly onCommandSelect: (command: Command) => void;
 	readonly onExit: () => void;
 }
 
-const BattleUI: React.SFC<IBattleUIProps> = ({ engineState, engineUpdate, onTileSelect, onCommandSelect, onExit }) => {
-	if (!engineUpdate) {
-		return <p className="Paragraph">Loading...</p>;
-	}
+const BattleUI: React.SFC<IBattleUIProps> = ({ engineState, onTileSelect, onCommandSelect, onExit }) => {
 	const { players, characters, order, act, tick, running, battleInfo } = engineState;
 
 	if (!act) {

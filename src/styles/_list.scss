@@ -30,6 +30,10 @@
 				width: $vu*2;
 				text-align: right;
 			}
+
+			> *:last-child {
+				margin-bottom: 0;
+			}
 		}
 
 		&.List-row--header {

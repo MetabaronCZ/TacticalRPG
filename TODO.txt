@@ -6,7 +6,7 @@ BUG
 
 TODO
 ----------------------------------------------------------------------------------------------------------
---	refaktorovat Engine eventy, aby korektne nastavovaly state UI komponente
+>>	refaktorovat Engine eventy, aby korektne nastavovaly state UI komponente
 	--	necpat tam cely Engine.getState() najednou
 	??	pouzit MobX i na Engine, Act, ActPhase[]
 	--	refaktorovat hotfix "setTimeout" kvuli racing condition v React.setState()

@@ -13,8 +13,7 @@ import Engine, { IEngineState } from 'modules/battle/engine';
 type IProps = RouteComponentProps<any> & IContext;
 
 interface IState {
-	engineState: IEngineState;
-	engineUpdate: Date | null;
+	engine: IEngineState;
 }
 
 const onExit = (history: History) => () => {
@@ -36,10 +35,14 @@ class BattlePageContainer extends React.Component<IProps, IState> {
 			parties: parties.data,
 			events: {
 				onStart: engineState => {
-					this.setState({ engineState, engineUpdate: new Date() });
+					this.setState(state => ({
+						engine: engineState
+					}));
 				},
 				onUpdate: engineState => {
-					this.setState({ engineState, engineUpdate: new Date() });
+					this.setState(state => ({
+						engine: engineState
+					}));
 				},
 				onGameOver: (engineState, winner) => {
 					const record = engineState.chronox;
@@ -50,25 +53,22 @@ class BattlePageContainer extends React.Component<IProps, IState> {
 					Summary.save(record, winner.id);
 
 					this.setState(state => ({
-						engineState,
-						engineUpdate: new Date()
+						engine: engineState
 					}));
 				},
 				onBattleInfo: info => {
 					this.setState(state => ({
-						engineState: {
-							...state.engineState,
+						engine: {
+							...state.engine,
 							battleInfo: info
-						},
-						engineUpdate: new Date()
+						}
 					}));
 				},
 			}
 		});
 
 		this.state = {
-			engineState: this.engine.getState(),
-			engineUpdate: null
+			engine: this.engine.getState()
 		};
 	}
 
@@ -78,7 +78,7 @@ class BattlePageContainer extends React.Component<IProps, IState> {
 
 	public render() {
 		const { history } = this.props;
-		const { engineState, engineUpdate } = this.state;
+		const { engine: engineState } = this.state;
 
 		const engine = this.engine;
 		const onTileSelect = engine.selectTile.bind(engine);
@@ -87,7 +87,6 @@ class BattlePageContainer extends React.Component<IProps, IState> {
 		return (
 			<BattleUI
 				engineState={engineState}
-				engineUpdate={engineUpdate}
 				onTileSelect={onTileSelect}
 				onCommandSelect={onCommandSelect}
 				onExit={onExit(history)}
