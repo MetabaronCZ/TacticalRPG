@@ -123,8 +123,8 @@ class PartyCreationUI extends React.Component<IPartyCreationUIProps> {
 				<FormSelect id={fieldId} name={`character-${i}`} value={id || ''} onChange={this.onChange('slots', i)}>
 					<FormSelectItem text="- Empty -" value="" />
 
-					{filtered.map((char, j) => (
-						<FormSelectItem text={char.name} value={char.id} key={j} />
+					{filtered.map(char => (
+						<FormSelectItem text={char.name} value={char.id} key={char.id} />
 					))}
 				</FormSelect>
 			</FormField>

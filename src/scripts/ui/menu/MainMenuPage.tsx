@@ -25,8 +25,8 @@ const MainMenuPage: React.SFC<RouteComponentProps<any>> = ({ history }) => (
 	<PageWrapper>
 		<div className="MainMenu">
 			<ul className="MainMenu-butttons">
-				{menuItems.map((item, i) => (
-					<li className="MainMenu-buttons-item" key={i}>
+				{menuItems.map(item => (
+					<li className="MainMenu-buttons-item" key={item.title}>
 						<Button
 							ico={item.ico}
 							size={item.size}

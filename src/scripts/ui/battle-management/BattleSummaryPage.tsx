@@ -287,8 +287,8 @@ class BattleSummaryPage extends React.Component<IProps, IState> {
 					Player "{winPlayer.name}" won!
 				</h2>
 
-				{playerData.map((data, d) => (
-					<div className="Paragraph" key={d}>
+				{playerData.map(data => (
+					<div className="Paragraph" key={data.id}>
 						<PlayerIco id={data.id} />
 						<strong>Player "{data.player.name}"</strong>
 						<br />
@@ -336,7 +336,7 @@ class BattleSummaryPage extends React.Component<IProps, IState> {
 						<div className="List-row-column">Result</div>
 					</li>
 
-					{chronox.timeline.map((t, i) => {
+					{chronox.timeline.map(t => {
 						if (t.skipped) {
 							return;
 						}
@@ -350,7 +350,7 @@ class BattleSummaryPage extends React.Component<IProps, IState> {
 							throw new Error('Invalid Character or Player data');
 						}
 						return (
-							<li className="List-row u-align-top" key={i}>
+							<li className="List-row u-align-top" key={t.id}>
 								<div className="List-row-column u-tableColumnFit u-align-right">
 									{item.id}.
 								</div>

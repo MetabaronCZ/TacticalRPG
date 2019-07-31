@@ -29,17 +29,17 @@ const CharacterList: React.SFC<ICharacterListProps> = props => {
 	return (
 		<ul className="List">
 			<li className="List-row List-row--header">
-				{columns.map((col, i) => (
-					<span className="List-row-column" key={i}>
+				{columns.map(col => (
+					<span className="List-row-column" key={col.name}>
 						{col.title || ''}
 					</span>
 				))}
 			</li>
 
 			{characters.data.map((char, i) => (
-				<li className="List-row" key={i}>
-					{columns.map((col, j) => (
-						<span className={`List-row-column List-row-column--${col.name}`} key={j}>
+				<li className="List-row" key={char.id}>
+					{columns.map(col => (
+						<span className={`List-row-column List-row-column--${col.name}`} key={col.name}>
 							{col.value(char, i)}
 						</span>
 					))}

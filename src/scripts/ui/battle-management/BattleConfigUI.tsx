@@ -47,17 +47,18 @@ class BattleConfigUI extends React.Component<IBattleConfigUIProps> {
 
 		return (
 			<Form onSubmit={this.onSubmit}>
-				{config.players.map((player, p) => {
+				{config.players.map(player => {
+					const pid = player.id;
 					const chars = this.form.getPartyCharacters(player, characters);
-					const errors = validation.errors.players[p];
+					const errors = validation.errors.players[pid];
 
-					const fieldName = `f-player-${p}-name`;
-					const fieldParty = `f-player-${p}-party`;
-					const fieldControl = `f-player-${p}-control`;
+					const fieldName = `f-player-${pid}-name`;
+					const fieldParty = `f-player-${pid}-party`;
+					const fieldControl = `f-player-${pid}-control`;
 
 					return (
-						<React.Fragment key={p}>
-							<h2 className="Heading">Player {p + 1}</h2>
+						<React.Fragment key={pid}>
+							<h2 className="Heading">Player {pid + 1}</h2>
 
 							<FormField fieldId={fieldName} label="Name" error={errors.name}>
 								<FormInput
@@ -66,7 +67,7 @@ class BattleConfigUI extends React.Component<IBattleConfigUIProps> {
 									name={fieldName}
 									maxLength={playerMaxNameLength}
 									isInvalid={!!errors.name}
-									onChange={this.onChange(p, 'name')}
+									onChange={this.onChange(pid, 'name')}
 								/>
 							</FormField>
 
@@ -75,16 +76,16 @@ class BattleConfigUI extends React.Component<IBattleConfigUIProps> {
 									id={fieldControl}
 									name={fieldControl}
 									value={player.control}
-									onChange={this.onChange(p, 'control')}
+									onChange={this.onChange(pid, 'control')}
 								>
-									{PlayerControl.map((id, control, i) => (
-										<FormSelectItem text={control.title} value={id} key={i} />
+									{PlayerControl.map((id, control) => (
+										<FormSelectItem text={control.title} value={id} key={id} />
 									))}
 								</FormSelect>
 							</FormField>
 
 							{'AI' === player.control && (
-								<AISettingsUI settings={player.aiSettings} onChange={this.onAIChange(p)} />
+								<AISettingsUI settings={player.aiSettings} onChange={this.onAIChange(pid)} />
 							)}
 
 							<FormField fieldId={fieldParty} label="Party">
@@ -92,10 +93,10 @@ class BattleConfigUI extends React.Component<IBattleConfigUIProps> {
 									id={fieldParty}
 									name={fieldParty}
 									value={player.party}
-									onChange={this.onChange(p, 'party')}
+									onChange={this.onChange(pid, 'party')}
 								>
-									{parties.map((party, i) => (
-										<FormSelectItem text={party.name} value={party.id} key={i} />
+									{parties.map(party => (
+										<FormSelectItem text={party.name} value={party.id} key={party.id} />
 									))}
 
 									<FormSelectItem text="Random characters" value={randomPartyID} />

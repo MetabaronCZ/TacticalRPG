@@ -13,7 +13,7 @@ interface IGridChactersProps {
 
 const GridCharacters: React.SFC<IGridChactersProps> = ({ actor, characters }) => (
 	<div className="GridCharacters">
-		{characters.map((char, i) => {
+		{characters.map(char => {
 			if (char.isDead()) {
 				return;
 			}
@@ -42,7 +42,7 @@ const GridCharacters: React.SFC<IGridChactersProps> = ({ actor, characters }) =>
 						}
 					}
 					title={char.name}
-					key={i}
+					key={char.data.id}
 				>
 					<div className={visualCls}>
 						{char.name.substring(0, 4).toUpperCase()}

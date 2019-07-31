@@ -54,7 +54,7 @@ const Commands: React.SFC<IProps> = ({ commands, onSelect }) => {
 				}
 
 				return (
-					<li className="Commands-item" key={i}>
+					<li className="Commands-item" key={command.title}>
 						<button
 							className={`Command ${true !== usable ? 'is-disabled' : ''}`}
 							type="button"

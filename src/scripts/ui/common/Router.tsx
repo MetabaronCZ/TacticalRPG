@@ -38,12 +38,12 @@ const routes: IRoute[] = [
 const Router: React.SFC<{}> = () => (
 	<MemoryRouter>
 		<Switch>
-			{routes.map((route, key) => (
+			{routes.map(route => (
 				<Route
 					exact={true}
 					path={getPath(route.id)}
 					component={route.component}
-					key={key}
+					key={route.id}
 				/>
 			))}
 		</Switch>

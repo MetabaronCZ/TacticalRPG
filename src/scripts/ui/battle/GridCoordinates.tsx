@@ -8,7 +8,7 @@ const itemPool = Array(gridSize).fill(null);
 const renderLetters = () => (
 	<div className="GridCoordinates-letters">
 		{itemPool.map((_, i) => (
-			<div className="GridCoordinates-letters-item" key={i}>
+			<div className="GridCoordinates-letters-item" key={letters[i]}>
 				{letters[i]}
 			</div>
 		))}

@@ -132,7 +132,7 @@ const GridBase: React.SFC<IGridBaseProps> = ({ act, characters, onSelect }) => {
 	};
 	return (
 		<div className="GridTiles">
-			{tiles.map(([tile, type, char], i) => {
+			{tiles.map(([tile, type, char]) => {
 				const { x, y } = tile;
 				return (
 					<div
@@ -146,7 +146,7 @@ const GridBase: React.SFC<IGridBaseProps> = ({ act, characters, onSelect }) => {
 							}
 						}
 						onClick={onClick(tile)}
-						key={i}
+						key={tile.id}
 					>
 						{!!char && (
 							<div className="GridTiles-item-tooltip">

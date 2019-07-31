@@ -43,7 +43,7 @@ const ActorUI: React.SFC<IProps> = ({ act, onCommandSelect }) => {
 					<div>
 						<strong>Targets:</strong>
 						<br />
-						{reactions.map((tgt, t) => {
+						{reactions.map(tgt => {
 							const { reactor, command: reactionCommand } = tgt;
 							let txt = '...';
 
@@ -51,7 +51,7 @@ const ActorUI: React.SFC<IProps> = ({ act, onCommandSelect }) => {
 								txt = reactionCommand.title;
 							}
 							return (
-								<div key={t}>
+								<div key={reactor.data.id}>
 									{reactor.name} ({txt})
 								</div>
 							);

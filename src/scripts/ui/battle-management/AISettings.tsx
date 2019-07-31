@@ -31,8 +31,8 @@ class AISettingsUI extends React.Component<IProps, IAISettings> {
 						value={preset}
 						onChange={this.setDifficulty}
 					>
-						{AIPresets.map((id, item, i) => (
-							<FormSelectItem text={item.title} value={id} key={i} />
+						{AIPresets.map((id, item) => (
+							<FormSelectItem text={item.title} value={id} key={id} />
 						))}
 					</FormSelect>
 				</FormField>
