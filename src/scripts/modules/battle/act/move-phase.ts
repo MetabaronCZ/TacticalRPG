@@ -26,7 +26,8 @@ export interface IActMoveRecord {
 }
 
 class MovePhase extends ActPhase<IActMoveRecord> {
-	private readonly actor: Character;
+	public readonly actor: Character;
+
 	private readonly costMap: ICostMap = {}; // movable area cost map
 	private readonly obstacles: Tile[] = [];
 	private readonly onEvent: IOnActPhaseEvent;
@@ -64,10 +65,6 @@ class MovePhase extends ActPhase<IActMoveRecord> {
 
 		// create barrier tiles for A* algorithm
 		this.obstacles = getTiles().filter(tile => tile.isContained(obstacles) || !tile.isContained(this.movable));
-	}
-
-	public getActor(): Character {
-		return this.actor;
 	}
 
 	public getPhase(): Phase {

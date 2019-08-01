@@ -36,7 +36,8 @@ export type CombatPhaseEvents =
 	'COMBAT_DONE';
 
 class CombatPhase extends ActPhase<IActCombatRecord> {
-	private readonly actor: Character;
+	public readonly actor: Character;
+
 	private readonly onEvent: IOnActPhaseEvent;
 	private readonly combatResults: ICombatResult[] = [];
 
@@ -46,10 +47,6 @@ class CombatPhase extends ActPhase<IActCombatRecord> {
 		super();
 		this.actor = actor;
 		this.onEvent = onEvent;
-	}
-
-	public getActor(): Character {
-		return this.actor;
 	}
 
 	public getPhase(): Phase {

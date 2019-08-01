@@ -41,7 +41,7 @@ export type CommandPhaseEvents =
 	'COMMAND_DONE';
 
 class CommandPhase extends ActPhase<IActCommandRecord> {
-	private readonly actor: Character;
+	public readonly actor: Character;
 	private readonly characters: Character[];
 	private readonly onEvent: IOnActPhaseEvent;
 	private state: IState = {};
@@ -53,10 +53,6 @@ class CommandPhase extends ActPhase<IActCommandRecord> {
 		this.actor = actor;
 		this.characters = characters.filter(char => !char.isDead());
 		this.onEvent = onEvent;
-	}
-
-	public getActor(): Character {
-		return this.actor;
 	}
 
 	public getPhase(): Phase {

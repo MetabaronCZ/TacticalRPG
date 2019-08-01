@@ -105,7 +105,7 @@ class Act {
 		if (!phase) {
 			return actor;
 		}
-		return phases[phase].getActor();
+		return phases[phase].actor;
 	}
 
 	public getInfo(): string {

@@ -18,21 +18,18 @@ export type DirectPhaseEvents =
 	'DIRECTION_SELECTED';
 
 class DirectPhase extends ActPhase<IActDirectRecord> {
-	private readonly actor: Character;
-	private readonly onEvent: IOnActPhaseEvent;
+	public readonly actor: Character;
 
 	private phase: Phase = 'SUSPENDED';
 	private directable: Tile[] = [];
 	private directTarget: Tile | null = null;
 
+	private readonly onEvent: IOnActPhaseEvent;
+
 	constructor(actor: Character, characters: Character[], onEvent: IOnActPhaseEvent) {
 		super();
 		this.actor = actor;
 		this.onEvent = onEvent;
-	}
-
-	public getActor(): Character {
-		return this.actor;
 	}
 
 	public getPhase(): Phase {

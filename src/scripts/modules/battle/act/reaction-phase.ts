@@ -37,24 +37,23 @@ interface IReaction {
 }
 
 class ReactionPhase extends ActPhase<IActReactionRecord> {
-	private readonly actor: Character;
-	private readonly characters: Character[];
-	private readonly onEvent: IOnActPhaseEvent;
-
+	public get actor(): Character | null {
+		const reaction = this.getReaction();
+		return reaction ? reaction.reactor : null;
+	}
 	private phase: Phase = 'SUSPENDED';
 	private reaction: number = 0; // active reaction index
 	private reactions: IReaction[] = [];
 
+	private actActor: Character;
+	private readonly characters: Character[];
+	private readonly onEvent: IOnActPhaseEvent;
+
 	constructor(actor: Character, characters: Character[], onEvent: IOnActPhaseEvent) {
 		super();
-		this.actor = actor;
+		this.actActor = actor;
 		this.onEvent = onEvent;
 		this.characters = characters;
-	}
-
-	public getActor(): Character | null {
-		const reaction = this.getReaction();
-		return reaction ? reaction.reactor : null;
 	}
 
 	public getPhase(): Phase {
@@ -153,7 +152,7 @@ class ReactionPhase extends ActPhase<IActReactionRecord> {
 	}
 
 	private startReact() {
-		const { actor, phase } = this;
+		const { actActor, phase } = this;
 
 		if ('IDLE' !== phase) {
 			throw new Error('Could not start reaction: invalid phase ' + phase);
@@ -169,7 +168,7 @@ class ReactionPhase extends ActPhase<IActReactionRecord> {
 		reaction.phase = 'IDLE';
 
 		// turn actor to face active reactor
-		actor.direction = resolveDirection(actor.position, reaction.reactor.position);
+		actActor.direction = resolveDirection(actActor.position, reaction.reactor.position);
 
 		const isSupport = !!reaction.combat.find(item => 'SUPPORT' === item.type);
 
