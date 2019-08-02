@@ -15,6 +15,8 @@ import ActPhase from 'modules/battle/act/phase';
 import { IOnActPhaseEvent } from 'modules/battle/act';
 import { IBattleInfo } from 'modules/battle/battle-info';
 
+const txtCombat = 'Combat in progress...';
+
 export interface IActCombatRecord {
 	readonly results: ICombatResult[];
 }
@@ -60,6 +62,7 @@ class CombatPhase extends ActPhase<IActCombatRecord> {
 			throw new Error('Could not start combat phase: invalid phase ' + phase);
 		}
 		this.phase = 'ANIMATION';
+		this.info = txtCombat;
 
 		const { skills } = command;
 		const timing = Array(skills.length).fill(skillAnimDuration);
@@ -140,6 +143,8 @@ class CombatPhase extends ActPhase<IActCombatRecord> {
 					target.status.removeByID('ENERGY_SHIELD');
 				}
 				this.phase = 'DONE';
+				this.info = '';
+
 				this.onEvent('COMBAT_DONE');
 			}
 		});

@@ -4,6 +4,12 @@ import Command from 'modules/battle/command';
 
 abstract class ActPhase<T> {
 	public abstract readonly actor: Character | null;
+	protected info: string = '';
+
+	public getInfo(): string {
+		return this.info;
+	}
+
 	public abstract selectTile(tile: Tile): void;
 	public abstract selectCommand(command: Command): void;
 	public abstract serialize(): T;

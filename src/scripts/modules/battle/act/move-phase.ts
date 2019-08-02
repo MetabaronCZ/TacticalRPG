@@ -12,6 +12,9 @@ import Command from 'modules/battle/command';
 import ActPhase from 'modules/battle/act/phase';
 import { IOnActPhaseEvent } from 'modules/battle/act';
 
+const txtIdle = 'Move on grid or select a command:';
+const txtMoving = 'Moving ...';
+
 type Phase = 'SUSPENDED' | 'IDLE' | 'SELECTED' | 'ANIMATION';
 
 export type MovePhaseEvents =
@@ -98,6 +101,8 @@ class MovePhase extends ActPhase<IActMoveRecord> {
 			throw new Error('Could not start movement: invalid phase ' + phase);
 		}
 		this.phase = 'IDLE';
+		this.info = txtIdle;
+
 		this.onEvent('MOVE_IDLE');
 	}
 
@@ -124,6 +129,8 @@ class MovePhase extends ActPhase<IActMoveRecord> {
 	public selectCommand(command: Command) {
 		if ('IDLE' === this.phase) {
 			this.phase = 'SUSPENDED';
+			this.info = '';
+
 			this.onEvent('MOVE_SUSPENDED', command);
 		}
 	}
@@ -142,6 +149,7 @@ class MovePhase extends ActPhase<IActMoveRecord> {
 			throw new Error('Could not animate movement: invalid phase ' + phase);
 		}
 		this.phase = 'ANIMATION';
+		this.info = txtMoving;
 
 		const timing = Array(movePath.length).fill(moveAnimDuration);
 
@@ -157,8 +165,8 @@ class MovePhase extends ActPhase<IActMoveRecord> {
 			this.onEvent('MOVE_ANIMATION');
 
 			if (step.isLast) {
-				this.phase = 'IDLE';
-				this.onEvent('MOVE_IDLE');
+				this.phase = 'SUSPENDED';
+				this.start();
 			}
 		});
 

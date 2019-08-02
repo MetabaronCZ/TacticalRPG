@@ -99,7 +99,7 @@ class Act {
 	public start() {
 		const { phase, actor } = this;
 
-		if (phase) {
+		if (null !== phase) {
 			throw new Error('Could not start act: invalid phase ' + phase);
 		}
 		this.log('Act started');
@@ -252,7 +252,12 @@ class Act {
 			this.events.onBattleInfo(data as IBattleInfo);
 			return;
 		}
+		if (!phase) {
+			throw new Error('Could not process phase event: invalid phase');
+		}
 		const { MOVEMENT, COMMAND, REACTION, DIRECTION, COMBAT } = phases;
+
+		this.info = phases[phase].getInfo();
 
 		switch (phase) {
 			case 'MOVEMENT':
@@ -263,17 +268,12 @@ class Act {
 						COMMAND.start(data as Command);
 						return;
 
-					case 'MOVE_IDLE':
-						this.info = 'Move on grid or select a command:';
-						this.update();
-						return;
-
 					case 'MOVE_SELECTED':
-						this.info = 'Moving ...';
 						this.log('Moving to ' + formatTile(data as Tile));
 						this.update();
 						return;
 
+					case 'MOVE_IDLE':
 					case 'MOVE_ANIMATION':
 						this.update();
 						return;
@@ -285,13 +285,11 @@ class Act {
 			case 'COMMAND':
 				switch (evt) {
 					case 'COMMAND_SELECTED':
-						this.info = 'Select command target on grid.';
 						this.log('Command selected: ' + (data as Command).title);
 						this.update();
 						return;
 
 					case 'COMMAND_TARGETED':
-						this.info = '';
 						this.log('Command target selected ' + (data ? (data as Character).name : ''));
 						this.update();
 						return;
@@ -327,12 +325,7 @@ class Act {
 			case 'REACTION':
 				switch (evt) {
 					case 'REACTION_IDLE':
-						this.info = 'Select reaction:';
-						this.update();
-						return;
-
 					case 'REACTION_EVADING':
-						this.info = 'Select evasion target on grid.';
 						this.update();
 						return;
 
@@ -349,8 +342,8 @@ class Act {
 							throw new Error('Could start combat phase: invalid command phase data');
 						}
 						this.phase = 'COMBAT';
-						this.info = 'Combat in progress...';
-						this.log(this.info);
+						this.log('Combat started');
+
 						COMBAT.start(command, effectArea, targets);
 						return;
 
@@ -379,13 +372,11 @@ class Act {
 			case 'DIRECTION':
 				switch (evt) {
 					case 'DIRECTION_IDLE':
-						this.info = 'Select new direction on grid.';
 						this.update();
 						return;
 
 					case 'DIRECTION_SELECTED':
 						// finish Act
-						this.info = '';
 						this.log('Direction set to ' + formatTile(data as Tile));
 						this.end();
 						return;

@@ -10,6 +10,9 @@ import { StatusEffectID } from 'modules/battle/status-effect';
 import { IEffectTargetData } from 'modules/battle/act/command-phase';
 import { getContinueCommand } from 'modules/battle/commands';
 
+const txtIdle = 'Select reaction:';
+const txtEvasion = 'Select evasion target on grid.';
+
 export interface IActReactionRecord {
 	reactions: Array<{
 		readonly reactor: string;
@@ -162,6 +165,8 @@ class ReactionPhase extends ActPhase<IActReactionRecord> {
 		if (!reaction) {
 			// all targets have reacted
 			this.phase = 'DONE';
+			this.info = '';
+
 			this.onEvent('REACTION_DONE');
 			return;
 		}
@@ -176,8 +181,10 @@ class ReactionPhase extends ActPhase<IActReactionRecord> {
 			// force reaction pass
 			const passAction = getContinueCommand();
 			this.pass(reaction, passAction);
+
 		} else {
 			// wait for reaction selection
+			this.info = txtIdle;
 			this.onEvent('REACTION_IDLE');
 		}
 	}
@@ -238,6 +245,8 @@ class ReactionPhase extends ActPhase<IActReactionRecord> {
 			throw new Error('Could not cancel evasion: invalid phase ' + phase);
 		}
 		reaction.phase = 'IDLE';
+		this.info = txtIdle;
+
 		reaction.command = null;
 		reaction.evasible = [];
 
@@ -262,6 +271,7 @@ class ReactionPhase extends ActPhase<IActReactionRecord> {
 			throw new Error('Could not start evasion: invalid phase ' + phase);
 		}
 		reaction.phase = 'EVASION';
+		this.info = txtEvasion;
 
 		const obstacles = characters.map(char => char.position);
 		reaction.evasible = reactor.position.getSideTiles(obstacles);

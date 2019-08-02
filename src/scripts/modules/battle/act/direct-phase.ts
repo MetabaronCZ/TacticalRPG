@@ -7,6 +7,8 @@ import Command from 'modules/battle/command';
 import ActPhase from 'modules/battle/act/phase';
 import { IOnActPhaseEvent } from 'modules/battle/act';
 
+const txtIdle = 'Select new direction on grid.';
+
 export interface IActDirectRecord {
 	readonly target: string | null;
 }
@@ -61,7 +63,10 @@ class DirectPhase extends ActPhase<IActDirectRecord> {
 		if (!actor.canAct()) {
 			// skip direction selection
 			this.selectTile(this.directTarget);
+
 		} else {
+			// let user select new direction
+			this.info = txtIdle;
 			this.onEvent('DIRECTION_IDLE');
 		}
 	}
@@ -84,6 +89,8 @@ class DirectPhase extends ActPhase<IActDirectRecord> {
 			const newDir = resolveDirection(pos, tile);
 			actor.direction = newDir;
 		}
+		this.info = '';
+
 		this.onEvent('DIRECTION_SELECTED', tile);
 	}
 

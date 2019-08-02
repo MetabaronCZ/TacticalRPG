@@ -7,6 +7,8 @@ import ActPhase from 'modules/battle/act/phase';
 import { IOnActPhaseEvent } from 'modules/battle/act';
 import { getCombatInfo, ICombatInfo } from 'modules/battle/combat';
 
+const txtIdle = 'Select command target on grid.';
+
 export interface IActCommandRecord {
 	readonly command: string | null;
 	readonly target: string | null;
@@ -223,6 +225,7 @@ class CommandPhase extends ActPhase<IActCommandRecord> {
 			effectTargets,
 			character: effectTarget
 		};
+		this.info = '';
 
 		this.onEvent('COMMAND_TARGETED', effectTarget);
 	}
@@ -248,6 +251,8 @@ class CommandPhase extends ActPhase<IActCommandRecord> {
 			targetable
 		};
 		this.phase = 'TARGETING';
+		this.info = txtIdle;
+
 		this.onEvent('COMMAND_SELECTED', command);
 	}
 
@@ -262,6 +267,8 @@ class CommandPhase extends ActPhase<IActCommandRecord> {
 			area: [],
 			targetable: []
 		};
+		this.info = '';
+
 		this.onEvent('COMMAND_PASSED');
 	}
 
@@ -274,6 +281,8 @@ class CommandPhase extends ActPhase<IActCommandRecord> {
 		delete this.state.command;
 
 		this.phase = 'SUSPENDED';
+		this.info = '';
+
 		this.onEvent('COMMAND_CANCELLED');
 	}
 
@@ -284,6 +293,8 @@ class CommandPhase extends ActPhase<IActCommandRecord> {
 			throw new Error('Could not confirm command: invalid phase ' + phase);
 		}
 		this.phase = 'DONE';
+		this.info = '';
+
 		this.onEvent('COMMAND_DONE');
 	}
 }
