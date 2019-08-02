@@ -34,11 +34,6 @@ class BattlePageContainer extends React.Component<IProps, IState> {
 			players: battleConfig.players,
 			parties: parties.data,
 			events: {
-				onStart: engineState => {
-					this.setState(state => ({
-						engine: engineState
-					}));
-				},
 				onUpdate: engineState => {
 					this.setState(state => ({
 						engine: engineState

@@ -29,11 +29,9 @@ export type ActPhaseEvent = 'BATTLE_INFO' | MovePhaseEvents | CommandPhaseEvents
 export type IOnActPhaseEvent = (event: ActPhaseEvent, data?: Character | Command | Tile | IBattleInfo | null) => void;
 
 export interface IActEvents {
-	readonly onStart: (act: Act) => void;
 	readonly onUpdate: (act: Act) => void;
-	readonly onSkip: (act: Act) => void;
-	readonly onEnd: (act: Act) => void;
 	readonly onBattleInfo: (info: IBattleInfo) => void;
+	readonly onEnd: (act: Act) => void;
 }
 
 export interface IActRecord {
@@ -63,7 +61,7 @@ class Act {
 		this.id = id;
 		this.actor = actor;
 		this.characters = characters;
-		this.events = this.prepareEvents(events);
+		this.events = events;
 
 		// prepare actor to act
 		actor.startAct();
@@ -75,20 +73,6 @@ class Act {
 			DIRECTION: new DirectPhase(actor, characters, this.onPhaseEvent),
 			COMBAT: new CombatPhase(actor, characters, this.onPhaseEvent)
 		};
-
-		this.events.onStart(this);
-
-		setTimeout(() => { // prevent race condition
-			if (actor.status.has('DYING')) {
-				// skip this Act
-				this.skip();
-
-			} else {
-				// start move phase
-				this.phase = 'MOVEMENT';
-				this.phases.MOVEMENT.start();
-			}
-		});
 	}
 
 	public getPhase(): PhaseID | null {
@@ -112,6 +96,24 @@ class Act {
 		return this.info;
 	}
 
+	public start() {
+		const { phase, actor } = this;
+
+		if (phase) {
+			throw new Error('Could not start act: invalid phase ' + phase);
+		}
+		this.log('Act started');
+
+		if (actor.status.has('DYING')) {
+			// skip this Act
+			this.skip();
+
+		} else {
+			// start move phase
+			this.phase = 'MOVEMENT';
+			this.phases.MOVEMENT.start();
+		}
+	}
 	public selectTile(tile: Tile) {
 		const { phase } = this;
 
@@ -145,11 +147,9 @@ class Act {
 
 	private skip() {
 		this.skipped = true;
-		this.events.onSkip(this);
+		this.log('Act skipped');
 
-		setTimeout(() => { // prevent race condition
-			this.end();
-		});
+		this.end();
 	}
 
 	private end() {
@@ -157,6 +157,8 @@ class Act {
 			this.actor.endAct();
 		}
 		this.phase = null;
+		this.log('Act ended');
+
 		this.events.onEnd(this);
 	}
 
@@ -220,14 +222,16 @@ class Act {
 	}
 
 	private update() {
-		let char = this.getActingCharacter();
+		const char = this.getActingCharacter();
 
 		if (!char) {
 			throw new Error('Could not update Act data: invalid acting character');
 		}
+		const commands = this.prepareCommands();
+
 		if (!char.isAI()) {
 			// set commands for player
-			this.commands = this.prepareCommands();
+			this.commands = commands;
 			this.events.onUpdate(this);
 
 		} else {
@@ -235,16 +239,8 @@ class Act {
 			this.commands = [];
 			this.events.onUpdate(this);
 
-			setTimeout(() => { // prevent racing condition
-				char = this.getActingCharacter();
-
-				if (!char) {
-					throw new Error('Could not update Act data: invalid acting character');
-				}
-				const commands = this.prepareCommands();
-				const player = char.player as AIPlayer;
-				player.update(this, commands);
-			});
+			const player = char.player as AIPlayer;
+			player.update(this, commands);
 		}
 	}
 
@@ -269,7 +265,6 @@ class Act {
 
 					case 'MOVE_IDLE':
 						this.info = 'Move on grid or select a command:';
-						this.log(this.info);
 						this.update();
 						return;
 
@@ -292,7 +287,6 @@ class Act {
 					case 'COMMAND_SELECTED':
 						this.info = 'Select command target on grid.';
 						this.log('Command selected: ' + (data as Command).title);
-						this.log(this.info);
 						this.update();
 						return;
 
@@ -334,13 +328,11 @@ class Act {
 				switch (evt) {
 					case 'REACTION_IDLE':
 						this.info = 'Select reaction:';
-						this.log(this.info);
 						this.update();
 						return;
 
 					case 'REACTION_EVADING':
 						this.info = 'Select evasion target on grid.';
-						this.log(this.info);
 						this.update();
 						return;
 
@@ -388,7 +380,6 @@ class Act {
 				switch (evt) {
 					case 'DIRECTION_IDLE':
 						this.info = 'Select new direction on grid.';
-						this.log(this.info);
 						this.update();
 						return;
 
@@ -406,25 +397,6 @@ class Act {
 			default:
 				return; // do nothing
 		}
-	}
-
-	private prepareEvents(events: IActEvents): IActEvents {
-		return {
-			onStart: act => {
-				this.log('Act started');
-				events.onStart(act);
-			},
-			onUpdate: events.onUpdate,
-			onSkip: act => {
-				this.log('Act skipped');
-				events.onSkip(act);
-			},
-			onEnd: act => {
-				this.log('Act ended');
-				events.onEnd(act);
-			},
-			onBattleInfo: events.onBattleInfo
-		};
 	}
 
 	private log(msg: string) {

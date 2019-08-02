@@ -35,10 +35,9 @@ export interface IEngineState {
 }
 
 interface IEngineEvents {
-	readonly onStart: (state: IEngineState) => void;
 	readonly onUpdate: (state: IEngineState) => void;
-	readonly onGameOver: (state: IEngineState, winner: Player) => void;
 	readonly onBattleInfo: (state: IBattleInfo[]) => void;
+	readonly onGameOver: (state: IEngineState, winner: Player) => void;
 }
 
 interface IEngineProps {
@@ -74,7 +73,7 @@ class Engine {
 		const chronoxConf = Chronox.getConfig(this.players, conf.parties);
 		this.chronox = new Chronox(chronoxConf);
 
-		this.events = this.prepareEvents(conf.events);
+		this.events = conf.events;
 	}
 
 	public start() {
@@ -82,8 +81,9 @@ class Engine {
 			return;
 		}
 		this.running = true;
+		Logger.info('Engine onStart');
 
-		this.events.onStart(this.getState());
+		this.events.onUpdate(this.getState());
 		this.update();
 	}
 
@@ -178,13 +178,9 @@ class Engine {
 		// create new character act
 		const actID = this.actNumber;
 
-		Logger.info(`ACT ${actID} (Tick ${this.tick})`);
-
 		this.act = new Act(actID, actor, characters, {
-			onBattleInfo: info => this.onInfo(info),
-			onStart: act => events.onUpdate(this.getState()),
 			onUpdate: act => events.onUpdate(this.getState()),
-			onSkip: act => events.onUpdate(this.getState()),
+			onBattleInfo: info => this.onInfo(info),
 			onEnd: act => {
 				// store Act record
 				const record = act.serialize();
@@ -195,14 +191,27 @@ class Engine {
 				if (winner) {
 					// finish game
 					this.running = false;
-					this.events.onGameOver(this.getState(), winner);
+
+					Logger.info('Engine onGameOver');
+					Logger.info('--------------------------------');
+					Logger.info(`Player "${winner.name}" won!`);
+
+					events.onGameOver(this.getState(), winner);
 
 				} else {
 					// run next act
+					events.onUpdate(this.getState());
 					this.startAct();
 				}
 			}
 		});
+
+		// start Act
+		Logger.info('--------------------------------');
+		Logger.info(`ACT ${actID} (Tick ${this.tick})`);
+		events.onUpdate(this.getState());
+
+		this.act.start();
 	}
 
 	private createPlayers(conf: IEngineProps): PlayerList {
@@ -296,22 +305,6 @@ class Engine {
 			return liveChars[0].player;
 		}
 		return null;
-	}
-
-	private prepareEvents(events: IEngineEvents): IEngineEvents {
-		return {
-			onStart: state => {
-				Logger.info('Engine onStart');
-				events.onStart(state);
-			},
-			onUpdate: events.onUpdate,
-			onGameOver: (state, winner) => {
-				Logger.info('Engine onGameOver');
-				Logger.info(`Player "${winner.name}" won!`);
-				events.onGameOver(state, winner);
-			},
-			onBattleInfo: events.onBattleInfo
-		};
 	}
 
 	private onInfo(info: IBattleInfo, duration = 3000) {

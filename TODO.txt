@@ -6,10 +6,7 @@ BUG
 
 TODO
 ----------------------------------------------------------------------------------------------------------
->>	refaktorovat Engine eventy, aby korektne nastavovaly state UI komponente
-	--	necpat tam cely Engine.getState() najednou
-	??	pouzit MobX i na Engine, Act, ActPhase[]
-	--	refaktorovat hotfix "setTimeout" kvuli racing condition v React.setState()
+--	Act.info brat z aktivni ActPhase
 --	AICharacter: pokud vybrana cesta nekonci na Tile, ze ktereho se da utocit, skoncit na posledni utocne pozici
 --	AICharacter: pohyb/akce podle melee / ranged / support role
 	- vybira AIPlayer

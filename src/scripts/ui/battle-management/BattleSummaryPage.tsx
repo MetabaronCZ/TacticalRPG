@@ -302,9 +302,17 @@ class BattleSummaryPage extends React.Component<IProps, IState> {
 
 				<ul className="List">
 					<li className="List-row List-row--header">
-						<div className="List-row-column">Top kills</div>
-						<div className="List-row-column">Top damage</div>
-						<div className="List-row-column">Top healing</div>
+						<div className="List-row-column">
+							Top {topListSize} kills
+						</div>
+
+						<div className="List-row-column">
+							Top {topListSize} damage
+						</div>
+
+						<div className="List-row-column">
+							Top {topListSize} healing
+						</div>
 					</li>
 
 					<li className="List-row">
