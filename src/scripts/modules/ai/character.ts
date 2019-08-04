@@ -10,6 +10,10 @@ import Character from 'modules/character';
 import Engine from 'modules/battle/engine';
 import Command from 'modules/battle/command';
 
+const actionDelay = 1000;
+
+const delayAction = (fn: () => any) => setTimeout(() => fn(), actionDelay);
+
 type TargetSide = 'FRONT' | 'SIDE' | 'BEHIND';
 
 interface ITargetInfo {
@@ -35,14 +39,23 @@ const getSide = (char: Character, tile: Tile): TargetSide => {
 
 class AICharacter {
 	public readonly character: Character;
-	private readonly engine: Engine;
 
 	private moved = false;
 	private target: Character | null = null; // skill target character
 
+	private selectTile: (tile: Tile) => void;
+	private selectCommand: (cmd: Command) => void;
+
 	constructor(character: Character, engine: Engine) {
 		this.character = character;
-		this.engine = engine;
+
+		this.selectTile = (tile: Tile) => {
+			delayAction(() => engine.selectTile(tile));
+		};
+
+		this.selectCommand = (cmd: Command) => {
+			delayAction(() => engine.selectCommand(cmd));
+		};
 	}
 
 	public update(act: Act, commands: Command[]) {
@@ -69,7 +82,7 @@ class AICharacter {
 							if (!confirm) {
 								throw new Error('AI character commands does not contain confirm command');
 							}
-							this.engine.selectCommand(confirm);
+							this.selectCommand(confirm);
 
 						} else {
 							// target selected command skill
@@ -187,7 +200,7 @@ class AICharacter {
 
 					if (movePath.length) {
 						const moveTarget = movePath[movePath.length - 1];
-						this.engine.selectTile(moveTarget);
+						this.selectTile(moveTarget);
 						return;
 					}
 				}
@@ -206,7 +219,7 @@ class AICharacter {
 		if (!target || !target.isContained(targetable)) {
 			throw new Error('AI character couold not target skill: no targetable tiles');
 		}
-		this.engine.selectTile(target);
+		this.selectTile(target);
 	}
 
 	public onReaction(commands: Command[], isBackAttacked: boolean) {
@@ -218,7 +231,7 @@ class AICharacter {
 		const char = this.character;
 
 		if (isBackAttacked || !char.canAct()) {
-			this.engine.selectCommand(passCommand);
+			this.selectCommand(passCommand);
 			return;
 		}
 		const player = this.character.player as AIPlayer;
@@ -239,12 +252,12 @@ class AICharacter {
 					continue;
 				}
 			}
-			this.engine.selectCommand(command);
+			this.selectCommand(command);
 			return;
 		}
 
 		// no reaction available
-		this.engine.selectCommand(passCommand);
+		this.selectCommand(passCommand);
 	}
 
 	public onEvasion(evasible: Tile[]) {
@@ -253,7 +266,7 @@ class AICharacter {
 		if (!evasionTarget) {
 			throw new Error('AI character could not react: no evasion targets');
 		}
-		this.engine.selectTile(evasionTarget);
+		this.selectTile(evasionTarget);
 	}
 
 	public onDirect(directable: Tile[]) {
@@ -277,7 +290,7 @@ class AICharacter {
 		if (!directTarget) {
 			throw new Error('AI could not direct');
 		}
-		this.engine.selectTile(directTarget);
+		this.selectTile(directTarget);
 	}
 
 	private chooseCommand(commands: Command[]) {
@@ -297,7 +310,7 @@ class AICharacter {
 		this.moved = false;
 
 		if (!this.target || !char.canAct()) {
-			this.engine.selectCommand(passCommand);
+			this.selectCommand(passCommand);
 			return;
 		}
 
@@ -318,13 +331,13 @@ class AICharacter {
 			const targets = command.skills[0].getTargets(char, enemy, targetable);
 
 			if (-1 !== targets.indexOf(this.target)) {
-				this.engine.selectCommand(command);
+				this.selectCommand(command);
 				return;
 			}
 		}
 
 		// enemy is not targetable
-		this.engine.selectCommand(passCommand);
+		this.selectCommand(passCommand);
 	}
 }
 

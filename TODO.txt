@@ -6,8 +6,6 @@ BUG
 
 TODO
 ----------------------------------------------------------------------------------------------------------
---	pridat delay mezi kroky AI
-	- pridat OPTIONS do MainMenu, tam udelat tento delay konfigurovatelny (INSTANT, 1 - 5 seconds)
 --	AICharacter: pokud vybrana cesta nekonci na Tile, ze ktereho se da utocit, skoncit na posledni utocne pozici
 --	AICharacter: pohyb/akce podle melee / ranged / support role
 	- vybira AIPlayer

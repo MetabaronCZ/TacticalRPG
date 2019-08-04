@@ -93,6 +93,11 @@ class Act {
 	}
 
 	public getInfo(): string {
+		const actingChar = this.getActingCharacter();
+
+		if (!actingChar || actingChar.isAI()) {
+			return '';
+		}
 		return this.info;
 	}
 
