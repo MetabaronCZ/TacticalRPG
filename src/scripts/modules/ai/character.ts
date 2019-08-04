@@ -1,4 +1,5 @@
 import { getRandomItem, getIntersection } from 'core/array';
+import { aiActionDelay } from 'data/game-config';
 
 import { getShortestPath } from 'modules/pathfinding';
 import { findTileFrom, resolveDirection, getOpositeDirection } from 'modules/geometry/direction';
@@ -10,9 +11,7 @@ import Character from 'modules/character';
 import Engine from 'modules/battle/engine';
 import Command from 'modules/battle/command';
 
-const actionDelay = 1000;
-
-const delayAction = (fn: () => any) => setTimeout(() => fn(), actionDelay);
+const delayAction = (fn: () => any) => setTimeout(() => fn(), aiActionDelay);
 
 type TargetSide = 'FRONT' | 'SIDE' | 'BEHIND';
 
