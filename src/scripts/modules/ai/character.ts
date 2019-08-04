@@ -36,8 +36,11 @@ const getSide = (char: Character, tile: Tile): TargetSide => {
 	return 'SIDE';
 };
 
+export type CharacterRole = 'MELEE' | 'RANGER' | 'MAGE' | 'HEALER';
+
 class AICharacter {
 	public readonly character: Character;
+	public readonly roles: CharacterRole[];
 
 	private moved = false;
 	private target: Character | null = null; // skill target character
@@ -45,8 +48,9 @@ class AICharacter {
 	private selectTile: (tile: Tile) => void;
 	private selectCommand: (cmd: Command) => void;
 
-	constructor(character: Character, engine: Engine) {
+	constructor(character: Character, engine: Engine, roles: CharacterRole[]) {
 		this.character = character;
+		this.roles = roles;
 
 		this.selectTile = (tile: Tile) => {
 			delayAction(() => engine.selectTile(tile));

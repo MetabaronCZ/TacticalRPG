@@ -6,10 +6,10 @@ BUG
 
 TODO
 ----------------------------------------------------------------------------------------------------------
---	AICharacter: pokud vybrana cesta nekonci na Tile, ze ktereho se da utocit, skoncit na posledni utocne pozici
---	AICharacter: pohyb/akce podle melee / ranged / support role
+>>	AICharacter: pohyb/akce podle melee / ranged / support role
 	- vybira AIPlayer
 	- prioritizace skillu (healing role -> Revive)
+--	AICharacter: pokud vybrana cesta nekonci na Tile, ze ktereho se da utocit, skoncit na posledni utocne pozici
 ??	prejit na HEXA-grid (vytvorit jako SVG)
 	- https://www.redblobgames.com/grids/hexagons/
 ??	Counter reaction skill >> bude to mainHand weapon Attack skill

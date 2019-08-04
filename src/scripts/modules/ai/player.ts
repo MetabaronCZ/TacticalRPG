@@ -5,13 +5,41 @@ import Tile from 'modules/geometry/tile';
 import Character from 'modules/character';
 import Engine from 'modules/battle/engine';
 import Command from 'modules/battle/command';
-import AICharacter from 'modules/ai/character';
 import { IAIConfig, IAISettings } from 'modules/ai/settings';
+import AICharacter, { CharacterRole } from 'modules/ai/character';
 import Player, { IPlayerCharacterSetup } from 'modules/battle/player';
 import { IPlayerData } from 'modules/battle-configuration/player-data';
 
-export type IOnTileSelect = (tile: Tile) => void;
-export type IOnCommandSelect = (command: Command) => void;
+const getCharacterRoles = (char: Character): CharacterRole[] => {
+	const { archetype, mainHand: main, offHand: off } = char;
+	const roles: CharacterRole[] = [];
+
+	const hasHealing = ('HOLY' === char.skillset.element);
+	const hasRangedWpn = ('RANGED' === main.type || 'RANGED' === off.type);
+	const hasMeleeWpn = (
+		('NONE' !== main.type && 'RANGED' !== main.type) ||
+		('NONE' !== off.type && 'RANGED' !== off.type)
+	);
+
+	if (archetype.type.M) {
+		if (hasHealing) {
+			roles.push('HEALER');
+		} else {
+			roles.push('MAGE');
+		}
+	}
+	if (archetype.type.S) {
+		if (hasRangedWpn) {
+			roles.push('RANGER');
+		}
+	}
+	if (archetype.type.P || archetype.type.S) {
+		if (hasMeleeWpn) {
+			roles.push('MELEE');
+		}
+	}
+	return roles;
+};
 
 class AIPlayer extends Player {
 	public readonly config: IAIConfig;
@@ -31,7 +59,8 @@ class AIPlayer extends Player {
 		}
 
 		this.ally = this.characters.map(char => {
-			return new AICharacter(char, engine);
+			const roles = getCharacterRoles(char);
+			return new AICharacter(char, engine, roles);
 		});
 	}
 
