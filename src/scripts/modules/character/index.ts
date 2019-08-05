@@ -2,7 +2,10 @@ import Sexes from 'data/sexes';
 import Armors from 'data/armors';
 import Weapons from 'data/weapons';
 import Archetypes from 'data/archetypes';
-import { characterCTLimit, mpRegen } from 'data/game-config';
+import {
+	characterCTLimit, mpRegen,
+	conditionCritical, conditionDanger
+} from 'data/game-config';
 
 import Tile from 'modules/geometry/tile';
 import AIPlayer from 'modules/ai/player';
@@ -21,6 +24,8 @@ import BaseAttributes from 'modules/character/base-attributes';
 import { SkillID, SkillCooldown } from 'modules/skill/skill-data';
 import { StatusEffectID, IOnStatus } from 'modules/battle/status-effect';
 import { CharacterData, ICharacterData } from 'modules/character-creation/character-data';
+
+type CharacterCondition = 'OK' | 'DANGER' | 'CRITICAL';
 
 export type ISkillCooldowns = Partial<{
 	[id in SkillID]: SkillCooldown;
@@ -93,6 +98,19 @@ class Character {
 
 	public canEvade(obstacles: Tile[] = []): boolean {
 		return this.position.getSideTiles(obstacles).length > 0;
+	}
+
+	public getCondition(): CharacterCondition {
+		const { HP } = this.attributes;
+		const { HP: baseHP } = this.baseAttributes;
+
+		if (HP < baseHP * conditionCritical) {
+			return 'CRITICAL';
+		}
+		if (HP < baseHP * conditionDanger) {
+			return 'DANGER';
+		}
+		return 'OK';
 	}
 
 	// updates on every game tick

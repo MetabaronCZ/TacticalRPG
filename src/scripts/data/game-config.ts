@@ -21,6 +21,8 @@ export const characterCTLimit = 100;
 export const maxJumpHeight = 1;
 export const characterBBox = 0.5; // character bounding box radius
 export const mpRegen = 0.1; // character mana regenerated fraction
+export const conditionDanger = 0.65;
+export const conditionCritical = 0.35;
 
 // party
 export const maxPartySize = 8; // maximum character count in one party

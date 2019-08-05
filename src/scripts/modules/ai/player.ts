@@ -11,11 +11,6 @@ import { IAIConfig, IAISettings } from 'modules/ai/settings';
 import Player, { IPlayerCharacterSetup } from 'modules/battle/player';
 import { IPlayerData } from 'modules/battle-configuration/player-data';
 
-const conditionDanger = 0.65;
-const conditionCritical = 0.35;
-
-type CharacterCondition = 'OK' | 'DANGER' | 'CRITICAL';
-
 class AIPlayer extends Player {
 	public readonly config: IAIConfig;
 	private readonly ally: AICharacter[];
@@ -57,7 +52,7 @@ class AIPlayer extends Player {
 	public onActStart() {
 		const act = this.getAct();
 		const char = this.getCharacter(act.actor);
-		const condition = this.getCharacterCondition(char.character);
+		const condition = char.character.getCondition();
 
 		switch (condition) {
 			case 'CRITICAL':
@@ -104,19 +99,6 @@ class AIPlayer extends Player {
 			throw new Error('Invalid actor');
 		}
 		return char;
-	}
-
-	private getCharacterCondition(character: Character): CharacterCondition {
-		const { HP } = character.attributes;
-		const { HP: baseHP } = character.baseAttributes;
-
-		if (HP < baseHP * conditionCritical) {
-			return 'CRITICAL';
-		}
-		if (HP < baseHP * conditionDanger) {
-			return 'DANGER';
-		}
-		return 'OK';
 	}
 }
 
