@@ -9,9 +9,10 @@ import Tile from 'modules/geometry/tile';
 import AIPlayer from 'modules/ai/player';
 import Character from 'modules/character';
 import Engine from 'modules/battle/engine';
+import CharacterRole from 'modules/ai/role';
 import Command from 'modules/battle/command';
 
-const delayAction = (fn: () => any) => setTimeout(() => fn(), aiActionDelay);
+const delayAction = (fn: () => void) => setTimeout(() => fn(), aiActionDelay);
 
 type TargetSide = 'FRONT' | 'SIDE' | 'BEHIND';
 
@@ -36,11 +37,9 @@ const getSide = (char: Character, tile: Tile): TargetSide => {
 	return 'SIDE';
 };
 
-export type CharacterRole = 'MELEE' | 'RANGER' | 'MAGE' | 'HEALER';
-
 class AICharacter {
 	public readonly character: Character;
-	public readonly roles: CharacterRole[];
+	public readonly role: CharacterRole;
 
 	private moved = false;
 	private target: Character | null = null; // skill target character
@@ -48,9 +47,9 @@ class AICharacter {
 	private selectTile: (tile: Tile) => void;
 	private selectCommand: (cmd: Command) => void;
 
-	constructor(character: Character, engine: Engine, roles: CharacterRole[]) {
+	constructor(character: Character, engine: Engine, role: CharacterRole) {
 		this.character = character;
-		this.roles = roles;
+		this.role = role;
 
 		this.selectTile = (tile: Tile) => {
 			delayAction(() => engine.selectTile(tile));

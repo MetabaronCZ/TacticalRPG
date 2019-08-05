@@ -4,42 +4,17 @@ import Act from 'modules/battle/act';
 import Tile from 'modules/geometry/tile';
 import Character from 'modules/character';
 import Engine from 'modules/battle/engine';
+import CharacterRole from 'modules/ai/role';
 import Command from 'modules/battle/command';
+import AICharacter from 'modules/ai/character';
 import { IAIConfig, IAISettings } from 'modules/ai/settings';
-import AICharacter, { CharacterRole } from 'modules/ai/character';
 import Player, { IPlayerCharacterSetup } from 'modules/battle/player';
 import { IPlayerData } from 'modules/battle-configuration/player-data';
 
-const getCharacterRoles = (char: Character): CharacterRole[] => {
-	const { archetype, mainHand: main, offHand: off } = char;
-	const roles: CharacterRole[] = [];
+const conditionDanger = 0.65;
+const conditionCritical = 0.35;
 
-	const hasHealing = ('HOLY' === char.skillset.element);
-	const hasRangedWpn = ('RANGED' === main.type || 'RANGED' === off.type);
-	const hasMeleeWpn = (
-		('NONE' !== main.type && 'RANGED' !== main.type) ||
-		('NONE' !== off.type && 'RANGED' !== off.type)
-	);
-
-	if (archetype.type.M) {
-		if (hasHealing) {
-			roles.push('HEALER');
-		} else {
-			roles.push('MAGE');
-		}
-	}
-	if (archetype.type.S) {
-		if (hasRangedWpn) {
-			roles.push('RANGER');
-		}
-	}
-	if (archetype.type.P || archetype.type.S) {
-		if (hasMeleeWpn) {
-			roles.push('MELEE');
-		}
-	}
-	return roles;
-};
+type CharacterCondition = 'OK' | 'DANGER' | 'CRITICAL';
 
 class AIPlayer extends Player {
 	public readonly config: IAIConfig;
@@ -59,8 +34,8 @@ class AIPlayer extends Player {
 		}
 
 		this.ally = this.characters.map(char => {
-			const roles = getCharacterRoles(char);
-			return new AICharacter(char, engine, roles);
+			const role = new CharacterRole(char);
+			return new AICharacter(char, engine, role);
 		});
 	}
 
@@ -74,25 +49,52 @@ class AIPlayer extends Player {
 	}
 
 	public getObstacles(): Tile[] {
-		const enemy = this.getEnemy();
-		return [
-			...this.ally.map(ch => ch.character.position),
-			...enemy.map(ch => ch.position)
-		];
+		return this.engine.getState().characters
+			.filter(char => !char.isDead())
+			.map(char => char.position);
 	}
 
-	public update(act: Act, commands: Command[]) {
-		const actingChar = act.getActingCharacter();
+	public onActStart() {
+		const act = this.getAct();
+		const char = this.getCharacter(act.actor);
+		const condition = this.getCharacterCondition(char.character);
 
-		if (actingChar) {
-			const char = this.getCharacter(actingChar);
-			this.updateGoals();
-			char.update(act, commands);
+		switch (condition) {
+			case 'CRITICAL':
+				// TODO
+				break;
+
+			case 'DANGER':
+				// TODO
+				break;
+
+			case 'OK':
+				// TODO
+				break;
+
+			default:
+				throw new Error('Invalid character condition: ' + condition);
 		}
 	}
 
-	private updateGoals() {
-		// TODO
+	public onUpdate(commands: Command[]) {
+		const act = this.getAct();
+		const actingChar = act.getActingCharacter();
+
+		if (!actingChar) {
+			throw new Error('Could not update AI player: invalid acing character');
+		}
+		const char = this.getCharacter(actingChar);
+		char.update(act, commands);
+	}
+
+	private getAct(): Act {
+		const { act } = this.engine.getState();
+
+		if (!act) {
+			throw new Error('Invalid act');
+		}
+		return act;
 	}
 
 	private getCharacter(actor: Character): AICharacter {
@@ -102,6 +104,19 @@ class AIPlayer extends Player {
 			throw new Error('Invalid actor');
 		}
 		return char;
+	}
+
+	private getCharacterCondition(character: Character): CharacterCondition {
+		const { HP } = character.attributes;
+		const { HP: baseHP } = character.baseAttributes;
+
+		if (HP < baseHP * conditionCritical) {
+			return 'CRITICAL';
+		}
+		if (HP < baseHP * conditionDanger) {
+			return 'DANGER';
+		}
+		return 'OK';
 	}
 }
 

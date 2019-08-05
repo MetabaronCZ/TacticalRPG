@@ -114,7 +114,14 @@ class Act {
 			this.skip();
 
 		} else {
-			// start move phase
+			// start Act
+			if (actor.isAI()) {
+				// inform AI Act started
+				const player = actor.player as AIPlayer;
+				player.onActStart();
+			}
+
+			// initialize move phase
 			this.phase = 'MOVEMENT';
 			this.phases.MOVEMENT.start();
 		}
@@ -245,7 +252,7 @@ class Act {
 			this.events.onUpdate(this);
 
 			const player = char.player as AIPlayer;
-			player.update(this, commands);
+			player.onUpdate(commands);
 		}
 	}
 
