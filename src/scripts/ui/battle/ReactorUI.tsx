@@ -1,7 +1,7 @@
 import React from 'react';
 
-import Act from 'modules/battle/act';
 import Command from 'modules/battle/command';
+import { IActState } from 'modules/battle/act';
 
 import EmptyUI from 'ui/battle/EmptyUI';
 import Commands from 'ui/battle/Commands';
@@ -10,21 +10,20 @@ import CommandInfo from 'ui/battle/CommandInfo';
 import CharacterInfo from 'ui/battle/CharacterInfo';
 
 interface IProps {
-	readonly act: Act;
+	readonly act: IActState;
 	readonly onCommandSelect: (command: Command) => void;
 }
 
 const ReactorUI: React.SFC<IProps> = ({ act, onCommandSelect }) => {
-	const reaction = act.phases.REACTION.getReaction();
+	const { reaction } = act.phases.REACTION;
 
 	if (!reaction) {
 		return <EmptyUI />;
 	}
 	const { reactor, command, combat } = reaction;
-	let commands = act.getCommands();
-	let info = act.getInfo();
+	let { commands, info } = act;
 
-	if ('REACTION' !== act.getPhase()) {
+	if ('REACTION' === act.phase) {
 		info = '';
 		commands = [];
 	}

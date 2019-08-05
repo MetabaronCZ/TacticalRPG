@@ -4,13 +4,13 @@ import { aiActionDelay } from 'data/game-config';
 import { getShortestPath } from 'modules/pathfinding';
 import { findTileFrom, resolveDirection, getOpositeDirection } from 'modules/geometry/direction';
 
-import Act from 'modules/battle/act';
 import Tile from 'modules/geometry/tile';
 import AIPlayer from 'modules/ai/player';
 import Character from 'modules/character';
 import Engine from 'modules/battle/engine';
 import CharacterRole from 'modules/ai/role';
 import Command from 'modules/battle/command';
+import { IActState } from 'modules/battle/act';
 
 const delayAction = (fn: () => void) => setTimeout(() => fn(), aiActionDelay);
 
@@ -60,23 +60,24 @@ class AICharacter {
 		};
 	}
 
-	public update(act: Act, commands: Command[]) {
+	public update(act: IActState, commands: Command[]) {
 		const { MOVEMENT, COMMAND, REACTION, DIRECTION } = act.phases;
 
-		switch (act.getPhase()) {
-			case 'MOVEMENT':
-				if ('IDLE' === MOVEMENT.getPhase()) {
-					const movable = MOVEMENT.getMovable();
+		switch (act.phase) {
+			case 'MOVEMENT': {
+				const { phase, movable } = MOVEMENT;
+
+				if ('IDLE' === phase) {
 					this.onCommand(commands, movable);
 				}
 				return;
+			}
 
-			case 'COMMAND':
-				switch (COMMAND.getPhase()) {
+			case 'COMMAND': {
+				const { phase, target, targetable } = COMMAND;
+
+				switch (phase) {
 					case 'TARGETING':
-						const targetable = COMMAND.getTargetable();
-						const target = COMMAND.getTarget();
-
 						if (target) {
 							// confirm selected command
 							const confirm = commands.find(cmd => 'CONFIRM' === cmd.type);
@@ -95,9 +96,10 @@ class AICharacter {
 					default:
 						return; // do nothing
 				}
+			}
 
-			case 'REACTION':
-				const reaction = REACTION.getReaction();
+			case 'REACTION': {
+				const { reaction } = REACTION;
 
 				if (!reaction) {
 					throw new Error('AI Could not react: invalid reaction');
@@ -116,11 +118,13 @@ class AICharacter {
 					default:
 						return; // do nothing
 				}
+			}
 
-			case 'DIRECTION':
-				const directable = DIRECTION.getDirectable();
+			case 'DIRECTION': {
+				const { directable } = DIRECTION;
 				this.onDirect(directable);
 				return;
+			}
 
 			default:
 				return; // do nothing

@@ -1,28 +1,27 @@
 import React from 'react';
 
-import Act from 'modules/battle/act';
 import Character from 'modules/character';
 import Player from 'modules/battle/player';
 
 interface IOrderProps {
-	readonly act: Act;
+	readonly actor: Character;
 	readonly players: Player[];
 	readonly characters: Character[];
 }
 
-const getState = (act: Act, char: Character): string => {
+const getState = (actor: Character, char: Character): string => {
 	const isDying = char.status.has('DYING');
-	const isActive = (act.actor === char);
+	const isActive = (actor === char);
 	return (isDying ? 'dying' : (isActive ? 'active' : ''));
 };
 
-const Order: React.SFC<IOrderProps> = ({ act, characters, players }) => (
+const Order: React.SFC<IOrderProps> = ({ actor, characters, players }) => (
 	<ul className="Order">
 		{characters.map((char, i) => {
 			if (char.isDead()) {
 				return;
 			}
-			const charState = getState(act, char);
+			const charState = getState(actor, char);
 			const charPlayer = players.indexOf(char.player);
 			return (
 				<li className={`Order-item Order-item--type${charPlayer} is-${charState}`} key={i}>

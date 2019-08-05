@@ -6,12 +6,12 @@ import { getTile } from 'modules/geometry/tiles';
 import { getRandomNames } from 'modules/random-name-generator';
 
 import Logger from 'modules/logger';
-import Act from 'modules/battle/act';
 import Tile from 'modules/geometry/tile';
 import Order from 'modules/battle/order';
 import AIPlayer from 'modules/ai/player';
 import Character from 'modules/character';
 import Command from 'modules/battle/command';
+import Act, { IActState } from 'modules/battle/act';
 import { IBattleInfo } from 'modules/battle/battle-info';
 import { DirectionID } from 'modules/geometry/direction';
 import { PartyData } from 'modules/party-creation/party-data';
@@ -26,8 +26,8 @@ export type PlayerList = [Player, Player];
 export interface IEngineState {
 	running: boolean;
 	tick: number;
-	act: Act | null;
 	order: Character[];
+	act: IActState | null;
 	battleInfo: IBattleInfo[];
 	readonly players: PlayerList;
 	readonly characters: Character[];
@@ -111,7 +111,7 @@ class Engine {
 		return {
 			running: this.running,
 			tick: this.tick,
-			act: this.act,
+			act: (this.act ? this.act.getState() : null),
 			players: this.players,
 			characters: this.characters,
 			order: this.order.serialize(),
@@ -179,11 +179,11 @@ class Engine {
 		const actID = this.actNumber;
 
 		this.act = new Act(actID, actor, characters, {
-			onUpdate: act => events.onUpdate(this.getState()),
+			onUpdate: () => events.onUpdate(this.getState()),
 			onBattleInfo: info => this.onInfo(info),
 			onEnd: act => {
 				// store Act record
-				const record = act.serialize();
+				const record = act.getRecord();
 				this.chronox.store(record);
 
 				const winner = this.getWinner();

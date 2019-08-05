@@ -2,9 +2,9 @@ import React from 'react';
 
 import { gridSize } from 'data/game-config';
 
-import Act from 'modules/battle/act';
 import Tile from 'modules/geometry/tile';
 import Character from 'modules/character';
+import { IActState } from 'modules/battle/act';
 import { getTiles } from 'modules/geometry/tiles';
 
 import CharacterTooltip from 'ui/battle/CharacterTooltip';
@@ -13,7 +13,7 @@ const itemSize = 100 / gridSize;
 const tileList = getTiles();
 
 interface IGridBaseProps {
-	readonly act: Act;
+	readonly act: IActState;
 	readonly characters: Character[];
 	readonly onSelect: (tile: Tile) => void;
 }
@@ -28,50 +28,49 @@ export type TileType =
 	'reactors' | 'reactionEvasible' | 'reactor' |
 	'directable' | 'directTarget';
 
-export const getTileType = (tile: Tile, act: Act): TileType => {
+export const getTileType = (tile: Tile, act: IActState): TileType => {
+	const { MOVEMENT, COMMAND, REACTION, DIRECTION } = act.phases;
+
 	let type: TileType = 'default';
 
-	switch (act.getPhase()) {
+	switch (act.phase) {
 		case 'MOVEMENT': {
-			const move = act.phases.MOVEMENT;
-			const tgt = move.getTarget();
+			const { movable, moveTarget, movePath } = MOVEMENT;
 
-			if (tile.isContained(move.getMovable())) {
+			if (tile.isContained(movable)) {
 				type = 'movable';
 			}
-			if (tile.isContained(move.getPath())) {
+			if (tile.isContained(movePath)) {
 				type = 'movePath';
 			}
-			if (tile === tgt) {
+			if (tile === moveTarget) {
 				type = 'moveTarget';
 			}
 			break;
 		}
 
 		case 'COMMAND': {
-			const commandPhase = act.phases.COMMAND;
+			const { phase, targetable, area, target, effectArea } = COMMAND;
 
-			if ('TARGETING' === commandPhase.getPhase()) {
-				const tgt = commandPhase.getTarget();
-
-				if (tgt) {
+			if ('TARGETING' === phase) {
+				if (target) {
 					// command with target selected
-					if (tile.isContained(commandPhase.getEffectArea())) {
+					if (tile.isContained(effectArea)) {
 						type = 'commandEffectArea';
 					}
-					if (tile.isContained(commandPhase.getTargetable())) {
+					if (tile.isContained(targetable)) {
 						type = 'commandTargetable';
 					}
-					if (tile === tgt) {
+					if (tile === target) {
 						type = 'commandEffectTarget';
 					}
 
 				} else {
 					// command without target selected
-					if (tile.isContained(commandPhase.getArea())) {
+					if (tile.isContained(area)) {
 						type = 'commandRange';
 					}
-					if (tile.isContained(commandPhase.getTargetable())) {
+					if (tile.isContained(targetable)) {
 						type = 'commandTargetable';
 					}
 				}
@@ -80,12 +79,11 @@ export const getTileType = (tile: Tile, act: Act): TileType => {
 		}
 
 		case 'REACTION': {
-			const reactionPhase = act.phases.REACTION;
-			const reaction = reactionPhase.getReaction();
+			const { reaction, reactions } = REACTION;
 
 			if (reaction) {
 				const { reactor } = reaction;
-				const reactors = reactionPhase.getReactions().map(r => r.reactor.position);
+				const reactors = reactions.map(r => r.reactor.position);
 
 				if (tile.isContained(reactors)) {
 					type = 'reactors';
@@ -101,13 +99,12 @@ export const getTileType = (tile: Tile, act: Act): TileType => {
 		}
 
 		case 'DIRECTION': {
-			const direct = act.phases.DIRECTION;
-			const tgt = direct.getTarget();
+			const { target, directable } = DIRECTION;
 
-			if (tile.isContained(direct.getDirectable())) {
+			if (tile.isContained(directable)) {
 				type = 'directable';
 			}
-			if (tile === tgt) {
+			if (tile === target) {
 				type = 'directTarget';
 			}
 			break;
@@ -123,7 +120,7 @@ const GridBase: React.SFC<IGridBaseProps> = ({ act, characters, onSelect }) => {
 		return [tile, getTileType(tile, act), char];
 	});
 
-	const actingChar = act.getActingCharacter();
+	const actingChar = act.actingCharacter;
 
 	const onClick = (tile: Tile) => () => {
 		if (actingChar && !actingChar.isAI()) {

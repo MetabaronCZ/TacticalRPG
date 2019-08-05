@@ -1,16 +1,17 @@
 import React from 'react';
 
-import Act from 'modules/battle/act';
-import Player from 'modules/battle/player';
+import { getUniqueItems } from 'core/array';
 import { getTiles } from 'modules/geometry/tiles';
 
+import Player from 'modules/battle/player';
+import { IActState } from 'modules/battle/act';
+
 import { getTileType, TileType } from 'ui/battle/GridBase';
-import { getUniqueItems } from 'core/array';
 
 const tileList = getTiles();
 
 interface IProps {
-	readonly act: Act;
+	readonly act: IActState;
 	readonly players: Player[];
 }
 

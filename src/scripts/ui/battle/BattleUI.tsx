@@ -29,7 +29,7 @@ const BattleUI: React.SFC<IBattleUIProps> = ({ engineState, onTileSelect, onComm
 	}
 	return (
 		<div className="BattleUI">
-			<Order act={act} characters={order} players={players} />
+			<Order actor={act.actor} characters={order} players={players} />
 
 			<div className="BattleUI-layout">
 				<div className="BattleUI-layout-column BattleUI-layout-column--actor">
@@ -59,7 +59,7 @@ const BattleUI: React.SFC<IBattleUIProps> = ({ engineState, onTileSelect, onComm
 
 				<div className="BattleUI-layout-column BattleUI-layout-column--reactor">
 					{running && (
-						'COMMAND' === act.getPhase()
+						'COMMAND' === act.phase
 							? <TargetUI act={act} />
 							: <ReactorUI act={act} onCommandSelect={onCommandSelect} />
 					)}

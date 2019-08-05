@@ -1,12 +1,12 @@
 import AIPresets from 'data/ai-presets';
 
-import Act from 'modules/battle/act';
 import Tile from 'modules/geometry/tile';
 import Character from 'modules/character';
 import Engine from 'modules/battle/engine';
 import CharacterRole from 'modules/ai/role';
 import Command from 'modules/battle/command';
 import AICharacter from 'modules/ai/character';
+import { IActState } from 'modules/battle/act';
 import { IAIConfig, IAISettings } from 'modules/ai/settings';
 import Player, { IPlayerCharacterSetup } from 'modules/battle/player';
 import { IPlayerData } from 'modules/battle-configuration/player-data';
@@ -74,7 +74,7 @@ class AIPlayer extends Player {
 
 	public onUpdate(commands: Command[]) {
 		const act = this.getAct();
-		const actingChar = act.getActingCharacter();
+		const actingChar = act.actingCharacter;
 
 		if (!actingChar) {
 			throw new Error('Could not update AI player: invalid acing character');
@@ -83,7 +83,7 @@ class AIPlayer extends Player {
 		char.update(act, commands);
 	}
 
-	private getAct(): Act {
+	private getAct(): IActState {
 		const { act } = this.engine.getState();
 
 		if (!act) {

@@ -36,4 +36,4 @@ export const playerMaxNameLength = 16;
 export const textInputRegex = /^[a-zA-Z0-9-_\s.]+$/;
 
 // AI
-export const aiActionDelay = 1000;
+export const aiActionDelay = 650;

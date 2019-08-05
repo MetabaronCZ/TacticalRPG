@@ -9,7 +9,19 @@ import { getCombatInfo, ICombatInfo } from 'modules/battle/combat';
 
 const txtIdle = 'Select command target on grid.';
 
-export interface IActCommandRecord {
+export interface ICommandPhaseState {
+	readonly phase: Phase;
+	readonly command: Command | null;
+	readonly area: Tile[];
+	readonly targetable: Tile[];
+	readonly target: Tile | null;
+	readonly effectArea: Tile[];
+	readonly effectTarget: Character | null;
+	readonly effectTargets: Character[];
+	readonly combatInfo: IEffectTargetData[];
+}
+
+export interface ICommandPhaseRecord {
 	readonly command: string | null;
 	readonly target: string | null;
 }
@@ -42,7 +54,7 @@ export type CommandPhaseEvents =
 	'COMMAND_TARGETED' |
 	'COMMAND_DONE';
 
-class CommandPhase extends ActPhase<IActCommandRecord> {
+class CommandPhase extends ActPhase<ICommandPhaseState, ICommandPhaseRecord> {
 	public readonly actor: Character;
 	private readonly characters: Character[];
 	private readonly onEvent: IOnActPhaseEvent;
@@ -57,55 +69,6 @@ class CommandPhase extends ActPhase<IActCommandRecord> {
 		this.onEvent = onEvent;
 	}
 
-	public getPhase(): Phase {
-		return this.phase;
-	}
-
-	public getCommand(): Command | null {
-		const { command } = this.state;
-		return command ? command.data : null;
-	}
-
-	public getArea(): Tile[] {
-		const { command } = this.state;
-		return command ? [...command.area] : [];
-	}
-
-	public getTargetable(): Tile[] {
-		const { command } = this.state;
-		return command ? [...command.targetable] : [];
-	}
-
-	public getTarget(): Tile | null {
-		const { command } = this.state;
-		const target = command ? command.target : null;
-		return target ? target.tile : null;
-	}
-
-	public getEffectArea(): Tile[] {
-		const { command } = this.state;
-		const target = command ? command.target : null;
-		return target ? [...target.effectArea] : [];
-	}
-
-	public getEffectTarget(): Character | null {
-		const { command } = this.state;
-		const target = command ? command.target : null;
-		return target ? target.character : null;
-	}
-
-	public getEffectTargets(): Character[] {
-		const { command } = this.state;
-		const target = command ? command.target : null;
-		return target ? target.effectTargets.map(eff => eff.character) : [];
-	}
-
-	public getCombatInfo(): IEffectTargetData[] {
-		const { command } = this.state;
-		const target = command ? command.target : null;
-		return target ? [...target.effectTargets] : [];
-	}
-
 	public start(command: Command) {
 		const { phase } = this;
 
@@ -118,7 +81,7 @@ class CommandPhase extends ActPhase<IActCommandRecord> {
 
 	public selectTile(tile: Tile) {
 		if ('TARGETING' === this.phase) {
-			const target = this.getTarget();
+			const { target } = this.getState();
 
 			if (target === tile) {
 				this.confirm();
@@ -179,12 +142,27 @@ class CommandPhase extends ActPhase<IActCommandRecord> {
 		}
 	}
 
-	public serialize(): IActCommandRecord {
-		const command = this.getCommand();
-		const target = this.getEffectTarget();
+	public getState(): ICommandPhaseState {
+		const { command } = this.state;
+		const target = command ? command.target : null;
+		return {
+			phase: this.phase,
+			command: (command ? command.data : null),
+			area: (command ? [...command.area] : []),
+			targetable: (command ? [...command.targetable] : []),
+			target: (target ? target.tile : null),
+			effectArea: (target ? [...target.effectArea] : []),
+			effectTarget: (target ? target.character : null),
+			effectTargets: (target ? target.effectTargets.map(eff => eff.character) : []),
+			combatInfo: (target ? [...target.effectTargets] : [])
+		};
+	}
+
+	public getRecord(): ICommandPhaseRecord {
+		const { command, effectTarget } = this.getState();
 		return {
 			command: (command ? command.title : null),
-			target: (target ? target.data.id : null)
+			target: (effectTarget ? effectTarget.data.id : null)
 		};
 	}
 
@@ -199,7 +177,7 @@ class CommandPhase extends ActPhase<IActCommandRecord> {
 		if (!command || !command.data.isActive()) {
 			throw new Error('Could not select command target: invalid command');
 		}
-		const targets = this.getTargetable();
+		const targets = this.getState().targetable;
 
 		if (!tile.isContained(targets)) {
 			// tile not targetable

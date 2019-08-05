@@ -17,7 +17,11 @@ import { IBattleInfo } from 'modules/battle/battle-info';
 
 const txtCombat = 'Combat in progress...';
 
-export interface IActCombatRecord {
+export interface ICombatPhaseState {
+	phase: Phase;
+}
+
+export interface ICombatPhaseRecord {
 	readonly results: ICombatResult[];
 }
 
@@ -37,7 +41,7 @@ export type CombatPhaseEvents =
 	'COMBAT_ANIMATION' |
 	'COMBAT_DONE';
 
-class CombatPhase extends ActPhase<IActCombatRecord> {
+class CombatPhase extends ActPhase<ICombatPhaseState, ICombatPhaseRecord> {
 	public readonly actor: Character;
 
 	private readonly onEvent: IOnActPhaseEvent;
@@ -49,10 +53,6 @@ class CombatPhase extends ActPhase<IActCombatRecord> {
 		super();
 		this.actor = actor;
 		this.onEvent = onEvent;
-	}
-
-	public getPhase(): Phase {
-		return this.phase;
 	}
 
 	public start(command: Command, effectArea: Tile[], targets: Character[]) {
@@ -161,7 +161,13 @@ class CombatPhase extends ActPhase<IActCombatRecord> {
 		// do nothing
 	}
 
-	public serialize(): IActCombatRecord {
+	public getState(): ICombatPhaseState {
+		return {
+			phase: this.phase
+		};
+	}
+
+	public getRecord(): ICombatPhaseRecord {
 		return {
 			results: this.combatResults
 		};

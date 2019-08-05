@@ -9,7 +9,13 @@ import { IOnActPhaseEvent } from 'modules/battle/act';
 
 const txtIdle = 'Select new direction on grid.';
 
-export interface IActDirectRecord {
+export interface IDirectPhaseState {
+	readonly phase: Phase;
+	readonly directable: Tile[];
+	readonly target: Tile | null;
+}
+
+export interface IDirectPhaseRecord {
 	readonly target: string | null;
 }
 
@@ -19,7 +25,7 @@ export type DirectPhaseEvents =
 	'DIRECTION_IDLE' |
 	'DIRECTION_SELECTED';
 
-class DirectPhase extends ActPhase<IActDirectRecord> {
+class DirectPhase extends ActPhase<IDirectPhaseState, IDirectPhaseRecord> {
 	public readonly actor: Character;
 
 	private phase: Phase = 'SUSPENDED';
@@ -32,18 +38,6 @@ class DirectPhase extends ActPhase<IActDirectRecord> {
 		super();
 		this.actor = actor;
 		this.onEvent = onEvent;
-	}
-
-	public getPhase(): Phase {
-		return this.phase;
-	}
-
-	public getDirectable(): Tile[] {
-		return [...this.directable];
-	}
-
-	public getTarget(): Tile | null {
-		return this.directTarget;
 	}
 
 	public start() {
@@ -98,7 +92,15 @@ class DirectPhase extends ActPhase<IActDirectRecord> {
 		// do nothing
 	}
 
-	public serialize(): IActDirectRecord {
+	public getState(): IDirectPhaseState {
+		return {
+			phase: this.phase,
+			directable: [...this.directable],
+			target: this.directTarget
+		};
+	}
+
+	public getRecord(): IDirectPhaseRecord {
 		const tgt = this.directTarget;
 		return {
 			target: (tgt ? formatTile(tgt) : null)

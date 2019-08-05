@@ -23,12 +23,21 @@ export type MovePhaseEvents =
 	'MOVE_ANIMATION' |
 	'MOVE_SUSPENDED';
 
-export interface IActMoveRecord {
+export interface  IMovePhaseState {
+	readonly phase: Phase;
+	readonly initialAP: number;
+	readonly initialPosition: Tile;
+	readonly movable: Tile[];
+	readonly moveTarget: Tile;
+	readonly movePath: Tile[];
+}
+
+export interface IMovePhaseRecord {
 	readonly initialPosition: string;
 	readonly target: string;
 }
 
-class MovePhase extends ActPhase<IActMoveRecord> {
+class MovePhase extends ActPhase<IMovePhaseState, IMovePhaseRecord> {
 	public readonly actor: Character;
 
 	private readonly costMap: ICostMap = {}; // movable area cost map
@@ -68,30 +77,6 @@ class MovePhase extends ActPhase<IActMoveRecord> {
 
 		// create barrier tiles for A* algorithm
 		this.obstacles = getTiles().filter(tile => tile.isContained(obstacles) || !tile.isContained(this.movable));
-	}
-
-	public getPhase(): Phase {
-		return this.phase;
-	}
-
-	public getMovable(): Tile[] {
-		return [...this.movable];
-	}
-
-	public getMoveCostMap(): ICostMap {
-		return this.costMap;
-	}
-
-	public getTarget(): Tile | null {
-		return this.moveTarget;
-	}
-
-	public getPath(): Tile[] {
-		return [...this.movePath];
-	}
-
-	public getInitialPosition(): Tile {
-		return this.initialPosition;
 	}
 
 	public start() {
@@ -135,10 +120,22 @@ class MovePhase extends ActPhase<IActMoveRecord> {
 		}
 	}
 
-	public serialize(): IActMoveRecord {
+	public getState(): IMovePhaseState {
 		return {
-			initialPosition: formatTile(this.initialPosition),
-			target: formatTile(this.moveTarget)
+			phase: this.phase,
+			initialAP: this.initialAP,
+			initialPosition: this.initialPosition,
+			movable: [...this.movable],
+			moveTarget: this.moveTarget,
+			movePath: [...this.movePath]
+		};
+	}
+
+	public getRecord(): IMovePhaseRecord {
+		const state = this.getState();
+		return {
+			initialPosition: formatTile(state.initialPosition),
+			target: formatTile(state.moveTarget)
 		};
 	}
 

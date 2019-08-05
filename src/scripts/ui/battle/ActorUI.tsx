@@ -1,26 +1,24 @@
 import React from 'react';
 
-import Act from 'modules/battle/act';
 import Command from 'modules/battle/command';
+import { IActState } from 'modules/battle/act';
 
 import Commands from 'ui/battle/Commands';
 import CommandInfo from 'ui/battle/CommandInfo';
 import CharacterInfo from 'ui/battle/CharacterInfo';
 
 interface IProps {
-	readonly act: Act;
+	readonly act: IActState;
 	readonly onCommandSelect: (command: Command) => void;
 }
 
 const ActorUI: React.SFC<IProps> = ({ act, onCommandSelect }) => {
-	const { actor } = act;
-	const command = act.phases.COMMAND.getCommand();
-	const reactions = act.phases.REACTION.getReactions();
+	const { actor, phase, phases } = act;
+	const { command } = phases.COMMAND;
+	const { reactions } = phases.REACTION;
+	let { commands, info } = act;
 
-	let commands = act.getCommands();
-	let info = act.getInfo();
-
-	if ('REACTION' === act.getPhase()) {
+	if ('REACTION' === phase) {
 		info = '';
 		commands = [];
 	}

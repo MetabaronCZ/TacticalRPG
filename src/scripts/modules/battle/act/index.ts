@@ -9,11 +9,12 @@ import AIPlayer from 'modules/ai/player';
 import Character from 'modules/character';
 import Command from 'modules/battle/command';
 import { IBattleInfo } from 'modules/battle/battle-info';
-import MovePhase, { MovePhaseEvents, IActMoveRecord } from 'modules/battle/act/move-phase';
-import CommandPhase, { CommandPhaseEvents, IActCommandRecord } from 'modules/battle/act/command-phase';
-import ReactionPhase, { ReactionPhaseEvents, IActReactionRecord } from 'modules/battle/act/reaction-phase';
-import CombatPhase, { CombatPhaseEvents, IActCombatRecord } from 'modules/battle/act/combat-phase';
-import DirectPhase, { DirectPhaseEvents, IActDirectRecord } from 'modules/battle/act/direct-phase';
+
+import MovePhase, { MovePhaseEvents, IMovePhaseRecord, IMovePhaseState } from 'modules/battle/act/move-phase';
+import CombatPhase, { CombatPhaseEvents, ICombatPhaseRecord, ICombatPhaseState } from 'modules/battle/act/combat-phase';
+import DirectPhase, { DirectPhaseEvents, IDirectPhaseRecord, IDirectPhaseState } from 'modules/battle/act/direct-phase';
+import CommandPhase, { CommandPhaseEvents, ICommandPhaseRecord, ICommandPhaseState } from 'modules/battle/act/command-phase';
+import ReactionPhase, { ReactionPhaseEvents, IReactionPhaseRecord, IReactionPhaseState } from 'modules/battle/act/reaction-phase';
 
 type PhaseID = 'MOVEMENT' | 'COMMAND' | 'REACTION' | 'COMBAT' | 'DIRECTION';
 
@@ -29,26 +30,40 @@ export type ActPhaseEvent = 'BATTLE_INFO' | MovePhaseEvents | CommandPhaseEvents
 export type IOnActPhaseEvent = (event: ActPhaseEvent, data?: Character | Command | Tile | IBattleInfo | null) => void;
 
 export interface IActEvents {
-	readonly onUpdate: (act: Act) => void;
+	readonly onUpdate: () => void;
 	readonly onBattleInfo: (info: IBattleInfo) => void;
 	readonly onEnd: (act: Act) => void;
 }
 
+export interface IActState {
+	readonly actor: Character;
+	readonly phase: PhaseID | null;
+	readonly commands: Command[];
+	readonly actingCharacter: Character | null;
+	readonly info: string;
+	readonly phases: {
+		readonly MOVEMENT: IMovePhaseState;
+		readonly COMMAND: ICommandPhaseState;
+		readonly REACTION: IReactionPhaseState;
+		readonly DIRECTION: IDirectPhaseState;
+		readonly COMBAT: ICombatPhaseState;
+	};
+}
 export interface IActRecord {
 	readonly id: number;
 	readonly actor: string;
 	readonly skipped: boolean;
-	readonly movementPhase: IActMoveRecord;
-	readonly commandPhase: IActCommandRecord;
-	readonly reactionPhase: IActReactionRecord;
-	readonly combatPhase: IActCombatRecord;
-	readonly directionPhase: IActDirectRecord;
+	readonly movementPhase: IMovePhaseRecord;
+	readonly commandPhase: ICommandPhaseRecord;
+	readonly reactionPhase: IReactionPhaseRecord;
+	readonly combatPhase: ICombatPhaseRecord;
+	readonly directionPhase: IDirectPhaseRecord;
 }
 
 class Act {
 	public readonly id: number;
 	public readonly actor: Character;
-	public readonly phases: IPhases;
+	private readonly phases: IPhases;
 	private readonly events: IActEvents;
 	private readonly characters: Character[];
 
@@ -73,32 +88,6 @@ class Act {
 			DIRECTION: new DirectPhase(actor, characters, this.onPhaseEvent),
 			COMBAT: new CombatPhase(actor, characters, this.onPhaseEvent)
 		};
-	}
-
-	public getPhase(): PhaseID | null {
-		return this.phase;
-	}
-
-	public getCommands(): Command[] {
-		return [...this.commands];
-	}
-
-	public getActingCharacter(): Character | null {
-		const { actor, phase, phases } = this;
-
-		if (!phase) {
-			return actor;
-		}
-		return phases[phase].actor;
-	}
-
-	public getInfo(): string {
-		const actingChar = this.getActingCharacter();
-
-		if (!actingChar || actingChar.isAI()) {
-			return '';
-		}
-		return this.info;
 	}
 
 	public start() {
@@ -144,16 +133,39 @@ class Act {
 		this.phases[phase].selectCommand(command);
 	}
 
-	public serialize(): IActRecord {
+	public getState(): IActState {
+		const { actor, info, phase, phases, commands } = this;
+		let actingCharacter: Character | null = actor;
+
+		if (phase) {
+			actingCharacter = phases[phase].actor;
+		}
+		return {
+			actor,
+			phase,
+			actingCharacter,
+			commands: [...commands],
+			info: (actingCharacter && actingCharacter.isAI() ? '' : info),
+			phases: {
+				MOVEMENT: phases.MOVEMENT.getState(),
+				COMMAND: phases.COMMAND.getState(),
+				REACTION: phases.REACTION.getState(),
+				COMBAT: phases.COMBAT.getState(),
+				DIRECTION: phases.DIRECTION.getState()
+			}
+		};
+	}
+
+	public getRecord(): IActRecord {
 		return {
 			id: this.id,
 			skipped: this.skipped,
 			actor: this.actor.data.id,
-			movementPhase: this.phases.MOVEMENT.serialize(),
-			commandPhase: this.phases.COMMAND.serialize(),
-			reactionPhase: this.phases.REACTION.serialize(),
-			directionPhase: this.phases.DIRECTION.serialize(),
-			combatPhase: this.phases.COMBAT.serialize()
+			movementPhase: this.phases.MOVEMENT.getRecord(),
+			commandPhase: this.phases.COMMAND.getRecord(),
+			reactionPhase: this.phases.REACTION.getRecord(),
+			directionPhase: this.phases.DIRECTION.getRecord(),
+			combatPhase: this.phases.COMBAT.getRecord()
 		};
 	}
 
@@ -179,8 +191,10 @@ class Act {
 		const { MOVEMENT, COMMAND, REACTION } = phases;
 
 		switch (this.phase) {
-			case 'MOVEMENT':
-				switch (MOVEMENT.getPhase()) {
+			case 'MOVEMENT': {
+				const { phase } = MOVEMENT.getState();
+
+				switch (phase) {
 					case 'IDLE':
 						// default character commands
 						return getIdleCommands(actor);
@@ -188,24 +202,28 @@ class Act {
 					default:
 						return [];
 				}
+			}
 
-			case 'COMMAND':
-				switch (COMMAND.getPhase()) {
+			case 'COMMAND': {
+				const { phase, effectTargets } = COMMAND.getState();
+
+				switch (phase) {
 					case 'IDLE':
 						// default character command
 						return getIdleCommands(actor);
 
 					case 'TARGETING':
 						// confirm command
-						const hasTargets = COMMAND.getEffectTargets().length > 0;
+						const hasTargets = effectTargets.length > 0;
 						return getSkillConfirmCommands(hasTargets);
 
 					default:
 						return [];
 				}
+			}
 
-			case 'REACTION':
-				const reaction = REACTION.getReaction();
+			case 'REACTION': {
+				const { reaction } = REACTION.getState();
 
 				if (!reaction) {
 					throw new Error('Could not get reaction commands: no reaction');
@@ -225,6 +243,7 @@ class Act {
 					default:
 						return [];
 				}
+			}
 
 			case 'DIRECTION':
 			case 'COMBAT':
@@ -234,7 +253,7 @@ class Act {
 	}
 
 	private update() {
-		const char = this.getActingCharacter();
+		const char = this.getState().actingCharacter;
 
 		if (!char) {
 			throw new Error('Could not update Act data: invalid acting character');
@@ -244,12 +263,12 @@ class Act {
 		if (!char.isAI()) {
 			// set commands for player
 			this.commands = commands;
-			this.events.onUpdate(this);
+			this.events.onUpdate();
 
 		} else {
 			// let AI act
 			this.commands = [];
-			this.events.onUpdate(this);
+			this.events.onUpdate();
 
 			const player = char.player as AIPlayer;
 			player.onUpdate(commands);
@@ -327,7 +346,7 @@ class Act {
 						this.log('Command confirmed');
 
 						this.phase = 'REACTION';
-						REACTION.start(COMMAND.getCombatInfo());
+						REACTION.start(COMMAND.getState().combatInfo);
 						return;
 
 					default:
@@ -346,17 +365,15 @@ class Act {
 						return;
 
 					case 'REACTION_DONE':
-						const command = COMMAND.getCommand();
-						const effectArea = COMMAND.getEffectArea();
-						const targets = COMMAND.getEffectTargets();
+						const { command, effectArea, effectTargets } = COMMAND.getState();
 
-						if (!command || !effectArea.length || !targets.length) {
+						if (!command || !effectArea.length || !effectTargets.length) {
 							throw new Error('Could start combat phase: invalid command phase data');
 						}
 						this.phase = 'COMBAT';
 						this.log('Combat started');
 
-						COMBAT.start(command, effectArea, targets);
+						COMBAT.start(command, effectArea, effectTargets);
 						return;
 
 					default:
@@ -403,7 +420,7 @@ class Act {
 	}
 
 	private log(msg: string) {
-		const char = this.getActingCharacter();
+		const char = this.getState().actingCharacter;
 		Logger.info(`${char ? char.name : '???'} - ${msg}`);
 	}
 }
