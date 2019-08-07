@@ -9,16 +9,17 @@
 
 		&-column {
 			&.BattleUI-layout-column--actor {
-				flex: 0 0 400px;
+				flex: 0 1 400px;
 			}
 
 			&.BattleUI-layout-column--grid {
-				flex: 0 0 auto;
+				max-width: 700px;
+				flex: 1 0 auto;
 				padding: 0 50px;
 			}
 
 			&.BattleUI-layout-column--reactor {
-				flex: 0 0 400px;
+				flex: 0 1 400px;
 			}
 		}
 	}

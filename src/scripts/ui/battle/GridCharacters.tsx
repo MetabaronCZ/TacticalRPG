@@ -45,7 +45,10 @@ const GridCharacters: React.SFC<IGridChactersProps> = ({ actor, characters }) =>
 					key={char.data.id}
 				>
 					<div className={visualCls}>
-						{char.name.substring(0, 4).toUpperCase()}
+						<div className="GridCharacters-item-visual-text">
+							{char.name.substring(0, 4).toUpperCase()}
+						</div>
+
 						<div className={`GridCharacters-item-dir GridCharacters-item-dir--${dir}`} />
 					</div>
 				</div>
