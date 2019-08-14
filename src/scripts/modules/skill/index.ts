@@ -24,8 +24,8 @@ const targetTable: ITargetTable = {
 	SELF:  (char: Character, actor: Character) => actor === char,
 	ALLY:  (char: Character, actor: Character) => actor.player === char.player,
 	ENEMY: (char: Character, actor: Character) => actor.player !== char.player,
-	NONE:  (char: Character, actor: Character) => false,
-	ANY:   (char: Character, actor: Character) => true
+	NONE:  () => false,
+	ANY:   () => true
 };
 
 // SkillArea based area tile getters
@@ -49,7 +49,7 @@ const areaTable: IAreaTable = {
 		}
 		return area;
 	},
-	NEIGHBOURS: (source: Tile, target: Tile) => source.getNeighbours(),
+	NEIGHBOURS: (source: Tile) => source.getNeighbours(),
 	AOE3x3:     (source: Tile, target: Tile) => [target, ...target.getNeighbours()]
 };
 

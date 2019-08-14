@@ -4,7 +4,7 @@ import paths from 'data/routes';
 import { RouteID } from 'modules/route';
 import { goto, gotoRoute, gotoFn } from 'core/navigation';
 
-const createHistory = () => createMemoryHistory({
+const createHistory = (): MemoryHistory => createMemoryHistory({
 	initialEntries: [],
 	initialIndex: 0
 });

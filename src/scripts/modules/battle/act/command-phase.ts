@@ -41,7 +41,7 @@ interface IState {
 			readonly character: Character | null;
 			readonly effectArea: Tile[];
 			readonly effectTargets: IEffectTargetData[];
-		}
+		};
 	};
 }
 
@@ -69,7 +69,7 @@ class CommandPhase extends ActPhase<ICommandPhaseState, ICommandPhaseRecord> {
 		this.onEvent = onEvent;
 	}
 
-	public start(command: Command) {
+	public start(command: Command): void {
 		const { phase } = this;
 
 		if ('SUSPENDED' !== phase) {
@@ -79,7 +79,7 @@ class CommandPhase extends ActPhase<ICommandPhaseState, ICommandPhaseRecord> {
 		this.selectCommand(command);
 	}
 
-	public selectTile(tile: Tile) {
+	public selectTile(tile: Tile): void {
 		if ('TARGETING' === this.phase) {
 			const { target } = this.getState();
 
@@ -91,7 +91,7 @@ class CommandPhase extends ActPhase<ICommandPhaseState, ICommandPhaseRecord> {
 		}
 	}
 
-	public selectCommand(command: Command) {
+	public selectCommand(command: Command): void {
 		if (!command.isActive()) {
 			throw new Error('Could not select command: command not active');
 		}
@@ -166,7 +166,7 @@ class CommandPhase extends ActPhase<ICommandPhaseState, ICommandPhaseRecord> {
 		};
 	}
 
-	private setTarget(tile: Tile) {
+	private setTarget(tile: Tile): void {
 		const { actor, phase, characters } = this;
 
 		if ('TARGETING' !== phase) {
@@ -208,7 +208,7 @@ class CommandPhase extends ActPhase<ICommandPhaseState, ICommandPhaseRecord> {
 		this.onEvent('COMMAND_TARGETED', effectTarget);
 	}
 
-	private set(command: Command) {
+	private set(command: Command): void {
 		const { actor, characters, phase } = this;
 
 		if ('IDLE' !== phase) {
@@ -246,7 +246,7 @@ class CommandPhase extends ActPhase<ICommandPhaseState, ICommandPhaseRecord> {
 		this.onEvent('COMMAND_SELECTED', command);
 	}
 
-	private pass(command: Command) {
+	private pass(command: Command): void {
 		const { phase } = this;
 
 		if ('IDLE' !== phase) {
@@ -262,7 +262,7 @@ class CommandPhase extends ActPhase<ICommandPhaseState, ICommandPhaseRecord> {
 		this.onEvent('COMMAND_PASSED');
 	}
 
-	private cancel() {
+	private cancel(): void {
 		const { phase } = this;
 
 		if ('TARGETING' !== phase) {
@@ -276,7 +276,7 @@ class CommandPhase extends ActPhase<ICommandPhaseState, ICommandPhaseRecord> {
 		this.onEvent('COMMAND_CANCELLED');
 	}
 
-	private confirm() {
+	private confirm(): void {
 		const { phase } = this;
 
 		if ('TARGETING' !== phase) {

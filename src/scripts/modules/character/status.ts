@@ -13,7 +13,7 @@ class Status {
 		return [...this.items];
 	}
 
-	public apply(effectId: StatusEffectID, physical = 0, magical = 0, onStatus?: IOnStatus) {
+	public apply(effectId: StatusEffectID, physical = 0, magical = 0, onStatus?: IOnStatus): void {
 		const effect = new StatusEffect(effectId, physical, magical, onStatus);
 		const existing = this.items.find(item => effectId === item.id);
 
@@ -43,19 +43,19 @@ class Status {
 		}
 	}
 
-	public remove(effect: StatusEffect) {
+	public remove(effect: StatusEffect): void {
 		this.items = this.items.filter(item => effect !== item);
 	}
 
-	public removeByID(effectID: StatusEffectID) {
+	public removeByID(effectID: StatusEffectID): void {
 		this.items = this.items.filter(item => effectID !== item.id);
 	}
 
-	public removeAll() {
+	public removeAll(): void {
 		this.items = [];
 	}
 
-	public update(char: Character, cb: IOnBattleInfo) {
+	public update(char: Character, cb: IOnBattleInfo): void {
 		for (const item of this.items) {
 			item.duration.value--;
 

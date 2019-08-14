@@ -10,7 +10,7 @@ const wield1HSkills: { [id in Wield1HWeaponSkillID]: ISkillData; } = {
 		area: 'SINGLE',
 		target: 'ENEMY',
 		physical: 1,
-		magical: 0,
+		magical: 0
 	},
 	S1H_BLEED: {
 		title: 'Bleed',
@@ -32,7 +32,7 @@ const wield1HSkills: { [id in Wield1HWeaponSkillID]: ISkillData; } = {
 		area: 'SINGLE',
 		target: 'ENEMY',
 		physical: 1,
-		magical: 0,
+		magical: 0
 	},
 	A1H_SMASH: {
 		title: 'Smash',
@@ -53,7 +53,7 @@ const wield1HSkills: { [id in Wield1HWeaponSkillID]: ISkillData; } = {
 		area: 'SINGLE',
 		target: 'ENEMY',
 		physical: 1,
-		magical: 0,
+		magical: 0
 	},
 	M1H_STUN: {
 		title: 'Stun',

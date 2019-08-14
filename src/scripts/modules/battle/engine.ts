@@ -77,7 +77,7 @@ class Engine {
 		this.events = conf.events;
 	}
 
-	public start() {
+	public start(): void {
 		if (this.running) {
 			return;
 		}
@@ -88,7 +88,7 @@ class Engine {
 		this.update();
 	}
 
-	public selectTile(tile: Tile) {
+	public selectTile(tile: Tile): void {
 		if (!this.act) {
 			throw new Error('Could not select tile: invalid act');
 		}
@@ -98,7 +98,7 @@ class Engine {
 		this.act.selectTile(tile);
 	}
 
-	public selectCommand(command: Command) {
+	public selectCommand(command: Command): void {
 		if (!this.act) {
 			throw new Error('Could not select command: invalid act');
 		}
@@ -121,7 +121,7 @@ class Engine {
 		};
 	}
 
-	private update() {
+	private update(): void {
 		if (!this.running) {
 			return;
 		}
@@ -156,7 +156,7 @@ class Engine {
 		this.startAct();
 	}
 
-	private startAct() {
+	private startAct(): void {
 		const { actors, characters, order, events } = this;
 		const actor = actors[0];
 		this.actors.shift();
@@ -299,7 +299,7 @@ class Engine {
 		return null;
 	}
 
-	private onInfo(info: IBattleInfo, duration = 3000) {
+	private onInfo(info: IBattleInfo, duration = 3000): void {
 		const { battleInfo, events } = this;
 
 		// set battle info item

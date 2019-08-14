@@ -21,7 +21,7 @@ class CharacterRole {
 		return -1 !== this.roles.indexOf(role);
 	}
 
-	public each(fn: IterationFn) {
+	public each(fn: IterationFn): void {
 		return this.roles.forEach(fn);
 	}
 
@@ -38,19 +38,19 @@ class CharacterRole {
 		);
 		const roles: CharacterRoleID[] = [];
 
-		const setMeleeRole = () => {
+		const setMeleeRole = (): void => {
 			if (hasMeleeWpn) {
 				roles.push('MELEE');
 			}
 		};
 
-		const setRangerRole = () => {
+		const setRangerRole = (): void => {
 			if (hasRangedWpn) {
 				roles.push('RANGER');
 			}
 		};
 
-		const setMageRole = () => {
+		const setMageRole = (): void => {
 			if (hasHealing) {
 				roles.push('HEALER');
 			} else {

@@ -13,12 +13,13 @@ import Button from 'ui/common/Button';
 import Separator from 'ui/common/Separator';
 import ButtonRow from 'ui/common/ButtonRow';
 import PlayerIco from 'ui/common/PlayerIco';
+import { IRouteParams } from 'modules/route';
 import { IPartyData } from 'modules/party-creation/party-data';
 import { IPlayerConfig } from 'modules/battle-configuration/player-data';
 
 const topListSize = 5; // maximum items of diplayed top kills, damage, ...
 
-type IProps = RouteComponentProps<any>;
+type IProps = RouteComponentProps<IRouteParams>;
 
 interface IState {
 	record: ISummary | null;
@@ -208,7 +209,7 @@ const analyzeScore = (timeline: IActRecord[], characters: ICharacterData[], play
 	return result;
 };
 
-const renderScoreItem = (items: IScoreItem[], postfix = '') => {
+const renderScoreItem = (items: IScoreItem[], postfix = ''): React.ReactNode => {
 	if (!items.length) {
 		return <React.Fragment />;
 	}
@@ -241,12 +242,12 @@ class BattleSummaryPage extends React.Component<IProps, IState> {
 		record: null
 	};
 
-	public componentDidMount() {
+	public componentDidMount(): void {
 		const record = Summary.load();
 		this.setState({ record });
 	}
 
-	public render() {
+	public render(): React.ReactNode {
 		const { history } = this.props;
 		const { record } = this.state;
 

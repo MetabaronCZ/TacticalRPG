@@ -1,0 +1,45 @@
+{
+	"extends":  [
+		"eslint:recommended"
+    ],
+    "env": {
+        "browser": true,
+        "node": true,
+        "jest": true,
+        "es6": true
+    },
+	"rules":  {
+        "space-infix-ops": ["error"],
+		"arrow-parens": ["error", "as-needed"],
+        "quotes": ["error", "single"],
+        "indent": ["error", "tab", { "SwitchCase": 1 }],
+        "comma-dangle": ["error", "never"]
+    },
+    "overrides": [
+        {
+            "files": ["**/*.ts", "**/*.tsx"],
+            "parser": "@typescript-eslint/parser",
+            "settings": {
+                "react": {
+                    "version": "detect",
+                }
+            },
+            "extends": [
+                "plugin:react/recommended",
+                "plugin:@typescript-eslint/recommended"
+            ],
+            "plugins": [
+                "react",
+                "@typescript-eslint"
+            ],
+            "rules": {
+                "jsx-quotes": ["error", "prefer-double"],
+                "react/prop-types": ["off"],
+                "react/no-unescaped-entities": ["off"],
+                "@typescript-eslint/no-explicit-any": ["off"],
+                "@typescript-eslint/interface-name-prefix": ["error", "always"],
+                "@typescript-eslint/explicit-function-return-type": ["error", { "allowExpressions": true }]
+            }
+        }
+    ]
+}

@@ -70,7 +70,7 @@ export class BattleConfig {
 	}
 
 	@action
-	public update(data: IBattleConfig | null) {
+	public update(data: IBattleConfig | null): void {
 		if (!data) {
 			return;
 		}

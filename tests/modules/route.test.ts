@@ -13,7 +13,7 @@ describe('modules.route', () => {
 		test('it applies given parameters correctly', () => {
 			const route: RouteID = 'PARTY_EDIT';
 			const path = paths[route];
-			expect(path).toMatch(/\:id/);
+			expect(path).toMatch(/:id/);
 
 			const res1 = getPath(route);
 			expect(res1).toEqual(path);

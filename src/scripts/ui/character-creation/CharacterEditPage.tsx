@@ -9,6 +9,7 @@ import { Store } from 'modules/store';
 import { CharacterData } from 'modules/character-creation/character-data';
 
 import Page from 'ui/common/Page';
+import { IRouteParams } from 'modules/route';
 import CharacterCreation from 'ui/character-creation/CharacterCreationUI';
 
 const onSubmit = (store: Store, history: History) => (char: CharacterData) => {
@@ -18,7 +19,7 @@ const onSubmit = (store: Store, history: History) => (char: CharacterData) => {
 	gotoRoute(history, 'CHARACTER_LIST');
 };
 
-const CharacterEditPageContainer: React.SFC<RouteComponentProps<any> & IContext> = props => {
+const CharacterEditPageContainer: React.SFC<RouteComponentProps<IRouteParams> & IContext> = props => {
 	const { store, history, match } = props;
 	const character = store.characters.getById(match.params.id);
 

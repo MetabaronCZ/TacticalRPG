@@ -55,7 +55,7 @@ class CombatPhase extends ActPhase<ICombatPhaseState, ICombatPhaseRecord> {
 		this.onEvent = onEvent;
 	}
 
-	public start(command: Command, effectArea: Tile[], targets: Character[]) {
+	public start(command: Command, effectArea: Tile[], targets: Character[]): void {
 		const { actor, phase } = this;
 
 		if ('SUSPENDED' !== phase) {
@@ -113,7 +113,7 @@ class CombatPhase extends ActPhase<ICombatPhaseState, ICombatPhaseRecord> {
 			});
 
 			if (info.length) {
-				const infoTiming = info.map(_ => randomNumberBetween(250, 350));
+				const infoTiming = info.map(() => randomNumberBetween(250, 350));
 
 				const infoAnim = new Animation(infoTiming, infoStep => {
 					const i = info[infoStep.number];
@@ -153,11 +153,11 @@ class CombatPhase extends ActPhase<ICombatPhaseState, ICombatPhaseRecord> {
 		skillAnim.start();
 	}
 
-	public selectTile(tile: Tile | null) {
+	public selectTile(): void {
 		// do nothing
 	}
 
-	public selectCommand(command: Command) {
+	public selectCommand(): void {
 		// do nothing
 	}
 
@@ -173,7 +173,7 @@ class CombatPhase extends ActPhase<ICombatPhaseState, ICombatPhaseRecord> {
 		};
 	}
 
-	private handleSupport(combat: ICombatInfo, result: ICombatResult, info: IBattleInfo[]) {
+	private handleSupport(combat: ICombatInfo, result: ICombatResult, info: IBattleInfo[]): void {
 		const { target, skill, healing, status } = combat;
 		const isDying = target.status.has('DYING');
 		const isDead = target.isDead();
@@ -238,7 +238,7 @@ class CombatPhase extends ActPhase<ICombatPhaseState, ICombatPhaseRecord> {
 		}
 	}
 
-	private handleDamage(combat: ICombatInfo, result: ICombatResult, info: IBattleInfo[]) {
+	private handleDamage(combat: ICombatInfo, result: ICombatResult, info: IBattleInfo[]): void {
 		const { target, skill, blocked, shielded, affinity, status } = combat;
 		const { position } = target;
 

@@ -1,3 +1,5 @@
+import { Color } from 'modules/color';
+
 abstract class Sprite<T> {
 	public readonly self: T;
 
@@ -5,7 +7,7 @@ abstract class Sprite<T> {
 		this.self = character;
 	}
 
-	public abstract render(ctx: CanvasRenderingContext2D, x: number, y: number, size: number, ...args: any): void;
+	public abstract render(ctx: CanvasRenderingContext2D, x: number, y: number, size: number, ...style: Color[]): void;
 }
 
 export default Sprite;

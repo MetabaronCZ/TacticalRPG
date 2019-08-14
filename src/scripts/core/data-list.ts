@@ -31,7 +31,7 @@ class DataList<T extends string, U> {
 		return this.entries().map(([key, value], i) => cb(key, value, i));
 	}
 
-	public each(cb: DataListIterator<T, U, void>) {
+	public each(cb: DataListIterator<T, U, void>): void {
 		this.entries().forEach(([key, value], i) => cb(key, value, i));
 	}
 

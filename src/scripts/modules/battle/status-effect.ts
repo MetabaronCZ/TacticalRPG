@@ -76,7 +76,7 @@ class StatusEffect {
 		this.applyFun = data.apply;
 	}
 
-	public apply(target: Character, onInfo: IOnBattleInfo) {
+	public apply(target: Character, onInfo: IOnBattleInfo): void {
 		const { physical, magical, applyFun, onStatus } = this;
 
 		if (applyFun) {

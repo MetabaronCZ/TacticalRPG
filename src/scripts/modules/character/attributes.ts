@@ -18,7 +18,7 @@ export type IAttributes = {
 
 class Attributes extends BaseAttributes {
 	// set attribute value
-	public set(attr: AttributeID, value: number) {
+	public set(attr: AttributeID, value: number): void {
 		if (value < 0) {
 			throw new Error(`Attribute ${attr} was set to invalid value: ${value}`);
 		}

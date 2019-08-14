@@ -4,7 +4,7 @@ import Command from 'modules/battle/command';
 
 abstract class ActPhase<T, U> {
 	public abstract readonly actor: Character | null;
-	protected info: string = '';
+	protected info = '';
 
 	public getInfo(): string {
 		return this.info;

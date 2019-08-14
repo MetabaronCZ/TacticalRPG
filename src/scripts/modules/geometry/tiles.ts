@@ -41,7 +41,7 @@ export const getTiles = (): Tile[] => {
 };
 
 // initialize game tile pool
-const init = () => {
+const init = (): void => {
 	// generate tiles
 	for (let x = min; x <= max; x++) {
 		for (let y = min; y <= max; y++) {
@@ -82,7 +82,7 @@ const init = () => {
 	const colorStep = Math.floor(256 / Math.cbrt(tileList.length));
 	let lastColor: Color = [1, 1, 1];
 
-	const getUniqueColor = () => {
+	const getUniqueColor = (): Color => {
 		let [r, g, b] = lastColor;
 		b += colorStep;
 

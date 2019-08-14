@@ -23,7 +23,7 @@ export class Store {
 		this.initialize();
 	}
 
-	public save() {
+	public save(): void {
 		localStorage.setItem(KEY, JSON.stringify({
 			battleConfig: this.battleConfig.serialize(),
 			characters: this.characters.serialize(),
@@ -31,7 +31,7 @@ export class Store {
 		}));
 	}
 
-	private initialize() {
+	private initialize(): void {
 		const saved = localStorage.getItem(KEY) || '';
 
 		if (!saved) {

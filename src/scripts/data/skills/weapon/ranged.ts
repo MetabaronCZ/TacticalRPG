@@ -10,7 +10,7 @@ const rangedSkills: { [id in RangedWeaponSkillID]: ISkillData; } = {
 		area: 'SINGLE',
 		target: 'ENEMY',
 		physical: 1,
-		magical: 0,
+		magical: 0
 	},
 	BOW_CHARGE: {
 		title: 'Charge',
@@ -33,7 +33,7 @@ const rangedSkills: { [id in RangedWeaponSkillID]: ISkillData; } = {
 		hitScan: true,
 		isFixedDamage: true,
 		physical: 30,
-		magical: 0,
+		magical: 0
 	},
 	GUN_CRIPPLE: {
 		title: 'Cripple',

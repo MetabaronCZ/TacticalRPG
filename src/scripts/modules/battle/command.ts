@@ -120,7 +120,7 @@ class Command {
 		return true;
 	}
 
-	public setActive(value: true | CommandReason) {
+	public setActive(value: true | CommandReason): void {
 		this.active = value;
 	}
 }

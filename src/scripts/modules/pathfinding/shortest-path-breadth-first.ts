@@ -2,7 +2,7 @@ import Tile from 'modules/geometry/tile';
 import { constructPath, IGraph } from 'modules/pathfinding';
 
 // Breadth first (shortest path at uniform maovement cost)
-export const getShortestPath = (start: Tile, target: Tile, obstacles: Tile[]) => {
+export const getShortestPath = (start: Tile, target: Tile, obstacles: Tile[]): Tile[] => {
 	const graph: IGraph = {
 		[start.id]: null
 	};

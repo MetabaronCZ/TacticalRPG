@@ -11,7 +11,7 @@ interface IInputProps {
 	readonly disabled?: boolean;
 	readonly isInvalid?: boolean;
 	readonly placeholder?: string;
-	readonly onChange: (e: SyntheticEvent<any>) => void;
+	readonly onChange: (e: SyntheticEvent<HTMLInputElement>) => void;
 }
 
 const FormInput: React.SFC<IInputProps> = props => {

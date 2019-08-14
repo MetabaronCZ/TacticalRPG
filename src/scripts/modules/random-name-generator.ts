@@ -3,10 +3,17 @@ import nameSamples from 'data/names';
 const markovOrder = 3; // Markov chains order
 const paramEnd = 'END';
 
+interface INextItem {
+	[id: string]: {
+		count: number;
+		weight: number;
+	};
+}
+
 interface IGroups {
 	[name: string]: {
 		count: number;
-		readonly next: any;
+		readonly next: INextItem;
 	};
 }
 
@@ -59,7 +66,7 @@ const getNextLetter = (graph: IGraph, groupName: string): string => {
 	return '';
 };
 
-const setWeights = (graph: IGraph) => {
+const setWeights = (graph: IGraph): void => {
 	for (const group in graph.groups) {
 		for (const letter in graph.groups[group].next) {
 			const node = graph.groups[group].next[letter];
@@ -94,7 +101,6 @@ const createGraph = (dict: string[], order: number): IGraph => {
 	const finishers: IFinishers = {};
 	const groups: IGroups = {};
 	const starters = [];
-	let graph: IGraph;
 
 	order = (order && order > 0) ? order : 1;
 
@@ -104,7 +110,10 @@ const createGraph = (dict: string[], order: number): IGraph => {
 				groups[sample] = {
 					count: 0,
 					next: {
-						[paramEnd]: { count: 0 }
+						[paramEnd]: {
+							count: 0,
+							weight: 0
+						}
 					}
 				};
 			}
@@ -132,7 +141,8 @@ const createGraph = (dict: string[], order: number): IGraph => {
 
 			if (!groups[group].next[next]) {
 				groups[group].next[next] = {
-					count: 0
+					count: 0,
+					weight: 0
 				};
 			}
 			groups[group].next[next].count++;
@@ -140,7 +150,7 @@ const createGraph = (dict: string[], order: number): IGraph => {
 	}
 
 	// create graph object
-	graph = { groups, starters, finishers };
+	const graph: IGraph = { groups, starters, finishers };
 
 	// assign occurence weights of next letters of each group
 	setWeights(graph);

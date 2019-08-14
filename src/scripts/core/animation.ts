@@ -24,11 +24,11 @@ class Animation {
 		this.stepsCount = timing.length;
 	}
 
-	public start() {
+	public start(): void {
 		this.step();
 	}
 
-	private step() {
+	private step(): void {
 		const step = this.currentStep;
 		const max = this.timing.length - 1;
 		const duration = this.timing[step];

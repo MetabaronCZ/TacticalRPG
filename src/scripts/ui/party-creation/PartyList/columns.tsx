@@ -8,19 +8,19 @@ import LinkIco from 'ui/common/LinkIco';
 import LinkButton from 'ui/common/LinkButton';
 import { IOnDelete, IOnMoveUp, IOnMoveDown } from 'ui/party-creation/PartyList';
 
-const renderMoveDown = (party: PartyData, onMoveDown: IOnMoveDown) => (
+const renderMoveDown = (party: PartyData, onMoveDown: IOnMoveDown): React.ReactNode => (
 	<LinkIco ico="down" title="Move down" onClick={onMoveDown && onMoveDown(party)} />
 );
 
-const renderMoveUp = (party: PartyData, onMoveUp: IOnMoveUp) => (
+const renderMoveUp = (party: PartyData, onMoveUp: IOnMoveUp): React.ReactNode => (
 	<LinkIco ico="up" title="Move up" onClick={onMoveUp(party)} />
 );
 
-const renderEdit = (party: PartyData) => (
+const renderEdit = (party: PartyData): React.ReactNode => (
 	<Link href={getPath('PARTY_EDIT', party.id)}>Edit</Link>
 );
 
-const renderDelete = (party: PartyData, onDelete: IOnDelete) => (
+const renderDelete = (party: PartyData, onDelete: IOnDelete): React.ReactNode => (
 	<LinkButton onClick={onDelete(party)}>Delete</LinkButton>
 );
 

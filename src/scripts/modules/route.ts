@@ -12,6 +12,10 @@ export type RouteID =
 	'CHARACTER_EDIT' |
 	'CHARACTER_CREATE';
 
+export interface IRouteParams {
+	id: string;
+}
+
 export const getPath = (route: RouteID, param = ''): string => {
 	if (param) {
 		return paths[route].replace(':id', param);

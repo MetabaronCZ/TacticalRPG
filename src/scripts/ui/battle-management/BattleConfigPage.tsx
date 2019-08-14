@@ -6,6 +6,7 @@ import { withContext, IContext } from 'context';
 import { gotoRoute, gotoFn } from 'core/navigation';
 
 import { Store } from 'modules/store';
+import { IRouteParams } from 'modules/route';
 import { BattleConfig } from 'modules/battle-configuration/battle-config';
 
 import Page from 'ui/common/Page';
@@ -18,7 +19,7 @@ const onStart = (history: History, store: Store) => (config: BattleConfig) => {
 	gotoRoute(history, 'BATTLE');
 };
 
-const BattleConfigPageContainer: React.SFC<RouteComponentProps<any> & IContext> = ({ history, store }) => (
+const BattleConfigPageContainer: React.SFC<RouteComponentProps<IRouteParams> & IContext> = ({ history, store }) => (
 	<Page heading="Battle config">
 		<BattleConfigUI
 			config={store.battleConfig}

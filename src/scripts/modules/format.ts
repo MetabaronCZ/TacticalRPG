@@ -1,14 +1,14 @@
 import Tile from 'modules/geometry/tile';
 import { CharacterData } from 'modules/character-creation/character-data';
 
-export const formatTile = (tile: Tile | null) => {
+export const formatTile = (tile: Tile | null): string => {
 	if (!tile) {
 		return '-';
 	}
 	return `(${tile.x}, ${tile.y}, ${tile.z})`;
 };
 
-export const formatTiles = (arr: Tile[]) => `[ ${arr.map(tile => formatTile(tile)).join(', ')} ]`;
+export const formatTiles = (arr: Tile[]): string => `[ ${arr.map(tile => formatTile(tile)).join(', ')} ]`;
 
 export const formatCharacter = (character: CharacterData | null): string => {
 	if (!character) {

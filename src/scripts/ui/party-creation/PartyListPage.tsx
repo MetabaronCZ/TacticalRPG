@@ -31,7 +31,7 @@ const onDelete = (store: Store) => (party: PartyData) => () => {
 	}
 };
 
-const PartyListPageContainer: React.SFC<RouteComponentProps<any> & IContext> = props => {
+const PartyListPageContainer: React.SFC<RouteComponentProps & IContext> = props => {
 	const { store, history } = props;
 	return (
 		<Page heading="Party list">

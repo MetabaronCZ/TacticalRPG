@@ -6,6 +6,7 @@ import { withContext, IContext } from 'context';
 import { gotoRoute, gotoFn } from 'core/navigation';
 
 import { Store } from 'modules/store';
+import { IRouteParams } from 'modules/route';
 import { CharacterData } from 'modules/character-creation/character-data';
 
 import Page from 'ui/common/Page';
@@ -18,7 +19,7 @@ const onSubmit = (store: Store, history: History) => (char: CharacterData): void
 	gotoRoute(history, 'CHARACTER_LIST');
 };
 
-const CharacterCreationPageContainer: React.SFC<RouteComponentProps<any> & IContext> = ({ store, history }) => (
+const CharacterCreationPageContainer: React.SFC<RouteComponentProps<IRouteParams> & IContext> = ({ store, history }) => (
 	<Page heading="Character creation">
 		<CharacterCreation
 			character={null}

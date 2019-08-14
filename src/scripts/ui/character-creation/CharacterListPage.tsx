@@ -6,6 +6,7 @@ import { gotoFn } from 'core/navigation';
 import { withContext, IContext } from 'context';
 
 import { Store } from 'modules/store';
+import { IRouteParams } from 'modules/route';
 import { CharacterData } from 'modules/character-creation/character-data';
 
 import Page from 'ui/common/Page';
@@ -43,7 +44,7 @@ const onDelete = (store: Store) => (char: CharacterData) => () => {
 	}
 };
 
-const CharacterListPageContainer: React.SFC<RouteComponentProps<any> & IContext> = props => {
+const CharacterListPageContainer: React.SFC<RouteComponentProps<IRouteParams> & IContext> = props => {
 	const { store, history } = props;
 
 	return (

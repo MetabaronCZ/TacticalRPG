@@ -51,7 +51,7 @@ class ReactionPhase extends ActPhase<IReactionPhaseState, IReactionPhaseRecord> 
 		return reaction ? reaction.reactor : null;
 	}
 	private phase: Phase = 'SUSPENDED';
-	private reaction: number = 0; // active reaction index
+	private reaction = 0; // active reaction index
 	private reactions: IReaction[] = [];
 
 	private actActor: Character;
@@ -65,7 +65,7 @@ class ReactionPhase extends ActPhase<IReactionPhaseState, IReactionPhaseRecord> 
 		this.characters = characters;
 	}
 
-	public selectTile(tile: Tile) {
+	public selectTile(tile: Tile): void {
 		const { reaction } = this.getState();
 
 		if (!reaction) {
@@ -76,7 +76,7 @@ class ReactionPhase extends ActPhase<IReactionPhaseState, IReactionPhaseRecord> 
 		}
 	}
 
-	public selectCommand(command: Command) {
+	public selectCommand(command: Command): void {
 		if (!command.isActive()) {
 			throw new Error('Could not select reaction: command not active');
 		}
@@ -112,7 +112,7 @@ class ReactionPhase extends ActPhase<IReactionPhaseState, IReactionPhaseRecord> 
 		}
 	}
 
-	public start(combatInfo: IEffectTargetData[]) {
+	public start(combatInfo: IEffectTargetData[]): void {
 		const { phase } = this;
 
 		if ('SUSPENDED' !== phase) {
@@ -156,7 +156,7 @@ class ReactionPhase extends ActPhase<IReactionPhaseState, IReactionPhaseRecord> 
 		};
 	}
 
-	private startReact() {
+	private startReact(): void {
 		const { actActor, phase } = this;
 
 		if ('IDLE' !== phase) {
@@ -191,7 +191,7 @@ class ReactionPhase extends ActPhase<IReactionPhaseState, IReactionPhaseRecord> 
 		}
 	}
 
-	private react(reaction: IReaction, command: Command) {
+	private react(reaction: IReaction, command: Command): void {
 		const { phase, combat } = reaction;
 
 		if ('IDLE' !== phase) {
@@ -230,7 +230,7 @@ class ReactionPhase extends ActPhase<IReactionPhaseState, IReactionPhaseRecord> 
 		}
 	}
 
-	private apply(reaction: IReaction, effect: StatusEffectID) {
+	private apply(reaction: IReaction, effect: StatusEffectID): void {
 		const { reactor, phase } = reaction;
 
 		if ('IDLE' !== phase) {
@@ -240,7 +240,7 @@ class ReactionPhase extends ActPhase<IReactionPhaseState, IReactionPhaseRecord> 
 		this.finish(reaction);
 	}
 
-	private cancelEvasion(reaction: IReaction) {
+	private cancelEvasion(reaction: IReaction): void {
 		const { phase } = reaction;
 
 		if ('EVASION' !== phase) {
@@ -255,7 +255,7 @@ class ReactionPhase extends ActPhase<IReactionPhaseState, IReactionPhaseRecord> 
 		this.onEvent('REACTION_IDLE');
 	}
 
-	private pass(reaction: IReaction, command: Command) {
+	private pass(reaction: IReaction, command: Command): void {
 		const { phase } = reaction;
 
 		if ('IDLE' !== phase) {
@@ -265,7 +265,7 @@ class ReactionPhase extends ActPhase<IReactionPhaseState, IReactionPhaseRecord> 
 		this.finish(reaction);
 	}
 
-	private startEvasion(reaction: IReaction) {
+	private startEvasion(reaction: IReaction): void {
 		const { characters } = this;
 		const { reactor, phase } = reaction;
 
@@ -281,7 +281,7 @@ class ReactionPhase extends ActPhase<IReactionPhaseState, IReactionPhaseRecord> 
 		this.onEvent('REACTION_EVADING');
 	}
 
-	private setEvasionTarget(reaction: IReaction, tile: Tile) {
+	private setEvasionTarget(reaction: IReaction, tile: Tile): void {
 		const { command, reactor, phase, evasible } = reaction;
 
 		if ('EVASION' !== phase) {
@@ -313,7 +313,7 @@ class ReactionPhase extends ActPhase<IReactionPhaseState, IReactionPhaseRecord> 
 		this.finish(reaction);
 	}
 
-	private finish(reaction: IReaction) {
+	private finish(reaction: IReaction): void {
 		this.onEvent('REACTION_FINISHED', reaction.command);
 
 		this.reaction++;

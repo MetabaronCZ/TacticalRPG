@@ -3,7 +3,6 @@ import { findTileFrom, resolveDirection } from 'modules/geometry/direction';
 
 import Tile from 'modules/geometry/tile';
 import Character from 'modules/character';
-import Command from 'modules/battle/command';
 import ActPhase from 'modules/battle/act/phase';
 import { IOnActPhaseEvent } from 'modules/battle/act';
 
@@ -40,7 +39,7 @@ class DirectPhase extends ActPhase<IDirectPhaseState, IDirectPhaseRecord> {
 		this.onEvent = onEvent;
 	}
 
-	public start() {
+	public start(): void {
 		const { actor, phase } = this;
 
 		if ('SUSPENDED' !== phase) {
@@ -65,7 +64,7 @@ class DirectPhase extends ActPhase<IDirectPhaseState, IDirectPhaseRecord> {
 		}
 	}
 
-	public selectTile(tile: Tile | null) {
+	public selectTile(tile: Tile | null): void {
 		const { actor, phase, directable } = this;
 
 		if ('IDLE' !== phase) {
@@ -88,7 +87,7 @@ class DirectPhase extends ActPhase<IDirectPhaseState, IDirectPhaseRecord> {
 		this.onEvent('DIRECTION_SELECTED', tile);
 	}
 
-	public selectCommand(command: Command) {
+	public selectCommand(): void {
 		// do nothing
 	}
 

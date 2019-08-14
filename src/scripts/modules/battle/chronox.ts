@@ -72,7 +72,7 @@ class Chronox {
 		};
 	}
 
-	public store(record: IActRecord) {
+	public store(record: IActRecord): void {
 		this.timeline.push(record);
 	}
 

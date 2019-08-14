@@ -34,14 +34,14 @@ module.exports = env => {
 		module: {
 			rules: [
 				{
-					test: /\.tsx?$/,
+					test: /\.[jt]sx?$/,
 					use: [
 						{
-							loader: "awesome-typescript-loader",
+							loader: 'awesome-typescript-loader',
 							options: {
 								useBabel: true,
 								useCache: true,
-								babelCore: "@babel/core",
+								babelCore: '@babel/core',
 								cacheDirectory: `${pathCache}/awesome-typescript-loader`
 							}
 						}
@@ -50,9 +50,9 @@ module.exports = env => {
 					exclude: /node_modules/
 				},
 				{
-					test: /\.tsx?$/,
+					test: /\.[jt]sx?$/,
 					enforce: 'pre',
-					use: ['tslint-loader'],
+					use: ['eslint-loader'],
 					exclude: /node_modules/
 				}
 			]

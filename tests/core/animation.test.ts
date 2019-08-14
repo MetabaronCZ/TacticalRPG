@@ -5,7 +5,9 @@ jest.useFakeTimers();
 describe('core.Animation', () => {
 	describe('#start()', () => {
 		test('it throws if invalid timing given', () => {
-			const fn = () => new Animation([], () => void(0));
+			const fn = (): Animation => {
+				return new Animation([], (): void => void(0));
+			};
 			expect(fn).toThrow();
 		});
 
@@ -43,7 +45,7 @@ describe('core.Animation', () => {
 			const data = [50, 0, 10, 35, 100];
 			const steps: IAnimationStep[] = [];
 
-			const anim = new Animation(data, step => {
+			const anim = new Animation(data, (step): void => {
 				steps.push(step);
 			});
 

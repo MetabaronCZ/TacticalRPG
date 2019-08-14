@@ -7,12 +7,13 @@ import { withContext, IContext } from 'context';
 
 import BattleUI from 'ui/battle/BattleUI';
 
-import Summary from 'modules/battle/summary';
-import Engine, { IEngineState } from 'modules/battle/engine';
 import Tile from 'modules/geometry/tile';
+import Summary from 'modules/battle/summary';
 import Command from 'modules/battle/command';
+import { IRouteParams } from 'modules/route';
+import Engine, { IEngineState } from 'modules/battle/engine';
 
-type IProps = RouteComponentProps<any> & IContext;
+type IProps = RouteComponentProps<IRouteParams> & IContext;
 
 interface IState {
 	engine: IEngineState;
@@ -37,7 +38,7 @@ class BattlePageContainer extends React.Component<IProps, IState> {
 			parties: parties.data,
 			events: {
 				onUpdate: engineState => {
-					this.setState(state => ({
+					this.setState(() => ({
 						engine: engineState
 					}));
 				},
@@ -49,7 +50,7 @@ class BattlePageContainer extends React.Component<IProps, IState> {
 					}
 					Summary.save(record, winner.id);
 
-					this.setState(state => ({
+					this.setState(() => ({
 						engine: engineState
 					}));
 				},
@@ -60,7 +61,7 @@ class BattlePageContainer extends React.Component<IProps, IState> {
 							battleInfo: info
 						}
 					}));
-				},
+				}
 			}
 		});
 
@@ -69,11 +70,11 @@ class BattlePageContainer extends React.Component<IProps, IState> {
 		};
 	}
 
-	public componentDidMount() {
+	public componentDidMount(): void {
 		this.engine.start();
 	}
 
-	public render() {
+	public render(): React.ReactNode {
 		const { history } = this.props;
 		const { engine: engineState } = this.state;
 		return (

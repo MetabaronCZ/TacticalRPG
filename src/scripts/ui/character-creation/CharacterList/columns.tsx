@@ -19,27 +19,27 @@ interface IColumn {
 	readonly editable?: boolean;
 }
 
-const renderArchetype = (char: CharacterData) => (
+const renderArchetype = (char: CharacterData): React.ReactNode => (
 	<ArchetypeIco archetype={char.archetype.id} />
 );
 
-const renderMoveDown = (char: CharacterData, onMoveDown?: IOnMoveDown) => (
+const renderMoveDown = (char: CharacterData, onMoveDown?: IOnMoveDown): React.ReactNode => (
 	<LinkIco ico="down" title="Move down" onClick={onMoveDown && onMoveDown(char)} />
 );
 
-const renderMoveUp = (char: CharacterData, onMoveUp?: IOnMoveUp) => (
+const renderMoveUp = (char: CharacterData, onMoveUp?: IOnMoveUp): React.ReactNode => (
 	<LinkIco ico="up" title="Move up" onClick={onMoveUp && onMoveUp(char)} />
 );
 
-const renderEdit = (char: CharacterData) => (
+const renderEdit = (char: CharacterData): React.ReactNode => (
 	<Link href={getPath('CHARACTER_EDIT', char.id)}>Edit</Link>
 );
 
-const renderDelete = (char: CharacterData, onDelete?: IOnDelete) => (
+const renderDelete = (char: CharacterData, onDelete?: IOnDelete): React.ReactNode => (
 	<LinkButton onClick={onDelete ? onDelete(char) : undefined}>Delete</LinkButton>
 );
 
-const renderOffHandBothWield = (title: string) => (
+const renderOffHandBothWield = (title: string): React.ReactNode => (
 	<span className="List-disabled">{title}</span>
 );
 
@@ -53,7 +53,7 @@ const getColumns = (editable = false, onMoveDown?: IOnMoveDown, onMoveUp?: IOnMo
 			value: char => (char ? renderArchetype(char) : '')
 		}, {
 			name: 'sex',
-			value: char => (char ? Icos[char.sex.id.toLowerCase() as IcoID] : '')
+			value: char => (char ? Icos[char.sex.id.toLowerCase() as IcoID] || '' : '')
 		}, {
 			title: 'Name',
 			name: 'name',

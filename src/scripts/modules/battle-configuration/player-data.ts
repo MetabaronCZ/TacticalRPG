@@ -74,22 +74,22 @@ export class PlayerData implements IPlayerData {
 	}
 
 	@action
-	public setName(name: string) {
+	public setName(name: string): void {
 		this.data.name = name;
 	}
 
 	@action
-	public setControl(control: PlayerControlID) {
+	public setControl(control: PlayerControlID): void {
 		this.data.control = control;
 	}
 
 	@action
-	public setParty(partyID: string) {
+	public setParty(partyID: string): void {
 		this.data.party = partyID;
 	}
 
 	@action
-	public setAISettings(settings: IAISettings) {
+	public setAISettings(settings: IAISettings): void {
 		this.data.aiSettings = settings;
 	}
 

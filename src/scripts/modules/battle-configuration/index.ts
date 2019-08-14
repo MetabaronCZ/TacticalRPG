@@ -42,7 +42,7 @@ class BattleConfiguration {
 	}
 
 	@action
-	public onPlayerChange(field: IPlayerDataEditable, i: number, value: string) {
+	public onPlayerChange(field: IPlayerDataEditable, i: number, value: string): void {
 		const config = this.state.config;
 		const player = config.players[i];
 
@@ -63,14 +63,14 @@ class BattleConfiguration {
 	}
 
 	@action
-	public onPlayerAIChange(i: number, settings: IAISettings) {
+	public onPlayerAIChange(i: number, settings: IAISettings): void {
 		const config = this.state.config;
 		config.players[i].setAISettings(settings);
 		this.state.validation = config.validate();
 	}
 
 	@action
-	public onSubmit(next: (config: BattleConfig) => void) {
+	public onSubmit(next: (config: BattleConfig) => void): void {
 		const config = this.state.config;
 		const validation = config.validate();
 

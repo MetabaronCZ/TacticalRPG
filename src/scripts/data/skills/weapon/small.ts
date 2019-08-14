@@ -10,7 +10,7 @@ const smallSkills: { [id in SmallWeaponSkillID]: ISkillData; } = {
 		area: 'SINGLE',
 		target: 'ENEMY',
 		physical: 1,
-		magical: 0,
+		magical: 0
 	},
 	FST_DISARM: {
 		title: 'Disarm',
@@ -32,7 +32,7 @@ const smallSkills: { [id in SmallWeaponSkillID]: ISkillData; } = {
 		area: 'SINGLE',
 		target: 'ENEMY',
 		physical: 1,
-		magical: 0,
+		magical: 0
 	},
 	DGR_STAB: {
 		title: 'Stab',

@@ -16,7 +16,9 @@ export const { Provider, Consumer } = React.createContext<IContext>(context);
 export const withContext = <T extends IContext>(Component: React.ComponentType<T>): React.SFC<T> => {
 	return observer((props: T) => (
 		<Consumer>
-			{ctx => <Component {...props} store={ctx.store} />}
+			{(ctx): React.ReactNode => (
+				<Component {...props} store={ctx.store} />
+			)}
 		</Consumer>
 	));
 };

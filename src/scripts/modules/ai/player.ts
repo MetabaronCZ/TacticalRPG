@@ -49,7 +49,7 @@ class AIPlayer extends Player {
 			.map(char => char.position);
 	}
 
-	public onActStart() {
+	public onActStart(): void {
 		const act = this.getAct();
 		const char = this.getCharacter(act.actor);
 		const condition = char.character.getCondition();
@@ -72,7 +72,7 @@ class AIPlayer extends Player {
 		}
 	}
 
-	public onUpdate(commands: Command[]) {
+	public onUpdate(commands: Command[]): void {
 		const act = this.getAct();
 		const actingChar = act.actingCharacter;
 

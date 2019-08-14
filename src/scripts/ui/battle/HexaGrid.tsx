@@ -52,8 +52,8 @@ class HexaGrid extends Canvas<IProps, IState> {
 	private canvas = React.createRef<HTMLCanvasElement>();
 	private ctx: CanvasRenderingContext2D | null = null;
 
-	private itemSize: number = 0;
-	private canvasSize: number = 0;
+	private itemSize = 0;
+	private canvasSize = 0;
 
 	constructor(props: IProps) {
 		super(props);
@@ -68,7 +68,7 @@ class HexaGrid extends Canvas<IProps, IState> {
 		this.hitCtx = hitCtx;
 	}
 
-	public render() {
+	public render(): React.ReactNode {
 		const { itemSize, canvasSize } = this;
 		const { hovered } = this.state;
 		const { x, y, tile } = hovered;
@@ -101,7 +101,7 @@ class HexaGrid extends Canvas<IProps, IState> {
 		);
 	}
 
-	public draw() {
+	public draw(): void {
 		const canvas = this.canvas.current;
 		const { act, characters } = this.props;
 		const { ctx, itemSize, canvasSize } = this;
@@ -142,7 +142,7 @@ class HexaGrid extends Canvas<IProps, IState> {
 		ctx.drawImage(offCanvas, 0, 0);
 	}
 
-	public setSize() {
+	public setSize(): void {
 		const canvas = this.canvas.current;
 
 		if (!canvas) {
@@ -178,14 +178,14 @@ class HexaGrid extends Canvas<IProps, IState> {
 		}
 	}
 
-	private clear() {
+	private clear(): void {
 		const { offCtx, hitCtx, canvasSize } = this;
 
-		offCtx.fillStyle = `rgb(53, 53, 53)`;
+		offCtx.fillStyle = 'rgb(53, 53, 53)';
 		offCtx.fillRect(0, 0, canvasSize, canvasSize);
 		offCtx.fill();
 
-		hitCtx.fillStyle = `rgb(0, 0, 0)`;
+		hitCtx.fillStyle = 'rgb(0, 0, 0)';
 		hitCtx.fillRect(0, 0, canvasSize, canvasSize);
 		hitCtx.fill();
 	}

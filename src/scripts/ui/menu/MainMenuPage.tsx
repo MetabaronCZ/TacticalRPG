@@ -4,7 +4,8 @@ import { withRouter, RouteComponentProps } from 'react-router';
 import { IcoID } from 'data/icos';
 import { gotoFn } from 'core/navigation';
 
-import { RouteID } from 'modules/route';
+import { RouteID, IRouteParams } from 'modules/route';
+
 import PageWrapper from 'ui/common/PageWrapper';
 import Button, { ButtonSize } from 'ui/common/Button';
 
@@ -21,7 +22,7 @@ const menuItems: IMenuItem[] = [
 	{ title: 'Character Creation', route: 'CHARACTER_LIST' }
 ];
 
-const MainMenuPage: React.SFC<RouteComponentProps<any>> = ({ history }) => (
+const MainMenuPage: React.SFC<RouteComponentProps<IRouteParams>> = ({ history }) => (
 	<PageWrapper>
 		<div className="MainMenu">
 			<ul className="MainMenu-butttons">

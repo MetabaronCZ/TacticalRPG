@@ -1,17 +1,18 @@
 import { isLoggingEnabled } from 'data/game-config';
 
 type LogSeverity = 'info' | 'error';
+type Loggable = number | string | object;
 
 class Logger {
-	public static info(...info: any[]) {
+	public static info(...info: Loggable[]): void {
 		this.log(info, 'info');
 	}
 
-	public static error(...info: any[]) {
+	public static error(...info: Loggable[]): void {
 		this.log(info, 'error');
 	}
 
-	private static log(info: any[], severity: LogSeverity) {
+	private static log(info: Loggable[], severity: LogSeverity): void {
 		if (!isLoggingEnabled) {
 			return;
 		}

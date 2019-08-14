@@ -79,7 +79,7 @@ class MovePhase extends ActPhase<IMovePhaseState, IMovePhaseRecord> {
 		this.obstacles = getTiles().filter(tile => tile.isContained(obstacles) || !tile.isContained(this.movable));
 	}
 
-	public start() {
+	public start(): void {
 		const { phase } = this;
 
 		if ('SUSPENDED' !== phase) {
@@ -91,7 +91,7 @@ class MovePhase extends ActPhase<IMovePhaseState, IMovePhaseRecord> {
 		this.onEvent('MOVE_IDLE');
 	}
 
-	public selectTile(tile: Tile) {
+	public selectTile(tile: Tile): void {
 		const { phase, actor, movable, obstacles } = this;
 
 		if ('IDLE' !== phase || !tile.isContained(movable) || !actor.canMove()) {
@@ -111,7 +111,7 @@ class MovePhase extends ActPhase<IMovePhaseState, IMovePhaseRecord> {
 		this.animate();
 	}
 
-	public selectCommand(command: Command) {
+	public selectCommand(command: Command): void {
 		if ('IDLE' === this.phase) {
 			this.phase = 'SUSPENDED';
 			this.info = '';
@@ -139,7 +139,7 @@ class MovePhase extends ActPhase<IMovePhaseState, IMovePhaseRecord> {
 		};
 	}
 
-	private animate() {
+	private animate(): void {
 		const { actor, phase, movePath, costMap } = this;
 
 		if ('SELECTED' !== phase) {

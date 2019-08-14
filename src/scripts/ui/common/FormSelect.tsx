@@ -5,7 +5,7 @@ interface IFormSelect {
 	readonly name?: string;
 	readonly value?: string;
 	readonly disabled?: boolean;
-	readonly onChange?: (e: SyntheticEvent<any>) => void;
+	readonly onChange?: (e: SyntheticEvent<HTMLSelectElement>) => void;
 }
 
 const FormSelect: React.SFC<IFormSelect> = ({ id, name, value = '', disabled, onChange, children }) => (

@@ -21,7 +21,7 @@ class Summary {
 		}
 	}
 
-	public static save(chronox: IChronoxRecord, winner: number) {
+	public static save(chronox: IChronoxRecord, winner: number): void {
 		const record: ISummary = { chronox, winner };
 		sessionStorage.setItem(KEY, JSON.stringify(record));
 	}

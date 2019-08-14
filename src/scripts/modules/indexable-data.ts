@@ -18,7 +18,7 @@ export class IndexableData {
 		this.lastUpdate = conf.lastUpdate || now;
 	}
 
-	public update() {
+	public update(): void {
 		this.lastUpdate = Date.now();
 	}
 

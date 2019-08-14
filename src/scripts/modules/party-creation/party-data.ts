@@ -86,13 +86,13 @@ export class PartyData extends IndexableData {
 	}
 
 	@action
-	public setName(name: string) {
+	public setName(name: string): void {
 		this.data.name = name;
 		super.update();
 	}
 
 	@action
-	public setSlot(id: string | null, slot: number) {
+	public setSlot(id: string | null, slot: number): void {
 		if (slot < 0 || slot >= maxPartySize) {
 			throw new Error(`Could not set character: invalid slot "${slot}"`);
 		}

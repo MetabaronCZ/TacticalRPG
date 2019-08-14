@@ -18,9 +18,9 @@ class AISettingsUI extends React.Component<IProps, IAISettings> {
 		this.state = { ...props.settings };
 	}
 
-	public render() {
+	public render(): React.ReactNode {
 		const { preset, config } = this.state;
-		const fieldDifficulty = `f-ai-difficulty`;
+		const fieldDifficulty = 'f-ai-difficulty';
 
 		return (
 			<React.Fragment>
@@ -52,7 +52,7 @@ class AISettingsUI extends React.Component<IProps, IAISettings> {
 		);
 	}
 
-	private onUpdate() {
+	private onUpdate(): void {
 		this.props.onChange(this.state);
 	}
 }

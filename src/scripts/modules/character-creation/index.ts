@@ -34,7 +34,7 @@ class CharacterCreation {
 	}
 
 	@action
-	public change(field: ICharacterDataEditable, value: string) {
+	public change(field: ICharacterDataEditable, value: string): void {
 		const character = this.state.character;
 		character.set(field, value);
 		this.state.validation = character.validate();

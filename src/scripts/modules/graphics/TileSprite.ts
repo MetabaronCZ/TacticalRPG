@@ -6,18 +6,18 @@ import { colorToRGB, Color } from 'modules/color';
 import { getHexDimensions } from 'modules/battle/grid';
 
 class TileSprite extends Sprite<Tile> {
-	public render(ctx: CanvasRenderingContext2D, x: number, y: number, size: number, background: Color, border: Color) {
+	public render(ctx: CanvasRenderingContext2D, x: number, y: number, size: number, background: Color, border: Color): void {
 		this.renderHex(ctx, x, y, size - 1, border); // border
 		this.renderHex(ctx, x, y, size - 3, background); // background
 		this.renderHexCoords(ctx, x, y, size); // coords
 	}
 
-	public renderBoundingBox(ctx: CanvasRenderingContext2D, x: number, y: number, size: number) {
+	public renderBoundingBox(ctx: CanvasRenderingContext2D, x: number, y: number, size: number): void {
 		const tile = this.self;
 		this.renderHex(ctx, x, y, size, tile.getColor());
 	}
 
-	private renderHex(ctx: CanvasRenderingContext2D, x: number, y: number, size: number, color: Color) {
+	private renderHex(ctx: CanvasRenderingContext2D, x: number, y: number, size: number, color: Color): void {
 		ctx.beginPath();
 		ctx.moveTo(x + size * Math.cos(0), y + size * Math.sin(0));
 
@@ -31,7 +31,7 @@ class TileSprite extends Sprite<Tile> {
 		ctx.fill();
 	}
 
-	private renderHexCoords(ctx: CanvasRenderingContext2D, x: number, y: number, size: number) {
+	private renderHexCoords(ctx: CanvasRenderingContext2D, x: number, y: number, size: number): void {
 		const { width, height } = getHexDimensions(size);
 		const tile = this.self;
 

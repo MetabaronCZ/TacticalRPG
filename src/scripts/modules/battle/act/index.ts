@@ -68,9 +68,9 @@ class Act {
 	private readonly characters: Character[];
 
 	private phase: PhaseID | null = null;
-	private skipped: boolean = false;
 	private commands: Command[] = [];
-	private info: string = '';
+	private skipped = false;
+	private info = '';
 
 	constructor(id: number, actor: Character, characters: Character[], events: IActEvents) {
 		this.id = id;
@@ -90,7 +90,7 @@ class Act {
 		};
 	}
 
-	public start() {
+	public start(): void {
 		const { phase, actor } = this;
 
 		if (null !== phase) {
@@ -115,7 +115,7 @@ class Act {
 			this.phases.MOVEMENT.start();
 		}
 	}
-	public selectTile(tile: Tile) {
+	public selectTile(tile: Tile): void {
 		const { phase } = this;
 
 		if (!phase) {
@@ -124,7 +124,7 @@ class Act {
 		this.phases[phase].selectTile(tile);
 	}
 
-	public selectCommand(command: Command) {
+	public selectCommand(command: Command): void {
 		const { phase } = this;
 
 		if (!phase) {
@@ -169,14 +169,14 @@ class Act {
 		};
 	}
 
-	private skip() {
+	private skip(): void {
 		this.skipped = true;
 		this.log('Act skipped');
 
 		this.end();
 	}
 
-	private end() {
+	private end(): void {
 		if (!this.actor.isDead()) {
 			this.actor.endAct();
 		}
@@ -212,10 +212,11 @@ class Act {
 						// default character command
 						return getIdleCommands(actor);
 
-					case 'TARGETING':
+					case 'TARGETING': {
 						// confirm command
 						const hasTargets = effectTargets.length > 0;
 						return getSkillConfirmCommands(hasTargets);
+					}
 
 					default:
 						return [];
@@ -252,7 +253,7 @@ class Act {
 		}
 	}
 
-	private update() {
+	private update(): void {
 		const char = this.getState().actingCharacter;
 
 		if (!char) {
@@ -364,7 +365,7 @@ class Act {
 						this.log('Reaction selected: ' + (data as Command).title);
 						return;
 
-					case 'REACTION_DONE':
+					case 'REACTION_DONE': {
 						const { command, effectArea, effectTargets } = COMMAND.getState();
 
 						if (!command || !effectArea.length || !effectTargets.length) {
@@ -375,6 +376,7 @@ class Act {
 
 						COMBAT.start(command, effectArea, effectTargets);
 						return;
+					}
 
 					default:
 						return; // do nothing
@@ -419,7 +421,7 @@ class Act {
 		}
 	}
 
-	private log(msg: string) {
+	private log(msg: string): void {
 		const char = this.getState().actingCharacter;
 		Logger.info(`${char ? char.name : '???'} - ${msg}`);
 	}

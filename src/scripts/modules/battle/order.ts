@@ -18,7 +18,7 @@ class Order {
 		return [...this.order];
 	}
 
-	public update() {
+	public update(): void {
 		const { players, characters } = this;
 		const liveChars = characters.filter(char => !char.isDead());
 

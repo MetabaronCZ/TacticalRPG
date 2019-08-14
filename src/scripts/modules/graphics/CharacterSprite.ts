@@ -8,7 +8,7 @@ import { dirToIndex } from 'modules/geometry/direction';
 const dirSize = 4; // size of character direction circle visual
 
 class CharacterSprite extends Sprite<Character> {
-	public render(ctx: CanvasRenderingContext2D, x: number, y: number, size: number, background: Color, border: Color) {
+	public render(ctx: CanvasRenderingContext2D, x: number, y: number, size: number, background: Color, border: Color): void {
 		const { self: char } = this;
 		const isDying = char.status.has('DYING');
 

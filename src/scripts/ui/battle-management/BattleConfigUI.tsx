@@ -27,7 +27,7 @@ interface IBattleConfigUIProps {
 	readonly parties: PartyData[];
 	readonly characters: CharacterData[];
 	readonly onStart: (config: BattleConfig) => void;
-	readonly onBack: (e: SyntheticEvent<any>) => void;
+	readonly onBack: (e: SyntheticEvent<HTMLButtonElement>) => void;
 }
 
 @observer
@@ -41,7 +41,7 @@ class BattleConfigUI extends React.Component<IBattleConfigUIProps> {
 		this.form = new BattleConfiguration(config, parties);
 	}
 
-	public render() {
+	public render(): React.ReactNode {
 		const { config, validation } = this.form.state;
 		const { parties, characters } = this.props;
 
@@ -121,7 +121,7 @@ class BattleConfigUI extends React.Component<IBattleConfigUIProps> {
 		);
 	}
 
-	private onChange = (player: number, name: IPlayerDataEditable) => (e: SyntheticEvent<any>) => {
+	private onChange = (player: number, name: IPlayerDataEditable) => (e: SyntheticEvent<HTMLInputElement | HTMLSelectElement>) => {
 		this.form.onPlayerChange(name, player, e.currentTarget.value);
 	}
 

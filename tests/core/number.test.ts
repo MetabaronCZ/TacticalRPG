@@ -3,7 +3,7 @@ import { randomNumberBetween, formatNumber, formatInteger } from 'core/number';
 describe('core.number', () => {
 	describe('#randomNumberBetween()', () => {
 		test('it throws error when "from" is greater than "to"', () => {
-			const fn = () => randomNumberBetween(10, 1);
+			const fn = (): number => randomNumberBetween(10, 1);
 			expect(fn).toThrowError();
 		});
 
@@ -57,7 +57,7 @@ describe('core.number', () => {
 	});
 
 	describe('#formatInteger()', () => {
-		const fn = (i: number, c: number) => () => formatInteger(i, c);
+		const fn = (i: number, c: number) => (): string => formatInteger(i, c);
 
 		test('it throws if input cipher count is bigger than requested', () => {
 			expect(fn(100, 1)).toThrowError();

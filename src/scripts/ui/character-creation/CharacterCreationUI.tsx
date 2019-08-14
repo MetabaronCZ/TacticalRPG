@@ -39,7 +39,7 @@ class CharacterCreationUI extends React.Component<ICharacterCreationUIProps> {
 		this.form = new CharacterCreation(props.character);
 	}
 
-	public render() {
+	public render(): React.ReactNode {
 		const { form, onChange } = this;
 		const { character, validation } = form.state;
 		const { name, sex, archetype, skillset, mainHand, offHand, armor } = character;
@@ -161,13 +161,13 @@ class CharacterCreationUI extends React.Component<ICharacterCreationUIProps> {
 		);
 	}
 
-	private onChange = (attr: ICharacterDataEditable) => (e?: SyntheticEvent<any>) => {
+	private onChange = (attr: ICharacterDataEditable) => (e?: SyntheticEvent<HTMLInputElement | HTMLSelectElement>) => {
 		if (e) {
 			this.form.change(attr, e.currentTarget.value);
 		}
 	}
 
-	private onSubmit = (e: SyntheticEvent<any>) => {
+	private onSubmit = (e: SyntheticEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
 		const char = this.form.get();

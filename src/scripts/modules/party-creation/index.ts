@@ -25,7 +25,7 @@ class PartyCreation {
 	}
 
 	@action
-	public change(field: IPartyDataEditable, i: number | null, value: string) {
+	public change(field: IPartyDataEditable, i: number | null, value: string): void {
 		const party = this.state.party;
 
 		if ('name' === field) {

@@ -142,19 +142,19 @@ export class CharacterData extends IndexableData {
 	}
 
 	@action
-	public setName(name: string) {
+	public setName(name: string): void {
 		this.data.name = name;
 		super.update();
 	}
 
 	@action
-	public setSex(id: SexID) {
+	public setSex(id: SexID): void {
 		this.data.sex = Sexes.get(id);
 		super.update();
 	}
 
 	@action
-	public setArchetype(id: ArchetypeID) {
+	public setArchetype(id: ArchetypeID): void {
 		this.data.archetype = Archetypes.get(id);
 
 		if (!this.canUseSkillset(this.data.skillset.id)) {
@@ -176,7 +176,7 @@ export class CharacterData extends IndexableData {
 	}
 
 	@action
-	public setSkillset(id: SkillsetID) {
+	public setSkillset(id: SkillsetID): void {
 		if (this.canUseSkillset(id)) {
 			this.data.skillset = Skillsets.get(id);
 			super.update();
@@ -184,7 +184,7 @@ export class CharacterData extends IndexableData {
 	}
 
 	@action
-	public setMainHand(id: WeaponID) {
+	public setMainHand(id: WeaponID): void {
 		if (this.canWieldWeapon(id, 'MAIN')) {
 			this.data.main = Weapons.get(id);
 
@@ -196,7 +196,7 @@ export class CharacterData extends IndexableData {
 	}
 
 	@action
-	public setOffHand(id: WeaponID) {
+	public setOffHand(id: WeaponID): void {
 		if (this.canWieldWeapon(id, 'OFF')) {
 			this.data.off = Weapons.get(id);
 			super.update();
@@ -204,7 +204,7 @@ export class CharacterData extends IndexableData {
 	}
 
 	@action
-	public setArmor(id: ArmorID) {
+	public setArmor(id: ArmorID): void {
 		if (this.canWieldArmor(id)) {
 			this.data.armor = Armors.get(id);
 			super.update();
@@ -212,7 +212,7 @@ export class CharacterData extends IndexableData {
 	}
 
 	@action
-	public set(field: ICharacterDataEditable, value: string) {
+	public set(field: ICharacterDataEditable, value: string): void {
 		switch (field) {
 			case 'name': return this.setName(value);
 			case 'sex': return this.setSex(value as SexID);

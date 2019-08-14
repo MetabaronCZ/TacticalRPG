@@ -29,27 +29,27 @@ class PartyPreview extends Canvas<IProps> {
 	private ctx: CanvasRenderingContext2D | null = null;
 	private slots: Array<Character | null> = [];
 
-	private itemSize: number = 0;
-	private canvasWidth: number = 0;
-	private canvasHeight: number = 0;
+	private itemSize = 0;
+	private canvasWidth = 0;
+	private canvasHeight = 0;
 
-	public componentDidMount() {
+	public componentDidMount(): void {
 		this.setSlots();
 		super.componentDidMount();
 	}
 
-	public componentDidUpdate() {
+	public componentDidUpdate(): void {
 		this.setSlots();
 		super.componentDidUpdate();
 	}
 
-	public render() {
+	public render(): React.ReactNode {
 		return (
 			<canvas className="PartyPreview" ref={this.canvas} />
 		);
 	}
 
-	public draw() {
+	public draw(): void {
 		const canvas = this.canvas.current;
 		const { ctx, itemSize, canvasWidth } = this;
 
@@ -82,7 +82,7 @@ class PartyPreview extends Canvas<IProps> {
 		}
 	}
 
-	public setSize() {
+	public setSize(): void {
 		const canvas = this.canvas.current;
 
 		if (!canvas) {
@@ -121,7 +121,7 @@ class PartyPreview extends Canvas<IProps> {
 		canvas.height = canvasHeight;
 	}
 
-	private setSlots() {
+	private setSlots(): void {
 		this.slots = this.props.slots.map((data, d) => {
 			if (!data) {
 				return null;
@@ -130,11 +130,11 @@ class PartyPreview extends Canvas<IProps> {
 		});
 	}
 
-	private clear() {
+	private clear(): void {
 		const { ctx, canvasWidth, canvasHeight } = this;
 
 		if (ctx) {
-			ctx.fillStyle = `rgb(0, 0, 0)`;
+			ctx.fillStyle = 'rgb(0, 0, 0)';
 			ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 			ctx.fill();
 		}

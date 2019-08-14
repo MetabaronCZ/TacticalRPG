@@ -122,9 +122,12 @@ const taskWatch = cb => {
 };
 
 // build app
-const build = gulp.series(taskClear, taskIndex, taskFonts, taskStylelint, taskStyles, taskScripts, taskTest);
+const build = gulp.series(taskClear, taskIndex, taskFonts, taskStylelint, taskStyles, taskScripts);
 
 // develop app (set watch before build, because "watch mode" in Webpack)
 const dev = gulp.series(taskWatch, build);
 
-module.exports = { build, dev };
+module.exports = {
+	build: gulp.series(build, taskTest),
+	dev
+};

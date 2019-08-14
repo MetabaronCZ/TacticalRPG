@@ -12,7 +12,9 @@ import CharacterRole from 'modules/ai/role';
 import Command from 'modules/battle/command';
 import { IActState } from 'modules/battle/act';
 
-const delayAction = (fn: () => void) => setTimeout(() => fn(), aiActionDelay);
+const delayAction = (fn: () => void): void => {
+	setTimeout(() => fn(), aiActionDelay);
+};
 
 type TargetSide = 'FRONT' | 'SIDE' | 'BEHIND';
 
@@ -60,7 +62,7 @@ class AICharacter {
 		};
 	}
 
-	public update(act: IActState, commands: Command[]) {
+	public update(act: IActState, commands: Command[]): void {
 		const { MOVEMENT, COMMAND, REACTION, DIRECTION } = act.phases;
 
 		switch (act.phase) {
@@ -131,7 +133,7 @@ class AICharacter {
 		}
 	}
 
-	public onCommand(commands: Command[], movable: Tile[]) {
+	public onCommand(commands: Command[], movable: Tile[]): void {
 		const char = this.character;
 
 		if (char.isDead()) {
@@ -215,7 +217,7 @@ class AICharacter {
 		this.chooseCommand(commands);
 	}
 
-	public onCommandTarget(targetable: Tile[]) {
+	public onCommandTarget(targetable: Tile[]): void {
 		let target = this.target ? this.target.position : null;
 
 		if (!target || !target.isContained(targetable)) {
@@ -228,7 +230,7 @@ class AICharacter {
 		this.selectTile(target);
 	}
 
-	public onReaction(commands: Command[], isBackAttacked: boolean) {
+	public onReaction(commands: Command[], isBackAttacked: boolean): void {
 		const passCommand = commands.find(act => 'DONT_REACT' === act.type);
 
 		if (!passCommand) {
@@ -266,7 +268,7 @@ class AICharacter {
 		this.selectCommand(passCommand);
 	}
 
-	public onEvasion(evasible: Tile[]) {
+	public onEvasion(evasible: Tile[]): void {
 		const evasionTarget = getRandomItem(evasible);
 
 		if (!evasionTarget) {
@@ -275,7 +277,7 @@ class AICharacter {
 		this.selectTile(evasionTarget);
 	}
 
-	public onDirect(directable: Tile[]) {
+	public onDirect(directable: Tile[]): void {
 		const char = this.character;
 
 		if (char.isDead() || !char.canAct()) {
@@ -299,7 +301,7 @@ class AICharacter {
 		this.selectTile(directTarget);
 	}
 
-	private chooseCommand(commands: Command[]) {
+	private chooseCommand(commands: Command[]): void {
 		const passCommand = commands.find(act => 'PASS' === act.type);
 
 		if (!passCommand) {

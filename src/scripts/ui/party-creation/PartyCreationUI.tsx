@@ -29,7 +29,7 @@ interface IPartyCreationUIProps {
 	readonly onSubmit: (party: PartyData) => void;
 }
 
-const getLabel = (i: number, id: string | null) => (
+const getLabel = (i: number, id: string | null): React.ReactNode => (
 	<React.Fragment>
 		Character {i + 1}
 		{' '}
@@ -50,7 +50,7 @@ class PartyCreationUI extends React.Component<IPartyCreationUIProps> {
 		this.form = new PartyCreationForm(props.party, props.characters.data);
 	}
 
-	public render() {
+	public render(): React.ReactNode {
 		const { characters } = this.props;
 		const { party, validation } = this.form.state;
 		const canCreateParty = characters.data.length > 0;
@@ -105,11 +105,11 @@ class PartyCreationUI extends React.Component<IPartyCreationUIProps> {
 		);
 	}
 
-	private onChange = (attr: IPartyDataEditable, i: number | null) => (e: SyntheticEvent<any>) => {
+	private onChange = (attr: IPartyDataEditable, i: number | null) => (e: SyntheticEvent<HTMLInputElement | HTMLSelectElement>) => {
 		this.form.change(attr, i, e.currentTarget.value);
 	}
 
-	private onSubmit = (e: SyntheticEvent<any>) => {
+	private onSubmit = (e: SyntheticEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
 		const party = this.form.get();
@@ -119,7 +119,7 @@ class PartyCreationUI extends React.Component<IPartyCreationUIProps> {
 		}
 	}
 
-	private renderPartyItem = (id: string | null, i: number) => {
+	private renderPartyItem = (id: string | null, i: number): React.ReactNode => {
 		const character = (id ? this.props.characters.getById(id) : null);
 		const filtered = this.form.filterCharacters(character);
 		const info = formatCharacter(character);

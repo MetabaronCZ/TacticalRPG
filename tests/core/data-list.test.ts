@@ -114,7 +114,7 @@ describe('core.DataList', () => {
 			const result2 = [{ x: 0 }, { x: 1 }, { x: 2 }];
 
 			const list = new DataList(data);
-			const mapped1 = list.map((key, value, i) => 2 * value);
+			const mapped1 = list.map((key, value) => 2 * value);
 			const mapped2 = list.map((key, value, i) => ({ x: i }));
 
 			expect(mapped1.sort()).toEqual(result1.sort());
@@ -167,10 +167,10 @@ describe('core.DataList', () => {
 			const data = { A: { x: 0 }, B: { x: 1 }, C: { x: 2 } };
 			const list = new DataList(data);
 
-			const res1 = list.filter((key, value, i) => 'A' === key);
+			const res1 = list.filter(key => 'A' === key);
 			expect(res1).toEqual([['A', data.A]]);
 
-			const res2 = list.filter((key, value, i) => value.x > 0);
+			const res2 = list.filter((key, value) => value.x > 0);
 			expect(res2).toEqual([['B', data.B], ['C', data.C]]);
 
 			const res3 = list.filter((key, value, i) => i < 2);

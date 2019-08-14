@@ -13,27 +13,27 @@ class IndexableList<T extends IndexableData> {
 	}
 
 	@action
-	public add(item: T) {
+	public add(item: T): void {
 		this.data.push(item);
 	}
 
 	@action
-	public replace(item: T) {
+	public replace(item: T): void {
 		this.data = this.data.map(d => d.id === item.id ? item : d);
 	}
 
 	@action
-	public moveDown(item: T) {
+	public moveDown(item: T): void {
 		this.move(item, +1);
 	}
 
 	@action
-	public moveUp(item: T) {
+	public moveUp(item: T): void {
 		this.move(item, -1);
 	}
 
 	@action
-	public remove(item: T) {
+	public remove(item: T): void {
 		this.data = this.data.filter(ch => ch.id !== item.id);
 	}
 
@@ -41,7 +41,7 @@ class IndexableList<T extends IndexableData> {
 		return this.data.map(item => item.serialize());
 	}
 
-	private move(item: T, diff = 0) {
+	private move(item: T, diff = 0): void {
 		if (!diff) {
 			return;
 		}

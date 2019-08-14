@@ -13,7 +13,7 @@ interface IButtonContainerProps {
 	readonly size?: ButtonSize;
 	readonly color?: ButtonColor;
 	readonly text: string;
-	readonly onClick?: (e: SyntheticEvent<any>) => void;
+	readonly onClick?: (e: SyntheticEvent<HTMLButtonElement>) => void;
 }
 
 const Button: React.SFC<IButtonContainerProps> = props => {

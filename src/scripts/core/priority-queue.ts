@@ -5,7 +5,7 @@ class PriorityQueue<T> {
 		return this.values.length;
 	}
 
-	public push(value: T, priority: number) {
+	public push(value: T, priority: number): void {
 		const values = this.values;
 		const size = this.size();
 

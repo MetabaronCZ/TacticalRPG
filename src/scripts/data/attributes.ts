@@ -25,14 +25,14 @@ export const Arch2AttTable: IArch2AttrTable = {
 };
 
 export const attributeFormulas: IAttributeFormulas = {
-	STR: (P, S, M) => 10 + P * 10,
-	VIT: (P, S, M) => 10 + P * 10,
-	SPD: (P, S, M) => 4 + S,
-	MOV: (P, S, M) => 4 + S,
+	STR: P => 10 + P * 10,
+	VIT: P => 10 + P * 10,
+	SPD: (P, S) => 4 + S,
+	MOV: (P, S) => 4 + S,
 	MAG: (P, S, M) => 10 + M * 10,
 	SPR: (P, S, M) => 10 + M * 10,
-	HP:  (P, S, M) => 100 + P * 50,
+	HP:  P => 100 + P * 50,
 	MP:  (P, S, M) => M * 50,
-	AP:  (P, S, M) => 8 + 4 * S,
-	CT:  (P, S, M) => 0
+	AP:  (P, S) => 8 + 4 * S,
+	CT:  () => 0
 };

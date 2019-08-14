@@ -9,7 +9,7 @@ interface IProps {
 	readonly combat: ICombatInfo[];
 }
 
-const formatStatus = (status: StatusEffect[]) => {
+const formatStatus = (status: StatusEffect[]): string => {
 	return status.map(st => st.title).join(', ') || 'none';
 };
 

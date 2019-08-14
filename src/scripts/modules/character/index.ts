@@ -56,7 +56,7 @@ class Character {
 
 	private sprite: CharacterSprite;
 
-	private dead: boolean = false;
+	private dead = false;
 
 	constructor(character: CharacterData, position: Tile, direction: DirectionID, player: Player) {
 		const data = character.serialize();
@@ -120,7 +120,7 @@ class Character {
 	}
 
 	// updates on every game tick
-	public update(onInfo: IOnBattleInfo) {
+	public update(onInfo: IOnBattleInfo): void {
 		if (this.dead) {
 			throw new Error('Cannot update dead character');
 		}
@@ -134,7 +134,7 @@ class Character {
 	}
 
 	// update on character act start
-	public startAct() {
+	public startAct(): void {
 		if (this.dead) {
 			throw new Error('Character cannot start act: dead state');
 		}
@@ -166,7 +166,7 @@ class Character {
 	}
 
 	// update on character act end
-	public endAct() {
+	public endAct(): void {
 		if (this.dead) {
 			throw new Error('Character cannot end act: dead or dying');
 		}
@@ -176,7 +176,7 @@ class Character {
 		this.attributes.set('CT', CT % characterCTLimit);
 	}
 
-	public onDamage(physical: number, magical: number, mana: number, effects: StatusEffectID[], onStatus: IOnStatus) {
+	public onDamage(physical: number, magical: number, mana: number, effects: StatusEffectID[], onStatus: IOnStatus): void {
 		const { attributes, status } = this;
 
 		if (this.dead || status.has('DYING')) {
@@ -207,7 +207,7 @@ class Character {
 		}
 	}
 
-	public onHealing(healing: number, effects: StatusEffectID[] = [], onStatus: IOnStatus) {
+	public onHealing(healing: number, effects: StatusEffectID[] = [], onStatus: IOnStatus): void {
 		if (this.dead || this.status.has('DYING')) {
 			throw new Error('Cannot apply healing: dead or dying');
 		}
@@ -227,7 +227,7 @@ class Character {
 		}
 	}
 
-	public onRevive(onStatus: IOnStatus) {
+	public onRevive(onStatus: IOnStatus): void {
 		if (!this.status.has('DYING')) {
 			throw new Error('Illegal character revive attempt');
 		}
@@ -238,12 +238,12 @@ class Character {
 		onStatus(0, true);
 	}
 
-	public die() {
+	public die(): void {
 		this.status.removeAll();
 		this.dead = true;
 	}
 
-	public act(command: Command) {
+	public act(command: Command): void {
 		const { cost, skills } = command;
 
 		// put skills on cooldown
@@ -259,7 +259,7 @@ class Character {
 		}
 	}
 
-	public render(ctx: CanvasRenderingContext2D, x: number, y: number, size: number, background: Color, border: Color) {
+	public render(ctx: CanvasRenderingContext2D, x: number, y: number, size: number, background: Color, border: Color): void {
 		this.sprite.render(ctx, x, y, size, background, border);
 	}
 }
