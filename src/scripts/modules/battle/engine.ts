@@ -1,8 +1,6 @@
 import { getRandomized } from 'core/array';
-
 import * as config from 'data/game-config';
 
-import { getTile } from 'modules/geometry/tiles';
 import { getRandomNames } from 'modules/random-name-generator';
 
 import Logger from 'modules/logger';
@@ -14,12 +12,15 @@ import Command from 'modules/battle/command';
 import Act, { IActState } from 'modules/battle/act';
 import { IBattleInfo } from 'modules/battle/battle-info';
 import { DirectionID } from 'modules/geometry/direction';
+import { getCharacterPositions } from 'modules/battle/grid';
 import { PartyData } from 'modules/party-creation/party-data';
 import CharacterCreationForm from 'modules/character-creation';
 import Chronox, { IChronoxRecord } from 'modules/battle/chronox';
 import Player, { IPlayerCharacterSetup } from 'modules/battle/player';
 import { CharacterData } from 'modules/character-creation/character-data';
 import { PlayerConfigList } from 'modules/battle-configuration/battle-config';
+
+const charPositions = getCharacterPositions();
 
 export type PlayerList = [Player, Player];
 
@@ -261,17 +262,8 @@ class Engine {
 
 			// create character setup
 			const setup: IPlayerCharacterSetup[] = charData.map((data, i) => {
-				let position: Tile | null;
-				let direction: DirectionID;
-
-				// set position / orientation
-				if (0 === p) {
-					position = getTile(i + 2, config.gridSize - 1);
-					direction = 'TOP';
-				} else {
-					position = getTile(i + 2, 0);
-					direction = 'BOTTOM';
-				}
+				const position: Tile | null = charPositions[p][i];
+				const direction: DirectionID = (p > 0 ? 'S' : 'N');
 
 				if (!position) {
 					throw new Error('Invalid tile given');

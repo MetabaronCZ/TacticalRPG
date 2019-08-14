@@ -214,11 +214,23 @@ class CommandPhase extends ActPhase<ICommandPhaseState, ICommandPhaseRecord> {
 		if ('IDLE' !== phase) {
 			throw new Error('Could not set command: invalid phase ' + phase);
 		}
-		const allies = characters.filter(char => char.player === actor.player);
-		const hitScanObstacles = allies.map(char => char.position);
-
 		const { skills } = command;
-		const skillAreas = skills.map(skill => skill.getTargetable(actor.position, hitScanObstacles));
+		const hitScanObstacles = characters.map(char => char.position);
+
+		const allyTiles = characters
+			.filter(char => char.player === actor.player)
+			.map(char => char.position);
+
+		const skillAreas = skills.map(skill => {
+			const tiles = skill.getTargetable(actor.position, hitScanObstacles);
+
+			if ('ENEMY' === skill.target) {
+				// exclude ally character positions
+				return tiles.filter(tile => -1 === allyTiles.indexOf(tile));
+			}
+			return tiles;
+		});
+
 		const area = getIntersection(skillAreas);
 		const targets = skills[0].getTargets(actor, characters, area);
 		const targetable = targets.map(char => char.position);

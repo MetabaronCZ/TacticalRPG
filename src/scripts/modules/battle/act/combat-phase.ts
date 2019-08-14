@@ -82,9 +82,9 @@ class CombatPhase extends ActPhase<ICombatPhaseState, ICombatPhaseRecord> {
 		const skillAnim = new Animation(timing, step => {
 			const info: IBattleInfo[] = [];
 
-			for (const target of targets) {
+			targets.forEach((target, t) => {
 				const combat = getCombatInfo(actor, target, skills[step.number]);
-				const result = this.combatResults[step.number];
+				const result = this.combatResults[t];
 				const { position } = combat.target;
 
 				if (!position.isContained(effectArea)) {
@@ -96,7 +96,7 @@ class CombatPhase extends ActPhase<ICombatPhaseState, ICombatPhaseRecord> {
 						type: 'ACTION',
 						position
 					});
-					continue;
+					return;
 				}
 				switch (combat.type) {
 					case 'SUPPORT':
@@ -110,7 +110,7 @@ class CombatPhase extends ActPhase<ICombatPhaseState, ICombatPhaseRecord> {
 					default:
 						throw new Error('Invalid combat info type: ' + combat.type);
 				}
-			}
+			});
 
 			if (info.length) {
 				const infoTiming = info.map(_ => randomNumberBetween(250, 350));

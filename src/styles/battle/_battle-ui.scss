@@ -1,5 +1,6 @@
 .BattleUI {
-	@extend .Paragraph;
+	@extend .u-text-default, .u-weight-regular;
+	color: $color-yellow;
 	text-align: left;
 	padding: 5*$vu;
 
@@ -13,9 +14,9 @@
 			}
 
 			&.BattleUI-layout-column--grid {
-				max-width: 700px;
+				max-width: 780px;
 				flex: 1 0 auto;
-				padding: 0 50px;
+				padding: 0 20px;
 			}
 
 			&.BattleUI-layout-column--reactor {

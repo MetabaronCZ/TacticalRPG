@@ -34,31 +34,3 @@ $player-0-color-main: darkviolet;
 $player-0-color-secondary: darkorchid;
 $player-1-color-main: tomato;
 $player-1-color-secondary: salmon;
-
-// tiles
-$tile-background-black: #000;
-$tile-border-black: #444;
-$tile-background-green: #084;
-$tile-border-green: #063;
-$tile-background-blue: #04d;
-$tile-border-blue: #02b;
-$tile-background-yellow: #dc0;
-$tile-border-yellow: #b90;
-
-// "tile type": ("tile primary color", "tile secondary color")
-$tiles: (
-	"default": ($tile-background-black, $tile-border-black),
-	"movable": ($tile-background-green, $tile-border-green),
-	"movePath": ($tile-background-blue, $tile-border-blue),
-	"moveTarget": ($tile-background-yellow, $tile-border-yellow),
-	"commandRange": ($tile-background-green, $tile-border-green),
-	"commandTargetable": ($tile-background-blue, $tile-border-blue),
-	"commandEffectArea": ($tile-background-green, $tile-border-green),
-	"commandEffectTargets": ($tile-background-blue, $tile-border-blue),
-	"commandEffectTarget": ($tile-background-yellow, $tile-border-yellow),
-	"reactors": ($tile-background-blue, $tile-border-blue),
-	"reactionEvasible": ($tile-background-green, $tile-border-green),
-	"reactor": ($tile-background-yellow, $tile-border-yellow),
-	"directable": ($tile-background-green, $tile-border-green),
-	"directTarget": ($tile-background-yellow, $tile-border-yellow)
-);

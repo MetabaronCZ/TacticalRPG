@@ -33,10 +33,17 @@ const CombatInfo: React.SFC<IProps> = ({ combat }) => (
 					<div><strong>Skill:</strong> {skill.title}</div>
 					<div><strong>Physical:</strong> {item.physical}</div>
 					<div><strong>Magical:</strong> {item.magical} {'NONE' !== elm ? `(${elm})` : ''}</div>
-					<div><strong>Status:</strong> {formatStatus(item.status)}</div>
+
+					{item.status.length > 0 && (
+						<div>
+							<strong>Status:</strong> {formatStatus(item.status)}
+						</div>
+					)}
+
 					{item.backAttack && (
 						<div>&rsaquo;&nbsp;Back attack</div>
 					)}
+
 					<div>&rsaquo;&nbsp;{affinityData[item.affinity].title}</div>
 				</div>
 			);

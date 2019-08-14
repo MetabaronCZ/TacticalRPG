@@ -23,7 +23,7 @@ const ReactorUI: React.SFC<IProps> = ({ act, onCommandSelect }) => {
 	const { reactor, command, combat } = reaction;
 	let { commands, info } = act;
 
-	if ('REACTION' === act.phase) {
+	if (reactor.isAI()) {
 		info = '';
 		commands = [];
 	}

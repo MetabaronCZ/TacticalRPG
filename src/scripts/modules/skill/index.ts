@@ -9,6 +9,7 @@ import {
 	SkillID, SkillType, SkillElement, SkillGrade,
 	SkillRange, SkillArea, SkillTarget, ISkillData, SkillCooldown
 } from 'modules/skill/skill-data';
+import { getUniqueItems } from 'core/array';
 
 type ITargetTable = {
 	readonly [id in SkillTarget]: (character: Character, actor: Character) => boolean;
@@ -33,12 +34,14 @@ const areaTable: IAreaTable = {
 	LINE: (source: Tile, target: Tile, range: SkillRange) => {
 		const diffX = target.x - source.x;
 		const diffY = target.y - source.y;
+		const diffZ = target.z - source.z;
 		const dirX = (diffX / Math.abs(diffX)) || 0;
 		const dirY = (diffY / Math.abs(diffY)) || 0;
+		const dirZ = (diffZ / Math.abs(diffZ)) || 0;
 		const area: Tile[] = [];
 
 		for (let i = 1; i <= range; i++ ) {
-			const tile = getTile(source.x + i * dirX, source.y + i * dirY);
+			const tile = getTile(source.x + i * dirX, source.y + i * dirY, source.z + i * dirZ);
 
 			if (tile) {
 				area.push(tile);
@@ -46,33 +49,24 @@ const areaTable: IAreaTable = {
 		}
 		return area;
 	},
-	CROSS:      (source: Tile, target: Tile) => [target, ...target.getSideTiles()],
 	NEIGHBOURS: (source: Tile, target: Tile) => source.getNeighbours(),
 	AOE3x3:     (source: Tile, target: Tile) => [target, ...target.getNeighbours()]
 };
 
 // targetable circle area
 const getCircleArea = (center: Tile, radius: number): Tile[] => {
-	const r2 = radius * radius;
-	const circle: Tile[] = [];
+	const circle: Tile[] = [center];
 
-	// iterate only for 1st quadrant
-	for (let x = -radius; x <= 0; x++) {
-		for (let y = -radius; y <= 0; y++) {
-			if (x * x + y * y <= r2) {
-				// get tiles for all 4 quadrants
-				const tiles = [
-					getTile(center.x + x, center.y + y),
-					getTile(center.x - x, center.y + y),
-					getTile(center.x + x, center.y - y),
-					getTile(center.x - x, center.y - y)
-				];
+	for (let i = 1; i <= radius; i++) {
+		const neighbours = circle
+			.map(tile => tile.getNeighbours())
+			.reduce((a, b) => a.concat(b));
 
-				for (const tile of tiles) {
-					if (tile && -1 === circle.indexOf(tile)) {
-						circle.push(tile);
-					}
-				}
+		const unique = getUniqueItems(neighbours);
+
+		for (const tile of unique) {
+			if (-1 === circle.indexOf(tile)) {
+				circle.push(tile);
 			}
 		}
 	}
@@ -168,6 +162,11 @@ class Skill implements ISkillData {
 		// apply hit-scan filter
 		if (hitScan) {
 			targetable = getVisible(targetable, source, hitScanObstacles);
+		}
+
+		if ('ENEMY' === target) {
+			// remove source
+			targetable = targetable.filter(tile => tile !== source);
 		}
 		return targetable;
 	}

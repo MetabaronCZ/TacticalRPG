@@ -82,7 +82,7 @@ const wield2HSkills: { [id in Wield2HWeaponSkillID]: ISkillData; } = {
 		apCost: 4,
 		type: 'ACTIVE',
 		range: 1,
-		area: 'CROSS',
+		area: 'NEIGHBOURS',
 		target: 'ENEMY',
 		physical: 0.5,
 		magical: 0,

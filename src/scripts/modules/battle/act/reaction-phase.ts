@@ -276,7 +276,7 @@ class ReactionPhase extends ActPhase<IReactionPhaseState, IReactionPhaseRecord> 
 		this.info = txtEvasion;
 
 		const obstacles = characters.map(char => char.position);
-		reaction.evasible = reactor.position.getSideTiles(obstacles);
+		reaction.evasible = reactor.position.getNeighbours(obstacles);
 
 		this.onEvent('REACTION_EVADING');
 	}

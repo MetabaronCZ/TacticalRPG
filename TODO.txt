@@ -6,12 +6,19 @@ BUG
 
 TODO
 ----------------------------------------------------------------------------------------------------------
->>	AICharacter: pohyb/akce podle melee / ranged / support role
+--	hot-reload:
+	- https://thoughtbot.com/blog/setting-up-webpack-for-react-and-hot-module-replacement
+	- https://stackoverflow.com/questions/38089785/webpack-watch-vs-hot-whats-the-difference
+	- https://github.com/webpack/webpack-with-common-libs/blob/master/gulpfile.js
+--	animace pohybu na canvasu
+--	AICharacter: pohyb/akce podle melee / ranged / support role
 	- vybira AIPlayer
 	- prioritizace skillu (healing role -> Revive)
 --	AICharacter: pokud vybrana cesta nekonci na Tile, ze ktereho se da utocit, skoncit na posledni utocne pozici
-??	prejit na HEXA-grid (vytvorit jako SVG)
-	- https://www.redblobgames.com/grids/hexagons/
+--	ikony pro:
+	--	Weapon.type
+	--	Armor.type
+	--	Skill.element
 ??	Counter reaction skill >> bude to mainHand weapon Attack skill
 ??	pasivni skilly
 	--	DARK_AURA by mela delat 50% damage reflection (do vzdalenosti SkillArea)

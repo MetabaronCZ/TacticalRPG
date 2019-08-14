@@ -20,6 +20,8 @@ import FormInput from 'ui/common/FormInput';
 import FormSelect from 'ui/common/FormSelect';
 import FormSelectItem from 'ui/common/FormSelectItem';
 
+import PartyPreview from 'ui/party-creation/PartyPreview';
+
 interface IPartyCreationUIProps {
 	readonly party?: PartyData;
 	readonly characters: IndexableList<CharacterData>;
@@ -52,49 +54,54 @@ class PartyCreationUI extends React.Component<IPartyCreationUIProps> {
 		const { characters } = this.props;
 		const { party, validation } = this.form.state;
 		const canCreateParty = characters.data.length > 0;
+		const preview = party.slots.map(id => id ? this.props.characters.getById(id) : null);
 
 		return (
-			<Form onSubmit={this.onSubmit}>
-				{!!validation.errors.slots && (
-					<p className="ErrorBox">
-						{validation.errors.slots}
-					</p>
-				)}
+			<div>
+				<PartyPreview slots={preview} />
 
-				{canCreateParty
-					? (
-						<React.Fragment>
-							<FormField fieldId="f-name" label="Name" error={validation.errors.name}>
-								<FormInput
-									id="f-name"
-									value={party.name}
-									placeholder="Type party name ..."
-									name="name"
-									maxLength={maxPartyNameLength}
-									isInvalid={!!validation.errors.name}
-									onChange={this.onChange('name', null)}
-								/>
-							</FormField>
-
-							{party.slots.map(this.renderPartyItem)}
-						</React.Fragment>
-					)
-					: (
-						<p className="Paragraph">
-							You must <Link href={getPath('CHARACTER_CREATE')}>create a character</Link> to form a party.
+				<Form onSubmit={this.onSubmit}>
+					{!!validation.errors.slots && (
+						<p className="ErrorBox">
+							{validation.errors.slots}
 						</p>
-					)
-				}
-				<Separator />
-
-				<ButtonRow>
-					<Button ico="back" text="Back" onClick={this.props.onBack} />
-
-					{(canCreateParty && validation.isValid) && (
-						<Button type="submit" ico="success" color="green" text="Save" />
 					)}
-				</ButtonRow>
-			</Form>
+
+					{canCreateParty
+						? (
+							<React.Fragment>
+								<FormField fieldId="f-name" label="Name" error={validation.errors.name}>
+									<FormInput
+										id="f-name"
+										value={party.name}
+										placeholder="Type party name ..."
+										name="name"
+										maxLength={maxPartyNameLength}
+										isInvalid={!!validation.errors.name}
+										onChange={this.onChange('name', null)}
+									/>
+								</FormField>
+
+								{party.slots.map(this.renderPartyItem)}
+							</React.Fragment>
+						)
+						: (
+							<p className="Paragraph">
+								You must <Link href={getPath('CHARACTER_CREATE')}>create a character</Link> to form a party.
+							</p>
+						)
+					}
+					<Separator />
+
+					<ButtonRow>
+						<Button ico="back" text="Back" onClick={this.props.onBack} />
+
+						{(canCreateParty && validation.isValid) && (
+							<Button type="submit" ico="success" color="green" text="Save" />
+						)}
+					</ButtonRow>
+				</Form>
+			</div>
 		);
 	}
 

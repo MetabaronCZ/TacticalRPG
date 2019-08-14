@@ -1,3 +1,6 @@
+export const PI = Math.PI;
+export const sqrt3 = Math.sqrt(3);
+
 // get random integer in interval <from, to> (including "from", "to")
 export const randomNumberBetween = (from: number, to: number): number => {
 	if (to < from) {

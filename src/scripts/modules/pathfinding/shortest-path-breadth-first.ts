@@ -17,7 +17,7 @@ export const getShortestPath = (start: Tile, target: Tile, obstacles: Tile[]) =>
 		if (curr === target) {
 			break;
 		}
-		const neighbours = curr.getSideTiles(obstacles);
+		const neighbours = curr.getNeighbours(obstacles);
 
 		for (const n of neighbours) {
 			if (!graph[n.id]) {

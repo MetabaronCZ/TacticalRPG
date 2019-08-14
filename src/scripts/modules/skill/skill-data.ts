@@ -9,7 +9,7 @@ export type Ultimate = 'ULTIMATE';
 
 export type SkillID = MiscSkillID | WeaponSkillID | MagicSkillID | DynamicSkillID;
 export type SkillType = 'ACTIVE' | 'REACTIVE' | 'PASSIVE';
-export type SkillArea = 'SINGLE' | 'LINE' | 'CROSS' | 'AOE3x3' | 'NEIGHBOURS';
+export type SkillArea = 'SINGLE' | 'LINE'  | 'NEIGHBOURS' | 'AOE3x3';
 export type SkillElement = 'NONE' | 'FIRE' | 'ICE' | 'WIND' | 'EARTH' | 'THUNDER' | 'WATER' | 'DARK' | 'HOLY' | 'PSYCHIC';
 export type SkillTarget = 'NONE' | 'ANY' | 'SELF' | 'ALLY' | 'ENEMY';
 export type SkillRange = 0 | 1 | 2 | 4 | Ultimate;

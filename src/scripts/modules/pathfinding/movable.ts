@@ -26,10 +26,10 @@ export const getMovableTiles = (start: Tile, obstacles: Tile[], max: number): IM
 		if (!curr) {
 			continue;
 		}
-		const neighbours = curr.getSideTiles(obstacles);
+		const neighbours = curr.getNeighbours(obstacles);
 
 		for (const n of neighbours) {
-			const heightCost = Math.abs(curr.z - n.z);
+			const heightCost = Math.abs(curr.h - n.h);
 
 			if (heightCost > maxJumpHeight) {
 				continue;

@@ -26,7 +26,7 @@ const Order: React.SFC<IOrderProps> = ({ actor, characters, players }) => (
 			return (
 				<li className={`Order-item Order-item--type${charPlayer} is-${charState}`} key={i}>
 					<div className="Order-item-title">
-						{i + 1}. {char.name}
+						{char.name}
 					</div>
 
 					<div className="Order-item-info">

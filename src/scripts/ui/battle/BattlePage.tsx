@@ -9,6 +9,8 @@ import BattleUI from 'ui/battle/BattleUI';
 
 import Summary from 'modules/battle/summary';
 import Engine, { IEngineState } from 'modules/battle/engine';
+import Tile from 'modules/geometry/tile';
+import Command from 'modules/battle/command';
 
 type IProps = RouteComponentProps<any> & IContext;
 
@@ -74,19 +76,32 @@ class BattlePageContainer extends React.Component<IProps, IState> {
 	public render() {
 		const { history } = this.props;
 		const { engine: engineState } = this.state;
-
-		const engine = this.engine;
-		const onTileSelect = engine.selectTile.bind(engine);
-		const onCommandSelect = engine.selectCommand.bind(engine);
-
 		return (
 			<BattleUI
 				engineState={engineState}
-				onTileSelect={onTileSelect}
-				onCommandSelect={onCommandSelect}
+				onTileSelect={this.onTileSelect}
+				onCommandSelect={this.onCommandSelect}
 				onExit={onExit(history)}
 			/>
 		);
+	}
+
+	private onTileSelect = (tile: Tile) => {
+		const { act } = this.state.engine;
+		const actingChar = act ? act.actingCharacter : null;
+
+		if (actingChar && !actingChar.isAI()) {
+			this.engine.selectTile(tile);
+		}
+	}
+
+	private onCommandSelect = (command: Command) => {
+		const { act } = this.state.engine;
+		const actingChar = act ? act.actingCharacter : null;
+
+		if (actingChar && !actingChar.isAI()) {
+			this.engine.selectCommand(command);
+		}
 	}
 }
 

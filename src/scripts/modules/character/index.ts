@@ -7,6 +7,7 @@ import {
 	conditionCritical, conditionDanger
 } from 'data/game-config';
 
+import { Color } from 'modules/color';
 import Tile from 'modules/geometry/tile';
 import AIPlayer from 'modules/ai/player';
 import Player from 'modules/battle/player';
@@ -21,6 +22,7 @@ import { IOnBattleInfo } from 'modules/battle/battle-info';
 import { IWeaponData } from 'modules/equipment/weapon-data';
 import { IArchetypeData } from 'modules/character/archetype';
 import BaseAttributes from 'modules/character/base-attributes';
+import CharacterSprite from 'modules/graphics/CharacterSprite';
 import { SkillID, SkillCooldown } from 'modules/skill/skill-data';
 import { StatusEffectID, IOnStatus } from 'modules/battle/status-effect';
 import { CharacterData, ICharacterData } from 'modules/character-creation/character-data';
@@ -52,6 +54,8 @@ class Character {
 	public direction: DirectionID;
 	public cooldowns: ISkillCooldowns = {}; // skill cooldowns
 
+	private sprite: CharacterSprite;
+
 	private dead: boolean = false;
 
 	constructor(character: CharacterData, position: Tile, direction: DirectionID, player: Player) {
@@ -76,6 +80,8 @@ class Character {
 		this.position = position;
 		this.direction = direction;
 		this.status = new Status();
+
+		this.sprite = new CharacterSprite(this);
 	}
 
 	public isDead(): boolean {
@@ -97,7 +103,7 @@ class Character {
 	}
 
 	public canEvade(obstacles: Tile[] = []): boolean {
-		return this.position.getSideTiles(obstacles).length > 0;
+		return this.position.getNeighbours(obstacles).length > 0;
 	}
 
 	public getCondition(): CharacterCondition {
@@ -251,6 +257,10 @@ class Character {
 			this.attributes.set('AP', this.attributes.AP - cost.AP);
 			this.attributes.set('MP', this.attributes.MP - cost.MP);
 		}
+	}
+
+	public render(ctx: CanvasRenderingContext2D, x: number, y: number, size: number, background: Color, border: Color) {
+		this.sprite.render(ctx, x, y, size, background, border);
 	}
 }
 

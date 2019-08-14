@@ -1,14 +1,17 @@
 import React from 'react';
 
 import { firstLetterToUpper } from 'core/string';
-import { gridSize } from 'data/game-config';
 import { IBattleInfo, BattleInfoType } from 'modules/battle/battle-info';
 
-interface IGridBattleInfo {
-	readonly info: IBattleInfo[];
+export interface IBattleInfoCoords {
+	info: IBattleInfo;
+	x: number;
+	y: number;
 }
 
-const itemSize = 100 / gridSize;
+interface IProps {
+	readonly info: IBattleInfoCoords[];
+}
 
 const getVariant = (type: BattleInfoType): string => {
 	switch (type) {
@@ -25,33 +28,32 @@ const getVariant = (type: BattleInfoType): string => {
 	}
 };
 
-const GridBattleInfo: React.SFC<IGridBattleInfo> = ({ info }) => {
-	return (
-		<ul className="GridBattleInfo">
-			{info.map(({ text, type, element, position }, i) => {
-				const variant = getVariant(type);
-				const elmText = element || 'PHYSICAL';
+const GridBattleInfo: React.SFC<IProps> = ({ info }) => (
+	<ul className="GridBattleInfo">
+		{info.map((item, i) => {
+			const { text, type, element } = item.info;
 
-				if ('DAMAGE' === type) {
-					text = `${text} (${firstLetterToUpper(elmText.toLowerCase())})`;
-				}
-				return (
-					<li
-						className={`GridBattleInfo-item GridBattleInfo-item--${variant}`}
-						key={i}
-						style={
-							{
-								top: `${position.y * itemSize}%`,
-								left: `${position.x * itemSize}%`,
-							}
-						}
-					>
-						{text}
-					</li>
-				);
-			})}
-		</ul>
-	);
-};
+			const variant = getVariant(type);
+			const elmText = element || 'PHYSICAL';
+			let message = text;
+
+			if ('DAMAGE' === type) {
+				message = `${message} (${firstLetterToUpper(elmText.toLowerCase())})`;
+			}
+			return (
+				<li
+					className={`GridBattleInfo-item GridBattleInfo-item--${variant}`}
+					key={i}
+					style={{
+						top: item.y + '%',
+						left: item.x + '%'
+					}}
+				>
+					{message}
+				</li>
+			);
+		})}
+	</ul>
+);
 
 export default GridBattleInfo;

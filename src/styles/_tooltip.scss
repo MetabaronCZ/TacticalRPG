@@ -1,10 +1,9 @@
 .Tooltip {
 	@extend .u-text-default;
 	position: absolute;
-	bottom: 100%;
 	z-index: 100;
 	padding: $vu 2*$vu;
-	margin-bottom: $vu;
+	margin-top: (-2*$vu);
 	background: $color-black;
 	border-radius: $border-radius-default;
 	text-align: left;
@@ -12,12 +11,12 @@
 
 	&::after {
 		position: absolute;
-		top: 100%;
-		left: $vu;
+		top: $vu;
+		left: (-2*$vu);
 		content: " ";
 		width: 0;
 		height: 0;
 		border: $vu solid transparent;
-		border-top-color: $color-black;
+		border-right-color: $color-black;
 	}
 }

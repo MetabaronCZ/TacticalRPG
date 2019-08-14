@@ -51,7 +51,7 @@ class DirectPhase extends ActPhase<IDirectPhaseState, IDirectPhaseRecord> {
 		const pos = actor.position;
 		const dir = actor.direction;
 
-		this.directable = pos.getSideTiles(),
+		this.directable = pos.getNeighbours(),
 		this.directTarget = findTileFrom(pos, dir);
 
 		if (!actor.canAct()) {

@@ -6,13 +6,12 @@ import { IEngineState } from 'modules/battle/engine';
 
 import Button from 'ui/common/Button';
 
-import Grid from 'ui/battle/Grid';
 import Order from 'ui/battle/Order';
 import ActorUI from 'ui/battle/ActorUI';
 import TargetUI from 'ui/battle/TargetUI';
 import ReactorUI from 'ui/battle/ReactorUI';
-import GridLegend from 'ui/battle/GridLegend';
-import GridCoordinates from 'ui/battle/GridCoordinates';
+
+import HexaGrid from 'ui/battle/HexaGrid';
 
 interface IBattleUIProps {
 	readonly engineState: IEngineState;
@@ -45,16 +44,12 @@ const BattleUI: React.SFC<IBattleUIProps> = ({ engineState, onTileSelect, onComm
 				</div>
 
 				<div className="BattleUI-layout-column BattleUI-layout-column--grid">
-					<GridCoordinates>
-						<Grid
-							act={act}
-							characters={characters}
-							battleInfo={battleInfo}
-							onTileSelect={onTileSelect}
-						/>
-					</GridCoordinates>
-
-					<GridLegend act={act} players={players} />
+					<HexaGrid
+						act={act}
+						characters={characters}
+						battleInfo={battleInfo}
+						onTileSelect={onTileSelect}
+					/>
 				</div>
 
 				<div className="BattleUI-layout-column BattleUI-layout-column--reactor">

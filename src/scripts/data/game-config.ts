@@ -2,7 +2,7 @@
 export const isLoggingEnabled = true;
 
 // grid
-export const gridSize = 12;
+export const gridSize = 8;
 export const blockSize = 64;
 
 // engine
@@ -19,7 +19,7 @@ export const maxOrderSize = 20; // maximum size of ordered character array
 export const maxCharacterNameLength = 16;
 export const characterCTLimit = 100;
 export const maxJumpHeight = 1;
-export const characterBBox = 0.5; // character bounding box radius
+export const characterBBox = Math.sqrt(3) / 2; // character bounding box radius
 export const mpRegen = 0.1; // character mana regenerated fraction
 export const conditionDanger = 0.65;
 export const conditionCritical = 0.35;

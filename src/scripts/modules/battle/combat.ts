@@ -1,13 +1,18 @@
+import { PI } from 'core/number';
+
 import Skills from 'data/skills';
 import Weapons from 'data/weapons';
 import * as DMG from 'data/combat';
 
 import Skill from 'modules/skill';
 import Character from 'modules/character';
-import { Vector2D } from 'modules/geometry/vector';
+import Vector from 'modules/geometry/vector';
 import StatusEffect from 'modules/battle/status-effect';
 import { ElementAffinityTable, Affinity } from 'modules/skill/affinity';
 import { SkillID, SkillElement, ISkillData } from 'modules/skill/skill-data';
+
+const precision = 10 ** 10; // angle precision modifier
+const backAttackAngle = PI / 3; // 60 degrees
 
 interface IBlockValue {
 	readonly physical: number;
@@ -36,10 +41,13 @@ export interface ICombatInfo {
 }
 
 const isBackAttacked = (attacker: Character, defender: Character): boolean => {
-	const attVector = Vector2D.fromTiles(attacker.position, defender.position);
-	const defVector = Vector2D.fromDirection(defender.direction);
+	const attVector = Vector.fromTiles(attacker.position, defender.position);
+	const defVector = Vector.fromDirection(defender.direction);
 	const angle = attVector.getAngle(defVector);
-	return angle < Math.PI / 2;
+
+	// get approximate value (resulting angle is bigger, even if it should be equal PI / 3)
+	const approxAngle = Math.floor(precision * angle) / precision;
+	return approxAngle <= backAttackAngle;
 };
 
 const getAffinity = (attacker: SkillElement, defender: SkillElement): Affinity => {

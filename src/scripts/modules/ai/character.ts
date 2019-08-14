@@ -154,7 +154,7 @@ class AICharacter {
 					if (e.isDead() || e.status.has('DYING')) {
 						return;
 					}
-					const sideTiles = e.position.getSideTiles();
+					const sideTiles = e.position.getNeighbours();
 
 					const paths: Array<ITargetInfo | null> = sideTiles.map(tile => {
 						if (tile.isContained(obstacles)) {
@@ -252,7 +252,7 @@ class AICharacter {
 
 			if ('EVADE' === skill.id) {
 				// get evasible tiles
-				const evasible = char.position.getSideTiles(obstacles);
+				const evasible = char.position.getNeighbours(obstacles);
 
 				if (!evasible.length) {
 					continue;

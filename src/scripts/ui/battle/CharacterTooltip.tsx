@@ -5,18 +5,32 @@ import Character from 'modules/character';
 import BarValue from 'ui/battle/BarValue';
 import ArchetypeIco from 'ui/common/ArchetypeIco';
 
+const offset = 8; // Tooltip triangle size
+
 interface IProps {
+	readonly x: number; // in pct
+	readonly y: number; // in pct
+	readonly size: number; // item size
 	readonly character: Character;
 }
 
-const CharacterTooltip: React.SFC<IProps> = ({ character: char }) => {
+const CharacterTooltip: React.SFC<IProps> = ({ x, y, size, character: char }) => {
 	const { archetype, skillset } = char;
 	const { HP, AP, MP } = char.attributes;
 	const { HP: baseHP, AP: baseAP, MP: baseMP } = char.baseAttributes;
+
 	const status = char.status.get();
 	const sex = Icos[char.sex.id.toLowerCase() as IcoID];
+
 	return (
-		<div className="Tooltip">
+		<div
+			className="Tooltip"
+			style={{
+				left: x + '%',
+				top: y + '%',
+				marginLeft: Math.ceil(size + offset) + 'px'
+			}}
+		>
 			<div>
 				<strong>{char.name}</strong>
 				{' '}

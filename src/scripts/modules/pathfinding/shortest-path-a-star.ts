@@ -28,11 +28,11 @@ export const getShortestPath = (start: Tile, target: Tile, obstacles: Tile[]): T
 		if (curr === target) {
 			break;
 		}
-		let neighbours = curr.getSideTiles(obstacles);
+		let neighbours = curr.getNeighbours(obstacles);
 		neighbours = getRandomized(neighbours);
 
 		for (const n of neighbours) {
-			const heightCost = Math.abs(curr.z - n.z);
+			const heightCost = Math.abs(curr.h - n.h);
 
 			if (heightCost > maxJumpHeight) {
 				continue;

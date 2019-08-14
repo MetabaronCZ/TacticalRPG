@@ -17,7 +17,7 @@ const dummyPlayerConfig = new PlayerData(0, {});
 const dummyPlayer = new Player(dummyPlayerConfig, []);
 
 const getDummyCharacter = (character: CharacterData): Character => {
-	return new Character(character, dummyTile, 'BOTTOM', dummyPlayer);
+	return new Character(character, dummyTile, 'S', dummyPlayer);
 };
 
 interface IProps {

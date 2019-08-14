@@ -40,16 +40,13 @@
 @import "player-ico";
 @import "archetype-ico";
 @import "archetype-selection";
+@import "party-preview";
 @import "character-preview";
 
 // game
 @import "battle/battle-ui";
-@import "battle/grid";
-@import "battle/grid-tiles";
-@import "battle/grid-characters";
+@import "battle/hexa-grid";
 @import "battle/grid-battle-info";
-@import "battle/grid-coordinates";
-@import "battle/grid-legend";
 @import "battle/order";
 @import "battle/bar";
 @import "battle/character-box";
