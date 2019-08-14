@@ -10,6 +10,7 @@ TODO
 	- https://thoughtbot.com/blog/setting-up-webpack-for-react-and-hot-module-replacement
 	- https://stackoverflow.com/questions/38089785/webpack-watch-vs-hot-whats-the-difference
 	- https://github.com/webpack/webpack-with-common-libs/blob/master/gulpfile.js
+--	zmenit UI pro Order
 --	animace pohybu na canvasu
 --	AICharacter: pohyb/akce podle melee / ranged / support role
 	- vybira AIPlayer
