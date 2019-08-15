@@ -32,6 +32,6 @@
 		}
 
 		&.is-active { background-color: $color-black; }
-		&.is-dying { background-color: $color-red-dark; }
+		&.is-dying { color: $color-grey; }
 	}
 }
