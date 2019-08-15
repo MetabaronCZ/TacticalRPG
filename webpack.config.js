@@ -52,7 +52,15 @@ module.exports = env => {
 				{
 					test: /\.[jt]sx?$/,
 					enforce: 'pre',
-					use: ['eslint-loader'],
+					use: [
+						{
+							loader: 'eslint-loader',
+							options: {
+								cache: true,
+								failOnError: true
+							}
+						}
+					],
 					exclude: /node_modules/
 				}
 			]

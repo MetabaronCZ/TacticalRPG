@@ -1,6 +1,5 @@
 const del = require('del');
 const gulp = require('gulp');
-const jest = require('jest');
 const sass = require('gulp-sass');
 const webpack = require('webpack');
 const cssnano = require('cssnano');
@@ -9,7 +8,6 @@ const postcss = require('gulp-postcss');
 const stylelint = require('gulp-stylelint');
 const autoprefixer = require('autoprefixer');
 
-const jestConfig = require('./jest.config.js');
 const webpackConfig = require('./webpack.config.js');
 const cssnanoConfig = { discardComments: { removeAll: true } };
 const stylelintConfig = { reporters: [{ formatter: 'string', console: true }] };
@@ -109,9 +107,6 @@ const taskScripts = cb => {
 	});
 };
 
-// run Jest tests
-const taskTest = () => jest.runCLI(jestConfig, ['./']);
-
 // watch files and perform given tasks
 const taskWatch = cb => {
 	env = 'dev';
@@ -127,7 +122,4 @@ const build = gulp.series(taskClear, taskIndex, taskFonts, taskStylelint, taskSt
 // develop app (set watch before build, because "watch mode" in Webpack)
 const dev = gulp.series(taskWatch, build);
 
-module.exports = {
-	build: gulp.series(build, taskTest),
-	dev
-};
+module.exports = { build, dev };
