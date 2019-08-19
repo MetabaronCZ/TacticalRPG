@@ -26,7 +26,7 @@ class Order {
 			this.order = liveChars;
 			return;
 		}
-		let order: Character[] = [];
+		const order: Character[] = [];
 
 		// serialize characters
 		const chars = liveChars.map(char => {
@@ -42,7 +42,7 @@ class Order {
 			return { CT, SPD, playerOrder, char };
 		});
 
-		while (order.length < maxOrderSize) {
+		main: while (order.length < maxOrderSize) {
 			let act = [];
 
 			// get characters who can act
@@ -68,7 +68,13 @@ class Order {
 			act = act.sort((a, b) => b.CT - a.CT);
 
 			// add acting characters to ordered array
-			order = [...order, ...act.map(a => a.char)];
+			for (const item of act) {
+				if (item.char === order[0]) {
+					// prevent order repeating itself
+					break main;
+				}
+				order.push(item.char);
+			}
 		}
 
 		this.order = order;

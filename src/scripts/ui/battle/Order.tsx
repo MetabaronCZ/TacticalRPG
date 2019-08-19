@@ -25,13 +25,7 @@ const Order: React.SFC<IOrderProps> = ({ actor, characters, players }) => (
 			const charPlayer = players.indexOf(char.player);
 			return (
 				<li className={`Order-item Order-item--type${charPlayer} is-${charState}`} key={i}>
-					<div className="Order-item-title">
-						{char.name}
-					</div>
-
-					<div className="Order-item-info">
-						CT: {char.attributes.CT} | SPD: {char.attributes.SPD}
-					</div>
+					{char.name}
 				</li>
 			);
 		})}

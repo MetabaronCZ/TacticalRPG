@@ -28,9 +28,11 @@ const BattleUI: React.SFC<IBattleUIProps> = ({ engineState, onTileSelect, onComm
 	}
 	return (
 		<div className="BattleUI">
-			<Order actor={act.actor} characters={order} players={players} />
-
 			<div className="BattleUI-layout">
+				<div className="BattleUI-layout-column BattleUI-layout-column--order">
+					<Order actor={act.actor} characters={order} players={players} />
+				</div>
+
 				<div className="BattleUI-layout-column BattleUI-layout-column--actor">
 					{running
 						? <ActorUI act={act} onCommandSelect={onCommandSelect} />

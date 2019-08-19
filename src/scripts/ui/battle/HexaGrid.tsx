@@ -17,6 +17,7 @@ import Canvas from 'ui/common/Canvas';
 import CharacterTooltip from 'ui/battle/CharacterTooltip';
 import GridBattleInfo, { IBattleInfoCoords } from 'ui/battle/GridBattleInfo';
 
+const hoverDelay = 150;
 const tiles = getTiles();
 
 interface IHovered {
@@ -54,6 +55,7 @@ class HexaGrid extends Canvas<IProps, IState> {
 
 	private itemSize = 0;
 	private canvasSize = 0;
+	private timeout = -1; // hovered tooltip timeout ID
 
 	constructor(props: IProps) {
 		super(props);
@@ -91,6 +93,7 @@ class HexaGrid extends Canvas<IProps, IState> {
 					ref={this.canvas}
 					onMouseUp={this.selectTile}
 					onMouseMove={this.hoverTile}
+					onMouseLeave={this.canvasLeave}
 				/>
 				<GridBattleInfo info={info} />
 
@@ -235,8 +238,25 @@ class HexaGrid extends Canvas<IProps, IState> {
 		const hovered = this.getMouseOver(e);
 
 		if (hovered.tile !== current.tile) {
-			this.setState({ hovered });
+			window.clearTimeout(this.timeout);
+
+			this.timeout = window.setTimeout(() => {
+				this.setState({ hovered });
+			}, hoverDelay);
 		}
+	}
+
+	private canvasLeave = (e: React.MouseEvent<HTMLCanvasElement>) => {
+		e.preventDefault();
+
+		// clear tooltip
+		this.setState({
+			hovered: {
+				x: 0,
+				y: 0,
+				tile: null
+			}
+		});
 	}
 }
 

@@ -6,7 +6,6 @@ BUG
 
 TODO
 ----------------------------------------------------------------------------------------------------------
---	zmenit UI pro Order
 --	animace pohybu na canvasu
 --	AICharacter: pohyb/akce podle melee / ranged / support role
 	- vybira AIPlayer

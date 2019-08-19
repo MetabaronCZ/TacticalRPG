@@ -1,11 +1,13 @@
 .BattleUI {
 	@extend .u-text-default, .u-weight-regular;
+	height: 100%;
+	padding: 5*$vu;
 	color: $color-yellow;
 	text-align: left;
-	padding: 5*$vu;
 
 	&-layout {
 		display: flex;
+		height: 100%;
 		justify-content: center;
 
 		&-column {
@@ -14,13 +16,16 @@
 			}
 
 			&.BattleUI-layout-column--grid {
-				max-width: 780px;
 				flex: 1 0 auto;
 				padding: 0 20px;
 			}
 
 			&.BattleUI-layout-column--reactor {
 				flex: 0 1 400px;
+			}
+
+			&.BattleUI-layout-column--order {
+				flex: 0 1 260px;
 			}
 		}
 	}

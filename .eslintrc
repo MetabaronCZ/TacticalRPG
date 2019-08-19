@@ -8,11 +8,6 @@
         "jest": true,
         "es6": true
     },
-    "parserOptions": {
-        "ecmaFeatures": {
-            "jsx": true
-        }
-    },
 	"rules":  {
         "space-infix-ops": ["error"],
 		"arrow-parens": ["error", "as-needed"],
@@ -24,6 +19,11 @@
         {
             "files": ["**/*.ts", "**/*.tsx"],
             "parser": "@typescript-eslint/parser",
+            "parserOptions": {
+                "ecmaFeatures": {
+                    "jsx": true
+                }
+            },
             "settings": {
                 "react": {
                     "version": "detect",
@@ -40,6 +40,8 @@
             "rules": {
                 "jsx-quotes": ["error", "prefer-double"],
                 "react/prop-types": ["off"],
+                "react/jsx-equals-spacing": ["error", "never"],
+                "react/jsx-indent": ["error", "tab", { "checkAttributes": true, "indentLogicalExpressions": true }],
                 "react/no-unescaped-entities": ["off"],
                 "@typescript-eslint/no-explicit-any": ["off"],
                 "@typescript-eslint/interface-name-prefix": ["error", "always"],
