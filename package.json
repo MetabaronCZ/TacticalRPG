@@ -18,10 +18,10 @@
     "@babel/preset-react": "^7.0.0",
     "@types/enzyme": "^3.10.3",
     "@types/history": "^4.7.2",
-    "@types/jest": "^24.0.17",
+    "@types/jest": "^24.0.18",
     "@types/node": "^10.14.15",
     "@types/react": "^16.9.2",
-    "@types/react-dom": "^16.8.5",
+    "@types/react-dom": "^16.9.0",
     "@types/react-router": "^5.0.3",
     "@types/react-router-dom": "^4.3.4",
     "@types/uuid": "^3.4.5",
@@ -33,11 +33,11 @@
     "del": "^4.1.1",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
-    "eslint": "^6.1.0",
+    "eslint": "^6.2.1",
     "eslint-loader": "^2.2.1",
     "eslint-plugin-react": "^7.14.3",
     "gulp": "^4.0.2",
-    "gulp-changed": "^4.0.0",
+    "gulp-changed": "^4.0.1",
     "gulp-postcss": "^8.0.0",
     "gulp-sass": "^4.0.2",
     "gulp-stylelint": "^9.0.0",
@@ -58,6 +58,6 @@
     "react-router": "^5.0.1",
     "react-router-dom": "^5.0.1",
     "tslib": "^1.10.0",
-    "uuid": "^3.3.2"
+    "uuid": "^3.3.3"
   }
 }
