@@ -11,6 +11,7 @@ import Character from 'modules/character';
 import Command from 'modules/battle/command';
 import ActPhase from 'modules/battle/act/phase';
 import { IOnActPhaseEvent } from 'modules/battle/act';
+import MoveAnimation from 'modules/battle/act/move-animation';
 
 const txtIdle = 'Move on grid or select a command:';
 const txtMoving = 'Moving ...';
@@ -150,21 +151,32 @@ class MovePhase extends ActPhase<IMovePhaseState, IMovePhaseRecord> {
 
 		const timing = Array(movePath.length).fill(moveAnimDuration);
 
-		const anim = new Animation(timing, step => {
+		const anim = new Animation(timing, true, (step, next) => {
+			// set direction to new tile
 			const newPos = movePath[step.number];
-			const newDir = resolveDirection(actor.position, newPos);
+			actor.direction = resolveDirection(actor.position, newPos);
 
-			// update actor
-			actor.position = newPos;
-			actor.direction = newDir;
-			actor.attributes.set('AP', this.initialAP - costMap[newPos.id]);
+			// animate tile-tile movement
+			const moveAnim = new MoveAnimation(
+				actor,
+				newPos,
+				() => this.onEvent('MOVE_ANIMATION'),
+				() => {
+					actor.attributes.set('AP', this.initialAP - costMap[newPos.id]);
 
-			this.onEvent('MOVE_ANIMATION');
+					if (step.isLast) {
+						// finalize animation
+						this.phase = 'SUSPENDED';
+						this.start();
 
-			if (step.isLast) {
-				this.phase = 'SUSPENDED';
-				this.start();
-			}
+					} else {
+						// run next move animation part
+						next();
+					}
+				}
+			);
+
+			moveAnim.start();
 		});
 
 		anim.start();

@@ -9,6 +9,7 @@ import { IOnActPhaseEvent } from 'modules/battle/act';
 import { StatusEffectID } from 'modules/battle/status-effect';
 import { IEffectTargetData } from 'modules/battle/act/command-phase';
 import { getContinueCommand } from 'modules/battle/commands';
+import MoveAnimation from 'modules/battle/act/move-animation';
 
 const txtIdle = 'Select reaction:';
 const txtEvasion = 'Select evasion target on grid.';
@@ -307,10 +308,19 @@ class ReactionPhase extends ActPhase<IReactionPhaseState, IReactionPhaseRecord> 
 		if (newAp < 0) {
 			throw new Error('Could not evade: could not afford to use skill');
 		}
-		reactor.position = tile;
-		reactor.attributes.set('AP', newAp);
 
-		this.finish(reaction);
+		// animate evasion
+		const moveAnim = new MoveAnimation(
+			reactor,
+			tile,
+			() => this.onEvent('REACTION_EVADING'),
+			() => {
+				reactor.attributes.set('AP', newAp);
+				this.finish(reaction);
+			}
+		);
+
+		moveAnim.start();
 	}
 
 	private finish(reaction: IReaction): void {

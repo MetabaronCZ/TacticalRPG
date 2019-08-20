@@ -6,14 +6,14 @@ describe('core.Animation', () => {
 	describe('#start()', () => {
 		test('it throws if invalid timing given', () => {
 			const fn = (): Animation => {
-				return new Animation([], (): void => void(0));
+				return new Animation([], false, () => void(0));
 			};
 			expect(fn).toThrow();
 		});
 
 		test('it calls animation step handler only after start method call', () => {
 			const fn = jest.fn();
-			const anim = new Animation([0], fn);
+			const anim = new Animation([0], false, fn);
 
 			jest.runAllTimers();
 			expect(fn).not.toBeCalled();
@@ -32,7 +32,7 @@ describe('core.Animation', () => {
 
 			for (const d of data) {
 				const fn = jest.fn();
-				const anim = new Animation(d, fn);
+				const anim = new Animation(d, false, fn);
 				expect(fn).not.toBeCalled();
 
 				anim.start();
@@ -45,7 +45,7 @@ describe('core.Animation', () => {
 			const data = [50, 0, 10, 35, 100];
 			const steps: IAnimationStep[] = [];
 
-			const anim = new Animation(data, (step): void => {
+			const anim = new Animation(data, false, step => {
 				steps.push(step);
 			});
 
@@ -61,6 +61,31 @@ describe('core.Animation', () => {
 				expect(step.isFirst).toEqual(0 === s);
 				expect(step.isLast).toEqual(data.length - 1 === s);
 			});
+		});
+
+		test('it can run asynchronously', () => {
+			const data = [50, 0, 10, 35, 100];
+			const steps: IAnimationStep[] = [];
+
+			const anim = new Animation(data, true, (step, next) => {
+				steps.push(step);
+				next();
+			});
+
+			anim.start();
+			expect(steps.length).toEqual(data.length);
+		});
+
+		test('it does not run correctly if no callback called when async', () => {
+			const data = [50, 0, 10, 35, 100];
+			const steps: IAnimationStep[] = [];
+
+			const anim = new Animation(data, true, step => {
+				steps.push(step);
+			});
+
+			anim.start();
+			expect(steps.length).toEqual(1); // only first step called
 		});
 	});
 });

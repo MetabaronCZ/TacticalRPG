@@ -79,7 +79,7 @@ class CombatPhase extends ActPhase<ICombatPhaseState, ICombatPhaseRecord> {
 			});
 		}
 
-		const skillAnim = new Animation(timing, step => {
+		const skillAnim = new Animation(timing, false, step => {
 			const info: IBattleInfo[] = [];
 
 			targets.forEach((target, t) => {
@@ -115,7 +115,7 @@ class CombatPhase extends ActPhase<ICombatPhaseState, ICombatPhaseRecord> {
 			if (info.length) {
 				const infoTiming = info.map(() => randomNumberBetween(250, 350));
 
-				const infoAnim = new Animation(infoTiming, infoStep => {
+				const infoAnim = new Animation(infoTiming, false, infoStep => {
 					const i = info[infoStep.number];
 					this.onEvent('BATTLE_INFO', i);
 				});
