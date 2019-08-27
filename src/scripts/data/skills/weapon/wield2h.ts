@@ -9,6 +9,7 @@ const wield2HSkills: { [id in Wield2HWeaponSkillID]: ISkillData; } = {
 		range: 2,
 		area: 'LINE',
 		target: 'ENEMY',
+		weapon: 'SPEAR',
 		hitScan: true,
 		physical: 1,
 		magical: 0
@@ -20,6 +21,7 @@ const wield2HSkills: { [id in Wield2HWeaponSkillID]: ISkillData; } = {
 		range: 2,
 		area: 'LINE',
 		target: 'ENEMY',
+		weapon: 'SPEAR',
 		hitScan: true,
 		cooldown: 1,
 		physical: 1,
@@ -32,6 +34,7 @@ const wield2HSkills: { [id in Wield2HWeaponSkillID]: ISkillData; } = {
 		range: 1,
 		area: 'SINGLE',
 		target: 'ENEMY',
+		weapon: 'SWORD_2H',
 		physical: 1,
 		magical: 0
 	},
@@ -42,6 +45,7 @@ const wield2HSkills: { [id in Wield2HWeaponSkillID]: ISkillData; } = {
 		range: 1,
 		area: 'NEIGHBOURS',
 		target: 'ENEMY',
+		weapon: 'SWORD_2H',
 		physical: 0.5,
 		magical: 0,
 		cooldown: 1
@@ -53,6 +57,7 @@ const wield2HSkills: { [id in Wield2HWeaponSkillID]: ISkillData; } = {
 		range: 1,
 		area: 'SINGLE',
 		target: 'ENEMY',
+		weapon: 'AXE_2H',
 		physical: 1,
 		magical: 0
 	},
@@ -63,6 +68,7 @@ const wield2HSkills: { [id in Wield2HWeaponSkillID]: ISkillData; } = {
 		range: 1,
 		area: 'NEIGHBOURS',
 		target: 'ENEMY',
+		weapon: 'AXE_2H',
 		physical: 0.5,
 		magical: 0,
 		cooldown: 1
@@ -74,6 +80,7 @@ const wield2HSkills: { [id in Wield2HWeaponSkillID]: ISkillData; } = {
 		range: 1,
 		area: 'SINGLE',
 		target: 'ENEMY',
+		weapon: 'MACE_2H',
 		physical: 1,
 		magical: 0
 	},
@@ -84,6 +91,7 @@ const wield2HSkills: { [id in Wield2HWeaponSkillID]: ISkillData; } = {
 		range: 1,
 		area: 'NEIGHBOURS',
 		target: 'ENEMY',
+		weapon: 'MACE_2H',
 		physical: 0.5,
 		magical: 0,
 		cooldown: 1

@@ -9,6 +9,7 @@ const smallSkills: { [id in SmallWeaponSkillID]: ISkillData; } = {
 		range: 1,
 		area: 'SINGLE',
 		target: 'ENEMY',
+		weapon: 'FISTS',
 		physical: 1,
 		magical: 0
 	},
@@ -19,6 +20,7 @@ const smallSkills: { [id in SmallWeaponSkillID]: ISkillData; } = {
 		range: 1,
 		area: 'SINGLE',
 		target: 'ENEMY',
+		weapon: 'FISTS',
 		physical: 0.5,
 		magical: 0,
 		status: ['DISARM'],
@@ -31,6 +33,7 @@ const smallSkills: { [id in SmallWeaponSkillID]: ISkillData; } = {
 		range: 1,
 		area: 'SINGLE',
 		target: 'ENEMY',
+		weapon: 'DAGGER',
 		physical: 1,
 		magical: 0
 	},
@@ -41,6 +44,7 @@ const smallSkills: { [id in SmallWeaponSkillID]: ISkillData; } = {
 		range: 1,
 		area: 'SINGLE',
 		target: 'ENEMY',
+		weapon: 'DAGGER',
 		physical: 2,
 		magical: 0,
 		cooldown: 1

@@ -1,4 +1,6 @@
 import React, { SyntheticEvent } from 'react';
+
+import CommandTitle from 'ui/battle/CommandTitle';
 import Command, { formatCost } from 'modules/battle/command';
 
 type IOnSelect = (command: Command) => void;
@@ -52,9 +54,10 @@ const Commands: React.SFC<IProps> = ({ commands, onSelect }) => {
 					default:
 						// do nothing
 				}
+				const key = `${command.title}-${command.skills.map(skill => skill.id).join('-')}`;
 
 				return (
-					<li className="Commands-item" key={command.title}>
+					<li className="Commands-item" key={key}>
 						<button
 							className={`Command ${true !== usable ? 'is-disabled' : ''}`}
 							type="button"
@@ -62,7 +65,7 @@ const Commands: React.SFC<IProps> = ({ commands, onSelect }) => {
 							onClick={onClick(command, i)}
 						>
 							<span className="Command-title">
-								{command.title}
+								<CommandTitle command={command} />
 							</span>
 
 							<span className="Command-cost">

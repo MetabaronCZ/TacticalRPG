@@ -11,8 +11,8 @@
 		justify-content: center;
 
 		&-column {
-			&.BattleUI-layout-column--actor {
-				flex: 0 1 400px;
+			&.BattleUI-layout-column--character {
+				flex: 0 1 320px;
 			}
 
 			&.BattleUI-layout-column--grid {
@@ -20,12 +20,8 @@
 				padding: 0 20px;
 			}
 
-			&.BattleUI-layout-column--reactor {
-				flex: 0 1 400px;
-			}
-
 			&.BattleUI-layout-column--order {
-				flex: 0 1 260px;
+				flex: 0 1 300px;
 			}
 		}
 	}

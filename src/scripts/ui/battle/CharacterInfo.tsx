@@ -1,35 +1,37 @@
 import React from 'react';
 
-import { Icos, IcoID } from 'data/icos';
 import Character from 'modules/character';
 
-import ArchetypeIco from 'ui/common/ArchetypeIco';
+import { formatCharacter } from 'ui/format';
 import AttributeInfo from 'ui/battle/AttributeInfo';
+import { CharacterData } from 'modules/character-creation/character-data';
 
 interface IProps {
 	readonly character: Character;
 }
 
 const CharactertInfo: React.SFC<IProps> = ({ character: char }) => {
-	const { archetype, sex, skillset, mainHand, offHand, armor, status } = char;
-	const { HP, AP, MP } = char.attributes;
 	const { HP: baseHP, AP: baseAP, MP: baseMP } = char.baseAttributes;
-	const st = status.get();
+	const { HP, AP, MP } = char.attributes;
+	const st = char.status.get();
+
+	const data = new CharacterData(char.data);
+
 	return (
 		<React.Fragment>
 			<h1 className="Heading">
-				{char.name}
-			</h1>
+				<div className="Layout">
+					<div className="Layout-row">
+						<div className="Layout-column">
+							{char.name}
+						</div>
 
-			<p className="Paragraph">
-				{Icos[sex.id.toLowerCase() as IcoID]}
-				{' '}
-				<ArchetypeIco archetype={archetype.id} />
-				{' '}
-				{archetype.title}{archetype.type.M ? ' (' + skillset.title + ')' : ''}
-				<br />
-				{mainHand.title}{'NONE' !== offHand.id ? ' + ' + offHand.title : ''} | {armor.title}
-			</p>
+						<div className="Layout-column u-align-right">
+							{formatCharacter(data)}
+						</div>
+					</div>
+				</div>
+			</h1>
 
 			<AttributeInfo label="HP" color="green" value={HP} max={baseHP} />
 			<AttributeInfo label="MP" color="blue" value={MP} max={baseMP} disabled={baseMP <= 0} />

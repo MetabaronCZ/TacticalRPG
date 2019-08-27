@@ -10,6 +10,9 @@ import Player from 'modules/battle/player';
 import { PlayerData } from 'modules/battle-configuration/player-data';
 import { CharacterData } from 'modules/character-creation/character-data';
 
+import ArmorIco from 'ui/common/ArmorIco';
+import WeaponIco from 'ui/common/WeaponIco';
+import ElementIco from 'ui/common/ElementIco';
 import ArchetypeIco from 'ui/common/ArchetypeIco';
 
 const dummyTile = getTiles()[0];
@@ -49,9 +52,7 @@ const CharacterPreview: React.SFC<IProps> = ({ character }) => {
 				{' '}
 				{archetype.title}
 				{' '}
-				{(archetype.type.M && 'NONE' !== skillset.id) && (
-					<span>({skillset.title})</span>
-				)}
+				<ElementIco element={skillset.element} minimal />
 			</p>
 
 			<h3 className="Heading Heading--small">
@@ -126,6 +127,8 @@ const CharacterPreview: React.SFC<IProps> = ({ character }) => {
 					<tr>
 						<td className="Table-column">MH:</td>
 						<td className="Table-column">
+							<WeaponIco weapon={mainHand.id} minimal />
+							{' '}
 							<strong>{mainHand.title}</strong>
 							{' '}
 							{'NONE' !== mainHand.id && (
@@ -139,9 +142,17 @@ const CharacterPreview: React.SFC<IProps> = ({ character }) => {
 						<td className="Table-column">OH:</td>
 						<td className="Table-column">
 							{character.isBothWielding() || character.isDualWielding()
-								? <span className="u-disabled">{mainHand.title}</span>
+								? (
+									<span className="u-disabled">
+										<WeaponIco weapon={mainHand.id} minimal />
+										{' '}
+										{mainHand.title}
+									</span>
+								)
 								: (
 									<span>
+										<WeaponIco weapon={offHand.id} minimal />
+										{' '}
 										<strong>{offHand.title}</strong>
 										{' '}
 										{'NONE' !== offHand.id && (
@@ -165,6 +176,8 @@ const CharacterPreview: React.SFC<IProps> = ({ character }) => {
 					<tr>
 						<td className="Table-column">AR:</td>
 						<td className="Table-column">
+							<ArmorIco armor={armor.id} minimal />
+							{' '}
 							<strong>{armor.title}</strong>
 							{' '}
 							{'NONE' !== armor.id && (

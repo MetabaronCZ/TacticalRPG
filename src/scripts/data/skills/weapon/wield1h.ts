@@ -9,6 +9,7 @@ const wield1HSkills: { [id in Wield1HWeaponSkillID]: ISkillData; } = {
 		range: 1,
 		area: 'SINGLE',
 		target: 'ENEMY',
+		weapon: 'SWORD_1H',
 		physical: 1,
 		magical: 0
 	},
@@ -19,6 +20,7 @@ const wield1HSkills: { [id in Wield1HWeaponSkillID]: ISkillData; } = {
 		range: 1,
 		area: 'SINGLE',
 		target: 'ENEMY',
+		weapon: 'SWORD_1H',
 		physical: 0.5,
 		magical: 0,
 		status: ['BLEED'],
@@ -31,6 +33,7 @@ const wield1HSkills: { [id in Wield1HWeaponSkillID]: ISkillData; } = {
 		range: 1,
 		area: 'SINGLE',
 		target: 'ENEMY',
+		weapon: 'AXE_1H',
 		physical: 1,
 		magical: 0
 	},
@@ -41,6 +44,7 @@ const wield1HSkills: { [id in Wield1HWeaponSkillID]: ISkillData; } = {
 		range: 1,
 		area: 'SINGLE',
 		target: 'ENEMY',
+		weapon: 'AXE_1H',
 		physical: 1.5,
 		magical: 0,
 		cooldown: 1
@@ -52,6 +56,7 @@ const wield1HSkills: { [id in Wield1HWeaponSkillID]: ISkillData; } = {
 		range: 1,
 		area: 'SINGLE',
 		target: 'ENEMY',
+		weapon: 'MACE_1H',
 		physical: 1,
 		magical: 0
 	},
@@ -62,6 +67,7 @@ const wield1HSkills: { [id in Wield1HWeaponSkillID]: ISkillData; } = {
 		range: 1,
 		area: 'SINGLE',
 		target: 'ENEMY',
+		weapon: 'MACE_1H',
 		physical: 0.5,
 		magical: 0,
 		status: ['STUN'],

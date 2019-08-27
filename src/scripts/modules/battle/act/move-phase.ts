@@ -1,7 +1,7 @@
 import Animation from 'core/animation';
 import { moveAnimDuration } from 'data/game-config';
 
-import { formatTile } from 'modules/format';
+import { formatTile } from 'ui/format';
 import { getTiles } from 'modules/geometry/tiles';
 import { resolveDirection } from 'modules/geometry/direction';
 import { ICostMap, getMovableTiles, getShortestPath } from 'modules/pathfinding';

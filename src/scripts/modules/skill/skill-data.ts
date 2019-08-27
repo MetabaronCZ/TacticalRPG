@@ -2,6 +2,7 @@ import { MiscSkillID } from 'modules/skill/misc';
 import { MagicSkillID } from 'modules/skill/magic';
 import { WeaponSkillID } from 'modules/skill/weapon';
 import { DynamicSkillID } from 'modules/skill/dynamic';
+import { WeaponID } from 'modules/equipment/weapon-data';
 import { StatusEffectID } from 'modules/battle/status-effect';
 
 // fake infinity number
@@ -25,6 +26,7 @@ export interface ISkillData {
 	readonly range: SkillRange;
 	readonly area: SkillArea;
 	readonly target?: SkillTarget;
+	readonly weapon?: WeaponID;
 	readonly element?: SkillElement;
 	readonly hitScan?: boolean;
 	readonly isFixedDamage?: boolean;

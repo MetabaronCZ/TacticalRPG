@@ -2,7 +2,7 @@ import React from 'react';
 
 interface IFormFieldProps {
 	readonly label: React.ReactNode;
-	readonly info?: string;
+	readonly info?: React.ReactNode;
 	readonly fieldId: string;
 	readonly error?: string;
 }

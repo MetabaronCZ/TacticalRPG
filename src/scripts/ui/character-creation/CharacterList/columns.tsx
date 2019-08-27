@@ -4,13 +4,19 @@ import Wields from 'data/wields';
 import { Icos, IcoID } from 'data/icos';
 
 import { getPath } from 'modules/route';
+import { IArmorData } from 'modules/equipment/armor-data';
+import { IWeaponData } from 'modules/equipment/weapon-data';
 import { CharacterData } from 'modules/character-creation/character-data';
 
 import Link from 'ui/common/Link';
 import LinkIco from 'ui/common/LinkIco';
+import ArmorIco from 'ui/common/ArmorIco';
+import WeaponIco from 'ui/common/WeaponIco';
 import LinkButton from 'ui/common/LinkButton';
 import ArchetypeIco from 'ui/common/ArchetypeIco';
 import { IOnMoveDown, IOnMoveUp, IOnDelete } from 'ui/character-creation/CharacterList';
+import ElementIco from 'ui/common/ElementIco';
+import { ArchetypeID } from 'modules/character/archetype';
 
 interface IColumn {
 	readonly title?: string;
@@ -19,8 +25,12 @@ interface IColumn {
 	readonly editable?: boolean;
 }
 
+const renderArchetypeIco = (archetype: ArchetypeID): React.ReactNode => (
+	<ArchetypeIco archetype={archetype} />
+);
+
 const renderArchetype = (char: CharacterData): React.ReactNode => (
-	<ArchetypeIco archetype={char.archetype.id} />
+	<ElementIco element={char.skillset.element} minimal />
 );
 
 const renderMoveDown = (char: CharacterData, onMoveDown?: IOnMoveDown): React.ReactNode => (
@@ -39,8 +49,24 @@ const renderDelete = (char: CharacterData, onDelete?: IOnDelete): React.ReactNod
 	<LinkButton onClick={onDelete ? onDelete(char) : undefined}>Delete</LinkButton>
 );
 
-const renderOffHandBothWield = (title: string): React.ReactNode => (
-	<span className="List-disabled">{title}</span>
+const renderWeapon = (weapon: IWeaponData): React.ReactNode => (
+	<React.Fragment>
+		<WeaponIco weapon={weapon.id} />
+		{weapon.title}
+	</React.Fragment>
+);
+
+const renderArmor = (armor: IArmorData): React.ReactNode => (
+	<React.Fragment>
+		<ArmorIco armor={armor.id} />
+		{armor.title}
+	</React.Fragment>
+);
+
+const renderOffHandBothWield = (weapon: IWeaponData): React.ReactNode => (
+	<span className="List-disabled">
+		{renderWeapon(weapon)}
+	</span>
 );
 
 const getColumns = (editable = false, onMoveDown?: IOnMoveDown, onMoveUp?: IOnMoveUp, onDelete?: IOnDelete): IColumn[] => {
@@ -50,7 +76,7 @@ const getColumns = (editable = false, onMoveDown?: IOnMoveDown, onMoveUp?: IOnMo
 			value: (char, i) => i + 1
 		}, {
 			name: 'ico',
-			value: char => (char ? renderArchetype(char) : '')
+			value: char => (char ? renderArchetypeIco(char.archetype.id) : '')
 		}, {
 			name: 'sex',
 			value: char => (char ? Icos[char.sex.id.toLowerCase() as IcoID] || '' : '')
@@ -59,18 +85,16 @@ const getColumns = (editable = false, onMoveDown?: IOnMoveDown, onMoveUp?: IOnMo
 			name: 'name',
 			value: char => (char ? char.name : 'Empty')
 		}, {
+			name: 'archetypeIco',
+			value: char => (char ? renderArchetype(char) : '')
+		}, {
 			title: 'Archetype',
 			name: 'archetype',
-			value: char => {
-				if (!char) {
-					return '';
-				}
-				return `${char.archetype.title}${char.archetype.type.M ? ' (' + char.skillset.title + ')' : ''}`;
-			}
+			value: char => (char ? char.archetype.title : '')
 		}, {
 			title: Wields.get('MAIN').title,
 			name: 'mainHand',
-			value: char => (char ? char.mainHand.title : '')
+			value: char => (char ? renderWeapon(char.mainHand) : '')
 		}, {
 			title: Wields.get('OFF').title,
 			name: 'offHand',
@@ -82,17 +106,17 @@ const getColumns = (editable = false, onMoveDown?: IOnMoveDown, onMoveUp?: IOnMo
 				const off = char.offHand;
 
 				if (char.isBothWielding()) {
-					return renderOffHandBothWield(main.title);
+					return renderOffHandBothWield(main);
 				} else if (char.isDualWielding()) {
-					return main.title;
+					return renderWeapon(main);
 				} else {
-					return off.title;
+					return renderWeapon(off);
 				}
 			}
 		}, {
 			title: 'Armor',
 			name: 'armor',
-			value: char => (char ? char.armor.title : '')
+			value: char => (char ? renderArmor(char.armor) : '')
 		}, {
 			name: 'moveDown',
 			editable: true,

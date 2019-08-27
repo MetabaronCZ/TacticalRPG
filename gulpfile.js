@@ -3,6 +3,7 @@ const gulp = require('gulp');
 const sass = require('gulp-sass');
 const webpack = require('webpack');
 const cssnano = require('cssnano');
+const svgmin = require('gulp-svgmin');
 const changed = require('gulp-changed');
 const postcss = require('gulp-postcss');
 const stylelint = require('gulp-stylelint');
@@ -27,9 +28,18 @@ const paths = {
 		dist: `${pathDist}/scripts`
 	},
 	fonts: {
-		src: `${pathSrc}/`,
+		src: `${pathSrc}/fonts`,
 		files: `${pathSrc}/fonts/**/*`,
 		dist: `${pathDist}/fonts`
+	},
+	images: {
+		src: `${pathSrc}/images`,
+		files: {
+			all: `${pathSrc}/images/**/*`,
+			img: `${pathSrc}/images/**/*.{jpg, png, gif}`,
+			ico: `${pathSrc}/images/**/*.svg`
+		},
+		dist: `${pathDist}/images`
 	},
 	templates: {
 		src: `${pathSrc}/templates/index.html`,
@@ -67,6 +77,21 @@ const taskFonts = () => {
 	return gulp.src(paths.fonts.files)
 		.pipe(changed(paths.fonts.dist))
 		.pipe(gulp.dest(paths.fonts.dist));
+};
+
+// copy images
+const taskImages = () => {
+	return gulp.src(paths.images.files.img)
+		.pipe(changed(paths.images.dist))
+		.pipe(gulp.dest(paths.images.dist));
+};
+
+// copy / optimize icos
+const taskIcos = () => {
+	return gulp.src(paths.images.files.ico)
+		.pipe(changed(paths.images.dist))
+		.pipe(svgmin())
+		.pipe(gulp.dest(paths.images.dist));
 };
 
 // copy index.html
@@ -113,11 +138,13 @@ const taskWatch = cb => {
 	gulp.watch(paths.templates.files, taskIndex);
 	gulp.watch(paths.styles.files, gulp.series(taskStylelint, taskStyles));
 	gulp.watch(paths.fonts.files, taskFonts);
+	gulp.watch(paths.images.files.ico, taskIcos);
+	gulp.watch(paths.images.files.img, taskImages);
 	cb();
 };
 
 // build app
-const build = gulp.series(taskClear, taskIndex, taskFonts, taskStylelint, taskStyles, taskScripts);
+const build = gulp.series(taskClear, taskIndex, taskFonts, taskImages, taskIcos, taskStylelint, taskStyles, taskScripts);
 
 // develop app (set watch before build, because "watch mode" in Webpack)
 const dev = gulp.series(taskWatch, build);

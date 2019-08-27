@@ -9,6 +9,7 @@ const rangedSkills: { [id in RangedWeaponSkillID]: ISkillData; } = {
 		range: 4,
 		area: 'SINGLE',
 		target: 'ENEMY',
+		weapon: 'BOW',
 		physical: 1,
 		magical: 0
 	},
@@ -19,6 +20,7 @@ const rangedSkills: { [id in RangedWeaponSkillID]: ISkillData; } = {
 		range: 4,
 		area: 'SINGLE',
 		target: 'ENEMY',
+		weapon: 'BOW',
 		physical: 1.5,
 		magical: 0,
 		cooldown: 1
@@ -30,6 +32,7 @@ const rangedSkills: { [id in RangedWeaponSkillID]: ISkillData; } = {
 		range: 4,
 		area: 'SINGLE',
 		target: 'ENEMY',
+		weapon: 'GUN',
 		hitScan: true,
 		isFixedDamage: true,
 		physical: 30,
@@ -42,6 +45,7 @@ const rangedSkills: { [id in RangedWeaponSkillID]: ISkillData; } = {
 		range: 4,
 		area: 'SINGLE',
 		target: 'ENEMY',
+		weapon: 'GUN',
 		hitScan: true,
 		isFixedDamage: true,
 		status: ['CRIPPLE'],

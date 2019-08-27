@@ -4,7 +4,6 @@ import { observer } from 'mobx-react';
 import { maxPartyNameLength } from 'data/game-config';
 
 import { getPath } from 'modules/route';
-import { formatCharacter } from 'modules/format';
 import IndexableList from 'modules/indexable-list';
 import PartyCreationForm from 'modules/party-creation';
 import { CharacterData } from 'modules/character-creation/character-data';
@@ -20,6 +19,7 @@ import FormInput from 'ui/common/FormInput';
 import FormSelect from 'ui/common/FormSelect';
 import FormSelectItem from 'ui/common/FormSelectItem';
 
+import { formatCharacter } from 'ui/format';
 import PartyPreview from 'ui/party-creation/PartyPreview';
 
 interface IPartyCreationUIProps {
@@ -70,7 +70,7 @@ class PartyCreationUI extends React.Component<IPartyCreationUIProps> {
 					{canCreateParty
 						? (
 							<React.Fragment>
-								<FormField fieldId="f-name" label="Name" error={validation.errors.name}>
+								<FormField fieldId="f-name" label="Party name" error={validation.errors.name}>
 									<FormInput
 										id="f-name"
 										value={party.name}

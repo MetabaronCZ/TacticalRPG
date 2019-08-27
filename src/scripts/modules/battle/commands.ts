@@ -28,7 +28,7 @@ export const getIdleCommands = (character: Character): Command[] => {
 			if (!skillIds.find(id => id === skill.id)) {
 				skillIds.push(skill.id);
 
-				const cmd = new Command('ATTACK', `Attack (${wpn.title})`, character, [skill]);
+				const cmd = new Command('ATTACK', skill.title, character, [skill]);
 				commands.push(cmd);
 			}
 		}
@@ -53,7 +53,7 @@ export const getIdleCommands = (character: Character): Command[] => {
 			}
 			skillIds.push(skill.id);
 
-			const cmd = new Command('WEAPON', `${skill.title} (${wpn.title})`, character, [skill]);
+			const cmd = new Command('WEAPON', skill.title, character, [skill]);
 			commands.push(cmd);
 		}
 	}
@@ -78,12 +78,8 @@ export const getIdleCommands = (character: Character): Command[] => {
 
 	// MAGIC commands
 	for (const skill of skillset.skills) {
-		const { title, type } = skill;
-
-		if ('ACTIVE' === type) {
-			const cmdTitle = `${title} (${skillset.title} ${skill.getGradeTitle()})`;
-
-			const cmd = new Command('MAGIC', cmdTitle, character, [skill]);
+		if ('ACTIVE' === skill.type) {
+			const cmd = new Command('MAGIC', skill.title, character, [skill]);
 			commands.push(cmd);
 		}
 	}

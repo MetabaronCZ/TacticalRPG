@@ -1,11 +1,13 @@
 .ArchetypeIco {
 	$border-size: 1px;
 	display: inline-block;
+	width: $ico-size;
+	height: $ico-size;
 	border-radius: 100%;
 	overflow: hidden;
-	vertical-align: middle;
+	vertical-align: top;
+	margin-top: $ico-offset;
 	border: $border-size solid $color-grey;
-	transition: border-color linear $anim-default;
 
 	&::before,
 	&::after {
@@ -13,19 +15,8 @@
 		content: " ";
 		width: 50%;
 		height: 100%;
-		background: $color-grey;
 		vertical-align: top;
-		transition: background-color linear $anim-default;
-	}
-
-	&.ArchetypeIco--sizeDefault {
-		width: $vu*2;
-		height: $vu*2;
-	}
-
-	&.ArchetypeIco--sizeLarge {
-		width: $vu*4;
-		height: $vu*4;
+		background: $color-grey;
 	}
 
 	&.ArchetypeIco--primaryP {

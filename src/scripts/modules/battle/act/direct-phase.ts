@@ -1,4 +1,4 @@
-import { formatTile } from 'modules/format';
+import { formatTile } from 'ui/format';
 import { findTileFrom, resolveDirection } from 'modules/geometry/direction';
 
 import Tile from 'modules/geometry/tile';

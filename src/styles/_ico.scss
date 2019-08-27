@@ -1,0 +1,52 @@
+.Ico {
+	$path-ico-element: "#{$path-images}/ico/element";
+	$path-ico-weapon: "#{$path-images}/ico/weapon";
+	$path-ico-armor: "#{$path-images}/ico/armor";
+	display: inline-block;
+	width: $ico-size;
+	height: $ico-size;
+	margin-top: $ico-offset;
+	margin-right: ($vu/2);
+	vertical-align: top;
+	background-color: transparent;
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: 100% 100%;
+
+	&.Ico--minimal {
+		margin-right: 0;
+	}
+
+	// elements
+	&.Ico--FIRE { background-image: url("#{$path-ico-element}/fire.svg"); }
+	&.Ico--ICE { background-image: url("#{$path-ico-element}/ice.svg"); }
+	&.Ico--WIND { background-image: url("#{$path-ico-element}/wind.svg"); }
+	&.Ico--EARTH { background-image: url("#{$path-ico-element}/earth.svg"); }
+	&.Ico--THUNDER { background-image: url("#{$path-ico-element}/thunder.svg"); }
+	&.Ico--WATER { background-image: url("#{$path-ico-element}/water.svg"); }
+	&.Ico--DARK { background-image: url("#{$path-ico-element}/dark.svg"); }
+	&.Ico--HOLY { background-image: url("#{$path-ico-element}/holy.svg"); }
+	&.Ico--PSYCHIC { background-image: url("#{$path-ico-element}/psychic.svg"); }
+
+	// weapons
+	&.Ico--FISTS { background-image: url("#{$path-ico-weapon}/fists.svg"); }
+	&.Ico--DAGGER { background-image: url("#{$path-ico-weapon}/dagger.svg"); }
+	&.Ico--SWORD_1H { background-image: url("#{$path-ico-weapon}/sword-1H.svg"); }
+	&.Ico--AXE_1H { background-image: url("#{$path-ico-weapon}/axe-1H.svg"); }
+	&.Ico--MACE_1H { background-image: url("#{$path-ico-weapon}/mace-1H.svg"); }
+	&.Ico--SPEAR { background-image: url("#{$path-ico-weapon}/spear.svg"); }
+	&.Ico--SWORD_2H { background-image: url("#{$path-ico-weapon}/sword-2H.svg"); }
+	&.Ico--AXE_2H { background-image: url("#{$path-ico-weapon}/axe-2H.svg"); }
+	&.Ico--MACE_2H { background-image: url("#{$path-ico-weapon}/mace-2H.svg"); }
+	&.Ico--ROD { background-image: url("#{$path-ico-weapon}/rod.svg"); }
+	&.Ico--STAFF { background-image: url("#{$path-ico-weapon}/staff.svg"); }
+	&.Ico--BOW { background-image: url("#{$path-ico-weapon}/bow.svg"); }
+	&.Ico--GUN { background-image: url("#{$path-ico-weapon}/gun.svg"); }
+	&.Ico--SHIELD_SMALL { background-image: url("#{$path-ico-weapon}/shield-small.svg"); }
+	&.Ico--SHIELD_LARGE { background-image: url("#{$path-ico-weapon}/shield-large.svg"); }
+
+	// armors
+	&.Ico--LIGHT { background-image: url("#{$path-ico-armor}/light.svg"); }
+	&.Ico--HEAVY { background-image: url("#{$path-ico-armor}/heavy.svg"); }
+	&.Ico--MAGICAL { background-image: url("#{$path-ico-armor}/magical.svg"); }
+}

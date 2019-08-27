@@ -1,15 +1,18 @@
 import Skills, { attackSkills } from 'data/skills';
 
-import Tile from 'modules/geometry/tile';
-import Character from 'modules/character';
+import { getUniqueItems } from 'core/array';
+
 import { getVisible } from 'modules/pathfinding/hit-scan';
 import { getTile, getTiles } from 'modules/geometry/tiles';
+
+import Tile from 'modules/geometry/tile';
+import Character from 'modules/character';
+import { WeaponID } from 'modules/equipment/weapon-data';
 import { StatusEffectID } from 'modules/battle/status-effect';
 import {
 	SkillID, SkillType, SkillElement, SkillGrade,
 	SkillRange, SkillArea, SkillTarget, ISkillData, SkillCooldown
 } from 'modules/skill/skill-data';
-import { getUniqueItems } from 'core/array';
 
 type ITargetTable = {
 	readonly [id in SkillTarget]: (character: Character, actor: Character) => boolean;
@@ -85,7 +88,8 @@ class Skill implements ISkillData {
 	public readonly range: SkillRange;
 	public readonly area: SkillArea;
 	public readonly target: SkillTarget; // character target type
-	public readonly element: SkillElement; // fire, water, ...
+	public readonly weapon: WeaponID;
+	public readonly element: SkillElement;
 	public readonly hitScan: boolean;
 	public readonly isFixedDamage: boolean;
 	public readonly physical: number; // damage modifier [%]
@@ -106,6 +110,7 @@ class Skill implements ISkillData {
 		this.range = data.range;
 		this.area = data.area;
 		this.target = data.target || 'NONE';
+		this.weapon = data.weapon || 'NONE';
 		this.element = data.element || 'NONE';
 		this.hitScan = data.hitScan || false;
 		this.isFixedDamage = data.isFixedDamage || false;

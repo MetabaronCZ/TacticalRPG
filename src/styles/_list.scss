@@ -23,6 +23,13 @@
 				width: $vu;
 			}
 
+			&.List-row-column--archetypeIco,
+			&.List-row-column--mainHandIco,
+			&.List-row-column--offHandIco,
+			&.List-row-column--armorIco {
+				width: 3*$vu;
+			}
+
 			&.List-row-column--moveUp,
 			&.List-row-column--moveDown,
 			&.List-row-column--edit,

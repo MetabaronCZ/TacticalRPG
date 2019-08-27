@@ -9,6 +9,7 @@ const shieldSkills: { [id in ShieldWeaponSkillID]: ISkillData; } = {
 		range: 0,
 		area: 'SINGLE',
 		target: 'SELF',
+		weapon: 'SHIELD_SMALL',
 		physical: 1,
 		magical: 1,
 		block: 1
@@ -20,6 +21,7 @@ const shieldSkills: { [id in ShieldWeaponSkillID]: ISkillData; } = {
 		range: 0,
 		area: 'SINGLE',
 		target: 'SELF',
+		weapon: 'SHIELD_LARGE',
 		physical: 1,
 		magical: 1,
 		block: 1

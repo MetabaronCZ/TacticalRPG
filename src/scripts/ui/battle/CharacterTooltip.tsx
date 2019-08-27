@@ -2,7 +2,11 @@ import React from 'react';
 
 import { Icos, IcoID } from 'data/icos';
 import Character from 'modules/character';
+
 import BarValue from 'ui/battle/BarValue';
+import ArmorIco from 'ui/common/ArmorIco';
+import WeaponIco from 'ui/common/WeaponIco';
+import ElementIco from 'ui/common/ElementIco';
 import ArchetypeIco from 'ui/common/ArchetypeIco';
 
 const offset = 8; // Tooltip triangle size
@@ -38,7 +42,7 @@ const CharacterTooltip: React.SFC<IProps> = ({ x, y, size, character: char }) =>
 				{' '}
 				<ArchetypeIco archetype={archetype.id} />
 				{' '}
-				{archetype.title}{archetype.type.M ? ' (' + skillset.element + ')' : ''}
+				<ElementIco element={skillset.element} minimal />
 			</div>
 
 			<table className="Table Table--plain">
@@ -49,8 +53,10 @@ const CharacterTooltip: React.SFC<IProps> = ({ x, y, size, character: char }) =>
 						<td className="Table-column">
 							<span className="u-disabled">|</span>
 						</td>
-						<td className="Table-column">MH:</td>
-						<td className="Table-column">{char.mainHand.title}</td>
+						<td className="Table-column">
+							<WeaponIco weapon={char.mainHand.id} />
+							{char.mainHand.title}
+						</td>
 					</tr>
 					<tr>
 						<td className="Table-column">MP:</td>
@@ -58,11 +64,20 @@ const CharacterTooltip: React.SFC<IProps> = ({ x, y, size, character: char }) =>
 						<td className="Table-column">
 							<span className="u-disabled">|</span>
 						</td>
-						<td className="Table-column">OH:</td>
 						<td className="Table-column">
 							{'NONE' !== char.offHand.id
-								? char.offHand.title
-								: <span className="u-disabled">{char.mainHand.title}</span>
+								? (
+									<React.Fragment>
+										<WeaponIco weapon={char.offHand.id} />
+										{char.offHand.title}
+									</React.Fragment>
+								)
+								: (
+									<span className="u-disabled">
+										<WeaponIco weapon={char.mainHand.id} />
+										{char.mainHand.title}
+									</span>
+								)
 							}
 						</td>
 					</tr>
@@ -72,8 +87,10 @@ const CharacterTooltip: React.SFC<IProps> = ({ x, y, size, character: char }) =>
 						<td className="Table-column">
 							<span className="u-disabled">|</span>
 						</td>
-						<td className="Table-column">AR:</td>
-						<td className="Table-column">{char.armor.title}</td>
+						<td className="Table-column">
+							<ArmorIco armor={char.armor.id} />
+							{char.armor.title}
+						</td>
 					</tr>
 				</tbody>
 			</table>

@@ -1,4 +1,4 @@
-import { formatTile } from 'modules/format';
+import { formatTile } from 'ui/format';
 import {
 	getIdleCommands, getSkillConfirmCommands, getReactiveCommands, getEvasiveCommands
 } from 'modules/battle/commands';

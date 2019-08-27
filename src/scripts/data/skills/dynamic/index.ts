@@ -44,6 +44,7 @@ const getData = (title: string, weapon: WeaponID, element: SkillElement): ISkill
 		...dynamicSkill,
 		title,
 		element,
+		weapon,
 		apCost: wpnApCost + dynApCost,
 		mpCost: dynMpCost,
 		range: data.range,
