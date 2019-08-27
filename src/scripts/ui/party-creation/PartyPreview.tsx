@@ -16,6 +16,7 @@ import {
 import Canvas from 'ui/common/Canvas';
 
 const positions = getCharacterPositions()[0];
+const gridMargin = 20; // safe area around canvas content
 
 const dummyPlayerConfig = new PlayerData(0, {});
 const dummyPlayer = new Player(dummyPlayerConfig, []);
@@ -30,6 +31,8 @@ class PartyPreview extends Canvas<IProps> {
 	private slots: Array<Character | null> = [];
 
 	private itemSize = 0;
+	private gridWidth = 0; // canvas drawable area width
+	private gridHeight = 0; // canvas drawable area height
 	private canvasWidth = 0;
 	private canvasHeight = 0;
 
@@ -51,7 +54,7 @@ class PartyPreview extends Canvas<IProps> {
 
 	public draw(): void {
 		const canvas = this.canvas.current;
-		const { ctx, itemSize, canvasWidth } = this;
+		const { ctx, itemSize, gridWidth } = this;
 
 		if (!ctx || !canvas) {
 			throw new Error('HexaGrid could not be drawn: invalid canvas to draw');
@@ -63,7 +66,7 @@ class PartyPreview extends Canvas<IProps> {
 
 		// draw tiles
 		for (const tile of positions) {
-			const coords = getTileCoords(tile, itemSize, canvasWidth);
+			const coords = getTileCoords(tile, itemSize, gridWidth, gridMargin);
 			const { x, y } = this.getUpdatedCoords(coords);
 			const style = tileStyles.default;
 			tile.render(ctx, x, y, itemSize, style[0], style[1]);
@@ -74,7 +77,7 @@ class PartyPreview extends Canvas<IProps> {
 			if (!character || character.isDead()) {
 				continue;
 			}
-			const coords = getTileCoords(character.position, itemSize, canvasWidth);
+			const coords = getTileCoords(character.position, itemSize, gridWidth, gridMargin);
 			const { x, y } = this.getUpdatedCoords(coords);
 			const hex = getHexDimensions(itemSize);
 			const style = characterStyles.violet;
@@ -105,12 +108,14 @@ class PartyPreview extends Canvas<IProps> {
 		canvas.style.width = '100%';
 
 		const size = canvas.offsetWidth;
-		this.itemSize = size / ((2 * gridSize - 1) * sqrt3);
+		this.gridWidth = size - 2 * gridMargin;
+		this.itemSize = this.gridWidth / ((2 * gridSize - 1) * sqrt3);
 
 		const hex = getHexDimensions(this.itemSize);
+		this.gridHeight = 3 * hex.height;
 
-		const canvasHeight = 3 * hex.height;
 		const canvasWidth = size;
+		const canvasHeight = this.gridHeight + 2 * gridMargin;
 		this.canvasWidth = canvasWidth;
 		this.canvasHeight = canvasHeight;
 

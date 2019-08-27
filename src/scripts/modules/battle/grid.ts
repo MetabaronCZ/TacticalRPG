@@ -164,13 +164,13 @@ export const getCharacterPositions = (): Tile[][] => {
 	});
 };
 
-export const getTileCoords = (tile: Tile, size: number, canvasSize: number): ITileCoords => {
+export const getTileCoords = (tile: Tile, size: number, gridSize: number, gridMargin = 0): ITileCoords => {
 	const { width, height } = getHexDimensions(size);
-	const centerX = canvasSize / 2;
-	const centerY = canvasSize / 2;
+	const centerX = gridSize / 2;
+	const centerY = gridSize / 2;
 
 	return {
-		x: centerX + (3 / 4) * width * tile.x,
-		y: centerY - height * (tile.y + tile.x / 2)
+		x: gridMargin + centerX + (3 / 4) * width * tile.x,
+		y: gridMargin + centerY - height * (tile.y + tile.x / 2)
 	};
 };

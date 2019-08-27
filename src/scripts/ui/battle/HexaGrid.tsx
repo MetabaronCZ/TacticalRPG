@@ -5,7 +5,8 @@ import { gridSize } from 'data/game-config';
 
 import { getTiles } from 'modules/geometry/tiles';
 import {
-	getTileStyle, getCharacterStyle, getHexDimensions, getTileCoords
+	getTileStyle, getCharacterStyle, getHexDimensions, getTileCoords,
+	ITileCoords
 } from 'modules/battle/grid';
 
 import Tile from 'modules/geometry/tile';
@@ -14,10 +15,11 @@ import { IActState } from 'modules/battle/act';
 import { IBattleInfo } from 'modules/battle/battle-info';
 
 import Canvas from 'ui/common/Canvas';
+import GridBattleInfo from 'ui/battle/GridBattleInfo';
 import CharacterTooltip from 'ui/battle/CharacterTooltip';
-import GridBattleInfo, { IBattleInfoCoords } from 'ui/battle/GridBattleInfo';
 
-const hoverDelay = 150;
+const hoverDelay = 150; // wait time to display character tooltip
+const gridMargin = 20; // safe area around canvas content
 const tiles = getTiles();
 
 interface IHovered {
@@ -53,8 +55,9 @@ class HexaGrid extends Canvas<IProps, IState> {
 	private canvas = React.createRef<HTMLCanvasElement>();
 	private ctx: CanvasRenderingContext2D | null = null;
 
-	private itemSize = 0;
-	private canvasSize = 0;
+	private itemSize = 0; // grid hexagon radius
+	private gridSize = 0; // canvas drawable area width / height
+	private canvasSize = 0; // canvas width / height
 	private timeout = -1; // hovered tooltip timeout ID
 
 	constructor(props: IProps) {
@@ -71,20 +74,14 @@ class HexaGrid extends Canvas<IProps, IState> {
 	}
 
 	public render(): React.ReactNode {
-		const { itemSize, canvasSize } = this;
-		const { hovered } = this.state;
-		const { x, y, tile } = hovered;
+		const { x, y, tile } = this.state.hovered;
 		const { characters, battleInfo } = this.props;
 		const char = characters.find(ch => tile === ch.position);
 
-		const info = battleInfo.map(i => {
-			const coords = getTileCoords(i.position, itemSize, canvasSize);
-			return {
-				info: i,
-				x: 100 * coords.x / canvasSize,
-				y: 100 * coords.y / canvasSize
-			} as IBattleInfoCoords;
-		});
+		const info = battleInfo.map(i => ({
+			info: i,
+			...this.getTilePctCoords(i.position)
+		}));
 
 		return (
 			<div className="HexaGrid">
@@ -98,7 +95,7 @@ class HexaGrid extends Canvas<IProps, IState> {
 				<GridBattleInfo info={info} />
 
 				{!!char && (
-					<CharacterTooltip x={x} y={y} size={itemSize} character={char} />
+					<CharacterTooltip x={x} y={y} size={this.itemSize} character={char} />
 				)}
 			</div>
 		);
@@ -107,7 +104,7 @@ class HexaGrid extends Canvas<IProps, IState> {
 	public draw(): void {
 		const canvas = this.canvas.current;
 		const { act, characters } = this.props;
-		const { ctx, itemSize, canvasSize } = this;
+		const { ctx, itemSize, gridSize } = this;
 
 		if (!ctx || !canvas) {
 			throw new Error('HexaGrid could not be drawn: invalid canvas to draw');
@@ -119,7 +116,7 @@ class HexaGrid extends Canvas<IProps, IState> {
 
 		// draw tiles
 		for (const tile of tiles) {
-			const { x, y } = getTileCoords(tile, itemSize, canvasSize);
+			const { x, y } = getTileCoords(tile, itemSize, gridSize, gridMargin);
 
 			// hit-box
 			tile.renderBoundingBox(hitCtx, x, y, itemSize);
@@ -134,7 +131,7 @@ class HexaGrid extends Canvas<IProps, IState> {
 			if (character.isDead()) {
 				continue;
 			}
-			const { x, y } = getTileCoords(character.position, itemSize, canvasSize);
+			const { x, y } = getTileCoords(character.position, itemSize, gridSize, gridMargin);
 			const isActor = (character === this.props.act.actor);
 			const style = getCharacterStyle(character, isActor);
 			const hex = getHexDimensions(itemSize);
@@ -170,7 +167,8 @@ class HexaGrid extends Canvas<IProps, IState> {
 
 		const size = canvas.offsetWidth;
 		this.canvasSize = size;
-		this.itemSize = size / ((2 * gridSize - 1) * sqrt3);
+		this.gridSize = size - 2 * gridMargin;
+		this.itemSize = this.gridSize / ((2 * gridSize - 1) * sqrt3);
 
 		// set new dimensions and canvas resolution
 		for (const c of [canvas, offCanvas, hitCanvas]) {
@@ -195,7 +193,6 @@ class HexaGrid extends Canvas<IProps, IState> {
 
 	private getMouseOver(e: React.MouseEvent<HTMLCanvasElement>): IHovered {
 		const canvas = e.currentTarget;
-		const { itemSize, canvasSize } = this;
 
 		const box = canvas.getBoundingClientRect();
 		const x = e.clientX - box.left;
@@ -206,18 +203,15 @@ class HexaGrid extends Canvas<IProps, IState> {
 			const color = t.getColor();
 
 			if (color[0] === point[0] && color[1] === point[1] && color[2] === point[2]) {
-				const coords = getTileCoords(t, itemSize, canvasSize);
 				return {
 					tile: t,
-					x: 100 * coords.x / canvasSize,
-					y: 100 * coords.y / canvasSize
+					...this.getTilePctCoords(t)
 				};
 			}
 		}
 		return {
 			tile: null,
-			x: 100 * x / canvasSize,
-			y: 100 * y / canvasSize
+			...this.getTilePctCoords({ x, y })
 		};
 	}
 
@@ -257,6 +251,19 @@ class HexaGrid extends Canvas<IProps, IState> {
 				tile: null
 			}
 		});
+	}
+
+	private getTilePctCoords = (tile: Tile | ITileCoords): ITileCoords => {
+		const { itemSize, gridSize, canvasSize } = this;
+		let coords: ITileCoords = tile;
+
+		if (tile instanceof Tile) {
+			coords = getTileCoords(tile, itemSize, gridSize, gridMargin);
+		}
+		return {
+			x: 100 * coords.x / canvasSize,
+			y: 100 * coords.y / canvasSize
+		};
 	}
 }
 
