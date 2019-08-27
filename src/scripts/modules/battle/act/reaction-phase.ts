@@ -1,15 +1,15 @@
+import { getContinueCommand } from 'modules/battle/commands';
 import { resolveDirection } from 'modules/geometry/direction';
 
 import Tile from 'modules/geometry/tile';
 import Character from 'modules/character';
-import Command from 'modules/battle/command';
 import ActPhase from 'modules/battle/act/phase';
 import { ICombatInfo } from 'modules/battle/combat';
 import { IOnActPhaseEvent } from 'modules/battle/act';
-import { StatusEffectID } from 'modules/battle/status-effect';
-import { IEffectTargetData } from 'modules/battle/act/command-phase';
-import { getContinueCommand } from 'modules/battle/commands';
 import MoveAnimation from 'modules/battle/act/move-animation';
+import { StatusEffectID } from 'modules/battle/status-effect';
+import Command, { ICommandRecord } from 'modules/battle/command';
+import { IEffectTargetData } from 'modules/battle/act/command-phase';
 
 const txtIdle = 'Select reaction:';
 const txtEvasion = 'Select evasion target on grid.';
@@ -23,7 +23,7 @@ export interface IReactionPhaseState {
 export interface IReactionPhaseRecord {
 	reactions: Array<{
 		readonly reactor: string;
-		readonly command: string | null;
+		readonly command: ICommandRecord | null;
 		readonly evasionTarget: string | null;
 	}>;
 }
@@ -149,7 +149,13 @@ class ReactionPhase extends ActPhase<IReactionPhaseState, IReactionPhaseRecord> 
 			reactions: this.reactions.map(({ reactor, command, evasionTarget }) => {
 				const reaction = {
 					reactor: reactor.data.id,
-					command: (command ? command.title : null),
+					command: command
+						? {
+							title: command.title,
+							skills: command.skills.map(skill => skill.id)
+						}
+						: null
+					,
 					evasionTarget: (evasionTarget ? evasionTarget.id : null)
 				};
 				return reaction;

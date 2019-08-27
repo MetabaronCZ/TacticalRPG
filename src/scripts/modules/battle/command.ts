@@ -1,7 +1,7 @@
 import Skill from 'modules/skill';
 import Status from 'modules/character/status';
-import { SkillCooldown } from 'modules/skill/skill-data';
 import Character, { ISkillCooldowns } from 'modules/character';
+import { SkillCooldown, SkillID } from 'modules/skill/skill-data';
 
 export type CommandReason =
 	'COOLDOWN' | 'CANT_ACT' | 'OUT_OF_AP' | 'OUT_OF_MP' | 'DISARMED' | 'SILENCED';
@@ -14,6 +14,11 @@ export interface ICommandCost {
 export type CommandType =
 	'ATTACK' | 'DOUBLE_ATTACK' | 'WEAPON' | 'MAGIC' | 'DYNAMIC' |
 	'PASS' | 'REACTION' | 'DONT_REACT' | 'DIRECT' | 'CONFIRM' | 'BACK';
+
+export interface ICommandRecord {
+	title: string;
+	skills: SkillID[];
+}
 
 export const formatCost = (cost: ICommandCost | null): string => {
 	if (!cost) {

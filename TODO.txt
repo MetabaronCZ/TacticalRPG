@@ -2,7 +2,9 @@ BUG
 ----------------------------------------------------------------------------------------------------------
 --	pokud se AI nemuze dostat protivnikovi do zad, udela PASS
 	- kdyz zbydou jen postavy v tomto stavu, delaji PASS do nekonecna
-
+--	kdyz je stejna postava v Party obou hracu, v BattleSummary se zobrazuji obe se stejnou ikonou hrace
+	- maji stejne Character.id
+	- Character by mohl mit ID slozene z CharacterDataID + Player.id
 
 TODO
 ----------------------------------------------------------------------------------------------------------
@@ -16,6 +18,9 @@ TODO
 	OK	pouzit pro nazvy skillu (vzdy zacit ikonou, pak nazec skill; bez nazvu zbrane / elementu)
 	OK	pak je mozno zuzit ActorUI, ReactorUI, a oba sloupce ve prospech vetsiho gridu
 --	upravit CharacterTooltip, aby se zarovnal nahoru, pokud je naspodu stranky
+--	generovat jednoznacne ID pro Command
+	- pridat metodu getCommandById()
+	- pouzit v BattleSummary
 --	AICharacter: pohyb/akce podle melee / ranged / support role
 	- vybira AIPlayer
 	- prioritizace skillu (healing role -> Revive)

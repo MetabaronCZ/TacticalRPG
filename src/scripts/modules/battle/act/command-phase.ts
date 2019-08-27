@@ -2,9 +2,9 @@ import { getIntersection } from 'core/array';
 
 import Tile from 'modules/geometry/tile';
 import Character from 'modules/character';
-import Command from 'modules/battle/command';
 import ActPhase from 'modules/battle/act/phase';
 import { IOnActPhaseEvent } from 'modules/battle/act';
+import Command, { ICommandRecord } from 'modules/battle/command';
 import { getCombatInfo, ICombatInfo } from 'modules/battle/combat';
 
 const txtIdle = 'Select command target on grid.';
@@ -22,7 +22,7 @@ export interface ICommandPhaseState {
 }
 
 export interface ICommandPhaseRecord {
-	readonly command: string | null;
+	readonly command: ICommandRecord | null;
 	readonly target: string | null;
 }
 
@@ -161,7 +161,13 @@ class CommandPhase extends ActPhase<ICommandPhaseState, ICommandPhaseRecord> {
 	public getRecord(): ICommandPhaseRecord {
 		const { command, effectTarget } = this.getState();
 		return {
-			command: (command ? command.title : null),
+			command: command
+				? {
+					title: command.title,
+					skills: command.skills.map(skill => skill.id)
+				}
+				: null
+			,
 			target: (effectTarget ? effectTarget.data.id : null)
 		};
 	}

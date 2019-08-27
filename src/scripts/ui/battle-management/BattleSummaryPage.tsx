@@ -16,6 +16,9 @@ import PlayerIco from 'ui/common/PlayerIco';
 import { IRouteParams } from 'modules/route';
 import { IPartyData } from 'modules/party-creation/party-data';
 import { IPlayerConfig } from 'modules/battle-configuration/player-data';
+import Command from 'modules/battle/command';
+import Skill from 'modules/skill';
+import CommandTitle from 'ui/battle/CommandTitle';
 
 const topListSize = 5; // maximum items of diplayed top kills, damage, ...
 
@@ -34,8 +37,8 @@ interface IRecordAnalysis {
 	readonly actor: ICharacterData;
 	readonly skipped: boolean;
 	move: string;
-	command: string;
-	reactions: string[];
+	command: React.ReactNode;
+	reactions: React.ReactNode[];
 	results: string[];
 }
 
@@ -96,15 +99,23 @@ const getRowInfo = (characters: ICharacterData[], record: IActRecord): IRecordAn
 	}
 
 	if (commandPhase.command) {
+		const { title, skills } = commandPhase.command;
+		const command = new Command('ATTACK', title, undefined, skills.map(id => new Skill(id)));
+		const cmd = <CommandTitle command={command} />
+
 		if (commandPhase.target) {
 			const target = characters.find(char => commandPhase.target === char.id);
 
 			if (!target) {
 				throw new Error('Invalid character ID in record command target');
 			}
-			result.command = `${commandPhase.command} → ${target.name}`;
+			result.command = (
+				<React.Fragment>
+					{cmd} → {target.name}
+				</React.Fragment>
+			);
 		} else {
-			result.command = commandPhase.command;
+			result.command = cmd;
 		}
 	}
 
@@ -114,7 +125,17 @@ const getRowInfo = (characters: ICharacterData[], record: IActRecord): IRecordAn
 		if (!reactor) {
 			throw new Error('Invalid reactor ID in record reaction');
 		}
-		result.reactions.push(`${reactor.name} → ${reaction.command}`);
+		if (reaction.command) {
+			const { title, skills } = reaction.command;
+			const command = new Command('REACTION', title, undefined, skills.map(id => new Skill(id)));
+			const cmd = <CommandTitle command={command} />
+
+			result.reactions.push(
+				<React.Fragment>
+					{reactor.name} → {cmd}
+				</React.Fragment>
+			);
+		}
 	}
 
 	for (const item of combatPhase.results) {
