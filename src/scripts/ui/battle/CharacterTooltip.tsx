@@ -9,16 +9,17 @@ import WeaponIco from 'ui/common/WeaponIco';
 import ElementIco from 'ui/common/ElementIco';
 import ArchetypeIco from 'ui/common/ArchetypeIco';
 
-const offset = 8; // Tooltip triangle size
+type TooltipOrientation = 'top' | 'bottom';
 
 interface IProps {
-	readonly x: number; // in pct
-	readonly y: number; // in pct
-	readonly size: number; // item size
 	readonly character: Character;
+	readonly x: number; // 0% - 100%
+	readonly y: number; // 0% - 100%
+	readonly size: number; // item size
+	readonly orientation: TooltipOrientation;
 }
 
-const CharacterTooltip: React.SFC<IProps> = ({ x, y, size, character: char }) => {
+const CharacterTooltip: React.SFC<IProps> = ({ x, y, size, orientation, character: char }) => {
 	const { archetype, skillset } = char;
 	const { HP, AP, MP } = char.attributes;
 	const { HP: baseHP, AP: baseAP, MP: baseMP } = char.baseAttributes;
@@ -28,78 +29,80 @@ const CharacterTooltip: React.SFC<IProps> = ({ x, y, size, character: char }) =>
 
 	return (
 		<div
-			className="Tooltip"
+			className={`Tooltip Tooltip--${orientation}`}
 			style={{
 				left: x + '%',
 				top: y + '%',
-				marginLeft: Math.ceil(size + offset) + 'px'
+				marginLeft: Math.ceil(size) + 'px'
 			}}
 		>
-			<div>
-				<strong>{char.name}</strong>
-				{' '}
-				{sex}
-				{' '}
-				<ArchetypeIco archetype={archetype.id} />
-				{' '}
-				<ElementIco element={skillset.element} minimal />
-			</div>
-
-			<table className="Table Table--plain">
-				<tbody>
-					<tr>
-						<td className="Table-column">HP:</td>
-						<td className="Table-column"><BarValue value={HP} max={baseHP} /></td>
-						<td className="Table-column">
-							<span className="u-disabled">|</span>
-						</td>
-						<td className="Table-column">
-							<WeaponIco weapon={char.mainHand.id} />
-							{char.mainHand.title}
-						</td>
-					</tr>
-					<tr>
-						<td className="Table-column">MP:</td>
-						<td className="Table-column"><BarValue value={MP} max={baseMP} /></td>
-						<td className="Table-column">
-							<span className="u-disabled">|</span>
-						</td>
-						<td className="Table-column">
-							{'NONE' !== char.offHand.id
-								? (
-									<React.Fragment>
-										<WeaponIco weapon={char.offHand.id} />
-										{char.offHand.title}
-									</React.Fragment>
-								)
-								: (
-									<span className="u-disabled">
-										<WeaponIco weapon={char.mainHand.id} />
-										{char.mainHand.title}
-									</span>
-								)
-							}
-						</td>
-					</tr>
-					<tr>
-						<td className="Table-column">AP:</td>
-						<td className="Table-column"><BarValue value={AP} max={baseAP} /></td>
-						<td className="Table-column">
-							<span className="u-disabled">|</span>
-						</td>
-						<td className="Table-column">
-							<ArmorIco armor={char.armor.id} />
-							{char.armor.title}
-						</td>
-					</tr>
-				</tbody>
-			</table>
-
-			{status.length > 0 && (
+			<div className="Tooltip-inner">
 				<div>
-					Status: {status.map(st => `${st.effect} (${st.duration.value})`).join(', ')}
+					<strong>{char.name}</strong>
+					{' '}
+					{sex}
+					{' '}
+					<ArchetypeIco archetype={archetype.id} />
+					{' '}
+					<ElementIco element={skillset.element} minimal />
 				</div>
-			)}
+
+				<table className="Table Table--plain">
+					<tbody>
+						<tr>
+							<td className="Table-column">HP:</td>
+							<td className="Table-column"><BarValue value={HP} max={baseHP} /></td>
+							<td className="Table-column">
+								<span className="u-disabled">|</span>
+							</td>
+							<td className="Table-column">
+								<WeaponIco weapon={char.mainHand.id} />
+								{char.mainHand.title}
+							</td>
+						</tr>
+						<tr>
+							<td className="Table-column">MP:</td>
+							<td className="Table-column"><BarValue value={MP} max={baseMP} /></td>
+							<td className="Table-column">
+								<span className="u-disabled">|</span>
+							</td>
+							<td className="Table-column">
+								{'NONE' !== char.offHand.id
+									? (
+										<React.Fragment>
+											<WeaponIco weapon={char.offHand.id} />
+											{char.offHand.title}
+										</React.Fragment>
+									)
+									: (
+										<span className="u-disabled">
+											<WeaponIco weapon={char.mainHand.id} />
+											{char.mainHand.title}
+										</span>
+									)
+								}
+							</td>
+						</tr>
+						<tr>
+							<td className="Table-column">AP:</td>
+							<td className="Table-column"><BarValue value={AP} max={baseAP} /></td>
+							<td className="Table-column">
+								<span className="u-disabled">|</span>
+							</td>
+							<td className="Table-column">
+								<ArmorIco armor={char.armor.id} />
+								{char.armor.title}
+							</td>
+						</tr>
+					</tbody>
+				</table>
+
+				{status.length > 0 && (
+					<div>
+						Status: {status.map(st => `${st.effect} (${st.duration.value})`).join(', ')}
+					</div>
+				)}
+			</div>
 		</div>
 	);
 };

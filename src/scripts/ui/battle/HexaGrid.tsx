@@ -93,7 +93,13 @@ class HexaGrid extends Canvas<IProps, IState> {
 				<GridBattleInfo info={info} />
 
 				{!!char && (
-					<CharacterTooltip x={x} y={y} size={this.itemSize} character={char} />
+					<CharacterTooltip
+						character={char}
+						size={this.itemSize}
+						orientation={y > 50 ? 'bottom' : 'top'}
+						x={x}
+						y={y}
+					/>
 				)}
 			</div>
 		);

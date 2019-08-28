@@ -1,22 +1,50 @@
 .Tooltip {
+	$triangle-size: $vu;
 	@extend .u-text-default;
 	position: absolute;
 	z-index: 100;
-	padding: $vu 2*$vu;
-	margin-top: (-2*$vu);
-	background: $color-black;
-	border-radius: $border-radius-default;
-	text-align: left;
 	pointer-events: none;
 
-	&::after {
+	&-inner {
 		position: absolute;
-		top: $vu;
-		left: (-2*$vu);
-		content: " ";
-		width: 0;
-		height: 0;
-		border: $vu solid transparent;
-		border-right-color: $color-black;
+		left: $triangle-size;
+		padding: $vu 2*$vu;
+		background: $color-black;
+		border-radius: $border-radius-default;
+		text-align: left;
+
+		> *:last-child {
+			margin-bottom: 0;
+		}
+
+		&::after {
+			position: absolute;
+			left: (-2*$triangle-size);
+			content: " ";
+			width: 0;
+			height: 0;
+			border: $triangle-size solid transparent;
+			border-right-color: $color-black;
+		}
+	}
+
+	&.Tooltip--top {
+		.Tooltip-inner {
+			top: (-2*$vu);
+
+			&::after {
+				top: $vu;
+			}
+		}
+	}
+
+	&.Tooltip--bottom {
+		.Tooltip-inner {
+			bottom: (-2*$vu);
+
+			&::after {
+				bottom: $vu;
+			}
+		}
 	}
 }
