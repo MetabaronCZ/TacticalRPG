@@ -9,9 +9,9 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="16px"
-   height="16px"
-   viewBox="0 0 16 16"
+   width="32"
+   height="32"
+   viewBox="0 0 32 32"
    version="1.1"
    id="SVGRoot"
    inkscape:version="0.92.4 (5da689c313, 2019-01-14)"
@@ -25,9 +25,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="16"
-     inkscape:cx="-1.3232025"
-     inkscape:cy="6.7789236"
+     inkscape:zoom="11.313709"
+     inkscape:cx="17.514629"
+     inkscape:cy="11.254989"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -53,33 +53,24 @@
   <g
      inkscape:label="bottom"
      inkscape:groupmode="layer"
-     id="layer1">
+     id="layer1"
+     transform="translate(0,16)">
     <circle
-       style="fill:#a0a8a5;fill-opacity:1;stroke:#f2f0e0;stroke-width:2;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:#f2f0e0;fill-opacity:1;stroke:#a0a8a5;stroke-width:2;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="path1371"
-       cx="8"
-       cy="8"
-       r="7" />
+       cx="16"
+       cy="6.0000002e-07"
+       r="15" />
   </g>
   <g
      inkscape:groupmode="layer"
      id="layer6"
      inkscape:label="L1"
-     style="display:inline" />
+     style="display:inline"
+     transform="translate(0,16)" />
   <g
      inkscape:groupmode="layer"
      id="layer7"
-     inkscape:label="L2" />
-  <g
-     inkscape:groupmode="layer"
-     id="layer2"
-     inkscape:label="top"
-     style="display:inline">
-    <circle
-       style="fill:none;fill-opacity:1;stroke:#f2f0e0;stroke-width:1;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="path1374"
-       cx="8"
-       cy="7.9999995"
-       r="6.5" />
-  </g>
+     inkscape:label="L2"
+     transform="translate(0,16)" />
 </svg>

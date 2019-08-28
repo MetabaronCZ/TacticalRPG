@@ -8,18 +8,6 @@ BUG
 
 TODO
 ----------------------------------------------------------------------------------------------------------
->>	ikony pro:
-	OK	Weapon.type
-		- FISTS, DAGGER, SWORD_1H, AXE_1H, MACE_1H, SPEAR, SWORD_2H, AXE_2H, MACE_2H, ROD, STAFF, BOW, GUN, SHIELD_SMALL, SHIELD_LARGE
-	--	Armor.type
-		- LIGHT, HEAVY, MAGICAL
-	OK	Skillset / element
-		- NONE, FIRE, ICE, WIND, EARTH, THUNDER, WATER, DARK, HOLY, PSYCHIC
-	OK	pouzit pro nazvy skillu (vzdy zacit ikonou, pak nazec skill; bez nazvu zbrane / elementu)
-	OK	pak je mozno zuzit ActorUI, ReactorUI, a oba sloupce ve prospech vetsiho gridu
---	generovat jednoznacne ID pro Command
-	- pridat metodu getCommandById()
-	- pouzit v BattleSummary
 --	AICharacter: pohyb/akce podle melee / ranged / support role
 	- vybira AIPlayer
 	- prioritizace skillu (healing role -> Revive)
