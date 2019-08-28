@@ -18,7 +18,6 @@ import Canvas from 'ui/common/Canvas';
 import GridBattleInfo from 'ui/battle/GridBattleInfo';
 import CharacterTooltip from 'ui/battle/CharacterTooltip';
 
-const hoverDelay = 150; // wait time to display character tooltip
 const gridMargin = 20; // safe area around canvas content
 const tiles = getTiles();
 
@@ -58,7 +57,6 @@ class HexaGrid extends Canvas<IProps, IState> {
 	private itemSize = 0; // grid hexagon radius
 	private gridSize = 0; // canvas drawable area width / height
 	private canvasSize = 0; // canvas width / height
-	private timeout = -1; // hovered tooltip timeout ID
 
 	constructor(props: IProps) {
 		super(props);
@@ -232,11 +230,7 @@ class HexaGrid extends Canvas<IProps, IState> {
 		const hovered = this.getMouseOver(e);
 
 		if (hovered.tile !== current.tile) {
-			window.clearTimeout(this.timeout);
-
-			this.timeout = window.setTimeout(() => {
-				this.setState({ hovered });
-			}, hoverDelay);
+			this.setState({ hovered });
 		}
 	}
 
