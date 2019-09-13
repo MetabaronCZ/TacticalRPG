@@ -5,8 +5,7 @@ import { IOnBattleInfo } from 'modules/battle/battle-info';
 
 type StatusEffectApplyFun = (
 	tgt: Character,
-	phy: number,
-	mag: number,
+	power: number,
 	onStatus: IOnStatus,
 	onInfo: IOnBattleInfo
 ) => void;
@@ -49,12 +48,11 @@ class StatusEffect {
 		value: number;
 		readonly max: StatusEffectRepeat;
 	};
-	private readonly physical: number;
-	private readonly magical: number;
+	private readonly power: number;
 	private readonly onStatus: IOnStatus;
 	private readonly applyFun?: StatusEffectApplyFun;
 
-	constructor(id: StatusEffectID, physical = 0, magical = 0, onStatus?: IOnStatus) {
+	constructor(id: StatusEffectID, power = 0, onStatus?: IOnStatus) {
 		const data = StatusEffects.get(id);
 		this.id = id;
 		this.type = data.type;
@@ -71,16 +69,15 @@ class StatusEffect {
 			max: data.repeat || 0
 		};
 		this.onStatus = (onStatus ? onStatus : () => void(0));
-		this.physical = physical;
-		this.magical = magical;
+		this.power = power;
 		this.applyFun = data.apply;
 	}
 
 	public apply(target: Character, onInfo: IOnBattleInfo): void {
-		const { physical, magical, applyFun, onStatus } = this;
+		const { power, applyFun, onStatus } = this;
 
 		if (applyFun) {
-			applyFun(target, physical, magical, onStatus, onInfo);
+			applyFun(target, power, onStatus, onInfo);
 		}
 	}
 }

@@ -16,7 +16,7 @@ import DirectPhase, { DirectPhaseEvents, IDirectPhaseRecord, IDirectPhaseState }
 import CommandPhase, { CommandPhaseEvents, ICommandPhaseRecord, ICommandPhaseState } from 'modules/battle/act/command-phase';
 import ReactionPhase, { ReactionPhaseEvents, IReactionPhaseRecord, IReactionPhaseState } from 'modules/battle/act/reaction-phase';
 
-type PhaseID = 'MOVEMENT' | 'COMMAND' | 'REACTION' | 'COMBAT' | 'DIRECTION';
+export type ActPhaseID = 'MOVEMENT' | 'COMMAND' | 'REACTION' | 'COMBAT' | 'DIRECTION';
 
 interface IPhases {
 	readonly MOVEMENT: MovePhase;
@@ -37,7 +37,7 @@ export interface IActEvents {
 
 export interface IActState {
 	readonly actor: Character;
-	readonly phase: PhaseID | null;
+	readonly phase: ActPhaseID | null;
 	readonly commands: Command[];
 	readonly actingCharacter: Character | null;
 	readonly info: string;
@@ -67,7 +67,7 @@ class Act {
 	private readonly events: IActEvents;
 	private readonly characters: Character[];
 
-	private phase: PhaseID | null = null;
+	private phase: ActPhaseID | null = null;
 	private commands: Command[] = [];
 	private skipped = false;
 	private info = '';

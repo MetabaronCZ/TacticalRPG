@@ -1,17 +1,25 @@
 BUG
 ----------------------------------------------------------------------------------------------------------
---	pokud se AI nemuze dostat protivnikovi do zad, udela PASS
-	- kdyz zbydou jen postavy v tomto stavu, delaji PASS do nekonecna
 --	kdyz je stejna postava v Party obou hracu, v BattleSummary se zobrazuji obe se stejnou ikonou hrace
 	- maji stejne Character.id
 	- Character by mohl mit ID slozene z CharacterDataID + Player.id
 
 TODO
 ----------------------------------------------------------------------------------------------------------
+--	HexaGrid vlozit na co nejvetsi urovni
+	- predat mu jen onUPdate event a posilat mu data primo bez prekresleni komponenty
+--	AI: u ranged / mage preferovat utoky s nejvetsi distance od target postavy
 --	AICharacter: pohyb/akce podle melee / ranged / support role
 	- vybira AIPlayer
 	- prioritizace skillu (healing role -> Revive)
---	AICharacter: pokud vybrana cesta nekonci na Tile, ze ktereho se da utocit, skoncit na posledni utocne pozici
+--  btEvadeTo predelat na:
+        ?SELECT_EVASION
+			>SAFE_EVADE     ?SHOULD_DEFEND  C-reactorWarningCondition
+											C-reactorCriticalCondition
+							A-evadeToSafety
+			>TACTICAL_EVADE C-hasTarget
+							A-evadeToTarget
+			>RANDOM_EVADE   A-evade
 ??	Counter reaction skill >> bude to mainHand weapon Attack skill
 ??	pasivni skilly
 	--	DARK_AURA by mela delat 50% damage reflection (do vzdalenosti SkillArea)
@@ -44,19 +52,15 @@ TODO
 
 LONG TERM
 ----------------------------------------------------------------------------------------------------------
---	grafika
-	- HUD
-	- ilustrace postav
-	- textury Gridu
-
---	vyrovnani atributu
-	- postavy, zbrane, brneni, skilly
-
---	AI
-	- GOAP
-	- urovne obtiznosti (nastaveni AI)
-	- kooperace postav
+>>	AI
+	>>	Behavioral tree
+	--	urovne obtiznosti (nastaveni AI)
+	--	kooperace postav
 
 --	Chronox
 	OK	trackovat rozhodnuti
+	--	moznost vratit krok/y zpet
 	--	pripravit replay (ulozeni na konci souboje + moznost krokovani, jako u sachu)
+
+--	vyrovnani atributu
+	- postavy, zbrane, brneni, skilly

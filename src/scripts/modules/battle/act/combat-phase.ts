@@ -242,6 +242,10 @@ class CombatPhase extends ActPhase<ICombatPhaseState, ICombatPhaseRecord> {
 		const { target, skill, blocked, shielded, affinity, status } = combat;
 		const { position } = target;
 
+		if (target.isDead() || target.status.has('DYING')) {
+			return;
+		}
+
 		// damage reduced by shield block
 		if (blocked) {
 			info.push({
@@ -299,7 +303,7 @@ class CombatPhase extends ActPhase<ICombatPhaseState, ICombatPhaseRecord> {
 		const statuses = status.map(item => item.id);
 		const mpDamage = (shielded ? shielded.cost : 0);
 
-		target.onDamage(combat.physical, combat.magical, mpDamage, statuses, (dmg, killed) => {
+		target.onDamage(combat.damage, mpDamage, statuses, (dmg, killed) => {
 			result.damaged += dmg;
 			result.killed = result.killed || !!killed;
 		});

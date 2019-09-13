@@ -1,5 +1,5 @@
 // debug
-export const isLoggingEnabled = false;
+export const isLoggingEnabled = true;
 
 // grid
 export const gridSize = 8;

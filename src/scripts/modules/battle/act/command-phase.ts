@@ -10,7 +10,7 @@ import { getCombatInfo, ICombatInfo } from 'modules/battle/combat';
 const txtIdle = 'Select command target on grid.';
 
 export interface ICommandPhaseState {
-	readonly phase: Phase;
+	readonly phase: CommandPhaseID;
 	readonly command: Command | null;
 	readonly area: Tile[];
 	readonly targetable: Tile[];
@@ -45,7 +45,7 @@ interface IState {
 	};
 }
 
-type Phase = 'SUSPENDED' | 'IDLE' | 'TARGETING' | 'DONE';
+export type CommandPhaseID = 'SUSPENDED' | 'IDLE' | 'TARGETING' | 'DONE';
 
 export type CommandPhaseEvents =
 	'COMMAND_SELECTED' |
@@ -59,7 +59,7 @@ class CommandPhase extends ActPhase<ICommandPhaseState, ICommandPhaseRecord> {
 	private readonly characters: Character[];
 	private readonly onEvent: IOnActPhaseEvent;
 	private state: IState = {};
-	private phase: Phase = 'SUSPENDED';
+	private phase: CommandPhaseID = 'SUSPENDED';
 
 	constructor(actor: Character, characters: Character[], onEvent: IOnActPhaseEvent) {
 		super();

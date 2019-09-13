@@ -28,9 +28,9 @@ const StatusEffects = new DataList<StatusEffectID, IStatusEffect>({
 		multi: 'STACK',
 		duration: 33,
 		repeat: 3,
-		apply: (tgt, phy, mag, onStatus, onInfo) => {
-			const dmg = Math.floor(phy / 2);
-			tgt.onDamage(dmg, 0, 0, [], onStatus);
+		apply: (tgt, ammount, onStatus, onInfo) => {
+			const dmg = Math.floor(ammount / 2);
+			tgt.onDamage(dmg, 0, [], onStatus);
 
 			onInfo({
 				text: formatNumber(dmg),
@@ -55,9 +55,9 @@ const StatusEffects = new DataList<StatusEffectID, IStatusEffect>({
 		multi: 'STACK',
 		duration: 33,
 		repeat: 3,
-		apply: (tgt, phy, mag, onStatus, onInfo) => {
-			const dmg = Math.floor(mag / 2);
-			tgt.onDamage(0, dmg, 0, [], onStatus);
+		apply: (tgt, ammount, onStatus, onInfo) => {
+			const dmg = Math.floor(ammount / 2);
+			tgt.onDamage(dmg, 0, [], onStatus);
 
 			onInfo({
 				text: formatNumber(dmg),
@@ -114,7 +114,7 @@ const StatusEffects = new DataList<StatusEffectID, IStatusEffect>({
 		type: 'PHYSICAL',
 		multi: 'IGNORE',
 		duration: 100,
-		apply: (tgt, phy, mag, onStatus, onInfo) => {
+		apply: (tgt, ammount, onStatus, onInfo) => {
 			tgt.die();
 
 			onInfo({
@@ -132,8 +132,8 @@ const StatusEffects = new DataList<StatusEffectID, IStatusEffect>({
 		multi: 'STACK',
 		duration: 33,
 		repeat: 3,
-		apply: (tgt, phy, mag, onStatus, onInfo) => {
-			const healing = Math.floor(mag / 2);
+		apply: (tgt, ammount, onStatus, onInfo) => {
+			const healing = Math.floor(ammount / 2);
 			tgt.onHealing(healing, [], onStatus);
 
 			onInfo({

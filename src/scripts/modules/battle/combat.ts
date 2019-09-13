@@ -32,6 +32,7 @@ export interface ICombatInfo {
 	skill: Skill;
 	physical: number;
 	magical: number;
+	damage: number;
 	healing: number;
 	affinity: Affinity;
 	backAttack: boolean;
@@ -219,6 +220,7 @@ export const getCombatInfo = (caster: Character, target: Character, skill: Skill
 		skill,
 		physical: 0,
 		magical: 0,
+		damage: 0,
 		healing: 0,
 		affinity: 'ELEMENTAL_NEUTRAL',
 		backAttack: false,
@@ -281,6 +283,7 @@ export const getCombatInfo = (caster: Character, target: Character, skill: Skill
 	const status = getStatusEffects(caster, target, skill, physical, magical, isGuarding);
 
 	// update result
+	result.damage = physical + magical;
 	result.physical = physical;
 	result.magical = magical;
 	result.affinity = affinity;

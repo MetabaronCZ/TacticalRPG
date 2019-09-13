@@ -15,7 +15,7 @@ const txtIdle = 'Select reaction:';
 const txtEvasion = 'Select evasion target on grid.';
 
 export interface IReactionPhaseState {
-	readonly phase: Phase;
+	readonly phase: ReactionPhaseID;
 	readonly reaction: IReaction;
 	readonly reactions: IReaction[];
 }
@@ -28,8 +28,8 @@ export interface IReactionPhaseRecord {
 	}>;
 }
 
-type Phase = 'SUSPENDED' | 'IDLE' | 'DONE';
-type IReactionPhase  = 'SUSPENDED' | 'IDLE' | 'EVASION';
+export type ReactionPhaseID = 'SUSPENDED' | 'IDLE' | 'DONE';
+export type ActiveReactionPhaseID  = 'SUSPENDED' | 'IDLE' | 'EVASION';
 
 export type ReactionPhaseEvents =
 	'REACTION_IDLE' |
@@ -40,7 +40,7 @@ export type ReactionPhaseEvents =
 interface IReaction {
 	readonly reactor: Character;
 	readonly combat: ICombatInfo[];
-	phase: IReactionPhase;
+	phase: ActiveReactionPhaseID;
 	command: Command | null;
 	evasible: Tile[];
 	evasionTarget: Tile | null;
@@ -51,7 +51,7 @@ class ReactionPhase extends ActPhase<IReactionPhaseState, IReactionPhaseRecord> 
 		const { reaction } = this.getState();
 		return reaction ? reaction.reactor : null;
 	}
-	private phase: Phase = 'SUSPENDED';
+	private phase: ReactionPhaseID = 'SUSPENDED';
 	private reaction = 0; // active reaction index
 	private reactions: IReaction[] = [];
 

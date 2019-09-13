@@ -13,8 +13,8 @@ class Status {
 		return [...this.items];
 	}
 
-	public apply(effectId: StatusEffectID, physical = 0, magical = 0, onStatus?: IOnStatus): void {
-		const effect = new StatusEffect(effectId, physical, magical, onStatus);
+	public apply(effectId: StatusEffectID, ammount = 0, onStatus?: IOnStatus): void {
+		const effect = new StatusEffect(effectId, ammount, onStatus);
 		const existing = this.items.find(item => effectId === item.id);
 
 		if (!existing) {

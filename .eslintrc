@@ -13,7 +13,8 @@
 		"arrow-parens": ["error", "as-needed"],
         "quotes": ["error", "single"],
         "indent": ["error", "tab", { "SwitchCase": 1 }],
-        "comma-dangle": ["error", "never"]
+        "comma-dangle": ["error", "never"],
+        "semi": ["error", "always"]
     },
     "overrides": [
         {

@@ -3,13 +3,14 @@ import AIPresets from 'data/ai-presets';
 import Tile from 'modules/geometry/tile';
 import Character from 'modules/character';
 import Engine from 'modules/battle/engine';
-import CharacterRole from 'modules/ai/role';
 import Command from 'modules/battle/command';
-import AICharacter from 'modules/ai/character';
 import { IActState } from 'modules/battle/act';
-import { IAIConfig, IAISettings } from 'modules/ai/settings';
 import Player, { IPlayerCharacterSetup } from 'modules/battle/player';
 import { IPlayerData } from 'modules/battle-configuration/player-data';
+
+import CharacterRole from 'modules/ai/role';
+import AICharacter from 'modules/ai/character';
+import { IAIConfig, IAISettings } from 'modules/ai/settings';
 
 class AIPlayer extends Player {
 	public readonly config: IAIConfig;
@@ -34,13 +35,20 @@ class AIPlayer extends Player {
 		});
 	}
 
-	public getEnemy(): Character[] {
+	public getEnemy(aliveOnly = false): Character[] {
 		const enemy = this.engine.getState().players.find(pl => pl !== this);
 
 		if (!enemy) {
 			throw new Error('AIPlayer could not find his enemy');
 		}
-		return enemy.getCharacters();
+		let characters = enemy.getCharacters();
+
+		if (aliveOnly) {
+			characters = characters.filter(char => {
+				return !char.isDead() && !char.status.has('DYING');
+			});
+		}
+		return characters;
 	}
 
 	public getObstacles(): Tile[] {
@@ -50,26 +58,7 @@ class AIPlayer extends Player {
 	}
 
 	public onActStart(): void {
-		const act = this.getAct();
-		const char = this.getCharacter(act.actor);
-		const condition = char.character.getCondition();
-
-		switch (condition) {
-			case 'CRITICAL':
-				// TODO
-				break;
-
-			case 'DANGER':
-				// TODO
-				break;
-
-			case 'OK':
-				// TODO
-				break;
-
-			default:
-				throw new Error('Invalid character condition: ' + condition);
-		}
+		/* */
 	}
 
 	public onUpdate(commands: Command[]): void {

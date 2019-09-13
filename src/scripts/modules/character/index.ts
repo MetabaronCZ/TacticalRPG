@@ -176,13 +176,12 @@ class Character {
 		this.attributes.set('CT', CT % characterCTLimit);
 	}
 
-	public onDamage(physical: number, magical: number, mana: number, effects: StatusEffectID[], onStatus: IOnStatus): void {
+	public onDamage(damage: number, mana: number, effects: StatusEffectID[], onStatus: IOnStatus): void {
 		const { attributes, status } = this;
 
 		if (this.dead || status.has('DYING')) {
 			throw new Error('Cannot apply damage: dead or dying');
 		}
-		const damage = physical + magical;
 		let newHP = attributes.HP - damage;
 		let newMP = attributes.MP - mana;
 
@@ -196,13 +195,13 @@ class Character {
 
 		// apply damage status effects
 		for (const effect of effects) {
-			status.apply(effect, physical, magical, onStatus);
+			status.apply(effect, damage, onStatus);
 		}
 
 		// set DYING status if mortally wounded
 		if (attributes.HP <= 0) {
 			status.removeAll();
-			status.apply('DYING', 0, 0);
+			status.apply('DYING');
 			onStatus(0, true);
 		}
 	}
@@ -223,7 +222,7 @@ class Character {
 		onStatus(healed);
 
 		for (const effect of effects) {
-			this.status.apply(effect, 0, healing, onStatus);
+			this.status.apply(effect, healing, onStatus);
 		}
 	}
 

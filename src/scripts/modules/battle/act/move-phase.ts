@@ -16,7 +16,7 @@ import MoveAnimation from 'modules/battle/act/move-animation';
 const txtIdle = 'Move on grid or select a command:';
 const txtMoving = 'Moving ...';
 
-type Phase = 'SUSPENDED' | 'IDLE' | 'SELECTED' | 'ANIMATION';
+export type MovePhaseID = 'SUSPENDED' | 'IDLE' | 'SELECTED' | 'ANIMATION';
 
 export type MovePhaseEvents =
 	'MOVE_IDLE' |
@@ -24,13 +24,14 @@ export type MovePhaseEvents =
 	'MOVE_ANIMATION' |
 	'MOVE_SUSPENDED';
 
-export interface  IMovePhaseState {
-	readonly phase: Phase;
+export interface IMovePhaseState {
+	readonly phase: MovePhaseID;
 	readonly initialAP: number;
 	readonly initialPosition: Tile;
 	readonly movable: Tile[];
 	readonly moveTarget: Tile;
 	readonly movePath: Tile[];
+	readonly costMap: ICostMap;
 }
 
 export interface IMovePhaseRecord {
@@ -45,7 +46,7 @@ class MovePhase extends ActPhase<IMovePhaseState, IMovePhaseRecord> {
 	private readonly obstacles: Tile[] = [];
 	private readonly onEvent: IOnActPhaseEvent;
 
-	private phase: Phase = 'SUSPENDED';
+	private phase: MovePhaseID = 'SUSPENDED';
 	private initialAP: number;
 	private initialPosition: Tile;
 	private movable: Tile[] = [];
@@ -101,6 +102,8 @@ class MovePhase extends ActPhase<IMovePhaseState, IMovePhaseRecord> {
 		const path = getShortestPath(actor.position, tile, obstacles);
 
 		if (path.length < 2) {
+			// current position selected
+			this.finalize();
 			return;
 		}
 		this.phase = 'SELECTED';
@@ -128,7 +131,8 @@ class MovePhase extends ActPhase<IMovePhaseState, IMovePhaseRecord> {
 			initialPosition: this.initialPosition,
 			movable: [...this.movable],
 			moveTarget: this.moveTarget,
-			movePath: [...this.movePath]
+			movePath: [...this.movePath],
+			costMap: { ...this.costMap }
 		};
 	}
 
@@ -166,8 +170,7 @@ class MovePhase extends ActPhase<IMovePhaseState, IMovePhaseRecord> {
 
 					if (step.isLast) {
 						// finalize animation
-						this.phase = 'SUSPENDED';
-						this.start();
+						this.finalize();
 
 					} else {
 						// run next move animation part
@@ -180,6 +183,11 @@ class MovePhase extends ActPhase<IMovePhaseState, IMovePhaseRecord> {
 		});
 
 		anim.start();
+	}
+
+	private finalize(): void {
+		this.phase = 'SUSPENDED';
+		this.start();
 	}
 }
 
