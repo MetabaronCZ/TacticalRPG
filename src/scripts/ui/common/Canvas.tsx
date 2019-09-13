@@ -22,7 +22,7 @@ abstract class Canvas<T, U = {}> extends React.Component<T, U> {
 
 	public abstract setSize(): void;
 
-	private onResize = () => {
+	private onResize = (): void => {
 		if (this.isResizing) {
 			return;
 		}

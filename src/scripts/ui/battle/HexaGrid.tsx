@@ -219,7 +219,7 @@ class HexaGrid extends Canvas<IProps, IState> {
 		};
 	}
 
-	private selectTile = (e: React.MouseEvent<HTMLCanvasElement>) => {
+	private selectTile = (e: React.MouseEvent<HTMLCanvasElement>): void => {
 		e.preventDefault();
 
 		const { tile } = this.getMouseOver(e);
@@ -229,7 +229,7 @@ class HexaGrid extends Canvas<IProps, IState> {
 		}
 	}
 
-	private hoverTile = (e: React.MouseEvent<HTMLCanvasElement>) => {
+	private hoverTile = (e: React.MouseEvent<HTMLCanvasElement>): void => {
 		e.preventDefault();
 
 		const current = this.state.hovered;
@@ -240,7 +240,7 @@ class HexaGrid extends Canvas<IProps, IState> {
 		}
 	}
 
-	private canvasLeave = (e: React.MouseEvent<HTMLCanvasElement>) => {
+	private canvasLeave = (e: React.MouseEvent<HTMLCanvasElement>): void => {
 		e.preventDefault();
 
 		// clear tooltip

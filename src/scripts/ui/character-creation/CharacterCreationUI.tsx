@@ -167,7 +167,7 @@ class CharacterCreationUI extends React.Component<ICharacterCreationUIProps> {
 		}
 	}
 
-	private onSubmit = (e: SyntheticEvent<HTMLFormElement>) => {
+	private onSubmit = (e: SyntheticEvent<HTMLFormElement>): void => {
 		e.preventDefault();
 
 		const char = this.form.get();

@@ -87,7 +87,7 @@ class BattlePageContainer extends React.Component<IProps, IState> {
 		);
 	}
 
-	private onTileSelect = (tile: Tile) => {
+	private onTileSelect = (tile: Tile): void => {
 		const { act } = this.state.engine;
 		const actingChar = act ? act.actingCharacter : null;
 
@@ -96,7 +96,7 @@ class BattlePageContainer extends React.Component<IProps, IState> {
 		}
 	}
 
-	private onCommandSelect = (command: Command) => {
+	private onCommandSelect = (command: Command): void => {
 		const { act } = this.state.engine;
 		const actingChar = act ? act.actingCharacter : null;
 

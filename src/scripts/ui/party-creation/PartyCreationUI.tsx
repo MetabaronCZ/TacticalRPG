@@ -109,7 +109,7 @@ class PartyCreationUI extends React.Component<IPartyCreationUIProps> {
 		this.form.change(attr, i, e.currentTarget.value);
 	}
 
-	private onSubmit = (e: SyntheticEvent<HTMLFormElement>) => {
+	private onSubmit = (e: SyntheticEvent<HTMLFormElement>): void => {
 		e.preventDefault();
 
 		const party = this.form.get();

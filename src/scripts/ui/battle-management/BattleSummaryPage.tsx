@@ -101,7 +101,7 @@ const getRowInfo = (characters: ICharacterData[], record: IActRecord): IRecordAn
 	if (commandPhase.command) {
 		const { title, skills } = commandPhase.command;
 		const command = new Command('ATTACK', title, undefined, skills.map(id => new Skill(id)));
-		const cmd = <CommandTitle command={command} />
+		const cmd = <CommandTitle command={command} />;
 
 		if (commandPhase.target) {
 			const target = characters.find(char => commandPhase.target === char.id);
@@ -128,7 +128,7 @@ const getRowInfo = (characters: ICharacterData[], record: IActRecord): IRecordAn
 		if (reaction.command) {
 			const { title, skills } = reaction.command;
 			const command = new Command('REACTION', title, undefined, skills.map(id => new Skill(id)));
-			const cmd = <CommandTitle command={command} />
+			const cmd = <CommandTitle command={command} />;
 
 			result.reactions.push(
 				<React.Fragment>

@@ -129,7 +129,7 @@ class BattleConfigUI extends React.Component<IBattleConfigUIProps> {
 		this.form.onPlayerAIChange(player, ai);
 	}
 
-	private onSubmit = (e: SyntheticEvent<HTMLFormElement>) => {
+	private onSubmit = (e: SyntheticEvent<HTMLFormElement>): void => {
 		e.preventDefault();
 		this.form.onSubmit(this.props.onStart);
 	}

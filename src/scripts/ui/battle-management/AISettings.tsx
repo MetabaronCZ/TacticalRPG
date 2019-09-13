@@ -45,7 +45,7 @@ class AISettingsUI extends React.Component<IProps, IAISettings> {
 		);
 	}
 
-	private setDifficulty = (e: React.SyntheticEvent<HTMLSelectElement>) => {
+	private setDifficulty = (e: React.SyntheticEvent<HTMLSelectElement>): void => {
 		this.setState(
 			{ preset: e.currentTarget.value as AIPreset },
 			() => this.onUpdate()
