@@ -30,7 +30,6 @@ export interface IEngineState {
 	order: IOrder;
 	act: IActState | null;
 	battleInfo: IBattleInfo[];
-	readonly players: PlayerList;
 	readonly characters: Character[];
 	readonly chronox: IChronoxRecord;
 }
@@ -113,7 +112,6 @@ class Engine {
 			running: this.running,
 			tick: this.tick,
 			act: (this.act ? this.act.getState() : null),
-			players: this.players,
 			characters: this.characters,
 			order: this.order.serialize(),
 			chronox: this.chronox.serialize(),

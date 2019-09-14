@@ -36,19 +36,15 @@ class AIPlayer extends Player {
 	}
 
 	public getEnemy(aliveOnly = false): Character[] {
-		const enemy = this.engine.getState().players.find(pl => pl !== this);
-
-		if (!enemy) {
-			throw new Error('AIPlayer could not find his enemy');
-		}
-		let characters = enemy.getCharacters();
+		const characters = this.engine.getState().characters;
+		let enemy = characters.filter(char => char.player !== this);
 
 		if (aliveOnly) {
-			characters = characters.filter(char => {
+			enemy = enemy.filter(char => {
 				return !char.isDead() && !char.status.has('DYING');
 			});
 		}
-		return characters;
+		return enemy;
 	}
 
 	public getObstacles(): Tile[] {
