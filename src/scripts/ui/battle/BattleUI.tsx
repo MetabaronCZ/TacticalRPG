@@ -21,7 +21,7 @@ interface IBattleUIProps {
 }
 
 const BattleUI: React.SFC<IBattleUIProps> = ({ engineState, onTileSelect, onCommandSelect, onExit }) => {
-	const { players, characters, order, act, tick, running, battleInfo } = engineState;
+	const { characters, order, act, tick, running, battleInfo } = engineState;
 
 	if (!act) {
 		return <p className="Paragraph">Waiting for act to start [Tick {tick}]...</p>;
@@ -30,7 +30,7 @@ const BattleUI: React.SFC<IBattleUIProps> = ({ engineState, onTileSelect, onComm
 		<div className="BattleUI">
 			<div className="BattleUI-layout">
 				<div className="BattleUI-layout-column BattleUI-layout-column--order">
-					<Order actor={act.actor} characters={order} players={players} />
+					<Order actor={act.actor.data.id} order={order} />
 				</div>
 
 				<div className="BattleUI-layout-column BattleUI-layout-column--character">

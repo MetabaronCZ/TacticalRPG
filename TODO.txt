@@ -1,6 +1,6 @@
 TODO
 ----------------------------------------------------------------------------------------------------------
---	EngineState by mel obsahovat vsechny charactery serializovane
+>>	EngineState by mel obsahovat vsechny charactery serializovane
 	- predelat porovnavani CharacterState pres ID
 	- Character.clone predelat na Character.from(characterState)
 --	HexaGrid vlozit na co nejvetsi urovni

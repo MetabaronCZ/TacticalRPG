@@ -5,11 +5,11 @@ import { getRandomNames } from 'modules/random-name-generator';
 
 import Logger from 'modules/logger';
 import Tile from 'modules/geometry/tile';
-import Order from 'modules/battle/order';
 import AIPlayer from 'modules/ai/player';
 import Character from 'modules/character';
 import Command from 'modules/battle/command';
 import Act, { IActState } from 'modules/battle/act';
+import Order, { IOrder } from 'modules/battle/order';
 import { IBattleInfo } from 'modules/battle/battle-info';
 import { DirectionID } from 'modules/geometry/direction';
 import { getCharacterPositions } from 'modules/battle/grid';
@@ -27,7 +27,7 @@ export type PlayerList = [Player, Player];
 export interface IEngineState {
 	running: boolean;
 	tick: number;
-	order: Character[];
+	order: IOrder;
 	act: IActState | null;
 	battleInfo: IBattleInfo[];
 	readonly players: PlayerList;
@@ -69,7 +69,7 @@ class Engine {
 			.map(pl => pl.getCharacters())
 			.reduce((a, b) => a.concat(b));
 
-		this.order = new Order(this.players);
+		this.order = new Order(this.characters, this.players);
 
 		const chronoxConf = Chronox.getConfig(this.players, conf.parties);
 		this.chronox = new Chronox(chronoxConf);
@@ -150,7 +150,7 @@ class Engine {
 		}
 
 		// order actors
-		const orderChars = order.serialize();
+		const orderChars = order.get();
 		this.actors = actors.sort((a, b) => orderChars.indexOf(a) - orderChars.indexOf(b));
 
 		this.startAct();

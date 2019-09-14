@@ -3,19 +3,48 @@ import { maxOrderSize, characterCTLimit } from 'data/game-config';
 import Character from 'modules/character';
 import Player from 'modules/battle/player';
 
+export interface IOrderCharacter {
+	readonly order: number;
+	readonly id: string;
+	readonly name: string;
+	readonly dead: boolean;
+	readonly dying: boolean;
+	readonly player: number;
+}
+
+export interface IOrder {
+	readonly characters: IOrderCharacter[];
+}
+
 class Order {
 	private players: Player[] = [];
 	private characters: Character[] = [];
 	private order: Character[] = [];
 
-	constructor(players: Player[]) {
-		this.characters = players.map(pl => pl.getCharacters()).reduce((a, b) => a.concat(b));
+	constructor(characters: Character[], players: Player[]) {
+		this.characters = characters;
 		this.players = players;
 		this.update();
 	}
 
-	public serialize(): Character[] {
+	public get(): Character[] {
 		return [...this.order];
+	}
+
+	public serialize(): IOrder {
+		return {
+			characters: this.order.map((char, i) => {
+				const state: IOrderCharacter = {
+					order: i,
+					id: char.data.id,
+					name: char.name,
+					dead: char.isDead(),
+					dying: char.status.has('DYING'),
+					player: char.player.id
+				};
+				return state;
+			})
+		};
 	}
 
 	public update(): void {
@@ -31,15 +60,8 @@ class Order {
 		// serialize characters
 		const chars = liveChars.map(char => {
 			const { SPD, CT } = char.attributes;
-			let playerOrder = -1;
-
-			for (let p = 0, pmax = players.length; p < pmax; p++) {
-				if (-1 !== players[p].getCharacters().indexOf(char)) {
-					playerOrder = p;
-					break;
-				}
-			}
-			return { CT, SPD, playerOrder, char };
+			const plOrder = players.indexOf(char.player);
+			return { CT, SPD, playerOrder: plOrder, char };
 		});
 
 		main: while (order.length < maxOrderSize) {

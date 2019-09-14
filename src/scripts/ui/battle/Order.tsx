@@ -1,30 +1,28 @@
 import React from 'react';
-
-import Character from 'modules/character';
-import Player from 'modules/battle/player';
+import { IOrder, IOrderCharacter } from 'modules/battle/order';
 
 interface IOrderProps {
-	readonly actor: Character;
-	readonly players: Player[];
-	readonly characters: Character[];
+	readonly actor: string;
+	readonly order: IOrder;
 }
 
-const getState = (actor: Character, char: Character): string => {
-	const isDying = char.status.has('DYING');
-	const isActive = (actor === char);
-	return (isDying ? 'dying' : (isActive ? 'active' : ''));
+const getState = (actorID: string, char: IOrderCharacter): string => {
+	const isActive = (actorID === char.id);
+	return (char.dying ? 'dying' : (isActive ? 'active' : ''));
 };
 
-const Order: React.SFC<IOrderProps> = ({ actor, characters, players }) => (
+const Order: React.SFC<IOrderProps> = ({ actor, order }) => (
 	<ul className="Order">
-		{characters.map((char, i) => {
-			if (char.isDead()) {
+		{order.characters.map(char => {
+			if (char.dead) {
 				return;
 			}
 			const charState = getState(actor, char);
-			const charPlayer = players.indexOf(char.player);
 			return (
-				<li className={`Order-item Order-item--type${charPlayer} is-${charState}`} key={i}>
+				<li
+					className={`Order-item Order-item--type${char.player} is-${charState}`}
+					key={char.order}
+				>
 					{char.name}
 				</li>
 			);
