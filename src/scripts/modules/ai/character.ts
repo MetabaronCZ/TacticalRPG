@@ -18,7 +18,6 @@ import BTree from 'modules/ai/behavioral-tree/tree';
 import BT, { BTData } from 'modules/ai/behavioral-tree';
 import BTPhaseSelector from 'modules/ai/phase-selector';
 
-import btInit from 'modules/ai/actions/init';
 import btMove from 'modules/ai/actions/move';
 import btEvade from 'modules/ai/actions/evade';
 import btBlock from 'modules/ai/actions/block';
@@ -26,6 +25,7 @@ import btShield from 'modules/ai/actions/shield';
 import btDirect from 'modules/ai/actions/direct';
 import btTarget from 'modules/ai/actions/target';
 import btCombat from 'modules/ai/actions/combat';
+import btDecide from 'modules/ai/actions/decide';
 import btCommand from 'modules/ai/actions/command';
 import btDontReact from 'modules/ai/actions/dont-react';
 import btEvadeTo from 'modules/ai/actions/evasion-select';
@@ -129,7 +129,7 @@ class AICharacter {
 					SUSPENDED: null,
 					ANIMATION: null,
 					SELECTED: null,
-					IDLE: BT.Sequence([btInit(), btMove(), btCommand()])
+					IDLE: BT.Sequence([btDecide(), btMove(), btCommand()])
 				}),
 				COMMAND: new BTPhaseSelector<CommandPhaseID>(data => data.act.phases.COMMAND.phase, {
 					SUSPENDED: null,

@@ -1,7 +1,11 @@
 TODO
 ----------------------------------------------------------------------------------------------------------
+--	EngineState by mel obsahovat vsechny charactery serializovane
+	- predelat porovnavani CharacterState pres ID
+	- Character.clone predelat na Character.from(characterState)
 --	HexaGrid vlozit na co nejvetsi urovni
 	- predat mu jen onUPdate event a posilat mu data primo bez prekresleni komponenty
+--	refaktorovat Coomand, aby mel jen jeden skill nebo "null"
 --	AI: u ranged / mage preferovat utoky s nejvetsi distance od target postavy
 --	AICharacter: pohyb/akce podle melee / ranged / support role
 	- vybira AIPlayer
@@ -42,7 +46,7 @@ TODO
 	+ v BattleConfig page umoznit vyber areny (pripadne kdy ma zacit nebo skoncit jeji efekt)
 ??	implementovat Sudden death mode (aby nedoslo ke stavu, kdy zbyvaji jen S-typy, ktere evaduji vsechny utoky)
 	- nebo po case na mapu vyvolat OP NPC, ktere bude nahodne utocit na postavy obou hracu
-
+	- muze nastat: 2 healeri zustanou
 
 LONG TERM
 ----------------------------------------------------------------------------------------------------------

@@ -15,7 +15,7 @@ import Command from 'modules/battle/command';
 import Status from 'modules/character/status';
 import { ISexData } from 'modules/character/sex';
 import Skillset from 'modules/character/skillset';
-import Attributes from 'modules/character/attributes';
+import Attributes, { AttributeID } from 'modules/character/attributes';
 import { DirectionID } from 'modules/geometry/direction';
 import { IArmorData } from 'modules/equipment/armor-data';
 import { IOnBattleInfo } from 'modules/battle/battle-info';
@@ -38,14 +38,13 @@ class Character {
 	public readonly name: string;
 	public readonly sex: ISexData;
 	public readonly archetype: IArchetypeData;
+	public readonly skillset: Skillset;
+	public readonly player: Player;
 
+	public readonly status: Status;
 	public readonly attributes: Attributes;
 	public readonly baseAttributes: BaseAttributes;
-
-	public readonly player: Player;
-	public readonly status: Status;
-	public readonly skillset: Skillset;
-
+	
 	public readonly mainHand: IWeaponData;
 	public readonly offHand: IWeaponData;
 	public readonly armor: IArmorData;
@@ -65,23 +64,46 @@ class Character {
 		this.name = data.name;
 		this.sex = Sexes.get(data.sex);
 		this.archetype = Archetypes.get(data.archetype);
-
 		this.skillset = new Skillset(data.skillset, data.archetype);
+		this.player = player;
+
+		this.status = new Status();
+		this.attributes = new Attributes(this);
+		this.baseAttributes = new BaseAttributes(this);
 
 		this.mainHand = Weapons.get(data.main);
 		this.offHand = Weapons.get(data.off);
 		this.armor = Armors.get(data.armor);
 
-		this.player = player;
-
-		this.attributes = new Attributes(this);
-		this.baseAttributes = new BaseAttributes(this);
-
 		this.position = position;
 		this.direction = direction;
-		this.status = new Status();
 
 		this.sprite = new CharacterSprite(this);
+	}
+
+	public clone(): Character {
+		const data = new CharacterData(this.data);
+		const char = new Character(data, this.position, this.direction, this.player);
+
+		for (const status of this.status.get()) {
+			char.status.apply(status.id);
+		}
+
+		for (const id in this.attributes) {
+			const attr = id as AttributeID;
+			char.attributes.set(attr, this.attributes[attr]);
+		}
+
+		for (const id in this.cooldowns) {
+			const cd = id as SkillID;
+			char.cooldowns[cd] = this.cooldowns[cd];
+		}
+	
+		if (this.dead) {
+			char.die();
+		}
+
+		return char;
 	}
 
 	public isDead(): boolean {
