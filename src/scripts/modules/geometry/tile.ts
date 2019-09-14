@@ -1,6 +1,5 @@
 import { Color } from 'modules/color';
 import { Terrain } from 'modules/geometry/terrain';
-import TileSprite from 'modules/graphics/TileSprite';
 
 class Tile {
 	public readonly id: string;
@@ -9,8 +8,6 @@ class Tile {
 	public readonly z: number;
 	public readonly h: number;
 	public readonly terrain: Terrain;
-
-	private sprite: TileSprite;
 
 	private color: Color = [0, 0, 0];
 	private neighbours: Tile[] = [];
@@ -22,7 +19,6 @@ class Tile {
 		this.z = z;
 		this.h = h;
 		this.terrain = terrain;
-		this.sprite = new TileSprite(this);
 	}
 
 	public isContained = (arr: Tile[] = []): boolean => {
@@ -51,14 +47,6 @@ class Tile {
 
 	public setColor(color: Color): void {
 		this.color = color;
-	}
-
-	public render(ctx: CanvasRenderingContext2D, x: number, y: number, size: number, background: Color, border: Color): void {
-		this.sprite.render(ctx, x, y, size, background, border);
-	}
-
-	public renderBoundingBox(ctx: CanvasRenderingContext2D, x: number, y: number, size: number): void {
-		this.sprite.renderBoundingBox(ctx, x, y, size);
 	}
 }
 

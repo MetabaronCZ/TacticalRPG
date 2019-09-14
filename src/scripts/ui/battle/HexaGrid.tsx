@@ -14,6 +14,9 @@ import Character from 'modules/character';
 import { IActState } from 'modules/battle/act';
 import { IBattleInfo } from 'modules/battle/battle-info';
 
+import { renderCharacter } from 'modules/graphics/character';
+import { renderTile, renderTileBoundingBox } from 'modules/graphics/tile';
+
 import Canvas from 'ui/common/Canvas';
 import GridBattleInfo from 'ui/battle/GridBattleInfo';
 import CharacterTooltip from 'ui/battle/CharacterTooltip';
@@ -123,23 +126,24 @@ class HexaGrid extends Canvas<IProps, IState> {
 			const { x, y } = getTileCoords(tile, itemSize, gridSize, gridMargin);
 
 			// hit-box
-			tile.renderBoundingBox(hitCtx, x, y, itemSize);
+			renderTileBoundingBox(tile, hitCtx, x, y, itemSize);
 
 			// hex
 			const style = getTileStyle(tile, act);
-			tile.render(offCtx, x, y, itemSize, style[0], style[1]);
+			renderTile(tile, offCtx, x, y, itemSize, style[0], style[1]);
 		}
 
 		// draw characters
-		for (const character of characters) {
-			if (character.isDead()) {
+		for (const char of characters) {
+			if (char.isDead()) {
 				continue;
 			}
-			const { x, y } = getTileCoords(character.position, itemSize, gridSize, gridMargin);
-			const isActor = (character === this.props.act.actor);
-			const style = getCharacterStyle(character, isActor);
+			const { x, y } = getTileCoords(char.position, itemSize, gridSize, gridMargin);
+			const isActor = (char === this.props.act.actor);
+			const style = getCharacterStyle(char, isActor);
 			const hex = getHexDimensions(itemSize);
-			character.render(offCtx, x, y, (hex.height / 2) - 2, style[0], style[1]);
+
+			renderCharacter(char, offCtx, x, y, (hex.height / 2) - 2, style[0], style[1]);
 		}
 
 		// swap drawing buffers

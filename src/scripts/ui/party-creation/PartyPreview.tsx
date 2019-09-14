@@ -13,6 +13,9 @@ import {
 	getTileCoords, tileStyles, characterStyles, ITileCoords
 } from 'modules/battle/grid';
 
+import { renderTile } from 'modules/graphics/tile';
+import { renderCharacter } from 'modules/graphics/character';
+
 import Canvas from 'ui/common/Canvas';
 
 const positions = getCharacterPositions()[0];
@@ -69,19 +72,19 @@ class PartyPreview extends Canvas<IProps> {
 			const coords = getTileCoords(tile, itemSize, gridWidth, gridMargin);
 			const { x, y } = this.getUpdatedCoords(coords);
 			const style = tileStyles.default;
-			tile.render(ctx, x, y, itemSize, style[0], style[1]);
+			renderTile(tile, ctx, x, y, itemSize, style[0], style[1]);
 		}
 
 		// draw characters
-		for (const character of slots) {
-			if (!character || character.isDead()) {
+		for (const char of slots) {
+			if (!char || char.isDead()) {
 				continue;
 			}
-			const coords = getTileCoords(character.position, itemSize, gridWidth, gridMargin);
+			const coords = getTileCoords(char.position, itemSize, gridWidth, gridMargin);
 			const { x, y } = this.getUpdatedCoords(coords);
 			const hex = getHexDimensions(itemSize);
 			const style = characterStyles.violet;
-			character.render(ctx, x, y, (hex.height / 2) - 2, style[0], style[1]);
+			renderCharacter(char, ctx, x, y, (hex.height / 2) - 2, style[0], style[1]);
 		}
 	}
 
