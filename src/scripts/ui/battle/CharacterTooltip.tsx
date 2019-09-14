@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Icos, IcoID } from 'data/icos';
-import Character from 'modules/character';
+import { ICharacter } from 'modules/character';
 
 import BarValue from 'ui/battle/BarValue';
 import ArmorIco from 'ui/common/ArmorIco';
@@ -12,7 +12,7 @@ import ArchetypeIco from 'ui/common/ArchetypeIco';
 type TooltipOrientation = 'top' | 'bottom';
 
 interface IProps {
-	readonly character: Character;
+	readonly character: ICharacter;
 	readonly x: number; // 0% - 100%
 	readonly y: number; // 0% - 100%
 	readonly size: number; // item size
@@ -20,12 +20,11 @@ interface IProps {
 }
 
 const CharacterTooltip: React.SFC<IProps> = ({ x, y, size, orientation, character: char }) => {
-	const { archetype, skillset } = char;
+	const { sex, archetype, skillset, status } = char;
 	const { HP, AP, MP } = char.attributes;
 	const { HP: baseHP, AP: baseAP, MP: baseMP } = char.baseAttributes;
 
-	const status = char.status.get();
-	const sex = Icos[char.sex.id.toLowerCase() as IcoID];
+	const sexIco = Icos[sex.toLowerCase() as IcoID];
 
 	return (
 		<div
@@ -40,9 +39,9 @@ const CharacterTooltip: React.SFC<IProps> = ({ x, y, size, orientation, characte
 				<div>
 					<strong>{char.name}</strong>
 					{' '}
-					{sex}
+					{sexIco}
 					{' '}
-					<ArchetypeIco archetype={archetype.id} />
+					<ArchetypeIco archetype={archetype} />
 					{' '}
 					<ElementIco element={skillset.element} minimal />
 				</div>

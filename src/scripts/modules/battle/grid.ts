@@ -5,8 +5,8 @@ import { characterPositions } from 'data/grid';
 
 import { Color } from 'modules/color';
 import Tile from 'modules/geometry/tile';
-import Character from 'modules/character';
 import { IActState } from 'modules/battle/act';
+import { ICharacter } from 'modules/character';
 import { getSafeTile } from 'modules/geometry/tiles';
 
 type TileColors = 'default' | 'green' | 'blue' | 'yellow';
@@ -130,15 +130,14 @@ export const getTileStyle = (tile: Tile, act: IActState): ColorStyle => {
 	return tileStyles.default;
 };
 
-export const getCharacterStyle = (character: Character, isActor: boolean): ColorStyle => {
+export const getCharacterStyle = (character: ICharacter, isActor: boolean): ColorStyle => {
 	let style = characterStyles.grey;
 
-	if (character.status.has('DYING')) {
+	if (character.dying) {
 		return style;
 	}
-	const playerID = character.player.id;
 
-	if (0 === playerID) {
+	if (0 === character.player) {
 		style = characterStyles.violet;
 	} else {
 		style = characterStyles.orange;

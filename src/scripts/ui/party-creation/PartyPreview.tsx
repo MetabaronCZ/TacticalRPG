@@ -80,11 +80,12 @@ class PartyPreview extends Canvas<IProps> {
 			if (!char || char.isDead()) {
 				continue;
 			}
-			const coords = getTileCoords(char.position, itemSize, gridWidth, gridMargin);
+			const charData = char.serialize();
+			const coords = getTileCoords(charData.position, itemSize, gridWidth, gridMargin);
 			const { x, y } = this.getUpdatedCoords(coords);
 			const hex = getHexDimensions(itemSize);
 			const style = characterStyles.violet;
-			renderCharacter(char, ctx, x, y, (hex.height / 2) - 2, style[0], style[1]);
+			renderCharacter(charData, ctx, x, y, (hex.height / 2) - 2, style[0], style[1]);
 		}
 	}
 

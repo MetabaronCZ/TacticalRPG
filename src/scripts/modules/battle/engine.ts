@@ -6,10 +6,10 @@ import { getRandomNames } from 'modules/random-name-generator';
 import Logger from 'modules/logger';
 import Tile from 'modules/geometry/tile';
 import AIPlayer from 'modules/ai/player';
-import Character from 'modules/character';
 import Command from 'modules/battle/command';
 import Act, { IActState } from 'modules/battle/act';
 import Order, { IOrder } from 'modules/battle/order';
+import Character, { ICharacter } from 'modules/character';
 import { IBattleInfo } from 'modules/battle/battle-info';
 import { DirectionID } from 'modules/geometry/direction';
 import { getCharacterPositions } from 'modules/battle/grid';
@@ -30,7 +30,7 @@ export interface IEngineState {
 	order: IOrder;
 	act: IActState | null;
 	battleInfo: IBattleInfo[];
-	readonly characters: Character[];
+	readonly characters: ICharacter[];
 	readonly chronox: IChronoxRecord;
 }
 
@@ -112,7 +112,7 @@ class Engine {
 			running: this.running,
 			tick: this.tick,
 			act: (this.act ? this.act.getState() : null),
-			characters: this.characters,
+			characters: this.characters.map(char => char.serialize()),
 			order: this.order.serialize(),
 			chronox: this.chronox.serialize(),
 			battleInfo: this.battleInfo

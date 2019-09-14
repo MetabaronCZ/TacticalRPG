@@ -12,24 +12,47 @@ import AIPlayer from 'modules/ai/player';
 import Player from 'modules/battle/player';
 import Command from 'modules/battle/command';
 import Status from 'modules/character/status';
-import { ISexData } from 'modules/character/sex';
 import Skillset from 'modules/character/skillset';
+import { ISexData, SexID } from 'modules/character/sex';
 import { DirectionID } from 'modules/geometry/direction';
 import { IArmorData } from 'modules/equipment/armor-data';
 import { IOnBattleInfo } from 'modules/battle/battle-info';
 import { IWeaponData } from 'modules/equipment/weapon-data';
-import { IArchetypeData } from 'modules/character/archetype';
 import BaseAttributes from 'modules/character/base-attributes';
 import { SkillID, SkillCooldown } from 'modules/skill/skill-data';
-import Attributes, { AttributeID } from 'modules/character/attributes';
-import { StatusEffectID, IOnStatus } from 'modules/battle/status-effect';
+import { IArchetypeData, ArchetypeID } from 'modules/character/archetype';
+import Attributes, { AttributeID, IAttributes } from 'modules/character/attributes';
+import StatusEffect, { StatusEffectID, IOnStatus } from 'modules/battle/status-effect';
 import { CharacterData, ICharacterData } from 'modules/character-creation/character-data';
+import { PlayerData } from 'modules/battle-configuration/player-data';
 
 type CharacterCondition = 'OK' | 'DANGER' | 'CRITICAL';
 
 export type ISkillCooldowns = Partial<{
 	[id in SkillID]: SkillCooldown;
 }>;
+
+export interface ICharacter {
+	readonly id: string;
+	readonly name: string;
+	readonly sex: SexID;
+	readonly skillset: Skillset;
+	readonly archetype: ArchetypeID;
+	readonly attributes: IAttributes;
+	readonly baseAttributes: IAttributes;
+	readonly dead: boolean;
+	readonly dying: boolean;
+	readonly player: number;
+	readonly status: StatusEffect[];
+	readonly cooldowns: ISkillCooldowns;
+
+	readonly mainHand: IWeaponData;
+	readonly offHand: IWeaponData;
+	readonly armor: IArmorData;
+
+	readonly position: Tile;
+	readonly direction: DirectionID;
+}
 
 class Character {
 	public readonly data: ICharacterData;
@@ -75,29 +98,64 @@ class Character {
 		this.direction = direction;
 	}
 
-	public clone(): Character {
-		const data = new CharacterData(this.data);
-		const char = new Character(data, this.position, this.direction, this.player);
+	public static from(data: ICharacter): Character {
+		const playerData = new PlayerData(data.player, { name: 'SYSTEM' });
+		const player = new Player(playerData, []);
 
-		for (const status of this.status.get()) {
+		const charData = new CharacterData({
+			id: data.id,
+			name: data.name,
+			sex: data.sex,
+			archetype: data.archetype,
+			skillset: data.skillset.id,
+			main: data.mainHand.id,
+			off: data.offHand.id,
+			armor: data.armor.id
+		});
+
+		const char = new Character(charData, data.position, data.direction, player);
+
+		for (const status of data.status) {
 			char.status.apply(status.id);
 		}
 
-		for (const id in this.attributes) {
+		for (const id in data.attributes) {
 			const attr = id as AttributeID;
-			char.attributes.set(attr, this.attributes[attr]);
+			char.attributes.set(attr, data.attributes[attr]);
 		}
 
-		for (const id in this.cooldowns) {
+		for (const id in data.cooldowns) {
 			const cd = id as SkillID;
-			char.cooldowns[cd] = this.cooldowns[cd];
+			char.cooldowns[cd] = data.cooldowns[cd];
 		}
 	
-		if (this.dead) {
+		if (data.dead) {
 			char.die();
 		}
 
 		return char;
+	}
+
+	public serialize(): ICharacter {
+		return {
+			id: this.data.id,
+			name: this.name,
+			sex: this.data.sex,
+			skillset: this.skillset,
+			archetype: this.archetype.id,
+			attributes: this.attributes.serialize(),
+			baseAttributes: this.baseAttributes.serialize(),
+			dead: this.dead,
+			dying: this.status.has('DYING'),
+			status: this.status.get(),
+			cooldowns: { ...this.cooldowns },
+			player: this.player.id,
+			position: this.position,
+			direction: this.direction,
+			mainHand: this.mainHand,
+			offHand: this.offHand,
+			armor: this.armor
+		};
 	}
 
 	public isDead(): boolean {

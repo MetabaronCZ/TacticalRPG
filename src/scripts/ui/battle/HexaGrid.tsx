@@ -10,8 +10,8 @@ import {
 } from 'modules/battle/grid';
 
 import Tile from 'modules/geometry/tile';
-import Character from 'modules/character';
 import { IActState } from 'modules/battle/act';
+import { ICharacter } from 'modules/character';
 import { IBattleInfo } from 'modules/battle/battle-info';
 
 import { renderCharacter } from 'modules/graphics/character';
@@ -32,7 +32,7 @@ interface IHovered {
 
 interface IProps {
 	readonly act: IActState;
-	readonly characters: Character[];
+	readonly characters: ICharacter[];
 	readonly battleInfo: IBattleInfo[];
 	readonly onTileSelect: (tile: Tile) => void;
 }
@@ -135,11 +135,11 @@ class HexaGrid extends Canvas<IProps, IState> {
 
 		// draw characters
 		for (const char of characters) {
-			if (char.isDead()) {
+			if (char.dead) {
 				continue;
 			}
 			const { x, y } = getTileCoords(char.position, itemSize, gridSize, gridMargin);
-			const isActor = (char === this.props.act.actor);
+			const isActor = (char.id === act.actor.data.id);
 			const style = getCharacterStyle(char, isActor);
 			const hex = getHexDimensions(itemSize);
 

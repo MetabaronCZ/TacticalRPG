@@ -10,6 +10,7 @@ TODO
 --	AICharacter: pohyb/akce podle melee / ranged / support role
 	- vybira AIPlayer
 	- prioritizace skillu (healing role -> Revive)
+--	AI: pridat logiku pro vyhodnoceni pouziti CC Commandu
 --  btEvadeTo predelat na:
         ?SELECT_EVASION
 			>SAFE_EVADE     ?SHOULD_DEFEND  C-reactorWarningCondition

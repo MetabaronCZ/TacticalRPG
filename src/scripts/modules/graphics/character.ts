@@ -1,13 +1,13 @@
 import { PI } from 'core/number';
 
-import Character from 'modules/character';
+import { ICharacter } from 'modules/character';
 import { colorToRGB, Color } from 'modules/color';
 import { dirToIndex } from 'modules/geometry/direction';
 
 const dirSize = 4; // size of character direction circle visual
 
-export const renderCharacter = (char: Character, ctx: CanvasRenderingContext2D, x: number, y: number, size: number, background: Color, border: Color): void => {
-	const isDying = char.status.has('DYING');
+export const renderCharacter = (char: ICharacter, ctx: CanvasRenderingContext2D, x: number, y: number, size: number, background: Color, border: Color): void => {
+	const isDying = char.dying;
 
 	// shadow
 	ctx.beginPath();

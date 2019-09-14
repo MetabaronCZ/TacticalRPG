@@ -1,10 +1,10 @@
 import AIPresets from 'data/ai-presets';
 
 import Tile from 'modules/geometry/tile';
-import Character from 'modules/character';
 import Engine from 'modules/battle/engine';
 import Command from 'modules/battle/command';
 import { IActState } from 'modules/battle/act';
+import Character, { ICharacter } from 'modules/character';
 import Player, { IPlayerCharacterSetup } from 'modules/battle/player';
 import { IPlayerData } from 'modules/battle-configuration/player-data';
 
@@ -35,21 +35,19 @@ class AIPlayer extends Player {
 		});
 	}
 
-	public getEnemy(aliveOnly = false): Character[] {
+	public getEnemy(aliveOnly = false): ICharacter[] {
 		const characters = this.engine.getState().characters;
-		let enemy = characters.filter(char => char.player !== this);
+		const enemy = characters.filter(char => char.player !== this.id);
 
-		if (aliveOnly) {
-			enemy = enemy.filter(char => {
-				return !char.isDead() && !char.status.has('DYING');
-			});
+		if (!aliveOnly) {
+			return enemy;
 		}
-		return enemy;
+		return enemy.filter(char => !char.dead && !char.dying);
 	}
 
 	public getObstacles(): Tile[] {
 		return this.engine.getState().characters
-			.filter(char => !char.isDead())
+			.filter(char => !char.dead)
 			.map(char => char.position);
 	}
 

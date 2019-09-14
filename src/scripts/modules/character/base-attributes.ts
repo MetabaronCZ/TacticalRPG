@@ -22,6 +22,21 @@ class BaseAttributes implements IAttributes {
 		}
 	}
 
+	public serialize(): IAttributes {
+		return {
+			STR: this.STR,
+			VIT: this.VIT,
+			SPD: this.SPD,
+			MOV: this.MOV,
+			MAG: this.MAG,
+			SPR: this.SPR,
+			HP: this.HP,
+			MP: this.MP,
+			AP: this.AP,
+			CT: this.CT
+		};
+	}
+
 	public get STR(): number { return this.values.STR; }
 	public get VIT(): number { return this.values.VIT; }
 	public get SPD(): number { return this.values.SPD; }

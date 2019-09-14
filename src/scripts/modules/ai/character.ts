@@ -1,9 +1,9 @@
 import { aiActionDelay } from 'data/game-config';
 
 import Tile from 'modules/geometry/tile';
-import Character from 'modules/character';
 import Engine from 'modules/battle/engine';
 import Command from 'modules/battle/command';
+import Character, { ICharacter } from 'modules/character';
 import { IActState, ActPhaseID } from 'modules/battle/act';
 
 import { MovePhaseID } from 'modules/battle/act/move-phase';
@@ -43,7 +43,7 @@ export interface IAIDecision {
 
 interface IAICharacterMemory {
 	ally: Character[];
-	enemy: Character[];
+	enemy: ICharacter[];
 	obstacles: Tile[];
 	decision: IAIDecision | null;
 

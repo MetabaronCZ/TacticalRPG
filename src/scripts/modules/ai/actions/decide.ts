@@ -6,15 +6,14 @@ import { getIdleCommands } from 'modules/battle/commands';
 
 import Logger from 'modules/logger';
 import Tile from 'modules/geometry/tile';
-import Character from 'modules/character';
 import Command from 'modules/battle/command';
 import { IAIData } from 'modules/ai/character';
+import Character, { ICharacter } from 'modules/character';
 
 import BT from 'modules/ai/behavioral-tree';
 import BTAction from 'modules/ai/behavioral-tree/action';
 
-interface IAction {
-	readonly character: Character;
+interface IActionBase {
 	readonly command: Command;
 	readonly move: Tile;
 	readonly cost: {
@@ -23,6 +22,14 @@ interface IAction {
 	};
 	readonly damage: number;
 	readonly distance: number;
+}
+
+interface IAction extends IActionBase {
+	readonly character: ICharacter;
+}
+
+interface IAnonymousAction extends IActionBase {
+	readonly character: string;
 }
 
 interface IDistances {
@@ -43,9 +50,12 @@ const btDecide = (): BTAction<IAIData> => {
 		const { movable, costMap } = data.act.phases.MOVEMENT;
 		const { enemy, obstacles } = data.memory;
 
-		const { actor } = data.act;
+		// convert enemy data into temporary Character instances
+		const enemyChars = enemy.map(data => Character.from(data));
+
+		const actor = data.act.actor.serialize();
 		const { AP } = actor.attributes;
-		const actions: IAction[] = [];
+		const actions: IAnonymousAction[] = [];
 
 		// gather information
 		for (const tile of movable) {
@@ -53,22 +63,23 @@ const btDecide = (): BTAction<IAIData> => {
 			const ap = Math.max(0, AP - moveCost);
 
 			// create actor shadow on given tile
-			const char = actor.clone();
+			const char = Character.from(actor);
 			char.position = tile;
 			char.attributes.set('AP', ap);
 
 			// get shortest possible paths / distances to all targets
 			const distances: IDistances = {};
 
-			for (const tgt of enemy) {
+			for (const tgt of enemyChars) {
 				const path = getShortestPath(tile, tgt.position, []);
+				const id = tgt.data.id;
 
 				const distance = path.length;
-				distances[tgt.data.id] = distance;
+				distances[id] = distance;
 
 				// add simple go-and-pass item
 				actions.push({
-					character: tgt,
+					character: id,
 					move: tile,
 					command: passCommand,
 					damage: 0,
@@ -97,10 +108,12 @@ const btDecide = (): BTAction<IAIData> => {
 				}
 				const skillAreas = skills.map(skill => skill.getTargetable(char.position, obstacles));
 				const targetable = getIntersection(skillAreas);
-				const targets = skills[0].getTargets(char, enemy, targetable);
+				const targets = skills[0].getTargets(char, enemyChars, targetable);
 
 				for (const tgt of targets) {
-					const distance = distances[tgt.data.id];
+					const id = tgt.data.id;
+					const distance = distances[id];
+
 					let damage = 0;
 
 					for (const skill of skills) {
@@ -108,7 +121,7 @@ const btDecide = (): BTAction<IAIData> => {
 						damage += combatInfo.damage;
 					}
 					actions.push({
-						character: tgt,
+						character: id,
 						move: tile,
 						command,
 						damage,
@@ -122,14 +135,23 @@ const btDecide = (): BTAction<IAIData> => {
 			}
 		}
 
+		let sorted: IAction[] = actions.map(action => {
+			const character = enemy.find(char => action.character === char.id);
+
+			if (!character) {
+				throw new Error('Could not convert action item: Invalid character ID');
+			}
+			return { ...action, character } as IAction;
+		});
+
 		// tertiary sort (by shortest travel distance)
-		let sorted = actions.sort((a, b) => a.distance - b.distance);
+		sorted = sorted.sort((a, b) => a.distance - b.distance);
 
 		// secondary sort (by most potentional damage done)
-		sorted = actions.sort((a, b) => b.damage - a.damage);
+		sorted = sorted.sort((a, b) => b.damage - a.damage);
 
 		// primary sort (by minimal % of enemy health remaining)
-		sorted = actions.sort((a, b) => {
+		sorted = sorted.sort((a, b) => {
 			const hpA = a.character.attributes.HP;
 			const hpB = b.character.attributes.HP;
 			const hpMaxA = a.character.baseAttributes.HP;
