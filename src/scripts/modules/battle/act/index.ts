@@ -52,6 +52,7 @@ export interface IActState {
 export interface IActRecord {
 	readonly id: number;
 	readonly actor: string;
+	readonly player: number;
 	readonly skipped: boolean;
 	readonly movementPhase: IMovePhaseRecord;
 	readonly commandPhase: ICommandPhaseRecord;
@@ -161,6 +162,7 @@ class Act {
 			id: this.id,
 			skipped: this.skipped,
 			actor: this.actor.data.id,
+			player: this.actor.player.id,
 			movementPhase: this.phases.MOVEMENT.getRecord(),
 			commandPhase: this.phases.COMMAND.getRecord(),
 			reactionPhase: this.phases.REACTION.getRecord(),

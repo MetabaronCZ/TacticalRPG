@@ -1,9 +1,3 @@
-BUG
-----------------------------------------------------------------------------------------------------------
---	kdyz je stejna postava v Party obou hracu, v BattleSummary se zobrazuji obe se stejnou ikonou hrace
-	- maji stejne Character.id
-	- Character by mohl mit ID slozene z CharacterDataID + Player.id
-
 TODO
 ----------------------------------------------------------------------------------------------------------
 --	HexaGrid vlozit na co nejvetsi urovni

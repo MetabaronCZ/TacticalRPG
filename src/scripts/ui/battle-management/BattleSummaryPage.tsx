@@ -4,8 +4,14 @@ import { withRouter, RouteComponentProps } from 'react-router';
 
 import { gotoRoute } from 'core/navigation';
 
+import Skill from 'modules/skill';
+import Command from 'modules/battle/command';
+import { IRouteParams } from 'modules/route';
 import { IActRecord } from 'modules/battle/act';
+import { IChronoxRecord } from 'modules/battle/chronox';
 import Summary, { ISummary } from 'modules/battle/summary';
+import { IPartyData } from 'modules/party-creation/party-data';
+import { IPlayerConfig } from 'modules/battle-configuration/player-data';
 import { ICharacterData } from 'modules/character-creation/character-data';
 
 import Page from 'ui/common/Page';
@@ -13,11 +19,6 @@ import Button from 'ui/common/Button';
 import Separator from 'ui/common/Separator';
 import ButtonRow from 'ui/common/ButtonRow';
 import PlayerIco from 'ui/common/PlayerIco';
-import { IRouteParams } from 'modules/route';
-import { IPartyData } from 'modules/party-creation/party-data';
-import { IPlayerConfig } from 'modules/battle-configuration/player-data';
-import Command from 'modules/battle/command';
-import Skill from 'modules/skill';
 import CommandTitle from 'ui/battle/CommandTitle';
 
 const topListSize = 5; // maximum items of diplayed top kills, damage, ...
@@ -72,6 +73,28 @@ interface IPlayerData {
 	readonly player: IPlayerConfig;
 	readonly characters: ICharacterData[];
 }
+
+// return player agnostic character ID
+const getActorID = (actorID: string, playerID: number): string => `${actorID}-${playerID}`;
+
+const getPlayerData = (record: IChronoxRecord): IPlayerData[] => {
+	const { characters, players, parties } = record;
+
+	return players.map(pl => {
+		const party = parties.find(pt => pl.party === pt.id);
+	
+		const chars = party
+			? party.slots.map(sl => characters.find(char => sl === char.id))
+			: [];
+	
+		return {
+			id: pl.id,
+			player: pl,
+			party,
+			characters: chars.filter(char => !!char) as ICharacterData[]
+		} as IPlayerData;
+	});
+};
 
 const getRowInfo = (characters: ICharacterData[], record: IActRecord): IRecordAnalysis => {
 	const actor = characters.find(char => record.actor === char.id);
@@ -161,7 +184,7 @@ const getRowInfo = (characters: ICharacterData[], record: IActRecord): IRecordAn
 	return result;
 };
 
-const analyzeScore = (timeline: IActRecord[], characters: ICharacterData[], players: IPlayerData[]): IScoreAnalysis => {
+const analyzeScore = (timeline: IActRecord[], characters: ICharacterData[]): IScoreAnalysis => {
 	const result: IScoreAnalysis = {
 		kills: [],
 		damage: [],
@@ -176,22 +199,18 @@ const analyzeScore = (timeline: IActRecord[], characters: ICharacterData[], play
 		if (!actor) {
 			throw new Error('Invalid score record character ID');
 		}
-		const playerData = players.find(pl => pl.characters.find(char => actor.id === char.id));
-
-		if (!playerData) {
-			throw new Error('Invalid score record player data');
-		}
+		const actorID = getActorID(actor.id, act.player);
 		const results = act.combatPhase.results;
 
-		scoreData[actor.id] = scoreData[actor.id] || {
+		scoreData[actorID] = scoreData[actorID] || {
 			name: actor.name,
-			player: playerData.id,
+			player: act.player,
 			kills: 0,
 			damage: 0,
 			healing: 0
 		} as IScoreDataItem;
 
-		const data = scoreData[actor.id];
+		const data = scoreData[actorID];
 
 		for (const res of results) {
 			data.damage += res.damaged;
@@ -285,22 +304,8 @@ class BattleSummaryPage extends React.Component<IProps, IState> {
 		if (!winPlayer) {
 			throw new Error('Invalid winner ID: ' + winner);
 		}
-		const playerData = chronox.players.map(pl => {
-			const party = chronox.parties.find(pt => pl.party === pt.id);
-
-			const characters = party
-				? party.slots.map(sl => chronox.characters.find(char => sl === char.id))
-				: [];
-
-			return {
-				id: pl.id,
-				player: pl,
-				party,
-				characters: characters.filter(char => !!char) as ICharacterData[]
-			} as IPlayerData;
-		});
-
-		const scoreAnalysis = analyzeScore(chronox.timeline, chronox.characters, playerData);
+		const playerData = getPlayerData(chronox);
+		const scoreAnalysis = analyzeScore(chronox.timeline, chronox.characters);
 
 		return (
 			<Page heading="Summary">
@@ -371,10 +376,7 @@ class BattleSummaryPage extends React.Component<IProps, IState> {
 							return;
 						}
 						const item = getRowInfo(chronox.characters, t);
-
-						const player = playerData.find(data => {
-							return !!data.characters.find(char => char && char.id === item.actor.id);
-						});
+						const player = playerData[t.player];
 
 						if (!player) {
 							throw new Error('Invalid Character or Player data');
