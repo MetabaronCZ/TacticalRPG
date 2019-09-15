@@ -424,11 +424,15 @@ class Act {
 
 	private getActingCharacter(): Character | null {
 		const { phase } = this;
-		return phase ? this.phases[phase].actor : null;
+		return phase ? this.phases[phase].actor : this.actor;
 	}
 
 	private log(msg: string): void {
-		const char = this.getState().actingCharacter;
+		const char = this.getActingCharacter();
+		if (!char) {
+			console.log(this);
+			throw new Error('Invalid acting character');
+		}
 		Logger.info(`${char ? char.name : '???'} - ${msg}`);
 	}
 }

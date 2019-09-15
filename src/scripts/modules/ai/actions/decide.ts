@@ -39,14 +39,16 @@ interface IDistances {
 const btDecide = (): BTAction<IAIData> => {
 	return BT.Action(data => {
 		if (data.memory.decision) {
-			Logger.info('AI INIT - already has target');
+			Logger.info('AI DECIDE - already decided');
 			return 'SUCCESS';
 		}
 		const passCommand = data.commands.find(cmd => 'PASS' === cmd.type);
 
 		if (!passCommand) {
-			throw new Error('Could not init AI: pass command not available');
+			throw new Error('Could not start AI decision: pass command not available');
 		}
+		const dStart = Date.now();
+
 		const { act, enemy, obstacles } = data;
 		const { actor, phases } = act;
 		const { movable, costMap } = phases.MOVEMENT;
@@ -150,15 +152,17 @@ const btDecide = (): BTAction<IAIData> => {
 		// secondary sort (by most potentional damage done)
 		sorted = sorted.sort((a, b) => b.damage - a.damage);
 
-		// primary sort (by minimal % of enemy health remaining)
+		// primary sort (by minimal % of enemy health remaining after command usage)
 		sorted = sorted.sort((a, b) => {
-			const hpA = a.character.attributes.HP;
-			const hpB = b.character.attributes.HP;
-			const hpMaxA = a.character.baseAttributes.HP;
-			const hpMaxB = b.character.baseAttributes.HP;
+			const charA = a.character;
+			const charB = b.character;
+			const hpA = charA.attributes.HP;
+			const hpB = charB.attributes.HP;
+			const hpMaxA = charA.baseAttributes.HP;
+			const hpMaxB = charB.baseAttributes.HP;
 
-			const remainingA = Math.max(0, hpA - a.damage) / hpMaxA;
-			const remainingB = Math.max(0, hpB - b.damage) / hpMaxB;
+			const remainingA = (hpA > a.damage ? hpA - a.damage : 0) / hpMaxA;
+			const remainingB = (hpB > b.damage ? hpB - b.damage : 0) / hpMaxB;
 
 			return remainingA - remainingB;
 		});
@@ -174,12 +178,15 @@ const btDecide = (): BTAction<IAIData> => {
 				command,
 				move
 			};
-			Logger.info(`AI INIT - target: ${character.name}, move: ${move.id}, command: ${command.title}`);
+			Logger.info(`AI DECIDE - target: ${character.name}, move: ${move.id}, command: ${command.title}`);
 
 		} else {
 			data.memory.decision = null;
-			Logger.info('AI INIT - no target found');
+			Logger.info('AI DECIDE - no target found');
 		}
+
+		const dEnd = Date.now();
+		Logger.info(`AI DECIDE: decision took ${((dEnd - dStart) / 1000).toFixed(3)} sec`);
 
 		return 'SUCCESS';
 	});
