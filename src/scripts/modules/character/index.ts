@@ -20,7 +20,6 @@ import { IOnBattleInfo } from 'modules/battle/battle-info';
 import { IWeaponData } from 'modules/equipment/weapon-data';
 import BaseAttributes from 'modules/character/base-attributes';
 import { SkillID, SkillCooldown } from 'modules/skill/skill-data';
-import { PlayerData } from 'modules/battle-configuration/player-data';
 import { IArchetypeData, ArchetypeID } from 'modules/character/archetype';
 import Attributes, { AttributeID, IAttributes } from 'modules/character/attributes';
 import StatusEffect, { StatusEffectID, IOnStatus } from 'modules/battle/status-effect';
@@ -100,10 +99,7 @@ class Character {
 		this.direction = direction;
 	}
 
-	public static from(data: ICharacter): Character {
-		const playerData = new PlayerData(data.player, { name: 'SYSTEM' });
-		const player = new Player(playerData, []);
-
+	public static from(data: ICharacter, player: Player): Character {
 		const charData = CharacterData.from(data);
 		const char = new Character(charData, data.position, data.direction, player);
 

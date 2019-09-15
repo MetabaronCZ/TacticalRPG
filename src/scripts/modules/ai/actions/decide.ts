@@ -12,6 +12,8 @@ import Character, { ICharacter } from 'modules/character';
 
 import BT from 'modules/ai/behavioral-tree';
 import BTAction from 'modules/ai/behavioral-tree/action';
+import { PlayerData } from 'modules/battle-configuration/player-data';
+import Player from 'modules/battle/player';
 
 interface IActionBase {
 	readonly command: Command;
@@ -36,6 +38,11 @@ interface IDistances {
 	[characterID: string]: number;
 }
 
+const getPlayerShadow = (id: number, name: string): Player => {
+	const data = new PlayerData(id, { name });
+	return new Player(data, []);
+};
+
 const btDecide = (): BTAction<IAIData> => {
 	return BT.Action(data => {
 		if (data.memory.decision) {
@@ -48,13 +55,18 @@ const btDecide = (): BTAction<IAIData> => {
 			throw new Error('Could not start AI decision: pass command not available');
 		}
 		const dStart = Date.now();
+		let tAccum = 0;
 
 		const { act, enemy, obstacles } = data;
 		const { actor, phases } = act;
 		const { movable, costMap } = phases.MOVEMENT;
 
-		// convert enemy data into temporary Character instances
-		const enemyChars = enemy.map(data => Character.from(data));
+		// create Player shadows
+		const playerShadow = getPlayerShadow(actor.player, 'SHADOW_ALLY');
+		const enemyPlayerShadow = getPlayerShadow(enemy[0].player, 'SHADOW_ENEMY');
+
+		// create enemy character shadows
+		const enemyShadows = enemy.map(data => Character.from(data, enemyPlayerShadow));
 
 		const { AP } = actor.attributes;
 		const actions: IAnonymousAction[] = [];
@@ -65,16 +77,22 @@ const btDecide = (): BTAction<IAIData> => {
 			const ap = Math.max(0, AP - moveCost);
 
 			// create actor shadow on given tile
-			const char = Character.from(actor);
+			const tStart = Date.now();
+
+			const char = Character.from(actor, playerShadow);
+
+			const tEnd = Date.now();
+			tAccum += tEnd - tStart;
+
 			char.position = tile;
 			char.attributes.set('AP', ap);
 
 			// get shortest possible paths / distances to all targets
 			const distances: IDistances = {};
 
-			for (const tgt of enemyChars) {
+			for (const tgt of enemyShadows) {
 				const path = getShortestPath(tile, tgt.position, []);
-				const id = tgt.data.id;
+				const { id } = tgt.data;
 
 				const distance = path.length;
 				distances[id] = distance;
@@ -110,10 +128,10 @@ const btDecide = (): BTAction<IAIData> => {
 				}
 				const skillAreas = skills.map(skill => skill.getTargetable(char.position, obstacles));
 				const targetable = getIntersection(skillAreas);
-				const targets = skills[0].getTargets(char, enemyChars, targetable);
+				const targets = skills[0].getTargets(char, enemyShadows, targetable);
 
 				for (const tgt of targets) {
-					const id = tgt.data.id;
+					const { id } = tgt.data;
 					const distance = distances[id];
 
 					let damage = 0;
@@ -187,6 +205,7 @@ const btDecide = (): BTAction<IAIData> => {
 
 		const dEnd = Date.now();
 		Logger.info(`AI DECIDE: decision took ${((dEnd - dStart) / 1000).toFixed(3)} sec`);
+		Logger.info(`AI DECIDE: XXX took ${(tAccum / 1000).toFixed(3)} sec`);
 
 		return 'SUCCESS';
 	});

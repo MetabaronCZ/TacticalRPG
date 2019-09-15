@@ -72,8 +72,6 @@ export class CharacterData extends IndexableData {
 	}
 
 	public static from(data: ICharacter): CharacterData {
-		const now = Date.now();
-
 		return new CharacterData({
 			id: data.id,
 			name: data.name,
@@ -82,9 +80,7 @@ export class CharacterData extends IndexableData {
 			skillset: data.skillset.id,
 			main: data.mainHand.id,
 			off: data.offHand.id,
-			armor: data.armor.id,
-			creationDate: now,
-			lastUpdate: now
+			armor: data.armor.id
 		});
 	}
 

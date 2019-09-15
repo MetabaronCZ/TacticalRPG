@@ -8,8 +8,8 @@ import Skill from 'modules/skill';
 import Character from 'modules/character';
 import Vector from 'modules/geometry/vector';
 import StatusEffect from 'modules/battle/status-effect';
+import { SkillElement, ISkillData } from 'modules/skill/skill-data';
 import { ElementAffinityTable, Affinity } from 'modules/skill/affinity';
-import { SkillID, SkillElement, ISkillData } from 'modules/skill/skill-data';
 
 const precision = 10 ** 10; // angle precision modifier
 const backAttackAngle = PI / 3; // 60 degrees
@@ -141,14 +141,14 @@ const getPhysicalDamage = (character: Character, skill: Skill): number => {
 	if (0 === skill.physical) {
 		return 0;
 	}
-	const weapon = Weapons.values().find(wpn => -1 !== (wpn.skills as SkillID[]).indexOf(skill.id));
-	const weaponDamage = (weapon ? weapon.physical : 0);
+	const weapon = Weapons.get(skill.weapon);
+	const weaponDamage = weapon.physical;
+	const { STR } = character.attributes;
 
 	if (skill.isFixedDamage) {
 		return skill.physical;
-	} else {
-		return (character.attributes.STR + weaponDamage) * skill.physical;
 	}
+	return (STR + weaponDamage) * skill.physical;
 };
 
 const getMagicalDamage = (character: Character, skill: Skill): number => {
@@ -180,10 +180,9 @@ const getStatusModifier = (attacker: Character, defender: Character): number => 
 
 const getStatusEffects = (caster: Character, target: Character, skill: Skill, phy = 0, mag = 0, isGuarding = false): StatusEffect[] => {
 	const statuses = skill.status.map(id => new StatusEffect(id));
-	const effects: StatusEffect[] = [];
-
 	const { STR: attSTR, MAG: attMAG } = caster.attributes;
 	const { VIT: defVIT, SPR: defSPR } = target.attributes;
+	const effects: StatusEffect[] = [];
 
 	for (const status of statuses) {
 		switch (status.type) {
@@ -228,11 +227,13 @@ export const getCombatInfo = (caster: Character, target: Character, skill: Skill
 		shielded: null,
 		status: getStatusEffects(caster, target, skill)
 	};
+
 	if (isSupport) {
 		result.type = 'SUPPORT';
 		result.healing = getMagicalDamage(caster, skill);
 		return result;
 	}
+
 	// handle damaging skill
 	let physical = getPhysicalDamage(caster, skill);
 	let magical = getMagicalDamage(caster, skill);
