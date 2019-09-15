@@ -19,17 +19,20 @@ const onStart = (history: History, store: Store) => (config: BattleConfig) => {
 	gotoRoute(history, 'BATTLE');
 };
 
-const BattleConfigPageContainer: React.SFC<RouteComponentProps<IRouteParams> & IContext> = ({ history, store }) => (
-	<Page heading="Battle config">
-		<BattleConfigUI
-			config={store.battleConfig}
-			characters={store.characters.data}
-			parties={store.parties.data}
-			onBack={gotoFn(history, 'ROOT')}
-			onStart={onStart(history, store)}
-		/>
-	</Page>
-);
+const BattleConfigPageContainer: React.SFC<RouteComponentProps<IRouteParams> & IContext> = ({ history, store }) => {
+	const characters = store.characters.data.map(char => char.serialize());
+	return (
+		<Page heading="Battle config">
+			<BattleConfigUI
+				config={store.battleConfig}
+				characters={characters}
+				parties={store.parties.data}
+				onBack={gotoFn(history, 'ROOT')}
+				onStart={onStart(history, store)}
+			/>
+		</Page>
+	);
+};
 
 export default withRouter(
 	withContext(BattleConfigPageContainer)

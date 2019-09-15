@@ -3,7 +3,7 @@ import React from 'react';
 import { Icos, IcoID } from 'data/icos';
 
 import Tile from 'modules/geometry/tile';
-import { CharacterData } from 'modules/character-creation/character-data';
+import { ICharacterData, isDualWielding } from 'modules/character-creation/character-data';
 
 import ArmorIco from 'ui/common/ArmorIco';
 import WeaponIco from 'ui/common/WeaponIco';
@@ -16,31 +16,33 @@ export const formatTile = (tile: Tile | null): string => {
 	return `(${tile.x}, ${tile.y}, ${tile.z})`;
 };
 
-export const formatTiles = (arr: Tile[]): string => `[ ${arr.map(tile => formatTile(tile)).join(', ')} ]`;
+export const formatTiles = (arr: Tile[]): string => {
+	return `[ ${arr.map(tile => formatTile(tile)).join(', ')} ]`;
+};
 
-export const formatCharacter = (character: CharacterData | null): React.ReactNode => {
+export const formatCharacter = (character: ICharacterData | null): React.ReactNode => {
 	if (!character) {
 		return '';
 	}
-	const { sex, archetype, mainHand, offHand, armor } = character;
-	let off: React.ReactNode = '';
+	const { sex, archetype, main, off, armor } = character;
+	let offA: React.ReactNode = '';
 
-	if (character.isDualWielding()) {
-		off = <WeaponIco weapon={mainHand.id} minimal />;
+	if (isDualWielding(character)) {
+		offA = <WeaponIco weapon={main} minimal />;
 	} else {
-		off = <WeaponIco weapon={offHand.id} minimal />;
+		offA = <WeaponIco weapon={off} minimal />;
 	}
 	return (
 		<React.Fragment>
-			{Icos[sex.id.toLowerCase() as IcoID] || ''}
+			{Icos[sex.toLowerCase() as IcoID] || ''}
 			{' '}
-			<ArchetypeIco archetype={archetype.id} />
+			<ArchetypeIco archetype={archetype} />
 			{' '}
-			<WeaponIco weapon={mainHand.id} minimal />
+			<WeaponIco weapon={main} minimal />
 			{' '}
-			{off}
+			{offA}
 			{' '}
-			<ArmorIco armor={armor.id} minimal />
+			<ArmorIco armor={armor} minimal />
 		</React.Fragment>
 	);
 };

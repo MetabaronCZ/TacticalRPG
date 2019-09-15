@@ -6,7 +6,6 @@ import { gotoFn } from 'core/navigation';
 import { withContext, IContext } from 'context';
 
 import { Store } from 'modules/store';
-import { PartyData } from 'modules/party-creation/party-data';
 
 import Page from 'ui/common/Page';
 import Button from 'ui/common/Button';
@@ -14,19 +13,19 @@ import ButtonRow from 'ui/common/ButtonRow';
 import Separator from 'ui/common/Separator';
 import PartyList from 'ui/party-creation/PartyList';
 
-const onMoveDown = (store: Store) => (party: PartyData) => () => {
-	store.parties.moveDown(party);
+const onMoveDown = (store: Store) => (id: string) => () => {
+	store.parties.moveDown(id);
 	store.save();
 };
 
-const onMoveUp = (store: Store) => (party: PartyData) => () => {
-	store.parties.moveUp(party);
+const onMoveUp = (store: Store) => (id: string) => () => {
+	store.parties.moveUp(id);
 	store.save();
 };
 
-const onDelete = (store: Store) => (party: PartyData) => () => {
-	if (confirm(`Do you realy want to delete "${party.name}"?`)) {
-		store.parties.remove(party);
+const onDelete = (store: Store) => (id: string) => () => {
+	if (confirm('Do you realy want to delete this party?')) {
+		store.parties.remove(id);
 		store.save();
 	}
 };

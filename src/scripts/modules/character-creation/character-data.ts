@@ -42,6 +42,26 @@ export interface ICharacterConfig {
 export type ICharacterDataEditable = keyof ICharacterConfig;
 export type ICharacterData = IIndexableData & ICharacterConfig;
 
+const checkWeaponArchetype = (weapon: WeaponID, archetype: ArchetypeID): boolean => {
+	return 1 === WeaponEquipTableArch[weapon][ArchetypeIndexTable[archetype]];
+};
+
+const checkWeaponWield = (weapon: WeaponID, wield: WieldID): boolean => {
+	return 1 === WeaponEquipTableWield[weapon][WieldIndexTable[wield]];
+};
+
+const checkArmorArchetype = (armor: ArmorID, archetype: ArchetypeID): boolean => {
+	return 1 === ArmorEquipTableArch[armor][ArchetypeIndexTable[archetype]];
+};
+
+export const isBothWielding = (char: ICharacterData): boolean => {
+	return checkWeaponWield(char.main, 'BOTH');
+};
+
+export const isDualWielding = (char: ICharacterData): boolean => {
+	return checkWeaponWield(char.main, 'DUAL');
+};
+
 export class CharacterData extends IndexableData {
 	@observable private data = {
 		name: getRandomNames(1, maxPartyNameLength)[0],
@@ -110,14 +130,6 @@ export class CharacterData extends IndexableData {
 			isValid: (0 === Object.keys(errors).length),
 			errors
 		};
-	}
-
-	public isBothWielding = (): boolean => {
-		return this.checkWeaponWield(this.data.main.id, 'BOTH');
-	}
-
-	public isDualWielding = (): boolean => {
-		return this.checkWeaponWield(this.data.main.id, 'DUAL');
 	}
 
 	@computed
@@ -248,24 +260,28 @@ export class CharacterData extends IndexableData {
 		if ('NONE' === weapon) {
 			return true;
 		}
-		if (!this.checkWeaponArchetype(weapon)) {
+
+		if (!checkWeaponArchetype(weapon, this.data.archetype.id)) {
 			return false;
 		}
+
 		switch (slot) {
 			case 'MAIN':
 				return (
-					this.checkWeaponWield(weapon, 'MAIN') ||
-					this.checkWeaponWield(weapon, 'BOTH') ||
-					this.checkWeaponWield(weapon, 'DUAL')
+					checkWeaponWield(weapon, 'MAIN') ||
+					checkWeaponWield(weapon, 'BOTH') ||
+					checkWeaponWield(weapon, 'DUAL')
 				);
 
-			case 'OFF':
+			case 'OFF': {
+				const data = this.serialize();
 				return (
-					this.checkWeaponWield(weapon, 'OFF') &&
-					!this.isBothWielding() &&
-					!this.isDualWielding() &&
+					checkWeaponWield(weapon, 'OFF') &&
+					!isBothWielding(data) &&
+					!isDualWielding(data) &&
 					('MM' !== this.data.archetype.id || -1 !== safeOffHand.indexOf(weapon))
 				);
+			}
 
 			default:
 				throw new Error('Invalid equip slot given');
@@ -276,7 +292,7 @@ export class CharacterData extends IndexableData {
 		if ('NONE' === armor) {
 			return true;
 		}
-		return this.checkArmorArchetype(armor);
+		return checkArmorArchetype(armor, this.data.archetype.id);
 	}
 
 	public serialize(): ICharacterData {
@@ -291,17 +307,5 @@ export class CharacterData extends IndexableData {
 			off: data.off.id,
 			armor: data.armor.id
 		};
-	}
-
-	private checkWeaponArchetype(weapon: WeaponID): boolean {
-		return 1 === WeaponEquipTableArch[weapon][ArchetypeIndexTable[this.data.archetype.id]];
-	}
-
-	private checkWeaponWield(weapon: WeaponID, wield: WieldID): boolean {
-		return 1 === WeaponEquipTableWield[weapon][WieldIndexTable[wield]];
-	}
-
-	private checkArmorArchetype(armor: ArmorID): boolean {
-		return 1 === ArmorEquipTableArch[armor][ArchetypeIndexTable[this.data.archetype.id]];
 	}
 }

@@ -4,10 +4,10 @@ import Tile from 'modules/geometry/tile';
 import Character from 'modules/character';
 import { DirectionID } from 'modules/geometry/direction';
 import { IPlayerData } from 'modules/battle-configuration/player-data';
-import { CharacterData } from 'modules/character-creation/character-data';
+import { ICharacterData } from 'modules/character-creation/character-data';
 
 export interface IPlayerCharacterSetup {
-	data: CharacterData;
+	data: ICharacterData;
 	position: Tile;
 	direction: DirectionID;
 }

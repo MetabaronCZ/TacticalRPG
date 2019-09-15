@@ -1,7 +1,7 @@
 import { observable, action } from 'mobx';
 
 import { IValidation } from 'core/validation';
-import { CharacterData } from 'modules/character-creation/character-data';
+import { ICharacterData } from 'modules/character-creation/character-data';
 import { PartyData, IPartyDataEditable } from 'modules/party-creation/party-data';
 
 interface IPartyCreation {
@@ -11,9 +11,9 @@ interface IPartyCreation {
 
 class PartyCreation {
 	@observable public state: IPartyCreation;
-	private characters: CharacterData[];
+	private characters: ICharacterData[];
 
-	constructor(data?: PartyData, characters: CharacterData[] = []) {
+	constructor(data?: PartyData, characters: ICharacterData[] = []) {
 		this.state = {
 			party: new PartyData(data ? data.serialize() : {}, characters),
 			validation: {
@@ -50,17 +50,18 @@ class PartyCreation {
 		return party;
 	}
 
-	public filterCharacters(character: CharacterData | null): CharacterData[] {
+	public filterCharacters(character: ICharacterData | null): ICharacterData[] {
 		const characters = this.characters;
 
 		if (!characters.length) {
 			return [];
 		}
 		const selected = this.state.party.characters;
+		const charID = (character ? character.id : null);
 
 		// filter unselected characters (keep character itself)
-		return characters.filter(char => {
-			return character === char || -1 === selected.indexOf(char.id);
+		return characters.filter(({ id }) => {
+			return charID === id || -1 === selected.indexOf(id);
 		});
 	}
 }

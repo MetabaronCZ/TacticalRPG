@@ -3,9 +3,8 @@ import { observable, action } from 'mobx';
 import { randomPartyID } from 'data/game-config';
 
 import { IAISettings } from 'modules/ai/settings';
-import IndexableList from 'modules/indexable-list';
 import { PartyData } from 'modules/party-creation/party-data';
-import { CharacterData } from 'modules/character-creation/character-data';
+import { ICharacterData } from 'modules/character-creation/character-data';
 import { BattleConfig, IBattleConfigValidation } from 'modules/battle-configuration/battle-config';
 import { IPlayerDataEditable, PlayerData, PlayerControlID } from 'modules/battle-configuration/player-data';
 
@@ -81,8 +80,8 @@ class BattleConfiguration {
 		next(config);
 	}
 
-	public getPartyCharacters(player: PlayerData, characters: CharacterData[] = []): IndexableList<CharacterData> {
-		const chars: CharacterData[] = [];
+	public getPartyCharacters(player: PlayerData, characters: ICharacterData[] = []): ICharacterData[] {
+		const chars: ICharacterData[] = [];
 
 		if (randomPartyID !== player.party) {
 			const parties = this.parties;
@@ -98,7 +97,7 @@ class BattleConfiguration {
 				}
 			}
 		}
-		return new IndexableList(chars);
+		return chars;
 	}
 }
 

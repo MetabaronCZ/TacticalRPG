@@ -4,7 +4,7 @@ import { IValidation } from 'core/validation';
 import { maxPartySize, maxPartyNameLength, textInputRegex } from 'data/game-config';
 
 import { IIndexableData, IndexableData } from 'modules/indexable-data';
-import { CharacterData } from 'modules/character-creation/character-data';
+import { ICharacterData } from 'modules/character-creation/character-data';
 
 interface IPartyConfig {
 	readonly name: string;
@@ -20,7 +20,7 @@ export class PartyData extends IndexableData {
 		slots: Array(maxPartySize).fill(null) as Array<string | null>
 	};
 
-	constructor(conf: Partial<IPartyData> = {}, characters: CharacterData[] = []) {
+	constructor(conf: Partial<IPartyData> = {}, characters: ICharacterData[] = []) {
 		super({
 			id: conf.id,
 			creationDate: conf.creationDate,

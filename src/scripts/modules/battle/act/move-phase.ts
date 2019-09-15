@@ -99,17 +99,10 @@ class MovePhase extends ActPhase<IMovePhaseState, IMovePhaseRecord> {
 		if ('IDLE' !== phase || !tile.isContained(movable) || !actor.canMove()) {
 			return;
 		}
-		const path = getShortestPath(actor.position, tile, obstacles);
-
-		if (path.length < 2) {
-			// current position selected
-			this.finalize();
-			return;
-		}
 		this.phase = 'SELECTED';
 
 		this.moveTarget = tile;
-		this.movePath = path;
+		this.movePath = getShortestPath(actor.position, tile, obstacles);
 
 		this.onEvent('MOVE_SELECTED', tile);
 		this.animate();
@@ -151,6 +144,12 @@ class MovePhase extends ActPhase<IMovePhaseState, IMovePhaseRecord> {
 			throw new Error('Could not animate movement: invalid phase ' + phase);
 		}
 		this.phase = 'ANIMATION';
+
+		if (!movePath.length) {
+			// current position selected
+			this.finalize();
+			return;
+		}
 		this.info = txtMoving;
 
 		const timing = Array(movePath.length).fill(moveAnimDuration);

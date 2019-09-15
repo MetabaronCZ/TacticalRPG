@@ -21,9 +21,9 @@ import { IWeaponData } from 'modules/equipment/weapon-data';
 import BaseAttributes from 'modules/character/base-attributes';
 import { SkillID, SkillCooldown } from 'modules/skill/skill-data';
 import { IArchetypeData, ArchetypeID } from 'modules/character/archetype';
+import { ICharacterData } from 'modules/character-creation/character-data';
 import Attributes, { AttributeID, IAttributes } from 'modules/character/attributes';
 import StatusEffect, { StatusEffectID, IOnStatus } from 'modules/battle/status-effect';
-import { CharacterData, ICharacterData } from 'modules/character-creation/character-data';
 
 type CharacterCondition = 'OK' | 'DANGER' | 'CRITICAL';
 
@@ -32,6 +32,8 @@ export type ISkillCooldowns = Partial<{
 }>;
 
 export interface ICharacter {
+	readonly data: ICharacterData;
+
 	readonly id: string;
 	readonly name: string;
 	readonly sex: SexID;
@@ -77,15 +79,16 @@ class Character {
 
 	private dead = false;
 
-	constructor(character: CharacterData, position: Tile, direction: DirectionID, player: Player) {
-		const data = character.serialize();
+	constructor(character: ICharacterData, position: Tile, direction: DirectionID, player: Player) {
+		const data = character;
 
 		this.data = data;
 		this.name = data.name;
+		this.player = player;
+
 		this.sex = Sexes.get(data.sex);
 		this.archetype = Archetypes.get(data.archetype);
 		this.skillset = new Skillset(data.skillset, data.archetype);
-		this.player = player;
 
 		this.status = new Status();
 		this.attributes = new Attributes(this);
@@ -99,38 +102,38 @@ class Character {
 		this.direction = direction;
 	}
 
-	public static from(data: ICharacter, player: Player): Character {
-		const charData = CharacterData.from(data);
-		const char = new Character(charData, data.position, data.direction, player);
+	public static from(char: ICharacter, player: Player): Character {
+		const character = new Character(char.data, char.position, char.direction, player);
 
-		for (const status of data.status) {
-			char.status.apply(status.id);
+		for (const status of char.status) {
+			character.status.apply(status.id);
 		}
 
-		for (const id in data.attributes) {
+		for (const id in char.attributes) {
 			const attr = id as AttributeID;
-			char.attributes.set(attr, data.attributes[attr]);
+			character.attributes.set(attr, char.attributes[attr]);
 		}
 
-		for (const id in data.cooldowns) {
+		for (const id in char.cooldowns) {
 			const cd = id as SkillID;
-			char.cooldowns[cd] = data.cooldowns[cd];
+			character.cooldowns[cd] = char.cooldowns[cd];
 		}
 	
-		if (data.dead) {
-			char.die();
+		if (char.dead) {
+			character.die();
 		}
 
-		return char;
+		return character;
 	}
 
 	public serialize(): ICharacter {
 		return {
+			data: this.data,
 			id: this.data.id,
-			name: this.name,
+			name: this.data.name,
 			sex: this.data.sex,
 			skillset: this.skillset,
-			archetype: this.archetype.id,
+			archetype: this.data.archetype,
 			attributes: this.attributes.serialize(),
 			baseAttributes: this.baseAttributes.serialize(),
 			isAI: this.isAI(),

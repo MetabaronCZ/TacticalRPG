@@ -306,6 +306,7 @@ class BattleSummaryPage extends React.Component<IProps, IState> {
 		}
 		const playerData = getPlayerData(chronox);
 		const scoreAnalysis = analyzeScore(chronox.timeline, chronox.characters);
+		const timeline = chronox.timeline.filter(t => !t.skipped);
 
 		return (
 			<Page heading="Summary">
@@ -363,6 +364,7 @@ class BattleSummaryPage extends React.Component<IProps, IState> {
 
 				<ul className="List">
 					<li className="List-row List-row--header">
+						<div className="List-row-column">Nr.</div>
 						<div className="List-row-column">Act</div>
 						<div className="List-row-column">Actor</div>
 						<div className="List-row-column">Move</div>
@@ -371,24 +373,26 @@ class BattleSummaryPage extends React.Component<IProps, IState> {
 						<div className="List-row-column">Result</div>
 					</li>
 
-					{chronox.timeline.map(t => {
-						if (t.skipped) {
-							return;
-						}
-						const item = getRowInfo(chronox.characters, t);
+					{timeline.map((t, i) => {
 						const player = playerData[t.player];
 
 						if (!player) {
 							throw new Error('Invalid Character or Player data');
 						}
+						const item = getRowInfo(chronox.characters, t);
+
 						return (
 							<li className="List-row u-align-top" key={t.id}>
 								<div className="List-row-column u-tableColumnFit u-align-right">
-									{item.id}.
+									{i}.
+								</div>
+
+								<div className="List-row-column u-tableColumnFit u-align-right">
+									{item.id}
 								</div>
 
 								<div className="List-row-column u-tableColumnFit">
-									<PlayerIco id={player.id} />
+									<PlayerIco id={player.id} align="middle" />
 									{item.actor.name}
 								</div>
 

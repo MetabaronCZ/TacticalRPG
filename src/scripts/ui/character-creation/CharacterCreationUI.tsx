@@ -11,7 +11,7 @@ import Archetypes from 'data/archetypes';
 import { maxCharacterNameLength } from 'data/game-config';
 
 import CharacterCreation from 'modules/character-creation';
-import { CharacterData, ICharacterDataEditable } from 'modules/character-creation/character-data';
+import { CharacterData, ICharacterDataEditable, isBothWielding, isDualWielding } from 'modules/character-creation/character-data';
 
 import Form from 'ui/common/Form';
 import Button from 'ui/common/Button';
@@ -47,7 +47,8 @@ class CharacterCreationUI extends React.Component<ICharacterCreationUIProps> {
 		const mainHandWield = Wields.get('MAIN');
 		const offHandWield = Wields.get('OFF');
 
-		const hasNoOffHand = (character.isBothWielding() || character.isDualWielding());
+		const data = character.serialize();
+		const hasNoOffHand = (isBothWielding(data) || isDualWielding(data));
 
 		const skillsets = form.getSkillsetIDs().map(id => Skillsets.get(id));
 		const mainWeapons = form.getWeaponIDs('MAIN').map(id => Weapons.get(id));
@@ -143,7 +144,7 @@ class CharacterCreationUI extends React.Component<ICharacterCreationUIProps> {
 							<h2 className="Heading">
 								Character preview
 							</h2>
-							<CharacterPreview character={character} />
+							<CharacterPreview character={data} />
 						</div>
 					</div>
 				</div>

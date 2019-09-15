@@ -17,7 +17,7 @@ import { PartyData } from 'modules/party-creation/party-data';
 import CharacterCreationForm from 'modules/character-creation';
 import Chronox, { IChronoxRecord } from 'modules/battle/chronox';
 import Player, { IPlayerCharacterSetup } from 'modules/battle/player';
-import { CharacterData } from 'modules/character-creation/character-data';
+import { ICharacterData } from 'modules/character-creation/character-data';
 import { PlayerConfigList } from 'modules/battle-configuration/battle-config';
 
 const charPositions = getCharacterPositions();
@@ -41,7 +41,7 @@ interface IEngineEvents {
 }
 
 interface IEngineProps {
-	readonly characters: CharacterData[];
+	readonly characters: ICharacterData[];
 	readonly players: PlayerConfigList;
 	readonly parties: PartyData[];
 	readonly events: IEngineEvents;
@@ -222,7 +222,7 @@ class Engine {
 		const pl = playerData.map((plData, p) => {
 			const player = plData.serialize();
 			const { name, party, control, aiSettings } = player;
-			const charData: CharacterData[] = [];
+			const charData: ICharacterData[] = [];
 
 			// get character data
 			if (config.randomPartyID === party) {
@@ -237,7 +237,7 @@ class Engine {
 					const char = charCreation.get();
 
 					if (char) {
-						charData.push(char);
+						charData.push(char.serialize());
 					}
 				}
 

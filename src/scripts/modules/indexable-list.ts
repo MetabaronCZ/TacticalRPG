@@ -23,29 +23,34 @@ class IndexableList<T extends IndexableData> {
 	}
 
 	@action
-	public moveDown(item: T): void {
-		this.move(item, +1);
+	public moveDown(id: string): void {
+		this.move(id, +1);
 	}
 
 	@action
-	public moveUp(item: T): void {
-		this.move(item, -1);
+	public moveUp(id: string): void {
+		this.move(id, -1);
 	}
 
 	@action
-	public remove(item: T): void {
-		this.data = this.data.filter(ch => ch.id !== item.id);
+	public remove(id: string): void {
+		this.data = this.data.filter(ch => ch.id !== id);
 	}
 
 	public serialize(): IIndexableData[] {
 		return this.data.map(item => item.serialize());
 	}
 
-	private move(item: T, diff = 0): void {
+	private move(id: string, diff = 0): void {
 		if (!diff) {
 			return;
 		}
-		const data = this.data;
+		const { data } = this;
+		const item = data.find(i => id === i.id);
+
+		if (!item) {
+			throw new Error(`Could not move item with ID "${id}"`);
+		}
 		const index = data.indexOf(item);
 
 		if (index + diff < 0 || index + diff > data.length - 1) {

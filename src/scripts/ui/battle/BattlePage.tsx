@@ -30,10 +30,11 @@ class BattlePageContainer extends React.Component<IProps, IState> {
 	constructor(props: IProps) {
 		super(props);
 
-		const { battleConfig, parties, characters } = this.props.store;
+		const { battleConfig, parties } = props.store;
+		const characters = props.store.characters.data.map(char => char.serialize());
 
 		this.engine = new Engine({
-			characters: characters.data,
+			characters,
 			players: battleConfig.players,
 			parties: parties.data,
 			events: {

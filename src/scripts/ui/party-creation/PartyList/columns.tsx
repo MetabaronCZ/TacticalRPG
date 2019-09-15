@@ -9,11 +9,11 @@ import LinkButton from 'ui/common/LinkButton';
 import { IOnDelete, IOnMoveUp, IOnMoveDown } from 'ui/party-creation/PartyList';
 
 const renderMoveDown = (party: PartyData, onMoveDown: IOnMoveDown): React.ReactNode => (
-	<LinkIco ico="down" title="Move down" onClick={onMoveDown && onMoveDown(party)} />
+	<LinkIco ico="down" title="Move down" onClick={onMoveDown && onMoveDown(party.id)} />
 );
 
 const renderMoveUp = (party: PartyData, onMoveUp: IOnMoveUp): React.ReactNode => (
-	<LinkIco ico="up" title="Move up" onClick={onMoveUp(party)} />
+	<LinkIco ico="up" title="Move up" onClick={onMoveUp(party.id)} />
 );
 
 const renderEdit = (party: PartyData): React.ReactNode => (
@@ -21,7 +21,7 @@ const renderEdit = (party: PartyData): React.ReactNode => (
 );
 
 const renderDelete = (party: PartyData, onDelete: IOnDelete): React.ReactNode => (
-	<LinkButton onClick={onDelete(party)}>Delete</LinkButton>
+	<LinkButton onClick={onDelete(party.id)}>Delete</LinkButton>
 );
 
 interface IColumn {

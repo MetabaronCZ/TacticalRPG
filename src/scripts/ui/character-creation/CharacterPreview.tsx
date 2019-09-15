@@ -8,7 +8,7 @@ import { getIdleCommands, getReactiveCommands } from 'modules/battle/commands';
 import Character from 'modules/character';
 import Player from 'modules/battle/player';
 import { PlayerData } from 'modules/battle-configuration/player-data';
-import { CharacterData } from 'modules/character-creation/character-data';
+import { ICharacterData, isBothWielding, isDualWielding } from 'modules/character-creation/character-data';
 
 import ArmorIco from 'ui/common/ArmorIco';
 import WeaponIco from 'ui/common/WeaponIco';
@@ -19,12 +19,12 @@ const dummyTile = getTiles()[0];
 const dummyPlayerConfig = new PlayerData(0, {});
 const dummyPlayer = new Player(dummyPlayerConfig, []);
 
-const getDummyCharacter = (character: CharacterData): Character => {
+const getDummyCharacter = (character: ICharacterData): Character => {
 	return new Character(character, dummyTile, 'S', dummyPlayer);
 };
 
 interface IProps {
-	readonly character: CharacterData;
+	readonly character: ICharacterData;
 }
 
 const CharacterPreview: React.SFC<IProps> = ({ character }) => {
@@ -141,7 +141,7 @@ const CharacterPreview: React.SFC<IProps> = ({ character }) => {
 					<tr>
 						<td className="Table-column">OH:</td>
 						<td className="Table-column">
-							{character.isBothWielding() || character.isDualWielding()
+							{isBothWielding(character) || isDualWielding(character)
 								? (
 									<span className="u-disabled">
 										<WeaponIco weapon={mainHand.id} minimal />

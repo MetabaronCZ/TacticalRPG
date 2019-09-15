@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { ICharacter } from 'modules/character';
-import { CharacterData } from 'modules/character-creation/character-data';
 
 import { formatCharacter } from 'ui/format';
 import AttributeInfo from 'ui/battle/AttributeInfo';
@@ -14,9 +13,6 @@ const CharactertInfo: React.SFC<IProps> = ({ character: char }) => {
 	const { HP: baseHP, AP: baseAP, MP: baseMP } = char.baseAttributes;
 	const { HP, AP, MP } = char.attributes;
 	const st = char.status;
-
-	const data = CharacterData.from(char);
-
 	return (
 		<React.Fragment>
 			<h1 className="Heading">
@@ -27,7 +23,7 @@ const CharactertInfo: React.SFC<IProps> = ({ character: char }) => {
 						</div>
 
 						<div className="Layout-column u-align-right">
-							{formatCharacter(data)}
+							{formatCharacter(char.data)}
 						</div>
 					</div>
 				</div>

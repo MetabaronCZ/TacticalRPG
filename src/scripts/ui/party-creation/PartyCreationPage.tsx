@@ -21,10 +21,11 @@ const onSubmit = (store: Store, history: History) => (party: PartyData): void =>
 
 const PartyCreationPageContainer: React.SFC<RouteComponentProps<IRouteParams> & IContext> = props => {
 	const { store, history } = props;
+	const characters = store.characters.data.map(char => char.serialize());
 	return (
 		<Page heading="Party creation">
 			<PartyCreationUI
-				characters={store.characters}
+				characters={characters}
 				onBack={gotoFn(history, 'PARTY_LIST')}
 				onSubmit={onSubmit(store, history)}
 			/>

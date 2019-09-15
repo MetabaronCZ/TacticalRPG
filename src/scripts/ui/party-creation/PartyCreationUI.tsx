@@ -4,9 +4,8 @@ import { observer } from 'mobx-react';
 import { maxPartyNameLength } from 'data/game-config';
 
 import { getPath } from 'modules/route';
-import IndexableList from 'modules/indexable-list';
 import PartyCreationForm from 'modules/party-creation';
-import { CharacterData } from 'modules/character-creation/character-data';
+import { ICharacterData } from 'modules/character-creation/character-data';
 import { PartyData, IPartyDataEditable } from 'modules/party-creation/party-data';
 
 import Link from 'ui/common/Link';
@@ -24,7 +23,7 @@ import PartyPreview from 'ui/party-creation/PartyPreview';
 
 interface IPartyCreationUIProps {
 	readonly party?: PartyData;
-	readonly characters: IndexableList<CharacterData>;
+	readonly characters: ICharacterData[];
 	readonly onBack: () => void;
 	readonly onSubmit: (party: PartyData) => void;
 }
@@ -47,14 +46,17 @@ class PartyCreationUI extends React.Component<IPartyCreationUIProps> {
 
 	constructor(props: IPartyCreationUIProps) {
 		super(props);
-		this.form = new PartyCreationForm(props.party, props.characters.data);
+		this.form = new PartyCreationForm(props.party, props.characters);
 	}
 
 	public render(): React.ReactNode {
 		const { characters } = this.props;
 		const { party, validation } = this.form.state;
-		const canCreateParty = characters.data.length > 0;
-		const preview = party.slots.map(id => id ? this.props.characters.getById(id) : null);
+		const canCreateParty = characters.length > 0;
+
+		const preview = party.slots.map(id => {
+			return characters.find(char => id === char.id) || null;
+		});
 
 		return (
 			<div>
@@ -120,7 +122,7 @@ class PartyCreationUI extends React.Component<IPartyCreationUIProps> {
 	}
 
 	private renderPartyItem = (id: string | null, i: number): React.ReactNode => {
-		const character = (id ? this.props.characters.getById(id) : null);
+		const character = this.props.characters.find(char => id === char.id) || null;
 		const filtered = this.form.filterCharacters(character);
 		const info = formatCharacter(character);
 		const fieldId = `f-character-${i}`;

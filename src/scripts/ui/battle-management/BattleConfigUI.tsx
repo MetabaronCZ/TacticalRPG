@@ -8,7 +8,7 @@ import { IAISettings } from 'modules/ai/settings';
 import { PartyData } from 'modules/party-creation/party-data';
 import BattleConfiguration from 'modules/battle-configuration';
 import { BattleConfig } from 'modules/battle-configuration/battle-config';
-import { CharacterData } from 'modules/character-creation/character-data';
+import { ICharacterData } from 'modules/character-creation/character-data';
 import { IPlayerDataEditable } from 'modules/battle-configuration/player-data';
 
 import Form from 'ui/common/Form';
@@ -25,7 +25,7 @@ import CharacterList from 'ui/character-creation/CharacterList';
 interface IBattleConfigUIProps {
 	readonly config?: BattleConfig;
 	readonly parties: PartyData[];
-	readonly characters: CharacterData[];
+	readonly characters: ICharacterData[];
 	readonly onStart: (config: BattleConfig) => void;
 	readonly onBack: (e: SyntheticEvent<HTMLButtonElement>) => void;
 }

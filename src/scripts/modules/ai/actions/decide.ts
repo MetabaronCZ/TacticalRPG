@@ -54,9 +54,6 @@ const btDecide = (): BTAction<IAIData> => {
 		if (!passCommand) {
 			throw new Error('Could not start AI decision: pass command not available');
 		}
-		const dStart = Date.now();
-		let tAccum = 0;
-
 		const { act, enemy, obstacles } = data;
 		const { actor, phases } = act;
 		const { movable, costMap } = phases.MOVEMENT;
@@ -77,13 +74,7 @@ const btDecide = (): BTAction<IAIData> => {
 			const ap = Math.max(0, AP - moveCost);
 
 			// create actor shadow on given tile
-			const tStart = Date.now();
-
 			const char = Character.from(actor, playerShadow);
-
-			const tEnd = Date.now();
-			tAccum += tEnd - tStart;
-
 			char.position = tile;
 			char.attributes.set('AP', ap);
 
@@ -202,10 +193,6 @@ const btDecide = (): BTAction<IAIData> => {
 			data.memory.decision = null;
 			Logger.info('AI DECIDE - no target found');
 		}
-
-		const dEnd = Date.now();
-		Logger.info(`AI DECIDE: decision took ${((dEnd - dStart) / 1000).toFixed(3)} sec`);
-		Logger.info(`AI DECIDE: XXX took ${(tAccum / 1000).toFixed(3)} sec`);
 
 		return 'SUCCESS';
 	});

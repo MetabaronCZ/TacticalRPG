@@ -21,9 +21,8 @@ const onSubmit = (store: Store, history: History) => (party: PartyData) => {
 
 const PartyEditPageContainer: React.SFC<RouteComponentProps<IRouteParams> & IContext> = props => {
 	const { store, history, match } = props;
-	const { characters, parties } = store;
-	const party = parties.data.find(c => c.id === match.params.id);
-
+	const party = store.parties.data.find(c => c.id === match.params.id);
+	const characters = store.characters.data.map(char => char.serialize());
 	return (
 		<Page heading="Edit party">
 			<PartyCreationUI

@@ -42,7 +42,7 @@ export class Store {
 			const { battleConfig, characters, parties } = JSON.parse(saved) as ISaveState;
 			this.battleConfig = this.prepareBattleConfig(battleConfig, parties);
 			this.characters = this.prepareCharacters(characters);
-			this.parties = this.prepareParties(parties, this.characters.data);
+			this.parties = this.prepareParties(parties, characters);
 
 		} catch (err) {
 			Logger.error(`Invalid store data: "${err}"`);
@@ -80,7 +80,7 @@ export class Store {
 		return new IndexableList(characters);
 	}
 
-	private prepareParties(data: IPartyData[] = [], characters: CharacterData[] = []): IndexableList<PartyData> {
+	private prepareParties(data: IPartyData[] = [], characters: ICharacterData[] = []): IndexableList<PartyData> {
 		const parties: PartyData[] = [];
 
 		for (const party of data) {

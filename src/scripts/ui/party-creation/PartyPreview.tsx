@@ -7,7 +7,7 @@ import { gridSize } from 'data/game-config';
 import Character from 'modules/character';
 import Player from 'modules/battle/player';
 import { PlayerData } from 'modules/battle-configuration/player-data';
-import { CharacterData } from 'modules/character-creation/character-data';
+import { ICharacterData } from 'modules/character-creation/character-data';
 import {
 	getCharacterPositions, getHexDimensions,
 	getTileCoords, tileStyles, characterStyles, ITileCoords
@@ -25,7 +25,7 @@ const dummyPlayerConfig = new PlayerData(0, {});
 const dummyPlayer = new Player(dummyPlayerConfig, []);
 
 interface IProps {
-	slots: Array<CharacterData | null>;
+	slots: Array<ICharacterData | null>;
 }
 
 class PartyPreview extends Canvas<IProps> {

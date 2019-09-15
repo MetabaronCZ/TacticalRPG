@@ -6,9 +6,9 @@ import { PartyData } from 'modules/party-creation/party-data';
 
 import getColumns from 'ui/party-creation/PartyList/columns';
 
-export type IOnMoveDown = (party: PartyData) => () => void;
-export type IOnMoveUp = (party: PartyData) => () => void;
-export type IOnDelete = (party: PartyData) => () => void;
+export type IOnMoveDown = (id: string) => () => void;
+export type IOnMoveUp = (id: string) => () => void;
+export type IOnDelete = (id: string) => () => void;
 
 interface IPartyListProps {
 	readonly parties: IndexableList<PartyData>;
