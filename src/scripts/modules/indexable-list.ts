@@ -1,7 +1,7 @@
 import { observable, action } from 'mobx';
-import { IndexableData, IIndexableData } from 'modules/indexable-data';
+import { IIndexableData } from 'modules/indexable-data';
 
-class IndexableList<T extends IndexableData> {
+class IndexableList<T extends IIndexableData> {
 	@observable.shallow public data: T[] = [];
 
 	constructor(data: T[] = []) {
@@ -37,8 +37,8 @@ class IndexableList<T extends IndexableData> {
 		this.data = this.data.filter(ch => ch.id !== id);
 	}
 
-	public serialize(): IIndexableData[] {
-		return this.data.map(item => item.serialize());
+	public serialize(): T[] {
+		return [...this.data];
 	}
 
 	private move(id: string, diff = 0): void {

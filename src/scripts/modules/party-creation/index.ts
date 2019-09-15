@@ -2,7 +2,7 @@ import { observable, action } from 'mobx';
 
 import { IValidation } from 'core/validation';
 import { ICharacterData } from 'modules/character-creation/character-data';
-import { PartyData, IPartyDataEditable } from 'modules/party-creation/party-data';
+import { PartyData, IPartyData, IPartyDataEditable } from 'modules/party-creation/party-data';
 
 interface IPartyCreation {
 	party: PartyData;
@@ -13,9 +13,9 @@ class PartyCreation {
 	@observable public state: IPartyCreation;
 	private characters: ICharacterData[];
 
-	constructor(data?: PartyData, characters: ICharacterData[] = []) {
+	constructor(data?: IPartyData, characters: ICharacterData[] = []) {
 		this.state = {
-			party: new PartyData(data ? data.serialize() : {}, characters),
+			party: new PartyData(data || {}, characters),
 			validation: {
 				isValid: true,
 				errors: {}
@@ -39,7 +39,7 @@ class PartyCreation {
 	}
 
 	@action
-	public get(): PartyData | null {
+	public get(): IPartyData | null {
 		const party = this.state.party;
 		const validation = party.validate();
 
@@ -47,7 +47,7 @@ class PartyCreation {
 			this.state.validation = validation;
 			return null;
 		}
-		return party;
+		return party.serialize();
 	}
 
 	public filterCharacters(character: ICharacterData | null): ICharacterData[] {

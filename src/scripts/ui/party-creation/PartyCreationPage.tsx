@@ -7,12 +7,12 @@ import { gotoRoute, gotoFn } from 'core/navigation';
 
 import { Store } from 'modules/store';
 import { IRouteParams } from 'modules/route';
-import { PartyData } from 'modules/party-creation/party-data';
+import { IPartyData } from 'modules/party-creation/party-data';
 
 import Page from 'ui/common/Page';
 import PartyCreationUI from 'ui/party-creation/PartyCreationUI';
 
-const onSubmit = (store: Store, history: History) => (party: PartyData): void => {
+const onSubmit = (store: Store, history: History) => (party: IPartyData): void => {
 	store.parties.add(party);
 	store.save();
 
@@ -21,11 +21,10 @@ const onSubmit = (store: Store, history: History) => (party: PartyData): void =>
 
 const PartyCreationPageContainer: React.SFC<RouteComponentProps<IRouteParams> & IContext> = props => {
 	const { store, history } = props;
-	const characters = store.characters.data.map(char => char.serialize());
 	return (
 		<Page heading="Party creation">
 			<PartyCreationUI
-				characters={characters}
+				characters={store.characters.data}
 				onBack={gotoFn(history, 'PARTY_LIST')}
 				onSubmit={onSubmit(store, history)}
 			/>

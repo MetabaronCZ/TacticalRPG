@@ -7,12 +7,12 @@ import { gotoRoute, gotoFn } from 'core/navigation';
 
 import { Store } from 'modules/store';
 import { IRouteParams } from 'modules/route';
-import { CharacterData } from 'modules/character-creation/character-data';
+import { ICharacterData } from 'modules/character-creation/character-data';
 
 import Page from 'ui/common/Page';
 import CharacterCreation from 'ui/character-creation/CharacterCreationUI';
 
-const onSubmit = (store: Store, history: History) => (char: CharacterData): void => {
+const onSubmit = (store: Store, history: History) => (char: ICharacterData): void => {
 	store.characters.add(char);
 	store.save();
 

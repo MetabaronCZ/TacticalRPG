@@ -1,33 +1,33 @@
 import React, { ReactNode } from 'react';
 
 import { getPath } from 'modules/route';
-import { PartyData } from 'modules/party-creation/party-data';
+import { IPartyData } from 'modules/party-creation/party-data';
 
 import Link from 'ui/common/Link';
 import LinkIco from 'ui/common/LinkIco';
 import LinkButton from 'ui/common/LinkButton';
 import { IOnDelete, IOnMoveUp, IOnMoveDown } from 'ui/party-creation/PartyList';
 
-const renderMoveDown = (party: PartyData, onMoveDown: IOnMoveDown): React.ReactNode => (
+const renderMoveDown = (party: IPartyData, onMoveDown: IOnMoveDown): React.ReactNode => (
 	<LinkIco ico="down" title="Move down" onClick={onMoveDown && onMoveDown(party.id)} />
 );
 
-const renderMoveUp = (party: PartyData, onMoveUp: IOnMoveUp): React.ReactNode => (
+const renderMoveUp = (party: IPartyData, onMoveUp: IOnMoveUp): React.ReactNode => (
 	<LinkIco ico="up" title="Move up" onClick={onMoveUp(party.id)} />
 );
 
-const renderEdit = (party: PartyData): React.ReactNode => (
+const renderEdit = (party: IPartyData): React.ReactNode => (
 	<Link href={getPath('PARTY_EDIT', party.id)}>Edit</Link>
 );
 
-const renderDelete = (party: PartyData, onDelete: IOnDelete): React.ReactNode => (
+const renderDelete = (party: IPartyData, onDelete: IOnDelete): React.ReactNode => (
 	<LinkButton onClick={onDelete(party.id)}>Delete</LinkButton>
 );
 
 interface IColumn {
 	readonly title: string;
 	readonly name: string;
-	readonly value: (party: PartyData) => ReactNode;
+	readonly value: (party: IPartyData) => ReactNode;
 }
 
 const getColumns = (onMoveDown: IOnMoveDown, onMoveUp: IOnMoveUp, onDelete: IOnDelete): IColumn[] => ([

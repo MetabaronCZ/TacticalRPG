@@ -2,8 +2,8 @@ import { maxPartySize } from 'data/game-config';
 
 import { IActRecord } from 'modules/battle/act';
 import { PlayerList } from 'modules/battle/engine';
+import { IPartyData } from 'modules/party-creation/party-data';
 import { IPlayerData } from 'modules/battle-configuration/player-data';
-import { IPartyData, PartyData } from 'modules/party-creation/party-data';
 import { ICharacterData } from 'modules/character-creation/character-data';
 
 export type ChronoxPlayerList =  [IPlayerData, IPlayerData];
@@ -33,7 +33,7 @@ class Chronox {
 		this.parties = config.parties;
 	}
 
-	public static getConfig(players: PlayerList, parties: PartyData[]): IChronoxConfig {
+	public static getConfig(players: PlayerList, parties: IPartyData[]): IChronoxConfig {
 		const chPlayers = players.map((pl, p) => ({
 			...pl.data,
 			party: 'PARTY-' + p
@@ -48,8 +48,7 @@ class Chronox {
 			const party = parties.find(pt => pl.data.party === pt.id);
 
 			if (party) {
-				const data = party.serialize();
-				return { ...data, id: partyID } as IPartyData;
+				return { ...party, id: partyID } as IPartyData;
 			}
 			const chars = pl.getCharacters();
 

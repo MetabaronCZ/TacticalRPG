@@ -15,8 +15,8 @@ interface ISaveState {
 }
 
 export class Store {
-	public characters = new IndexableList<CharacterData>();
-	public parties = new IndexableList<PartyData>();
+	public characters = new IndexableList<ICharacterData>();
+	public parties = new IndexableList<IPartyData>();
 	public battleConfig = new BattleConfig(null);
 
 	constructor() {
@@ -61,8 +61,8 @@ export class Store {
 		return config;
 	}
 
-	private prepareCharacters(data: ICharacterData[] = []): IndexableList<CharacterData> {
-		const characters: CharacterData[] = [];
+	private prepareCharacters(data: ICharacterData[] = []): IndexableList<ICharacterData> {
+		const characters: ICharacterData[] = [];
 
 		for (const char of data) {
 			if (!char) {
@@ -72,7 +72,7 @@ export class Store {
 			const validation = charData.validate();
 
 			if (validation.isValid) {
-				characters.push(charData);
+				characters.push(char);
 			} else {
 				Logger.error(`Invalid character: "${JSON.stringify(validation.errors)}"`);
 			}
@@ -80,8 +80,8 @@ export class Store {
 		return new IndexableList(characters);
 	}
 
-	private prepareParties(data: IPartyData[] = [], characters: ICharacterData[] = []): IndexableList<PartyData> {
-		const parties: PartyData[] = [];
+	private prepareParties(data: IPartyData[] = [], characters: ICharacterData[] = []): IndexableList<IPartyData> {
+		const parties: IPartyData[] = [];
 
 		for (const party of data) {
 			if (!party) {
@@ -91,7 +91,7 @@ export class Store {
 			const validation = partyData.validate();
 
 			if (validation.isValid) {
-				parties.push(partyData);
+				parties.push(party);
 			} else {
 				Logger.error(`Invalid party: "${JSON.stringify(validation.errors)}"`);
 			}

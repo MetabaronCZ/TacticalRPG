@@ -11,7 +11,7 @@ import Archetypes from 'data/archetypes';
 import { maxCharacterNameLength } from 'data/game-config';
 
 import CharacterCreation from 'modules/character-creation';
-import { CharacterData, ICharacterDataEditable, isBothWielding, isDualWielding } from 'modules/character-creation/character-data';
+import { ICharacterData, ICharacterDataEditable, isBothWielding, isDualWielding } from 'modules/character-creation/character-data';
 
 import Form from 'ui/common/Form';
 import Button from 'ui/common/Button';
@@ -25,9 +25,9 @@ import FormSelectItem from 'ui/common/FormSelectItem';
 import CharacterPreview from 'ui/character-creation/CharacterPreview';
 
 interface ICharacterCreationUIProps {
-	readonly character: CharacterData | null;
+	readonly character: ICharacterData | null;
 	readonly onBack: () => void;
-	readonly onSubmit: (data: CharacterData) => void;
+	readonly onSubmit: (data: ICharacterData) => void;
 }
 
 @observer

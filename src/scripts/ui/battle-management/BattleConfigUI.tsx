@@ -5,7 +5,7 @@ import PlayerControl from 'data/player-control';
 import { playerMaxNameLength, randomPartyID } from 'data/game-config';
 
 import { IAISettings } from 'modules/ai/settings';
-import { PartyData } from 'modules/party-creation/party-data';
+import { IPartyData } from 'modules/party-creation/party-data';
 import BattleConfiguration from 'modules/battle-configuration';
 import { BattleConfig } from 'modules/battle-configuration/battle-config';
 import { ICharacterData } from 'modules/character-creation/character-data';
@@ -24,7 +24,7 @@ import CharacterList from 'ui/character-creation/CharacterList';
 
 interface IBattleConfigUIProps {
 	readonly config?: BattleConfig;
-	readonly parties: PartyData[];
+	readonly parties: IPartyData[];
 	readonly characters: ICharacterData[];
 	readonly onStart: (config: BattleConfig) => void;
 	readonly onBack: (e: SyntheticEvent<HTMLButtonElement>) => void;

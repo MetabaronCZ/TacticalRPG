@@ -13,7 +13,7 @@ import { ArmorID } from 'modules/equipment/armor-data';
 import { WeaponID } from 'modules/equipment/weapon-data';
 import { IEquipSlot } from 'modules/equipment/wield-data';
 import { SkillsetID } from 'modules/character/skillset-data';
-import { CharacterData, ICharacterDataEditable } from 'modules/character-creation/character-data';
+import { CharacterData, ICharacterDataEditable, ICharacterData } from 'modules/character-creation/character-data';
 
 interface ICharacterCreation {
 	character: CharacterData;
@@ -23,9 +23,9 @@ interface ICharacterCreation {
 class CharacterCreation {
 	@observable public state: ICharacterCreation;
 
-	constructor(data: CharacterData | null) {
+	constructor(data: ICharacterData | null) {
 		this.state = {
-			character: new CharacterData(data ? data.serialize() : {}),
+			character: new CharacterData(data || {}),
 			validation: {
 				isValid: true,
 				errors: {}
@@ -41,7 +41,7 @@ class CharacterCreation {
 	}
 
 	@action
-	public get(): CharacterData | null {
+	public get(): ICharacterData | null {
 		const character = this.state.character;
 		const validation = character.validate();
 
@@ -49,7 +49,7 @@ class CharacterCreation {
 			this.state.validation = validation;
 			return null;
 		}
-		return character;
+		return character.serialize();
 	}
 
 	@action

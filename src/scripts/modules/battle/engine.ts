@@ -13,8 +13,8 @@ import Character, { ICharacter } from 'modules/character';
 import { IBattleInfo } from 'modules/battle/battle-info';
 import { DirectionID } from 'modules/geometry/direction';
 import { getCharacterPositions } from 'modules/battle/grid';
-import { PartyData } from 'modules/party-creation/party-data';
 import CharacterCreationForm from 'modules/character-creation';
+import { IPartyData } from 'modules/party-creation/party-data';
 import Chronox, { IChronoxRecord } from 'modules/battle/chronox';
 import Player, { IPlayerCharacterSetup } from 'modules/battle/player';
 import { ICharacterData } from 'modules/character-creation/character-data';
@@ -43,7 +43,7 @@ interface IEngineEvents {
 interface IEngineProps {
 	readonly characters: ICharacterData[];
 	readonly players: PlayerConfigList;
-	readonly parties: PartyData[];
+	readonly parties: IPartyData[];
 	readonly events: IEngineEvents;
 }
 
@@ -237,7 +237,7 @@ class Engine {
 					const char = charCreation.get();
 
 					if (char) {
-						charData.push(char.serialize());
+						charData.push(char);
 					}
 				}
 
@@ -249,7 +249,7 @@ class Engine {
 					throw new Error(`Could not create player "${name}": Invalid party selected`);
 				}
 
-				for (const id of selectedParty.characters) {
+				for (const id of selectedParty.slots) {
 					const char = characters.find(ch => id === ch.id);
 
 					if (char) {

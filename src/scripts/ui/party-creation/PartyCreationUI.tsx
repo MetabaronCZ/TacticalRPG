@@ -6,7 +6,7 @@ import { maxPartyNameLength } from 'data/game-config';
 import { getPath } from 'modules/route';
 import PartyCreationForm from 'modules/party-creation';
 import { ICharacterData } from 'modules/character-creation/character-data';
-import { PartyData, IPartyDataEditable } from 'modules/party-creation/party-data';
+import { IPartyData, IPartyDataEditable } from 'modules/party-creation/party-data';
 
 import Link from 'ui/common/Link';
 import Form from 'ui/common/Form';
@@ -22,10 +22,10 @@ import { formatCharacter } from 'ui/format';
 import PartyPreview from 'ui/party-creation/PartyPreview';
 
 interface IPartyCreationUIProps {
-	readonly party?: PartyData;
+	readonly party?: IPartyData;
 	readonly characters: ICharacterData[];
 	readonly onBack: () => void;
-	readonly onSubmit: (party: PartyData) => void;
+	readonly onSubmit: (party: IPartyData) => void;
 }
 
 const getLabel = (i: number, id: string | null): React.ReactNode => (
@@ -60,7 +60,9 @@ class PartyCreationUI extends React.Component<IPartyCreationUIProps> {
 
 		return (
 			<div>
-				<PartyPreview slots={preview} />
+				{canCreateParty && (
+					<PartyPreview slots={preview} />
+				)}
 
 				<Form onSubmit={this.onSubmit}>
 					{!!validation.errors.slots && (

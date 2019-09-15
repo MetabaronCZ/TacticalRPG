@@ -3,7 +3,7 @@ import { observable, action } from 'mobx';
 import { randomPartyID } from 'data/game-config';
 
 import { IAISettings } from 'modules/ai/settings';
-import { PartyData } from 'modules/party-creation/party-data';
+import { IPartyData } from 'modules/party-creation/party-data';
 import { ICharacterData } from 'modules/character-creation/character-data';
 import { BattleConfig, IBattleConfigValidation } from 'modules/battle-configuration/battle-config';
 import { IPlayerDataEditable, PlayerData, PlayerControlID } from 'modules/battle-configuration/player-data';
@@ -15,9 +15,9 @@ interface IBattleConfiguration {
 
 class BattleConfiguration {
 	@observable public state: IBattleConfiguration;
-	public readonly parties: PartyData[];
+	public readonly parties: IPartyData[];
 
-	constructor(data?: BattleConfig, parties: PartyData[] = []) {
+	constructor(data?: BattleConfig, parties: IPartyData[] = []) {
 		this.state = {
 			config: new BattleConfig(data ? data.serialize() : null),
 			validation: {
@@ -29,10 +29,8 @@ class BattleConfiguration {
 		};
 
 		// fix invalid party selections
-		const partyData = parties.map(party => party.serialize());
-
 		for (const pl of this.state.config.players) {
-			if (!pl.isValidParty(pl.party, partyData)) {
+			if (!pl.isValidParty(pl.party, parties)) {
 				pl.setParty(randomPartyID);
 			}
 		}
@@ -88,7 +86,7 @@ class BattleConfiguration {
 			const selectedParty = parties.find(party => player.party === party.id);
 
 			if (selectedParty) {
-				for (const id of selectedParty.characters) {
+				for (const id of selectedParty.slots) {
 					const char = characters.find(ch => id === ch.id);
 
 					if (char) {

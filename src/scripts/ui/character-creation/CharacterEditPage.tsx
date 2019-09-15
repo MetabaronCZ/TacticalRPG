@@ -6,13 +6,13 @@ import { withContext, IContext } from 'context';
 import { gotoRoute, gotoFn } from 'core/navigation';
 
 import { Store } from 'modules/store';
-import { CharacterData } from 'modules/character-creation/character-data';
+import { ICharacterData } from 'modules/character-creation/character-data';
 
 import Page from 'ui/common/Page';
 import { IRouteParams } from 'modules/route';
 import CharacterCreation from 'ui/character-creation/CharacterCreationUI';
 
-const onSubmit = (store: Store, history: History) => (char: CharacterData) => {
+const onSubmit = (store: Store, history: History) => (char: ICharacterData) => {
 	store.characters.replace(char);
 	store.save();
 

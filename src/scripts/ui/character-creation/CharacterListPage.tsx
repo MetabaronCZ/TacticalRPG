@@ -29,7 +29,7 @@ const onDelete = (store: Store) => (id: string) => () => {
 		const included: string[] = [];
 
 		for (const party of store.parties.data) {
-			if (party.characters.find(charID => id === charID)) {
+			if (party.slots.find(slot => id === slot)) {
 				included.push(party.name);
 			}
 		}
@@ -45,7 +45,7 @@ const onDelete = (store: Store) => (id: string) => () => {
 
 const CharacterListPageContainer: React.SFC<RouteComponentProps<IRouteParams> & IContext> = props => {
 	const { store, history } = props;
-	const characters = store.characters.data.map(char => char.serialize());
+	const characters = store.characters.data;
 	return (
 		<Page heading="Character list">
 			{characters.length

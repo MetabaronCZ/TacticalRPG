@@ -36,7 +36,7 @@ const PartyListPageContainer: React.SFC<RouteComponentProps & IContext> = props 
 		<Page heading="Party list">
 			{store.parties.data.length
 				? <PartyList
-					parties={store.parties}
+					parties={store.parties.data}
 					onDelete={onDelete(store)}
 					onMoveUp={onMoveUp(store)}
 					onMoveDown={onMoveDown(store)}
