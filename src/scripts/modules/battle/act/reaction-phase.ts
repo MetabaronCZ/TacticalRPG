@@ -1,6 +1,7 @@
 import { getContinueCommand } from 'modules/battle/commands';
 import { resolveDirection } from 'modules/geometry/direction';
 
+import Skill from 'modules/skill';
 import Tile from 'modules/geometry/tile';
 import ActPhase from 'modules/battle/act/phase';
 import { ICombatInfo } from 'modules/battle/combat';
@@ -238,15 +239,15 @@ class ReactionPhase extends ActPhase<IReactionPhaseState, IReactionPhaseRecord> 
 
 		switch (skill.id) {
 			case 'ENERGY_SHIELD':
-				this.apply(reaction, 'ENERGY_SHIELD');
+				this.apply(reaction, skill, 'ENERGY_SHIELD');
 				return;
 
 			case 'SHD_SMALL_BLOCK':
-				this.apply(reaction, 'BLOCK_SMALL');
+				this.apply(reaction, skill, 'BLOCK_SMALL');
 				return;
 
 			case 'SHD_LARGE_BLOCK':
-				this.apply(reaction, 'BLOCK_LARGE');
+				this.apply(reaction, skill, 'BLOCK_LARGE');
 				return;
 
 			case 'EVADE':
@@ -258,13 +259,13 @@ class ReactionPhase extends ActPhase<IReactionPhaseState, IReactionPhaseRecord> 
 		}
 	}
 
-	private apply(reaction: IReaction, effect: StatusEffectID): void {
+	private apply(reaction: IReaction, skill: Skill, effect: StatusEffectID): void {
 		const { reactor, phase } = reaction;
 
 		if ('IDLE' !== phase) {
 			throw new Error('Could not react: invalid state ' + phase);
 		}
-		reactor.status.apply(effect);
+		reactor.status.apply(skill, effect);
 		this.finish(reaction);
 	}
 

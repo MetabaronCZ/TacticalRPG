@@ -80,10 +80,11 @@ class CombatPhase extends ActPhase<ICombatPhaseState, ICombatPhaseRecord> {
 		}
 
 		const skillAnim = new Animation(timing, false, step => {
+			const skill = skills[step.number];
 			const info: IBattleInfo[] = [];
 
 			targets.forEach((target, t) => {
-				const combat = getCombatInfo(actor, target, skills[step.number]);
+				const combat = getCombatInfo(actor, target, skill);
 				const result = this.combatResults[t];
 				const { position } = combat.target;
 
@@ -94,6 +95,7 @@ class CombatPhase extends ActPhase<ICombatPhaseState, ICombatPhaseRecord> {
 					info.push({
 						text: 'Evaded',
 						type: 'ACTION',
+						skill,
 						position
 					});
 					return;
@@ -125,7 +127,7 @@ class CombatPhase extends ActPhase<ICombatPhaseState, ICombatPhaseRecord> {
 
 				// log info to console
 				for (const i of info) {
-					const elm = (i.element ? `(${i.element})` : '');
+					const elm = ('NONE' !== i.skill.element ? `(${i.skill.element})` : '');
 					Logger.info(`ActCombat: ${i.type} ${i.text} ${elm}`);
 				}
 			}
@@ -192,6 +194,7 @@ class CombatPhase extends ActPhase<ICombatPhaseState, ICombatPhaseRecord> {
 					info.push({
 						text: `${effect ? effect.title : 'No'} status healed`,
 						type: 'HEALING',
+						skill,
 						position
 					});
 				}
@@ -207,6 +210,7 @@ class CombatPhase extends ActPhase<ICombatPhaseState, ICombatPhaseRecord> {
 					info.push({
 						text: 'Revived',
 						type: 'BUFF',
+						skill,
 						position
 					});
 				}
@@ -216,13 +220,15 @@ class CombatPhase extends ActPhase<ICombatPhaseState, ICombatPhaseRecord> {
 				if (!isDead && !isDying) {
 					// apply healing to target
 					const statuses = status.map(item => item.id);
-					target.onHealing(healing, statuses, healed => {
+
+					target.onHealing(skill, healing, statuses, healed => {
 						result.healed += healed;
 					});
 
 					info.push({
 						text: formatNumber(healing),
 						type: 'HEALING',
+						skill,
 						position
 					});
 
@@ -230,6 +236,7 @@ class CombatPhase extends ActPhase<ICombatPhaseState, ICombatPhaseRecord> {
 						info.push({
 							text: item.effect,
 							type: 'BUFF',
+							skill,
 							position
 						});
 					}
@@ -250,7 +257,8 @@ class CombatPhase extends ActPhase<ICombatPhaseState, ICombatPhaseRecord> {
 		if (blocked) {
 			info.push({
 				text: 'Blocked',
-				type: 'ACTION',
+				type: 'REACTION',
+				skill,
 				position
 			});
 		}
@@ -259,7 +267,8 @@ class CombatPhase extends ActPhase<ICombatPhaseState, ICombatPhaseRecord> {
 		if (shielded) {
 			info.push({
 				text: `Shielded (${shielded.cost} MP)`,
-				type: 'ACTION',
+				type: 'REACTION',
+				skill,
 				position
 			});
 		}
@@ -269,6 +278,7 @@ class CombatPhase extends ActPhase<ICombatPhaseState, ICombatPhaseRecord> {
 			info.push({
 				text: 'Back attack',
 				type: 'ACTION',
+				skill,
 				position
 			});
 		}
@@ -278,6 +288,7 @@ class CombatPhase extends ActPhase<ICombatPhaseState, ICombatPhaseRecord> {
 			info.push({
 				text: formatNumber(combat.physical),
 				type: 'DAMAGE',
+				skill,
 				position
 			});
 		}
@@ -288,13 +299,14 @@ class CombatPhase extends ActPhase<ICombatPhaseState, ICombatPhaseRecord> {
 				info.push({
 					text: affinityData[affinity].title,
 					type: 'ACTION',
+					skill,
 					position
 				});
 			}
 			info.push({
 				text: formatNumber(combat.magical),
 				type: 'DAMAGE',
-				element: skill.element,
+				skill,
 				position
 			});
 		}
@@ -303,7 +315,7 @@ class CombatPhase extends ActPhase<ICombatPhaseState, ICombatPhaseRecord> {
 		const statuses = status.map(item => item.id);
 		const mpDamage = (shielded ? shielded.cost : 0);
 
-		target.onDamage(combat.damage, mpDamage, statuses, (dmg, killed) => {
+		target.onDamage(skill, combat.damage, mpDamage, statuses, (dmg, killed) => {
 			result.damaged += dmg;
 			result.killed = result.killed || !!killed;
 		});
@@ -312,6 +324,7 @@ class CombatPhase extends ActPhase<ICombatPhaseState, ICombatPhaseRecord> {
 			info.push({
 				text: 'Dying',
 				type: 'ACTION',
+				skill,
 				position
 			});
 			return;
@@ -322,6 +335,7 @@ class CombatPhase extends ActPhase<ICombatPhaseState, ICombatPhaseRecord> {
 			info.push({
 				text: item.effect,
 				type: 'DEBUFF',
+				skill,
 				position
 			});
 		}

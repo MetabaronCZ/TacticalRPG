@@ -28,13 +28,14 @@ const StatusEffects = new DataList<StatusEffectID, IStatusEffect>({
 		multi: 'STACK',
 		duration: 33,
 		repeat: 3,
-		apply: (tgt, ammount, onStatus, onInfo) => {
+		apply: (skill, tgt, ammount, onStatus, onInfo) => {
 			const dmg = Math.floor(ammount / 2);
-			tgt.onDamage(dmg, 0, [], onStatus);
+			tgt.onDamage(skill, dmg, 0, [], onStatus);
 
 			onInfo({
 				text: formatNumber(dmg),
 				type: 'DAMAGE',
+				skill,
 				position: tgt.position
 			});
 		}
@@ -55,14 +56,14 @@ const StatusEffects = new DataList<StatusEffectID, IStatusEffect>({
 		multi: 'STACK',
 		duration: 33,
 		repeat: 3,
-		apply: (tgt, ammount, onStatus, onInfo) => {
+		apply: (skill, tgt, ammount, onStatus, onInfo) => {
 			const dmg = Math.floor(ammount / 2);
-			tgt.onDamage(dmg, 0, [], onStatus);
+			tgt.onDamage(skill, dmg, 0, [], onStatus);
 
 			onInfo({
 				text: formatNumber(dmg),
 				type: 'DAMAGE',
-				element: 'FIRE',
+				skill,
 				position: tgt.position
 			});
 		}
@@ -114,12 +115,13 @@ const StatusEffects = new DataList<StatusEffectID, IStatusEffect>({
 		type: 'PHYSICAL',
 		multi: 'IGNORE',
 		duration: 100,
-		apply: (tgt, ammount, onStatus, onInfo) => {
+		apply: (skill, tgt, ammount, onStatus, onInfo) => {
 			tgt.die();
 
 			onInfo({
 				text: 'Dead',
 				type: 'ACTION',
+				skill,
 				position: tgt.position
 			});
 		}
@@ -132,13 +134,14 @@ const StatusEffects = new DataList<StatusEffectID, IStatusEffect>({
 		multi: 'STACK',
 		duration: 33,
 		repeat: 3,
-		apply: (tgt, ammount, onStatus, onInfo) => {
+		apply: (skill, tgt, ammount, onStatus, onInfo) => {
 			const healing = Math.floor(ammount / 2);
-			tgt.onHealing(healing, [], onStatus);
+			tgt.onHealing(skill, healing, [], onStatus);
 
 			onInfo({
 				text: formatNumber(healing),
 				type: 'HEALING',
+				skill,
 				position: tgt.position
 			});
 		}

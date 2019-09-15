@@ -7,6 +7,7 @@ import {
 	conditionCritical, conditionDanger
 } from 'data/game-config';
 
+import Skill from 'modules/skill';
 import Tile from 'modules/geometry/tile';
 import AIPlayer from 'modules/ai/player';
 import Player from 'modules/battle/player';
@@ -106,7 +107,7 @@ class Character {
 		const character = new Character(char.data, char.position, char.direction, player);
 
 		for (const status of char.status) {
-			character.status.apply(status.id);
+			character.status.apply(status.skill, status.id);
 		}
 
 		for (const id in char.attributes) {
@@ -242,7 +243,7 @@ class Character {
 		this.attributes.set('CT', CT % characterCTLimit);
 	}
 
-	public onDamage(damage: number, mana: number, effects: StatusEffectID[], onStatus: IOnStatus): void {
+	public onDamage(skill: Skill, damage: number, mana: number, effects: StatusEffectID[], onStatus: IOnStatus): void {
 		const { attributes, status } = this;
 
 		if (this.dead || status.has('DYING')) {
@@ -261,18 +262,18 @@ class Character {
 
 		// apply damage status effects
 		for (const effect of effects) {
-			status.apply(effect, damage, onStatus);
+			status.apply(skill, effect, damage, onStatus);
 		}
 
 		// set DYING status if mortally wounded
 		if (attributes.HP <= 0) {
 			status.removeAll();
-			status.apply('DYING');
+			status.apply(skill, 'DYING');
 			onStatus(0, true);
 		}
 	}
 
-	public onHealing(healing: number, effects: StatusEffectID[] = [], onStatus: IOnStatus): void {
+	public onHealing(skill: Skill, healing: number, effects: StatusEffectID[] = [], onStatus: IOnStatus): void {
 		if (this.dead || this.status.has('DYING')) {
 			throw new Error('Cannot apply healing: dead or dying');
 		}
@@ -288,7 +289,7 @@ class Character {
 		onStatus(healed);
 
 		for (const effect of effects) {
-			this.status.apply(effect, healing, onStatus);
+			this.status.apply(skill, effect, healing, onStatus);
 		}
 	}
 

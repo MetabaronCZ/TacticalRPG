@@ -179,7 +179,7 @@ const getStatusModifier = (attacker: Character, defender: Character): number => 
 };
 
 const getStatusEffects = (caster: Character, target: Character, skill: Skill, phy = 0, mag = 0, isGuarding = false): StatusEffect[] => {
-	const statuses = skill.status.map(id => new StatusEffect(id));
+	const statuses = skill.status.map(id => new StatusEffect(id, skill));
 	const { STR: attSTR, MAG: attMAG } = caster.attributes;
 	const { VIT: defVIT, SPR: defSPR } = target.attributes;
 	const effects: StatusEffect[] = [];

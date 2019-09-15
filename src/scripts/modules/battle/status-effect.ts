@@ -1,9 +1,11 @@
 import StatusEffects from 'data/status-effects';
 
+import Skill from 'modules/skill';
 import Character from 'modules/character';
 import { IOnBattleInfo } from 'modules/battle/battle-info';
 
 type StatusEffectApplyFun = (
+	skill: Skill,
 	tgt: Character,
 	power: number,
 	onStatus: IOnStatus,
@@ -38,6 +40,7 @@ class StatusEffect {
 	public readonly type: StatusEffectType;
 	public readonly title: string;
 	public readonly effect: string;
+	public readonly skill: Skill;
 	public readonly multi: StatusEffectMulti;
 	public readonly description: string;
 	public readonly duration: {
@@ -48,16 +51,18 @@ class StatusEffect {
 		value: number;
 		readonly max: StatusEffectRepeat;
 	};
+
 	private readonly power: number;
 	private readonly onStatus: IOnStatus;
 	private readonly applyFun?: StatusEffectApplyFun;
 
-	constructor(id: StatusEffectID, power = 0, onStatus?: IOnStatus) {
+	constructor(id: StatusEffectID, skill: Skill, power = 0, onStatus?: IOnStatus) {
 		const data = StatusEffects.get(id);
 		this.id = id;
 		this.type = data.type;
 		this.title = data.title;
 		this.effect = data.effect;
+		this.skill = skill;
 		this.multi = data.multi;
 		this.description = data.description;
 		this.duration = {
@@ -74,10 +79,10 @@ class StatusEffect {
 	}
 
 	public apply(target: Character, onInfo: IOnBattleInfo): void {
-		const { power, applyFun, onStatus } = this;
+		const { skill, power, applyFun, onStatus } = this;
 
 		if (applyFun) {
-			applyFun(target, power, onStatus, onInfo);
+			applyFun(skill, target, power, onStatus, onInfo);
 		}
 	}
 }

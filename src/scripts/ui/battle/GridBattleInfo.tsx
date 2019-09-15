@@ -1,7 +1,9 @@
 import React from 'react';
 
-import { firstLetterToUpper } from 'core/string';
 import { IBattleInfo, BattleInfoType } from 'modules/battle/battle-info';
+
+import ElementIco from 'ui/common/ElementIco';
+import WeaponIco from 'ui/common/WeaponIco';
 
 export interface IBattleInfoCoords {
 	info: IBattleInfo;
@@ -31,14 +33,23 @@ const getVariant = (type: BattleInfoType): string => {
 const GridBattleInfo: React.SFC<IProps> = ({ info }) => (
 	<ul className="GridBattleInfo">
 		{info.map((item, i) => {
-			const { text, type, element } = item.info;
+			const { text, type, skill } = item.info;
 
 			const variant = getVariant(type);
-			const elmText = element || 'PHYSICAL';
-			let message = text;
+			let message: React.ReactNode = text;
 
-			if ('DAMAGE' === type) {
-				message = `${message} (${firstLetterToUpper(elmText.toLowerCase())})`;
+			if ('ACTION' !== type && 'REACTION' !== type) {
+				message = (
+					<React.Fragment>
+						{'NONE' !== skill.weapon && (
+							<WeaponIco weapon={skill.weapon} />
+						)}
+						{'NONE' !== skill.element && (
+							<ElementIco element={skill.element} />
+						)}
+						{message}
+					</React.Fragment>
+				);
 			}
 			return (
 				<li
