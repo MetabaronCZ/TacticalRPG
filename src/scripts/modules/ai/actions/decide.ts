@@ -47,13 +47,13 @@ const btDecide = (): BTAction<IAIData> => {
 		if (!passCommand) {
 			throw new Error('Could not init AI: pass command not available');
 		}
-		const { movable, costMap } = data.act.phases.MOVEMENT;
-		const { enemy, obstacles } = data.memory;
+		const { act, enemy, obstacles } = data;
+		const { actor, phases } = act;
+		const { movable, costMap } = phases.MOVEMENT;
 
 		// convert enemy data into temporary Character instances
 		const enemyChars = enemy.map(data => Character.from(data));
 
-		const actor = data.act.actor.serialize();
 		const { AP } = actor.attributes;
 		const actions: IAnonymousAction[] = [];
 

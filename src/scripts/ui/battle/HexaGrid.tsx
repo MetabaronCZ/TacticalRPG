@@ -139,7 +139,7 @@ class HexaGrid extends Canvas<IProps, IState> {
 				continue;
 			}
 			const { x, y } = getTileCoords(char.position, itemSize, gridSize, gridMargin);
-			const isActor = (char.id === act.actor.data.id);
+			const isActor = (char.id === act.actor.id);
 			const style = getCharacterStyle(char, isActor);
 			const hex = getHexDimensions(itemSize);
 

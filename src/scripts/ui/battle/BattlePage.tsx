@@ -91,7 +91,7 @@ class BattlePageContainer extends React.Component<IProps, IState> {
 		const { act } = this.state.engine;
 		const actingChar = act ? act.actingCharacter : null;
 
-		if (actingChar && !actingChar.isAI()) {
+		if (actingChar && !actingChar.isAI) {
 			this.engine.selectTile(tile);
 		}
 	}
@@ -100,7 +100,7 @@ class BattlePageContainer extends React.Component<IProps, IState> {
 		const { act } = this.state.engine;
 		const actingChar = act ? act.actingCharacter : null;
 
-		if (actingChar && !actingChar.isAI()) {
+		if (actingChar && !actingChar.isAI) {
 			this.engine.selectCommand(command);
 		}
 	}

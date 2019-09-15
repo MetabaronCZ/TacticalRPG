@@ -11,9 +11,7 @@ import { CommandPhaseID } from 'modules/battle/act/command-phase';
 import { DirectionPhaseID } from 'modules/battle/act/direct-phase';
 import { ReactionPhaseID, ActiveReactionPhaseID } from 'modules/battle/act/reaction-phase';
 
-import AIPlayer from 'modules/ai/player';
 import CharacterRole from 'modules/ai/role';
-
 import BTree from 'modules/ai/behavioral-tree/tree';
 import BT, { BTData } from 'modules/ai/behavioral-tree';
 import BTPhaseSelector from 'modules/ai/phase-selector';
@@ -42,21 +40,23 @@ export interface IAIDecision {
 }
 
 interface IAICharacterMemory {
-	ally: Character[];
-	enemy: ICharacter[];
-	obstacles: Tile[];
 	decision: IAIDecision | null;
-
 	hasMoved: boolean;
 	commandTargeted: boolean;
 	commandSelected: boolean;
 	commandConfirmed: boolean;
 }
 
-export interface IAIData extends BTData {
-	act: IActState;
-	commands: Command[];
-	memory: IAICharacterMemory;
+interface IAICharacterUpdateData {
+	readonly act: IActState;
+	readonly commands: Command[];
+	readonly ally: ICharacter[];
+	readonly enemy: ICharacter[];
+	readonly obstacles: Tile[];
+}
+
+export interface IAIData extends BTData, IAICharacterUpdateData {
+	readonly memory: IAICharacterMemory;
 	readonly selectTile: (tile: Tile) => void;
 	readonly selectCommand: (cmd: Command) => void;
 }
@@ -72,10 +72,7 @@ class AICharacter {
 		hasMoved: false,
 		commandTargeted: false,
 		commandSelected: false,
-		commandConfirmed: false,
-		ally: [],
-		enemy: [],
-		obstacles: []
+		commandConfirmed: false
 	}
 	private selectTile: (tile: Tile) => void;
 	private selectCommand: (cmd: Command) => void;
@@ -95,30 +92,21 @@ class AICharacter {
 		this.bt = this.constructBT();
 	}
 
-	public update(act: IActState, commands: Command[]): void {
+	public update(data: IAICharacterUpdateData): void {
 		const { character, memory } = this;
 
 		if (character.isDead()) {
 			return;
 		}
-		const player = character.player as AIPlayer;
-
-		// update memory
-		memory.enemy = player.getEnemy(true);
-		memory.ally = player.getCharacters();
-		memory.obstacles = player.getObstacles();
-
-		// create AI data
-		const data: IAIData = {
-			act,
-			commands,
+		const updateData: IAIData = {
+			...data,
 			memory,
 			selectTile: tile => this.selectTile(tile),
 			selectCommand: command => this.selectCommand(command)
 		};
 
 		// update behavioral tree
-		this.bt.run(data);
+		this.bt.run(updateData);
 	}
 
 	private constructBT(): BTree<IAIData> {
@@ -140,11 +128,17 @@ class AICharacter {
 				REACTION: new BTPhaseSelector<ReactionPhaseID>(data => data.act.phases.REACTION.phase, {
 					SUSPENDED: null,
 					DONE: null,
-					IDLE: new BTPhaseSelector<ActiveReactionPhaseID>(data => data.act.phases.REACTION.reaction.phase, {
-						SUSPENDED: null,
-						IDLE: BT.Selector([btEvade(), btBlock(), btShield(), btDontReact()]),
-						EVASION: btEvadeTo()
-					})
+					IDLE: new BTPhaseSelector<ActiveReactionPhaseID>(
+						data => {
+							const { reaction } = data.act.phases.REACTION;
+							return reaction ? reaction.phase : 'SUSPENDED';
+						},
+						{
+							SUSPENDED: null,
+							IDLE: BT.Selector([btEvade(), btBlock(), btShield(), btDontReact()]),
+							EVASION: btEvadeTo()
+						}
+					)
 				}),
 				DIRECTION: new BTPhaseSelector<DirectionPhaseID>(data => data.act.phases.DIRECTION.phase, {
 					SUSPENDED: null,

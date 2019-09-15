@@ -2,10 +2,10 @@ import { getContinueCommand } from 'modules/battle/commands';
 import { resolveDirection } from 'modules/geometry/direction';
 
 import Tile from 'modules/geometry/tile';
-import Character from 'modules/character';
 import ActPhase from 'modules/battle/act/phase';
 import { ICombatInfo } from 'modules/battle/combat';
 import { IOnActPhaseEvent } from 'modules/battle/act';
+import Character, { ICharacter } from 'modules/character';
 import MoveAnimation from 'modules/battle/act/move-animation';
 import { StatusEffectID } from 'modules/battle/status-effect';
 import Command, { ICommandRecord } from 'modules/battle/command';
@@ -16,8 +16,8 @@ const txtEvasion = 'Select evasion target on grid.';
 
 export interface IReactionPhaseState {
 	readonly phase: ReactionPhaseID;
-	readonly reaction: IReaction;
-	readonly reactions: IReaction[];
+	readonly reaction: IReactionState | null;
+	readonly reactions: IReactionState[];
 }
 
 export interface IReactionPhaseRecord {
@@ -26,6 +26,15 @@ export interface IReactionPhaseRecord {
 		readonly command: ICommandRecord | null;
 		readonly evasionTarget: string | null;
 	}>;
+}
+
+interface IReactionState {
+	readonly reactor: ICharacter;
+	readonly combat: ICombatInfo[];
+	phase: ActiveReactionPhaseID;
+	command: Command | null;
+	evasible: Tile[];
+	evasionTarget: Tile | null;
 }
 
 export type ReactionPhaseID = 'SUSPENDED' | 'IDLE' | 'DONE';
@@ -48,7 +57,7 @@ interface IReaction {
 
 class ReactionPhase extends ActPhase<IReactionPhaseState, IReactionPhaseRecord> {
 	public get actor(): Character | null {
-		const { reaction } = this.getState();
+		const reaction = this.getReaction();
 		return reaction ? reaction.reactor : null;
 	}
 	private phase: ReactionPhaseID = 'SUSPENDED';
@@ -67,7 +76,7 @@ class ReactionPhase extends ActPhase<IReactionPhaseState, IReactionPhaseRecord> 
 	}
 
 	public selectTile(tile: Tile): void {
-		const { reaction } = this.getState();
+		const reaction = this.getReaction();
 
 		if (!reaction) {
 			return;
@@ -81,7 +90,7 @@ class ReactionPhase extends ActPhase<IReactionPhaseState, IReactionPhaseRecord> 
 		if (!command.isActive()) {
 			throw new Error('Could not select reaction: command not active');
 		}
-		const { reaction } = this.getState();
+		const reaction = this.getReaction();
 
 		if (!reaction) {
 			return;
@@ -136,11 +145,16 @@ class ReactionPhase extends ActPhase<IReactionPhaseState, IReactionPhaseRecord> 
 		this.startReact();
 	}
 
+	public getReaction(): IReaction | null {
+		return this.reactions[this.reaction] || null;
+	}
+
 	public getState(): IReactionPhaseState {
+		const reaction = this.getReaction();
 		return {
 			phase: this.phase,
-			reaction: this.reactions[this.reaction] || null,
-			reactions: [...this.reactions]
+			reaction: (reaction ? this.serializeReaction(reaction) : null),
+			reactions: this.reactions.map(r => this.serializeReaction(r))
 		};
 	}
 
@@ -163,13 +177,20 @@ class ReactionPhase extends ActPhase<IReactionPhaseState, IReactionPhaseRecord> 
 		};
 	}
 
+	private serializeReaction(reaction: IReaction): IReactionState {
+		return {
+			...reaction,
+			reactor: reaction.reactor.serialize()
+		};
+	}
+
 	private startReact(): void {
 		const { actActor, phase } = this;
 
 		if ('IDLE' !== phase) {
 			throw new Error('Could not start reaction: invalid phase ' + phase);
 		}
-		const { reaction } = this.getState();
+		const reaction = this.getReaction();
 
 		if (!reaction) {
 			// all targets have reacted

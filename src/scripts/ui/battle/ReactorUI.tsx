@@ -23,13 +23,13 @@ const ReactorUI: React.SFC<IProps> = ({ act, onCommandSelect }) => {
 	const { reactor, command, combat } = reaction;
 	let { commands, info } = act;
 
-	if (reactor.isAI()) {
+	if (reactor.isAI) {
 		info = '';
 		commands = [];
 	}
 	return (
 		<div className="CharacterBox">
-			<div className={`CharacterBox-player CharacterBox-player--player${reactor.player.id}`} />
+			<div className={`CharacterBox-player CharacterBox-player--player${reactor.player}`} />
 
 			<CharacterInfo character={reactor} />
 			<hr className="Separator" />
@@ -48,7 +48,7 @@ const ReactorUI: React.SFC<IProps> = ({ act, onCommandSelect }) => {
 				<p className="Paragraph">{info}</p>
 			)}
 
-			{!reactor.isAI() && (
+			{!reactor.isAI && (
 				<Commands commands={commands} onSelect={onCommandSelect} />
 			)}
 		</div>

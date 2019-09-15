@@ -8,7 +8,7 @@ import BTAction from 'modules/ai/behavioral-tree/action';
 const btEvadeTo = (): BTAction<IAIData> => {
 	return BT.Action(data => {
 		const { reaction } = data.act.phases.REACTION;
-		const evasionTarget = getRandomItem(reaction.evasible);
+		const evasionTarget = (reaction ? getRandomItem(reaction.evasible) : null);
 
 		if (!evasionTarget) {
 			throw new Error('AI character could not react: no evasion targets');

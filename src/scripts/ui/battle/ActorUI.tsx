@@ -24,7 +24,7 @@ const ActorUI: React.SFC<IProps> = ({ act, onCommandSelect }) => {
 	}
 	return (
 		<div className="CharacterBox">
-			<div className={`CharacterBox-player CharacterBox-player--player${actor.player.id}`} />
+			<div className={`CharacterBox-player CharacterBox-player--player${actor.player}`} />
 
 			<CharacterInfo character={actor} />
 			<hr className="Separator" />
@@ -49,7 +49,7 @@ const ActorUI: React.SFC<IProps> = ({ act, onCommandSelect }) => {
 								txt = reactionCommand.title;
 							}
 							return (
-								<div key={reactor.data.id}>
+								<div key={reactor.id}>
 									{reactor.name} ({txt})
 								</div>
 							);
@@ -63,7 +63,7 @@ const ActorUI: React.SFC<IProps> = ({ act, onCommandSelect }) => {
 				<p className="Paragraph">{info}</p>
 			)}
 
-			{!actor.isAI() && (
+			{!actor.isAI && (
 				<Commands commands={commands} onSelect={onCommandSelect} />
 			)}
 		</div>

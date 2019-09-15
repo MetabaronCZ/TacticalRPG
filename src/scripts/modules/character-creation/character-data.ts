@@ -19,6 +19,7 @@ import {
 	ArchetypeIndexTable, safeOffHand
 } from 'data/equipment';
 
+import { ICharacter } from 'modules/character';
 import { SexID, ISexData } from 'modules/character/sex';
 import { getRandomNames } from 'modules/random-name-generator';
 import { IEquipSlot, WieldID } from 'modules/equipment/wield-data';
@@ -67,6 +68,23 @@ export class CharacterData extends IndexableData {
 			if ('undefined' !== typeof value) {
 				this.set(attr, value);
 			}
+		});
+	}
+
+	public static from(data: ICharacter): CharacterData {
+		const now = Date.now();
+
+		return new CharacterData({
+			id: data.id,
+			name: data.name,
+			sex: data.sex,
+			archetype: data.archetype,
+			skillset: data.skillset.id,
+			main: data.mainHand.id,
+			off: data.offHand.id,
+			armor: data.armor.id,
+			creationDate: now,
+			lastUpdate: now
 		});
 	}
 

@@ -3,8 +3,7 @@ import AIPresets from 'data/ai-presets';
 import Tile from 'modules/geometry/tile';
 import Engine from 'modules/battle/engine';
 import Command from 'modules/battle/command';
-import { IActState } from 'modules/battle/act';
-import Character, { ICharacter } from 'modules/character';
+import { ICharacter } from 'modules/character';
 import Player, { IPlayerCharacterSetup } from 'modules/battle/player';
 import { IPlayerData } from 'modules/battle-configuration/player-data';
 
@@ -35,53 +34,47 @@ class AIPlayer extends Player {
 		});
 	}
 
-	public getEnemy(aliveOnly = false): ICharacter[] {
-		const characters = this.engine.getState().characters;
-		const enemy = characters.filter(char => char.player !== this.id);
-
-		if (!aliveOnly) {
-			return enemy;
-		}
-		return enemy.filter(char => !char.dead && !char.dying);
-	}
-
-	public getObstacles(): Tile[] {
-		return this.engine.getState().characters
-			.filter(char => !char.dead)
-			.map(char => char.position);
-	}
-
 	public onActStart(): void {
 		/* */
 	}
 
 	public onUpdate(commands: Command[]): void {
-		const act = this.getAct();
+		const { act, characters } = this.engine.getState();
+
+		if (!act) {
+			throw new Error('Invalid act');
+		}
 		const actingChar = act.actingCharacter;
 
 		if (!actingChar) {
 			throw new Error('Could not update AI player: invalid acing character');
 		}
-		const char = this.getCharacter(actingChar);
-		char.update(act, commands);
-	}
+		const aiChar = this.ally.find(ch => ch.character.data.id === actingChar.id);
+		const char = characters.find(ch => ch.id === actingChar.id);
 
-	private getAct(): IActState {
-		const { act } = this.engine.getState();
-
-		if (!act) {
-			throw new Error('Invalid act');
-		}
-		return act;
-	}
-
-	private getCharacter(actor: Character): AICharacter {
-		const char = this.ally.find(ch => ch.character === actor);
-
-		if (!char || char.character.isDead()) {
+		if (!aiChar || !char || char.dead) {
 			throw new Error('Invalid actor');
 		}
-		return char;
+		aiChar.update({
+			act,
+			commands,
+			ally: this.getAlly(characters),
+			enemy: this.getEnemy(characters),
+			obstacles: this.getObstacles(characters)
+		});
+	}
+
+	private getAlly(characters: ICharacter[]): ICharacter[] {
+		return characters.filter(char => char.player === this.id);
+	}
+
+	private getEnemy(characters: ICharacter[]): ICharacter[] {
+		const enemy = characters.filter(char => char.player !== this.id);
+		return enemy.filter(char => !char.dead && !char.dying);
+	}
+
+	private getObstacles(characters: ICharacter[]): Tile[] {
+		return characters.filter(char => !char.dead).map(char => char.position);
 	}
 }
 

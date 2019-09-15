@@ -6,9 +6,9 @@ import {
 import Logger from 'modules/logger';
 import Tile from 'modules/geometry/tile';
 import AIPlayer from 'modules/ai/player';
-import Character from 'modules/character';
 import Command from 'modules/battle/command';
 import { IBattleInfo } from 'modules/battle/battle-info';
+import Character, { ICharacter } from 'modules/character';
 
 import MovePhase, { MovePhaseEvents, IMovePhaseRecord, IMovePhaseState } from 'modules/battle/act/move-phase';
 import CombatPhase, { CombatPhaseEvents, ICombatPhaseRecord, ICombatPhaseState } from 'modules/battle/act/combat-phase';
@@ -36,10 +36,10 @@ export interface IActEvents {
 }
 
 export interface IActState {
-	readonly actor: Character;
+	readonly actor: ICharacter;
 	readonly phase: ActPhaseID | null;
 	readonly commands: Command[];
-	readonly actingCharacter: Character | null;
+	readonly actingCharacter: ICharacter | null;
 	readonly info: string;
 	readonly phases: {
 		readonly MOVEMENT: IMovePhaseState;
@@ -136,17 +136,14 @@ class Act {
 
 	public getState(): IActState {
 		const { actor, info, phase, phases, commands } = this;
-		let actingCharacter: Character | null = actor;
+		const actingChar = this.getActingCharacter();
 
-		if (phase) {
-			actingCharacter = phases[phase].actor;
-		}
 		return {
-			actor,
+			actor: actor.serialize(),
 			phase,
-			actingCharacter,
+			actingCharacter: (actingChar ? actingChar.serialize() : null),
 			commands: [...commands],
-			info: (actingCharacter && actingCharacter.isAI() ? '' : info),
+			info: (actingChar && actingChar.isAI() ? '' : info),
 			phases: {
 				MOVEMENT: phases.MOVEMENT.getState(),
 				COMMAND: phases.COMMAND.getState(),
@@ -226,7 +223,7 @@ class Act {
 			}
 
 			case 'REACTION': {
-				const { reaction } = REACTION.getState();
+				const reaction = REACTION.getReaction();
 
 				if (!reaction) {
 					throw new Error('Could not get reaction commands: no reaction');
@@ -256,7 +253,8 @@ class Act {
 	}
 
 	private update(): void {
-		const char = this.getState().actingCharacter;
+		// acting character
+		const char = this.getActingCharacter();
 
 		if (!char) {
 			throw new Error('Could not update Act data: invalid acting character');
@@ -349,7 +347,7 @@ class Act {
 						this.log('Command confirmed');
 
 						this.phase = 'REACTION';
-						REACTION.start(COMMAND.getState().combatInfo);
+						REACTION.start(COMMAND.getCombatInfo());
 						return;
 
 					default:
@@ -368,7 +366,8 @@ class Act {
 						return;
 
 					case 'REACTION_DONE': {
-						const { command, effectArea, effectTargets } = COMMAND.getState();
+						const { command, effectArea } = COMMAND.getState();
+						const effectTargets = COMMAND.getEffectTargets();
 
 						if (!command || !effectArea.length || !effectTargets.length) {
 							throw new Error('Could start combat phase: invalid command phase data');
@@ -421,6 +420,11 @@ class Act {
 			default:
 				return; // do nothing
 		}
+	}
+
+	private getActingCharacter(): Character | null {
+		const { phase } = this;
+		return phase ? this.phases[phase].actor : null;
 	}
 
 	private log(msg: string): void {

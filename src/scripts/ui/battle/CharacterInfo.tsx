@@ -1,21 +1,21 @@
 import React from 'react';
 
-import Character from 'modules/character';
+import { ICharacter } from 'modules/character';
+import { CharacterData } from 'modules/character-creation/character-data';
 
 import { formatCharacter } from 'ui/format';
 import AttributeInfo from 'ui/battle/AttributeInfo';
-import { CharacterData } from 'modules/character-creation/character-data';
 
 interface IProps {
-	readonly character: Character;
+	readonly character: ICharacter;
 }
 
 const CharactertInfo: React.SFC<IProps> = ({ character: char }) => {
 	const { HP: baseHP, AP: baseAP, MP: baseMP } = char.baseAttributes;
 	const { HP, AP, MP } = char.attributes;
-	const st = char.status.get();
+	const st = char.status;
 
-	const data = new CharacterData(char.data);
+	const data = CharacterData.from(char);
 
 	return (
 		<React.Fragment>
