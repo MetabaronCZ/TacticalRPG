@@ -9,7 +9,6 @@ TODO
 --	BattleInfo
     - u elementu ukazovat ikonky
     + ikonku zbrane
---	v PartyCreation validovat zmeny az po odeslani
 --	HexaGrid vlozit na co nejvyssi urovni
 	- predat mu jen onUPdate event a posilat mu data primo bez prekresleni komponenty
 --	refaktorovat Command, aby mel jen jeden skill nebo "null"

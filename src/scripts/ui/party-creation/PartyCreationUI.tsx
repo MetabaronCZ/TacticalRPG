@@ -100,7 +100,7 @@ class PartyCreationUI extends React.Component<IPartyCreationUIProps> {
 					<ButtonRow>
 						<Button ico="back" text="Back" onClick={this.props.onBack} />
 
-						{(canCreateParty && validation.isValid) && (
+						{canCreateParty && (
 							<Button type="submit" ico="success" color="green" text="Save" />
 						)}
 					</ButtonRow>

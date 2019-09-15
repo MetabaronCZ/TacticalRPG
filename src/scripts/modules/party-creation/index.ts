@@ -26,7 +26,7 @@ class PartyCreation {
 
 	@action
 	public change(field: IPartyDataEditable, i: number | null, value: string): void {
-		const party = this.state.party;
+		const { party, validation } = this.state;
 
 		if ('name' === field) {
 			party.setName(value);
@@ -35,7 +35,11 @@ class PartyCreation {
 			const char = this.characters.find(ch => value === ch.id);
 			party.setSlot(char ? char.id : null, i);
 		}
-		this.state.validation = party.validate();
+		const result = party.validate();
+
+		// update validation state
+		validation.isValid = result.isValid;
+		validation.errors[field] = result.errors[field];
 	}
 
 	@action
