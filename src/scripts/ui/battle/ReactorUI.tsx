@@ -5,8 +5,7 @@ import { IActState } from 'modules/battle/act';
 
 import EmptyUI from 'ui/battle/EmptyUI';
 import Commands from 'ui/battle/Commands';
-import CombatInfo from 'ui/battle/CombatInfo';
-import CommandInfo from 'ui/battle/CommandInfo';
+import TargetInfo from 'ui/battle/TargetInfo';
 import CharacterInfo from 'ui/battle/CharacterInfo';
 
 interface IProps {
@@ -20,7 +19,7 @@ const ReactorUI: React.SFC<IProps> = ({ act, onCommandSelect }) => {
 	if (!reaction) {
 		return <EmptyUI />;
 	}
-	const { reactor, command, combat } = reaction;
+	const { reactor } = reaction;
 	let { commands, info } = act;
 
 	if (reactor.isAI) {
@@ -34,15 +33,8 @@ const ReactorUI: React.SFC<IProps> = ({ act, onCommandSelect }) => {
 			<CharacterInfo character={reactor} />
 			<hr className="Separator" />
 
-			<CombatInfo combat={combat} />
+			<TargetInfo character={reactor} />
 			<hr className="Separator" />
-
-			{!!command && (
-				<React.Fragment>
-					<CommandInfo command={command} />
-					<hr className="Separator" />
-				</React.Fragment>
-			)}
 
 			{!!info && (
 				<p className="Paragraph">{info}</p>

@@ -1,0 +1,15 @@
+.CombatInfo {
+	@extend .u-text-default;
+	display: flex;
+	align-items: center;
+
+	&-label {
+		flex: 0 0 auto;
+		text-align: left;
+	}
+
+	&-value {
+		flex: 1 0 auto;
+		text-align: right;
+	}
+}

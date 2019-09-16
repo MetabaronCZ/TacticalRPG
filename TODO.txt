@@ -1,16 +1,16 @@
 BUGS
----------------------------------------------------------------------------------------
---	pri targetovani HEAL skillu se nezobrazuje TargetInfo UI komponenta
-	- combatInfo by se melo zobrazit jeste pred CONFIRM akci
+--	import Player, PlayerData v "modules\battle\combat.ts"
+	- pokud jsou importy posazeny vyse nez zbyle importy, vraci konzole chybu
+	- zrejme chyba s cross-importem PartyData
+--	pokud obe Party maji stejnou postavu, tak je HexaGrid obe podbarvi, kdyz je na rade
 
 
 TODO
 ---------------------------------------------------------------------------------------
---	v ActorUI zobrazovat pod selected Command:
-	- damage, healing, (?status), element
-	- back attack
---	v ReactorUI zobrazovat:
-	- physical / magical defense, element
+--	TargetInfo UI ukazovat uz pri COMMAND targetovani
+	? odebrat combatInfo z COMMAND phaze
+--	v Status.apply() upravit tak, aby se nemusel posilat v parametru i Skill
+	? pridat odkaz na ISkillData do StatusEffectData
 --	AI: pridat logiku pro vyhodnoceni pouziti CC Commandu
 	- viz "effectActions" v btDecide
 --	AI: pridat rozdavani rozkazu AIPlayerem

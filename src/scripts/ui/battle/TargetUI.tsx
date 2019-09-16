@@ -3,30 +3,30 @@ import React from 'react';
 import { IActState } from 'modules/battle/act';
 
 import EmptyUI from 'ui/battle/EmptyUI';
-import CombatInfo from 'ui/battle/CombatInfo';
+import TargetInfo from 'ui/battle/TargetInfo';
 import CharacterInfo from 'ui/battle/CharacterInfo';
 
 interface IProps {
 	readonly act: IActState;
 }
 
-const ReactorUI: React.SFC<IProps> = ({ act }) => {
-	const { effectTarget, combatInfo } = act.phases.COMMAND;
-	const combat = combatInfo.find(item => effectTarget === item.character);
+const TargetUI: React.SFC<IProps> = ({ act }) => {
+	const { effectTarget: target, combatInfo } = act.phases.COMMAND;
+	const combat = combatInfo.find(item => target === item.character);
 
-	if (!combat || !effectTarget) {
+	if (!combat || !target) {
 		return <EmptyUI />;
 	}
 	return (
 		<div className="CharacterBox">
-			<div className={`CharacterBox-player CharacterBox-player--player${effectTarget.player}`} />
+			<div className={`CharacterBox-player CharacterBox-player--player${target.player}`} />
 
-			<CharacterInfo character={effectTarget} />
+			<CharacterInfo character={target} />
 			<hr className="Separator" />
 
-			<CombatInfo combat={combat.combat} />
+			<TargetInfo character={target} />
 		</div>
 	);
 };
 
-export default ReactorUI;
+export default TargetUI;

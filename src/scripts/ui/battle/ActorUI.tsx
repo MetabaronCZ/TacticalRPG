@@ -31,7 +31,7 @@ const ActorUI: React.SFC<IProps> = ({ act, onCommandSelect }) => {
 
 			{!!command && (
 				<React.Fragment>
-					<CommandInfo command={command} />
+					<CommandInfo character={actor} command={command} />
 					<hr className="Separator" />
 				</React.Fragment>
 			)}

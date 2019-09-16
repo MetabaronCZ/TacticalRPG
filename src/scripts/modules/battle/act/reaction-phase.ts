@@ -31,11 +31,10 @@ export interface IReactionPhaseRecord {
 
 interface IReactionState {
 	readonly reactor: ICharacter;
-	readonly combat: ICombatInfo[];
-	phase: ActiveReactionPhaseID;
-	command: Command | null;
-	evasible: Tile[];
-	evasionTarget: Tile | null;
+	readonly phase: ActiveReactionPhaseID;
+	readonly command: Command | null;
+	readonly evasible: Tile[];
+	readonly evasionTarget: Tile | null;
 }
 
 export type ReactionPhaseID = 'SUSPENDED' | 'IDLE' | 'DONE';
@@ -180,8 +179,11 @@ class ReactionPhase extends ActPhase<IReactionPhaseState, IReactionPhaseRecord> 
 
 	private serializeReaction(reaction: IReaction): IReactionState {
 		return {
-			...reaction,
-			reactor: reaction.reactor.serialize()
+			reactor: reaction.reactor.serialize(),
+			phase: reaction.phase,
+			command: reaction.command,
+			evasible: reaction.evasible,
+			evasionTarget: reaction.evasionTarget
 		};
 	}
 
