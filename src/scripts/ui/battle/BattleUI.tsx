@@ -2,15 +2,15 @@ import React from 'react';
 
 import Tile from 'modules/geometry/tile';
 import Command from 'modules/battle/command';
+import { ICharacter } from 'modules/character';
 import { IEngineState } from 'modules/battle/engine';
 
 import Button from 'ui/common/Button';
 
 import Order from 'ui/battle/Order';
+import EmptyUI from 'ui/battle/EmptyUI';
 import ActorUI from 'ui/battle/ActorUI';
 import TargetUI from 'ui/battle/TargetUI';
-import ReactorUI from 'ui/battle/ReactorUI';
-
 import HexaGrid from 'ui/battle/HexaGrid';
 
 interface IBattleUIProps {
@@ -25,6 +25,36 @@ const BattleUI: React.SFC<IBattleUIProps> = ({ engineState, onTileSelect, onComm
 
 	if (!act) {
 		return <p className="Paragraph">Waiting for act to start [Tick {tick}]...</p>;
+	}
+	let commands: Command[] = [];
+	let target: ICharacter | null = null;
+	let info = '';
+
+	if (running) {
+		switch (act.phase) {
+			case 'COMMAND':
+				target = act.phases.COMMAND.effectTarget;
+				break;
+
+			case 'REACTION': {
+				const { reaction } = act.phases.REACTION;
+
+				if (reaction) {
+					target = reaction.reactor;
+					commands = act.commands;
+					info = act.info;
+
+					if (target.isAI) {
+						info = '';
+						commands = [];
+					}
+				}
+				break;
+			}
+
+			default:
+				// do nothing
+		}
 	}
 	return (
 		<div className="BattleUI">
@@ -55,11 +85,15 @@ const BattleUI: React.SFC<IBattleUIProps> = ({ engineState, onTileSelect, onComm
 				</div>
 
 				<div className="BattleUI-layout-column BattleUI-layout-column--character">
-					{running && (
-						'COMMAND' === act.phase
-							? <TargetUI act={act} />
-							: <ReactorUI act={act} onCommandSelect={onCommandSelect} />
-					)}
+					{target
+						? <TargetUI
+							info={info}
+							character={target}
+							commands={commands}
+							onCommandSelect={onCommandSelect}
+						/>
+						: <EmptyUI />
+					}
 				</div>
 			</div>
 		</div>

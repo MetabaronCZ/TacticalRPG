@@ -7,8 +7,6 @@ BUGS
 
 TODO
 ---------------------------------------------------------------------------------------
---	refaktorovat Target UI do ReactorUI
-	- kontrolovat poute commands / info / isAI
 --	vytvorit metodu Command.isSupport():
 	- const isSupport = command.skills.filter(skill => 'HOLY' === skill.element).length > 0;
 	- vyhledat vsechny kontroly isSupport, isHealing a refaktorovat
