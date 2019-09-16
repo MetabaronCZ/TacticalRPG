@@ -36,8 +36,6 @@ const getData = (title: string, weapon: WeaponID, element: SkillElement): ISkill
 	if (!data) {
 		throw new Error(`Invalid weapon given for Dynamic skill definition: ${weapon}`);
 	}
-	const wpnApCost = data.apCost || 0;
-	const dynApCost = dynamicSkill.apCost || 0;
 	const dynMpCost = dynamicSkill.mpCost || 0;
 
 	return {
@@ -45,7 +43,8 @@ const getData = (title: string, weapon: WeaponID, element: SkillElement): ISkill
 		title,
 		element,
 		weapon,
-		apCost: wpnApCost + dynApCost,
+		physical: data.physical,
+		apCost: data.apCost || 0,
 		mpCost: dynMpCost,
 		range: data.range,
 		area: data.area,

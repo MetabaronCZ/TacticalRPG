@@ -11,7 +11,6 @@ TODO
 	- back attack
 --	v ReactorUI zobrazovat:
 	- physical / magical defense, element
---	upravit vypocet damage u dynamic Skillu
 --	AI: pridat logiku pro vyhodnoceni pouziti CC Commandu
 	- viz "effectActions" v btDecide
 --	AI: pridat rozdavani rozkazu AIPlayerem

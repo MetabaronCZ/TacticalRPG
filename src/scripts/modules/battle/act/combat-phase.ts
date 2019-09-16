@@ -95,7 +95,8 @@ class CombatPhase extends ActPhase<ICombatPhaseState, ICombatPhaseRecord> {
 					info.push({
 						text: 'Evaded',
 						type: 'ACTION',
-						skill,
+						element: 'NONE',
+						weapon: skill.weapon,
 						position
 					});
 					return;
@@ -127,7 +128,7 @@ class CombatPhase extends ActPhase<ICombatPhaseState, ICombatPhaseRecord> {
 
 				// log info to console
 				for (const i of info) {
-					const elm = ('NONE' !== i.skill.element ? `(${i.skill.element})` : '');
+					const elm = ('NONE' !== i.element ? `(${i.element})` : '');
 					Logger.info(`ActCombat: ${i.type} ${i.text} ${elm}`);
 				}
 			}
@@ -194,7 +195,8 @@ class CombatPhase extends ActPhase<ICombatPhaseState, ICombatPhaseRecord> {
 					info.push({
 						text: `${effect ? effect.title : 'No'} status healed`,
 						type: 'HEALING',
-						skill,
+						weapon: 'NONE',
+						element: skill.element,
 						position
 					});
 				}
@@ -210,7 +212,8 @@ class CombatPhase extends ActPhase<ICombatPhaseState, ICombatPhaseRecord> {
 					info.push({
 						text: 'Revived',
 						type: 'BUFF',
-						skill,
+						weapon: 'NONE',
+						element: skill.element,
 						position
 					});
 				}
@@ -228,7 +231,8 @@ class CombatPhase extends ActPhase<ICombatPhaseState, ICombatPhaseRecord> {
 					info.push({
 						text: formatNumber(healing),
 						type: 'HEALING',
-						skill,
+						weapon: 'NONE',
+						element: skill.element,
 						position
 					});
 
@@ -236,7 +240,8 @@ class CombatPhase extends ActPhase<ICombatPhaseState, ICombatPhaseRecord> {
 						info.push({
 							text: item.effect,
 							type: 'BUFF',
-							skill,
+							weapon: 'NONE',
+							element: skill.element,
 							position
 						});
 					}
@@ -258,7 +263,8 @@ class CombatPhase extends ActPhase<ICombatPhaseState, ICombatPhaseRecord> {
 			info.push({
 				text: 'Blocked',
 				type: 'REACTION',
-				skill,
+				element: 'NONE',
+				weapon: skill.weapon,
 				position
 			});
 		}
@@ -268,7 +274,8 @@ class CombatPhase extends ActPhase<ICombatPhaseState, ICombatPhaseRecord> {
 			info.push({
 				text: `Shielded (${shielded.cost} MP)`,
 				type: 'REACTION',
-				skill,
+				element: 'NONE',
+				weapon: 'NONE',
 				position
 			});
 		}
@@ -278,7 +285,8 @@ class CombatPhase extends ActPhase<ICombatPhaseState, ICombatPhaseRecord> {
 			info.push({
 				text: 'Back attack',
 				type: 'ACTION',
-				skill,
+				element: 'NONE',
+				weapon: 'NONE',
 				position
 			});
 		}
@@ -288,7 +296,8 @@ class CombatPhase extends ActPhase<ICombatPhaseState, ICombatPhaseRecord> {
 			info.push({
 				text: formatNumber(combat.physical),
 				type: 'DAMAGE',
-				skill,
+				weapon: skill.weapon,
+				element: 'NONE',
 				position
 			});
 		}
@@ -299,14 +308,16 @@ class CombatPhase extends ActPhase<ICombatPhaseState, ICombatPhaseRecord> {
 				info.push({
 					text: affinityData[affinity].title,
 					type: 'ACTION',
-					skill,
+					element: 'NONE',
+					weapon: 'NONE',
 					position
 				});
 			}
 			info.push({
 				text: formatNumber(combat.magical),
 				type: 'DAMAGE',
-				skill,
+				element: skill.element,
+				weapon: 'NONE',
 				position
 			});
 		}
@@ -324,7 +335,8 @@ class CombatPhase extends ActPhase<ICombatPhaseState, ICombatPhaseRecord> {
 			info.push({
 				text: 'Dying',
 				type: 'ACTION',
-				skill,
+				element: 'NONE',
+				weapon: 'NONE',
 				position
 			});
 			return;
@@ -335,7 +347,8 @@ class CombatPhase extends ActPhase<ICombatPhaseState, ICombatPhaseRecord> {
 			info.push({
 				text: item.effect,
 				type: 'DEBUFF',
-				skill,
+				weapon: item.skill.weapon,
+				element: item.skill.element,
 				position
 			});
 		}

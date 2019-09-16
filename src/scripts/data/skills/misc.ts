@@ -15,14 +15,14 @@ const miscSkills: { [id in MiscSkillID]: ISkillData; } = {
 	},
 	DYNAMIC_SKILL: {
 		title: '',
-		apCost: 1,
+		apCost: 0,
 		mpCost: 5,
 		type: 'ACTIVE',
 		grade: 1,
 		range: 'ULTIMATE',
 		area: 'SINGLE',
 		target: 'ENEMY',
-		physical: 0.5,
+		physical: 0,
 		magical: 0.5,
 		cooldown: 1
 	},

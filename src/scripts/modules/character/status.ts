@@ -74,7 +74,8 @@ class Status {
 					cb({
 						text: `${item.title} ended`,
 						type: 'ACTION',
-						skill: item.skill,
+						weapon: item.skill.weapon,
+						element: item.skill.element,
 						position: char.position
 					});
 				}

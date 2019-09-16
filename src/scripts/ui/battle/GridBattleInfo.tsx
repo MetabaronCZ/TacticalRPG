@@ -33,7 +33,7 @@ const getVariant = (type: BattleInfoType): string => {
 const GridBattleInfo: React.SFC<IProps> = ({ info }) => (
 	<ul className="GridBattleInfo">
 		{info.map((item, i) => {
-			const { text, type, skill } = item.info;
+			const { text, type, weapon, element } = item.info;
 
 			const variant = getVariant(type);
 			let message: React.ReactNode = text;
@@ -41,11 +41,11 @@ const GridBattleInfo: React.SFC<IProps> = ({ info }) => (
 			if ('ACTION' !== type && 'REACTION' !== type) {
 				message = (
 					<React.Fragment>
-						{'NONE' !== skill.weapon && (
-							<WeaponIco weapon={skill.weapon} />
+						{'NONE' !== weapon && (
+							<WeaponIco weapon={weapon} />
 						)}
-						{'NONE' !== skill.element && (
-							<ElementIco element={skill.element} />
+						{'NONE' !== element && (
+							<ElementIco element={element} />
 						)}
 						{message}
 					</React.Fragment>

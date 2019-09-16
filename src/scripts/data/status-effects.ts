@@ -35,7 +35,8 @@ const StatusEffects = new DataList<StatusEffectID, IStatusEffect>({
 			onInfo({
 				text: formatNumber(dmg),
 				type: 'DAMAGE',
-				skill,
+				element: 'NONE',
+				weapon: skill.weapon,
 				position: tgt.position
 			});
 		}
@@ -63,7 +64,8 @@ const StatusEffects = new DataList<StatusEffectID, IStatusEffect>({
 			onInfo({
 				text: formatNumber(dmg),
 				type: 'DAMAGE',
-				skill,
+				weapon: 'NONE',
+				element: skill.element,
 				position: tgt.position
 			});
 		}
@@ -121,7 +123,8 @@ const StatusEffects = new DataList<StatusEffectID, IStatusEffect>({
 			onInfo({
 				text: 'Dead',
 				type: 'ACTION',
-				skill,
+				weapon: 'NONE',
+				element: 'NONE',
 				position: tgt.position
 			});
 		}
@@ -141,7 +144,8 @@ const StatusEffects = new DataList<StatusEffectID, IStatusEffect>({
 			onInfo({
 				text: formatNumber(healing),
 				type: 'HEALING',
-				skill,
+				weapon: 'NONE',
+				element: skill.element,
 				position: tgt.position
 			});
 		}
