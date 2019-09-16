@@ -89,7 +89,7 @@ class AICharacter {
 			delayAction(() => engine.selectCommand(cmd));
 		};
 
-		this.bt = this.constructBT();
+		this.bt = this.constructBT(role);
 	}
 
 	public update(data: IAICharacterUpdateData): void {
@@ -109,7 +109,7 @@ class AICharacter {
 		this.bt.run(updateData);
 	}
 
-	private constructBT(): BTree<IAIData> {
+	private constructBT(role: CharacterRole): BTree<IAIData> {
 		return BT.Tree<IAIData>(
 			new BTPhaseSelector<ActPhaseID | null>(data => data.act.phase, {
 				COMBAT: null,
@@ -117,7 +117,7 @@ class AICharacter {
 					SUSPENDED: null,
 					ANIMATION: null,
 					SELECTED: null,
-					IDLE: BT.Sequence([btDecide(), btMove(), btCommand()])
+					IDLE: BT.Sequence([btDecide(role), btMove(), btCommand()])
 				}),
 				COMMAND: new BTPhaseSelector<CommandPhaseID>(data => data.act.phases.COMMAND.phase, {
 					SUSPENDED: null,

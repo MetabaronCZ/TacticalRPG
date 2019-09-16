@@ -97,7 +97,7 @@ class Act {
 		if (null !== phase) {
 			throw new Error('Could not start act: invalid phase ' + phase);
 		}
-		this.log('Act started');
+		this.log('Act started ' + actor.position.id);
 
 		if (actor.status.has('DYING')) {
 			// skip this Act

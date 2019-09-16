@@ -1,14 +1,18 @@
 .GridBattleInfo {
-	$anim-duration: 5s;
+	$anim-duration: 3s;
 	$anim-distance: 10rem;
 
 	@keyframes battleInfoAnim {
-		from {
+		0% {
 			opacity: 1;
 			transform: translate(0, 0);
 		}
 
-		to {
+		50% {
+			opacity: 1;
+		}
+
+		100% {
 			opacity: 0;
 			transform: translate(0, -10rem);
 		}
@@ -24,6 +28,7 @@
 	&-item {
 		@extend .u-text-default;
 		position: absolute;
+		white-space: nowrap;
 		animation-name: battleInfoAnim;
 		animation-fill-mode: forwards;
 		animation-duration: $anim-duration;

@@ -49,6 +49,7 @@ export interface ICharacter {
 	readonly player: number;
 	readonly status: StatusEffect[];
 	readonly cooldowns: ISkillCooldowns;
+	readonly condition: CharacterCondition;
 
 	readonly mainHand: IWeaponData;
 	readonly offHand: IWeaponData;
@@ -141,6 +142,7 @@ class Character {
 			dead: this.dead,
 			dying: this.status.has('DYING'),
 			status: this.status.get(),
+			condition: this.getCondition(),
 			cooldowns: { ...this.cooldowns },
 			player: this.player.id,
 			position: this.position,

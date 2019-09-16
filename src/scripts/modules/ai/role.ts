@@ -2,9 +2,7 @@ import Character from 'modules/character';
 import { WeaponTypeID } from 'modules/equipment/weapon-data';
 
 const nonMeleeWpns: WeaponTypeID[] = ['NONE', 'MAGICAL', 'RANGED','SHIELD'];
-
 type CharacterRoleID = 'MELEE' | 'RANGER' | 'MAGE' | 'HEALER';
-type IterationFn = (role: CharacterRoleID, i: number) => void;
 
 class CharacterRole {
 	private readonly roles: CharacterRoleID[];
@@ -21,8 +19,8 @@ class CharacterRole {
 		return -1 !== this.roles.indexOf(role);
 	}
 
-	public each(fn: IterationFn): void {
-		return this.roles.forEach(fn);
+	public get(): CharacterRoleID[] {
+		return [...this.roles];
 	}
 
 	private getRoles = (char: Character): CharacterRoleID[] => {

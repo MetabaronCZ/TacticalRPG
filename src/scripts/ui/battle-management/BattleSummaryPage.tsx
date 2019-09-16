@@ -14,6 +14,8 @@ import { IPartyData } from 'modules/party-creation/party-data';
 import { IPlayerConfig } from 'modules/battle-configuration/player-data';
 import { ICharacterData } from 'modules/character-creation/character-data';
 
+import { formatCharacter } from 'ui/format';
+
 import Page from 'ui/common/Page';
 import Button from 'ui/common/Button';
 import Separator from 'ui/common/Separator';
@@ -315,14 +317,36 @@ class BattleSummaryPage extends React.Component<IProps, IState> {
 					Player "{winPlayer.name}" won!
 				</h2>
 
-				{playerData.map(data => (
-					<div className="Paragraph" key={data.id}>
-						<PlayerIco id={data.id} />
-						<strong>Player "{data.player.name}"</strong>
-						<br />
-						{data.characters.map(char => char ? char.name : '?????').join(', ')}
-					</div>
-				))}
+				<ul className="Layout">
+					<li className="Layout-row">
+						{playerData.map(data => (
+							<div className="Layout-column u-col-1-2" key={data.id}>
+								<div className="Paragraph">
+									<div>
+										<PlayerIco id={data.id} />
+										<strong>Player "{data.player.name}"</strong>
+									</div>
+
+									<table className="Table">
+										<tbody>
+											{data.characters.filter(char => !!char).map(char => (
+												<tr className="Table-row" key={char.id}>
+													<td className="Table-column">
+														{char.name}
+													</td>
+
+													<td className="Table-column">
+														{formatCharacter(char)}
+													</td>
+												</tr>
+											))}
+										</tbody>
+									</table>
+								</div>
+							</div>
+						))}
+					</li>
+				</ul>
 
 				<h2 className="Heading">
 					Score
@@ -382,35 +406,35 @@ class BattleSummaryPage extends React.Component<IProps, IState> {
 						const item = getRowInfo(chronox.characters, t);
 
 						return (
-							<li className="List-row u-align-top" key={t.id}>
-								<div className="List-row-column u-tableColumnFit u-align-right">
+							<li className="List-row" key={t.id}>
+								<div className="List-row-column u-tableColumnFit u-align-top u-align-right">
 									{i}.
 								</div>
 
-								<div className="List-row-column u-tableColumnFit u-align-right">
+								<div className="List-row-column u-tableColumnFit u-align-top u-align-right">
 									{item.id}
 								</div>
 
-								<div className="List-row-column u-tableColumnFit">
+								<div className="List-row-column u-tableColumnFit u-align-top">
 									<PlayerIco id={player.id} align="middle" />
 									{item.actor.name}
 								</div>
 
-								<div className="List-row-column u-tableColumnFit">
+								<div className="List-row-column u-tableColumnFit u-align-top">
 									{item.move}
 								</div>
 
-								<div className="List-row-column u-tableColumnFit">
+								<div className="List-row-column u-tableColumnFit u-align-top">
 									{item.command}
 								</div>
 
-								<div className="List-row-column">
+								<div className="List-row-column u-align-top">
 									{item.reactions.map((reaction, r) => (
 										<div key={r}>{reaction}</div>
 									))}
 								</div>
 
-								<div className="List-row-column">
+								<div className="List-row-column u-align-top">
 									{item.results.map((result, r) => (
 										<div key={r}>{result}</div>
 									))}

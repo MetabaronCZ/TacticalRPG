@@ -6,18 +6,17 @@ BUGS
 
 TODO
 ---------------------------------------------------------------------------------------
---	Canvas predelat na HexaGrid
-	- Canvas udelat jako <canvas> komponentu
-	- zamezit rerenderu: pridat
-		public shouldComponentUpdate(): boolean {
-			this.draw();
-			return false;
-		}
---	AI: u ranged / mage preferovat utoky s nejvetsi distance od target postavy
---	AICharacter: pohyb/akce podle melee / ranged / support role
-	- vybira AIPlayer
-	- prioritizace skillu (healing role -> Revive)
+--	v ActorUI zobrazovat pod selected Command:
+	- damage, healing, (?status), element
+	- back attack
+--	v ReactorUI zobrazovat:
+	- physical / magical defense, element
+--	upravit vypocet damage u dynamic Skillu
 --	AI: pridat logiku pro vyhodnoceni pouziti CC Commandu
+	- viz "effectActions" v btDecide
+--	AI: pridat rozdavani rozkazu AIPlayerem
+	- vyhodnocovani situace
+	- koordinace utoku
 --  btEvadeTo predelat na:
         ?SELECT_EVASION
 			>SAFE_EVADE     ?SHOULD_DEFEND  C-reactorWarningCondition
@@ -27,6 +26,15 @@ TODO
 							A-evadeToTarget
 			>RANDOM_EVADE   A-evade
 ??	serializovat v EngineState i Command na ICommand
+??	AI Player: leader character
+	- nastavit jednu z postav jako LEADER
+	- idealne WARRIOR, FIGHTER nebo MAGI-KNIGHT archetypy
+	- ostatni postavy dodrzuji maximalni vzdalenost (4) od leadera pro udrzeni formace
+	- pokud je na zacatku Actu leader dead, AI Player vybere noveho leadera
+	- leader by mel jit kupredu a obsadit stred
+		- ostatni se drzi pobliz a nejdou az prilis dopredu
+	- vyresi problem, kdy RANGED a MAGE role jdou az prilis dopredu
+
 ??	Counter reaction skill >> bude to mainHand weapon Attack skill
 ??	pasivni skilly
 	--	DARK_AURA by mela delat 50% damage reflection (do vzdalenosti SkillArea)
