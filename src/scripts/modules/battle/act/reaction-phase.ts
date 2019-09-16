@@ -4,13 +4,11 @@ import { resolveDirection } from 'modules/geometry/direction';
 import Skill from 'modules/skill';
 import Tile from 'modules/geometry/tile';
 import ActPhase from 'modules/battle/act/phase';
-import { ICombatInfo } from 'modules/battle/combat';
 import { IOnActPhaseEvent } from 'modules/battle/act';
 import Character, { ICharacter } from 'modules/character';
 import MoveAnimation from 'modules/battle/act/move-animation';
 import { StatusEffectID } from 'modules/battle/status-effect';
 import Command, { ICommandRecord } from 'modules/battle/command';
-import { IEffectTargetData } from 'modules/battle/act/command-phase';
 
 const txtIdle = 'Select reaction:';
 const txtEvasion = 'Select evasion target on grid.';
@@ -48,7 +46,7 @@ export type ReactionPhaseEvents =
 
 interface IReaction {
 	readonly reactor: Character;
-	readonly combat: ICombatInfo[];
+	readonly isSupport: boolean;
 	phase: ActiveReactionPhaseID;
 	command: Command | null;
 	evasible: Tile[];
@@ -122,21 +120,24 @@ class ReactionPhase extends ActPhase<IReactionPhaseState, IReactionPhaseRecord> 
 		}
 	}
 
-	public start(combatInfo: IEffectTargetData[]): void {
+	public start(targets: Character[], command: Command): void {
 		const { phase } = this;
 
 		if ('SUSPENDED' !== phase) {
 			throw new Error('Could not start reaction: invalid phase ' + phase);
 		}
-		if (0 === combatInfo.length) {
-			throw new Error('Could not start reaction: invalid data');
+
+		if (!targets.length) {
+			throw new Error('Could not start reaction: no reactors');
 		}
 		this.phase = 'IDLE';
 
-		this.reactions = combatInfo.map(info => ({
+		const isSupport = command.skills.filter(skill => 'HOLY' === skill.element).length > 0;
+
+		this.reactions = targets.map(target => ({
 			phase: 'SUSPENDED',
-			reactor: info.character,
-			combat: info.combat,
+			isSupport,
+			reactor: target,
 			command: null,
 			evasible: [],
 			evasionTarget: null
@@ -208,9 +209,7 @@ class ReactionPhase extends ActPhase<IReactionPhaseState, IReactionPhaseRecord> 
 		// turn actor to face active reactor
 		actActor.direction = resolveDirection(actActor.position, reaction.reactor.position);
 
-		const isSupport = !!reaction.combat.find(item => 'SUPPORT' === item.type);
-
-		if (isSupport) {
+		if (reaction.isSupport) {
 			// force reaction pass
 			const passAction = getContinueCommand();
 			this.pass(reaction, passAction);
@@ -223,17 +222,13 @@ class ReactionPhase extends ActPhase<IReactionPhaseState, IReactionPhaseRecord> 
 	}
 
 	private react(reaction: IReaction, command: Command): void {
-		const { phase, combat } = reaction;
+		const { phase } = reaction;
 
 		if ('IDLE' !== phase) {
 			throw new Error('Could not set reaction: invalid phase ' + phase);
 		}
 		if (!command.isActive() || !command.skills.length) {
 			throw new Error('Could not react: invalid command');
-		}
-
-		if (combat[0].backAttack) {
-			throw new Error('Cannot react if back attacked');
 		}
 		reaction.command = command;
 

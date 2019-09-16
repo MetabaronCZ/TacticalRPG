@@ -1,4 +1,5 @@
 import { formatTile } from 'ui/format';
+import { isBackAttacked } from 'modules/battle/combat';
 import {
 	getIdleCommands, getSkillConfirmCommands, getReactiveCommands, getEvasiveCommands
 } from 'modules/battle/commands';
@@ -228,14 +229,14 @@ class Act {
 				if (!reaction) {
 					throw new Error('Could not get reaction commands: no reaction');
 				}
-				const { reactor, combat } = reaction;
+				const { reactor, isSupport } = reaction;
 				const obstacles = this.characters.map(char => char.position);
+				const isBackAttack = isBackAttacked(actor, reactor);
 				const canEvade = reactor.canEvade(obstacles);
-				const isSupport = !!combat.find(dmg => 'SUPPORT' === dmg.type);
 
 				switch (reaction.phase) {
 					case 'IDLE':
-						return getReactiveCommands(reactor, combat[0].backAttack, canEvade, isSupport);
+						return getReactiveCommands(reactor, isBackAttack, canEvade, isSupport);
 
 					case 'EVASION':
 						return getEvasiveCommands();
@@ -342,13 +343,20 @@ class Act {
 						MOVEMENT.start();
 						return;
 
-					case 'COMMAND_DONE':
+					case 'COMMAND_DONE': {
 						// start reaction phase
 						this.log('Command confirmed');
-
 						this.phase = 'REACTION';
-						REACTION.start(COMMAND.getCombatInfo());
+
+						const targets = COMMAND.getEffectTargets();
+						const command = COMMAND.getCommand();
+
+						if (!command) {
+							throw new Error('Could not start reaction: invalid command');
+						}
+						REACTION.start(targets, command);
 						return;
+					}
 
 					default:
 						return; // do nothing

@@ -11,10 +11,9 @@ interface IProps {
 }
 
 const TargetUI: React.SFC<IProps> = ({ act }) => {
-	const { effectTarget: target, combatInfo } = act.phases.COMMAND;
-	const combat = combatInfo.find(item => target === item.character);
+	const { effectTarget: target } = act.phases.COMMAND;
 
-	if (!combat || !target) {
+	if (!target) {
 		return <EmptyUI />;
 	}
 	return (

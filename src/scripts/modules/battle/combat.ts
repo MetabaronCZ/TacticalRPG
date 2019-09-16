@@ -66,7 +66,7 @@ export interface ITargetPreview {
 	readonly shield: number | null;
 }
 
-const isBackAttacked = (attacker: Character, defender: Character): boolean => {
+export const isBackAttacked = (attacker: Character, defender: Character): boolean => {
 	const attVector = Vector.fromTiles(attacker.position, defender.position);
 	const defVector = Vector.fromDirection(defender.direction);
 	const angle = attVector.getAngle(defVector);

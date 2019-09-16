@@ -5,14 +5,8 @@ import ActPhase from 'modules/battle/act/phase';
 import { IOnActPhaseEvent } from 'modules/battle/act';
 import Character, { ICharacter } from 'modules/character';
 import Command, { ICommandRecord } from 'modules/battle/command';
-import { getCombatInfo, ICombatInfo } from 'modules/battle/combat';
 
 const txtIdle = 'Select command target on grid.';
-
-interface IEffectTarget {
-	readonly character: ICharacter;
-	readonly combat: ICombatInfo[];
-}
 
 export interface ICommandPhaseState {
 	readonly phase: CommandPhaseID;
@@ -23,17 +17,11 @@ export interface ICommandPhaseState {
 	readonly effectArea: Tile[];
 	readonly effectTarget: ICharacter | null;
 	readonly effectTargets: ICharacter[];
-	readonly combatInfo: IEffectTarget[];
 }
 
 export interface ICommandPhaseRecord {
 	readonly command: ICommandRecord | null;
 	readonly target: string | null;
-}
-
-export interface IEffectTargetData {
-	readonly character: Character;
-	readonly combat: ICombatInfo[];
 }
 
 interface IState {
@@ -45,7 +33,7 @@ interface IState {
 			readonly tile: Tile;
 			readonly character: Character | null;
 			readonly effectArea: Tile[];
-			readonly effectTargets: IEffectTargetData[];
+			readonly effectTargets: Character[];
 		};
 	};
 }
@@ -147,16 +135,15 @@ class CommandPhase extends ActPhase<ICommandPhaseState, ICommandPhaseRecord> {
 		}
 	}
 
-	public getCombatInfo(): IEffectTargetData[] {
+	public getCommand(): Command | null {
 		const { command } = this.state;
-		const target = command ? command.target : null;
-		return target ? [...target.effectTargets] : [];
+		return command ? command.data : null;
 	}
 
 	public getEffectTargets(): Character[] {
 		const { command } = this.state;
 		const target = command ? command.target : null;
-		return target ? target.effectTargets.map(eff => eff.character) : [];
+		return target ? target.effectTargets : [];
 	}
 
 	public getState(): ICommandPhaseState {
@@ -170,11 +157,7 @@ class CommandPhase extends ActPhase<ICommandPhaseState, ICommandPhaseRecord> {
 			target: (target ? target.tile : null),
 			effectArea: (target ? [...target.effectArea] : []),
 			effectTarget: (target && target.character ? target.character.serialize() : null),
-			effectTargets: this.getEffectTargets().map(char => char.serialize()),
-			combatInfo: this.getCombatInfo().map(combat => ({
-				...combat,
-				character: combat.character.serialize()
-			}))
+			effectTargets: this.getEffectTargets().map(char => char.serialize())
 		};
 	}
 
@@ -215,13 +198,7 @@ class CommandPhase extends ActPhase<ICommandPhaseState, ICommandPhaseRecord> {
 		const effectAreas = skills.map(s => s.getEffectArea(actor.position, tile));
 		const effectArea = getIntersection(effectAreas);
 		const effectTarget = characters.find(char => tile === char.position) || null;
-
-		const effectTargets = skills[0]
-			.getTargets(actor, characters, effectArea)
-			.map(tgt => ({
-				character: tgt,
-				combat: skills.map(skill => getCombatInfo(actor, tgt, skill))
-			}));
+		const effectTargets = skills[0].getTargets(actor, characters, effectArea);
 
 		command.target = {
 			tile,

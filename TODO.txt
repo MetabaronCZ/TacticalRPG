@@ -7,8 +7,11 @@ BUGS
 
 TODO
 ---------------------------------------------------------------------------------------
---	TargetInfo UI ukazovat uz pri COMMAND targetovani
-	? odebrat combatInfo z COMMAND phaze
+--	refaktorovat Target UI do ReactorUI
+	- kontrolovat poute commands / info / isAI
+--	vytvorit metodu Command.isSupport():
+	- const isSupport = command.skills.filter(skill => 'HOLY' === skill.element).length > 0;
+	- vyhledat vsechny kontroly isSupport, isHealing a refaktorovat
 --	v Status.apply() upravit tak, aby se nemusel posilat v parametru i Skill
 	? pridat odkaz na ISkillData do StatusEffectData
 --	AI: pridat logiku pro vyhodnoceni pouziti CC Commandu
