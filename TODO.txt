@@ -6,9 +6,13 @@ BUGS
 
 TODO
 ---------------------------------------------------------------------------------------
---	HexaGrid vlozit na co nejvyssi urovni
-	- predat mu jen onUPdate event a posilat mu data primo bez prekresleni komponenty
---	refaktorovat Command, aby mel jen jeden skill nebo "null"
+--	Canvas predelat na HexaGrid
+	- Canvas udelat jako <canvas> komponentu
+	- zamezit rerenderu: pridat
+		public shouldComponentUpdate(): boolean {
+			this.draw();
+			return false;
+		}
 --	AI: u ranged / mage preferovat utoky s nejvetsi distance od target postavy
 --	AICharacter: pohyb/akce podle melee / ranged / support role
 	- vybira AIPlayer
@@ -22,6 +26,7 @@ TODO
 			>TACTICAL_EVADE C-hasTarget
 							A-evadeToTarget
 			>RANDOM_EVADE   A-evade
+??	serializovat v EngineState i Command na ICommand
 ??	Counter reaction skill >> bude to mainHand weapon Attack skill
 ??	pasivni skilly
 	--	DARK_AURA by mela delat 50% damage reflection (do vzdalenosti SkillArea)
