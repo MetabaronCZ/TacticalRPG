@@ -2,7 +2,6 @@ BUGS
 --	import Player, PlayerData v "modules\battle\combat.ts"
 	- pokud jsou importy posazeny vyse nez zbyle importy, vraci konzole chybu
 	- zrejme chyba s cross-importem PartyData
---	pokud obe Party maji stejnou postavu, tak je HexaGrid obe podbarvi, kdyz je na rade
 !!	nekdy se stane, ze AI rozhodne jit nekam, ale MovePhase jde realne nekam jinam
 	- typicky to byva tile s promichanymi souradnicemi
 	- docasne pridat logovani pro targetovani:

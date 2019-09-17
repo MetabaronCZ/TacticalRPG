@@ -117,6 +117,7 @@ class HexaGrid extends Canvas<IProps, IState> {
 			throw new Error('HexaGrid could not be drawn: invalid canvas to draw');
 		}
 		const { offCanvas, offCtx, hitCtx } = this;
+		const { actor } = act;
 
 		// clear image
 		this.clear();
@@ -139,7 +140,7 @@ class HexaGrid extends Canvas<IProps, IState> {
 				continue;
 			}
 			const { x, y } = getTileCoords(char.position, itemSize, gridSize, gridMargin);
-			const isActor = (char.id === act.actor.id);
+			const isActor = (char.id === actor.id && char.player.id === actor.player.id);
 			const style = getCharacterStyle(char, isActor);
 			const hex = getHexDimensions(itemSize);
 
