@@ -1,7 +1,6 @@
 import Animation from 'core/animation';
 import { moveAnimDuration } from 'data/game-config';
 
-import { formatTile } from 'ui/format';
 import { getTiles } from 'modules/geometry/tiles';
 import { resolveDirection } from 'modules/geometry/direction';
 import { ICostMap, getMovableTiles, getShortestPath } from 'modules/pathfinding';
@@ -132,8 +131,8 @@ class MovePhase extends ActPhase<IMovePhaseState, IMovePhaseRecord> {
 	public getRecord(): IMovePhaseRecord {
 		const state = this.getState();
 		return {
-			initialPosition: formatTile(state.initialPosition),
-			target: formatTile(state.moveTarget)
+			initialPosition: state.initialPosition.id,
+			target: state.moveTarget.id
 		};
 	}
 

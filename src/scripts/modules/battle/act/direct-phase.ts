@@ -1,4 +1,3 @@
-import { formatTile } from 'ui/format';
 import { findTileFrom, resolveDirection } from 'modules/geometry/direction';
 
 import Tile from 'modules/geometry/tile';
@@ -102,7 +101,7 @@ class DirectPhase extends ActPhase<IDirectPhaseState, IDirectPhaseRecord> {
 	public getRecord(): IDirectPhaseRecord {
 		const tgt = this.directTarget;
 		return {
-			target: (tgt ? formatTile(tgt) : null)
+			target: (tgt ? tgt.id : null)
 		};
 	}
 }

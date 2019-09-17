@@ -1,4 +1,3 @@
-import { formatTile } from 'ui/format';
 import { isBackAttacked } from 'modules/battle/combat';
 import {
 	getIdleCommands, getSkillConfirmCommands, getReactiveCommands, getEvasiveCommands
@@ -302,7 +301,7 @@ class Act {
 						return;
 
 					case 'MOVE_SELECTED':
-						this.log('Moving to ' + formatTile(data as Tile));
+						this.log('Moving to ' + (data as Tile).id);
 						this.update();
 						return;
 
@@ -417,7 +416,7 @@ class Act {
 
 					case 'DIRECTION_SELECTED':
 						// finish Act
-						this.log('Direction set to ' + formatTile(data as Tile));
+						this.log('Direction set to ' + (data as Tile).id);
 						this.end();
 						return;
 

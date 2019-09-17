@@ -336,7 +336,7 @@ class BattleSummaryPage extends React.Component<IProps, IState> {
 													</td>
 
 													<td className="Table-column">
-														{formatCharacter(char)}
+														{'\u00A0'}{formatCharacter(char)}
 													</td>
 												</tr>
 											))}
