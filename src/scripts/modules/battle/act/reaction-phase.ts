@@ -132,11 +132,9 @@ class ReactionPhase extends ActPhase<IReactionPhaseState, IReactionPhaseRecord> 
 		}
 		this.phase = 'IDLE';
 
-		const isSupport = command.skills.filter(skill => 'HOLY' === skill.element).length > 0;
-
 		this.reactions = targets.map(target => ({
 			phase: 'SUSPENDED',
-			isSupport,
+			isSupport: command.isSupport,
 			reactor: target,
 			command: null,
 			evasible: [],

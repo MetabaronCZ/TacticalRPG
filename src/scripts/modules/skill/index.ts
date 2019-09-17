@@ -97,6 +97,7 @@ class Skill implements ISkillData {
 	public readonly block: number; // block modifier [%]
 	public readonly status: StatusEffectID[]; // status effects added to attack
 	public readonly cooldown: SkillCooldown;
+	public readonly isSupport: boolean;
 	public readonly isAttackSkill: boolean;
 
 	constructor(id: SkillID) {
@@ -119,6 +120,7 @@ class Skill implements ISkillData {
 		this.block = data.block || 1;
 		this.status = data.status || [];
 		this.cooldown = data.cooldown || 0;
+		this.isSupport = ('HOLY' === data.element);
 		this.isAttackSkill = (-1 !== attackSkills.indexOf(this.id));
 	}
 

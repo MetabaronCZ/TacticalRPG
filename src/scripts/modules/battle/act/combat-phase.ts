@@ -101,17 +101,10 @@ class CombatPhase extends ActPhase<ICombatPhaseState, ICombatPhaseRecord> {
 					});
 					return;
 				}
-				switch (combat.type) {
-					case 'SUPPORT':
-						this.handleSupport(combat, result, info);
-						break;
-
-					case 'DAMAGE':
-						this.handleDamage(combat, result, info);
-						break;
-
-					default:
-						throw new Error('Invalid combat info type: ' + combat.type);
+				if (skill.isSupport) {
+					this.handleSupport(combat, result, info);
+				} else {
+					this.handleDamage(combat, result, info);
 				}
 			});
 

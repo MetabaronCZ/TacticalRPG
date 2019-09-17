@@ -5,16 +5,21 @@ BUGS
 --	pokud obe Party maji stejnou postavu, tak je HexaGrid obe podbarvi, kdyz je na rade
 !!	nekdy se stane, ze AI rozhodne jit nekam, ale MovePhase jde realne nekam jinam
 	- typicky to byva tile s promichanymi souradnicemi
+	- docasne pridat logovani pro targetovani:
+		- pokud targetovany Tile neni v targetable, tak zalogovat Act
 
 
 TODO
 ---------------------------------------------------------------------------------------
 --	zkontrolovat performance u btDecide
---	vytvorit metodu Command.isSupport():
-	- const isSupport = command.skills.filter(skill => 'HOLY' === skill.element).length > 0;
-	- vyhledat vsechny kontroly isSupport, isHealing a refaktorovat
 --	v Status.apply() upravit tak, aby se nemusel posilat v parametru i Skill
 	? pridat odkaz na ISkillData do StatusEffectData
+--	BattleInfo:
+	--	misto Back Attack textu pridat ikonku
+	--	misto Strong, Weak elemental affinity pridat ikonky
+--	implementovat Skill.minimumDistance
+	- pridat na RANGED weapon skilly
+	- staci dat distance: 1
 --	AI: pridat logiku pro vyhodnoceni pouziti CC Commandu
 	- viz "effectActions" v btDecide
 --	AI: pridat rozdavani rozkazu AIPlayerem

@@ -16,18 +16,13 @@ interface IProps {
 }
 
 const CommandInfo: React.SFC<IProps> = ({ character, command }) => {
-	const { cost, skills} = command;
+	const { cost } = command;
 	let status: StatusEffectID[] = [];
 
-	for (const skill of skills) {
+	for (const skill of command.skills) {
 		status = [...status, ...skill.status];
 	}
-
-	const casterInfo = previewCasterInfo(character, skills);
-	const isSupport = (!!casterInfo && casterInfo.isSupport);
-	const casterSkills = (casterInfo ? casterInfo.skills : []);
-
-	const label = (isSupport ? 'Healing' : 'Attack value');
+	const { damageSkills, healingSkills } = previewCasterInfo(character, command.skills);
 
 	return (
 		<React.Fragment>
@@ -40,10 +35,24 @@ const CommandInfo: React.SFC<IProps> = ({ character, command }) => {
 					{formatCost(cost)}
 				</CombatInfo>
 			)}
+
+			{healingSkills.length > 0 && (
+				<CombatInfo label="Healing" small={false}>
+					{healingSkills.map(({ skill, value }, i) => (
+						<React.Fragment key={i}>
+							{'NONE' !== skill.element && (
+								<ElementIco element={skill.element} />
+							)}
+							{value}
+							{i < healingSkills.length - 1 ? ' + ' : ''}
+						</React.Fragment>
+					))}
+				</CombatInfo>
+			)}
 	
-			{casterSkills.length > 0 && (
-				<CombatInfo label={label} small={false}>
-					{casterSkills.map(({ skill, damage, healing }, i) => (
+			{damageSkills.length > 0 && (
+				<CombatInfo label="Attack value" small={false}>
+					{damageSkills.map(({ skill, value }, i) => (
 						<React.Fragment key={i}>
 							{'NONE' !== skill.weapon && (
 								<WeaponIco weapon={skill.weapon} />
@@ -51,8 +60,8 @@ const CommandInfo: React.SFC<IProps> = ({ character, command }) => {
 							{'NONE' !== skill.element && (
 								<ElementIco element={skill.element} />
 							)}
-							{isSupport ? healing : damage}
-							{i < casterSkills.length - 1 ? ' + ' : ''}
+							{value}
+							{i < damageSkills.length - 1 ? ' + ' : ''}
 						</React.Fragment>
 					))}
 				</CombatInfo>

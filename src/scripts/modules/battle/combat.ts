@@ -33,7 +33,6 @@ interface IShieldValue {
 }
 
 export interface ICombatInfo {
-	type: 'DAMAGE' | 'SUPPORT';
 	caster: Character;
 	target: Character;
 	skill: Skill;
@@ -48,13 +47,14 @@ export interface ICombatInfo {
 	status: StatusEffect[];
 }
 
+interface ICasterPreviewItem {
+	readonly skill: Skill;
+	readonly value: number;
+}
+
 export interface ICasterPreview {
-	readonly isSupport: boolean;
-	readonly skills: Array<{
-		readonly skill: Skill;
-		readonly damage: number;
-		readonly healing: number;
-	}>;
+	readonly damageSkills: ICasterPreviewItem[];
+	readonly healingSkills: ICasterPreviewItem[];
 }
 
 export interface ITargetPreview {
@@ -234,31 +234,34 @@ const getStatusEffects = (caster: Character, target: Character, skill: Skill, ph
 	return effects;
 };
 
-export const previewCasterInfo = (char: ICharacter, skills: Skill[]): ICasterPreview | null => {
+export const previewCasterInfo = (char: ICharacter, skills: Skill[]): ICasterPreview => {
+	const result: ICasterPreview = {
+		damageSkills: [],
+		healingSkills: []
+	};
+
 	if (!skills.length) {
-		return null;
+		return result;
 	}
 	const character = Character.from(char, shadowPlayer);
-	const isSupport = ('HOLY' === skills[0].element);
-	return {
-		isSupport,
-		skills: skills.map(skill => {
-			if (isSupport) {
-				return {
-					skill,
-					damage: 0,
-					healing: getMagicalDamage(character, skill)
-				};
-			}
-			const physical = getPhysicalDamage(character, skill);
-			const magical = getMagicalDamage(character, skill);
-			return {
+
+	for (const skill of skills) {
+		const physical = getPhysicalDamage(character, skill);
+		const magical = getMagicalDamage(character, skill);
+
+		if (skill.isSupport) {
+			result.healingSkills.push({
 				skill,
-				healing: 0,
-				damage: physical + magical
-			};
-		})
-	};
+				value: magical
+			});
+		} else {
+			result.damageSkills.push({
+				skill,
+				value: physical + magical
+			});
+		}
+	}
+	return result;
 };
 
 export const previewTargetInfo = (char: ICharacter): ITargetPreview => {
@@ -308,10 +311,7 @@ export const previewTargetInfo = (char: ICharacter): ITargetPreview => {
 };
 
 export const getCombatInfo = (caster: Character, target: Character, skill: Skill): ICombatInfo => {
-	const isSupport = (caster.player === target.player);
-
 	const result: ICombatInfo = {
-		type: 'DAMAGE',
 		caster,
 		target,
 		skill,
@@ -326,8 +326,7 @@ export const getCombatInfo = (caster: Character, target: Character, skill: Skill
 		status: getStatusEffects(caster, target, skill)
 	};
 
-	if (isSupport) {
-		result.type = 'SUPPORT';
+	if (skill.isSupport) {
 		result.healing = getMagicalDamage(caster, skill);
 		return result;
 	}

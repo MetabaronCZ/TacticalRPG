@@ -59,7 +59,9 @@ class Command {
 	public readonly title: string;
 	public readonly skills: Skill[] = [];
 	public readonly cooldown: SkillCooldown = 0;
+	public readonly isSupport: boolean;
 	public cost: ICommandCost | null = null;
+
 	private readonly character: Character | null;
 	private active: true | CommandReason = true;
 
@@ -68,6 +70,7 @@ class Command {
 		this.title = title;
 		this.skills = skills;
 		this.character = character || null;
+		this.isSupport = !!skills.find(skill => skill.isSupport);
 
 		if (character) {
 			this.cost = getCost(skills, character.status);
