@@ -10,11 +10,11 @@ BUGS
 
 TODO
 ---------------------------------------------------------------------------------------
---	v Status.apply() upravit tak, aby se nemusel posilat v parametru i Skill
-	? pridat odkaz na ISkillData do StatusEffectData
 --	BattleInfo:
 	--	misto Back Attack textu pridat ikonku
 	--	misto Strong, Weak elemental affinity pridat ikonky
+	--	misto StatusEffect textu udelat ikonky
+		- potom uz nebude potreba posilat do StatusEffectu ani Skill
 --	implementovat Skill.minimumDistance
 	- pridat na RANGED weapon skilly
 	- staci dat distance: 1
@@ -23,6 +23,11 @@ TODO
 --	AI: pridat rozdavani rozkazu AIPlayerem
 	- vyhodnocovani situace
 	- koordinace utoku
+--  AIPlayer: mel by rozhodovat, ktera postava bude na koho utocit (pripadne healovat)
+	- mel by davat obecny rozkaz - specifika si rozhodne postava sama podle soucasne logiky
+	- vysledkem rozkazu by melo byt prioritizovani MOVE, TARGET nebo COMMAND v IAIData
+	- mel by vyhodnocovat, jestli je rozkaz jeste aktualni
+	- postavy nemusi mit vzdy rozkaz
 --  btEvadeTo predelat na:
         ?SELECT_EVASION
 			>SAFE_EVADE     ?SHOULD_DEFEND  C-reactorWarningCondition
@@ -32,6 +37,9 @@ TODO
 							A-evadeToTarget
 			>RANDOM_EVADE   A-evade
 ??	serializovat v EngineState i Command na ICommand
+??  Magical weapon type 
+	- damage physical + magical bonus (obe mensi nez maji standardni ATTACK skilly)
+    - dynamic skilly by s nimi mely byt mnohem silnejsi
 ??	AI Player: leader character
 	- nastavit jednu z postav jako LEADER
 	- idealne WARRIOR, FIGHTER nebo MAGI-KNIGHT archetypy
