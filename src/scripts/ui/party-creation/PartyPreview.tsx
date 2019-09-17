@@ -21,7 +21,7 @@ import Canvas from 'ui/common/Canvas';
 const positions = getCharacterPositions()[0];
 const gridMargin = 20; // safe area around canvas content
 
-const dummyPlayerConfig = new PlayerData(0, {});
+const dummyPlayerConfig = new PlayerData(-1, {});
 const dummyPlayer = new Player(dummyPlayerConfig, []);
 
 interface IProps {

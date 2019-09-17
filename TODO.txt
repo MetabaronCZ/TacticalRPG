@@ -11,7 +11,6 @@ BUGS
 
 TODO
 ---------------------------------------------------------------------------------------
---	zkontrolovat performance u btDecide
 --	v Status.apply() upravit tak, aby se nemusel posilat v parametru i Skill
 	? pridat odkaz na ISkillData do StatusEffectData
 --	BattleInfo:

@@ -10,7 +10,6 @@ import {
 import Skill from 'modules/skill';
 import Tile from 'modules/geometry/tile';
 import AIPlayer from 'modules/ai/player';
-import Player from 'modules/battle/player';
 import Command from 'modules/battle/command';
 import Status from 'modules/character/status';
 import Skillset from 'modules/character/skillset';
@@ -20,6 +19,7 @@ import { IArmorData } from 'modules/equipment/armor-data';
 import { IOnBattleInfo } from 'modules/battle/battle-info';
 import { IWeaponData } from 'modules/equipment/weapon-data';
 import BaseAttributes from 'modules/character/base-attributes';
+import Player, { IPlayerSnapshot } from 'modules/battle/player';
 import { SkillID, SkillCooldown } from 'modules/skill/skill-data';
 import { IArchetypeData, ArchetypeID } from 'modules/character/archetype';
 import { ICharacterData } from 'modules/character-creation/character-data';
@@ -34,6 +34,7 @@ export type ISkillCooldowns = Partial<{
 
 export interface ICharacterSnapshot {
 	readonly data: ICharacterData;
+	readonly player: IPlayerSnapshot;
 
 	readonly id: string;
 	readonly name: string;
@@ -46,7 +47,6 @@ export interface ICharacterSnapshot {
 	readonly isAI: boolean;
 	readonly dead: boolean;
 	readonly dying: boolean;
-	readonly player: number;
 	readonly status: StatusEffect[];
 	readonly cooldowns: ISkillCooldowns;
 	readonly condition: CharacterCondition;
@@ -144,7 +144,7 @@ class Character {
 			status: this.status.get(),
 			condition: this.getCondition(),
 			cooldowns: { ...this.cooldowns },
-			player: this.player.id,
+			player: this.player.serialize(),
 			position: this.position,
 			direction: this.direction,
 			mainHand: this.mainHand,

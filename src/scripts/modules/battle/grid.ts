@@ -137,7 +137,7 @@ export const getCharacterStyle = (character: ICharacterSnapshot, isActor: boolea
 		return style;
 	}
 
-	if (0 === character.player) {
+	if (0 === character.player.id) {
 		style = characterStyles.violet;
 	} else {
 		style = characterStyles.orange;

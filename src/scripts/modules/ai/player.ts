@@ -65,11 +65,11 @@ class AIPlayer extends Player {
 	}
 
 	private getAlly(characters: ICharacterSnapshot[]): ICharacterSnapshot[] {
-		return characters.filter(char => char.player === this.id);
+		return characters.filter(char => char.player.id === this.id);
 	}
 
 	private getEnemy(characters: ICharacterSnapshot[]): ICharacterSnapshot[] {
-		const enemy = characters.filter(char => char.player !== this.id);
+		const enemy = characters.filter(char => char.player.id !== this.id);
 		return enemy.filter(char => !char.dead && !char.dying);
 	}
 

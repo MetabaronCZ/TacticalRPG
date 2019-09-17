@@ -16,7 +16,7 @@ interface IProps {
 
 const TargetUI: React.SFC<IProps> = ({ character, commands, info, onCommandSelect }) => (
 	<div className="CharacterBox">
-		<div className={`CharacterBox-player CharacterBox-player--player${character.player}`} />
+		<div className={`CharacterBox-player CharacterBox-player--player${character.player.id}`} />
 
 		<CharacterInfo character={character} />
 		<hr className="Separator" />

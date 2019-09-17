@@ -17,7 +17,6 @@ import Character, { ICharacterSnapshot } from 'modules/character';
 
 import BT from 'modules/ai/behavioral-tree';
 import BTAction from 'modules/ai/behavioral-tree/action';
-import { PlayerData } from 'modules/battle-configuration/player-data';
 
 const MAX_NUMBER = Number.MAX_SAFE_INTEGER;
 const healingTreshold = 0.8; // maximum percent of target life remaining for healer to care
@@ -47,11 +46,6 @@ type IAnonymousAction = IActionBase<string>;
 interface IDistances {
 	[characterID: string]: number;
 }
-
-const getPlayerShadow = (id: number, name: string): Player => {
-	const data = new PlayerData(id, { name });
-	return new Player(data, []);
-};
 
 const getCharacterHPRatio = (char: ICharacterSnapshot, damage = 0): number => {
 	const hp = char.attributes.HP;
@@ -97,12 +91,12 @@ const btDecide = (role: CharacterRole): BTAction<IAIData> => {
 		const characters = ally.concat(enemy);
 
 		// create Player shadows
-		const playerShadow = getPlayerShadow(actor.player, 'SHADOW_ALLY');
-		const enemyPlayerShadow = getPlayerShadow(enemy[0].player, 'SHADOW_ENEMY');
+		const playerShadow = Player.from(actor.player);
+		const enemyPlayerShadow = Player.from(enemy[0].player);
 
 		// create character shadows
 		const charShadows = characters.map(char => {
-			const pl = (actor.player === char.player ? playerShadow : enemyPlayerShadow);
+			const pl = (actor.player.id === char.player.id ? playerShadow : enemyPlayerShadow);
 			return Character.from(char, pl);
 		});
 
@@ -377,11 +371,11 @@ const btDecide = (role: CharacterRole): BTAction<IAIData> => {
 			let act = [...passActions];
 
 			let allyActions = act.filter(action => {
-				return actor.player === action.target.character.player;
+				return actor.player.id === action.target.character.player.id;
 			});
 
 			let enemyActions = act.filter(action => {
-				return actor.player !== action.target.character.player;
+				return actor.player.id !== action.target.character.player.id;
 			});
 
 			if (!enemyActions.length) {

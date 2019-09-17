@@ -6,6 +6,14 @@ import { DirectionID } from 'modules/geometry/direction';
 import { IPlayerData } from 'modules/battle-configuration/player-data';
 import { ICharacterData } from 'modules/character-creation/character-data';
 
+export interface IPlayerSnapshot {
+	readonly data: IPlayerData;
+
+	readonly id: number;
+	readonly name: string;
+	readonly characters: string[];
+}
+
 export interface IPlayerCharacterSetup {
 	data: ICharacterData;
 	position: Tile;
@@ -33,6 +41,20 @@ class Player {
 
 			return char;
 		});
+	}
+
+	public static from(pl: IPlayerSnapshot): Player {
+		const player = new Player(pl.data, []);
+		return player;
+	}
+
+	public serialize(): IPlayerSnapshot {
+		return {
+			data: { ...this.data },
+			id: this.id,
+			name: this.name,
+			characters: this.characters.map(char => char.data.id)
+		};
 	}
 
 	public getCharacters(): Character[] {
