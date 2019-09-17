@@ -1,14 +1,14 @@
 import React from 'react';
 
 import Command from 'modules/battle/command';
-import { IActState } from 'modules/battle/act';
+import { IActSnapshot } from 'modules/battle/act';
 
 import Commands from 'ui/battle/Commands';
 import CommandInfo from 'ui/battle/CommandInfo';
 import CharacterInfo from 'ui/battle/CharacterInfo';
 
 interface IProps {
-	readonly act: IActState;
+	readonly act: IActSnapshot;
 	readonly onCommandSelect: (command: Command) => void;
 }
 

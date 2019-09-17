@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ICharacter } from 'modules/character';
+import { ICharacterSnapshot } from 'modules/character';
 import { previewCasterInfo } from 'modules/battle/combat';
 import Command, { formatCost } from 'modules/battle/command';
 import { StatusEffectID } from 'modules/battle/status-effect';
@@ -11,7 +11,7 @@ import CombatInfo from 'ui/battle/CombatInfo';
 import CommandTitle from 'ui/battle/CommandTitle';
 
 interface IProps {
-	readonly character: ICharacter;
+	readonly character: ICharacterSnapshot;
 	readonly command: Command;
 }
 

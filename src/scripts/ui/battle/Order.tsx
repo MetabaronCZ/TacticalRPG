@@ -1,9 +1,9 @@
 import React from 'react';
-import { IOrder, IOrderCharacter } from 'modules/battle/order';
+import { IOrderSnapshot, IOrderCharacter } from 'modules/battle/order';
 
 interface IOrderProps {
 	readonly actor: string;
-	readonly order: IOrder;
+	readonly order: IOrderSnapshot;
 }
 
 const getState = (actorID: string, char: IOrderCharacter): string => {

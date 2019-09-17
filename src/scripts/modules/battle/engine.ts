@@ -1,21 +1,21 @@
 import { getRandomized } from 'core/array';
 import * as config from 'data/game-config';
 
+import { getCharacterPositions } from 'modules/battle/grid';
 import { getRandomNames } from 'modules/random-name-generator';
 
 import Logger from 'modules/logger';
 import Tile from 'modules/geometry/tile';
 import AIPlayer from 'modules/ai/player';
 import Command from 'modules/battle/command';
-import Act, { IActState } from 'modules/battle/act';
-import Order, { IOrder } from 'modules/battle/order';
-import Character, { ICharacter } from 'modules/character';
+import Act, { IActSnapshot } from 'modules/battle/act';
 import { IBattleInfo } from 'modules/battle/battle-info';
 import { DirectionID } from 'modules/geometry/direction';
-import { getCharacterPositions } from 'modules/battle/grid';
+import Order, { IOrderSnapshot } from 'modules/battle/order';
 import CharacterCreationForm from 'modules/character-creation';
 import { IPartyData } from 'modules/party-creation/party-data';
 import Chronox, { IChronoxRecord } from 'modules/battle/chronox';
+import Character, { ICharacterSnapshot } from 'modules/character';
 import Player, { IPlayerCharacterSetup } from 'modules/battle/player';
 import { ICharacterData } from 'modules/character-creation/character-data';
 import { PlayerConfigList } from 'modules/battle-configuration/battle-config';
@@ -24,20 +24,20 @@ const charPositions = getCharacterPositions();
 
 export type PlayerList = [Player, Player];
 
-export interface IEngineState {
+export interface IEngineSnapshot {
 	running: boolean;
 	tick: number;
-	order: IOrder;
-	act: IActState | null;
+	order: IOrderSnapshot;
+	act: IActSnapshot | null;
 	battleInfo: IBattleInfo[];
-	readonly characters: ICharacter[];
+	readonly characters: ICharacterSnapshot[];
 	readonly chronox: IChronoxRecord;
 }
 
 interface IEngineEvents {
-	readonly onUpdate: (state: IEngineState) => void;
-	readonly onBattleInfo: (state: IBattleInfo[]) => void;
-	readonly onGameOver: (state: IEngineState, winner: Player) => void;
+	readonly onBattleInfo: (info: IBattleInfo[]) => void;
+	readonly onUpdate: (engine: IEngineSnapshot) => void;
+	readonly onGameOver: (engine: IEngineSnapshot, winner: Player) => void;
 }
 
 interface IEngineProps {
@@ -83,7 +83,7 @@ class Engine {
 		this.running = true;
 		Logger.info('Engine onStart');
 
-		this.events.onUpdate(this.getState());
+		this.events.onUpdate(this.serialize());
 		this.update();
 	}
 
@@ -107,11 +107,11 @@ class Engine {
 		this.act.selectCommand(command);
 	}
 
-	public getState(): IEngineState {
+	public serialize(): IEngineSnapshot {
 		return {
 			running: this.running,
 			tick: this.tick,
-			act: (this.act ? this.act.getState() : null),
+			act: (this.act ? this.act.serialize() : null),
 			characters: this.characters.map(char => char.serialize()),
 			order: this.order.serialize(),
 			chronox: this.chronox.serialize(),
@@ -178,7 +178,7 @@ class Engine {
 		const actID = this.actNumber;
 
 		this.act = new Act(actID, actor, characters, {
-			onUpdate: () => events.onUpdate(this.getState()),
+			onUpdate: () => events.onUpdate(this.serialize()),
 			onBattleInfo: info => this.onInfo(info),
 			onEnd: act => {
 				// store Act record
@@ -195,11 +195,11 @@ class Engine {
 					Logger.info('--------------------------------');
 					Logger.info(`Player "${winner.name}" won!`);
 
-					events.onGameOver(this.getState(), winner);
+					events.onGameOver(this.serialize(), winner);
 
 				} else {
 					// run next act
-					events.onUpdate(this.getState());
+					events.onUpdate(this.serialize());
 					this.startAct();
 				}
 			}
@@ -208,7 +208,7 @@ class Engine {
 		// start Act
 		Logger.info('--------------------------------');
 		Logger.info(`ACT ${actID} (Tick ${this.tick})`);
-		events.onUpdate(this.getState());
+		events.onUpdate(this.serialize());
 
 		this.act.start();
 	}

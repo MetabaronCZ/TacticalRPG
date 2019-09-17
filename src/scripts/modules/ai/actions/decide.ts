@@ -13,7 +13,7 @@ import CharacterRole from 'modules/ai/role';
 import Command from 'modules/battle/command';
 import { IAIData } from 'modules/ai/character';
 import StatusEffect from 'modules/battle/status-effect';
-import Character, { ICharacter } from 'modules/character';
+import Character, { ICharacterSnapshot } from 'modules/character';
 
 import BT from 'modules/ai/behavioral-tree';
 import BTAction from 'modules/ai/behavioral-tree/action';
@@ -41,7 +41,7 @@ interface IActionBase<T> {
 	readonly status: StatusEffect[];
 }
 
-type IAction = IActionBase<ICharacter>;
+type IAction = IActionBase<ICharacterSnapshot>;
 type IAnonymousAction = IActionBase<string>;
 
 interface IDistances {
@@ -53,7 +53,7 @@ const getPlayerShadow = (id: number, name: string): Player => {
 	return new Player(data, []);
 };
 
-const getCharacterHPRatio = (char: ICharacter, damage = 0): number => {
+const getCharacterHPRatio = (char: ICharacterSnapshot, damage = 0): number => {
 	const hp = char.attributes.HP;
 	const hpMax = char.baseAttributes.HP;
 	return (hp > damage ? hp - damage : 0) / hpMax;

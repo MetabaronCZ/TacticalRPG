@@ -10,8 +10,8 @@ import {
 } from 'modules/battle/grid';
 
 import Tile from 'modules/geometry/tile';
-import { IActState } from 'modules/battle/act';
-import { ICharacter } from 'modules/character';
+import { IActSnapshot } from 'modules/battle/act';
+import { ICharacterSnapshot } from 'modules/character';
 import { IBattleInfo } from 'modules/battle/battle-info';
 
 import { renderCharacter } from 'modules/graphics/character';
@@ -31,8 +31,8 @@ interface IHovered {
 }
 
 interface IProps {
-	readonly act: IActState;
-	readonly characters: ICharacter[];
+	readonly act: IActSnapshot;
+	readonly characters: ICharacterSnapshot[];
 	readonly battleInfo: IBattleInfo[];
 	readonly onTileSelect: (tile: Tile) => void;
 }

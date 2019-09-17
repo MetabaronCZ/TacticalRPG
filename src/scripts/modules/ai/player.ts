@@ -3,7 +3,7 @@ import AIPresets from 'data/ai-presets';
 import Tile from 'modules/geometry/tile';
 import Engine from 'modules/battle/engine';
 import Command from 'modules/battle/command';
-import { ICharacter } from 'modules/character';
+import { ICharacterSnapshot } from 'modules/character';
 import Player, { IPlayerCharacterSetup } from 'modules/battle/player';
 import { IPlayerData } from 'modules/battle-configuration/player-data';
 
@@ -39,7 +39,7 @@ class AIPlayer extends Player {
 	}
 
 	public onUpdate(commands: Command[]): void {
-		const { act, characters } = this.engine.getState();
+		const { act, characters } = this.engine.serialize();
 
 		if (!act) {
 			throw new Error('Invalid act');
@@ -64,16 +64,16 @@ class AIPlayer extends Player {
 		});
 	}
 
-	private getAlly(characters: ICharacter[]): ICharacter[] {
+	private getAlly(characters: ICharacterSnapshot[]): ICharacterSnapshot[] {
 		return characters.filter(char => char.player === this.id);
 	}
 
-	private getEnemy(characters: ICharacter[]): ICharacter[] {
+	private getEnemy(characters: ICharacterSnapshot[]): ICharacterSnapshot[] {
 		const enemy = characters.filter(char => char.player !== this.id);
 		return enemy.filter(char => !char.dead && !char.dying);
 	}
 
-	private getObstacles(characters: ICharacter[]): Tile[] {
+	private getObstacles(characters: ICharacterSnapshot[]): Tile[] {
 		return characters.filter(char => !char.dead).map(char => char.position);
 	}
 }

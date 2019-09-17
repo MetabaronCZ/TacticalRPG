@@ -3,8 +3,8 @@ import { aiActionDelay } from 'data/game-config';
 import Tile from 'modules/geometry/tile';
 import Engine from 'modules/battle/engine';
 import Command from 'modules/battle/command';
-import Character, { ICharacter } from 'modules/character';
-import { IActState, ActPhaseID } from 'modules/battle/act';
+import { IActSnapshot, ActPhaseID } from 'modules/battle/act';
+import Character, { ICharacterSnapshot } from 'modules/character';
 
 import { MovePhaseID } from 'modules/battle/act/move-phase';
 import { CommandPhaseID } from 'modules/battle/act/command-phase';
@@ -48,10 +48,10 @@ interface IAICharacterMemory {
 }
 
 interface IAICharacterUpdateData {
-	readonly act: IActState;
+	readonly act: IActSnapshot;
 	readonly commands: Command[];
-	readonly ally: ICharacter[];
-	readonly enemy: ICharacter[];
+	readonly ally: ICharacterSnapshot[];
+	readonly enemy: ICharacterSnapshot[];
 	readonly obstacles: Tile[];
 }
 

@@ -12,7 +12,7 @@ export interface IOrderCharacter {
 	readonly player: number;
 }
 
-export interface IOrder {
+export interface IOrderSnapshot {
 	readonly characters: IOrderCharacter[];
 }
 
@@ -31,7 +31,7 @@ class Order {
 		return [...this.order];
 	}
 
-	public serialize(): IOrder {
+	public serialize(): IOrderSnapshot {
 		return {
 			characters: this.order.map((char, i) => {
 				const state: IOrderCharacter = {

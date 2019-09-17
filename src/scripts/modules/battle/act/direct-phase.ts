@@ -7,7 +7,7 @@ import { IOnActPhaseEvent } from 'modules/battle/act';
 
 const txtIdle = 'Select new direction on grid.';
 
-export interface IDirectPhaseState {
+export interface IDirectPhaseSnapshot {
 	readonly phase: DirectionPhaseID;
 	readonly directable: Tile[];
 	readonly target: Tile | null;
@@ -23,7 +23,7 @@ export type DirectPhaseEvents =
 	'DIRECTION_IDLE' |
 	'DIRECTION_SELECTED';
 
-class DirectPhase extends ActPhase<IDirectPhaseState, IDirectPhaseRecord> {
+class DirectPhase extends ActPhase<IDirectPhaseSnapshot, IDirectPhaseRecord> {
 	public readonly actor: Character;
 
 	private phase: DirectionPhaseID = 'SUSPENDED';
@@ -90,7 +90,7 @@ class DirectPhase extends ActPhase<IDirectPhaseState, IDirectPhaseRecord> {
 		// do nothing
 	}
 
-	public getState(): IDirectPhaseState {
+	public serialize(): IDirectPhaseSnapshot {
 		return {
 			phase: this.phase,
 			directable: [...this.directable],

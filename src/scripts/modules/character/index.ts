@@ -32,7 +32,7 @@ export type ISkillCooldowns = Partial<{
 	[id in SkillID]: SkillCooldown;
 }>;
 
-export interface ICharacter {
+export interface ICharacterSnapshot {
 	readonly data: ICharacterData;
 
 	readonly id: string;
@@ -82,7 +82,7 @@ class Character {
 	private dead = false;
 
 	constructor(character: ICharacterData, position: Tile, direction: DirectionID, player: Player) {
-		const data = character;
+		const data = { ...character };
 
 		this.data = data;
 		this.name = data.name;
@@ -104,7 +104,7 @@ class Character {
 		this.direction = direction;
 	}
 
-	public static from(char: ICharacter, player: Player): Character {
+	public static from(char: ICharacterSnapshot, player: Player): Character {
 		const character = new Character(char.data, char.position, char.direction, player);
 
 		for (const status of char.status) {
@@ -128,9 +128,9 @@ class Character {
 		return character;
 	}
 
-	public serialize(): ICharacter {
+	public serialize(): ICharacterSnapshot {
 		return {
-			data: this.data,
+			data: { ...this.data },
 			id: this.data.id,
 			name: this.data.name,
 			sex: this.data.sex,

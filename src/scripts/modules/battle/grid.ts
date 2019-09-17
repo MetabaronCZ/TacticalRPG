@@ -5,9 +5,9 @@ import { characterPositions } from 'data/grid';
 
 import { Color } from 'modules/color';
 import Tile from 'modules/geometry/tile';
-import { IActState } from 'modules/battle/act';
-import { ICharacter } from 'modules/character';
+import { IActSnapshot } from 'modules/battle/act';
 import { getSafeTile } from 'modules/geometry/tiles';
+import { ICharacterSnapshot } from 'modules/character';
 
 type TileColors = 'default' | 'green' | 'blue' | 'yellow';
 type CharacterColors = 'grey' | 'violet' | 'orange';
@@ -47,7 +47,7 @@ export const characterStyles: CharacterStyles = {
 	orange: [colors.orange, colors.orangeDark]
 };
 
-export const getTileStyle = (tile: Tile, act: IActState): ColorStyle => {
+export const getTileStyle = (tile: Tile, act: IActSnapshot): ColorStyle => {
 	const { MOVEMENT, COMMAND, REACTION, DIRECTION } = act.phases;
 
 	switch (act.phase) {
@@ -130,7 +130,7 @@ export const getTileStyle = (tile: Tile, act: IActState): ColorStyle => {
 	return tileStyles.default;
 };
 
-export const getCharacterStyle = (character: ICharacter, isActor: boolean): ColorStyle => {
+export const getCharacterStyle = (character: ICharacterSnapshot, isActor: boolean): ColorStyle => {
 	let style = characterStyles.grey;
 
 	if (character.dying) {

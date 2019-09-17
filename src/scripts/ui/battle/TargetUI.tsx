@@ -1,14 +1,14 @@
 import React from 'react';
 
 import Command from 'modules/battle/command';
-import { ICharacter } from 'modules/character';
+import { ICharacterSnapshot } from 'modules/character';
 
 import Commands from 'ui/battle/Commands';
 import TargetInfo from 'ui/battle/TargetInfo';
 import CharacterInfo from 'ui/battle/CharacterInfo';
 
 interface IProps {
-	readonly character: ICharacter;
+	readonly character: ICharacterSnapshot;
 	readonly commands: Command[];
 	readonly info: string;
 	readonly onCommandSelect: (command: Command) => void;

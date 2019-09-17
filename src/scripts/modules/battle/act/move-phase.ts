@@ -23,7 +23,7 @@ export type MovePhaseEvents =
 	'MOVE_ANIMATION' |
 	'MOVE_SUSPENDED';
 
-export interface IMovePhaseState {
+export interface IMovePhaseSnapshot {
 	readonly phase: MovePhaseID;
 	readonly initialAP: number;
 	readonly initialPosition: Tile;
@@ -38,7 +38,7 @@ export interface IMovePhaseRecord {
 	readonly target: string;
 }
 
-class MovePhase extends ActPhase<IMovePhaseState, IMovePhaseRecord> {
+class MovePhase extends ActPhase<IMovePhaseSnapshot, IMovePhaseRecord> {
 	public readonly actor: Character;
 
 	private readonly costMap: ICostMap = {}; // movable area cost map
@@ -116,7 +116,7 @@ class MovePhase extends ActPhase<IMovePhaseState, IMovePhaseRecord> {
 		}
 	}
 
-	public getState(): IMovePhaseState {
+	public serialize(): IMovePhaseSnapshot {
 		return {
 			phase: this.phase,
 			initialAP: this.initialAP,
@@ -129,7 +129,7 @@ class MovePhase extends ActPhase<IMovePhaseState, IMovePhaseRecord> {
 	}
 
 	public getRecord(): IMovePhaseRecord {
-		const state = this.getState();
+		const state = this.serialize();
 		return {
 			initialPosition: state.initialPosition.id,
 			target: state.moveTarget.id

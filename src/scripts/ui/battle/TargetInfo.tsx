@@ -1,13 +1,13 @@
 import React from 'react';
 
-import { ICharacter } from 'modules/character';
+import { ICharacterSnapshot } from 'modules/character';
 import { previewTargetInfo } from 'modules/battle/combat';
 
 import ElementIco from 'ui/common/ElementIco';
 import CombatInfo from 'ui/battle/CombatInfo';
 
 interface IProps {
-	character: ICharacter;
+	character: ICharacterSnapshot;
 }
 
 const TargetInfo: React.SFC<IProps> = ({ character }) => {

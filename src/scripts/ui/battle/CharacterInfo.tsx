@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { ICharacter } from 'modules/character';
+import { ICharacterSnapshot } from 'modules/character';
 
 import { formatCharacter } from 'ui/format';
 import AttributeInfo from 'ui/battle/AttributeInfo';
 
 interface IProps {
-	readonly character: ICharacter;
+	readonly character: ICharacterSnapshot;
 }
 
 const CharactertInfo: React.SFC<IProps> = ({ character: char }) => {

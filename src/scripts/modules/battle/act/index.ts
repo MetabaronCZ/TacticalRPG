@@ -8,13 +8,13 @@ import Tile from 'modules/geometry/tile';
 import AIPlayer from 'modules/ai/player';
 import Command from 'modules/battle/command';
 import { IBattleInfo } from 'modules/battle/battle-info';
-import Character, { ICharacter } from 'modules/character';
+import Character, { ICharacterSnapshot } from 'modules/character';
 
-import MovePhase, { MovePhaseEvents, IMovePhaseRecord, IMovePhaseState } from 'modules/battle/act/move-phase';
-import CombatPhase, { CombatPhaseEvents, ICombatPhaseRecord, ICombatPhaseState } from 'modules/battle/act/combat-phase';
-import DirectPhase, { DirectPhaseEvents, IDirectPhaseRecord, IDirectPhaseState } from 'modules/battle/act/direct-phase';
-import CommandPhase, { CommandPhaseEvents, ICommandPhaseRecord, ICommandPhaseState } from 'modules/battle/act/command-phase';
-import ReactionPhase, { ReactionPhaseEvents, IReactionPhaseRecord, IReactionPhaseState } from 'modules/battle/act/reaction-phase';
+import MovePhase, { MovePhaseEvents, IMovePhaseRecord, IMovePhaseSnapshot } from 'modules/battle/act/move-phase';
+import CombatPhase, { CombatPhaseEvents, ICombatPhaseRecord, ICombatPhaseSnapshot } from 'modules/battle/act/combat-phase';
+import DirectPhase, { DirectPhaseEvents, IDirectPhaseRecord, IDirectPhaseSnapshot } from 'modules/battle/act/direct-phase';
+import CommandPhase, { CommandPhaseEvents, ICommandPhaseRecord, ICommandPhaseSnapshot } from 'modules/battle/act/command-phase';
+import ReactionPhase, { ReactionPhaseEvents, IReactionPhaseRecord, IReactionPhaseSnapshot } from 'modules/battle/act/reaction-phase';
 
 export type ActPhaseID = 'MOVEMENT' | 'COMMAND' | 'REACTION' | 'COMBAT' | 'DIRECTION';
 
@@ -35,18 +35,18 @@ export interface IActEvents {
 	readonly onEnd: (act: Act) => void;
 }
 
-export interface IActState {
-	readonly actor: ICharacter;
+export interface IActSnapshot {
+	readonly actor: ICharacterSnapshot;
 	readonly phase: ActPhaseID | null;
 	readonly commands: Command[];
-	readonly actingCharacter: ICharacter | null;
+	readonly actingCharacter: ICharacterSnapshot | null;
 	readonly info: string;
 	readonly phases: {
-		readonly MOVEMENT: IMovePhaseState;
-		readonly COMMAND: ICommandPhaseState;
-		readonly REACTION: IReactionPhaseState;
-		readonly DIRECTION: IDirectPhaseState;
-		readonly COMBAT: ICombatPhaseState;
+		readonly MOVEMENT: IMovePhaseSnapshot;
+		readonly COMMAND: ICommandPhaseSnapshot;
+		readonly REACTION: IReactionPhaseSnapshot;
+		readonly DIRECTION: IDirectPhaseSnapshot;
+		readonly COMBAT: ICombatPhaseSnapshot;
 	};
 }
 export interface IActRecord {
@@ -134,7 +134,7 @@ class Act {
 		this.phases[phase].selectCommand(command);
 	}
 
-	public getState(): IActState {
+	public serialize(): IActSnapshot {
 		const { actor, info, phase, phases, commands } = this;
 		const actingChar = this.getActingCharacter();
 
@@ -145,11 +145,11 @@ class Act {
 			commands: [...commands],
 			info: (actingChar && actingChar.isAI() ? '' : info),
 			phases: {
-				MOVEMENT: phases.MOVEMENT.getState(),
-				COMMAND: phases.COMMAND.getState(),
-				REACTION: phases.REACTION.getState(),
-				COMBAT: phases.COMBAT.getState(),
-				DIRECTION: phases.DIRECTION.getState()
+				MOVEMENT: phases.MOVEMENT.serialize(),
+				COMMAND: phases.COMMAND.serialize(),
+				REACTION: phases.REACTION.serialize(),
+				COMBAT: phases.COMBAT.serialize(),
+				DIRECTION: phases.DIRECTION.serialize()
 			}
 		};
 	}
@@ -191,7 +191,7 @@ class Act {
 
 		switch (this.phase) {
 			case 'MOVEMENT': {
-				const { phase } = MOVEMENT.getState();
+				const { phase } = MOVEMENT.serialize();
 
 				switch (phase) {
 					case 'IDLE':
@@ -204,7 +204,7 @@ class Act {
 			}
 
 			case 'COMMAND': {
-				const { phase, effectTargets } = COMMAND.getState();
+				const { phase, effectTargets } = COMMAND.serialize();
 
 				switch (phase) {
 					case 'IDLE':
@@ -373,7 +373,7 @@ class Act {
 						return;
 
 					case 'REACTION_DONE': {
-						const { command, effectArea } = COMMAND.getState();
+						const { command, effectArea } = COMMAND.serialize();
 						const effectTargets = COMMAND.getEffectTargets();
 
 						if (!command || !effectArea.length || !effectTargets.length) {

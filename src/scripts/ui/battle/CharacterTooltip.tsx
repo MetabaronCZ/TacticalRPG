@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Icos, IcoID } from 'data/icos';
-import { ICharacter } from 'modules/character';
+import { ICharacterSnapshot } from 'modules/character';
 
 import BarValue from 'ui/battle/BarValue';
 import ArmorIco from 'ui/common/ArmorIco';
@@ -12,7 +12,7 @@ import ArchetypeIco from 'ui/common/ArchetypeIco';
 type TooltipOrientation = 'top' | 'bottom';
 
 interface IProps {
-	readonly character: ICharacter;
+	readonly character: ICharacterSnapshot;
 	readonly x: number; // 0% - 100%
 	readonly y: number; // 0% - 100%
 	readonly size: number; // item size

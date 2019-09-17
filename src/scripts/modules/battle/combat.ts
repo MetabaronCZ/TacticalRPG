@@ -6,7 +6,7 @@ import * as DMG from 'data/combat';
 
 import Skill from 'modules/skill';
 import Vector from 'modules/geometry/vector';
-import Character, { ICharacter } from 'modules/character';
+import Character, { ICharacterSnapshot } from 'modules/character';
 import { ElementAffinityTable, Affinity } from 'modules/skill/affinity';
 import StatusEffect, { StatusEffectID } from 'modules/battle/status-effect';
 import { SkillElement, ISkillData, SkillID } from 'modules/skill/skill-data';
@@ -234,7 +234,7 @@ const getStatusEffects = (caster: Character, target: Character, skill: Skill, ph
 	return effects;
 };
 
-export const previewCasterInfo = (char: ICharacter, skills: Skill[]): ICasterPreview => {
+export const previewCasterInfo = (char: ICharacterSnapshot, skills: Skill[]): ICasterPreview => {
 	const result: ICasterPreview = {
 		damageSkills: [],
 		healingSkills: []
@@ -264,7 +264,7 @@ export const previewCasterInfo = (char: ICharacter, skills: Skill[]): ICasterPre
 	return result;
 };
 
-export const previewTargetInfo = (char: ICharacter): ITargetPreview => {
+export const previewTargetInfo = (char: ICharacterSnapshot): ITargetPreview => {
 	const character = Character.from(char, shadowPlayer);
 
 	// apply reaction skills for computations

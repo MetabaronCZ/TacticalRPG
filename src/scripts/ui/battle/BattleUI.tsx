@@ -2,8 +2,8 @@ import React from 'react';
 
 import Tile from 'modules/geometry/tile';
 import Command from 'modules/battle/command';
-import { ICharacter } from 'modules/character';
-import { IEngineState } from 'modules/battle/engine';
+import { ICharacterSnapshot } from 'modules/character';
+import { IEngineSnapshot } from 'modules/battle/engine';
 
 import Button from 'ui/common/Button';
 
@@ -14,20 +14,20 @@ import TargetUI from 'ui/battle/TargetUI';
 import HexaGrid from 'ui/battle/HexaGrid';
 
 interface IBattleUIProps {
-	readonly engineState: IEngineState;
+	readonly engine: IEngineSnapshot;
 	readonly onTileSelect: (tile: Tile) => void;
 	readonly onCommandSelect: (command: Command) => void;
 	readonly onExit: () => void;
 }
 
-const BattleUI: React.SFC<IBattleUIProps> = ({ engineState, onTileSelect, onCommandSelect, onExit }) => {
+const BattleUI: React.SFC<IBattleUIProps> = ({ engine: engineState, onTileSelect, onCommandSelect, onExit }) => {
 	const { characters, order, act, tick, running, battleInfo } = engineState;
 
 	if (!act) {
 		return <p className="Paragraph">Waiting for act to start [Tick {tick}]...</p>;
 	}
 	let commands: Command[] = [];
-	let target: ICharacter | null = null;
+	let target: ICharacterSnapshot | null = null;
 	let info = '';
 
 	if (running) {

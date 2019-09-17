@@ -3,20 +3,20 @@ import { getIntersection } from 'core/array';
 import Tile from 'modules/geometry/tile';
 import ActPhase from 'modules/battle/act/phase';
 import { IOnActPhaseEvent } from 'modules/battle/act';
-import Character, { ICharacter } from 'modules/character';
 import Command, { ICommandRecord } from 'modules/battle/command';
+import Character, { ICharacterSnapshot } from 'modules/character';
 
 const txtIdle = 'Select command target on grid.';
 
-export interface ICommandPhaseState {
+export interface ICommandPhaseSnapshot {
 	readonly phase: CommandPhaseID;
 	readonly command: Command | null;
 	readonly area: Tile[];
 	readonly targetable: Tile[];
 	readonly target: Tile | null;
 	readonly effectArea: Tile[];
-	readonly effectTarget: ICharacter | null;
-	readonly effectTargets: ICharacter[];
+	readonly effectTarget: ICharacterSnapshot | null;
+	readonly effectTargets: ICharacterSnapshot[];
 }
 
 export interface ICommandPhaseRecord {
@@ -47,7 +47,7 @@ export type CommandPhaseEvents =
 	'COMMAND_TARGETED' |
 	'COMMAND_DONE';
 
-class CommandPhase extends ActPhase<ICommandPhaseState, ICommandPhaseRecord> {
+class CommandPhase extends ActPhase<ICommandPhaseSnapshot, ICommandPhaseRecord> {
 	public readonly actor: Character;
 	private readonly characters: Character[];
 	private readonly onEvent: IOnActPhaseEvent;
@@ -74,7 +74,7 @@ class CommandPhase extends ActPhase<ICommandPhaseState, ICommandPhaseRecord> {
 
 	public selectTile(tile: Tile): void {
 		if ('TARGETING' === this.phase) {
-			const { target } = this.getState();
+			const { target } = this.serialize();
 
 			if (target === tile) {
 				this.confirm();
@@ -146,7 +146,7 @@ class CommandPhase extends ActPhase<ICommandPhaseState, ICommandPhaseRecord> {
 		return target ? target.effectTargets : [];
 	}
 
-	public getState(): ICommandPhaseState {
+	public serialize(): ICommandPhaseSnapshot {
 		const { command } = this.state;
 		const target = command ? command.target : null;
 		return {
@@ -162,7 +162,7 @@ class CommandPhase extends ActPhase<ICommandPhaseState, ICommandPhaseRecord> {
 	}
 
 	public getRecord(): ICommandPhaseRecord {
-		const { command, effectTarget } = this.getState();
+		const { command, effectTarget } = this.serialize();
 		return {
 			command: command
 				? {
@@ -186,7 +186,7 @@ class CommandPhase extends ActPhase<ICommandPhaseState, ICommandPhaseRecord> {
 		if (!command || !command.data.isActive()) {
 			throw new Error('Could not select command target: invalid command');
 		}
-		const targets = this.getState().targetable;
+		const targets = this.serialize().targetable;
 
 		if (!tile.isContained(targets)) {
 			// tile not targetable

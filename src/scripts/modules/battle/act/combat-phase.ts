@@ -17,7 +17,7 @@ import { IBattleInfo } from 'modules/battle/battle-info';
 
 const txtCombat = 'Combat in progress...';
 
-export interface ICombatPhaseState {
+export interface ICombatPhaseSnapshot {
 	phase: Phase;
 }
 
@@ -41,7 +41,7 @@ export type CombatPhaseEvents =
 	'COMBAT_ANIMATION' |
 	'COMBAT_DONE';
 
-class CombatPhase extends ActPhase<ICombatPhaseState, ICombatPhaseRecord> {
+class CombatPhase extends ActPhase<ICombatPhaseSnapshot, ICombatPhaseRecord> {
 	public readonly actor: Character;
 
 	private readonly onEvent: IOnActPhaseEvent;
@@ -157,7 +157,7 @@ class CombatPhase extends ActPhase<ICombatPhaseState, ICombatPhaseRecord> {
 		// do nothing
 	}
 
-	public getState(): ICombatPhaseState {
+	public serialize(): ICombatPhaseSnapshot {
 		return {
 			phase: this.phase
 		};

@@ -11,7 +11,7 @@ abstract class ActPhase<T, U> {
 	}
 	public abstract selectTile(tile: Tile): void;
 	public abstract selectCommand(command: Command): void;
-	public abstract getState(): T;
+	public abstract serialize(): T;
 	public abstract getRecord(): U;
 }
 

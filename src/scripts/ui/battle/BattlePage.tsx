@@ -11,12 +11,12 @@ import Tile from 'modules/geometry/tile';
 import Summary from 'modules/battle/summary';
 import Command from 'modules/battle/command';
 import { IRouteParams } from 'modules/route';
-import Engine, { IEngineState } from 'modules/battle/engine';
+import Engine, { IEngineSnapshot } from 'modules/battle/engine';
 
 type IProps = RouteComponentProps<IRouteParams> & IContext;
 
 interface IState {
-	engine: IEngineState;
+	engine: IEngineSnapshot;
 }
 
 const onExit = (history: History) => () => {
@@ -66,7 +66,7 @@ class BattlePageContainer extends React.Component<IProps, IState> {
 		});
 
 		this.state = {
-			engine: this.engine.getState()
+			engine: this.engine.serialize()
 		};
 	}
 
@@ -79,7 +79,7 @@ class BattlePageContainer extends React.Component<IProps, IState> {
 		const { engine: engineState } = this.state;
 		return (
 			<BattleUI
-				engineState={engineState}
+				engine={engineState}
 				onTileSelect={this.onTileSelect}
 				onCommandSelect={this.onCommandSelect}
 				onExit={onExit(history)}

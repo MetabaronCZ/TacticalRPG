@@ -5,18 +5,18 @@ import Skill from 'modules/skill';
 import Tile from 'modules/geometry/tile';
 import ActPhase from 'modules/battle/act/phase';
 import { IOnActPhaseEvent } from 'modules/battle/act';
-import Character, { ICharacter } from 'modules/character';
 import MoveAnimation from 'modules/battle/act/move-animation';
 import { StatusEffectID } from 'modules/battle/status-effect';
 import Command, { ICommandRecord } from 'modules/battle/command';
+import Character, { ICharacterSnapshot } from 'modules/character';
 
 const txtIdle = 'Select reaction:';
 const txtEvasion = 'Select evasion target on grid.';
 
-export interface IReactionPhaseState {
+export interface IReactionPhaseSnapshot {
 	readonly phase: ReactionPhaseID;
-	readonly reaction: IReactionState | null;
-	readonly reactions: IReactionState[];
+	readonly reaction: IReactionSnapshot | null;
+	readonly reactions: IReactionSnapshot[];
 }
 
 export interface IReactionPhaseRecord {
@@ -27,8 +27,8 @@ export interface IReactionPhaseRecord {
 	}>;
 }
 
-interface IReactionState {
-	readonly reactor: ICharacter;
+interface IReactionSnapshot {
+	readonly reactor: ICharacterSnapshot;
 	readonly phase: ActiveReactionPhaseID;
 	readonly command: Command | null;
 	readonly evasible: Tile[];
@@ -53,7 +53,7 @@ interface IReaction {
 	evasionTarget: Tile | null;
 }
 
-class ReactionPhase extends ActPhase<IReactionPhaseState, IReactionPhaseRecord> {
+class ReactionPhase extends ActPhase<IReactionPhaseSnapshot, IReactionPhaseRecord> {
 	public get actor(): Character | null {
 		const reaction = this.getReaction();
 		return reaction ? reaction.reactor : null;
@@ -148,7 +148,7 @@ class ReactionPhase extends ActPhase<IReactionPhaseState, IReactionPhaseRecord> 
 		return this.reactions[this.reaction] || null;
 	}
 
-	public getState(): IReactionPhaseState {
+	public serialize(): IReactionPhaseSnapshot {
 		const reaction = this.getReaction();
 		return {
 			phase: this.phase,
@@ -176,7 +176,7 @@ class ReactionPhase extends ActPhase<IReactionPhaseState, IReactionPhaseRecord> 
 		};
 	}
 
-	private serializeReaction(reaction: IReaction): IReactionState {
+	private serializeReaction(reaction: IReaction): IReactionSnapshot {
 		return {
 			reactor: reaction.reactor.serialize(),
 			phase: reaction.phase,
