@@ -20,7 +20,7 @@ export interface IReactionPhaseSnapshot {
 }
 
 export interface IReactionPhaseRecord {
-	reactions: Array<{
+	readonly reactions: Array<{
 		readonly reactor: string;
 		readonly command: ICommandRecord | null;
 		readonly evasionTarget: string | null;

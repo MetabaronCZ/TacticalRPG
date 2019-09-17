@@ -1,21 +1,20 @@
 import React from 'react';
 
-import { ICharacterSnapshot } from 'modules/character';
-import { previewTargetInfo } from 'modules/battle/combat';
+import { ITargetCombatPreview } from 'modules/battle/combat';
 
 import ElementIco from 'ui/common/ElementIco';
 import CombatInfo from 'ui/battle/CombatInfo';
 
 interface IProps {
-	character: ICharacterSnapshot;
+	preview: ITargetCombatPreview;
 }
 
-const TargetInfo: React.SFC<IProps> = ({ character }) => {
+const TargetInfo: React.SFC<IProps> = ({ preview }) => {
 	const {
-		shield, block,
+		block, shield,
 		physical, magical,
 		elementalStrength, elementalWeakness
-	} = previewTargetInfo(character);
+	} = preview;
 
 	return (
 		<React.Fragment>

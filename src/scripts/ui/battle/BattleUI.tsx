@@ -2,7 +2,6 @@ import React from 'react';
 
 import Tile from 'modules/geometry/tile';
 import Command from 'modules/battle/command';
-import { ICharacterSnapshot } from 'modules/character';
 import { IEngineSnapshot } from 'modules/battle/engine';
 
 import Button from 'ui/common/Button';
@@ -26,36 +25,21 @@ const BattleUI: React.SFC<IBattleUIProps> = ({ engine: engineState, onTileSelect
 	if (!act) {
 		return <p className="Paragraph">Waiting for act to start [Tick {tick}]...</p>;
 	}
+	const preview = act.phases.COMMAND.combatPreview;
+	const { reaction } = act.phases.REACTION;
+
 	let commands: Command[] = [];
-	let target: ICharacterSnapshot | null = null;
 	let info = '';
 
-	if (running) {
-		switch (act.phase) {
-			case 'COMMAND':
-				target = act.phases.COMMAND.effectTarget;
-				break;
-
-			case 'REACTION': {
-				const { reaction } = act.phases.REACTION;
-
-				if (reaction) {
-					target = reaction.reactor;
-					commands = act.commands;
-					info = act.info;
-
-					if (target.isAI) {
-						info = '';
-						commands = [];
-					}
-				}
-				break;
-			}
-
-			default:
-				// do nothing
+	if (running && 'REACTION' === act.phase) {
+		if (reaction && !reaction.reactor.isAI) {
+			info = act.info;
+			commands = act.commands;
 		}
 	}
+	const caster = preview ? preview.caster : null;
+	const target = preview ? preview.target : null;
+
 	return (
 		<div className="BattleUI">
 			<div className="BattleUI-layout">
@@ -65,7 +49,11 @@ const BattleUI: React.SFC<IBattleUIProps> = ({ engine: engineState, onTileSelect
 
 				<div className="BattleUI-layout-column BattleUI-layout-column--character">
 					{running
-						? <ActorUI act={act} onCommandSelect={onCommandSelect} />
+						? <ActorUI
+							act={act}
+							preview={caster}
+							onCommandSelect={onCommandSelect}
+						/>
 						: (
 							<React.Fragment>
 								<h2 className="Heading">Game Over</h2>
@@ -85,11 +73,11 @@ const BattleUI: React.SFC<IBattleUIProps> = ({ engine: engineState, onTileSelect
 				</div>
 
 				<div className="BattleUI-layout-column BattleUI-layout-column--character">
-					{target
+					{(running && target)
 						? <TargetUI
 							info={info}
-							character={target}
 							commands={commands}
+							preview={target}
 							onCommandSelect={onCommandSelect}
 						/>
 						: <EmptyUI />

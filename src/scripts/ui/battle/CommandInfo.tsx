@@ -1,9 +1,8 @@
 import React from 'react';
 
-import { ICharacterSnapshot } from 'modules/character';
-import { previewCasterInfo } from 'modules/battle/combat';
 import Command, { formatCost } from 'modules/battle/command';
 import { StatusEffectID } from 'modules/battle/status-effect';
+import { ICasterCombatPreview, ICasterPreviewItem } from 'modules/battle/combat';
 
 import WeaponIco from 'ui/common/WeaponIco';
 import ElementIco from 'ui/common/ElementIco';
@@ -11,18 +10,22 @@ import CombatInfo from 'ui/battle/CombatInfo';
 import CommandTitle from 'ui/battle/CommandTitle';
 
 interface IProps {
-	readonly character: ICharacterSnapshot;
+	readonly preview: ICasterCombatPreview | null;
 	readonly command: Command;
 }
 
-const CommandInfo: React.SFC<IProps> = ({ character, command }) => {
+const CommandInfo: React.SFC<IProps> = ({ preview, command }) => {
 	const { cost } = command;
+
+	let damageSkills: ICasterPreviewItem[] = [];
+	let healingSkills: ICasterPreviewItem[] = [];
 	let status: StatusEffectID[] = [];
 
-	for (const skill of command.skills) {
-		status = [...status, ...skill.status];
+	if (preview) {
+		damageSkills = preview.damageSkills;
+		healingSkills = preview.healingSkills;
+		status = preview.status;
 	}
-	const { damageSkills, healingSkills } = previewCasterInfo(character, command.skills);
 
 	return (
 		<React.Fragment>

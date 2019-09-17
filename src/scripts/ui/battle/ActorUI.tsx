@@ -2,6 +2,7 @@ import React from 'react';
 
 import Command from 'modules/battle/command';
 import { IActSnapshot } from 'modules/battle/act';
+import { ICasterCombatPreview } from 'modules/battle/combat';
 
 import Commands from 'ui/battle/Commands';
 import CommandInfo from 'ui/battle/CommandInfo';
@@ -9,10 +10,11 @@ import CharacterInfo from 'ui/battle/CharacterInfo';
 
 interface IProps {
 	readonly act: IActSnapshot;
+	readonly preview: ICasterCombatPreview | null;
 	readonly onCommandSelect: (command: Command) => void;
 }
 
-const ActorUI: React.SFC<IProps> = ({ act, onCommandSelect }) => {
+const ActorUI: React.SFC<IProps> = ({ act, preview, onCommandSelect }) => {
 	const { actor, phase, phases } = act;
 	const { command } = phases.COMMAND;
 	const { reactions } = phases.REACTION;
@@ -31,7 +33,7 @@ const ActorUI: React.SFC<IProps> = ({ act, onCommandSelect }) => {
 
 			{!!command && (
 				<React.Fragment>
-					<CommandInfo character={actor} command={command} />
+					<CommandInfo preview={preview} command={command} />
 					<hr className="Separator" />
 				</React.Fragment>
 			)}

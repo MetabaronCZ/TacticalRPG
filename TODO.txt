@@ -1,8 +1,5 @@
 BUGS
---	import Player, PlayerData v "modules\battle\combat.ts"
-	- pokud jsou importy posazeny vyse nez zbyle importy, vraci konzole chybu
-	- zrejme chyba s cross-importem PartyData
-!!	nekdy se stane, ze AI rozhodne jit nekam, ale MovePhase jde realne nekam jinam
+--	nekdy se stane, ze AI rozhodne jit nekam, ale MovePhase jde realne nekam jinam
 	- typicky to byva tile s promichanymi souradnicemi
 	- docasne pridat logovani pro targetovani:
 		- pokud targetovany Tile neni v targetable, tak zalogovat Act
@@ -10,19 +7,23 @@ BUGS
 
 TODO
 ---------------------------------------------------------------------------------------
+--	combatPreview davat do UI pres IActSnapshot
+??	zkusit separovat AI z Engine
+	- Player instance vytvaret pred Engine a vkladat je do nej jako argument
+	- AIPlayer.update() delat v ramci Engine.onUpdate() a poslat si:
+		- EngineSnapshot
+		- selectTile a selectCommand metody
 --	BattleInfo:
 	--	misto Back Attack textu pridat ikonku
+		- BACK ATTACK psat v zavorce za damage
 	--	misto Strong, Weak elemental affinity pridat ikonky
+		- STRONG / WEAK psat v zavorce za damage
+		- nebo dat ikonky sipky nahoru / dolu
 	--	misto StatusEffect textu udelat ikonky
 		- potom uz nebude potreba posilat do StatusEffectu ani Skill
---	implementovat Skill.minimumDistance
-	- pridat na RANGED weapon skilly
-	- staci dat distance: 1
+		- mozna staci pro ty effecty co maji repeating efekt
 --	AI: pridat logiku pro vyhodnoceni pouziti CC Commandu
 	- viz "effectActions" v btDecide
---	AI: pridat rozdavani rozkazu AIPlayerem
-	- vyhodnocovani situace
-	- koordinace utoku
 --  AIPlayer: mel by rozhodovat, ktera postava bude na koho utocit (pripadne healovat)
 	- mel by davat obecny rozkaz - specifika si rozhodne postava sama podle soucasne logiky
 	- vysledkem rozkazu by melo byt prioritizovani MOVE, TARGET nebo COMMAND v IAIData
@@ -48,13 +49,9 @@ TODO
 	- leader by mel jit kupredu a obsadit stred
 		- ostatni se drzi pobliz a nejdou az prilis dopredu
 	- vyresi problem, kdy RANGED a MAGE role jdou az prilis dopredu
-
-??	Counter reaction skill >> bude to mainHand weapon Attack skill
+??	Counter reaction skill >> jako mainHand weapon Attack skill
 ??	pasivni skilly
 	--	DARK_AURA by mela delat 50% damage reflection (do vzdalenosti SkillArea)
-??	pokud je v Actor[] vice postav stejneho hrace
-	- melo by jit vybrat, kdo z nich bude jednat driv
-	- mela by se objevit moznost koordinovaneho utoku (basic attacky obou postav, ukonci Acty postav)
 ??	pridat arenu / pocasi 
 	- v zavislosti na arene se behem souboje muze spustit ArenaEffect (zmena pocasi)
 	- efekt je specificky pro kazdou arenu a trva nahodnou dobu v urcitem rozmezi

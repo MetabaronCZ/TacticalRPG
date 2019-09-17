@@ -5,6 +5,7 @@ import ActPhase from 'modules/battle/act/phase';
 import { IOnActPhaseEvent } from 'modules/battle/act';
 import Command, { ICommandRecord } from 'modules/battle/command';
 import Character, { ICharacterSnapshot } from 'modules/character';
+import { ICombatPreview, getCombatPreview } from 'modules/battle/combat';
 
 const txtIdle = 'Select command target on grid.';
 
@@ -17,6 +18,7 @@ export interface ICommandPhaseSnapshot {
 	readonly effectArea: Tile[];
 	readonly effectTarget: ICharacterSnapshot | null;
 	readonly effectTargets: ICharacterSnapshot[];
+	readonly combatPreview: ICombatPreview | null;
 }
 
 export interface ICommandPhaseRecord {
@@ -148,16 +150,27 @@ class CommandPhase extends ActPhase<ICommandPhaseSnapshot, ICommandPhaseRecord> 
 
 	public serialize(): ICommandPhaseSnapshot {
 		const { command } = this.state;
+		const cmd = (command ? command.data : null);
 		const target = command ? command.target : null;
+
+		const effectTarget = (target && target.character)
+			? target.character
+			: null;
+
+		const preview = cmd
+			? getCombatPreview(cmd.skills, this.actor, effectTarget)
+			: null;
+
 		return {
 			phase: this.phase,
-			command: (command ? command.data : null),
+			command: cmd,
 			area: (command ? [...command.area] : []),
 			targetable: (command ? [...command.targetable] : []),
 			target: (target ? target.tile : null),
 			effectArea: (target ? [...target.effectArea] : []),
-			effectTarget: (target && target.character ? target.character.serialize() : null),
-			effectTargets: this.getEffectTargets().map(char => char.serialize())
+			effectTarget: (effectTarget ? effectTarget.serialize() : null),
+			effectTargets: this.getEffectTargets().map(char => char.serialize()),
+			combatPreview: preview
 		};
 	}
 

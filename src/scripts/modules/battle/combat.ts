@@ -7,19 +7,12 @@ import * as DMG from 'data/combat';
 import Skill from 'modules/skill';
 import Vector from 'modules/geometry/vector';
 import Character, { ICharacterSnapshot } from 'modules/character';
+import { SkillElement, ISkillData } from 'modules/skill/skill-data';
 import { ElementAffinityTable, Affinity } from 'modules/skill/affinity';
 import StatusEffect, { StatusEffectID } from 'modules/battle/status-effect';
-import { SkillElement, ISkillData, SkillID } from 'modules/skill/skill-data';
-
-import Player from 'modules/battle/player';
-import { PlayerData } from 'modules/battle-configuration/player-data';
 
 const precision = 10 ** 10; // angle precision modifier
 const backAttackAngle = PI / 3; // 60 degrees
-
-// shadow player used for preview computations
-const plData = new PlayerData(-1, { name: 'PREVIEW' });
-const shadowPlayer = new Player(plData, []);
 
 interface IBlockValue {
 	readonly physical: number;
@@ -47,23 +40,31 @@ export interface ICombatInfo {
 	status: StatusEffect[];
 }
 
-interface ICasterPreviewItem {
+export interface ICasterPreviewItem {
 	readonly skill: Skill;
 	readonly value: number;
 }
 
-export interface ICasterPreview {
+export interface ICasterCombatPreview {
+	readonly character: ICharacterSnapshot;
+	readonly status: StatusEffectID[];
 	readonly damageSkills: ICasterPreviewItem[];
 	readonly healingSkills: ICasterPreviewItem[];
 }
 
-export interface ITargetPreview {
-	readonly physical: number;
-	readonly magical: number;
-	readonly elementalStrength: SkillElement;
-	readonly elementalWeakness: SkillElement;
-	readonly block: number | null;
-	readonly shield: number | null;
+export interface ITargetCombatPreview {
+	readonly character: ICharacterSnapshot;
+	physical: number;
+	magical: number;
+	elementalStrength: SkillElement;
+	elementalWeakness: SkillElement;
+	block: number | null;
+	shield: number | null;
+}
+
+export interface ICombatPreview {
+	readonly caster: ICasterCombatPreview;
+	target: ITargetCombatPreview | null;
 }
 
 export const isBackAttacked = (attacker: Character, defender: Character): boolean => {
@@ -94,18 +95,26 @@ const getDirectionalModifier = (backAttacked: boolean): number => {
 	return backAttacked ? DMG.backAttackModifier : 1;
 };
 
-const getBlock = (character: Character): number | null => {
+const getBlock = (character: Character, isPreview = false): number | null => {
 	const hasShield = ('SHIELD' === character.offHand.type);
 
 	if (hasShield) {
 		const shield = character.offHand;
 		let skill: ISkillData | null = null;
 
-		if (character.status.has('BLOCK_SMALL')) {
+		let hasSmallShield = character.status.has('BLOCK_SMALL');
+		let hasLargeShield = character.status.has('BLOCK_LARGE');
+
+		if (isPreview) {
+			hasSmallShield = ('SHIELD_SMALL' === shield.id);
+			hasLargeShield = ('SHIELD_LARGE' === shield.id);
+		}
+
+		if (hasSmallShield) {
 			skill = Skills.get('SHD_SMALL_BLOCK');
 		}
 
-		if (character.status.has('BLOCK_LARGE')) {
+		if (hasLargeShield) {
 			skill = Skills.get('SHD_LARGE_BLOCK');
 		}
 
@@ -135,8 +144,14 @@ const getBlockValue = (physical: number, magical: number, block: number | null):
 	};
 };
 
-const getShield = (character: Character): number | null => {
-	if (!character.status.has('ENERGY_SHIELD')) {
+const getShield = (character: Character, isPreview = false): number | null => {
+	let hasEnergyShield = character.status.has('ENERGY_SHIELD');
+
+	if (isPreview) {
+		hasEnergyShield = true;
+	}
+
+	if (!hasEnergyShield) {
 		return null;
 	}
 	return character.attributes.MP;
@@ -234,80 +249,62 @@ const getStatusEffects = (caster: Character, target: Character, skill: Skill, ph
 	return effects;
 };
 
-export const previewCasterInfo = (char: ICharacterSnapshot, skills: Skill[]): ICasterPreview => {
-	const result: ICasterPreview = {
-		damageSkills: [],
-		healingSkills: []
+export const getCombatPreview = (skills: Skill[], caster: Character, target: Character | null): ICombatPreview | null => {
+	if (!skills.length) {
+		return null;
+	}
+	const preview: ICombatPreview = {
+		caster: {
+			character: caster.serialize(),
+			status: [],
+			damageSkills: [],
+			healingSkills: []
+		},
+		target: null
 	};
 
-	if (!skills.length) {
-		return result;
-	}
-	const character = Character.from(char, shadowPlayer);
-
+	// get caster command skills info
 	for (const skill of skills) {
-		const physical = getPhysicalDamage(character, skill);
-		const magical = getMagicalDamage(character, skill);
+		const physical = getPhysicalDamage(caster, skill);
+		const magical = getMagicalDamage(caster, skill);
+
+		for (const effect of skill.status) {
+			preview.caster.status.push(effect);
+		}
 
 		if (skill.isSupport) {
-			result.healingSkills.push({
+			preview.caster.healingSkills.push({
 				skill,
 				value: magical
 			});
 		} else {
-			result.damageSkills.push({
+			preview.caster.damageSkills.push({
 				skill,
 				value: physical + magical
 			});
 		}
 	}
-	return result;
-};
 
-export const previewTargetInfo = (char: ICharacterSnapshot): ITargetPreview => {
-	const character = Character.from(char, shadowPlayer);
+	// handle target stats
+	if (target) {
+		const { skillset, armor } = target;
+	
+		const elmStrengths = Object.entries(ElementAffinityTable)
+			.filter(elm => elm[1] === skillset.element)
+			.map(elm => elm[0] as SkillElement);
 
-	// apply reaction skills for computations
-	if ('MAGICAL' === character.armor.id) {
-		const shieldSkill = new Skill('ENERGY_SHIELD');
-		character.status.apply(shieldSkill, 'ENERGY_SHIELD');
+		preview.target = {
+			character: target.serialize(),
+			block: getBlock(target, true) || 0,
+			shield: getShield(target, true) || 0,
+			magical: 1 - armor.magical,
+			physical: 1 - armor.physical,
+			elementalStrength: (elmStrengths.length ? elmStrengths[0] : null) || 'NONE',
+			elementalWeakness: ElementAffinityTable[skillset.element] || 'NONE'
+		};
 	}
 
-	if ('SHIELD' === character.offHand.type) {
-		let skillID: SkillID;
-		let statusID: StatusEffectID;
-
-		if ('SHIELD_LARGE' === character.offHand.id) {
-			statusID = 'BLOCK_LARGE';
-			skillID = 'SHD_LARGE_BLOCK';
-		} else {
-			statusID = 'BLOCK_SMALL';
-			skillID = 'SHD_SMALL_BLOCK';
-		}
-		const blockSkill = new Skill(skillID);
-		character.status.apply(blockSkill, statusID);
-	}
-	const { skillset, armor } = character;
-	const block = getBlock(character);
-	const shield = getShield(character);
-
-	// elemental affinity
-	const elementalWeakness = ElementAffinityTable[skillset.element] || 'NONE';
-
-	const elmStrengths = Object.entries(ElementAffinityTable)
-		.filter(elm => elm[1] === skillset.element)
-		.map(elm => elm[0] as SkillElement);
-
-	const elementalStrength = (elmStrengths.length ? elmStrengths[0] : null) || 'NONE';
-
-	return {
-		block,
-		shield,
-		elementalWeakness,
-		elementalStrength,
-		physical: 1 - armor.physical,
-		magical: 1 - armor.magical
-	};
+	return preview;
 };
 
 export const getCombatInfo = (caster: Character, target: Character, skill: Skill): ICombatInfo => {
