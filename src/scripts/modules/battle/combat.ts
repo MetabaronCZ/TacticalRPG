@@ -26,6 +26,11 @@ interface IShieldValue {
 	readonly cost: number;
 }
 
+interface IStatusValue {
+	attack: number;
+	defense: number;
+}
+
 export interface ICombatInfo {
 	caster: Character;
 	target: Character;
@@ -34,8 +39,6 @@ export interface ICombatInfo {
 	magical: number;
 	damage: number;
 	healing: number;
-	affinity: Affinity;
-	backAttack: boolean;
 	blocked: IBlockValue | null;
 	shielded: IShieldValue | null;
 	status: StatusEffect[];
@@ -46,23 +49,20 @@ export interface ICasterPreviewItem {
 	readonly value: number;
 }
 
-export interface ICasterPreviewAffinity {
-	readonly element: SkillElement;
-	readonly affinity: Affinity;
-}
-
 export interface ICasterCombatPreview {
 	readonly character: ICharacterSnapshot;
 	readonly status: StatusEffectID[];
+	readonly statusModifier: number;
 	readonly physicalSkills: ICasterPreviewItem[];
 	readonly magicalSkills: ICasterPreviewItem[];
 	readonly healingSkills: ICasterPreviewItem[];
-	readonly affinity: ICasterPreviewAffinity[];
-	backAttack: boolean;
+	directionModifier: number;
+	affinity: number;
 }
 
 export interface ITargetCombatPreview {
 	readonly character: ICharacterSnapshot;
+	readonly statusModifier: number;
 	physical: number;
 	magical: number;
 	elementalStrength: SkillElement;
@@ -209,22 +209,26 @@ const getMagicalDamage = (character: Character, skill: Skill): number => {
 	return (character.attributes.MAG + weaponDamage) * skill.magical;
 };
 
-const getStatusModifier = (attacker: Character, defender: Character): number => {
-	let mod = 1;
+const getStatusModifier = (attacker: Character, defender?: Character | null): IStatusValue => {
+	let attack = 1;
+	let defense = 1;
 
-	if (defender.status.has('SHOCK')) {
-		mod *= DMG.shockModifier;
-	}
-	if (defender.status.has('IRON_SKIN')) {
-		mod *= DMG.ironSkinModifier;
-	}
 	if (attacker.status.has('BERSERK')) {
-		mod *= DMG.berserkAttackModifier;
+		attack *= DMG.berserkAttackModifier;
 	}
-	if (defender.status.has('BERSERK')) {
-		mod *= DMG.berserkDefenseModifier;
+
+	if (defender) {
+		if (defender.status.has('SHOCK')) {
+			defense *= DMG.shockModifier;
+		}
+		if (defender.status.has('IRON_SKIN')) {
+			defense *= DMG.ironSkinModifier;
+		}
+		if (defender.status.has('BERSERK')) {
+			defense *= DMG.berserkDefenseModifier;
+		}
 	}
-	return mod;
+	return { attack, defense };
 };
 
 const getStatusEffects = (caster: Character, target: Character, skill: Skill, phy = 0, mag = 0, isGuarding = false): StatusEffect[] => {
@@ -265,23 +269,26 @@ export const getCombatPreview = (command: Command, caster: Character, target: Ch
 		return null;
 	}
 	const allied = (!!target && caster.player === target.player);
+	const statusMod = getStatusModifier(caster, target);
 
 	const preview: ICombatPreview = {
 		caster: {
 			character: caster.serialize(),
-			backAttack: false,
-			status: [],
-			affinity: [],
+			statusModifier: statusMod.attack,
+			directionModifier: 1,
+			affinity: 1,
 			physicalSkills: [],
 			magicalSkills: [],
-			healingSkills: []
+			healingSkills: [],
+			status: []
 		},
 		target: null
 	};
 
 	// check back attack
 	if (target && !command.isSupport && !allied) {
-		preview.caster.backAttack = isBackAttacked(caster, target);
+		const backAttacked = isBackAttacked(caster, target);
+		preview.caster.directionModifier = getDirectionalModifier(backAttacked);
 	}
 
 	// get caster command skills info
@@ -318,14 +325,8 @@ export const getCombatPreview = (command: Command, caster: Character, target: Ch
 
 			// add element affinity data
 			if (target) {
-				const affinity = getAffinity(skill.element, target.skillset.element);
-
-				if ('ELEMENTAL_NEUTRAL' !== affinity) {
-					preview.caster.affinity.push({
-						element: skill.element,
-						affinity
-					});
-				}
+				const affinity = getAffinity(caster.skillset.element, target.skillset.element);
+				preview.caster.affinity = getAffinityModifier(affinity);
 			}
 		}
 	}
@@ -337,6 +338,7 @@ export const getCombatPreview = (command: Command, caster: Character, target: Ch
 
 		preview.target = {
 			character: target.serialize(),
+			statusModifier: statusMod.defense,
 			block: getBlock(target, true) || 0,
 			shield: getShield(target, true) || 0,
 			magical: 1 - armor.magical,
@@ -371,8 +373,6 @@ export const getCombatInfo = (caster: Character, target: Character, skill: Skill
 		magical: 0,
 		damage: 0,
 		healing: 0,
-		affinity: 'ELEMENTAL_NEUTRAL',
-		backAttack: false,
 		blocked: null,
 		shielded: null,
 		status: getStatusEffects(caster, target, skill)
@@ -415,13 +415,14 @@ export const getCombatInfo = (caster: Character, target: Character, skill: Skill
 
 	// status modifiers
 	const statusModifier = getStatusModifier(caster, target);
+	const statusMod = statusModifier.attack * statusModifier.defense;
 
 	if (physical > 0) {
-		physical *= directionMod * statusModifier * target.armor.physical;
+		physical *= directionMod * statusMod * target.armor.physical;
 	}
 
 	if (magical > 0) {
-		magical *= directionMod * statusModifier * affinityMod * target.armor.magical;
+		magical *= directionMod * statusMod * affinityMod * target.armor.magical;
 	}
 
 	// clamp values
@@ -436,8 +437,6 @@ export const getCombatInfo = (caster: Character, target: Character, skill: Skill
 	result.damage = physical + magical;
 	result.physical = physical;
 	result.magical = magical;
-	result.affinity = affinity;
-	result.backAttack = backAttack;
 	result.blocked = blocked;
 	result.shielded = shielded;
 	result.status = status;

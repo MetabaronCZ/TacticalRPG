@@ -1,10 +1,8 @@
 import React from 'react';
 
-import { backAttackModifier } from 'data/combat';
-
 import Command, { formatCost } from 'modules/battle/command';
 import { StatusEffectID } from 'modules/battle/status-effect';
-import { ICasterCombatPreview, ICasterPreviewItem, ICasterPreviewAffinity } from 'modules/battle/combat';
+import { ICasterCombatPreview, ICasterPreviewItem } from 'modules/battle/combat';
 
 import Ico from 'ui/common/Ico';
 import WeaponIco from 'ui/common/WeaponIco';
@@ -23,16 +21,20 @@ const CommandInfo: React.SFC<IProps> = ({ preview, command }) => {
 	let physicalSkills: ICasterPreviewItem[] = [];
 	let magicalSkills: ICasterPreviewItem[] = [];
 	let healingSkills: ICasterPreviewItem[] = [];
-	let affinities: ICasterPreviewAffinity[] = [];
 	let status: StatusEffectID[] = [];
-	let isBackAttack = false;
+	let directionMod = 1;
+	let affinityMod = 1;
+	let statusMod = 1;
 
 	if (preview) {
 		physicalSkills = preview.physicalSkills;
 		magicalSkills = preview.magicalSkills;
 		healingSkills = preview.healingSkills;
-		isBackAttack = preview.backAttack;
-		affinities = preview.affinity;
+
+		directionMod = preview.directionModifier;
+		statusMod = preview.statusModifier;
+		affinityMod = preview.affinity;
+
 		status = preview.status;
 	}
 
@@ -83,22 +85,21 @@ const CommandInfo: React.SFC<IProps> = ({ preview, command }) => {
 				</CombatInfo>
 			)}
 
-			{isBackAttack && (
+			{(1 !== directionMod) && (
 				<CombatInfo label="Back attack modifier">
-					x{backAttackModifier}
+					x{directionMod}
 				</CombatInfo>
 			)}
 
-			{affinities.length > 0 && (
-				<CombatInfo label="Elemental affinity" small={false}>
-					{affinities.map(({ element, affinity }, i) => (
-						<React.Fragment key={i}>
-							<ElementIco element={element} minimal />
-							{' '}
-							{'ELEMENTAL_WEAK' === affinity ? 'WEAK' : 'STRONG'}
-							{i < affinities.length - 1 ? ' + ' : ''}
-						</React.Fragment>
-					))}
+			{(1 !== affinityMod) && (
+				<CombatInfo label="Elemental modifier">
+					x{affinityMod}
+				</CombatInfo>
+			)}
+
+			{(1 !== statusMod) && (
+				<CombatInfo label="Status modifier">
+					x{statusMod}
 				</CombatInfo>
 			)}
 

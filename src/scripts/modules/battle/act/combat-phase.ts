@@ -237,7 +237,7 @@ class CombatPhase extends ActPhase<ICombatPhaseSnapshot, ICombatPhaseRecord> {
 	}
 
 	private handleDamage(combat: ICombatInfo, result: ICombatResult, info: IBattleInfo[]): void {
-		const { target, skill, blocked, shielded, affinity, status } = combat;
+		const { target, skill, blocked, shielded, status } = combat;
 		const { position } = target;
 
 		if (target.isDead() || target.status.has('DYING')) {
@@ -275,17 +275,8 @@ class CombatPhase extends ActPhase<ICombatPhaseSnapshot, ICombatPhaseRecord> {
 
 		// magical damage done
 		if (skill.magical) {
-			let affinityText = '';
-
-			if (affinity === 'ELEMENTAL_STRONG') {
-				affinityText = 'STRONG';
-			} else if (affinity === 'ELEMENTAL_WEAK') {
-				affinityText = 'WEAK';
-			}
-			const dmg = formatNumber(combat.magical);
-
 			info.push({
-				text: `${dmg}${affinityText ? ' (' + affinityText + ')' : ''}`,
+				text: formatNumber(combat.magical),
 				type: 'DAMAGE',
 				element: skill.element,
 				position
