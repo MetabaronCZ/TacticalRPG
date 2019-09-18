@@ -1,8 +1,10 @@
 .Ico {
-	$path-ico-element: "#{$path-images}/ico/element";
-	$path-ico-weapon: "#{$path-images}/ico/weapon";
-	$path-ico-armor: "#{$path-images}/ico/armor";
-	$path-ico-skill: "#{$path-images}/ico/skill";
+	$path-ico: "#{$path-images}/ico";
+	$path-ico-element: "#{$path-ico}/element";
+	$path-ico-weapon: "#{$path-ico}/weapon";
+	$path-ico-armor: "#{$path-ico}/armor";
+	$path-ico-skill: "#{$path-ico}/skill";
+
 	display: inline-block;
 	width: $ico-size;
 	height: $ico-size;
@@ -17,6 +19,9 @@
 	&.Ico--minimal {
 		margin-right: 0;
 	}
+
+	// general
+	&.Ico--info { background-image: url("#{$path-ico}/info.svg"); }
 
 	// elements
 	&.Ico--FIRE { background-image: url("#{$path-ico-element}/fire.svg"); }

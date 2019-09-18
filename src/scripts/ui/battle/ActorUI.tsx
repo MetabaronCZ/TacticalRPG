@@ -4,10 +4,12 @@ import Command from 'modules/battle/command';
 import { IActSnapshot } from 'modules/battle/act';
 import { ICasterCombatPreview } from 'modules/battle/combat';
 
+import { formatCombatResult } from 'ui/format';
+
+import Ico from 'ui/common/Ico';
 import Commands from 'ui/battle/Commands';
 import CommandInfo from 'ui/battle/CommandInfo';
 import CharacterInfo from 'ui/battle/CharacterInfo';
-import { formatCombatResult } from 'ui/format';
 
 interface IProps {
 	readonly act: IActSnapshot;
@@ -69,7 +71,10 @@ const ActorUI: React.SFC<IProps> = ({ act, preview, onCommandSelect }) => {
 			)}
 
 			{!!info && (
-				<p className="Paragraph">{info}</p>
+				<p className="Paragraph">
+					<Ico name="info" />
+					{info}
+				</p>
 			)}
 
 			{!actor.isAI && (

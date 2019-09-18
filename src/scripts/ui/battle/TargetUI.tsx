@@ -3,6 +3,7 @@ import React from 'react';
 import Command from 'modules/battle/command';
 import { ITargetCombatPreview } from 'modules/battle/combat';
 
+import Ico from 'ui/common/Ico';
 import Commands from 'ui/battle/Commands';
 import TargetInfo from 'ui/battle/TargetInfo';
 import CharacterInfo from 'ui/battle/CharacterInfo';
@@ -28,7 +29,10 @@ const TargetUI: React.SFC<IProps> = ({ preview, commands, info, onCommandSelect 
 			<hr className="Separator" />
 	
 			{!!info && (
-				<p className="Paragraph">{info}</p>
+				<p className="Paragraph">
+					<Ico name="info" />
+					{info}
+				</p>
 			)}
 	
 			{commands.length > 0 && (
