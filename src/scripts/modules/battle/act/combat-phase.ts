@@ -2,10 +2,7 @@ import Animation from 'core/animation';
 import { getRandomItem } from 'core/array';
 import { formatNumber, randomNumberBetween } from 'core/number';
 
-import { affinityData } from 'data/combat';
 import { skillAnimDuration } from 'data/game-config';
-
-import { getCombatInfo, ICombatInfo } from 'modules/battle/combat';
 
 import Logger from 'modules/logger';
 import Tile from 'modules/geometry/tile';
@@ -14,6 +11,7 @@ import Command from 'modules/battle/command';
 import ActPhase from 'modules/battle/act/phase';
 import { IOnActPhaseEvent } from 'modules/battle/act';
 import { IBattleInfo } from 'modules/battle/battle-info';
+import { getCombatInfo, ICombatInfo } from 'modules/battle/combat';
 
 const txtCombat = 'Combat in progress...';
 
@@ -297,17 +295,17 @@ class CombatPhase extends ActPhase<ICombatPhaseSnapshot, ICombatPhaseRecord> {
 
 		// magical damage done
 		if (skill.magical) {
-			if (affinity !== 'ELEMENTAL_NEUTRAL') {
-				info.push({
-					text: affinityData[affinity].title,
-					type: 'ACTION',
-					element: 'NONE',
-					weapon: 'NONE',
-					position
-				});
+			let affinityText = '';
+
+			if (affinity === 'ELEMENTAL_STRONG') {
+				affinityText = 'STRONG';
+			} else if (affinity === 'ELEMENTAL_WEAK') {
+				affinityText = 'WEAK';
 			}
+			const dmg = formatNumber(combat.magical);
+
 			info.push({
-				text: formatNumber(combat.magical),
+				text: `${dmg}${affinityText ? ' (' + affinityText + ')' : ''}`,
 				type: 'DAMAGE',
 				element: skill.element,
 				weapon: 'NONE',

@@ -7,18 +7,9 @@ BUGS
 
 TODO
 ---------------------------------------------------------------------------------------
---	combatPreview davat do UI pres IActSnapshot
-??	zkusit separovat AI z Engine
-	- Player instance vytvaret pred Engine a vkladat je do nej jako argument
-	- AIPlayer.update() delat v ramci Engine.onUpdate() a poslat si:
-		- EngineSnapshot
-		- selectTile a selectCommand metody
 --	BattleInfo:
 	--	misto Back Attack textu pridat ikonku
 		- BACK ATTACK psat v zavorce za damage
-	--	misto Strong, Weak elemental affinity pridat ikonky
-		- STRONG / WEAK psat v zavorce za damage
-		- nebo dat ikonky sipky nahoru / dolu
 	--	misto StatusEffect textu udelat ikonky
 		- potom uz nebude potreba posilat do StatusEffectu ani Skill
 		- mozna staci pro ty effecty co maji repeating efekt
