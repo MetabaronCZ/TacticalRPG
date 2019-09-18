@@ -1,14 +1,15 @@
 import React from 'react';
 
+import Skillsets from 'data/skillsets';
 import { Icos, IcoID } from 'data/icos';
 
+import { ICombatResult } from 'modules/battle/act/combat-phase';
 import { ICharacterData, isDualWielding } from 'modules/character-creation/character-data';
 
 import ArmorIco from 'ui/common/ArmorIco';
 import WeaponIco from 'ui/common/WeaponIco';
-import ArchetypeIco from 'ui/common/ArchetypeIco';
-import Skillsets from 'data/skillsets';
 import ElementIco from 'ui/common/ElementIco';
+import ArchetypeIco from 'ui/common/ArchetypeIco';
 
 export const formatCharacter = (character: ICharacterData | null): React.ReactNode => {
 	if (!character) {
@@ -42,3 +43,25 @@ export const formatCharacter = (character: ICharacterData | null): React.ReactNo
 		</React.Fragment>
 	);
 };
+
+export const formatCombatResult = (result: ICombatResult): React.ReactNode => {
+	let txt = '-';
+
+	if (result.evaded) {
+		txt = 'Evaded';
+	}
+	if (result.damaged > 0) {
+		txt = result.damaged + ' damage';
+	}
+	if (result.healed > 0) {
+		txt = result.healed + ' healing';
+	}
+	if (result.revived) {
+		txt = 'Revived';
+	}
+	if (result.killed) {
+		txt = `Killed (${result.damaged} damage)`;
+	}
+	return txt;
+};
+

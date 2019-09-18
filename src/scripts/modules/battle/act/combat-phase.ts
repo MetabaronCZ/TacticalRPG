@@ -16,7 +16,8 @@ import { getCombatInfo, ICombatInfo } from 'modules/battle/combat';
 const txtCombat = 'Combat in progress...';
 
 export interface ICombatPhaseSnapshot {
-	phase: Phase;
+	readonly phase: Phase;
+	readonly results: ICombatResult[];
 }
 
 export interface ICombatPhaseRecord {
@@ -157,13 +158,14 @@ class CombatPhase extends ActPhase<ICombatPhaseSnapshot, ICombatPhaseRecord> {
 
 	public serialize(): ICombatPhaseSnapshot {
 		return {
-			phase: this.phase
+			phase: this.phase,
+			results: [...this.combatResults]
 		};
 	}
 
 	public getRecord(): ICombatPhaseRecord {
 		return {
-			results: this.combatResults
+			results: [...this.combatResults]
 		};
 	}
 

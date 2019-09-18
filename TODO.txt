@@ -9,9 +9,7 @@ BUGS
 TODO
 ---------------------------------------------------------------------------------------
 --	ikonu pro ENERGY SHIELD a EVADE
---	v CommandInfo UI zobrazovat u targets:
-	- ... (pokud se rozhoduji)
-	- combat.result (pokud je reaction DONE)
+--	ikonku pro Act.info zobrazovane v ActorUI a TargetUI
 --	BattleInfo:
 	--	misto Back Attack textu pridat ikonku
 		- BACK ATTACK psat v zavorce za damage

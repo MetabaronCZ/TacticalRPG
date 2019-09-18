@@ -7,6 +7,7 @@ import { ICasterCombatPreview } from 'modules/battle/combat';
 import Commands from 'ui/battle/Commands';
 import CommandInfo from 'ui/battle/CommandInfo';
 import CharacterInfo from 'ui/battle/CharacterInfo';
+import { formatCombatResult } from 'ui/format';
 
 interface IProps {
 	readonly act: IActSnapshot;
@@ -18,6 +19,7 @@ const ActorUI: React.SFC<IProps> = ({ act, preview, onCommandSelect }) => {
 	const { actor, phase, phases } = act;
 	const { command } = phases.COMMAND;
 	const { reactions } = phases.REACTION;
+	const { results } = phases.COMBAT;
 	let { commands, info } = act;
 
 	if ('REACTION' === phase) {
@@ -45,14 +47,19 @@ const ActorUI: React.SFC<IProps> = ({ act, preview, onCommandSelect }) => {
 						<br />
 						{reactions.map(tgt => {
 							const { reactor, command: reactionCommand } = tgt;
-							let txt = '...';
+							let txt: React.ReactNode = '...';
 
 							if (reactionCommand) {
 								txt = reactionCommand.title;
 							}
+							const result = results.find(r => reactor.id === r.character);
+
+							if (result) {
+								txt = formatCombatResult(result);
+							}
 							return (
 								<div key={reactor.id}>
-									{reactor.name} ({txt})
+									{reactor.name} → {txt}
 								</div>
 							);
 						})}

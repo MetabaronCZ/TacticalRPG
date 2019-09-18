@@ -14,7 +14,7 @@ import { IPartyData } from 'modules/party-creation/party-data';
 import { IPlayerConfig } from 'modules/battle-configuration/player-data';
 import { ICharacterData } from 'modules/character-creation/character-data';
 
-import { formatCharacter } from 'ui/format';
+import { formatCharacter, formatCombatResult } from 'ui/format';
 
 import Page from 'ui/common/Page';
 import Button from 'ui/common/Button';
@@ -42,7 +42,7 @@ interface IRecordAnalysis {
 	move: string;
 	command: React.ReactNode;
 	reactions: React.ReactNode[];
-	results: string[];
+	results: React.ReactNode[];
 }
 
 interface IScoreData {
@@ -164,23 +164,7 @@ const getRowInfo = (characters: ICharacterData[], record: IActRecord): IRecordAn
 	}
 
 	for (const item of combatPhase.results) {
-		let txt = '-';
-
-		if (item.evaded) {
-			txt = 'Evaded';
-		}
-		if (item.damaged > 0) {
-			txt = item.damaged + ' damage';
-		}
-		if (item.healed > 0) {
-			txt = item.healed + ' healing';
-		}
-		if (item.revived) {
-			txt = 'Revived';
-		}
-		if (item.killed) {
-			txt = `Killed (${item.damaged} damage)`;
-		}
+		const txt = formatCombatResult(item);
 		result.results.push(txt);
 	}
 	return result;
