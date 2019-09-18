@@ -1,17 +1,15 @@
 import React from 'react';
 import { withRouter, RouteComponentProps } from 'react-router';
 
-import { IcoID } from 'data/icos';
 import { gotoFn } from 'core/navigation';
-
 import { RouteID, IRouteParams } from 'modules/route';
 
 import PageWrapper from 'ui/common/PageWrapper';
-import Button, { ButtonSize } from 'ui/common/Button';
+import Button, { ButtonSize, ButtonIco } from 'ui/common/Button';
 
 interface IMenuItem {
 	readonly title: string;
-	readonly ico?: IcoID;
+	readonly ico?: ButtonIco;
 	readonly size?: ButtonSize;
 	readonly route: RouteID;
 }

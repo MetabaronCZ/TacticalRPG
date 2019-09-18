@@ -1,11 +1,12 @@
 import React from 'react';
 
 import Skillsets from 'data/skillsets';
-import { Icos, IcoID } from 'data/icos';
 
+import { WeaponID } from 'modules/equipment/weapon-data';
 import { ICombatResult } from 'modules/battle/act/combat-phase';
 import { ICharacterData, isDualWielding } from 'modules/character-creation/character-data';
 
+import Ico from 'ui/common/Ico';
 import ArmorIco from 'ui/common/ArmorIco';
 import WeaponIco from 'ui/common/WeaponIco';
 import ElementIco from 'ui/common/ElementIco';
@@ -18,26 +19,24 @@ export const formatCharacter = (character: ICharacterData | null): React.ReactNo
 	const { sex, archetype, skillset, main, off, armor } = character;
 	const element = Skillsets.get(skillset).element;
 
-	let offA: React.ReactNode = '';
+	let offA: WeaponID;
 
 	if (isDualWielding(character)) {
-		offA = <WeaponIco weapon={main} minimal />;
+		offA = main;
 	} else {
-		offA = <WeaponIco weapon={off} minimal />;
+		offA = off;
 	}
 	return (
 		<React.Fragment>
-			{Icos[sex.toLowerCase() as IcoID] || ''}
+			<Ico name={sex} minimal />
 			{' '}
 			<ArchetypeIco archetype={archetype} />
 			{' '}
-			{'NONE' !== element && (
-				<ElementIco element={element} minimal />
-			)}
+			<ElementIco element={element} minimal />
 			{' '}
 			<WeaponIco weapon={main} minimal />
 			{' '}
-			{offA}
+			<WeaponIco weapon={offA} minimal />
 			{' '}
 			<ArmorIco armor={armor} minimal />
 		</React.Fragment>

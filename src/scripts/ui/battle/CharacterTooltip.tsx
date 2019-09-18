@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { Icos, IcoID } from 'data/icos';
 import { ICharacterSnapshot } from 'modules/character';
 
+import Ico from 'ui/common/Ico';
 import BarValue from 'ui/battle/BarValue';
 import ArmorIco from 'ui/common/ArmorIco';
 import WeaponIco from 'ui/common/WeaponIco';
@@ -23,9 +23,6 @@ const CharacterTooltip: React.SFC<IProps> = ({ x, y, size, orientation, characte
 	const { sex, archetype, skillset, status } = char;
 	const { HP, AP, MP } = char.attributes;
 	const { HP: baseHP, AP: baseAP, MP: baseMP } = char.baseAttributes;
-
-	const sexIco = Icos[sex.toLowerCase() as IcoID];
-
 	return (
 		<div
 			className={`Tooltip Tooltip--${orientation}`}
@@ -39,7 +36,7 @@ const CharacterTooltip: React.SFC<IProps> = ({ x, y, size, orientation, characte
 				<div>
 					<strong>{char.name}</strong>
 					{' '}
-					{sexIco}
+					<Ico name={sex} minimal />
 					{' '}
 					<ArchetypeIco archetype={archetype} />
 					{' '}

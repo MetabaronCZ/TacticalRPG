@@ -1,15 +1,15 @@
 import React from 'react';
-import { IcoID, Icos } from 'data/icos';
+import { ButtonIco, buttonIcos } from 'ui/common/Button';
 
 interface ILinkIcoProps {
-	readonly ico: IcoID;
+	readonly ico: ButtonIco;
 	readonly title: string;
 	readonly onClick?: () => void;
 }
 
 const LinkIco: React.SFC<ILinkIcoProps> = ({ ico, title = '', onClick }) => (
 	<button className="LinkIco" title={title} onClick={onClick}>
-		{Icos[ico]}
+		{buttonIcos[ico]}
 	</button>
 );
 

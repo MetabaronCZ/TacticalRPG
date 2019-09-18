@@ -1,15 +1,34 @@
 import React, { SyntheticEvent } from 'react';
-
-import { IcoID, Icos } from 'data/icos';
 import { firstLetterToUpper } from 'core/string';
 
 export type ButtonColor = 'default' | 'yellow' | 'red' | 'green' | 'blue' | 'grey';
 export type ButtonSize = 'default' | 'small' | 'large';
 export type ButtonType = 'button' | 'submit' | 'reset';
 
+export type ButtonIco = 'default' |
+	'back' | 'next' | 'up' | 'down' |
+	'create' | 'destroy' | 'fight' |
+	'success';
+
+type IButtonIcos = {
+	readonly [id in ButtonIco]: string | null;
+};
+
+export const buttonIcos: IButtonIcos = {
+	default: null,
+	back: '‹',
+	next: '›',
+	up: '↑',
+	down: '↓',
+	create: '+',
+	destroy: '-',
+	fight: '⚔',
+	success: '✔'
+};
+
 interface IButtonContainerProps {
 	readonly type?: ButtonType;
-	readonly ico?: IcoID;
+	readonly ico?: ButtonIco;
 	readonly size?: ButtonSize;
 	readonly color?: ButtonColor;
 	readonly text: string;
@@ -23,7 +42,7 @@ const Button: React.SFC<IButtonContainerProps> = props => {
 
 	return (
 		<button className={`Button ${sizeCls} ${colorCls}`} type={type} onClick={onClick}>
-			{Icos[ico] ? <span className="Button-ico">{Icos[ico]}</span> : ''}
+			<span className="Button-ico">{buttonIcos[ico]}</span>
 			{text}
 		</button>
 	);

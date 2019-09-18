@@ -8,8 +8,6 @@ BUGS
 
 TODO
 ---------------------------------------------------------------------------------------
---	udelat ikony pro Character.sex
-	- refaktorovat IIcos di UI komponent
 --	BattleInfo:
 	--	misto Back Attack textu pridat ikonku
 		- BACK ATTACK psat v zavorce za damage

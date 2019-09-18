@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { Icos, IcoID } from 'data/icos';
-
 import { getTiles } from 'modules/geometry/tiles';
 import { getIdleCommands, getReactiveCommands } from 'modules/battle/commands';
 
@@ -10,6 +8,7 @@ import Player from 'modules/battle/player';
 import { PlayerData } from 'modules/battle-configuration/player-data';
 import { ICharacterData, isBothWielding, isDualWielding } from 'modules/character-creation/character-data';
 
+import Ico from 'ui/common/Ico';
 import ArmorIco from 'ui/common/ArmorIco';
 import WeaponIco from 'ui/common/WeaponIco';
 import ElementIco from 'ui/common/ElementIco';
@@ -46,7 +45,7 @@ const CharacterPreview: React.SFC<IProps> = ({ character }) => {
 			<p className="Paragraph">
 				<strong>{name || '?????'}</strong>
 				{' '}
-				{Icos[sex.id.toLowerCase() as IcoID]}
+				<Ico name={sex.id} minimal />
 				{' '}
 				<ArchetypeIco archetype={archetype.id} />
 				{' '}

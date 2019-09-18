@@ -1,7 +1,6 @@
 import React, { SyntheticEvent } from 'react';
 import { observer } from 'mobx-react';
 
-import { Icos, IcoID } from 'data/icos';
 import Sexes from 'data/sexes';
 import Wields from 'data/wields';
 import Armors from 'data/armors';
@@ -80,7 +79,7 @@ class CharacterCreationUI extends React.Component<ICharacterCreationUIProps> {
 								{Sexes.map((id, sexData) => (
 									<FormRadio
 										id={`f-sex-${id}`}
-										label={`${Icos[id.toLocaleLowerCase() as IcoID]} ${sexData.title}`}
+										label={sexData.title}
 										name="sex"
 										value={id}
 										isChecked={id === sex.id}

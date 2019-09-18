@@ -4,14 +4,15 @@ import Wields from 'data/wields';
 import Armors from 'data/armors';
 import Weapons from 'data/weapons';
 import Skillsets from 'data/skillsets';
-import { Icos, IcoID } from 'data/icos';
 import Archetypes from 'data/archetypes';
 
 import { getPath } from 'modules/route';
+import { SexID } from 'modules/character/sex';
 import { IArmorData } from 'modules/equipment/armor-data';
 import { IWeaponData } from 'modules/equipment/weapon-data';
 import { isBothWielding, isDualWielding, ICharacterData } from 'modules/character-creation/character-data';
 
+import Ico from 'ui/common/Ico';
 import Link from 'ui/common/Link';
 import LinkIco from 'ui/common/LinkIco';
 import ArmorIco from 'ui/common/ArmorIco';
@@ -28,6 +29,10 @@ interface IColumn {
 	readonly value: (char: ICharacterData | null, i: number) => React.ReactNode;
 	readonly editable?: boolean;
 }
+
+const renderSexIco = (sex: SexID): React.ReactNode => (
+	<Ico name={sex} />
+);
 
 const renderArchetypeIco = (archetype: ArchetypeID): React.ReactNode => (
 	<ArchetypeIco archetype={archetype} />
@@ -84,7 +89,7 @@ const getColumns = (editable = false, onMoveDown?: IOnMoveDown, onMoveUp?: IOnMo
 			value: char => (char ? renderArchetypeIco(char.archetype) : '')
 		}, {
 			name: 'sex',
-			value: char => (char ? Icos[char.sex.toLowerCase() as IcoID] || '' : '')
+			value: char => (char ? renderSexIco(char.sex) : '')
 		}, {
 			title: 'Name',
 			name: 'name',

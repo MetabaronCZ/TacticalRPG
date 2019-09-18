@@ -20,9 +20,6 @@
 		margin-right: 0;
 	}
 
-	// general
-	&.Ico--info { background-image: url("#{$path-ico}/info.svg"); }
-
 	// elements
 	&.Ico--FIRE { background-image: url("#{$path-ico-element}/fire.svg"); }
 	&.Ico--ICE { background-image: url("#{$path-ico-element}/ice.svg"); }
@@ -59,4 +56,9 @@
 	// skills
 	&.Ico--EVADE { background-image: url("#{$path-ico-skill}/evade.svg"); }
 	&.Ico--ENERGY_SHIELD { background-image: url("#{$path-ico-skill}/energy-shield.svg"); }
+
+	// misc
+	&.Ico--info { background-image: url("#{$path-ico}/info.svg"); }
+	&.Ico--MALE { background-image: url("#{$path-ico}/male.svg"); }
+	&.Ico--FEMALE { background-image: url("#{$path-ico}/female.svg"); }
 }
