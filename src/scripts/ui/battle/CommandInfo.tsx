@@ -1,14 +1,15 @@
 import React from 'react';
 
+import { backAttackModifier } from 'data/combat';
+
 import Command, { formatCost } from 'modules/battle/command';
 import { StatusEffectID } from 'modules/battle/status-effect';
-import { ICasterCombatPreview, ICasterPreviewItem } from 'modules/battle/combat';
+import { ICasterCombatPreview, ICasterPreviewItem, ICasterPreviewAffinity } from 'modules/battle/combat';
 
 import WeaponIco from 'ui/common/WeaponIco';
 import ElementIco from 'ui/common/ElementIco';
 import CombatInfo from 'ui/battle/CombatInfo';
 import CommandTitle from 'ui/battle/CommandTitle';
-import { backAttackModifier } from 'data/combat';
 
 interface IProps {
 	readonly preview: ICasterCombatPreview | null;
@@ -18,15 +19,19 @@ interface IProps {
 const CommandInfo: React.SFC<IProps> = ({ preview, command }) => {
 	const { cost } = command;
 
-	let damageSkills: ICasterPreviewItem[] = [];
+	let physicalSkills: ICasterPreviewItem[] = [];
+	let magicalSkills: ICasterPreviewItem[] = [];
 	let healingSkills: ICasterPreviewItem[] = [];
+	let affinities: ICasterPreviewAffinity[] = [];
 	let status: StatusEffectID[] = [];
 	let isBackAttack = false;
 
 	if (preview) {
-		damageSkills = preview.damageSkills;
+		physicalSkills = preview.physicalSkills;
+		magicalSkills = preview.magicalSkills;
 		healingSkills = preview.healingSkills;
 		isBackAttack = preview.backAttack;
+		affinities = preview.affinity;
 		status = preview.status;
 	}
 
@@ -46,36 +51,54 @@ const CommandInfo: React.SFC<IProps> = ({ preview, command }) => {
 				<CombatInfo label="Healing" small={false}>
 					{healingSkills.map(({ skill, value }, i) => (
 						<React.Fragment key={i}>
-							{'NONE' !== skill.element && (
-								<ElementIco element={skill.element} />
-							)}
-							{value}
-							{i < healingSkills.length - 1 ? ' + ' : ''}
+							<ElementIco element={skill.element} />
+							{' '}
+							{value}{i < healingSkills.length - 1 ? ' + ' : ''}
 						</React.Fragment>
 					))}
 				</CombatInfo>
 			)}
 	
-			{damageSkills.length > 0 && (
-				<CombatInfo label="Attack value" small={false}>
-					{damageSkills.map(({ skill, value }, i) => (
+			{physicalSkills.length > 0 && (
+				<CombatInfo label="Physical attack" small={false}>
+					{physicalSkills.map(({ skill, value }, i) => (
 						<React.Fragment key={i}>
-							{'NONE' !== skill.weapon && (
-								<WeaponIco weapon={skill.weapon} />
-							)}
-							{'NONE' !== skill.element && (
-								<ElementIco element={skill.element} />
-							)}
-							{value}
-							{i < damageSkills.length - 1 ? ' + ' : ''}
+							<WeaponIco weapon={skill.weapon} minimal />
+							{' '}
+							{value}{i < physicalSkills.length - 1 ? ' + ' : ''}
+						</React.Fragment>
+					))}
+				</CombatInfo>
+			)}
+
+			{magicalSkills.length > 0 && (
+				<CombatInfo label="Magical attack" small={false}>
+					{magicalSkills.map(({ skill, value }, i) => (
+						<React.Fragment key={i}>
+							<ElementIco element={skill.element} minimal />
+							{' '}
+							{value}{i < magicalSkills.length - 1 ? ' + ' : ''}
 						</React.Fragment>
 					))}
 				</CombatInfo>
 			)}
 
 			{isBackAttack && (
-				<CombatInfo label="Back attack">
+				<CombatInfo label="Back attack modifier">
 					x{backAttackModifier}
+				</CombatInfo>
+			)}
+
+			{affinities.length > 0 && (
+				<CombatInfo label="Elemental affinity" small={false}>
+					{affinities.map(({ element, affinity }, i) => (
+						<React.Fragment key={i}>
+							<ElementIco element={element} minimal />
+							{' '}
+							{'ELEMENTAL_WEAK' === affinity ? 'WEAK' : 'STRONG'}
+							{i < affinities.length - 1 ? ' + ' : ''}
+						</React.Fragment>
+					))}
 				</CombatInfo>
 			)}
 

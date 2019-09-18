@@ -222,25 +222,25 @@ class CombatPhase extends ActPhase<ICombatPhaseSnapshot, ICombatPhaseRecord> {
 
 					target.onHealing(skill, healing, statuses, healed => {
 						result.healed += healed;
-					});
 
-					info.push({
-						text: formatNumber(healing),
-						type: 'HEALING',
-						weapon: 'NONE',
-						element: skill.element,
-						position
-					});
-
-					for (const item of status) {
 						info.push({
-							text: item.effect,
-							type: 'BUFF',
+							text: formatNumber(healed),
+							type: 'HEALING',
 							weapon: 'NONE',
 							element: skill.element,
 							position
 						});
-					}
+
+						for (const item of status) {
+							info.push({
+								text: item.effect,
+								type: 'BUFF',
+								weapon: 'NONE',
+								element: skill.element,
+								position
+							});
+						}
+					});
 				}
 				return;
 		}

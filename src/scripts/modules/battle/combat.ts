@@ -6,11 +6,11 @@ import * as DMG from 'data/combat';
 
 import Skill from 'modules/skill';
 import Vector from 'modules/geometry/vector';
+import Command from 'modules/battle/command';
 import Character, { ICharacterSnapshot } from 'modules/character';
 import { SkillElement, ISkillData } from 'modules/skill/skill-data';
 import { ElementAffinityTable, Affinity } from 'modules/skill/affinity';
 import StatusEffect, { StatusEffectID } from 'modules/battle/status-effect';
-import Command from 'modules/battle/command';
 
 const precision = 10 ** 10; // angle precision modifier
 const backAttackAngle = PI / 3; // 60 degrees
@@ -46,11 +46,18 @@ export interface ICasterPreviewItem {
 	readonly value: number;
 }
 
+export interface ICasterPreviewAffinity {
+	readonly element: SkillElement;
+	readonly affinity: Affinity;
+}
+
 export interface ICasterCombatPreview {
 	readonly character: ICharacterSnapshot;
 	readonly status: StatusEffectID[];
-	readonly damageSkills: ICasterPreviewItem[];
+	readonly physicalSkills: ICasterPreviewItem[];
+	readonly magicalSkills: ICasterPreviewItem[];
 	readonly healingSkills: ICasterPreviewItem[];
+	readonly affinity: ICasterPreviewAffinity[];
 	backAttack: boolean;
 }
 
@@ -260,13 +267,20 @@ export const getCombatPreview = (command: Command, caster: Character, target: Ch
 	const preview: ICombatPreview = {
 		caster: {
 			character: caster.serialize(),
+			backAttack: false,
 			status: [],
-			damageSkills: [],
-			healingSkills: [],
-			backAttack: false
+			affinity: [],
+			physicalSkills: [],
+			magicalSkills: [],
+			healingSkills: []
 		},
 		target: null
 	};
+
+	// check back attack
+	if (target && !command.isSupport) {
+		preview.caster.backAttack = isBackAttacked(caster, target);
+	}
 
 	// get caster command skills info
 	for (const skill of skills) {
@@ -278,15 +292,39 @@ export const getCombatPreview = (command: Command, caster: Character, target: Ch
 		}
 
 		if (skill.isSupport) {
+			// add healing data
 			preview.caster.healingSkills.push({
 				skill,
 				value: magical
 			});
+
 		} else {
-			preview.caster.damageSkills.push({
-				skill,
-				value: physical + magical
-			});
+			// add damage data
+			if ('NONE' !== skill.weapon) {
+				preview.caster.physicalSkills.push({
+					skill,
+					value: physical
+				});
+			}
+
+			if ('NONE' !== skill.element) {
+				preview.caster.magicalSkills.push({
+					skill,
+					value: magical
+				});
+			}
+
+			// add element affinity data
+			if (target) {
+				const affinity = getAffinity(skill.element, target.skillset.element);
+
+				if ('ELEMENTAL_NEUTRAL' !== affinity) {
+					preview.caster.affinity.push({
+						element: skill.element,
+						affinity
+					});
+				}
+			}
 		}
 	}
 
@@ -297,10 +335,6 @@ export const getCombatPreview = (command: Command, caster: Character, target: Ch
 		const elmStrengths = Object.entries(ElementAffinityTable)
 			.filter(elm => elm[1] === skillset.element)
 			.map(elm => elm[0] as SkillElement);
-
-		if (!command.isSupport) {
-			preview.caster.backAttack = isBackAttacked(caster, target);
-		}
 
 		preview.target = {
 			character: target.serialize(),
