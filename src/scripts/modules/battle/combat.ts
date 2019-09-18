@@ -90,7 +90,7 @@ const getAffinity = (attacker: SkillElement, defender: SkillElement): Affinity =
 	if (ElementAffinityTable[attacker] === defender) {
 		return 'ELEMENTAL_STRONG';
 	}
-	if (defender === attacker) {
+	if ('NONE' !== attacker && defender === attacker) {
 		return 'ELEMENTAL_WEAK';
 	}
 	return 'ELEMENTAL_NEUTRAL';

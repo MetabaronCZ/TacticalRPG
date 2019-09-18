@@ -3,12 +3,12 @@ BUGS
 	- typicky to byva tile s promichanymi souradnicemi
 	- docasne pridat logovani pro targetovani:
 		- pokud targetovany Tile neni v targetable, tak zalogovat Act
-??	pocita se spravne Summary TOP 5 damage
-	- kontrolovat pro skilly, kde bylo zraneno vic postav
+
 
 TODO
 ---------------------------------------------------------------------------------------
---	pridat do CombatPreview i modifikatory ze statusu (BERSERKING, IRON_SKIN, apod)
+--	AI: pridat logiku rozhodovani podle CharacterCondition
+	- MELEE pri DANGER utocit ze safeArea pozice, apod.
 --	AI: pridat logiku pro vyhodnoceni pouziti CC Commandu
 	- viz "effectActions" v btDecide
 --  AIPlayer: mel by rozhodovat, ktera postava bude na koho utocit (pripadne healovat)
