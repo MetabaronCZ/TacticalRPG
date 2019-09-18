@@ -179,7 +179,7 @@ const getRowInfo = (characters: ICharacterData[], record: IActRecord): IRecordAn
 			txt = 'Revived';
 		}
 		if (item.killed) {
-			txt = 'Killed';
+			txt = `Killed (${item.damaged} damage)`;
 		}
 		result.results.push(txt);
 	}

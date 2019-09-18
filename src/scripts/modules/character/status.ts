@@ -71,8 +71,13 @@ class Status {
 				if (item.repeat.value <= 0) {
 					this.remove(item);
 
+					let text = `${item.title} ended`;
+
+					if ('DYING' === item.id) {
+						text = 'Dead';
+					}
 					cb({
-						text: `${item.title} ended`,
+						text,
 						type: 'ACTION',
 						weapon: item.skill.weapon,
 						element: item.skill.element,

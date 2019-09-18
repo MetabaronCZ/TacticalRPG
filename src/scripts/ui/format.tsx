@@ -7,12 +7,16 @@ import { ICharacterData, isDualWielding } from 'modules/character-creation/chara
 import ArmorIco from 'ui/common/ArmorIco';
 import WeaponIco from 'ui/common/WeaponIco';
 import ArchetypeIco from 'ui/common/ArchetypeIco';
+import Skillsets from 'data/skillsets';
+import ElementIco from 'ui/common/ElementIco';
 
 export const formatCharacter = (character: ICharacterData | null): React.ReactNode => {
 	if (!character) {
 		return '';
 	}
-	const { sex, archetype, main, off, armor } = character;
+	const { sex, archetype, skillset, main, off, armor } = character;
+	const element = Skillsets.get(skillset).element;
+
 	let offA: React.ReactNode = '';
 
 	if (isDualWielding(character)) {
@@ -25,6 +29,10 @@ export const formatCharacter = (character: ICharacterData | null): React.ReactNo
 			{Icos[sex.toLowerCase() as IcoID] || ''}
 			{' '}
 			<ArchetypeIco archetype={archetype} />
+			{' '}
+			{'NONE' !== element && (
+				<ElementIco element={element} minimal />
+			)}
 			{' '}
 			<WeaponIco weapon={main} minimal />
 			{' '}

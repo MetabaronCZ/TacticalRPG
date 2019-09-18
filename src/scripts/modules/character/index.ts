@@ -299,11 +299,12 @@ class Character {
 		if (!this.status.has('DYING')) {
 			throw new Error('Illegal character revive attempt');
 		}
+		const { HP } = this.baseAttributes;
 		this.status.removeAll();
 
-		this.attributes.set('HP', this.baseAttributes.HP);
+		this.attributes.set('HP', HP);
 		this.attributes.set('CT', 0);
-		onStatus(0, true);
+		onStatus(HP, true);
 	}
 
 	public die(): void {

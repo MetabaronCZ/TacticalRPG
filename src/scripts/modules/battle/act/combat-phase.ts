@@ -197,6 +197,7 @@ class CombatPhase extends ActPhase<ICombatPhaseSnapshot, ICombatPhaseRecord> {
 				if (isDying) {
 					// revive target
 					target.onRevive((amount, revived) => {
+						result.healed += amount;
 						result.revived = result.revived || !revived;
 					});
 
@@ -321,17 +322,6 @@ class CombatPhase extends ActPhase<ICombatPhaseSnapshot, ICombatPhaseRecord> {
 			result.damaged += dmg;
 			result.killed = result.killed || !!killed;
 		});
-
-		if (target.status.has('DYING')) {
-			info.push({
-				text: 'Dying',
-				type: 'ACTION',
-				element: 'NONE',
-				weapon: 'NONE',
-				position
-			});
-			return;
-		}
 
 		// add skill effects
 		for (const item of status) {

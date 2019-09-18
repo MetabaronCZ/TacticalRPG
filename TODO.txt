@@ -3,10 +3,15 @@ BUGS
 	- typicky to byva tile s promichanymi souradnicemi
 	- docasne pridat logovani pro targetovani:
 		- pokud targetovany Tile neni v targetable, tak zalogovat Act
-
+??	pocita se spravne Summary TOP 5 damage
+	- kontrolovat pro skilly, kde bylo zraneno vic postav
 
 TODO
 ---------------------------------------------------------------------------------------
+--	ikonu pro ENERGY SHIELD a EVADE
+--	v CommandInfo UI zobrazovat u targets:
+	- ... (pokud se rozhoduji)
+	- combat.result (pokud je reaction DONE)
 --	BattleInfo:
 	--	misto Back Attack textu pridat ikonku
 		- BACK ATTACK psat v zavorce za damage
