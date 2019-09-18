@@ -8,6 +8,7 @@ import WeaponIco from 'ui/common/WeaponIco';
 import ElementIco from 'ui/common/ElementIco';
 import CombatInfo from 'ui/battle/CombatInfo';
 import CommandTitle from 'ui/battle/CommandTitle';
+import { backAttackModifier } from 'data/combat';
 
 interface IProps {
 	readonly preview: ICasterCombatPreview | null;
@@ -20,10 +21,12 @@ const CommandInfo: React.SFC<IProps> = ({ preview, command }) => {
 	let damageSkills: ICasterPreviewItem[] = [];
 	let healingSkills: ICasterPreviewItem[] = [];
 	let status: StatusEffectID[] = [];
+	let isBackAttack = false;
 
 	if (preview) {
 		damageSkills = preview.damageSkills;
 		healingSkills = preview.healingSkills;
+		isBackAttack = preview.backAttack;
 		status = preview.status;
 	}
 
@@ -67,6 +70,12 @@ const CommandInfo: React.SFC<IProps> = ({ preview, command }) => {
 							{i < damageSkills.length - 1 ? ' + ' : ''}
 						</React.Fragment>
 					))}
+				</CombatInfo>
+			)}
+
+			{isBackAttack && (
+				<CombatInfo label="Back attack">
+					x{backAttackModifier}
 				</CombatInfo>
 			)}
 

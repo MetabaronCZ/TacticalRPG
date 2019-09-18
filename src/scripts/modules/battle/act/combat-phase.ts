@@ -25,6 +25,7 @@ export interface ICombatPhaseRecord {
 }
 
 export interface ICombatResult {
+	readonly isSupport: boolean;
 	readonly character: string;
 	damaged: number;
 	healed: number;
@@ -69,6 +70,7 @@ class CombatPhase extends ActPhase<ICombatPhaseSnapshot, ICombatPhaseRecord> {
 		// prepare results object
 		for (const tgt of targets) {
 			this.combatResults.push({
+				isSupport: command.isSupport,
 				character: tgt.data.id,
 				damaged: 0,
 				healed: 0,

@@ -47,6 +47,10 @@ export const formatCharacter = (character: ICharacterData | null): React.ReactNo
 export const formatCombatResult = (result: ICombatResult): React.ReactNode => {
 	let txt = '-';
 
+	if (result.isSupport) {
+		txt = 'Healed';
+	}
+
 	if (result.evaded) {
 		txt = 'Evaded';
 	}

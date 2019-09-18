@@ -10,6 +10,7 @@ import Character, { ICharacterSnapshot } from 'modules/character';
 import { SkillElement, ISkillData } from 'modules/skill/skill-data';
 import { ElementAffinityTable, Affinity } from 'modules/skill/affinity';
 import StatusEffect, { StatusEffectID } from 'modules/battle/status-effect';
+import Command from 'modules/battle/command';
 
 const precision = 10 ** 10; // angle precision modifier
 const backAttackAngle = PI / 3; // 60 degrees
@@ -50,6 +51,7 @@ export interface ICasterCombatPreview {
 	readonly status: StatusEffectID[];
 	readonly damageSkills: ICasterPreviewItem[];
 	readonly healingSkills: ICasterPreviewItem[];
+	backAttack: boolean;
 }
 
 export interface ITargetCombatPreview {
@@ -249,7 +251,9 @@ const getStatusEffects = (caster: Character, target: Character, skill: Skill, ph
 	return effects;
 };
 
-export const getCombatPreview = (skills: Skill[], caster: Character, target: Character | null): ICombatPreview | null => {
+export const getCombatPreview = (command: Command, caster: Character, target: Character | null): ICombatPreview | null => {
+	const { skills } = command;
+
 	if (!skills.length) {
 		return null;
 	}
@@ -258,7 +262,8 @@ export const getCombatPreview = (skills: Skill[], caster: Character, target: Cha
 			character: caster.serialize(),
 			status: [],
 			damageSkills: [],
-			healingSkills: []
+			healingSkills: [],
+			backAttack: false
 		},
 		target: null
 	};
@@ -288,10 +293,14 @@ export const getCombatPreview = (skills: Skill[], caster: Character, target: Cha
 	// handle target stats
 	if (target) {
 		const { skillset, armor } = target;
-	
+
 		const elmStrengths = Object.entries(ElementAffinityTable)
 			.filter(elm => elm[1] === skillset.element)
 			.map(elm => elm[0] as SkillElement);
+
+		if (!command.isSupport) {
+			preview.caster.backAttack = isBackAttacked(caster, target);
+		}
 
 		preview.target = {
 			character: target.serialize(),

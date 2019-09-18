@@ -158,7 +158,7 @@ class CommandPhase extends ActPhase<ICommandPhaseSnapshot, ICommandPhaseRecord> 
 			: null;
 
 		const preview = cmd
-			? getCombatPreview(cmd.skills, this.actor, effectTarget)
+			? getCombatPreview(cmd, this.actor, effectTarget)
 			: null;
 
 		return {
