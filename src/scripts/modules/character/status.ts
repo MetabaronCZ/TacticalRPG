@@ -1,7 +1,6 @@
 import Character from 'modules/character';
 import { IOnBattleInfo } from 'modules/battle/battle-info';
 import StatusEffect, { StatusEffectID, IOnStatus } from 'modules/battle/status-effect';
-import Skill from 'modules/skill';
 
 class Status {
 	private items: StatusEffect[] = [];
@@ -14,8 +13,8 @@ class Status {
 		return [...this.items];
 	}
 
-	public apply(skill: Skill, effectId: StatusEffectID, ammount = 0, onStatus?: IOnStatus): void {
-		const effect = new StatusEffect(effectId, skill, ammount, onStatus);
+	public apply(effectId: StatusEffectID, ammount = 0, onStatus?: IOnStatus): void {
+		const effect = new StatusEffect(effectId, ammount, onStatus);
 		const existing = this.items.find(item => effectId === item.id);
 
 		if (!existing) {
@@ -72,15 +71,16 @@ class Status {
 					this.remove(item);
 
 					let text = `${item.title} ended`;
+					let status: StatusEffectID | undefined;
 
 					if ('DYING' === item.id) {
 						text = 'Dead';
+						status = 'DYING';
 					}
 					cb({
 						text,
 						type: 'ACTION',
-						weapon: item.skill.weapon,
-						element: item.skill.element,
+						status,
 						position: char.position
 					});
 				}

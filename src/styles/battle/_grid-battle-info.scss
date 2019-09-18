@@ -38,12 +38,9 @@
 			color: $color-yellow;
 		}
 
+		&.GridBattleInfo-item--healing,
 		&.GridBattleInfo-item--damage {
 			color: $color-white;
-		}
-
-		&.GridBattleInfo-item--healing {
-			color: $color-green;
 		}
 	}
 }

@@ -96,8 +96,6 @@ class CombatPhase extends ActPhase<ICombatPhaseSnapshot, ICombatPhaseRecord> {
 					info.push({
 						text: 'Evaded',
 						type: 'ACTION',
-						element: 'NONE',
-						weapon: skill.weapon,
 						position
 					});
 					return;
@@ -190,8 +188,6 @@ class CombatPhase extends ActPhase<ICombatPhaseSnapshot, ICombatPhaseRecord> {
 					info.push({
 						text: `${effect ? effect.title : 'No'} status healed`,
 						type: 'HEALING',
-						weapon: 'NONE',
-						element: skill.element,
 						position
 					});
 				}
@@ -208,8 +204,6 @@ class CombatPhase extends ActPhase<ICombatPhaseSnapshot, ICombatPhaseRecord> {
 					info.push({
 						text: 'Revived',
 						type: 'BUFF',
-						weapon: 'NONE',
-						element: skill.element,
 						position
 					});
 				}
@@ -220,14 +214,12 @@ class CombatPhase extends ActPhase<ICombatPhaseSnapshot, ICombatPhaseRecord> {
 					// apply healing to target
 					const statuses = status.map(item => item.id);
 
-					target.onHealing(skill, healing, statuses, healed => {
+					target.onHealing(healing, statuses, healed => {
 						result.healed += healed;
 
 						info.push({
 							text: formatNumber(healed),
 							type: 'HEALING',
-							weapon: 'NONE',
-							element: skill.element,
 							position
 						});
 
@@ -235,8 +227,6 @@ class CombatPhase extends ActPhase<ICombatPhaseSnapshot, ICombatPhaseRecord> {
 							info.push({
 								text: item.effect,
 								type: 'BUFF',
-								weapon: 'NONE',
-								element: skill.element,
 								position
 							});
 						}
@@ -259,7 +249,6 @@ class CombatPhase extends ActPhase<ICombatPhaseSnapshot, ICombatPhaseRecord> {
 			info.push({
 				text: 'Blocked',
 				type: 'REACTION',
-				element: 'NONE',
 				weapon: skill.weapon,
 				position
 			});
@@ -270,8 +259,6 @@ class CombatPhase extends ActPhase<ICombatPhaseSnapshot, ICombatPhaseRecord> {
 			info.push({
 				text: `Shielded (${shielded.cost} MP)`,
 				type: 'REACTION',
-				element: 'NONE',
-				weapon: 'NONE',
 				position
 			});
 		}
@@ -282,7 +269,6 @@ class CombatPhase extends ActPhase<ICombatPhaseSnapshot, ICombatPhaseRecord> {
 				text: formatNumber(combat.physical),
 				type: 'DAMAGE',
 				weapon: skill.weapon,
-				element: 'NONE',
 				position
 			});
 		}
@@ -302,7 +288,6 @@ class CombatPhase extends ActPhase<ICombatPhaseSnapshot, ICombatPhaseRecord> {
 				text: `${dmg}${affinityText ? ' (' + affinityText + ')' : ''}`,
 				type: 'DAMAGE',
 				element: skill.element,
-				weapon: 'NONE',
 				position
 			});
 		}
@@ -311,7 +296,7 @@ class CombatPhase extends ActPhase<ICombatPhaseSnapshot, ICombatPhaseRecord> {
 		const statuses = status.map(item => item.id);
 		const mpDamage = (shielded ? shielded.cost : 0);
 
-		target.onDamage(skill, combat.damage, mpDamage, statuses, (dmg, killed) => {
+		target.onDamage(combat.damage, mpDamage, statuses, (dmg, killed) => {
 			result.damaged += dmg;
 			result.killed = result.killed || !!killed;
 		});
@@ -321,8 +306,9 @@ class CombatPhase extends ActPhase<ICombatPhaseSnapshot, ICombatPhaseRecord> {
 			info.push({
 				text: item.effect,
 				type: 'DEBUFF',
-				weapon: item.skill.weapon,
-				element: item.skill.element,
+				weapon: skill.weapon,
+				element: skill.element,
+				status: item.id,
 				position
 			});
 		}

@@ -2,8 +2,10 @@ import React from 'react';
 
 import { IBattleInfo, BattleInfoType } from 'modules/battle/battle-info';
 
-import ElementIco from 'ui/common/ElementIco';
 import WeaponIco from 'ui/common/WeaponIco';
+import StatusIco from 'ui/common/StatusIco';
+import ElementIco from 'ui/common/ElementIco';
+import Ico from 'ui/common/Ico';
 
 export interface IBattleInfoCoords {
 	info: IBattleInfo;
@@ -33,24 +35,45 @@ const getVariant = (type: BattleInfoType): string => {
 const GridBattleInfo: React.SFC<IProps> = ({ info }) => (
 	<ul className="GridBattleInfo">
 		{info.map((item, i) => {
-			const { text, type, weapon, element } = item.info;
+			const { text, type, weapon, element, status } = item.info;
 
 			const variant = getVariant(type);
 			let message: React.ReactNode = text;
 
-			if ('ACTION' !== type && 'REACTION' !== type) {
-				message = (
-					<React.Fragment>
-						{'NONE' !== weapon && (
-							<WeaponIco weapon={weapon} />
-						)}
-						{'NONE' !== element && (
-							<ElementIco element={element} />
-						)}
-						{message}
-					</React.Fragment>
-				);
+			switch (type) {
+				case 'DAMAGE':
+				case 'DEBUFF':
+					message = (
+						<React.Fragment>
+							{weapon && (
+								<WeaponIco weapon={weapon} minimal />
+							)}
+							{element && (
+								<ElementIco element={element} minimal />
+							)}
+							{status && (
+								<StatusIco status={status} minimal />
+							)}
+							{' '}
+							{message}
+						</React.Fragment>
+					);
+					break;
+
+				case 'HEALING':
+				case 'BUFF':
+					message = (
+						<React.Fragment>
+							<Ico name="healing" />
+							{message}
+						</React.Fragment>
+					);
+					break;
+
+				default:
+					// pass
 			}
+
 			return (
 				<li
 					className={`GridBattleInfo-item GridBattleInfo-item--${variant}`}

@@ -8,13 +8,10 @@ BUGS
 
 TODO
 ---------------------------------------------------------------------------------------
---	u HEALING skill dat specialni ikonu (+)
+>>	u HEALING skill dat specialni ikonu (+)
 	- ukazovat v v BattleInfo i CommandInfo
-	- u BattleInfo pridat hodnotu "status", odebrat skill
-	- u data/status-effect davat do onInfo "status"
-	- pridat ikonky pro statusy (.apply() metodu):
-		- REGEN, DYING, BURN, BLEED
-		- slozka icos/status
+
+--	udelat ikony pro vsechny StatusEffecty -> posilat je jako status v combat phase
 ??	misto StatusEffect textu udelat v BattleInfo ikonky
 	- potom uz nebude potreba posilat do StatusEffectu ani Skill
 	- mozna staci pro ty effecty co maji repeating efekt

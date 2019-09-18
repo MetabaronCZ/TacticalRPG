@@ -1,6 +1,7 @@
 .Ico {
 	$path-ico: "#{$path-images}/ico";
 	$path-ico-element: "#{$path-ico}/element";
+	$path-ico-status: "#{$path-ico}/status";
 	$path-ico-weapon: "#{$path-ico}/weapon";
 	$path-ico-armor: "#{$path-ico}/armor";
 	$path-ico-skill: "#{$path-ico}/skill";
@@ -57,8 +58,15 @@
 	&.Ico--EVADE { background-image: url("#{$path-ico-skill}/evade.svg"); }
 	&.Ico--ENERGY_SHIELD { background-image: url("#{$path-ico-skill}/energy-shield.svg"); }
 
+	// statuses
+	&.Ico--BLEED { background-image: url("#{$path-ico-status}/bleed.svg"); }
+	&.Ico--BURN { background-image: url("#{$path-ico-status}/burn.svg"); }
+	&.Ico--DYING { background-image: url("#{$path-ico-status}/dying.svg"); }
+	&.Ico--REGEN { background-image: url("#{$path-ico-status}/regen.svg"); }
+
 	// misc
 	&.Ico--info { background-image: url("#{$path-ico}/info.svg"); }
+	&.Ico--healing { background-image: url("#{$path-ico}/healing.svg"); }
 	&.Ico--MALE { background-image: url("#{$path-ico}/male.svg"); }
 	&.Ico--FEMALE { background-image: url("#{$path-ico}/female.svg"); }
 }

@@ -28,15 +28,14 @@ const StatusEffects = new DataList<StatusEffectID, IStatusEffect>({
 		multi: 'STACK',
 		duration: 33,
 		repeat: 3,
-		apply: (skill, tgt, ammount, onStatus, onInfo) => {
+		apply: (tgt, ammount, onStatus, onInfo) => {
 			const dmg = Math.floor(ammount / 2);
-			tgt.onDamage(skill, dmg, 0, [], onStatus);
+			tgt.onDamage(dmg, 0, [], onStatus);
 
 			onInfo({
 				text: formatNumber(dmg),
 				type: 'DAMAGE',
-				element: 'NONE',
-				weapon: skill.weapon,
+				status: 'BLEED',
 				position: tgt.position
 			});
 		}
@@ -57,15 +56,14 @@ const StatusEffects = new DataList<StatusEffectID, IStatusEffect>({
 		multi: 'STACK',
 		duration: 33,
 		repeat: 3,
-		apply: (skill, tgt, ammount, onStatus, onInfo) => {
+		apply: (tgt, ammount, onStatus, onInfo) => {
 			const dmg = Math.floor(ammount / 2);
-			tgt.onDamage(skill, dmg, 0, [], onStatus);
+			tgt.onDamage(dmg, 0, [], onStatus);
 
 			onInfo({
 				text: formatNumber(dmg),
 				type: 'DAMAGE',
-				weapon: 'NONE',
-				element: skill.element,
+				status: 'BURN',
 				position: tgt.position
 			});
 		}
@@ -117,14 +115,13 @@ const StatusEffects = new DataList<StatusEffectID, IStatusEffect>({
 		type: 'PHYSICAL',
 		multi: 'IGNORE',
 		duration: 100,
-		apply: (skill, tgt, ammount, onStatus, onInfo) => {
+		apply: (tgt, ammount, onStatus, onInfo) => {
 			tgt.die();
 
 			onInfo({
 				text: 'Dead',
-				type: 'ACTION',
-				weapon: 'NONE',
-				element: 'NONE',
+				type: 'DEBUFF',
+				status: 'DYING',
 				position: tgt.position
 			});
 		}
@@ -137,15 +134,14 @@ const StatusEffects = new DataList<StatusEffectID, IStatusEffect>({
 		multi: 'STACK',
 		duration: 33,
 		repeat: 3,
-		apply: (skill, tgt, ammount, onStatus, onInfo) => {
+		apply: (tgt, ammount, onStatus, onInfo) => {
 			const healing = Math.floor(ammount / 2);
-			tgt.onHealing(skill, healing, [], onStatus);
+			tgt.onHealing(healing, [], onStatus);
 
 			onInfo({
 				text: formatNumber(healing),
 				type: 'HEALING',
-				weapon: 'NONE',
-				element: skill.element,
+				status: 'REGEN',
 				position: tgt.position
 			});
 		}

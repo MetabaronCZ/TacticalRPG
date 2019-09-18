@@ -2,15 +2,30 @@ import React from 'react';
 
 import Command from 'modules/battle/command';
 
-import SkillIco, { availableSkillIcos } from 'ui/common/SkillIco';
+import Ico from 'ui/common/Ico';
 import WeaponIco from 'ui/common/WeaponIco';
 import ElementIco from 'ui/common/ElementIco';
+import SkillIco, { availableSkillIcos } from 'ui/common/SkillIco';
 
 interface IProps {
 	command: Command;
 }
 
 const CommandTitle: React.SFC<IProps> = ({ command }) => {
+	if (!command.skills.length) {
+		return (
+			<span>{command.title}</span>
+		);
+	}
+
+	if (command.isSupport) {
+		return (
+			<React.Fragment>
+				<Ico name="healing" />
+				{command.title}
+			</React.Fragment>
+		);
+	}
 	const elements = command.skills
 		.map(skill => skill.element)
 		.filter(elm => 'NONE' !== elm);

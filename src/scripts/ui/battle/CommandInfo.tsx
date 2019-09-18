@@ -6,6 +6,7 @@ import Command, { formatCost } from 'modules/battle/command';
 import { StatusEffectID } from 'modules/battle/status-effect';
 import { ICasterCombatPreview, ICasterPreviewItem, ICasterPreviewAffinity } from 'modules/battle/combat';
 
+import Ico from 'ui/common/Ico';
 import WeaponIco from 'ui/common/WeaponIco';
 import ElementIco from 'ui/common/ElementIco';
 import CombatInfo from 'ui/battle/CombatInfo';
@@ -49,11 +50,10 @@ const CommandInfo: React.SFC<IProps> = ({ preview, command }) => {
 
 			{healingSkills.length > 0 && (
 				<CombatInfo label="Healing" small={false}>
-					{healingSkills.map(({ skill, value }, i) => (
+					{healingSkills.map((skill, i) => (
 						<React.Fragment key={i}>
-							<ElementIco element={skill.element} />
-							{' '}
-							{value}{i < healingSkills.length - 1 ? ' + ' : ''}
+							<Ico name="healing" />
+							{skill.value}{i < healingSkills.length - 1 ? ' + ' : ''}
 						</React.Fragment>
 					))}
 				</CombatInfo>

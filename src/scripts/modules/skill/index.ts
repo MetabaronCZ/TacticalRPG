@@ -120,8 +120,13 @@ class Skill implements ISkillData {
 		this.block = data.block || 1;
 		this.status = data.status || [];
 		this.cooldown = data.cooldown || 0;
-		this.isSupport = ('HOLY' === data.element);
 		this.isAttackSkill = (-1 !== attackSkills.indexOf(this.id));
+
+		this.isSupport = (
+			'HOLY' === data.element && (
+				!data.weapon || 'NONE' === data.weapon
+			)
+		);
 	}
 
 	public static filterAttack(ids: SkillID[]): Skill[] {

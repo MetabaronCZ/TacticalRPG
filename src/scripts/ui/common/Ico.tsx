@@ -1,7 +1,7 @@
 import React from 'react';
 import Sexes from 'data/sexes';
 
-type GeneralIco = 'info' | 'MALE' | 'FEMALE';
+type GeneralIco = 'info' | 'healing' | 'MALE' | 'FEMALE';
 
 type IcoLabels= {
 	[id in GeneralIco]: string;
@@ -9,6 +9,7 @@ type IcoLabels= {
 
 const labels: IcoLabels = {
 	info: 'Info',
+	healing: 'Healing',
 	MALE: Sexes.get('MALE').title,
 	FEMALE: Sexes.get('FEMALE').title
 };

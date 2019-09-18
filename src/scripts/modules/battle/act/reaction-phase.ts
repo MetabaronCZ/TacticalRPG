@@ -1,7 +1,6 @@
 import { getContinueCommand } from 'modules/battle/commands';
 import { resolveDirection } from 'modules/geometry/direction';
 
-import Skill from 'modules/skill';
 import Tile from 'modules/geometry/tile';
 import ActPhase from 'modules/battle/act/phase';
 import { IOnActPhaseEvent } from 'modules/battle/act';
@@ -207,7 +206,7 @@ class ReactionPhase extends ActPhase<IReactionPhaseSnapshot, IReactionPhaseRecor
 		// turn actor to face active reactor
 		actActor.direction = resolveDirection(actActor.position, reaction.reactor.position);
 
-		if (reaction.isSupport) {
+		if (reaction.isSupport || reaction.reactor.player === actActor.player) {
 			// force reaction pass
 			const passAction = getContinueCommand();
 			this.pass(reaction, passAction);
@@ -234,15 +233,15 @@ class ReactionPhase extends ActPhase<IReactionPhaseSnapshot, IReactionPhaseRecor
 
 		switch (skill.id) {
 			case 'ENERGY_SHIELD':
-				this.apply(reaction, skill, 'ENERGY_SHIELD');
+				this.apply(reaction, 'ENERGY_SHIELD');
 				return;
 
 			case 'SHD_SMALL_BLOCK':
-				this.apply(reaction, skill, 'BLOCK_SMALL');
+				this.apply(reaction, 'BLOCK_SMALL');
 				return;
 
 			case 'SHD_LARGE_BLOCK':
-				this.apply(reaction, skill, 'BLOCK_LARGE');
+				this.apply(reaction, 'BLOCK_LARGE');
 				return;
 
 			case 'EVADE':
@@ -254,13 +253,13 @@ class ReactionPhase extends ActPhase<IReactionPhaseSnapshot, IReactionPhaseRecor
 		}
 	}
 
-	private apply(reaction: IReaction, skill: Skill, effect: StatusEffectID): void {
+	private apply(reaction: IReaction, effect: StatusEffectID): void {
 		const { reactor, phase } = reaction;
 
 		if ('IDLE' !== phase) {
 			throw new Error('Could not react: invalid state ' + phase);
 		}
-		reactor.status.apply(skill, effect);
+		reactor.status.apply(effect);
 		this.finish(reaction);
 	}
 
