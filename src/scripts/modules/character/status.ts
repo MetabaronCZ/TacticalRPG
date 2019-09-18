@@ -57,6 +57,9 @@ class Status {
 
 	public update(char: Character, cb: IOnBattleInfo): void {
 		for (const item of this.items) {
+			if (char.isDead()) {
+				return;
+			}
 			item.duration.value--;
 
 			if (item.duration.value <= 0) {

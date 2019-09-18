@@ -7,15 +7,22 @@ BUGS
 
 TODO
 ---------------------------------------------------------------------------------------
+--	pridat animDuration pro kazdy skill
+	- na jeho zaklade pocitat timing u combat animation
+	? akce by mely vracet animaci (MOVEMENT, REACTION, COMBAT, DIRECTION)
+
 --	AI: pridat logiku rozhodovani podle CharacterCondition
 	- MELEE pri DANGER utocit ze safeArea pozice, apod.
+
 --	AI: pridat logiku pro vyhodnoceni pouziti CC Commandu
 	- viz "effectActions" v btDecide
+
 --  AIPlayer: mel by rozhodovat, ktera postava bude na koho utocit (pripadne healovat)
 	- mel by davat obecny rozkaz - specifika si rozhodne postava sama podle soucasne logiky
 	- vysledkem rozkazu by melo byt prioritizovani MOVE, TARGET nebo COMMAND v IAIData
 	- mel by vyhodnocovat, jestli je rozkaz jeste aktualni
 	- postavy nemusi mit vzdy rozkaz
+
 --  btEvadeTo predelat na:
         ?SELECT_EVASION
 			>SAFE_EVADE     ?SHOULD_DEFEND  C-reactorWarningCondition
@@ -24,13 +31,17 @@ TODO
 			>TACTICAL_EVADE C-hasTarget
 							A-evadeToTarget
 			>RANDOM_EVADE   A-evade
+
 --	udelat ikony pro vsechny StatusEffecty
 	- posilat je jako status v combat phase
 	- u debuffu posilat jen "status" a ne "weapon"
+
 ??	serializovat v EngineState i Command na ICommand
+
 ??  Magical weapon type 
 	- damage physical + magical bonus (obe mensi nez maji standardni ATTACK skilly)
     - dynamic skilly by s nimi mely byt mnohem silnejsi
+
 ??	AI Player: leader character
 	- nastavit jednu z postav jako LEADER
 	- idealne WARRIOR, FIGHTER nebo MAGI-KNIGHT archetypy
@@ -39,9 +50,12 @@ TODO
 	- leader by mel jit kupredu a obsadit stred
 		- ostatni se drzi pobliz a nejdou az prilis dopredu
 	- vyresi problem, kdy RANGED a MAGE role jdou az prilis dopredu
+
 ??	Counter reaction skill >> jako mainHand weapon Attack skill
+
 ??	pasivni skilly
 	--	DARK_AURA by mela delat 50% damage reflection (do vzdalenosti SkillArea)
+
 ??	pridat arenu / pocasi 
 	- v zavislosti na arene se behem souboje muze spustit ArenaEffect (zmena pocasi)
 	- efekt je specificky pro kazdou arenu a trva nahodnou dobu v urcitem rozmezi
@@ -62,9 +76,11 @@ TODO
 	+ upravit BattleConfig, aby mu slo vnutit i nastaveni pocasi
 	+ u replay funkce pozdeji nacitat i pocasi z Chronox zaznamu
 	+ v BattleConfig page umoznit vyber areny (pripadne kdy ma zacit nebo skoncit jeji efekt)
+
 ??	implementovat Sudden death mode (aby nedoslo ke stavu, kdy zbyvaji jen S-typy, ktere evaduji vsechny utoky)
 	- nebo po case na mapu vyvolat OP NPC, ktere bude nahodne utocit na postavy obou hracu
 	- muze nastat: zustanou 2 healeri
+
 
 LONG TERM
 ----------------------------------------------------------------------------------------------------------
