@@ -8,14 +8,7 @@ BUGS
 
 TODO
 ---------------------------------------------------------------------------------------
->>	u HEALING skill dat specialni ikonu (+)
-	- ukazovat v v BattleInfo i CommandInfo
-
---	udelat ikony pro vsechny StatusEffecty -> posilat je jako status v combat phase
-??	misto StatusEffect textu udelat v BattleInfo ikonky
-	- potom uz nebude potreba posilat do StatusEffectu ani Skill
-	- mozna staci pro ty effecty co maji repeating efekt
-
+--	pridat do CombatPreview i modifikatory ze statusu (BERSERKING, IRON_SKIN, apod)
 --	AI: pridat logiku pro vyhodnoceni pouziti CC Commandu
 	- viz "effectActions" v btDecide
 --  AIPlayer: mel by rozhodovat, ktera postava bude na koho utocit (pripadne healovat)
@@ -31,6 +24,9 @@ TODO
 			>TACTICAL_EVADE C-hasTarget
 							A-evadeToTarget
 			>RANDOM_EVADE   A-evade
+--	udelat ikony pro vsechny StatusEffecty
+	- posilat je jako status v combat phase
+	- u debuffu posilat jen "status" a ne "weapon"
 ??	serializovat v EngineState i Command na ICommand
 ??  Magical weapon type 
 	- damage physical + magical bonus (obe mensi nez maji standardni ATTACK skilly)

@@ -90,7 +90,7 @@ const getAffinity = (attacker: SkillElement, defender: SkillElement): Affinity =
 	if (ElementAffinityTable[attacker] === defender) {
 		return 'ELEMENTAL_STRONG';
 	}
-	if (ElementAffinityTable[defender] === attacker) {
+	if (defender === attacker) {
 		return 'ELEMENTAL_WEAK';
 	}
 	return 'ELEMENTAL_NEUTRAL';
@@ -264,6 +264,8 @@ export const getCombatPreview = (command: Command, caster: Character, target: Ch
 	if (!skills.length) {
 		return null;
 	}
+	const allied = (!!target && caster.player === target.player);
+
 	const preview: ICombatPreview = {
 		caster: {
 			character: caster.serialize(),
@@ -278,7 +280,7 @@ export const getCombatPreview = (command: Command, caster: Character, target: Ch
 	};
 
 	// check back attack
-	if (target && !command.isSupport) {
+	if (target && !command.isSupport && !allied) {
 		preview.caster.backAttack = isBackAttacked(caster, target);
 	}
 
@@ -331,10 +333,7 @@ export const getCombatPreview = (command: Command, caster: Character, target: Ch
 	// handle target stats
 	if (target) {
 		const { skillset, armor } = target;
-
-		const elmStrengths = Object.entries(ElementAffinityTable)
-			.filter(elm => elm[1] === skillset.element)
-			.map(elm => elm[0] as SkillElement);
+		const targetElm = skillset.element;
 
 		preview.target = {
 			character: target.serialize(),
@@ -342,9 +341,22 @@ export const getCombatPreview = (command: Command, caster: Character, target: Ch
 			shield: getShield(target, true) || 0,
 			magical: 1 - armor.magical,
 			physical: 1 - armor.physical,
-			elementalStrength: (elmStrengths.length ? elmStrengths[0] : null) || 'NONE',
-			elementalWeakness: ElementAffinityTable[skillset.element] || 'NONE'
+			elementalStrength: 'NONE',
+			elementalWeakness: 'NONE'
 		};
+
+		for (const id of Object.keys(ElementAffinityTable)) {
+			const elm = id as SkillElement;
+			const affinity = getAffinity(elm, targetElm);
+
+			if ('ELEMENTAL_STRONG' === affinity) {
+				preview.target.elementalWeakness = elm;
+			}
+
+			if ('ELEMENTAL_WEAK' === affinity) {
+				preview.target.elementalStrength = elm;
+			}
+		}
 	}
 
 	return preview;
