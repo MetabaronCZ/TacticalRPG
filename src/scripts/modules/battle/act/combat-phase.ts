@@ -276,17 +276,6 @@ class CombatPhase extends ActPhase<ICombatPhaseSnapshot, ICombatPhaseRecord> {
 			});
 		}
 
-		// back attacked
-		if (combat.backAttack) {
-			info.push({
-				text: 'Back attack',
-				type: 'ACTION',
-				element: 'NONE',
-				weapon: 'NONE',
-				position
-			});
-		}
-
 		// physical damage done
 		if (skill.physical) {
 			info.push({

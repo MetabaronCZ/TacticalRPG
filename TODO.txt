@@ -8,12 +8,10 @@ BUGS
 
 TODO
 ---------------------------------------------------------------------------------------
---	BattleInfo:
-	--	misto Back Attack textu pridat ikonku
-		- BACK ATTACK psat v zavorce za damage
-	--	misto StatusEffect textu udelat ikonky
-		- potom uz nebude potreba posilat do StatusEffectu ani Skill
-		- mozna staci pro ty effecty co maji repeating efekt
+??	misto StatusEffect textu udelat v BattleInfo ikonky
+	- potom uz nebude potreba posilat do StatusEffectu ani Skill
+	- mozna staci pro ty effecty co maji repeating efekt
+
 --	AI: pridat logiku pro vyhodnoceni pouziti CC Commandu
 	- viz "effectActions" v btDecide
 --  AIPlayer: mel by rozhodovat, ktera postava bude na koho utocit (pripadne healovat)
