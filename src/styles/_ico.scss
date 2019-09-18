@@ -2,6 +2,7 @@
 	$path-ico-element: "#{$path-images}/ico/element";
 	$path-ico-weapon: "#{$path-images}/ico/weapon";
 	$path-ico-armor: "#{$path-images}/ico/armor";
+	$path-ico-skill: "#{$path-images}/ico/skill";
 	display: inline-block;
 	width: $ico-size;
 	height: $ico-size;
@@ -49,4 +50,8 @@
 	&.Ico--LIGHT { background-image: url("#{$path-ico-armor}/light.svg"); }
 	&.Ico--HEAVY { background-image: url("#{$path-ico-armor}/heavy.svg"); }
 	&.Ico--MAGICAL { background-image: url("#{$path-ico-armor}/magical.svg"); }
+
+	// skills
+	&.Ico--EVADE { background-image: url("#{$path-ico-skill}/evade.svg"); }
+	&.Ico--ENERGY_SHIELD { background-image: url("#{$path-ico-skill}/energy-shield.svg"); }
 }

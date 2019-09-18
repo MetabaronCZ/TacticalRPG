@@ -8,8 +8,9 @@ BUGS
 
 TODO
 ---------------------------------------------------------------------------------------
---	ikonu pro ENERGY SHIELD a EVADE
---	ikonku pro Act.info zobrazovane v ActorUI a TargetUI
+--	v ActorInfo zobrazovat i Back Attack s honoutou modifikatoru x2
+--	ikonku pro Act.info
+	- zobrazovane v ActorUI a TargetUI
 --	BattleInfo:
 	--	misto Back Attack textu pridat ikonku
 		- BACK ATTACK psat v zavorce za damage
