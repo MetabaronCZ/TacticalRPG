@@ -136,7 +136,7 @@ class CombatPhase extends ActPhase<ICombatPhaseSnapshot, ICombatPhaseRecord> {
 		
 						// log info to console
 						for (const i of info) {
-							const elm = ('NONE' !== i.element ? `(${i.element})` : '');
+							const elm = ((i.element && 'NONE' !== i.element) ? `(${i.element})` : '');
 							Logger.info(`ActCombat: ${i.type} ${i.text} ${elm}`);
 						}
 					}

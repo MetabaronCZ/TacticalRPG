@@ -255,7 +255,6 @@ class ReactionPhase extends ActPhase<IReactionPhaseSnapshot, IReactionPhaseRecor
 		if ('IDLE' !== phase) {
 			throw new Error('Could not react: invalid phase ' + phase);
 		}
-		this.onEvent('REACTION_SELECTED');
 
 		// reaction animation
 		const reactionAnim = new SkillAnimation(

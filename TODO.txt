@@ -1,11 +1,3 @@
-BUGS
---	nekdy se stane, ze AI rozhodne jit nekam, ale MovePhase jde realne nekam jinam
-	- typicky to byva tile s promichanymi souradnicemi
-	- docasne pridat logovani pro targetovani:
-		- pokud targetovany Tile neni v targetable, tak zalogovat Act
---	pokud proti sobe bojuji ty same skupiny (MAIN vs MAIN), dojde k chybe vyhodnoceni enemyTargets v btDecide
-
-
 TODO
 ---------------------------------------------------------------------------------------
 --	pridat animation.test pro onEnd event

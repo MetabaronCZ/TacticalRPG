@@ -23,6 +23,7 @@ const healingTreshold = 0.8; // maximum percent of target life remaining for hea
 
 interface IActionTarget<T> {
 	readonly character: T;
+	readonly player: number;
 	readonly distance: number;
 }
 
@@ -173,6 +174,7 @@ const btDecide = (role: CharacterRole): BTAction<IAIData> => {
 					actions.push({
 						target: {
 							character: id,
+							player: tgt.player.id,
 							distance
 						},
 						move: tile,
@@ -189,7 +191,11 @@ const btDecide = (role: CharacterRole): BTAction<IAIData> => {
 
 		const possibleActions: IAction[] = actions.map(action => {
 			const charID = action.target.character;
-			const character = characters.find(char => charID === char.id);
+			const playerID = action.target.player;
+
+			const character = characters.find(char => {
+				return charID === char.id && playerID === char.player.id;
+			});
 
 			if (!character) {
 				throw new Error('Could not convert action item: Invalid character ID');
@@ -422,9 +428,9 @@ const btDecide = (role: CharacterRole): BTAction<IAIData> => {
 		}
 		const { target, move, command } = action;
 		const { character } = target;
-		let targetPos = target.character.position;
+		let targetPos = character.position;
 
-		if (character.id === actor.id) {
+		if (character.id === actor.id && character.player.id === actor.player.id) {
 			// target self on position after move
 			targetPos = move;
 		}
