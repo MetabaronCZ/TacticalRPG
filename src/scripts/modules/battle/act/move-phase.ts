@@ -1,5 +1,4 @@
 import Animation from 'core/animation';
-import { moveAnimDuration } from 'data/game-config';
 
 import { getTiles } from 'modules/geometry/tiles';
 import { resolveDirection } from 'modules/geometry/direction';
@@ -151,34 +150,36 @@ class MovePhase extends ActPhase<IMovePhaseSnapshot, IMovePhaseRecord> {
 		}
 		this.info = txtMoving;
 
-		const timing = Array(movePath.length).fill(moveAnimDuration);
+		const timing = Array(movePath.length).fill(0);
 
-		const anim = new Animation(timing, true, (step, next) => {
-			// set direction to new tile
-			const newPos = movePath[step.number];
-			actor.direction = resolveDirection(actor.position, newPos);
+		const anim = new Animation(
+			timing,
+			true,
+			(step, next) => {
+				// set direction to new tile
+				const newPos = movePath[step.number];
+				const cost = costMap[newPos.id];
 
-			// animate tile-tile movement
-			const moveAnim = new MoveAnimation(
-				actor,
-				newPos,
-				() => this.onEvent('MOVE_ANIMATION'),
-				() => {
-					actor.attributes.set('AP', this.initialAP - costMap[newPos.id]);
+				actor.direction = resolveDirection(actor.position, newPos);
 
-					if (step.isLast) {
-						// finalize animation
-						this.finalize();
-
-					} else {
-						// run next move animation part
+				// animate tile-tile movement
+				const moveAnim = new MoveAnimation(
+					actor,
+					newPos,
+					() => this.onEvent('MOVE_ANIMATION'),
+					() => {
+						actor.attributes.set('AP', this.initialAP - cost);
 						next();
 					}
-				}
-			);
+				);
 
-			moveAnim.start();
-		});
+				moveAnim.start();
+			},
+			() => {
+				// on animation end
+				this.finalize();
+			}
+		);
 
 		anim.start();
 	}

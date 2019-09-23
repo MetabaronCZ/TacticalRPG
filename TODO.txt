@@ -3,13 +3,18 @@ BUGS
 	- typicky to byva tile s promichanymi souradnicemi
 	- docasne pridat logovani pro targetovani:
 		- pokud targetovany Tile neni v targetable, tak zalogovat Act
+--	pokud proti sobe bojuji ty same skupiny (MAIN vs MAIN), dojde k chybe vyhodnoceni enemyTargets v btDecide
 
 
 TODO
 ---------------------------------------------------------------------------------------
---	pridat animDuration pro kazdy skill
-	- na jeho zaklade pocitat timing u combat animation
-	? akce by mely vracet animaci (MOVEMENT, REACTION, COMBAT, DIRECTION)
+--	reset ENERGY_SHIELD, BLOCK_SMALL, apod. statusu udealt ne v COMBAT fazi, ale v actor.onActEnd()
+
+--	pridat animation.test pro onEnd event
+
+--	vystup z COMMAND faze poro ostatni faze a pro Chronox by mel byt pouze:
+	- vybrany Command a vybrany target Tile
+	- vstup pro COMMAND fazi by mel byt REACTION.getReactions()
 
 --	AI: pridat logiku rozhodovani podle CharacterCondition
 	- MELEE pri DANGER utocit ze safeArea pozice, apod.
@@ -22,15 +27,6 @@ TODO
 	- vysledkem rozkazu by melo byt prioritizovani MOVE, TARGET nebo COMMAND v IAIData
 	- mel by vyhodnocovat, jestli je rozkaz jeste aktualni
 	- postavy nemusi mit vzdy rozkaz
-
---  btEvadeTo predelat na:
-        ?SELECT_EVASION
-			>SAFE_EVADE     ?SHOULD_DEFEND  C-reactorWarningCondition
-											C-reactorCriticalCondition
-							A-evadeToSafety
-			>TACTICAL_EVADE C-hasTarget
-							A-evadeToTarget
-			>RANDOM_EVADE   A-evade
 
 --	udelat ikony pro vsechny StatusEffecty
 	- posilat je jako status v combat phase

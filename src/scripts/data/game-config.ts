@@ -10,7 +10,6 @@ export const tickDelay = 0;
 
 // animation
 export const moveAnimDuration = 150;
-export const skillAnimDuration = 1000;
 
 // order
 export const maxOrderSize = 20; // maximum size of ordered character array

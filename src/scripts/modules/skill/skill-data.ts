@@ -16,6 +16,11 @@ export type SkillTarget = 'NONE' | 'ANY' | 'SELF' | 'ALLY' | 'ENEMY';
 export type SkillRange = 0 | 1 | 2 | 4 | Ultimate;
 export type SkillGrade = 0 | 1 | 2;
 export type SkillCooldown = 0 | 1 | 2 | Ultimate;
+export type ISkillAnimationDuration = 0 | 150 | 1000;
+
+export interface ISkillAnimation {
+	duration: ISkillAnimationDuration;
+}
 
 export interface ISkillData {
 	readonly title: string;
@@ -35,4 +40,5 @@ export interface ISkillData {
 	readonly block?: number;
 	readonly status?: StatusEffectID[];
 	readonly cooldown?: SkillCooldown;
+	readonly animation: ISkillAnimation;
 }

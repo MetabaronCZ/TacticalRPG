@@ -364,7 +364,8 @@ class Act {
 			case 'REACTION':
 				switch (evt) {
 					case 'REACTION_IDLE':
-					case 'REACTION_EVADING':
+					case 'REACTION_SELECTED':
+					case 'REACTION_ANIMATION':
 						this.update();
 						return;
 

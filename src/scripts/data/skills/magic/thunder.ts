@@ -12,7 +12,10 @@ const thunderMagic: { [id in ThunderMagicSkillID]: ISkillData; } = {
 		target: 'ENEMY',
 		element: 'THUNDER',
 		physical: 0,
-		magical: 1
+		magical: 1,
+		animation: {
+			duration: 1000
+		}
 	},
 	THU_SHOCK: {
 		title: 'Shock',
@@ -25,8 +28,11 @@ const thunderMagic: { [id in ThunderMagicSkillID]: ISkillData; } = {
 		element: 'THUNDER',
 		physical: 0,
 		magical: 0.5,
+		cooldown: 1,
 		status: ['SHOCK'],
-		cooldown: 1
+		animation: {
+			duration: 1000
+		}
 	},
 	THU_THUNDERSTORM: {
 		title: 'Thunderstorm',
@@ -39,7 +45,10 @@ const thunderMagic: { [id in ThunderMagicSkillID]: ISkillData; } = {
 		element: 'THUNDER',
 		physical: 0,
 		magical: 0.5,
-		cooldown: 2
+		cooldown: 2,
+		animation: {
+			duration: 1000
+		}
 	},
 	THU_THUNDER_AURA: {
 		title: 'Thunder Aura',
@@ -52,7 +61,10 @@ const thunderMagic: { [id in ThunderMagicSkillID]: ISkillData; } = {
 		element: 'THUNDER',
 		physical: 0,
 		magical: 0.25,
-		status: ['SHOCK']
+		status: ['SHOCK'],
+		animation: {
+			duration: 0
+		}
 	}
 };
 

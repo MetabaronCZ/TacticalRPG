@@ -12,7 +12,11 @@ const shieldSkills: { [id in ShieldWeaponSkillID]: ISkillData; } = {
 		weapon: 'SHIELD_SMALL',
 		physical: 1,
 		magical: 1,
-		block: 1
+		block: 1,
+		status: ['BLOCK_SMALL'],
+		animation: {
+			duration: 150
+		}
 	},
 	SHD_LARGE_BLOCK: {
 		title: 'Block',
@@ -24,7 +28,11 @@ const shieldSkills: { [id in ShieldWeaponSkillID]: ISkillData; } = {
 		weapon: 'SHIELD_LARGE',
 		physical: 1,
 		magical: 1,
-		block: 1
+		block: 1,
+		status: ['BLOCK_LARGE'],
+		animation: {
+			duration: 150
+		}
 	}
 };
 

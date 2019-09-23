@@ -9,7 +9,6 @@ import {
 
 import Tile from 'modules/geometry/tile';
 import AIPlayer from 'modules/ai/player';
-import Command from 'modules/battle/command';
 import Status from 'modules/character/status';
 import Skillset from 'modules/character/skillset';
 import { ISexData, SexID } from 'modules/character/sex';
@@ -17,6 +16,7 @@ import { DirectionID } from 'modules/geometry/direction';
 import { IArmorData } from 'modules/equipment/armor-data';
 import { IOnBattleInfo } from 'modules/battle/battle-info';
 import { IWeaponData } from 'modules/equipment/weapon-data';
+import Command, { formatCost } from 'modules/battle/command';
 import BaseAttributes from 'modules/character/base-attributes';
 import Player, { IPlayerSnapshot } from 'modules/battle/player';
 import { SkillID, SkillCooldown } from 'modules/skill/skill-data';
@@ -314,16 +314,23 @@ class Character {
 	public act(command: Command): void {
 		const { cost, skills } = command;
 
+		// reduce AP, MP
+		if (cost) {
+			const { AP, MP } = this.attributes;
+			const newAP = AP - cost.AP;
+			const newMP = MP - cost.MP;
+
+			if (newAP < 0 || newMP < 0) {
+				throw new Error('Character could not act: invalid command cost ' + formatCost(cost));
+			}
+			this.attributes.set('AP', newAP);
+			this.attributes.set('MP', newMP);
+		}
+
 		// put skills on cooldown
 		for (const skill of skills) {
 			const cd = skill.cooldown;
 			this.cooldowns[skill.id] = ('ULTIMATE' === cd ? cd : cd + 1) as SkillCooldown;
-		}
-
-		// reduce AP, MP
-		if (cost) {
-			this.attributes.set('AP', this.attributes.AP - cost.AP);
-			this.attributes.set('MP', this.attributes.MP - cost.MP);
 		}
 	}
 }

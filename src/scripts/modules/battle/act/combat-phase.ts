@@ -2,8 +2,6 @@ import Animation from 'core/animation';
 import { getRandomItem } from 'core/array';
 import { formatNumber, randomNumberBetween } from 'core/number';
 
-import { skillAnimDuration } from 'data/game-config';
-
 import Logger from 'modules/logger';
 import Tile from 'modules/geometry/tile';
 import Character from 'modules/character';
@@ -12,6 +10,7 @@ import ActPhase from 'modules/battle/act/phase';
 import { IOnActPhaseEvent } from 'modules/battle/act';
 import { IBattleInfo } from 'modules/battle/battle-info';
 import { getCombatInfo, ICombatInfo } from 'modules/battle/combat';
+import SkillAnimation from 'modules/battle/act/skill-animation';
 
 const txtCombat = 'Combat in progress...';
 
@@ -64,9 +63,6 @@ class CombatPhase extends ActPhase<ICombatPhaseSnapshot, ICombatPhaseRecord> {
 		this.phase = 'ANIMATION';
 		this.info = txtCombat;
 
-		const { skills } = command;
-		const timing = Array(skills.length).fill(skillAnimDuration);
-
 		// prepare results object
 		for (const tgt of targets) {
 			this.combatResults.push({
@@ -80,55 +76,13 @@ class CombatPhase extends ActPhase<ICombatPhaseSnapshot, ICombatPhaseRecord> {
 			});
 		}
 
-		const skillAnim = new Animation(timing, false, step => {
-			const skill = skills[step.number];
-			const info: IBattleInfo[] = [];
+		const steps = [...command.skills];
 
-			targets.forEach((target, t) => {
-				const combat = getCombatInfo(actor, target, skill);
-				const result = this.combatResults[t];
-				const { position } = combat.target;
+		const run = (): void => {
+			const step = steps.shift();
 
-				if (!position.isContained(effectArea)) {
-					// target has been pushed / evaded from skill effect area
-					result.evaded = true;
-
-					info.push({
-						text: 'Evaded',
-						type: 'ACTION',
-						position
-					});
-					return;
-				}
-				if (skill.isSupport) {
-					this.handleSupport(combat, result, info);
-				} else {
-					this.handleDamage(combat, result, info);
-				}
-			});
-
-			if (info.length) {
-				const infoTiming = info.map(() => randomNumberBetween(250, 350));
-
-				const infoAnim = new Animation(infoTiming, false, infoStep => {
-					const i = info[infoStep.number];
-					this.onEvent('BATTLE_INFO', i);
-				});
-
-				// start battle info animation
-				infoAnim.start();
-
-				// log info to console
-				for (const i of info) {
-					const elm = ('NONE' !== i.element ? `(${i.element})` : '');
-					Logger.info(`ActCombat: ${i.type} ${i.text} ${elm}`);
-				}
-			}
-
-			this.onEvent('COMBAT_ANIMATION');
-
-			if (step.isLast) {
-				// finalize step
+			if (!step) {
+				// finalize combat animation
 				actor.act(command);
 
 				for (const target of targets) {
@@ -141,11 +95,71 @@ class CombatPhase extends ActPhase<ICombatPhaseSnapshot, ICombatPhaseRecord> {
 				this.info = '';
 
 				this.onEvent('COMBAT_DONE');
+				return;
 			}
-		});
+
+			// animate skill
+			const anim = new SkillAnimation(
+				actor,
+				step,
+				() => {
+					// on skill action phase
+					const info: IBattleInfo[] = [];
+	
+					targets.forEach((target, t) => {
+						const combat = getCombatInfo(actor, target, step);
+						const result = this.combatResults[t];
+						const { position } = combat.target;
+		
+						if (!position.isContained(effectArea)) {
+							// target has been pushed / evaded from skill effect area
+							result.evaded = true;
+		
+							info.push({
+								text: 'Evaded',
+								type: 'ACTION',
+								position
+							});
+							return;
+						}
+						if (step.isSupport) {
+							this.handleSupport(combat, result, info);
+						} else {
+							this.handleDamage(combat, result, info);
+						}
+					});
+		
+					if (info.length) {
+						const infoTiming = info.map(() => randomNumberBetween(250, 350));
+		
+						const infoAnim = new Animation(infoTiming, false, infoStep => {
+							const i = info[infoStep.number];
+							this.onEvent('BATTLE_INFO', i);
+						});
+		
+						// start battle info animation
+						infoAnim.start();
+		
+						// log info to console
+						for (const i of info) {
+							const elm = ('NONE' !== i.element ? `(${i.element})` : '');
+							Logger.info(`ActCombat: ${i.type} ${i.text} ${elm}`);
+						}
+					}
+		
+					this.onEvent('COMBAT_ANIMATION');
+				},
+				() => {
+					// on skill end / run next skill animation
+					run();
+				}
+			);
+
+			anim.start();
+		};
 
 		// start battle animation
-		skillAnim.start();
+		run();
 	}
 
 	public selectTile(): void {

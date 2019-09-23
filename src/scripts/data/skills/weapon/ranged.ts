@@ -11,7 +11,10 @@ const rangedSkills: { [id in RangedWeaponSkillID]: ISkillData; } = {
 		target: 'ENEMY',
 		weapon: 'BOW',
 		physical: 1,
-		magical: 0
+		magical: 0,
+		animation: {
+			duration: 1000
+		}
 	},
 	BOW_CHARGE: {
 		title: 'Charge',
@@ -23,7 +26,10 @@ const rangedSkills: { [id in RangedWeaponSkillID]: ISkillData; } = {
 		weapon: 'BOW',
 		physical: 1.5,
 		magical: 0,
-		cooldown: 1
+		cooldown: 1,
+		animation: {
+			duration: 1000
+		}
 	},
 	GUN_ATTACK: {
 		title: 'Attack',
@@ -36,7 +42,10 @@ const rangedSkills: { [id in RangedWeaponSkillID]: ISkillData; } = {
 		hitScan: true,
 		isFixedDamage: true,
 		physical: 30,
-		magical: 0
+		magical: 0,
+		animation: {
+			duration: 1000
+		}
 	},
 	GUN_CRIPPLE: {
 		title: 'Cripple',
@@ -48,10 +57,13 @@ const rangedSkills: { [id in RangedWeaponSkillID]: ISkillData; } = {
 		weapon: 'GUN',
 		hitScan: true,
 		isFixedDamage: true,
-		status: ['CRIPPLE'],
 		physical: 20,
 		magical: 0,
-		cooldown: 1
+		cooldown: 1,
+		status: ['CRIPPLE'],
+		animation: {
+			duration: 1000
+		}
 	}
 };
 

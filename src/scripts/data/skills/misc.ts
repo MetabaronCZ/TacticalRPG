@@ -11,7 +11,10 @@ const miscSkills: { [id in MiscSkillID]: ISkillData; } = {
 		target: 'ENEMY',
 		physical: 0,
 		magical: 0,
-		cooldown: 1
+		cooldown: 1,
+		animation: {
+			duration: 0
+		}
 	},
 	DYNAMIC_SKILL: {
 		title: '',
@@ -24,7 +27,10 @@ const miscSkills: { [id in MiscSkillID]: ISkillData; } = {
 		target: 'ENEMY',
 		physical: 0,
 		magical: 0.5,
-		cooldown: 1
+		cooldown: 1,
+		animation: {
+			duration: 0
+		}
 	},
 	EVADE: {
 		title: 'Evade',
@@ -33,7 +39,10 @@ const miscSkills: { [id in MiscSkillID]: ISkillData; } = {
 		range: 1,
 		area: 'SINGLE',
 		physical: 0,
-		magical: 0
+		magical: 0,
+		animation: {
+			duration: 150
+		}
 	},
 	ENERGY_SHIELD: {
 		title: 'Energy Shield',
@@ -43,7 +52,11 @@ const miscSkills: { [id in MiscSkillID]: ISkillData; } = {
 		area: 'SINGLE',
 		target: 'SELF',
 		physical: 0,
-		magical: 0
+		magical: 0,
+		status: ['ENERGY_SHIELD'],
+		animation: {
+			duration: 150
+		}
 	}
 };
 

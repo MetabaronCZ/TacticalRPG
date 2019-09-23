@@ -12,7 +12,10 @@ const psychokinesis: { [id in PsychokinesisSkillID]: ISkillData; } = {
 		target: 'ENEMY',
 		element: 'PSYCHIC',
 		physical: 0,
-		magical: 1
+		magical: 1,
+		animation: {
+			duration: 1000
+		}
 	},
 	PSY_CONFUSION: {
 		title: 'Confusion',
@@ -26,7 +29,10 @@ const psychokinesis: { [id in PsychokinesisSkillID]: ISkillData; } = {
 		status: ['CONFUSION'],
 		physical: 0,
 		magical: 0,
-		cooldown: 1
+		cooldown: 1,
+		animation: {
+			duration: 1000
+		}
 	},
 	PSY_PSYCHODOME: {
 		title: 'Psychodome',
@@ -39,7 +45,10 @@ const psychokinesis: { [id in PsychokinesisSkillID]: ISkillData; } = {
 		element: 'PSYCHIC',
 		physical: 0,
 		magical: 0,
-		status: ['CONFUSION']
+		status: ['CONFUSION'],
+		animation: {
+			duration: 0
+		}
 	}
 };
 

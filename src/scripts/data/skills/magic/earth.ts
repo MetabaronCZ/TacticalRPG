@@ -12,7 +12,10 @@ const earthMagic: { [id in EarthMagicSkillID]: ISkillData; } = {
 		target: 'ENEMY',
 		element: 'EARTH',
 		physical: 0,
-		magical: 1
+		magical: 1,
+		animation: {
+			duration: 1000
+		}
 	},
 	ERT_EARTH_SPIKE: {
 		title: 'Earth Spike',
@@ -25,8 +28,11 @@ const earthMagic: { [id in EarthMagicSkillID]: ISkillData; } = {
 		element: 'EARTH',
 		physical: 0,
 		magical: 0.5,
+		cooldown: 1,
 		status: ['STUN'],
-		cooldown: 1
+		animation: {
+			duration: 1000
+		}
 	},
 	ERT_EARTHQUAKE: {
 		title: 'Earthquake',
@@ -40,7 +46,10 @@ const earthMagic: { [id in EarthMagicSkillID]: ISkillData; } = {
 		physical: 0,
 		magical: 0.5,
 		status: [],
-		cooldown: 2
+		cooldown: 2,
+		animation: {
+			duration: 1000
+		}
 	},
 	ERT_STONE_SKIN: {
 		title: 'Stone Skin',
@@ -54,7 +63,10 @@ const earthMagic: { [id in EarthMagicSkillID]: ISkillData; } = {
 		status: ['IRON_SKIN'],
 		physical: 0,
 		magical: 0,
-		cooldown: 1
+		cooldown: 1,
+		animation: {
+			duration: 1000
+		}
 	}
 };
 

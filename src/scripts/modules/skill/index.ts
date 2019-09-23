@@ -11,7 +11,7 @@ import { WeaponID } from 'modules/equipment/weapon-data';
 import { StatusEffectID } from 'modules/battle/status-effect';
 import {
 	SkillID, SkillType, SkillElement, SkillGrade,
-	SkillRange, SkillArea, SkillTarget, ISkillData, SkillCooldown
+	SkillRange, SkillArea, SkillTarget, ISkillData, SkillCooldown, ISkillAnimation
 } from 'modules/skill/skill-data';
 
 type ITargetTable = {
@@ -99,6 +99,7 @@ class Skill implements ISkillData {
 	public readonly cooldown: SkillCooldown;
 	public readonly isSupport: boolean;
 	public readonly isAttackSkill: boolean;
+	public readonly animation: ISkillAnimation;
 
 	constructor(id: SkillID) {
 		const data = Skills.get(id);
@@ -120,6 +121,7 @@ class Skill implements ISkillData {
 		this.block = data.block || 1;
 		this.status = data.status || [];
 		this.cooldown = data.cooldown || 0;
+		this.animation = data.animation;
 		this.isAttackSkill = (-1 !== attackSkills.indexOf(this.id));
 
 		this.isSupport = (
@@ -197,10 +199,6 @@ class Skill implements ISkillData {
 
 	public getEffectArea(source: Tile, target: Tile): Tile[] {
 		return areaTable[this.area](source, target, this.range);
-	}
-
-	public getGradeTitle(): string {
-		return ['I', 'II', 'III'][this.grade - 1];
 	}
 }
 

@@ -12,7 +12,10 @@ const darkMagic: { [id in DarkMagicSkillID]: ISkillData; } = {
 		target: 'ENEMY',
 		element: 'DARK',
 		physical: 0,
-		magical: 1
+		magical: 1,
+		animation: {
+			duration: 1000
+		}
 	},
 	DRK_BERSERK: {
 		title: 'Berserk',
@@ -25,8 +28,11 @@ const darkMagic: { [id in DarkMagicSkillID]: ISkillData; } = {
 		element: 'DARK',
 		physical: 0,
 		magical: 0,
+		cooldown: 1,
 		status: ['BERSERK'],
-		cooldown: 1
+		animation: {
+			duration: 1000
+		}
 	},
 	DRK_SHADOWFLARE: {
 		title: 'Shadowflare',
@@ -40,7 +46,10 @@ const darkMagic: { [id in DarkMagicSkillID]: ISkillData; } = {
 		physical: 0,
 		magical: 0.5,
 		status: [],
-		cooldown: 2
+		cooldown: 2,
+		animation: {
+			duration: 1000
+		}
 	},
 	DRK_DARK_AURA: {
 		title: 'Dark Aura',
@@ -52,7 +61,10 @@ const darkMagic: { [id in DarkMagicSkillID]: ISkillData; } = {
 		target: 'SELF',
 		element: 'DARK',
 		physical: 0,
-		magical: 0.25
+		magical: 0.25,
+		animation: {
+			duration: 0
+		}
 	}
 };
 

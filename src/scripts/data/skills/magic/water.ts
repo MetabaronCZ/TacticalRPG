@@ -12,7 +12,10 @@ const waterMagic: { [id in WaterMagicSkillID]: ISkillData; } = {
 		target: 'ENEMY',
 		element: 'WATER',
 		physical: 0,
-		magical: 1
+		magical: 1,
+		animation: {
+			duration: 1000
+		}
 	},
 	WAT_SILENCE: {
 		title: 'Silence',
@@ -25,8 +28,11 @@ const waterMagic: { [id in WaterMagicSkillID]: ISkillData; } = {
 		element: 'WATER',
 		physical: 0,
 		magical: 0.5,
+		cooldown: 1,
 		status: ['SILENCE'],
-		cooldown: 1
+		animation: {
+			duration: 1000
+		}
 	},
 	WAT_FLOOD: {
 		title: 'Flood',
@@ -39,7 +45,10 @@ const waterMagic: { [id in WaterMagicSkillID]: ISkillData; } = {
 		element: 'WATER',
 		physical: 0,
 		magical: 0.5,
-		cooldown: 2
+		cooldown: 2,
+		animation: {
+			duration: 1000
+		}
 	},
 	WAT_WATER_AURA: {
 		title: 'Water Aura',
@@ -52,7 +61,10 @@ const waterMagic: { [id in WaterMagicSkillID]: ISkillData; } = {
 		element: 'WATER',
 		physical: 0,
 		magical: 0.25,
-		status: ['SILENCE']
+		status: ['SILENCE'],
+		animation: {
+			duration: 0
+		}
 	}
 };
 

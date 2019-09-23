@@ -12,7 +12,10 @@ const windMagic: { [id in WindMagicSkillID]: ISkillData; } = {
 		target: 'ENEMY',
 		element: 'WIND',
 		physical: 0,
-		magical: 1
+		magical: 1,
+		animation: {
+			duration: 1000
+		}
 	},
 	WND_JET_STREAM: {
 		title: 'Jet Stream',
@@ -25,7 +28,10 @@ const windMagic: { [id in WindMagicSkillID]: ISkillData; } = {
 		element: 'WIND',
 		physical: 0,
 		magical: 0.5,
-		cooldown: 1
+		cooldown: 1,
+		animation: {
+			duration: 1000
+		}
 	},
 	WND_TORNADO: {
 		title: 'Tornado',
@@ -38,7 +44,10 @@ const windMagic: { [id in WindMagicSkillID]: ISkillData; } = {
 		element: 'WIND',
 		physical: 0,
 		magical: 0.5,
-		cooldown: 2
+		cooldown: 2,
+		animation: {
+			duration: 1000
+		}
 	},
 	WND_WIND_AURA: {
 		title: 'Wind Aura',
@@ -50,7 +59,10 @@ const windMagic: { [id in WindMagicSkillID]: ISkillData; } = {
 		target: 'SELF',
 		element: 'WIND',
 		physical: 0,
-		magical: 0.25
+		magical: 0.25,
+		animation: {
+			duration: 0
+		}
 	}
 };
 

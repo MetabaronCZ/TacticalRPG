@@ -49,7 +49,10 @@ const getData = (title: string, weapon: WeaponID, element: SkillElement): ISkill
 		range: data.range,
 		area: data.area,
 		hitScan: data.hitScan,
-		isFixedDamage: data.isFixedDamage
+		isFixedDamage: data.isFixedDamage,
+		animation: {
+			duration: data.animation.duration
+		}
 	};
 };
 

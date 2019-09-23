@@ -5,7 +5,7 @@ import Tile from 'modules/geometry/tile';
 import ActPhase from 'modules/battle/act/phase';
 import { IOnActPhaseEvent } from 'modules/battle/act';
 import MoveAnimation from 'modules/battle/act/move-animation';
-import { StatusEffectID } from 'modules/battle/status-effect';
+import SkillAnimation from 'modules/battle/act/skill-animation';
 import Command, { ICommandRecord } from 'modules/battle/command';
 import Character, { ICharacterSnapshot } from 'modules/character';
 
@@ -39,7 +39,8 @@ export type ActiveReactionPhaseID  = 'SUSPENDED' | 'IDLE' | 'EVASION';
 
 export type ReactionPhaseEvents =
 	'REACTION_IDLE' |
-	'REACTION_EVADING' |
+	'REACTION_SELECTED' |
+	'REACTION_ANIMATION' |
 	'REACTION_FINISHED' |
 	'REACTION_DONE';
 
@@ -233,15 +234,9 @@ class ReactionPhase extends ActPhase<IReactionPhaseSnapshot, IReactionPhaseRecor
 
 		switch (skill.id) {
 			case 'ENERGY_SHIELD':
-				this.apply(reaction, 'ENERGY_SHIELD');
-				return;
-
 			case 'SHD_SMALL_BLOCK':
-				this.apply(reaction, 'BLOCK_SMALL');
-				return;
-
 			case 'SHD_LARGE_BLOCK':
-				this.apply(reaction, 'BLOCK_LARGE');
+				this.apply(reaction, command);
 				return;
 
 			case 'EVADE':
@@ -253,14 +248,31 @@ class ReactionPhase extends ActPhase<IReactionPhaseSnapshot, IReactionPhaseRecor
 		}
 	}
 
-	private apply(reaction: IReaction, effect: StatusEffectID): void {
+	private apply(reaction: IReaction, command: Command): void {
 		const { reactor, phase } = reaction;
+		const skill = command.skills[0];
 
 		if ('IDLE' !== phase) {
-			throw new Error('Could not react: invalid state ' + phase);
+			throw new Error('Could not react: invalid phase ' + phase);
 		}
-		reactor.status.apply(effect);
-		this.finish(reaction);
+		this.onEvent('REACTION_SELECTED');
+
+		// reaction animation
+		const reactionAnim = new SkillAnimation(
+			reactor,
+			skill,
+			() => {
+				// apply skill effects
+				for (const effect of skill.status) {
+					reactor.status.apply(effect);
+				}
+				reactor.act(command);
+				this.onEvent('REACTION_ANIMATION');
+			},
+			() => this.finish(reaction)
+		);
+
+		reactionAnim.start();
 	}
 
 	private cancelEvasion(reaction: IReaction): void {
@@ -301,7 +313,7 @@ class ReactionPhase extends ActPhase<IReactionPhaseSnapshot, IReactionPhaseRecor
 		const obstacles = characters.map(char => char.position);
 		reaction.evasible = reactor.position.getNeighbours(obstacles);
 
-		this.onEvent('REACTION_EVADING');
+		this.onEvent('REACTION_SELECTED');
 	}
 
 	private setEvasionTarget(reaction: IReaction, tile: Tile): void {
@@ -321,23 +333,13 @@ class ReactionPhase extends ActPhase<IReactionPhaseSnapshot, IReactionPhaseRecor
 		}
 		reaction.evasionTarget = tile;
 
-		const skill = command.skills[0];
-
-		// update reacting character
-		const { AP } = reactor.attributes;
-		const newAp = AP - skill.apCost;
-
-		if (newAp < 0) {
-			throw new Error('Could not evade: could not afford to use skill');
-		}
-
 		// animate evasion
 		const moveAnim = new MoveAnimation(
 			reactor,
 			tile,
-			() => this.onEvent('REACTION_EVADING'),
+			() => this.onEvent('REACTION_ANIMATION'),
 			() => {
-				reactor.attributes.set('AP', newAp);
+				reactor.act(command);
 				this.finish(reaction);
 			}
 		);

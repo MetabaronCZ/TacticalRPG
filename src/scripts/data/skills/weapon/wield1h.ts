@@ -11,7 +11,10 @@ const wield1HSkills: { [id in Wield1HWeaponSkillID]: ISkillData; } = {
 		target: 'ENEMY',
 		weapon: 'SWORD_1H',
 		physical: 1,
-		magical: 0
+		magical: 0,
+		animation: {
+			duration: 1000
+		}
 	},
 	S1H_BLEED: {
 		title: 'Bleed',
@@ -23,8 +26,11 @@ const wield1HSkills: { [id in Wield1HWeaponSkillID]: ISkillData; } = {
 		weapon: 'SWORD_1H',
 		physical: 0.5,
 		magical: 0,
+		cooldown: 1,
 		status: ['BLEED'],
-		cooldown: 1
+		animation: {
+			duration: 1000
+		}
 	},
 	A1H_ATTACK: {
 		title: 'Attack',
@@ -35,7 +41,10 @@ const wield1HSkills: { [id in Wield1HWeaponSkillID]: ISkillData; } = {
 		target: 'ENEMY',
 		weapon: 'AXE_1H',
 		physical: 1,
-		magical: 0
+		magical: 0,
+		animation: {
+			duration: 1000
+		}
 	},
 	A1H_SMASH: {
 		title: 'Smash',
@@ -47,7 +56,10 @@ const wield1HSkills: { [id in Wield1HWeaponSkillID]: ISkillData; } = {
 		weapon: 'AXE_1H',
 		physical: 1.5,
 		magical: 0,
-		cooldown: 1
+		cooldown: 1,
+		animation: {
+			duration: 1000
+		}
 	},
 	M1H_ATTACK: {
 		title: 'Attack',
@@ -58,7 +70,10 @@ const wield1HSkills: { [id in Wield1HWeaponSkillID]: ISkillData; } = {
 		target: 'ENEMY',
 		weapon: 'MACE_1H',
 		physical: 1,
-		magical: 0
+		magical: 0,
+		animation: {
+			duration: 1000
+		}
 	},
 	M1H_STUN: {
 		title: 'Stun',
@@ -70,8 +85,11 @@ const wield1HSkills: { [id in Wield1HWeaponSkillID]: ISkillData; } = {
 		weapon: 'MACE_1H',
 		physical: 0.5,
 		magical: 0,
+		cooldown: 1,
 		status: ['STUN'],
-		cooldown: 1
+		animation: {
+			duration: 1000
+		}
 	}
 };
 

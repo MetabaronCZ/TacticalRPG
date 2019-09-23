@@ -11,7 +11,10 @@ const smallSkills: { [id in SmallWeaponSkillID]: ISkillData; } = {
 		target: 'ENEMY',
 		weapon: 'FISTS',
 		physical: 1,
-		magical: 0
+		magical: 0,
+		animation: {
+			duration: 1000
+		}
 	},
 	FST_DISARM: {
 		title: 'Disarm',
@@ -24,7 +27,10 @@ const smallSkills: { [id in SmallWeaponSkillID]: ISkillData; } = {
 		physical: 0.5,
 		magical: 0,
 		status: ['DISARM'],
-		cooldown: 1
+		cooldown: 1,
+		animation: {
+			duration: 1000
+		}
 	},
 	DGR_ATTACK: {
 		title: 'Attack',
@@ -35,7 +41,10 @@ const smallSkills: { [id in SmallWeaponSkillID]: ISkillData; } = {
 		target: 'ENEMY',
 		weapon: 'DAGGER',
 		physical: 1,
-		magical: 0
+		magical: 0,
+		animation: {
+			duration: 1000
+		}
 	},
 	DGR_STAB: {
 		title: 'Stab',
@@ -47,7 +56,10 @@ const smallSkills: { [id in SmallWeaponSkillID]: ISkillData; } = {
 		weapon: 'DAGGER',
 		physical: 2,
 		magical: 0,
-		cooldown: 1
+		cooldown: 1,
+		animation: {
+			duration: 1000
+		}
 	}
 };
 

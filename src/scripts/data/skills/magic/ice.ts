@@ -12,7 +12,10 @@ const iceMagic: { [id in IceMagicSkillID]: ISkillData; } = {
 		target: 'ENEMY',
 		element: 'ICE',
 		physical: 0,
-		magical: 1
+		magical: 1,
+		animation: {
+			duration: 1000
+		}
 	},
 	ICE_FREEZE: {
 		title: 'Freeze',
@@ -25,8 +28,11 @@ const iceMagic: { [id in IceMagicSkillID]: ISkillData; } = {
 		element: 'ICE',
 		physical: 0,
 		magical: 0.5,
+		cooldown: 1,
 		status: ['FREEZE'],
-		cooldown: 1
+		animation: {
+			duration: 1000
+		}
 	},
 	ICE_BLIZZARD: {
 		title: 'Blizzard',
@@ -39,7 +45,10 @@ const iceMagic: { [id in IceMagicSkillID]: ISkillData; } = {
 		element: 'ICE',
 		physical: 0,
 		magical: 0.5,
-		cooldown: 2
+		cooldown: 2,
+		animation: {
+			duration: 1000
+		}
 	},
 	ICE_FROST_AURA: {
 		title: 'Frost Aura',
@@ -52,7 +61,10 @@ const iceMagic: { [id in IceMagicSkillID]: ISkillData; } = {
 		element: 'ICE',
 		physical: 0,
 		magical: 0.25,
-		status: ['FREEZE']
+		status: ['FREEZE'],
+		animation: {
+			duration: 0
+		}
 	}
 };
 

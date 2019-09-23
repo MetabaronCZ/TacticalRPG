@@ -12,7 +12,10 @@ const wield2HSkills: { [id in Wield2HWeaponSkillID]: ISkillData; } = {
 		weapon: 'SPEAR',
 		hitScan: true,
 		physical: 1,
-		magical: 0
+		magical: 0,
+		animation: {
+			duration: 1000
+		}
 	},
 	SPR_THRUST: {
 		title: 'Thrust',
@@ -25,7 +28,10 @@ const wield2HSkills: { [id in Wield2HWeaponSkillID]: ISkillData; } = {
 		hitScan: true,
 		cooldown: 1,
 		physical: 1,
-		magical: 0
+		magical: 0,
+		animation: {
+			duration: 1000
+		}
 	},
 	S2H_ATTACK: {
 		title: 'Attack',
@@ -36,7 +42,10 @@ const wield2HSkills: { [id in Wield2HWeaponSkillID]: ISkillData; } = {
 		target: 'ENEMY',
 		weapon: 'SWORD_2H',
 		physical: 1,
-		magical: 0
+		magical: 0,
+		animation: {
+			duration: 1000
+		}
 	},
 	S2H_CLEAVE: {
 		title: 'Cleave',
@@ -48,7 +57,10 @@ const wield2HSkills: { [id in Wield2HWeaponSkillID]: ISkillData; } = {
 		weapon: 'SWORD_2H',
 		physical: 0.5,
 		magical: 0,
-		cooldown: 1
+		cooldown: 1,
+		animation: {
+			duration: 1000
+		}
 	},
 	A2H_ATTACK: {
 		title: 'Attack',
@@ -59,7 +71,10 @@ const wield2HSkills: { [id in Wield2HWeaponSkillID]: ISkillData; } = {
 		target: 'ENEMY',
 		weapon: 'AXE_2H',
 		physical: 1,
-		magical: 0
+		magical: 0,
+		animation: {
+			duration: 1000
+		}
 	},
 	A2H_WHIRLWIND: {
 		title: 'Whirlwind',
@@ -71,7 +86,10 @@ const wield2HSkills: { [id in Wield2HWeaponSkillID]: ISkillData; } = {
 		weapon: 'AXE_2H',
 		physical: 0.5,
 		magical: 0,
-		cooldown: 1
+		cooldown: 1,
+		animation: {
+			duration: 1000
+		}
 	},
 	M2H_ATTACK: {
 		title: 'Attack',
@@ -82,7 +100,10 @@ const wield2HSkills: { [id in Wield2HWeaponSkillID]: ISkillData; } = {
 		target: 'ENEMY',
 		weapon: 'MACE_2H',
 		physical: 1,
-		magical: 0
+		magical: 0,
+		animation: {
+			duration: 1000
+		}
 	},
 	M2H_SHOCKWAVE: {
 		title: 'Shockwave',
@@ -94,7 +115,10 @@ const wield2HSkills: { [id in Wield2HWeaponSkillID]: ISkillData; } = {
 		weapon: 'MACE_2H',
 		physical: 0.5,
 		magical: 0,
-		cooldown: 1
+		cooldown: 1,
+		animation: {
+			duration: 1000
+		}
 	}
 };
 

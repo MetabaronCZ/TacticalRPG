@@ -12,7 +12,10 @@ const holyMagic: { [id in HolyMagicSkillID]: ISkillData; } = {
 		target: 'ALLY',
 		element: 'HOLY',
 		physical: 0,
-		magical: 1
+		magical: 1,
+		animation: {
+			duration: 1000
+		}
 	},
 	HOL_REMEDY: {
 		title: 'Remedy',
@@ -24,7 +27,10 @@ const holyMagic: { [id in HolyMagicSkillID]: ISkillData; } = {
 		target: 'ALLY',
 		element: 'HOLY',
 		physical: 0,
-		magical: 0
+		magical: 0,
+		animation: {
+			duration: 1000
+		}
 	},
 	HOL_REGENERATE: {
 		title: 'Regenerate',
@@ -37,8 +43,11 @@ const holyMagic: { [id in HolyMagicSkillID]: ISkillData; } = {
 		element: 'HOLY',
 		physical: 0,
 		magical: 0.5,
+		cooldown: 1,
 		status: ['REGEN'],
-		cooldown: 1
+		animation: {
+			duration: 1000
+		}
 	},
 	HOL_GROUP_HEAL: {
 		title: 'Group Heal',
@@ -51,7 +60,10 @@ const holyMagic: { [id in HolyMagicSkillID]: ISkillData; } = {
 		element: 'HOLY',
 		physical: 0,
 		magical: 0.5,
-		cooldown: 2
+		cooldown: 2,
+		animation: {
+			duration: 1000
+		}
 	},
 	HOL_HOLY_AURA: {
 		title: 'Holy Aura',
@@ -63,7 +75,10 @@ const holyMagic: { [id in HolyMagicSkillID]: ISkillData; } = {
 		target: 'ALLY',
 		element: 'HOLY',
 		physical: 0,
-		magical: 0.25
+		magical: 0.25,
+		animation: {
+			duration: 0
+		}
 	},
 	HOL_REVIVE: {
 		title: 'Revive',
@@ -76,7 +91,10 @@ const holyMagic: { [id in HolyMagicSkillID]: ISkillData; } = {
 		element: 'HOLY',
 		physical: 0,
 		magical: 0,
-		cooldown: 'ULTIMATE'
+		cooldown: 'ULTIMATE',
+		animation: {
+			duration: 1000
+		}
 	}
 };
 

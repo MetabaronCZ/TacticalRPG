@@ -3,26 +3,26 @@ import { moveAnimDuration } from 'data/game-config';
 import Tile from 'modules/geometry/tile';
 import Character from 'modules/character';
 
-type IOnDone = () => void;
-type IOnUpdate = () => void;
+type OnEnd = () => void;
+type OnUpdate = () => void;
 
 class MoveAnimation {
 	private readonly actor: Character;
 	private readonly target: Tile;
-	private readonly onDone: IOnDone;
-	private readonly onUpdate: IOnUpdate;
+	private readonly onEnd: OnEnd;
+	private readonly onUpdate: OnUpdate;
 
 	private done = false;
 	private running = false;
 	private startTime = 0;
 	private startPosition: Tile;
 
-	constructor(actor: Character, target: Tile, onUpdate: IOnUpdate, onDone: IOnDone) {
+	constructor(actor: Character, target: Tile, onUpdate: OnUpdate, onEnd: OnEnd) {
 		this.actor = actor;
 		this.target = target;
 		this.startPosition = actor.position;
 
-		this.onDone = onDone;
+		this.onEnd = onEnd;
 		this.onUpdate = onUpdate;
 	}
 
@@ -63,7 +63,7 @@ class MoveAnimation {
 		if (isLast) {
 			this.running = false;
 			this.done = true;
-			this.onDone();
+			this.onEnd();
 		}
 	}
 }
