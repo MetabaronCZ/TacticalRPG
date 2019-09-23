@@ -83,16 +83,10 @@ class CombatPhase extends ActPhase<ICombatPhaseSnapshot, ICombatPhaseRecord> {
 
 			if (!step) {
 				// finalize combat animation
-				actor.act(command);
-
-				for (const target of targets) {
-					// remove reactive statuses
-					target.status.removeByID('BLOCK_SMALL');
-					target.status.removeByID('BLOCK_LARGE');
-					target.status.removeByID('ENERGY_SHIELD');
-				}
 				this.phase = 'DONE';
 				this.info = '';
+
+				actor.act(command);
 
 				this.onEvent('COMBAT_DONE');
 				return;

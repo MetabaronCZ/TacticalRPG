@@ -8,8 +8,6 @@ BUGS
 
 TODO
 ---------------------------------------------------------------------------------------
---	reset ENERGY_SHIELD, BLOCK_SMALL, apod. statusu udealt ne v COMBAT fazi, ale v actor.onActEnd()
-
 --	pridat animation.test pro onEnd event
 
 --	vystup z COMMAND faze poro ostatni faze a pro Chronox by mel byt pouze:

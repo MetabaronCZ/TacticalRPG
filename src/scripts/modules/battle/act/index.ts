@@ -8,6 +8,7 @@ import Tile from 'modules/geometry/tile';
 import AIPlayer from 'modules/ai/player';
 import Command from 'modules/battle/command';
 import { IBattleInfo } from 'modules/battle/battle-info';
+import { StatusEffectID } from 'modules/battle/status-effect';
 import Character, { ICharacterSnapshot } from 'modules/character';
 
 import MovePhase, { MovePhaseEvents, IMovePhaseRecord, IMovePhaseSnapshot } from 'modules/battle/act/move-phase';
@@ -15,6 +16,8 @@ import CombatPhase, { CombatPhaseEvents, ICombatPhaseRecord, ICombatPhaseSnapsho
 import DirectPhase, { DirectPhaseEvents, IDirectPhaseRecord, IDirectPhaseSnapshot } from 'modules/battle/act/direct-phase';
 import CommandPhase, { CommandPhaseEvents, ICommandPhaseRecord, ICommandPhaseSnapshot } from 'modules/battle/act/command-phase';
 import ReactionPhase, { ReactionPhaseEvents, IReactionPhaseRecord, IReactionPhaseSnapshot } from 'modules/battle/act/reaction-phase';
+
+const reactiveEffects: StatusEffectID[] = ['BLOCK_SMALL', 'BLOCK_LARGE', 'ENERGY_SHIELD'];
 
 export type ActPhaseID = 'MOVEMENT' | 'COMMAND' | 'REACTION' | 'COMBAT' | 'DIRECTION';
 
@@ -180,8 +183,14 @@ class Act {
 			this.actor.endAct();
 		}
 		this.phase = null;
-		this.log('Act ended');
 
+		// remove reactive status effects
+		for (const char of this.characters) {
+			for (const effect of reactiveEffects) {
+				char.status.removeByID(effect);
+			}
+		}
+		this.log('Act ended');
 		this.events.onEnd(this);
 	}
 
