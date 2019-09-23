@@ -2,6 +2,8 @@ TODO
 ---------------------------------------------------------------------------------------
 --	pridat animation.test pro onEnd event
 
+--	logiku z BattleSummary UI presunout do modules/battle-summary
+
 --	vystup z COMMAND faze poro ostatni faze a pro Chronox by mel byt pouze:
 	- vybrany Command a vybrany target Tile
 	- vstup pro COMMAND fazi by mel byt REACTION.getReactions()

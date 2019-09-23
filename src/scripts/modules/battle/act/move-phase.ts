@@ -93,14 +93,19 @@ class MovePhase extends ActPhase<IMovePhaseSnapshot, IMovePhaseRecord> {
 
 	public selectTile(tile: Tile): void {
 		const { phase, actor, movable, obstacles } = this;
+		const actorPos = actor.position;
 
 		if ('IDLE' !== phase || !tile.isContained(movable) || !actor.canMove()) {
 			return;
 		}
 		this.phase = 'SELECTED';
 
+		if (tile === actorPos) {
+			this.finalize();
+			return;
+		}
 		this.moveTarget = tile;
-		this.movePath = getShortestPath(actor.position, tile, obstacles);
+		this.movePath = getShortestPath(actorPos, tile, obstacles);
 
 		this.onEvent('MOVE_SELECTED', tile);
 		this.animate();
@@ -160,7 +165,9 @@ class MovePhase extends ActPhase<IMovePhaseSnapshot, IMovePhaseRecord> {
 				const newPos = movePath[step.number];
 				const cost = costMap[newPos.id];
 
-				actor.direction = resolveDirection(actor.position, newPos);
+				if (movePath.length > 1) {
+					actor.direction = resolveDirection(actor.position, newPos);
+				}
 
 				// animate tile-tile movement
 				const moveAnim = new MoveAnimation(

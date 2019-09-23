@@ -17,6 +17,7 @@ import Character, { ICharacterSnapshot } from 'modules/character';
 
 import BT from 'modules/ai/behavioral-tree';
 import BTAction from 'modules/ai/behavioral-tree/action';
+import { resolveDirection, findTileFrom } from 'modules/geometry/direction';
 
 const MAX_NUMBER = Number.MAX_SAFE_INTEGER;
 const healingTreshold = 0.8; // maximum percent of target life remaining for healer to care
@@ -31,6 +32,7 @@ interface IActionTarget<T> {
 interface IActionBase<T> {
 	readonly target: IActionTarget<T>;
 	readonly command: Command;
+	readonly direct: Tile | null;
 	readonly move: Tile;
 	readonly cost: {
 		AP: number;
@@ -38,8 +40,9 @@ interface IActionBase<T> {
 	};
 	readonly damage: number;
 	readonly healing: number;
-	readonly safeArea: number;
 	readonly status: StatusEffect[];
+	readonly closestAlly: number;
+	readonly closestEnemy: number;
 }
 
 type IAction = IActionBase<ICharacterSnapshot>;
@@ -59,8 +62,12 @@ const sortByShortestTravel = (actions: IAction[]): IAction[] => {
 	return actions.sort((a, b) => a.target.distance - b.target.distance);
 };
 
-const sortByMostSafeDistance = (actions: IAction[]): IAction[] => {
-	return actions.sort((a, b) => b.safeArea - a.safeArea);
+const sortBySafeDistance = (actions: IAction[]): IAction[] => {
+	return actions.sort((a, b) => b.closestEnemy - a.closestEnemy);
+};
+
+const sortByAllyDistance = (actions: IAction[]): IAction[] => {
+	return actions.sort((a, b) => a.closestAlly - b.closestAlly);
 };
 
 const sortByMostHealing = (actions: IAction[]): IAction[] => {
@@ -90,7 +97,7 @@ const btDecide = (role: CharacterRole): BTAction<IAIData> => {
 		const { act, ally, enemy, obstacles } = data;
 		const { actor, phases } = act;
 		const { movable, costMap } = phases.MOVEMENT;
-		const characters = ally.concat(enemy);
+		const characters = ally.concat(enemy).filter(char => !char.dead && !char.dying);
 
 		// create Player shadows
 		const playerShadow = Player.from(actor.player);
@@ -105,7 +112,7 @@ const btDecide = (role: CharacterRole): BTAction<IAIData> => {
 		const { AP } = actor.attributes;
 		const actions: IAnonymousAction[] = [];
 
-		// gather information
+		// gather possible actions
 		for (const tile of movable) {
 			const moveCost = costMap[tile.id];
 			const ap = Math.max(0, AP - moveCost);
@@ -115,18 +122,31 @@ const btDecide = (role: CharacterRole): BTAction<IAIData> => {
 			char.position = tile;
 			char.attributes.set('AP', ap);
 
-			// get distances to possible targets / get safe distance
-			const distances: IDistances = {};
-			let safeArea = MAX_NUMBER;
+			// direction target
+			let direct: Tile | null = null;
 
-			for (const char of characters) {
-				const path = getShortestPath(tile, char.position, []);
+			// get distances to all targets
+			const distances: IDistances = {};
+			let closestAlly = MAX_NUMBER;
+			let closestEnemy = MAX_NUMBER;
+
+			for (const ch of characters) {
+				const path = getShortestPath(tile, ch.position, []);
 
 				const distance = path.length;
-				distances[char.data.id] = distance;
+				distances[ch.data.id] = distance;
 
-				if (char.id !== actor.id && distance < safeArea) {
-					safeArea = distance;
+				if (actor.player.id !== ch.player.id) {
+					if (distance < closestEnemy) {
+						const dir = resolveDirection(tile, ch.position);
+						const dirTile = findTileFrom(tile, dir);
+						direct = dirTile;
+						closestEnemy = distance;
+					}
+				} else {
+					if (distance < closestAlly && actor.id !== ch.id) {
+						closestAlly = distance;
+					}
 				}
 			}
 
@@ -155,8 +175,12 @@ const btDecide = (role: CharacterRole): BTAction<IAIData> => {
 				for (const tgt of targetable) {
 					const { id } = tgt.data;
 					const distance = distances[id];
-					const tgtPosition = tgt.position;
+					let tgtPosition = tgt.position;
 
+					if (tgt.data.id === actor.id && tgt.player.id === actor.player.id) {
+						// target its future position
+						tgtPosition = tile;
+					}
 					let damage = 0;
 					let healing = 0;
 					let status: StatusEffect[] = [];
@@ -181,11 +205,13 @@ const btDecide = (role: CharacterRole): BTAction<IAIData> => {
 							distance
 						},
 						move: tile,
+						direct,
 						command,
 						damage,
 						healing,
-						safeArea,
 						status,
+						closestAlly,
+						closestEnemy,
 						cost: newCost
 					});
 				}
@@ -306,7 +332,7 @@ const btDecide = (role: CharacterRole): BTAction<IAIData> => {
 					let act: IAction[] = [...healingActions];
 
 					// sort actions (prioritized)
-					act = sortByMostSafeDistance(act);
+					act = sortBySafeDistance(act);
 					act = sortByMostHealing(act);
 					act = sortByHPRemaining(act, false);
 
@@ -342,7 +368,7 @@ const btDecide = (role: CharacterRole): BTAction<IAIData> => {
 					let act: IAction[] = [...rangedActions];
 
 					// sort actions (prioritized)
-					act = sortByMostSafeDistance(act);
+					act = sortBySafeDistance(act);
 					act = sortByMostDamage(act);
 					act = sortByHPRemaining(act, true);
 
@@ -360,7 +386,7 @@ const btDecide = (role: CharacterRole): BTAction<IAIData> => {
 					let act: IAction[] = [...magicalActions];
 
 					// sort actions (prioritized)
-					act = sortByMostSafeDistance(act);
+					act = sortBySafeDistance(act);
 					act = sortByMostDamage(act);
 					act = sortByHPRemaining(act, true);
 
@@ -377,69 +403,87 @@ const btDecide = (role: CharacterRole): BTAction<IAIData> => {
 
 		if (!action) {
 			// find best available move-and-pass action
-			let act = [...passActions];
+			const act = [...passActions];
 
-			let allyActions = act.filter(action => {
+			const allyActions = act.filter(action => {
 				return actor.player.id === action.target.character.player.id;
 			});
 
-			let enemyActions = act.filter(action => {
+			const enemyActions = act.filter(action => {
 				return actor.player.id !== action.target.character.player.id;
 			});
 
 			if (!enemyActions.length) {
 				throw new Error('AI could not decide action: No enemy');
 			}
+			let results: IAction[] = [];
 
-			switch (roles[0]) {
-				case 'HEALER': {
-					// get injured targets
-					allyActions = allyActions.filter(action => {
-						return 'OK' !== action.target.character.condition;
-					});
+			if ('HEALER' === roles[0]) {
+				// get injured targets
+				const injured = allyActions.filter(action => {
+					return 'OK' !== action.target.character.condition;
+				});
 
-					if (allyActions.length) {
-						// go to closest injured ally
-						allyActions = sortByMostSafeDistance(allyActions);
-						allyActions = sortByShortestTravel(allyActions);
-						action = allyActions[0];
+				if (injured.length) {
+					// go to closest injured ally
+					results = [...injured];
+					results = sortBySafeDistance(results);
+					results = sortByShortestTravel(results);
+
+					Logger.info('AI DECIDE - go to closest injured ally');
+
+				} else {
+					// keep out of harm
+					results = [...act];
+
+					const actorMove = actor.attributes.MOV;
+					const approachable = results.filter(action => action.closestAlly - 2 <= actorMove);
+
+					if (approachable.length) {
+						// stay in emergency distance
+						results = [...approachable];
+						results = sortBySafeDistance(results);
+
+						Logger.info('AI DECIDE - stay in emergency ally distance');
 
 					} else {
-						// keep out of harm
-						act = sortByMostSafeDistance(act);
-						action = act[0];
+						// go closer to allies
+						results = sortBySafeDistance(results);
+						results = sortByAllyDistance(results);
+
+						Logger.info('AI DECIDE - go closer to allies');
 					}
-					break;
 				}
 
-				case 'MELEE':
-				case 'RANGER':
-				case 'MAGE': {
-					// go to closest enemy
-					enemyActions = sortByShortestTravel(enemyActions);
-					action = enemyActions[0];
-					break;
-				}
+			} else {
+				// go to closest enemy
+				results = [...enemyActions];
+				results = sortByShortestTravel(results);
 
-				default:
-					throw new Error('Invalid character role: ' + roles[0]);
+				Logger.info('AI DECIDE - go to closest enemy');
 			}
+
+			action = results[0];
+
+		} else {
+			Logger.info('AI DECIDE - role action:', action);
 		}
 
 		if (!action) {
 			throw new Error('AI could not decide any action');
 		}
-		const { target, move, command } = action;
+		const { target, move, command, direct } = action;
 		const { position } = target;
 
 		data.memory.decision = {
 			move,
 			command,
-			target: position
+			target: position,
+			direct
 		};
 		const char = characters.find(char => position === char.position);
 
-		Logger.info(`AI DECIDE - target: ${char ? char.name : '?????'} ${position.id}`);
+		Logger.info(`AI DECIDE - target: ${char ? char.name + ' ' : ''}${position.id}`);
 		Logger.info(`AI DECIDE - move: ${move.id}`);
 		Logger.info(`AI DECIDE - command: ${command.title}`);
 

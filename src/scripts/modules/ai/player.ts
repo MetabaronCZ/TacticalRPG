@@ -10,6 +10,7 @@ import { IPlayerData } from 'modules/battle-configuration/player-data';
 import CharacterRole from 'modules/ai/role';
 import AICharacter from 'modules/ai/character';
 import { IAIConfig, IAISettings } from 'modules/ai/settings';
+import Logger from 'modules/logger';
 
 class AIPlayer extends Player {
 	public readonly config: IAIConfig;
@@ -35,7 +36,23 @@ class AIPlayer extends Player {
 	}
 
 	public onActStart(): void {
-		/* */
+		const { act } = this.engine.serialize();
+
+		if (!act) {
+			throw new Error('Invalid act');
+		}
+		const actingChar = act.actingCharacter;
+
+		if (!actingChar) {
+			throw new Error('Could not get AI character: invalid acting character');
+		}
+		const aiChar = this.ally.find(ch => ch.character.data.id === actingChar.id);
+
+		if (!aiChar) {
+			throw new Error('Invalid actor');
+		}
+		const { character: { name }, role } = aiChar;
+		Logger.info(`AI Player: ${name} [${role.get().join(', ')}]`);
 	}
 
 	public onUpdate(commands: Command[]): void {
@@ -47,12 +64,11 @@ class AIPlayer extends Player {
 		const actingChar = act.actingCharacter;
 
 		if (!actingChar) {
-			throw new Error('Could not update AI player: invalid acing character');
+			throw new Error('Could not update AI character: invalid acting character');
 		}
 		const aiChar = this.ally.find(ch => ch.character.data.id === actingChar.id);
-		const char = characters.find(ch => ch.id === actingChar.id);
 
-		if (!aiChar || !char || char.dead) {
+		if (!aiChar || aiChar.character.isDead()) {
 			throw new Error('Invalid actor');
 		}
 		aiChar.update({

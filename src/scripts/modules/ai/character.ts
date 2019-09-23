@@ -37,6 +37,7 @@ export interface IAIDecision {
 	readonly command: Command;
 	readonly target: Tile;
 	readonly move: Tile;
+	readonly direct: Tile | null;
 }
 
 interface IAICharacterMemory {

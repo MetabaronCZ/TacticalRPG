@@ -2,7 +2,6 @@ import { getRandomItem } from 'core/array';
 
 import Logger from 'modules/logger';
 import { IAIData } from 'modules/ai/character';
-import { resolveDirection, findTileFrom } from 'modules/geometry/direction';
 
 import BT from 'modules/ai/behavioral-tree';
 import BTAction from 'modules/ai/behavioral-tree/action';
@@ -12,24 +11,17 @@ const btDirect = (): BTAction<IAIData> => {
 		const { directable } = data.act.phases.DIRECTION;
 		const { decision } = data.memory;
 
-		const char = data.act.actor;
-		const pos = char.position;
-		let dir = char.direction;
-
-		if (decision) {
-			dir = resolveDirection(pos, decision.target);
+		if (!decision) {
+			Logger.info('AI DECISION - no decision target decided');
+			return 'SUCCESS';
 		}
-		let directTarget = findTileFrom(pos, dir);
+		const tile = decision.direct || getRandomItem(directable);
 
-		if (!directTarget) {
-			directTarget = getRandomItem(directable);
-		}
-
-		if (!directTarget) {
+		if (!tile) {
 			throw new Error('AI could not direct');
 		}
-		data.selectTile(directTarget);
-		Logger.info('AI DIRECT - direction target selected: ' + directTarget.id);
+		data.selectTile(tile);
+		Logger.info('AI DIRECT - direction target selected: ' + tile.id);
 
 		return 'SUCCESS';
 	});
