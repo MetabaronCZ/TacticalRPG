@@ -159,20 +159,22 @@ class ReactionPhase extends ActPhase<IReactionPhaseSnapshot, IReactionPhaseRecor
 
 	public getRecord(): IReactionPhaseRecord {
 		return {
-			reactions: this.reactions.map(({ reactor, command, evasionTarget }) => {
-				const reaction = {
-					reactor: reactor.data.id,
-					command: command
-						? {
-							title: command.title,
-							skills: command.skills.map(skill => skill.id)
-						}
-						: null
-					,
-					evasionTarget: (evasionTarget ? evasionTarget.id : null)
-				};
-				return reaction;
-			})
+			reactions: this.reactions
+				.filter(reaction => reaction.command && !reaction.isSupport)
+				.map(({ reactor, command, evasionTarget }) => {
+					const reaction = {
+						reactor: reactor.data.id,
+						command: command
+							? {
+								title: command.title,
+								skills: command.skills.map(skill => skill.id)
+							}
+							: null
+						,
+						evasionTarget: (evasionTarget ? evasionTarget.id : null)
+					};
+					return reaction;
+				})
 		};
 	}
 
