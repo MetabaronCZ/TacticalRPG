@@ -1,5 +1,5 @@
 import Character from 'modules/character';
-import { IOnBattleInfo } from 'modules/battle/battle-info';
+import { IOnBattleInfo, BattleInfoType } from 'modules/battle/battle-info';
 import StatusEffect, { StatusEffectID, IOnStatus } from 'modules/battle/status-effect';
 
 class Status {
@@ -74,15 +74,17 @@ class Status {
 					this.remove(item);
 
 					let text = `${item.title} ended`;
+					let type: BattleInfoType = 'ACTION';
 					let status: StatusEffectID | undefined;
 
 					if ('DYING' === item.id) {
 						text = 'Dead';
+						type = 'DEBUFF';
 						status = 'DYING';
 					}
 					cb({
 						text,
-						type: 'ACTION',
+						type,
 						status,
 						position: char.position
 					});

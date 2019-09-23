@@ -115,16 +115,7 @@ const StatusEffects = new DataList<StatusEffectID, IStatusEffect>({
 		type: 'PHYSICAL',
 		multi: 'IGNORE',
 		duration: 100,
-		apply: (tgt, ammount, onStatus, onInfo) => {
-			tgt.die();
-
-			onInfo({
-				text: 'Dead',
-				type: 'DEBUFF',
-				status: 'DYING',
-				position: tgt.position
-			});
-		}
+		apply: tgt => tgt.die()
 	},
 	REGEN: {
 		title: 'Regen',
