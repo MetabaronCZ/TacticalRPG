@@ -24,6 +24,7 @@ const healingTreshold = 0.8; // maximum percent of target life remaining for hea
 interface IActionTarget<T> {
 	readonly character: T;
 	readonly player: number;
+	readonly position: Tile;
 	readonly distance: number;
 }
 
@@ -154,13 +155,14 @@ const btDecide = (role: CharacterRole): BTAction<IAIData> => {
 				for (const tgt of targetable) {
 					const { id } = tgt.data;
 					const distance = distances[id];
+					const tgtPosition = tgt.position;
 
 					let damage = 0;
 					let healing = 0;
 					let status: StatusEffect[] = [];
 
 					for (const skill of skills) {
-						const effectArea = skill.getEffectArea(actor.position, tgt.position);
+						const effectArea = skill.getEffectArea(actor.position, tgtPosition);
 						const effectTargets = skill.getTargets(char, charShadows, effectArea);
 				
 						effectTargets.forEach(eff => {
@@ -175,6 +177,7 @@ const btDecide = (role: CharacterRole): BTAction<IAIData> => {
 						target: {
 							character: id,
 							player: tgt.player.id,
+							position: tgtPosition,
 							distance
 						},
 						move: tile,
@@ -427,20 +430,16 @@ const btDecide = (role: CharacterRole): BTAction<IAIData> => {
 			throw new Error('AI could not decide any action');
 		}
 		const { target, move, command } = action;
-		const { character } = target;
-		let targetPos = character.position;
+		const { position } = target;
 
-		if (character.id === actor.id && character.player.id === actor.player.id) {
-			// target self on position after move
-			targetPos = move;
-		}
 		data.memory.decision = {
 			move,
 			command,
-			target: targetPos
+			target: position
 		};
+		const char = characters.find(char => position === char.position);
 
-		Logger.info(`AI DECIDE - target: ${character.name} ${targetPos.id}`);
+		Logger.info(`AI DECIDE - target: ${char ? char.name : '?????'} ${position.id}`);
 		Logger.info(`AI DECIDE - move: ${move.id}`);
 		Logger.info(`AI DECIDE - command: ${command.title}`);
 
