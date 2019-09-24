@@ -7,7 +7,6 @@ import BTAction from 'modules/ai/behavioral-tree/action';
 const btCombat = (): BTAction<IAIData> => {
 	return BT.Action(data => {
 		if (data.memory.commandConfirmed) {
-			Logger.info('AI COMBAT - command already confirmed');
 			return 'SUCCESS';
 		}
 		data.memory.commandConfirmed = true;

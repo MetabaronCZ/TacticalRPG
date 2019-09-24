@@ -2,7 +2,7 @@ TODO
 ---------------------------------------------------------------------------------------
 --	zjistit, proc v MAIN vs MAIN zustane nakonec HEALER v rohu
 
---	vystup z COMMAND faze poro ostatni faze a pro Chronox by mel byt pouze:
+--	vystup z COMMAND faze pro ostatni faze a pro Chronox by mel byt pouze:
 	- vybrany Command a vybrany target Tile
 	- vstup pro COMMAND fazi by mel byt REACTION.getReactions()
 

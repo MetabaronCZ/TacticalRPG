@@ -7,7 +7,6 @@ import BTAction from 'modules/ai/behavioral-tree/action';
 const btMove = (): BTAction<IAIData> => {
 	return BT.Action(data => {
 		if (data.memory.hasMoved) {
-			Logger.info('AI MOVE - already moved');
 			return 'SUCCESS';
 		}
 		data.memory.hasMoved = true;

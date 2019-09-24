@@ -2,7 +2,8 @@ import Character from 'modules/character';
 import { WeaponTypeID } from 'modules/equipment/weapon-data';
 
 const nonMeleeWpns: WeaponTypeID[] = ['NONE', 'MAGICAL', 'RANGED','SHIELD'];
-type CharacterRoleID = 'MELEE' | 'RANGER' | 'MAGE' | 'HEALER';
+
+export type CharacterRoleID = 'MELEE' | 'RANGER' | 'MAGE' | 'HEALER';
 
 class CharacterRole {
 	private readonly roles: CharacterRoleID[];

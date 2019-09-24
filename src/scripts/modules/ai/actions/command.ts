@@ -7,7 +7,6 @@ import BTAction from 'modules/ai/behavioral-tree/action';
 const btCommand = (): BTAction<IAIData> => {
 	return BT.Action(data => {
 		if (data.memory.commandSelected) {
-			Logger.info('AI COMMAND - command already selected');
 			return 'SUCCESS';
 		}
 		data.memory.commandSelected = true;

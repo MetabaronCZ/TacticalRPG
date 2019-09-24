@@ -7,7 +7,6 @@ import BTAction from 'modules/ai/behavioral-tree/action';
 const btTarget = (): BTAction<IAIData> => {
 	return BT.Action(data => {
 		if (data.memory.commandTargeted) {
-			Logger.info('AI TARGET - already targeted');
 			return 'SUCCESS';
 		}
 		data.memory.commandTargeted = true;
