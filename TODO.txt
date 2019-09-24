@@ -1,7 +1,5 @@
 TODO
 ---------------------------------------------------------------------------------------
---	pridat animation.test pro onEnd event
-
 --	zjistit, proc v MAIN vs MAIN zustane nakonec HEALER v rohu
 
 --	vystup z COMMAND faze poro ostatni faze a pro Chronox by mel byt pouze:

@@ -6,9 +6,9 @@ export interface IAnimationStep {
 	readonly isFirst: boolean;
 }
 
-type AnimationTiming = number[]; // step time intervals (in ms)
-type OnAnimationStep = (step: IAnimationStep, next: () => void) => void;
-type OnAnimationEnd = () => void;
+export type AnimationTiming = number[]; // step time intervals (in ms)
+export type OnAnimationStep = (step: IAnimationStep, next: () => void) => void;
+export type OnAnimationEnd = () => void;
 
 class Animation {
 	private readonly async: boolean;
