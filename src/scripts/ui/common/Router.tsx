@@ -6,8 +6,8 @@ import { RouteID, getPath } from 'modules/route';
 import MainMenu from 'ui/menu/MainMenuPage';
 
 import Battle from 'ui/battle/BattlePage';
-import BattleConfig from 'ui/battle-management/BattleConfigPage';
-import BattleSummary from 'ui/battle-management/BattleSummaryPage';
+import BattleConfig from 'ui/battle-config/BattleConfigPage';
+import BattleSummary from 'ui/battle-summary/BattleSummaryPage';
 
 import PartyList from 'ui/party-creation/PartyListPage';
 import PartyEdit from 'ui/party-creation/PartyEditPage';

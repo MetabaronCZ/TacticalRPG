@@ -43,7 +43,7 @@ export const formatCharacter = (character: ICharacterData | null): React.ReactNo
 	);
 };
 
-export const formatCombatResult = (result: ICombatResult): React.ReactNode => {
+export const formatCombatResult = (result: ICombatResult): string => {
 	let txt = '-';
 
 	if (result.isSupport) {

@@ -4,8 +4,6 @@ TODO
 
 --	zjistit, proc v MAIN vs MAIN zustane nakonec HEALER v rohu
 
---	logiku z BattleSummary UI presunout do modules/battle-summary
-
 --	vystup z COMMAND faze poro ostatni faze a pro Chronox by mel byt pouze:
 	- vybrany Command a vybrany target Tile
 	- vstup pro COMMAND fazi by mel byt REACTION.getReactions()
@@ -25,6 +23,9 @@ TODO
 --	udelat ikony pro vsechny StatusEffecty
 	- posilat je jako status v combat phase
 	- u debuffu posilat jen "status" a ne "weapon"
+
+??	vytvorit character UID
+	- tvoreno z character ID a player ID
 
 ??	serializovat v EngineState i Command na ICommand
 

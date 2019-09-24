@@ -10,7 +10,7 @@ import { IRouteParams } from 'modules/route';
 import { BattleConfig } from 'modules/battle-configuration/battle-config';
 
 import Page from 'ui/common/Page';
-import BattleConfigUI from 'ui/battle-management/BattleConfigUI';
+import BattleConfigUI from 'ui/battle-config/BattleConfigUI';
 
 const onStart = (history: History, store: Store) => (config: BattleConfig) => {
 	store.battleConfig.update(config.serialize());

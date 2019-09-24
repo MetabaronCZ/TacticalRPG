@@ -19,7 +19,7 @@ import FormField from 'ui/common/FormField';
 import FormInput from 'ui/common/FormInput';
 import FormSelect from 'ui/common/FormSelect';
 import FormSelectItem from 'ui/common/FormSelectItem';
-import AISettingsUI from 'ui/battle-management/AISettings';
+import AISettingsUI from 'ui/battle-config/AISettings';
 import CharacterList from 'ui/character-creation/CharacterList';
 
 interface IBattleConfigUIProps {
