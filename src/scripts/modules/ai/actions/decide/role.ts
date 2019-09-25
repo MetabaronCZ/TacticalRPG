@@ -1,8 +1,8 @@
-import { CharacterRoleID } from 'modules/ai/role';
-import * as sort from 'modules/ai/actions/decide/sort';
-import { IAction } from 'modules/ai/actions/decide/actions';
-import { IActionCategories } from 'modules/ai/actions/decide/categories';
 import Logger from 'modules/logger';
+import { CharacterRoleID } from 'modules/ai/role';
+import { IAction } from 'modules/ai/actions/decide/actions';
+import { sortActions } from 'modules/ai/actions/decide/sort';
+import { IActionCategories } from 'modules/ai/actions/decide/categories';
 
 // get action according to actor role
 export const getRoleAction = (categories: IActionCategories, roles: CharacterRoleID[]): IAction | null => {
@@ -20,10 +20,9 @@ export const getRoleAction = (categories: IActionCategories, roles: CharacterRol
 				}
 				let act: IAction[] = [...healingActions];
 
-				// sort actions (prioritized)
-				act = sort.bySafeDistance(act);
-				act = sort.byMostHealing(act);
-				act = sort.byHPRemaining(act, false);
+				act = sortActions(act, [
+					'HP_REMAINING', 'MOST_HEALING', 'SAFE_DISTANCE'
+				]);
 
 				// optimal healing action
 				Logger.info('AI DECIDE: HEALER healing');
@@ -37,10 +36,9 @@ export const getRoleAction = (categories: IActionCategories, roles: CharacterRol
 				}
 				let act: IAction[] = [...meleeActions];
 
-				// sort actions (prioritized)
-				act = sort.byShortestTravel(act);
-				act = sort.byMostDamage(act);
-				act = sort.byHPRemaining(act, true);
+				act = sortActions(act, [
+					'HP_REMAINING', 'MOST_DAMAGE', 'SHORTEST_TRAVEL'
+				], true);
 
 				// optimal melee damage action
 				Logger.info('AI DECIDE: MELEE attack');
@@ -54,10 +52,9 @@ export const getRoleAction = (categories: IActionCategories, roles: CharacterRol
 				}
 				let act: IAction[] = [...rangedActions];
 
-				// sort actions (prioritized)
-				act = sort.bySafeDistance(act);
-				act = sort.byMostDamage(act);
-				act = sort.byHPRemaining(act, true);
+				act = sortActions(act, [
+					'HP_REMAINING', 'MOST_DAMAGE', 'SAFE_DISTANCE'
+				], true);
 
 				// optimal ranged damage action
 				Logger.info('AI DECIDE: RANGER attack');
@@ -71,10 +68,9 @@ export const getRoleAction = (categories: IActionCategories, roles: CharacterRol
 				}
 				let act: IAction[] = [...magicalActions];
 
-				// sort actions (prioritized)
-				act = sort.bySafeDistance(act);
-				act = sort.byMostDamage(act);
-				act = sort.byHPRemaining(act, true);
+				act = sortActions(act, [
+					'HP_REMAINING', 'MOST_DAMAGE', 'SAFE_DISTANCE'
+				], true);
 
 				// optimal magical damage action
 				Logger.info('AI DECIDE: MAGE attack');

@@ -7,6 +7,8 @@ TODO
 ---------------------------------------------------------------------------------------
 --	zjistit, proc v MAIN vs MAIN zustane nakonec HEALER v rohu
 
+--	refaktorovat btDecide do BTTree v BTPhaseSelectoru
+
 --	udelat ikony pro vsechny StatusEffecty
 	- posilat je jako status v combat phase
 	- u debuffu posilat jen "status" a ne "weapon"

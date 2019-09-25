@@ -1,6 +1,6 @@
 import Logger from 'modules/logger';
 import { CharacterRoleID } from 'modules/ai/role';
-import * as sort from 'modules/ai/actions/decide/sort';
+import { sortActions } from 'modules/ai/actions/decide/sort';
 import { ICharacterSnapshot } from 'modules/character';
 import { IAction } from 'modules/ai/actions/decide/actions';
 
@@ -31,10 +31,10 @@ export const getPassAction = (actor: ICharacterSnapshot, primaryRole: CharacterR
 		if (injured.length) {
 			// go to closest injured ally
 			let results = [...injured];
-			results = sort.bySafeDistance(results);
-			results = sort.byShortestTravel(results);
 
+			results = sortActions(results, ['SHORTEST_TRAVEL', 'SAFE_DISTANCE']);
 			result = results[0];
+
 			Logger.info('AI DECIDE - HEALER go to closest injured');
 
 		} else {
@@ -45,18 +45,19 @@ export const getPassAction = (actor: ICharacterSnapshot, primaryRole: CharacterR
 			if (approachable.length) {
 				// stay in emergency distance
 				let results = [...approachable];
-				results = sort.bySafeDistance(results);
 
+				results = sortActions(results, ['SAFE_DISTANCE']);
 				result = results[0];
+
 				Logger.info('AI DECIDE - HEALER stay in emergency distance');
 
 			} else {
 				// go closer to allies
 				let results = [...actions];
-				results = sort.bySafeDistance(results);
-				results = sort.byAllyDistance(results);
 
+				results = sortActions(results, ['ALLY_DISTANCE', 'SAFE_DISTANCE']);
 				result = results[0];
+
 				Logger.info('AI DECIDE - HEALER keep close to allies');
 			}
 		}
@@ -64,9 +65,10 @@ export const getPassAction = (actor: ICharacterSnapshot, primaryRole: CharacterR
 	} else {
 		// go to closest enemy
 		let results = [...enemyActions];
-		results = sort.byShortestTravel(results);
 
+		results = sortActions(results, ['SHORTEST_TRAVEL']);
 		result = results[0];
+
 		Logger.info('AI DECIDE - DAMAGE DEALER go to closest enemy');
 	}
 
