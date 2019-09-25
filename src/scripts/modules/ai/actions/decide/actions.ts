@@ -1,8 +1,8 @@
+import { MAX_NUMBER } from 'core/number';
 import { getIntersection } from 'core/array';
 
 import { getCombatInfo } from 'modules/battle/combat';
 import { getIdleCommands } from 'modules/battle/commands';
-import { resolveDirection, findTileFrom } from 'modules/geometry/direction';
 import { getShortestPath } from 'modules/pathfinding/shortest-path-breadth-first';
 
 import Tile from 'modules/geometry/tile';
@@ -11,8 +11,6 @@ import Command from 'modules/battle/command';
 import { IAIData } from 'modules/ai/character';
 import StatusEffect from 'modules/battle/status-effect';
 import Character, { ICharacterSnapshot } from 'modules/character';
-
-const MAX_NUMBER = Number.MAX_SAFE_INTEGER;
 
 interface IDistances {
 	[characterID: string]: number;
@@ -28,7 +26,6 @@ interface IActionTarget<T> {
 interface IActionBase<T> {
 	readonly target: IActionTarget<T>;
 	readonly command: Command;
-	readonly direct: Tile | null;
 	readonly move: Tile;
 	readonly cost: {
 		AP: number;
@@ -73,9 +70,6 @@ export const getActions = (data: IAIData): IAction[] => {
 		char.position = tile;
 		char.attributes.set('AP', ap);
 
-		// direction target
-		let direct: Tile | null = null;
-
 		// get distances to all targets
 		const distances: IDistances = {};
 		let closestAlly = MAX_NUMBER;
@@ -89,9 +83,6 @@ export const getActions = (data: IAIData): IAction[] => {
 
 			if (actor.player.id !== ch.player.id) {
 				if (distance < closestEnemy) {
-					const dir = resolveDirection(tile, ch.position);
-					const dirTile = findTileFrom(tile, dir);
-					direct = dirTile;
 					closestEnemy = distance;
 				}
 			} else {
@@ -156,7 +147,6 @@ export const getActions = (data: IAIData): IAction[] => {
 						distance
 					},
 					move: tile,
-					direct,
 					command,
 					damage,
 					healing,

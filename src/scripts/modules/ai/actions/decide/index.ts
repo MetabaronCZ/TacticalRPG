@@ -37,14 +37,13 @@ const btDecide = (role: CharacterRole): BTAction<IAIData> => {
 		if (!action) {
 			throw new Error('AI could not decide any action');
 		}
-		const { target, move, command, direct } = action;
+		const { target, move, command } = action;
 		const { position } = target;
 
 		data.memory.decision = {
 			move,
 			command,
-			target: position,
-			direct
+			target: position
 		};
 		const char = characters.find(char => position === char.position);
 

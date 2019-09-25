@@ -5,11 +5,6 @@ BUGS
 
 TODO
 ---------------------------------------------------------------------------------------
---	AI direction by melo probihat az v btDirect
-	- pokud actor zabije jinou postavu, tak se k ni nataci, protoze je nejbliz
-
---	AI btEvade by melo vybirat pouze pozice, ktere nejsou v COMMAND.effectArea
-
 --	zjistit, proc v MAIN vs MAIN zustane nakonec HEALER v rohu
 
 --	AI: pridat logiku rozhodovani podle CharacterCondition
