@@ -190,7 +190,7 @@ class CommandPhase extends ActPhase<ICommandPhaseSnapshot, ICommandPhaseRecord> 
 				}
 				: null
 			,
-			target: (effectTarget ? effectTarget.id : null)
+			target: (effectTarget ? effectTarget.data.id : null)
 		};
 	}
 

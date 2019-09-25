@@ -1,13 +1,10 @@
 BUGS
 ---------------------------------------------------------------------------------------
---	AI postavy s kopim neutoci vzdy, kdyz mohou
+--	AI postavy se Spear zbrani neutoci vzdy, kdyz mohou
 
 
 TODO
 ---------------------------------------------------------------------------------------
->>	vytvorit character UID
-	- tvoreno z character ID a player ID
-
 --	AI direction by melo probihat az v btDirect
 	- pokud actor zabije jinou postavu, tak se k ni nataci, protoze je nejbliz
 

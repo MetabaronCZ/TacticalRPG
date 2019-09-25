@@ -85,7 +85,7 @@ export const getActions = (data: IAIData): IAction[] => {
 			const path = getShortestPath(tile, ch.position, []);
 
 			const distance = path.length;
-			distances[ch.data.id] = distance;
+			distances[ch.id] = distance;
 
 			if (actor.player.id !== ch.player.id) {
 				if (distance < closestEnemy) {
@@ -124,11 +124,11 @@ export const getActions = (data: IAIData): IAction[] => {
 			}
 
 			for (const tgt of targetable) {
-				const { id } = tgt.data;
+				const { id } = tgt;
 				const distance = distances[id];
 				let tgtPosition = tgt.position;
 
-				if (tgt.data.id === actor.id && tgt.player.id === actor.player.id) {
+				if (id === actor.id) {
 					// target its future position
 					tgtPosition = tile;
 				}
@@ -171,11 +171,7 @@ export const getActions = (data: IAIData): IAction[] => {
 
 	const possibleActions: IAction[] = actions.map(action => {
 		const charID = action.target.character;
-		const playerID = action.target.player;
-
-		const character = characters.find(char => {
-			return charID === char.id && playerID === char.player.id;
-		});
+		const character = characters.find(char => charID === char.id);
 
 		if (!character) {
 			throw new Error('Could not convert action item: Invalid character ID');

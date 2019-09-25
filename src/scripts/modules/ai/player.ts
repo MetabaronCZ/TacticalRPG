@@ -10,6 +10,7 @@ import { IPlayerData } from 'modules/battle-configuration/player-data';
 import CharacterRole from 'modules/ai/role';
 import AICharacter from 'modules/ai/character';
 import { IAIConfig, IAISettings } from 'modules/ai/settings';
+import { IActSnapshot } from 'modules/battle/act';
 
 class AIPlayer extends Player {
 	public readonly config: IAIConfig;
@@ -40,17 +41,9 @@ class AIPlayer extends Player {
 		if (!act) {
 			throw new Error('Invalid act');
 		}
-		const actingChar = act.actingCharacter;
+		const char = this.getCharacter(act);
 
-		if (!actingChar) {
-			throw new Error('Could not get AI character: invalid acting character');
-		}
-		const aiChar = this.ally.find(ch => ch.character.data.id === actingChar.id);
-
-		if (!aiChar) {
-			throw new Error('Invalid actor');
-		}
-		const { character: { name }, role } = aiChar;
+		const { character: { name }, role } = char;
 		Logger.info(`AI Player: ${name} [${role.get().join(', ')}]`);
 	}
 
@@ -60,14 +53,9 @@ class AIPlayer extends Player {
 		if (!act) {
 			throw new Error('Invalid act');
 		}
-		const actingChar = act.actingCharacter;
+		const aiChar = this.getCharacter(act);
 
-		if (!actingChar) {
-			throw new Error('Could not update AI character: invalid acting character');
-		}
-		const aiChar = this.ally.find(ch => ch.character.data.id === actingChar.id);
-
-		if (!aiChar || aiChar.character.isDead()) {
+		if (aiChar.character.isDead()) {
 			throw new Error('Invalid actor');
 		}
 		aiChar.update({
@@ -85,6 +73,23 @@ class AIPlayer extends Player {
 	private getEnemy(characters: ICharacterSnapshot[]): ICharacterSnapshot[] {
 		const enemy = characters.filter(char => char.player.id !== this.id);
 		return enemy.filter(char => !char.dead && !char.dying);
+	}
+
+	private getCharacter(act: IActSnapshot): AICharacter {
+		if (!act) {
+			throw new Error('Invalid act');
+		}
+		const actingChar = act.actingCharacter;
+
+		if (!actingChar) {
+			throw new Error('Invalid acting character');
+		}
+		const aiChar = this.ally.find(ch => ch.character.id === actingChar.id);
+
+		if (!aiChar) {
+			throw new Error('Invalid actor');
+		}
+		return aiChar;
 	}
 
 	private getObstacles(characters: ICharacterSnapshot[]): Tile[] {
