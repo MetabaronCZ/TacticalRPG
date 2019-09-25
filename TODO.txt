@@ -1,14 +1,5 @@
-BUGS
----------------------------------------------------------------------------------------
---	DOUBLE_ATTACK se nedava na cooldown
-
-
 TODO
 ---------------------------------------------------------------------------------------
-??	serializovat v EngineState:
-	-- Tile
-	-- Skill
-
 --	zjistit, proc v MAIN vs MAIN zustane nakonec HEALER v rohu
 
 --	AI: pridat logiku rozhodovani podle CharacterCondition

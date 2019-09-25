@@ -7,6 +7,7 @@ import {
 	conditionCritical, conditionDanger
 } from 'data/game-config';
 
+import Skill from 'modules/skill';
 import Tile from 'modules/geometry/tile';
 import AIPlayer from 'modules/ai/player';
 import Status from 'modules/character/status';
@@ -24,6 +25,9 @@ import { IArchetypeData, ArchetypeID } from 'modules/character/archetype';
 import { ICharacterData } from 'modules/character-creation/character-data';
 import Attributes, { AttributeID, IAttributes } from 'modules/character/attributes';
 import StatusEffect, { StatusEffectID, IOnStatus } from 'modules/battle/status-effect';
+
+// DOUBLE_ATTACK skill for cooledown data extraction
+const doubleAttack = new Skill('DOUBLE_ATTACK');
 
 type CharacterCondition = 'OK' | 'DANGER' | 'CRITICAL';
 
@@ -326,9 +330,14 @@ class Character {
 			this.attributes.set('AP', newAP);
 			this.attributes.set('MP', newMP);
 		}
+		const cdSkills = [...skills];
+
+		if ('DOUBLE_ATTACK' === command.type) {
+			cdSkills.push(doubleAttack);
+		}
 
 		// put skills on cooldown
-		for (const skill of skills) {
+		for (const skill of cdSkills) {
 			const cd = skill.cooldown;
 			this.cooldowns[skill.id] = ('ULTIMATE' === cd ? cd : cd + 1) as SkillCooldown;
 		}
