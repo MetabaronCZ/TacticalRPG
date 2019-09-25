@@ -190,7 +190,7 @@ class ReactionPhase extends ActPhase<IReactionPhaseSnapshot, IReactionPhaseRecor
 	}
 
 	private startReact(): void {
-		const { actActor, phase } = this;
+		const { actActor, phase, characters } = this;
 
 		if ('IDLE' !== phase) {
 			throw new Error('Could not start reaction: invalid phase ' + phase);
@@ -207,10 +207,14 @@ class ReactionPhase extends ActPhase<IReactionPhaseSnapshot, IReactionPhaseRecor
 		}
 		reaction.phase = 'IDLE';
 
+		const { reactor } = reaction;
+		const obstacles = characters.map(char => char.position);
+		reaction.evasible = reactor.position.getNeighbours(obstacles);
+
 		// turn actor to face active reactor
 		actActor.direction = resolveDirection(actActor.position, reaction.reactor.position);
 
-		if (reaction.isSupport || reaction.reactor.player === actActor.player) {
+		if (reaction.isSupport || reactor.player === actActor.player) {
 			// force reaction pass
 			const passAction = getContinueCommand();
 			this.pass(reaction, passAction);
@@ -288,7 +292,6 @@ class ReactionPhase extends ActPhase<IReactionPhaseSnapshot, IReactionPhaseRecor
 		this.info = txtIdle;
 
 		reaction.command = null;
-		reaction.evasible = [];
 
 		this.onEvent('REACTION_IDLE');
 	}
@@ -304,17 +307,13 @@ class ReactionPhase extends ActPhase<IReactionPhaseSnapshot, IReactionPhaseRecor
 	}
 
 	private startEvasion(reaction: IReaction): void {
-		const { characters } = this;
-		const { reactor, phase } = reaction;
+		const { phase } = reaction;
 
 		if ('IDLE' !== phase) {
 			throw new Error('Could not start evasion: invalid phase ' + phase);
 		}
 		reaction.phase = 'EVASION';
 		this.info = txtEvasion;
-
-		const obstacles = characters.map(char => char.position);
-		reaction.evasible = reactor.position.getNeighbours(obstacles);
 
 		this.onEvent('REACTION_SELECTED');
 	}

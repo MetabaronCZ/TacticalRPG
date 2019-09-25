@@ -16,6 +16,17 @@ const btEvade = (): BTAction<IAIData> => {
 		if (!evadeCommand) {
 			return 'FAILURE';
 		}
+		const { reaction } = data.act.phases.REACTION;
+		const { effectArea } = data.act.phases.COMMAND;
+
+		if (!reaction) {
+			throw new Error('AI character could not evade: invalid reaction');
+		}
+		const evasible = reaction.evasible.find(tile => !tile.isContained(effectArea));
+
+		if (!evasible) {
+			return 'FAILURE';
+		}
 		data.selectCommand(evadeCommand.id);
 		return 'SUCCESS';
 	});
