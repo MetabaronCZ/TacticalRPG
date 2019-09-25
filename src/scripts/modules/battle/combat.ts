@@ -13,7 +13,8 @@ import { ElementAffinityTable, Affinity } from 'modules/skill/affinity';
 import StatusEffect, { StatusEffectID } from 'modules/battle/status-effect';
 
 const precision = 10 ** 10; // angle precision modifier
-const backAttackAngle = PI / 3; // 60 degrees
+const backAttackAngle = PI / 6; // 30 degrees
+const sideBackAttackAngle = PI / 3; // 60 degrees
 
 interface IBlockValue {
 	readonly physical: number;
@@ -76,14 +77,19 @@ export interface ICombatPreview {
 	target: ITargetCombatPreview | null;
 }
 
-export const isBackAttacked = (attacker: Character, defender: Character): boolean => {
+const getCharacterAngle = (attacker: Character, defender: Character): number => {
 	const attVector = Vector.fromTiles(attacker.position, defender.position);
 	const defVector = Vector.fromDirection(defender.direction);
 	const angle = attVector.getAngle(defVector);
 
 	// get approximate value (resulting angle is bigger, even if it should be equal PI / 3)
 	const approxAngle = Math.floor(precision * angle) / precision;
-	return approxAngle <= backAttackAngle;
+	return approxAngle;
+};
+
+export const isBackAttacked = (attacker: Character, defender: Character): boolean => {
+	const angle = getCharacterAngle(attacker, defender);
+	return angle <= sideBackAttackAngle;
 };
 
 const getAffinity = (attacker: SkillElement, defender: SkillElement): Affinity => {
@@ -100,8 +106,16 @@ const getAffinityModifier = (affinity: Affinity): number => {
 	return DMG.affinityModifierTable[affinity];
 };
 
-const getDirectionalModifier = (backAttacked: boolean): number => {
-	return backAttacked ? DMG.backAttackModifier : 1;
+const getDirectionalModifier = (attacker: Character, defender: Character): number => {
+	const angle = getCharacterAngle(attacker, defender);
+
+	if (angle <= backAttackAngle) {
+		return DMG.backAttackModifier;
+	}
+	if (angle <= sideBackAttackAngle) {
+		return DMG.sideBackAttackModifier;
+	}
+	return 1;
 };
 
 const getBlock = (character: Character, isPreview = false): number | null => {
@@ -285,10 +299,9 @@ export const getCombatPreview = (command: Command, caster: Character, target: Ch
 		target: null
 	};
 
-	// check back attack
+	// back attack check
 	if (target && !command.isSupport && !allied) {
-		const backAttacked = isBackAttacked(caster, target);
-		preview.caster.directionModifier = getDirectionalModifier(backAttacked);
+		preview.caster.directionModifier = getDirectionalModifier(caster, target);
 	}
 
 	// get caster command skills info
@@ -392,8 +405,7 @@ export const getCombatInfo = (caster: Character, target: Character, skill: Skill
 	const affinityMod = getAffinityModifier(affinity);
 
 	// directional modifier
-	const backAttack = isBackAttacked(caster, target);
-	const directionMod = getDirectionalModifier(backAttack);
+	const directionMod = getDirectionalModifier(caster, target);
 
 	// shield block
 	const block = getBlock(target);

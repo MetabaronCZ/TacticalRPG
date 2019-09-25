@@ -8,6 +8,7 @@ import MoveAnimation from 'modules/battle/act/move-animation';
 import SkillAnimation from 'modules/battle/act/skill-animation';
 import Character, { ICharacterSnapshot } from 'modules/character';
 import Command, { ICommandRecord, ICommandSnapshot } from 'modules/battle/command';
+import { isBackAttacked } from 'modules/battle/combat';
 
 const txtIdle = 'Select reaction:';
 const txtEvasion = 'Select evasion target on grid.';
@@ -47,6 +48,7 @@ export type ReactionPhaseEvents =
 interface IReaction {
 	readonly reactor: Character;
 	readonly isSupport: boolean;
+	readonly isBackAttack: boolean;
 	phase: ActiveReactionPhaseID;
 	command: Command | null;
 	evasible: Tile[];
@@ -121,7 +123,7 @@ class ReactionPhase extends ActPhase<IReactionPhaseSnapshot, IReactionPhaseRecor
 	}
 
 	public start(targets: Character[], command: Command): void {
-		const { phase } = this;
+		const { phase, actActor } = this;
 
 		if ('SUSPENDED' !== phase) {
 			throw new Error('Could not start reaction: invalid phase ' + phase);
@@ -135,6 +137,7 @@ class ReactionPhase extends ActPhase<IReactionPhaseSnapshot, IReactionPhaseRecor
 		this.reactions = targets.map(target => ({
 			phase: 'SUSPENDED',
 			isSupport: command.isSupport,
+			isBackAttack: isBackAttacked(actActor, target),
 			reactor: target,
 			command: null,
 			evasible: [],

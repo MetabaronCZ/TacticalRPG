@@ -1,6 +1,8 @@
 import { Affinity } from 'modules/skill/affinity';
 
 export const backAttackModifier = 2;
+export const sideBackAttackModifier = 1.5;
+
 export const shockModifier = 2;
 export const ironSkinModifier = 0.5;
 export const berserkAttackModifier = 2;

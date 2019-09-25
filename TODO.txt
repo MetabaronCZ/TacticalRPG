@@ -12,10 +12,6 @@ TODO
 
 --	zjistit, proc v MAIN vs MAIN zustane nakonec HEALER v rohu
 
---	rozdelit BACK_ATTACK:
-	- standardni je primo zezadu (-30° az +30°); modifier x2
-	- side-back attack je ze sousednich policek (-60° az +60°) 
-
 --	AI: pridat logiku rozhodovani podle CharacterCondition
 	- MELEE pri DANGER utocit ze safeArea pozice, apod.
 

@@ -1,4 +1,3 @@
-import { isBackAttacked } from 'modules/battle/combat';
 import {
 	getIdleCommands, getSkillConfirmCommands, getReactiveCommands, getEvasiveCommands
 } from 'modules/battle/commands';
@@ -240,9 +239,8 @@ class Act {
 				if (!reaction) {
 					throw new Error('Could not get reaction commands: no reaction');
 				}
-				const { reactor, isSupport } = reaction;
+				const { reactor, isSupport, isBackAttack } = reaction;
 				const obstacles = this.characters.map(char => char.position);
-				const isBackAttack = isBackAttacked(actor, reactor);
 				const canEvade = reactor.canEvade(obstacles);
 
 				switch (reaction.phase) {

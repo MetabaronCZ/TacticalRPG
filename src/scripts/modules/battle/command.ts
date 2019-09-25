@@ -149,7 +149,7 @@ class Command {
 			title: this.title,
 			skills: [...this.skills],
 			cooldown: this.cooldown,
-			cost: { ...this.cost } as ICommandCost,
+			cost: (this.cost ? { ...this.cost } : null),
 			isActive: this.isActive(),
 			isSupport: this.isSupport,
 			isUsable: this.isUsable()
