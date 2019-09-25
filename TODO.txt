@@ -1,5 +1,18 @@
+BUGS
+---------------------------------------------------------------------------------------
+--	AI postavy s kopim neutoci vzdy, kdyz mohou
+
+
 TODO
 ---------------------------------------------------------------------------------------
+>>	vytvorit character UID
+	- tvoreno z character ID a player ID
+
+--	AI direction by melo probihat az v btDirect
+	- pokud actor zabije jinou postavu, tak se k ni nataci, protoze je nejbliz
+
+--	AI btEvade by melo vybirat pouze pozice, ktere nejsou v COMMAND.effectArea
+
 --	zjistit, proc v MAIN vs MAIN zustane nakonec HEALER v rohu
 
 --	AI: pridat logiku rozhodovani podle CharacterCondition
@@ -17,9 +30,7 @@ TODO
 --	udelat ikony pro vsechny StatusEffecty
 	- posilat je jako status v combat phase
 	- u debuffu posilat jen "status" a ne "weapon"
-
-??	vytvorit character UID
-	- tvoreno z character ID a player ID
+	- pouzit v CharacterInfo UI misto soucasnych textu s dobou trvani
 
 ??  Magical weapon type 
 	- damage physical + magical bonus (obe mensi nez maji standardni ATTACK skilly)
@@ -33,8 +44,6 @@ TODO
 	- leader by mel jit kupredu a obsadit stred
 		- ostatni se drzi pobliz a nejdou az prilis dopredu
 	- vyresi problem, kdy RANGED a MAGE role jdou az prilis dopredu
-
-??	Counter reaction skill >> jako mainHand weapon Attack skill
 
 ??	pasivni skilly
 	--	DARK_AURA by mela delat 50% damage reflection (do vzdalenosti SkillArea)

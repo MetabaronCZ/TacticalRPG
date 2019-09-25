@@ -172,7 +172,7 @@ class BattleSummaryPage extends React.Component<IProps, IState> {
 					</li>
 
 					{timeline.map((t, i) => {
-						const player = playerData[t.player];
+						const player = playerData.find(pl => t.player === pl.id);
 
 						if (!player) {
 							throw new Error('Invalid Character or Player data');
