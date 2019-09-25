@@ -22,7 +22,7 @@ export const getPassAction = (actor: ICharacterSnapshot, primaryRole: CharacterR
 	}
 	let result: IAction | null = null;
 
-	if ('HEALER' === primaryRole[0]) {
+	if ('HEALER' === primaryRole) {
 		// get injured targets
 		const injured = allyActions.filter(action => {
 			return 'OK' !== action.target.character.condition;

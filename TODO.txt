@@ -7,6 +7,11 @@ TODO
 ---------------------------------------------------------------------------------------
 --	zjistit, proc v MAIN vs MAIN zustane nakonec HEALER v rohu
 
+--	udelat ikony pro vsechny StatusEffecty
+	- posilat je jako status v combat phase
+	- u debuffu posilat jen "status" a ne "weapon"
+	- pouzit v CharacterInfo UI misto soucasnych textu s dobou trvani
+
 --	AI: pridat logiku rozhodovani podle CharacterCondition
 	- MELEE pri DANGER utocit ze safeArea pozice, apod.
 
@@ -18,11 +23,6 @@ TODO
 	- vysledkem rozkazu by melo byt prioritizovani MOVE, TARGET nebo COMMAND v IAIData
 	- mel by vyhodnocovat, jestli je rozkaz jeste aktualni
 	- postavy nemusi mit vzdy rozkaz
-
---	udelat ikony pro vsechny StatusEffecty
-	- posilat je jako status v combat phase
-	- u debuffu posilat jen "status" a ne "weapon"
-	- pouzit v CharacterInfo UI misto soucasnych textu s dobou trvani
 
 ??  Magical weapon type 
 	- damage physical + magical bonus (obe mensi nez maji standardni ATTACK skilly)
