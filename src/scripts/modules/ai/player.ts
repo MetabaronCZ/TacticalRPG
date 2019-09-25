@@ -1,8 +1,8 @@
 import AIPresets from 'data/ai-presets';
 
+import Logger from 'modules/logger';
 import Tile from 'modules/geometry/tile';
 import Engine from 'modules/battle/engine';
-import Command from 'modules/battle/command';
 import { ICharacterSnapshot } from 'modules/character';
 import Player, { IPlayerCharacterSetup } from 'modules/battle/player';
 import { IPlayerData } from 'modules/battle-configuration/player-data';
@@ -10,7 +10,6 @@ import { IPlayerData } from 'modules/battle-configuration/player-data';
 import CharacterRole from 'modules/ai/role';
 import AICharacter from 'modules/ai/character';
 import { IAIConfig, IAISettings } from 'modules/ai/settings';
-import Logger from 'modules/logger';
 
 class AIPlayer extends Player {
 	public readonly config: IAIConfig;
@@ -55,7 +54,7 @@ class AIPlayer extends Player {
 		Logger.info(`AI Player: ${name} [${role.get().join(', ')}]`);
 	}
 
-	public onUpdate(commands: Command[]): void {
+	public onUpdate(): void {
 		const { act, characters } = this.engine.serialize();
 
 		if (!act) {
@@ -73,7 +72,6 @@ class AIPlayer extends Player {
 		}
 		aiChar.update({
 			act,
-			commands,
 			ally: this.getAlly(characters),
 			enemy: this.getEnemy(characters),
 			obstacles: this.getObstacles(characters)

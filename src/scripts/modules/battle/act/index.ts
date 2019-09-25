@@ -128,11 +128,16 @@ class Act {
 		this.phases[phase].selectTile(tile);
 	}
 
-	public selectCommand(command: Command): void {
+	public selectCommand(commandID: string): void {
 		const { phase } = this;
 
 		if (!phase) {
 			throw new Error('Could not select command: invalid phase ' + phase);
+		}
+		const command = this.commands.find(cmd => commandID === cmd.id);
+
+		if (!command) {
+			throw new Error('Could not select command: invalid command ' + commandID);
 		}
 		this.phases[phase].selectCommand(command);
 	}
@@ -268,20 +273,12 @@ class Act {
 		if (!char) {
 			throw new Error('Could not update Act data: invalid acting character');
 		}
-		const commands = this.prepareCommands();
+		this.commands = this.prepareCommands();
+		this.events.onUpdate();
 
-		if (!char.isAI()) {
-			// set commands for player
-			this.commands = commands;
-			this.events.onUpdate();
-
-		} else {
-			// let AI act
-			this.commands = [];
-			this.events.onUpdate();
-
+		if (char.isAI()) {
 			const player = char.player as AIPlayer;
-			player.onUpdate(commands);
+			player.onUpdate();
 		}
 	}
 

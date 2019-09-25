@@ -7,7 +7,6 @@ import { getRandomNames } from 'modules/random-name-generator';
 import Logger from 'modules/logger';
 import Tile from 'modules/geometry/tile';
 import AIPlayer from 'modules/ai/player';
-import Command from 'modules/battle/command';
 import Act, { IActSnapshot } from 'modules/battle/act';
 import { IBattleInfo } from 'modules/battle/battle-info';
 import { DirectionID } from 'modules/geometry/direction';
@@ -97,14 +96,14 @@ class Engine {
 		this.act.selectTile(tile);
 	}
 
-	public selectCommand(command: Command): void {
+	public selectCommand(commandID: string): void {
 		if (!this.act) {
 			throw new Error('Could not select command: invalid act');
 		}
 		if (!this.running) {
 			return;
 		}
-		this.act.selectCommand(command);
+		this.act.selectCommand(commandID);
 	}
 
 	public serialize(): IEngineSnapshot {

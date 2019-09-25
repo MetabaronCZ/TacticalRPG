@@ -55,6 +55,7 @@ const getCooldown = (skills: Skill[], cooldowns: ISkillCooldowns): SkillCooldown
 };
 
 class Command {
+	public readonly id: string;
 	public readonly type: CommandType;
 	public readonly title: string;
 	public readonly skills: Skill[] = [];
@@ -66,6 +67,7 @@ class Command {
 	private active: true | CommandReason = true;
 
 	constructor(type: CommandType, title: string, character?: Character, skills: Skill[] = []) {
+		this.id = `${type}-${skills.map(s => s.id).join(',') || 'X'}`;
 		this.type = type;
 		this.title = title;
 		this.skills = skills;

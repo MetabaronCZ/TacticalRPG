@@ -11,7 +11,7 @@ const btCommand = (): BTAction<IAIData> => {
 		}
 		data.memory.commandSelected = true;
 
-		const passCommand = data.commands.find(cmd => 'PASS' === cmd.type);
+		const passCommand = data.act.commands.find(cmd => 'PASS' === cmd.type);
 		const { decision } = data.memory;
 
 		if (!passCommand) {
@@ -19,12 +19,12 @@ const btCommand = (): BTAction<IAIData> => {
 		}
 
 		if (!decision) {
-			data.selectCommand(passCommand);
+			data.selectCommand(passCommand.id);
 			Logger.info('AI COMMAND - no command decided');
 
 		} else {
 			const { command } = decision;
-			data.selectCommand(command);
+			data.selectCommand(command.id);
 			Logger.info('AI COMMAND - command selected: ' + command.title);
 		}
 		return 'SUCCESS';

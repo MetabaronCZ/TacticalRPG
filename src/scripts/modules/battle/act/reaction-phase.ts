@@ -35,7 +35,7 @@ interface IReactionSnapshot {
 }
 
 export type ReactionPhaseID = 'SUSPENDED' | 'IDLE' | 'DONE';
-export type ActiveReactionPhaseID  = 'SUSPENDED' | 'IDLE' | 'EVASION';
+export type ActiveReactionPhaseID  = 'SUSPENDED' | 'IDLE' | 'EVASION' | 'ANIMATION' | 'DONE';
 
 export type ReactionPhaseEvents =
 	'REACTION_IDLE' |
@@ -257,6 +257,7 @@ class ReactionPhase extends ActPhase<IReactionPhaseSnapshot, IReactionPhaseRecor
 		if ('IDLE' !== phase) {
 			throw new Error('Could not react: invalid phase ' + phase);
 		}
+		reaction.phase = 'ANIMATION';
 
 		// reaction animation
 		const reactionAnim = new SkillAnimation(
@@ -349,6 +350,7 @@ class ReactionPhase extends ActPhase<IReactionPhaseSnapshot, IReactionPhaseRecor
 	}
 
 	private finish(reaction: IReaction): void {
+		reaction.phase = 'DONE';
 		this.onEvent('REACTION_FINISHED', reaction.command);
 
 		this.reaction++;

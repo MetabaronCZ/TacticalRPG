@@ -9,7 +9,6 @@ import BattleUI from 'ui/battle/BattleUI';
 
 import Tile from 'modules/geometry/tile';
 import Summary from 'modules/battle/summary';
-import Command from 'modules/battle/command';
 import { IRouteParams } from 'modules/route';
 import Engine, { IEngineSnapshot } from 'modules/battle/engine';
 
@@ -96,12 +95,12 @@ class BattlePageContainer extends React.Component<IProps, IState> {
 		}
 	}
 
-	private onCommandSelect = (command: Command): void => {
+	private onCommandSelect = (commandID: string): void => {
 		const { act } = this.state.engine;
 		const actingChar = act ? act.actingCharacter : null;
 
 		if (actingChar && !actingChar.isAI) {
-			this.engine.selectCommand(command);
+			this.engine.selectCommand(commandID);
 		}
 	}
 }

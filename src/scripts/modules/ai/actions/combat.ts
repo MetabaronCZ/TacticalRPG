@@ -17,7 +17,7 @@ const btCombat = (): BTAction<IAIData> => {
 			Logger.info('AI COMBAT - no command decided');
 			return 'SUCCESS';
 		}
-		const confirm = data.commands.find(cmd => 'CONFIRM' === cmd.type);
+		const confirm = data.act.commands.find(cmd => 'CONFIRM' === cmd.type);
 
 		if (!confirm) {
 			throw new Error('AI character commands does not contain confirm command');
@@ -25,7 +25,7 @@ const btCombat = (): BTAction<IAIData> => {
 		const { command } = decision;
 
 		// confirm selected command
-		data.selectCommand(confirm);
+		data.selectCommand(confirm.id);
 		Logger.info('AI COMBAT - command confirmed: ' + command.title);
 
 		return 'RUNNING';

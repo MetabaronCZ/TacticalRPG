@@ -5,7 +5,7 @@ import BTAction from 'modules/ai/behavioral-tree/action';
 
 const btShield = (): BTAction<IAIData> => {
 	return BT.Action(data => {
-		const shieldCommand = data.commands.find(cmd => {
+		const shieldCommand = data.act.commands.find(cmd => {
 			return (
 				cmd.isActive() &&
 				cmd.skills.length &&
@@ -16,8 +16,8 @@ const btShield = (): BTAction<IAIData> => {
 		if (!shieldCommand) {
 			return 'FAILURE';
 		}
-		data.selectCommand(shieldCommand);
-		return 'SUCCESS';
+		data.selectCommand(shieldCommand.id);
+		return 'RUNNING';
 	});
 };
 

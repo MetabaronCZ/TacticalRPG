@@ -5,7 +5,7 @@ import BTAction from 'modules/ai/behavioral-tree/action';
 
 const btBlock = (): BTAction<IAIData> => {
 	return BT.Action(data => {
-		const blockCommand = data.commands.find(cmd => {
+		const blockCommand = data.act.commands.find(cmd => {
 			return (
 				cmd.isActive() &&
 				cmd.skills.length &&
@@ -19,8 +19,8 @@ const btBlock = (): BTAction<IAIData> => {
 		if (!blockCommand) {
 			return 'FAILURE';
 		}
-		data.selectCommand(blockCommand);
-		return 'SUCCESS';
+		data.selectCommand(blockCommand.id);
+		return 'RUNNING';
 	});
 };
 

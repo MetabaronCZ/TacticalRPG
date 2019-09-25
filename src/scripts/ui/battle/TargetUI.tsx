@@ -12,7 +12,7 @@ interface IProps {
 	readonly preview: ITargetCombatPreview;
 	readonly commands: Command[];
 	readonly info: string;
-	readonly onCommandSelect: (command: Command) => void;
+	readonly onCommandSelect: (commandID: string) => void;
 }
 
 const TargetUI: React.SFC<IProps> = ({ preview, commands, info, onCommandSelect }) => {

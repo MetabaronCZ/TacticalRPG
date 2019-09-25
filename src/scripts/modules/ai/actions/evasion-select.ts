@@ -15,7 +15,7 @@ const btEvadeTo = (): BTAction<IAIData> => {
 		}
 		data.selectTile(evasionTarget);
 
-		return 'SUCCESS';
+		return 'RUNNING';
 	});
 };
 

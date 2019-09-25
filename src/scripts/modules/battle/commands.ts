@@ -9,7 +9,6 @@ export const getDontReactCommand = (): Command => new Command('DONT_REACT', 'Don
 export const getConfirmCommand = (): Command => new Command('CONFIRM', 'Confirm command');
 export const getCancelCommand = (): Command => new Command('BACK', 'Cancel command');
 export const getPassCommand = (): Command => new Command('PASS', 'End turn');
-export const getDirectCommand = (): Command => new Command('DIRECT', 'Direct');
 export const getContinueCommand = (): Command => new Command('DONT_REACT', 'Continue');
 
 export const getIdleCommands = (character: Character): Command[] => {
@@ -168,4 +167,3 @@ export const getReactiveCommands = (character: Character, isBackAttack: boolean,
 };
 
 export const getEvasiveCommands = (): Command[] => [getCancelCommand()];
-export const getDirectCommands = (): Command[] => [getDirectCommand()];

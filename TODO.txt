@@ -1,10 +1,15 @@
+BUGS
+---------------------------------------------------------------------------------------
+--	DOUBLE_ATTACK se nedava na cooldown
+
+
 TODO
 ---------------------------------------------------------------------------------------
---	zjistit, proc v MAIN vs MAIN zustane nakonec HEALER v rohu
+>>	serializovat v EngineState i Command na ICommand
+	?? Tile
+	?? Skill
 
---	vystup z COMMAND faze pro ostatni faze a pro Chronox by mel byt pouze:
-	- vybrany Command a vybrany target Tile
-	- vstup pro COMMAND fazi by mel byt REACTION.getReactions()
+--	zjistit, proc v MAIN vs MAIN zustane nakonec HEALER v rohu
 
 --	AI: pridat logiku rozhodovani podle CharacterCondition
 	- MELEE pri DANGER utocit ze safeArea pozice, apod.
@@ -24,8 +29,6 @@ TODO
 
 ??	vytvorit character UID
 	- tvoreno z character ID a player ID
-
-??	serializovat v EngineState i Command na ICommand
 
 ??  Magical weapon type 
 	- damage physical + magical bonus (obe mensi nez maji standardni ATTACK skilly)

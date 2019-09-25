@@ -15,7 +15,7 @@ import HexaGrid from 'ui/battle/HexaGrid';
 interface IBattleUIProps {
 	readonly engine: IEngineSnapshot;
 	readonly onTileSelect: (tile: Tile) => void;
-	readonly onCommandSelect: (command: Command) => void;
+	readonly onCommandSelect: (commandID: string) => void;
 	readonly onExit: () => void;
 }
 

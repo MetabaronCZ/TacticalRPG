@@ -50,7 +50,6 @@ interface IAICharacterMemory {
 
 interface IAICharacterUpdateData {
 	readonly act: IActSnapshot;
-	readonly commands: Command[];
 	readonly ally: ICharacterSnapshot[];
 	readonly enemy: ICharacterSnapshot[];
 	readonly obstacles: Tile[];
@@ -59,7 +58,7 @@ interface IAICharacterUpdateData {
 export interface IAIData extends BTData, IAICharacterUpdateData {
 	readonly memory: IAICharacterMemory;
 	readonly selectTile: (tile: Tile) => void;
-	readonly selectCommand: (cmd: Command) => void;
+	readonly selectCommand: (commandID: string) => void;
 }
 
 class AICharacter {
@@ -76,17 +75,17 @@ class AICharacter {
 		commandConfirmed: false
 	}
 	private selectTile: (tile: Tile) => void;
-	private selectCommand: (cmd: Command) => void;
+	private selectCommand: (commandID: string) => void;
 
 	constructor(character: Character, engine: Engine, role: CharacterRole) {
 		this.character = character;
 		this.role = role;
 
-		this.selectTile = (tile: Tile) => {
+		this.selectTile = tile => {
 			delayAction(() => engine.selectTile(tile));
 		};
 
-		this.selectCommand = (cmd: Command) => {
+		this.selectCommand = cmd => {
 			delayAction(() => engine.selectCommand(cmd));
 		};
 
@@ -136,6 +135,8 @@ class AICharacter {
 						},
 						{
 							SUSPENDED: null,
+							ANIMATION: null,
+							DONE: null,
 							IDLE: BT.Selector([btEvade(), btBlock(), btShield(), btDontReact()]),
 							EVASION: btEvadeTo()
 						}

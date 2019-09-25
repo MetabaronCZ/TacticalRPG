@@ -3,7 +3,7 @@ import React, { SyntheticEvent } from 'react';
 import CommandTitle from 'ui/battle/CommandTitle';
 import Command, { formatCost } from 'modules/battle/command';
 
-type IOnSelect = (command: Command) => void;
+type IOnSelect = (commandID: string) => void;
 
 interface IProps {
 	readonly commands: Command[];
@@ -21,7 +21,7 @@ const Commands: React.SFC<IProps> = ({ commands, onSelect }) => {
 		e.preventDefault();
 
 		if (command.isActive()) {
-			onSelect(command);
+			onSelect(command.id);
 		}
 		const button = buttons[id];
 

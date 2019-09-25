@@ -5,7 +5,7 @@ import BTAction from 'modules/ai/behavioral-tree/action';
 
 const btEvade = (): BTAction<IAIData> => {
 	return BT.Action(data => {
-		const evadeCommand = data.commands.find(cmd => {
+		const evadeCommand = data.act.commands.find(cmd => {
 			return (
 				cmd.isActive() &&
 				cmd.skills.length &&
@@ -16,7 +16,7 @@ const btEvade = (): BTAction<IAIData> => {
 		if (!evadeCommand) {
 			return 'FAILURE';
 		}
-		data.selectCommand(evadeCommand);
+		data.selectCommand(evadeCommand.id);
 		return 'SUCCESS';
 	});
 };

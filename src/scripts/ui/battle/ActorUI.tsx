@@ -1,6 +1,5 @@
 import React from 'react';
 
-import Command from 'modules/battle/command';
 import { IActSnapshot } from 'modules/battle/act';
 import { ICasterCombatPreview } from 'modules/battle/combat';
 
@@ -14,7 +13,7 @@ import CharacterInfo from 'ui/battle/CharacterInfo';
 interface IProps {
 	readonly act: IActSnapshot;
 	readonly preview: ICasterCombatPreview | null;
-	readonly onCommandSelect: (command: Command) => void;
+	readonly onCommandSelect: (commandID: string) => void;
 }
 
 const ActorUI: React.SFC<IProps> = ({ act, preview, onCommandSelect }) => {
