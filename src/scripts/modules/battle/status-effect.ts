@@ -22,6 +22,10 @@ export type StatusEffectMulti = 'RENEW' | 'STACK' | 'IGNORE';
 export type StatusEffectDuration = 0 | 33 | 100;  // game ticks
 export type StatusEffectRepeat = 0 | 3;
 
+export const reactiveEffects: StatusEffectID[] = [
+	'BLOCK_SMALL', 'BLOCK_LARGE', 'ENERGY_SHIELD'
+];
+
 export interface IStatusEffect {
 	readonly type: StatusEffectType;
 	readonly title: string;

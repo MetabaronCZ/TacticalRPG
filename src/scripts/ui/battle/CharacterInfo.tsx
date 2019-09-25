@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { ICharacterSnapshot } from 'modules/character';
+import { reactiveEffects } from 'modules/battle/status-effect';
 
 import { formatCharacter } from 'ui/format';
 import AttributeInfo from 'ui/battle/AttributeInfo';
@@ -12,7 +13,8 @@ interface IProps {
 const CharactertInfo: React.SFC<IProps> = ({ character: char }) => {
 	const { HP: baseHP, AP: baseAP, MP: baseMP } = char.baseAttributes;
 	const { HP, AP, MP } = char.attributes;
-	const st = char.status;
+	const st = char.status.filter(eff => -1 === reactiveEffects.indexOf(eff.id));
+
 	return (
 		<React.Fragment>
 			<h1 className="Heading">
