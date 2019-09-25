@@ -6,8 +6,8 @@ import ActPhase from 'modules/battle/act/phase';
 import { IOnActPhaseEvent } from 'modules/battle/act';
 import MoveAnimation from 'modules/battle/act/move-animation';
 import SkillAnimation from 'modules/battle/act/skill-animation';
-import Command, { ICommandRecord } from 'modules/battle/command';
 import Character, { ICharacterSnapshot } from 'modules/character';
+import Command, { ICommandRecord, ICommandSnapshot } from 'modules/battle/command';
 
 const txtIdle = 'Select reaction:';
 const txtEvasion = 'Select evasion target on grid.';
@@ -29,7 +29,7 @@ export interface IReactionPhaseRecord {
 interface IReactionSnapshot {
 	readonly reactor: ICharacterSnapshot;
 	readonly phase: ActiveReactionPhaseID;
-	readonly command: Command | null;
+	readonly command: ICommandSnapshot | null;
 	readonly evasible: Tile[];
 	readonly evasionTarget: Tile | null;
 }
@@ -179,10 +179,11 @@ class ReactionPhase extends ActPhase<IReactionPhaseSnapshot, IReactionPhaseRecor
 	}
 
 	private serializeReaction(reaction: IReaction): IReactionSnapshot {
+		const cmd = reaction.command;
 		return {
 			reactor: reaction.reactor.serialize(),
 			phase: reaction.phase,
-			command: reaction.command,
+			command: (cmd ? cmd.serialize() : null),
 			evasible: reaction.evasible,
 			evasionTarget: reaction.evasionTarget
 		};

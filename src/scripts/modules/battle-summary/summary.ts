@@ -1,6 +1,6 @@
 import Skill from 'modules/skill';
-import Command from 'modules/battle/command';
 import { IActRecord } from 'modules/battle/act';
+import Command, { ICommandSnapshot } from 'modules/battle/command';
 import { ICharacterData } from 'modules/character-creation/character-data';
 
 import { formatCombatResult } from 'ui/format';
@@ -11,12 +11,12 @@ interface ISummaryItemMove {
 }
 
 interface ISummaryItemCommand {
-	command: Command;
+	command: ICommandSnapshot;
 	target: ICharacterData;
 }
 
 interface ISummaryItemReaction {
-	command: Command;
+	command: ICommandSnapshot;
 	reactor: ICharacterData;
 }
 
@@ -60,7 +60,6 @@ export const getSummaryItem = (characters: ICharacterData[], record: IActRecord)
 
 	if (commandPhase.command) {
 		const { title, skills } = commandPhase.command;
-		const command = new Command('ATTACK', title, undefined, skills.map(id => new Skill(id)));
 
 		if (commandPhase.target) {
 			const target = characters.find(char => commandPhase.target === char.id);
@@ -68,8 +67,10 @@ export const getSummaryItem = (characters: ICharacterData[], record: IActRecord)
 			if (!target) {
 				throw new Error('Invalid character ID in record command target');
 			}
+			const command = new Command('ATTACK', title, undefined, skills.map(id => new Skill(id)));
+
 			result.command = {
-				command,
+				command: command.serialize(),
 				target
 			};
 		}
@@ -86,7 +87,7 @@ export const getSummaryItem = (characters: ICharacterData[], record: IActRecord)
 			const cmd = new Command('REACTION', title, undefined, skills.map(id => new Skill(id)));
 
 			result.reactions.push({
-				command: cmd,
+				command: cmd.serialize(),
 				reactor
 			});
 		}

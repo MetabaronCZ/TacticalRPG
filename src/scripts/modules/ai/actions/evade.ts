@@ -7,7 +7,7 @@ const btEvade = (): BTAction<IAIData> => {
 	return BT.Action(data => {
 		const evadeCommand = data.act.commands.find(cmd => {
 			return (
-				cmd.isActive() &&
+				cmd.isActive &&
 				cmd.skills.length &&
 				'EVADE' === cmd.skills[0].id
 			);

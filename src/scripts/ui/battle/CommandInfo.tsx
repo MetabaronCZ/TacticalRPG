@@ -1,7 +1,7 @@
 import React from 'react';
 
-import Command, { formatCost } from 'modules/battle/command';
 import { StatusEffectID } from 'modules/battle/status-effect';
+import { formatCost, ICommandSnapshot } from 'modules/battle/command';
 import { ICasterCombatPreview, ICasterPreviewItem } from 'modules/battle/combat';
 
 import Ico from 'ui/common/Ico';
@@ -12,7 +12,7 @@ import CommandTitle from 'ui/battle/CommandTitle';
 
 interface IProps {
 	readonly preview: ICasterCombatPreview | null;
-	readonly command: Command;
+	readonly command: ICommandSnapshot;
 }
 
 const CommandInfo: React.SFC<IProps> = ({ preview, command }) => {

@@ -5,9 +5,9 @@ BUGS
 
 TODO
 ---------------------------------------------------------------------------------------
->>	serializovat v EngineState i Command na ICommand
-	?? Tile
-	?? Skill
+??	serializovat v EngineState:
+	-- Tile
+	-- Skill
 
 --	zjistit, proc v MAIN vs MAIN zustane nakonec HEALER v rohu
 

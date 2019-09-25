@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Command from 'modules/battle/command';
+import { ICommandSnapshot } from 'modules/battle/command';
 
 import Ico from 'ui/common/Ico';
 import WeaponIco from 'ui/common/WeaponIco';
@@ -8,7 +8,7 @@ import ElementIco from 'ui/common/ElementIco';
 import SkillIco, { availableSkillIcos } from 'ui/common/SkillIco';
 
 interface IProps {
-	command: Command;
+	command: ICommandSnapshot;
 }
 
 const CommandTitle: React.SFC<IProps> = ({ command }) => {

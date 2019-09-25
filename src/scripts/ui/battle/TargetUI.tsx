@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Command from 'modules/battle/command';
+import { ICommandSnapshot } from 'modules/battle/command';
 import { ITargetCombatPreview } from 'modules/battle/combat';
 
 import Ico from 'ui/common/Ico';
@@ -10,7 +10,7 @@ import CharacterInfo from 'ui/battle/CharacterInfo';
 
 interface IProps {
 	readonly preview: ITargetCombatPreview;
-	readonly commands: Command[];
+	readonly commands: ICommandSnapshot[];
 	readonly info: string;
 	readonly onCommandSelect: (commandID: string) => void;
 }

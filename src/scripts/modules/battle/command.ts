@@ -15,6 +15,18 @@ export type CommandType =
 	'ATTACK' | 'DOUBLE_ATTACK' | 'WEAPON' | 'MAGIC' | 'DYNAMIC' |
 	'PASS' | 'REACTION' | 'DONT_REACT' | 'DIRECT' | 'CONFIRM' | 'BACK';
 
+export interface ICommandSnapshot {
+	readonly id: string;
+	readonly type: CommandType;
+	readonly title: string;
+	readonly skills: Skill[];
+	readonly cooldown: SkillCooldown ;
+	readonly cost: ICommandCost | null;
+	readonly isActive: boolean;
+	readonly isSupport: boolean;
+	readonly isUsable: true | CommandReason;
+}
+
 export interface ICommandRecord {
 	title: string;
 	skills: SkillID[];
@@ -128,6 +140,20 @@ class Command {
 		}
 
 		return true;
+	}
+
+	public serialize(): ICommandSnapshot {
+		return {
+			id: this.id,
+			type: this.type,
+			title: this.title,
+			skills: [...this.skills],
+			cooldown: this.cooldown,
+			cost: { ...this.cost } as ICommandCost,
+			isActive: this.isActive(),
+			isSupport: this.isSupport,
+			isUsable: this.isUsable()
+		};
 	}
 
 	public setActive(value: true | CommandReason): void {

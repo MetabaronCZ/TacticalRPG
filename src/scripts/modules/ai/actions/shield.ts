@@ -7,7 +7,7 @@ const btShield = (): BTAction<IAIData> => {
 	return BT.Action(data => {
 		const shieldCommand = data.act.commands.find(cmd => {
 			return (
-				cmd.isActive() &&
+				cmd.isActive &&
 				cmd.skills.length &&
 				'ENERGY_SHIELD' === cmd.skills[0].id
 			);

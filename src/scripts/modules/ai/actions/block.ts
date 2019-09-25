@@ -7,7 +7,7 @@ const btBlock = (): BTAction<IAIData> => {
 	return BT.Action(data => {
 		const blockCommand = data.act.commands.find(cmd => {
 			return (
-				cmd.isActive() &&
+				cmd.isActive &&
 				cmd.skills.length &&
 				(
 					'SHD_SMALL_BLOCK' === cmd.skills[0].id ||

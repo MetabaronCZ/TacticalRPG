@@ -6,10 +6,10 @@ import {
 import Logger from 'modules/logger';
 import Tile from 'modules/geometry/tile';
 import AIPlayer from 'modules/ai/player';
-import Command from 'modules/battle/command';
 import { IBattleInfo } from 'modules/battle/battle-info';
 import { StatusEffectID } from 'modules/battle/status-effect';
 import Character, { ICharacterSnapshot } from 'modules/character';
+import Command, { ICommandSnapshot } from 'modules/battle/command';
 
 import MovePhase, { MovePhaseEvents, IMovePhaseRecord, IMovePhaseSnapshot } from 'modules/battle/act/move-phase';
 import CombatPhase, { CombatPhaseEvents, ICombatPhaseRecord, ICombatPhaseSnapshot } from 'modules/battle/act/combat-phase';
@@ -41,7 +41,7 @@ export interface IActEvents {
 export interface IActSnapshot {
 	readonly actor: ICharacterSnapshot;
 	readonly phase: ActPhaseID | null;
-	readonly commands: Command[];
+	readonly commands: ICommandSnapshot[];
 	readonly actingCharacter: ICharacterSnapshot | null;
 	readonly info: string;
 	readonly phases: {
@@ -150,7 +150,7 @@ class Act {
 			actor: actor.serialize(),
 			phase,
 			actingCharacter: (actingChar ? actingChar.serialize() : null),
-			commands: [...commands],
+			commands: commands.map(cmd => cmd.serialize()),
 			info: (actingChar && actingChar.isAI() ? '' : info),
 			phases: {
 				MOVEMENT: phases.MOVEMENT.serialize(),
@@ -380,7 +380,8 @@ class Act {
 						return;
 
 					case 'REACTION_DONE': {
-						const { command, effectArea } = COMMAND.serialize();
+						const command = COMMAND.getCommand();
+						const effectArea = COMMAND.getEffectArea();
 						const effectTargets = COMMAND.getEffectTargets();
 
 						if (!command || !effectArea.length || !effectTargets.length) {

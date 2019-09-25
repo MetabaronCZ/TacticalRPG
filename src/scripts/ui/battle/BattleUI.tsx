@@ -1,12 +1,11 @@
 import React from 'react';
 
 import Tile from 'modules/geometry/tile';
-import Command from 'modules/battle/command';
 import { IEngineSnapshot } from 'modules/battle/engine';
-
-import Button from 'ui/common/Button';
+import { ICommandSnapshot } from 'modules/battle/command';
 
 import Order from 'ui/battle/Order';
+import Button from 'ui/common/Button';
 import EmptyUI from 'ui/battle/EmptyUI';
 import ActorUI from 'ui/battle/ActorUI';
 import TargetUI from 'ui/battle/TargetUI';
@@ -28,7 +27,7 @@ const BattleUI: React.SFC<IBattleUIProps> = ({ engine: engineState, onTileSelect
 	const preview = act.phases.COMMAND.combatPreview;
 	const { reaction } = act.phases.REACTION;
 
-	let commands: Command[] = [];
+	let commands: ICommandSnapshot[] = [];
 	let info = '';
 
 	if (running && 'REACTION' === act.phase) {

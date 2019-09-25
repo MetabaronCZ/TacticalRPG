@@ -3,15 +3,15 @@ import { getIntersection } from 'core/array';
 import Tile from 'modules/geometry/tile';
 import ActPhase from 'modules/battle/act/phase';
 import { IOnActPhaseEvent } from 'modules/battle/act';
-import Command, { ICommandRecord } from 'modules/battle/command';
 import Character, { ICharacterSnapshot } from 'modules/character';
 import { ICombatPreview, getCombatPreview } from 'modules/battle/combat';
+import Command, { ICommandRecord, ICommandSnapshot } from 'modules/battle/command';
 
 const txtIdle = 'Select command target on grid.';
 
 export interface ICommandPhaseSnapshot {
 	readonly phase: CommandPhaseID;
-	readonly command: Command | null;
+	readonly command: ICommandSnapshot | null;
 	readonly area: Tile[];
 	readonly targetable: Tile[];
 	readonly target: Tile | null;
@@ -142,6 +142,12 @@ class CommandPhase extends ActPhase<ICommandPhaseSnapshot, ICommandPhaseRecord> 
 		return command ? command.data : null;
 	}
 
+	public getEffectArea(): Tile[] {
+		const { command } = this.state;
+		const target = command ? command.target : null;
+		return target ? target.effectArea : [];
+	}
+
 	public getEffectTargets(): Character[] {
 		const { command } = this.state;
 		const target = command ? command.target : null;
@@ -163,7 +169,7 @@ class CommandPhase extends ActPhase<ICommandPhaseSnapshot, ICommandPhaseRecord> 
 
 		return {
 			phase: this.phase,
-			command: cmd,
+			command: (cmd ? cmd.serialize() : null),
 			area: (command ? [...command.area] : []),
 			targetable: (command ? [...command.targetable] : []),
 			target: (target ? target.tile : null),

@@ -1,12 +1,12 @@
 import React, { SyntheticEvent } from 'react';
 
 import CommandTitle from 'ui/battle/CommandTitle';
-import Command, { formatCost } from 'modules/battle/command';
+import { formatCost, ICommandSnapshot } from 'modules/battle/command';
 
 type IOnSelect = (commandID: string) => void;
 
 interface IProps {
-	readonly commands: Command[];
+	readonly commands: ICommandSnapshot[];
 	readonly onSelect: IOnSelect;
 }
 
@@ -17,13 +17,13 @@ interface IButtons {
 const Commands: React.SFC<IProps> = ({ commands, onSelect }) => {
 	const buttons: IButtons = {};
 
-	const onClick = (command: Command, id: number) => (e: SyntheticEvent) => {
+	const onClick = (command: ICommandSnapshot, buttonID: number) => (e: SyntheticEvent) => {
 		e.preventDefault();
 
-		if (command.isActive()) {
+		if (command.isActive) {
 			onSelect(command.id);
 		}
-		const button = buttons[id];
+		const button = buttons[buttonID];
 
 		if (button) {
 			button.blur();
@@ -32,8 +32,8 @@ const Commands: React.SFC<IProps> = ({ commands, onSelect }) => {
 	return (
 		<ul className="Commands">
 			{commands.map((command, i) => {
-				const usable = command.isUsable();
 				const cd = command.cooldown;
+				const usable = command.isUsable;
 				let info = formatCost(command.cost);
 
 				switch (usable) {
