@@ -23,7 +23,10 @@ export interface ICommandPhaseSnapshot {
 
 export interface ICommandPhaseRecord {
 	readonly command: ICommandRecord | null;
-	readonly target: string | null;
+	readonly target: {
+		readonly id: string;
+		readonly player: number;
+	} | null;
 }
 
 interface IState {
@@ -190,7 +193,13 @@ class CommandPhase extends ActPhase<ICommandPhaseSnapshot, ICommandPhaseRecord> 
 				}
 				: null
 			,
-			target: (effectTarget ? effectTarget.data.id : null)
+			target: (effectTarget ?
+				{
+					id: effectTarget.data.id,
+					player: effectTarget.player.id
+				}
+				: null
+			)
 		};
 	}
 

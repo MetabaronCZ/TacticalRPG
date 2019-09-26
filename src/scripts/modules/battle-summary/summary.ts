@@ -6,18 +6,19 @@ import { ICharacterData } from 'modules/character-creation/character-data';
 import { formatCombatResult } from 'ui/format';
 
 interface ISummaryItemMove {
-	from: string;
-	to: string;
+	readonly from: string;
+	readonly to: string;
 }
 
 interface ISummaryItemCommand {
-	command: ICommandSnapshot;
-	target: ICharacterData;
+	readonly command: ICommandSnapshot;
+	readonly target: ICharacterData;
+	readonly player: number;
 }
 
 interface ISummaryItemReaction {
-	command: ICommandSnapshot;
-	reactor: ICharacterData;
+	readonly command: ICommandSnapshot;
+	readonly reactor: ICharacterData;
 }
 
 export interface ISummaryItem {
@@ -62,7 +63,9 @@ export const getSummaryItem = (characters: ICharacterData[], record: IActRecord)
 		const { title, skills } = commandPhase.command;
 
 		if (commandPhase.target) {
-			const target = characters.find(char => commandPhase.target === char.id);
+			const target = characters.find(char => {
+				return commandPhase.target && commandPhase.target.id === char.id;
+			});
 
 			if (!target) {
 				throw new Error('Invalid character ID in record command target');
@@ -71,7 +74,8 @@ export const getSummaryItem = (characters: ICharacterData[], record: IActRecord)
 
 			result.command = {
 				command: command.serialize(),
-				target
+				target,
+				player: commandPhase.target.player
 			};
 		}
 	}
