@@ -1,5 +1,4 @@
 import { MAX_NUMBER } from 'core/number';
-import { getIntersection } from 'core/array';
 
 import { getCombatInfo } from 'modules/battle/combat';
 import { getIdleCommands } from 'modules/battle/commands';
@@ -42,7 +41,7 @@ type IAnonymousAction = IActionBase<string>;
 export type IAction = IActionBase<ICharacterSnapshot>;
 
 export const getActions = (data: IAIData): IAction[] => {
-	const { act, ally, enemy, obstacles } = data;
+	const { act, ally, enemy } = data;
 	const { actor, phases } = act;
 	const { movable, costMap } = phases.MOVEMENT;
 	const characters = ally.concat(enemy).filter(char => !char.dead && !char.dying);
@@ -109,9 +108,8 @@ export const getActions = (data: IAIData): IAction[] => {
 			let targetable = [...charShadows];
 
 			if (skills.length) {
-				const skillAreas = skills.map(skill => skill.getTargetable(char.position, obstacles));
-				const skillArea = getIntersection(skillAreas);
-				targetable = skills[0].getTargets(char, charShadows, skillArea);
+				const area = command.getSkillArea(char, charShadows);
+				targetable = command.getSkillTargetable(char, charShadows, area);
 			}
 
 			for (const tgt of targetable) {

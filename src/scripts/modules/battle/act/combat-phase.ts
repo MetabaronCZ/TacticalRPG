@@ -76,12 +76,12 @@ class CombatPhase extends ActPhase<ICombatPhaseSnapshot, ICombatPhaseRecord> {
 			});
 		}
 
-		const steps = [...command.skills];
+		const skills = [...command.skills];
 
 		const run = (): void => {
-			const step = steps.shift();
+			const skill = skills.shift();
 
-			if (!step) {
+			if (!skill) {
 				// finalize combat animation
 				this.phase = 'DONE';
 				this.info = '';
@@ -95,13 +95,13 @@ class CombatPhase extends ActPhase<ICombatPhaseSnapshot, ICombatPhaseRecord> {
 			// animate skill
 			const anim = new SkillAnimation(
 				actor,
-				step,
+				skill,
 				() => {
 					// on skill action phase
 					const info: IBattleInfo[] = [];
 	
 					targets.forEach((target, t) => {
-						const combat = getCombatInfo(actor, target, step);
+						const combat = getCombatInfo(actor, target, skill);
 						const result = this.combatResults[t];
 						const { position } = combat.target;
 		
@@ -116,7 +116,7 @@ class CombatPhase extends ActPhase<ICombatPhaseSnapshot, ICombatPhaseRecord> {
 							});
 							return;
 						}
-						if (step.isSupport) {
+						if (skill.isSupport) {
 							this.handleSupport(combat, result, info);
 						} else {
 							this.handleDamage(combat, result, info);

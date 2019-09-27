@@ -1,4 +1,7 @@
+import { getIntersection } from 'core/array';
+
 import Skill from 'modules/skill';
+import Tile from 'modules/geometry/tile';
 import Status from 'modules/character/status';
 import Character, { ISkillCooldowns } from 'modules/character';
 import { SkillCooldown, SkillID } from 'modules/skill/skill-data';
@@ -140,6 +143,48 @@ class Command {
 		}
 
 		return true;
+	}
+
+	public getSkillArea(caster: Character, characters: Character[]): Tile[] {
+		const hitScanObstacles = characters.map(char => char.position);
+
+		const allyTiles = characters
+			.filter(char => char.player === caster.player)
+			.map(char => char.position);
+
+		const skillAreas = this.skills.map(skill => {
+			const tiles = skill.getTargetable(caster.position, hitScanObstacles);
+
+			if ('ENEMY' === skill.target) {
+				// exclude ally character positions
+				return tiles.filter(tile => -1 === allyTiles.indexOf(tile));
+			}
+			return tiles;
+		});
+
+		return getIntersection(skillAreas);
+	}
+
+	public getSkillTargetable(caster: Character, characters: Character[], area: Tile[]): Character[] {
+		if (!this.skills.length) {
+			return [];
+		}
+		return this.skills[0].getTargets(caster, characters, area);
+	}
+
+	public getSkillEfectArea(caster: Character, target: Tile): Tile[] {
+		if (!this.skills.length) {
+			return [];
+		}
+		const effectAreas = this.skills.map(s => s.getEffectArea(caster.position, target));
+		return getIntersection(effectAreas);
+	}
+
+	public getSkillEfectTargets(caster: Character, characters: Character[], area: Tile[]): Character[] {
+		if (!this.skills.length) {
+			return [];
+		}
+		return this.skills[0].getTargets(caster, characters, area);
 	}
 
 	public serialize(): ICommandSnapshot {

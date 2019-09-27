@@ -1,8 +1,8 @@
 import Logger from 'modules/logger';
 import { CharacterRoleID } from 'modules/ai/role';
-import { sortActions } from 'modules/ai/actions/decide/sort';
 import { ICharacterSnapshot } from 'modules/character';
 import { IAction } from 'modules/ai/actions/decide/actions';
+import { sortActions } from 'modules/ai/actions/decide/sort';
 
 // find best available move-and-pass action
 export const getPassAction = (actor: ICharacterSnapshot, primaryRole: CharacterRoleID, actions: IAction[]): IAction | null => {

@@ -1,5 +1,3 @@
-import { getIntersection } from 'core/array';
-
 import Tile from 'modules/geometry/tile';
 import ActPhase from 'modules/battle/act/phase';
 import { IOnActPhaseEvent } from 'modules/battle/act';
@@ -103,7 +101,7 @@ class CommandPhase extends ActPhase<ICommandPhaseSnapshot, ICommandPhaseRecord> 
 					case 'DYNAMIC': {
 						// set new command phase
 						if (!command.skills.length) {
-							throw new Error('Could not select command: no skills');
+							throw new Error('Could not select command without skills: ' + command.id);
 						}
 						this.set(command);
 						return;
@@ -220,13 +218,12 @@ class CommandPhase extends ActPhase<ICommandPhaseSnapshot, ICommandPhaseRecord> 
 			// tile not targetable
 			return;
 		}
-		const { skills } = command.data;
+		const cmd = command.data;
 
 		// get skill effect area
-		const effectAreas = skills.map(s => s.getEffectArea(actor.position, tile));
-		const effectArea = getIntersection(effectAreas);
+		const effectArea = cmd.getSkillEfectArea(actor, tile);
 		const effectTarget = characters.find(char => tile === char.position) || null;
-		const effectTargets = skills[0].getTargets(actor, characters, effectArea);
+		const effectTargets = cmd.getSkillEfectTargets(actor, characters, effectArea);
 
 		command.target = {
 			tile,
@@ -245,31 +242,13 @@ class CommandPhase extends ActPhase<ICommandPhaseSnapshot, ICommandPhaseRecord> 
 		if ('IDLE' !== phase) {
 			throw new Error('Could not set command: invalid phase ' + phase);
 		}
-		const { skills } = command;
-		const hitScanObstacles = characters.map(char => char.position);
-
-		const allyTiles = characters
-			.filter(char => char.player === actor.player)
-			.map(char => char.position);
-
-		const skillAreas = skills.map(skill => {
-			const tiles = skill.getTargetable(actor.position, hitScanObstacles);
-
-			if ('ENEMY' === skill.target) {
-				// exclude ally character positions
-				return tiles.filter(tile => -1 === allyTiles.indexOf(tile));
-			}
-			return tiles;
-		});
-
-		const area = getIntersection(skillAreas);
-		const targets = skills[0].getTargets(actor, characters, area);
-		const targetable = targets.map(char => char.position);
+		const area = command.getSkillArea(actor, characters);
+		const targetable = command.getSkillTargetable(actor, characters, area);
 
 		this.state.command = {
 			data: command,
 			area,
-			targetable
+			targetable: targetable.map(char => char.position)
 		};
 		this.phase = 'TARGETING';
 		this.info = txtIdle;
