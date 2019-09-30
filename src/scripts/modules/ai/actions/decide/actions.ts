@@ -126,9 +126,9 @@ export const getActions = (data: IAIData): IAction[] => {
 				let status: StatusEffect[] = [];
 
 				for (const skill of skills) {
-					const effectArea = skill.getEffectArea(actor.position, tgtPosition);
+					const effectArea = skill.getEffectArea(tile, tgtPosition);
 					const effectTargets = skill.getTargets(char, charShadows, effectArea);
-			
+
 					effectTargets.forEach(eff => {
 						const combatInfo = getCombatInfo(char, eff, skill);
 						damage += combatInfo.damage;

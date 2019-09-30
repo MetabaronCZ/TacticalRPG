@@ -1,8 +1,3 @@
-BUGS
----------------------------------------------------------------------------------------
---	AI postavy se Spear zbrani neutoci vzdy, kdyz mohou
-
-
 TODO
 ---------------------------------------------------------------------------------------
 --	zjistit, proc v MAIN vs MAIN zustane nakonec HEALER v rohu
