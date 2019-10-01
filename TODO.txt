@@ -2,6 +2,12 @@ TODO
 ---------------------------------------------------------------------------------------
 --	zjistit, proc v MAIN vs MAIN zustane nakonec HEALER v rohu
 
+--	zkontrolovat hodnoty DAMAGE u 2H zbrani a u DUAL wieldingu
+	+ u utoku zezadu
+
+--	zkontrolovat hodnoty HEALING u vsech archetypu postav a MAGICAL zbrani
+	+ zkontrolovat, jestli se nahodou neaplikuje directional modifier
+
 --	refaktorovat btDecide do BTTree v BTPhaseSelectoru
 
 --	udelat ikony pro vsechny StatusEffecty

@@ -1,9 +1,7 @@
 import AIPresets from 'data/ai-presets';
 
 import Logger from 'modules/logger';
-import Tile from 'modules/geometry/tile';
 import Engine from 'modules/battle/engine';
-import { ICharacterSnapshot } from 'modules/character';
 import Player, { IPlayerCharacterSetup } from 'modules/battle/player';
 import { IPlayerData } from 'modules/battle-configuration/player-data';
 
@@ -60,19 +58,9 @@ class AIPlayer extends Player {
 		}
 		aiChar.update({
 			act,
-			ally: this.getAlly(characters),
-			enemy: this.getEnemy(characters),
-			obstacles: this.getObstacles(characters)
+			characters,
+			enemy: characters.filter(char => char.player.id !== this.id)
 		});
-	}
-
-	private getAlly(characters: ICharacterSnapshot[]): ICharacterSnapshot[] {
-		return characters.filter(char => char.player.id === this.id);
-	}
-
-	private getEnemy(characters: ICharacterSnapshot[]): ICharacterSnapshot[] {
-		const enemy = characters.filter(char => char.player.id !== this.id);
-		return enemy.filter(char => !char.dead && !char.dying);
 	}
 
 	private getCharacter(act: IActSnapshot): AICharacter {
@@ -90,10 +78,6 @@ class AIPlayer extends Player {
 			throw new Error('Invalid actor');
 		}
 		return aiChar;
-	}
-
-	private getObstacles(characters: ICharacterSnapshot[]): Tile[] {
-		return characters.filter(char => !char.dead).map(char => char.position);
 	}
 }
 

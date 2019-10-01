@@ -14,8 +14,7 @@ const btDecide = (role: CharacterRole): BTAction<IAIData> => {
 		if (data.memory.decision) {
 			return 'SUCCESS';
 		}
-		const { act, ally, enemy } = data;
-		const characters = ally.concat(enemy).filter(char => !char.dead && !char.dying);
+		const { act, characters } = data;
 
 		// gather all possible actions
 		const actions = getActions(data);

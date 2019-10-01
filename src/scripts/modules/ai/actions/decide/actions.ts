@@ -41,10 +41,9 @@ type IAnonymousAction = IActionBase<string>;
 export type IAction = IActionBase<ICharacterSnapshot>;
 
 export const getActions = (data: IAIData): IAction[] => {
-	const { act, ally, enemy } = data;
+	const { act, enemy, characters } = data;
 	const { actor, phases } = act;
 	const { movable, costMap } = phases.MOVEMENT;
-	const characters = ally.concat(enemy).filter(char => !char.dead && !char.dying);
 
 	// create Player shadows
 	const playerShadow = Player.from(actor.player);
@@ -55,6 +54,8 @@ export const getActions = (data: IAIData): IAction[] => {
 		const pl = (actor.player.id === char.player.id ? playerShadow : enemyPlayerShadow);
 		return Character.from(char, pl);
 	});
+
+	const liveChars = charShadows.filter(char => !char.isDead() && !char.status.has('DYING'));
 
 	const { AP } = actor.attributes;
 	const actions: IAnonymousAction[] = [];
@@ -74,19 +75,22 @@ export const getActions = (data: IAIData): IAction[] => {
 		let closestAlly = MAX_NUMBER;
 		let closestEnemy = MAX_NUMBER;
 
-		for (const ch of characters) {
+		for (const ch of charShadows) {
 			const path = getShortestPath(tile, ch.position, []);
 
 			const distance = path.length;
 			distances[ch.id] = distance;
 
-			if (actor.player.id !== ch.player.id) {
-				if (distance < closestEnemy) {
-					closestEnemy = distance;
-				}
-			} else {
-				if (distance < closestAlly && actor.id !== ch.id) {
-					closestAlly = distance;
+			if (-1 !== liveChars.indexOf(ch)) {
+				// mark closest ally / enemy
+				if (actor.player.id !== ch.player.id) {
+					if (distance < closestEnemy) {
+						closestEnemy = distance;
+					}
+				} else {
+					if (distance < closestAlly && actor.id !== ch.id) {
+						closestAlly = distance;
+					}
 				}
 			}
 		}
@@ -105,7 +109,7 @@ export const getActions = (data: IAIData): IAction[] => {
 				AP: moveCost + (cost ? cost.AP : 0),
 				MP: (cost ? cost.MP : 0)
 			};
-			let targetable = [...charShadows];
+			let targetable = [...liveChars];
 
 			if (skills.length) {
 				const area = command.getSkillArea(char, charShadows);

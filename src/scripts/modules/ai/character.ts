@@ -49,9 +49,8 @@ interface IAICharacterMemory {
 
 interface IAICharacterUpdateData {
 	readonly act: IActSnapshot;
-	readonly ally: ICharacterSnapshot[];
 	readonly enemy: ICharacterSnapshot[];
-	readonly obstacles: Tile[];
+	readonly characters: ICharacterSnapshot[];
 }
 
 export interface IAIData extends BTData, IAICharacterUpdateData {
