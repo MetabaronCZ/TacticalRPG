@@ -49,22 +49,6 @@ const fireMagic: { [id in FireMagicSkillID]: ISkillData; } = {
 		animation: {
 			duration: 1000
 		}
-	},
-	FIR_FIRE_AURA: {
-		title: 'Fire Aura',
-		mpCost: 0,
-		type: 'PASSIVE',
-		grade: 1,
-		range: 0,
-		area: 'AOE3x3',
-		target: 'SELF',
-		element: 'FIRE',
-		physical: 0,
-		magical: 0.25,
-		status: ['BURN'],
-		animation: {
-			duration: 0
-		}
 	}
 };
 

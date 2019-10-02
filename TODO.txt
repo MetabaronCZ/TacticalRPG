@@ -31,18 +31,6 @@ TODO
 	- damage physical + magical bonus (obe mensi nez maji standardni ATTACK skilly)
     - dynamic skilly by s nimi mely byt mnohem silnejsi
 
-??	AI Player: leader character
-	- nastavit jednu z postav jako LEADER
-	- idealne WARRIOR, FIGHTER nebo MAGI-KNIGHT archetypy
-	- ostatni postavy dodrzuji maximalni vzdalenost (4) od leadera pro udrzeni formace
-	- pokud je na zacatku Actu leader dead, AI Player vybere noveho leadera
-	- leader by mel jit kupredu a obsadit stred
-		- ostatni se drzi pobliz a nejdou az prilis dopredu
-	- vyresi problem, kdy RANGED a MAGE role jdou az prilis dopredu
-
-??	pasivni skilly
-	--	DARK_AURA by mela delat 50% damage reflection (do vzdalenosti SkillArea)
-
 ??	pridat arenu / pocasi 
 	- v zavislosti na arene se behem souboje muze spustit ArenaEffect (zmena pocasi)
 	- efekt je specificky pro kazdou arenu a trva nahodnou dobu v urcitem rozmezi

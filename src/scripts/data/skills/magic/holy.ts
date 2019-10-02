@@ -65,21 +65,6 @@ const holyMagic: { [id in HolyMagicSkillID]: ISkillData; } = {
 			duration: 1000
 		}
 	},
-	HOL_HOLY_AURA: {
-		title: 'Holy Aura',
-		mpCost: 0,
-		type: 'PASSIVE',
-		grade: 1,
-		range: 0,
-		area: 'AOE3x3',
-		target: 'ALLY',
-		element: 'HOLY',
-		physical: 0,
-		magical: 0.25,
-		animation: {
-			duration: 0
-		}
-	},
 	HOL_REVIVE: {
 		title: 'Revive',
 		mpCost: 20,

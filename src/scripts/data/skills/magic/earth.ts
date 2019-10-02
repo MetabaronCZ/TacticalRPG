@@ -50,23 +50,6 @@ const earthMagic: { [id in EarthMagicSkillID]: ISkillData; } = {
 		animation: {
 			duration: 1000
 		}
-	},
-	ERT_STONE_SKIN: {
-		title: 'Stone Skin',
-		mpCost: 0,
-		type: 'PASSIVE',
-		grade: 1,
-		range: 0,
-		area: 'SINGLE',
-		target: 'SELF',
-		element: 'EARTH',
-		status: ['IRON_SKIN'],
-		physical: 0,
-		magical: 0,
-		cooldown: 1,
-		animation: {
-			duration: 1000
-		}
 	}
 };
 

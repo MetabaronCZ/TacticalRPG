@@ -50,21 +50,6 @@ const darkMagic: { [id in DarkMagicSkillID]: ISkillData; } = {
 		animation: {
 			duration: 1000
 		}
-	},
-	DRK_DARK_AURA: {
-		title: 'Dark Aura',
-		mpCost: 0,
-		type: 'PASSIVE',
-		grade: 1,
-		range: 0,
-		area: 'AOE3x3',
-		target: 'SELF',
-		element: 'DARK',
-		physical: 0,
-		magical: 0.25,
-		animation: {
-			duration: 0
-		}
 	}
 };
 

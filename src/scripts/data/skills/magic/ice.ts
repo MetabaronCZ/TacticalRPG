@@ -49,22 +49,6 @@ const iceMagic: { [id in IceMagicSkillID]: ISkillData; } = {
 		animation: {
 			duration: 1000
 		}
-	},
-	ICE_FROST_AURA: {
-		title: 'Frost Aura',
-		mpCost: 0,
-		type: 'PASSIVE',
-		grade: 1,
-		range: 1,
-		area: 'AOE3x3',
-		target: 'ENEMY',
-		element: 'ICE',
-		physical: 0,
-		magical: 0.25,
-		status: ['FREEZE'],
-		animation: {
-			duration: 0
-		}
 	}
 };
 

@@ -49,22 +49,6 @@ const thunderMagic: { [id in ThunderMagicSkillID]: ISkillData; } = {
 		animation: {
 			duration: 1000
 		}
-	},
-	THU_THUNDER_AURA: {
-		title: 'Thunder Aura',
-		mpCost: 0,
-		type: 'PASSIVE',
-		grade: 1,
-		range: 0,
-		area: 'AOE3x3',
-		target: 'SELF',
-		element: 'THUNDER',
-		physical: 0,
-		magical: 0.25,
-		status: ['SHOCK'],
-		animation: {
-			duration: 0
-		}
 	}
 };
 

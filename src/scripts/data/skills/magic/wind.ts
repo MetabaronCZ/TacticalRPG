@@ -48,21 +48,6 @@ const windMagic: { [id in WindMagicSkillID]: ISkillData; } = {
 		animation: {
 			duration: 1000
 		}
-	},
-	WND_WIND_AURA: {
-		title: 'Wind Aura',
-		mpCost: 0,
-		type: 'PASSIVE',
-		grade: 1,
-		range: 0,
-		area: 'AOE3x3',
-		target: 'SELF',
-		element: 'WIND',
-		physical: 0,
-		magical: 0.25,
-		animation: {
-			duration: 0
-		}
 	}
 };
 

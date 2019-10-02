@@ -9,7 +9,7 @@ import { StatusEffectID } from 'modules/battle/status-effect';
 export type Ultimate = 'ULTIMATE';
 
 export type SkillID = MiscSkillID | WeaponSkillID | MagicSkillID | DynamicSkillID;
-export type SkillType = 'ACTIVE' | 'REACTIVE' | 'PASSIVE';
+export type SkillType = 'ACTIVE' | 'REACTIVE';
 export type SkillArea = 'SINGLE' | 'LINE'  | 'NEIGHBOURS' | 'AOE3x3';
 export type SkillElement = 'NONE' | 'FIRE' | 'ICE' | 'WIND' | 'EARTH' | 'THUNDER' | 'WATER' | 'DARK' | 'HOLY' | 'PSYCHIC';
 export type SkillTarget = 'NONE' | 'ANY' | 'SELF' | 'ALLY' | 'ENEMY';

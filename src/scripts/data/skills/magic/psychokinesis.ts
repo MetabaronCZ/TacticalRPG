@@ -33,22 +33,6 @@ const psychokinesis: { [id in PsychokinesisSkillID]: ISkillData; } = {
 		animation: {
 			duration: 1000
 		}
-	},
-	PSY_PSYCHODOME: {
-		title: 'Psychodome',
-		mpCost: 0,
-		type: 'PASSIVE',
-		grade: 1,
-		range: 0,
-		area: 'AOE3x3',
-		target: 'ENEMY',
-		element: 'PSYCHIC',
-		physical: 0,
-		magical: 0,
-		status: ['CONFUSION'],
-		animation: {
-			duration: 0
-		}
 	}
 };
 

@@ -49,22 +49,6 @@ const waterMagic: { [id in WaterMagicSkillID]: ISkillData; } = {
 		animation: {
 			duration: 1000
 		}
-	},
-	WAT_WATER_AURA: {
-		title: 'Water Aura',
-		mpCost: 0,
-		type: 'PASSIVE',
-		grade: 1,
-		range: 0,
-		area: 'AOE3x3',
-		target: 'SELF',
-		element: 'WATER',
-		physical: 0,
-		magical: 0.25,
-		status: ['SILENCE'],
-		animation: {
-			duration: 0
-		}
 	}
 };
 

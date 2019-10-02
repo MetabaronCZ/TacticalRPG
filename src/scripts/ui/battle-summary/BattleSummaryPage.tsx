@@ -61,8 +61,7 @@ const renderSummaryItem = (item: ISummaryItem, player: ISummaryPlayerData, row: 
 					<React.Fragment>
 						<CommandTitle command={item.command.command} />
 						{' → '}
-						<PlayerIco id={item.command.player} align="middle" />
-						{item.command.target.name}
+						<PlayerIco id={item.command.player} align="middle" />{item.command.target.name}
 					</React.Fragment>
 				)
 				: '-'

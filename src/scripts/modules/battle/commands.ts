@@ -150,12 +150,16 @@ export const getReactiveCommands = (character: Character, isBackAttack: boolean,
 		const title = `${skill.title} ${MP}`;
 
 		const cmd = new Command('REACTION', title, character, [skill]);
+		const isSilenced = character.status.has('SILENCE');
 
 		if (isBackAttack) {
 			cmd.setActive('CANT_ACT');
 		}
 		if (cmd.isActive() && 0 === MP) {
 			cmd.setActive('OUT_OF_MP');
+		}
+		if (cmd.isActive() && isSilenced) {
+			cmd.setActive('SILENCED');
 		}
 		commands.push(cmd);
 	}

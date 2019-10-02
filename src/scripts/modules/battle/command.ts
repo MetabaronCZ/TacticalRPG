@@ -104,7 +104,7 @@ class Command {
 	}
 
 	public isUsable(initial = false): true | CommandReason {
-		const { active, cooldown, character, cost } = this;
+		const { active, cooldown, character, cost, skills } = this;
 
 		if (!initial && true !== active) {
 			return active;
@@ -124,6 +124,9 @@ class Command {
 				const isDisarmed = character.status.has('DISARM');
 				const isSilenced = character.status.has('SILENCE');
 
+				const usesWeapon = !!skills.find(skill => 'NONE' !== skill.weapon);
+				const usesMagic = !!skills.find(skill => 'NONE' !== skill.element);
+
 				if (AP < cost.AP) {
 					return 'OUT_OF_AP';
 				}
@@ -132,11 +135,11 @@ class Command {
 					return 'OUT_OF_MP';
 				}
 
-				if (cost.AP && isDisarmed) {
+				if (usesWeapon && isDisarmed) {
 					return 'DISARMED';
 				}
 
-				if (cost.MP && isSilenced) {
+				if (usesMagic && isSilenced) {
 					return 'SILENCED';
 				}
 			}
