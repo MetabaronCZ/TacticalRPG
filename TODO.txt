@@ -1,13 +1,5 @@
 TODO
 ---------------------------------------------------------------------------------------
---	zjistit, proc v MAIN vs MAIN zustane nakonec HEALER v rohu
-
---	zkontrolovat hodnoty DAMAGE u 2H zbrani a u DUAL wieldingu
-	+ u utoku zezadu
-
---	zkontrolovat hodnoty HEALING u vsech archetypu postav a MAGICAL zbrani
-	+ zkontrolovat, jestli se nahodou neaplikuje directional modifier
-
 --	refaktorovat btDecide do BTTree v BTPhaseSelectoru
 
 --	udelat ikony pro vsechny StatusEffecty
@@ -30,27 +22,6 @@ TODO
 ??  Magical weapon type 
 	- damage physical + magical bonus (obe mensi nez maji standardni ATTACK skilly)
     - dynamic skilly by s nimi mely byt mnohem silnejsi
-
-??	pridat arenu / pocasi 
-	- v zavislosti na arene se behem souboje muze spustit ArenaEffect (zmena pocasi)
-	- efekt je specificky pro kazdou arenu a trva nahodnou dobu v urcitem rozmezi
-	- efekt zpusobi dmg+ bonus pro skilly daneho elementu, dmg- pro afinni element, pripadne jine efekty
-		- Greenfield >> none
-		- Beach >> none
-		- Dunes >> Sandstorm [skill range -1]
-		- Volcano >> Eruption [FIRE]
-		- Swamp/Wetlands >> Rain [WATER]
-		- Tundra/Arctic >> Snowstorm [ICE]
-		- Highland >> Thunderstorm [THUNDER]
-		- Mountain peak/Canyon >> Storm [WIND]
-		- Island >> Earthquake [EARTH]
-		? Cathedral >> Hymn of the Cherubim [HOLY]
-		? ??? >> Dark Vortex [DARK]
-		? ??? >> Chaos storm [PSYCHIC]
-	+ typ pocasi, zacatek a konec efektu pridat do vysledneho Chronox zaznamu
-	+ upravit BattleConfig, aby mu slo vnutit i nastaveni pocasi
-	+ u replay funkce pozdeji nacitat i pocasi z Chronox zaznamu
-	+ v BattleConfig page umoznit vyber areny (pripadne kdy ma zacit nebo skoncit jeji efekt)
 
 ??	implementovat Sudden death mode (aby nedoslo ke stavu, kdy zbyvaji jen S-typy, ktere evaduji vsechny utoky)
 	- nebo po case na mapu vyvolat OP NPC, ktere bude nahodne utocit na postavy obou hracu
