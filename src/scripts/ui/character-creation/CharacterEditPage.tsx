@@ -1,6 +1,6 @@
 import React from 'react';
 import { History } from 'history';
-import { withRouter, RouteComponentProps } from 'react-router';
+import { useHistory, useParams } from 'react-router';
 
 import { withContext, IContext } from 'context';
 import { gotoRoute, gotoFn } from 'core/navigation';
@@ -9,7 +9,6 @@ import { Store } from 'modules/store';
 import { ICharacterData } from 'modules/character-creation/character-data';
 
 import Page from 'ui/common/Page';
-import { IRouteParams } from 'modules/route';
 import CharacterCreation from 'ui/character-creation/CharacterCreationUI';
 
 const onSubmit = (store: Store, history: History) => (char: ICharacterData) => {
@@ -19,10 +18,10 @@ const onSubmit = (store: Store, history: History) => (char: ICharacterData) => {
 	gotoRoute(history, 'CHARACTER_LIST');
 };
 
-const CharacterEditPageContainer: React.SFC<RouteComponentProps<IRouteParams> & IContext> = props => {
-	const { store, history, match } = props;
-	const character = store.characters.getById(match.params.id);
-
+const CharacterEditPageContainer: React.SFC<IContext> = ({ store }) => {
+	const history = useHistory();
+	const { id } = useParams();
+	const character = store.characters.getById(id || '') || null;
 	return (
 		<Page heading="Edit character">
 			<CharacterCreation
@@ -34,6 +33,4 @@ const CharacterEditPageContainer: React.SFC<RouteComponentProps<IRouteParams> & 
 	);
 };
 
-export default withRouter(
-	withContext(CharacterEditPageContainer)
-);
+export default withContext(CharacterEditPageContainer);

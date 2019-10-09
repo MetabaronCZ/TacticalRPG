@@ -1,12 +1,11 @@
 import React from 'react';
 import { History } from 'history';
-import { withRouter, RouteComponentProps } from 'react-router';
+import { useHistory } from 'react-router';
 
 import { withContext, IContext } from 'context';
 import { gotoRoute, gotoFn } from 'core/navigation';
 
 import { Store } from 'modules/store';
-import { IRouteParams } from 'modules/route';
 import { IPartyData } from 'modules/party-creation/party-data';
 
 import Page from 'ui/common/Page';
@@ -19,8 +18,8 @@ const onSubmit = (store: Store, history: History) => (party: IPartyData): void =
 	gotoRoute(history, 'PARTY_LIST');
 };
 
-const PartyCreationPageContainer: React.SFC<RouteComponentProps<IRouteParams> & IContext> = props => {
-	const { store, history } = props;
+const PartyCreationPageContainer: React.SFC<IContext> = ({ store }) => {
+	const history = useHistory();
 	return (
 		<Page heading="Party creation">
 			<PartyCreationUI
@@ -32,6 +31,4 @@ const PartyCreationPageContainer: React.SFC<RouteComponentProps<IRouteParams> & 
 	);
 };
 
-export default withRouter(
-	withContext(PartyCreationPageContainer)
-);
+export default withContext(PartyCreationPageContainer);

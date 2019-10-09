@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import { withRouter, RouteComponentProps } from 'react-router';
+import { useHistory } from 'react-router';
 
 import { gotoFn } from 'core/navigation';
 import { withContext, IContext } from 'context';
@@ -30,8 +30,8 @@ const onDelete = (store: Store) => (id: string) => () => {
 	}
 };
 
-const PartyListPageContainer: React.SFC<RouteComponentProps & IContext> = props => {
-	const { store, history } = props;
+const PartyListPageContainer: React.SFC<IContext> = ({ store }) => {
+	const history = useHistory();
 	return (
 		<Page heading="Party list">
 			{store.parties.data.length
@@ -59,8 +59,6 @@ const PartyListPageContainer: React.SFC<RouteComponentProps & IContext> = props 
 	);
 };
 
-export default withRouter(
-	withContext(
-		observer(PartyListPageContainer)
-	)
+export default withContext(
+	observer(PartyListPageContainer)
 );

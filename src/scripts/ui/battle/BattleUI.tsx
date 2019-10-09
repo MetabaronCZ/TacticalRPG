@@ -1,4 +1,6 @@
 import React from 'react';
+import { History } from 'history';
+import { useHistory } from 'react-router';
 
 import Tile from 'modules/geometry/tile';
 import { IEngineSnapshot } from 'modules/battle/engine';
@@ -15,11 +17,12 @@ interface IBattleUIProps {
 	readonly engine: IEngineSnapshot;
 	readonly onTileSelect: (tile: Tile) => void;
 	readonly onCommandSelect: (commandID: string) => void;
-	readonly onExit: () => void;
+	readonly onExit: (history: History) => void;
 }
 
 const BattleUI: React.SFC<IBattleUIProps> = ({ engine: engineState, onTileSelect, onCommandSelect, onExit }) => {
 	const { characters, order, act, tick, running, battleInfo } = engineState;
+	const history = useHistory();
 
 	if (!act) {
 		return <p className="Paragraph">Waiting for act to start [Tick {tick}]...</p>;
@@ -56,7 +59,7 @@ const BattleUI: React.SFC<IBattleUIProps> = ({ engine: engineState, onTileSelect
 						: (
 							<React.Fragment>
 								<h2 className="Heading">Game Over</h2>
-								<Button text="Show summary" onClick={onExit} />
+								<Button text="Show summary" onClick={() => onExit(history)} />
 							</React.Fragment>
 						)
 					}

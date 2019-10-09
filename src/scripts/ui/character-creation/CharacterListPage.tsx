@@ -1,12 +1,11 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import { withRouter, RouteComponentProps } from 'react-router';
+import { useHistory } from 'react-router';
 
 import { gotoFn } from 'core/navigation';
 import { withContext, IContext } from 'context';
 
 import { Store } from 'modules/store';
-import { IRouteParams } from 'modules/route';
 
 import Page from 'ui/common/Page';
 import Button from 'ui/common/Button';
@@ -43,8 +42,8 @@ const onDelete = (store: Store) => (id: string) => () => {
 	}
 };
 
-const CharacterListPageContainer: React.SFC<RouteComponentProps<IRouteParams> & IContext> = props => {
-	const { store, history } = props;
+const CharacterListPageContainer: React.SFC<IContext> = ({ store }) => {
+	const history = useHistory();
 	const characters = store.characters.data;
 	return (
 		<Page heading="Character list">
@@ -73,8 +72,6 @@ const CharacterListPageContainer: React.SFC<RouteComponentProps<IRouteParams> & 
 	);
 };
 
-export default withRouter(
-	withContext(
-		observer(CharacterListPageContainer)
-	)
+export default withContext(
+	observer(CharacterListPageContainer)
 );

@@ -1,6 +1,6 @@
 import React from 'react';
 import { History } from 'history';
-import { withRouter, RouteComponentProps } from 'react-router';
+import { } from 'react-router';
 
 import { gotoRoute } from 'core/navigation';
 import { withContext, IContext } from 'context';
@@ -9,16 +9,15 @@ import BattleUI from 'ui/battle/BattleUI';
 
 import Tile from 'modules/geometry/tile';
 import Summary from 'modules/battle/summary';
-import { IRouteParams } from 'modules/route';
 import Engine, { IEngineSnapshot } from 'modules/battle/engine';
 
-type IProps = RouteComponentProps<IRouteParams> & IContext;
+type IProps = IContext;
 
 interface IState {
 	engine: IEngineSnapshot;
 }
 
-const onExit = (history: History) => () => {
+const onExit = (history: History): void => {
 	gotoRoute(history, 'BATTLE_SUMMARY');
 };
 
@@ -74,14 +73,13 @@ class BattlePageContainer extends React.Component<IProps, IState> {
 	}
 
 	public render(): React.ReactNode {
-		const { history } = this.props;
 		const { engine: engineState } = this.state;
 		return (
 			<BattleUI
 				engine={engineState}
 				onTileSelect={this.onTileSelect}
 				onCommandSelect={this.onCommandSelect}
-				onExit={onExit(history)}
+				onExit={onExit}
 			/>
 		);
 	}
@@ -105,6 +103,4 @@ class BattlePageContainer extends React.Component<IProps, IState> {
 	}
 }
 
-export default withRouter(
-	withContext(BattlePageContainer)
-);
+export default withContext(BattlePageContainer);

@@ -1,12 +1,11 @@
 import React from 'react';
 import { History } from 'history';
-import { withRouter, RouteComponentProps } from 'react-router';
+import { useHistory } from 'react-router';
 
 import { withContext, IContext } from 'context';
 import { gotoRoute, gotoFn } from 'core/navigation';
 
 import { Store } from 'modules/store';
-import { IRouteParams } from 'modules/route';
 import { BattleConfig } from 'modules/battle-configuration/battle-config';
 
 import Page from 'ui/common/Page';
@@ -19,18 +18,19 @@ const onStart = (history: History, store: Store) => (config: BattleConfig) => {
 	gotoRoute(history, 'BATTLE');
 };
 
-const BattleConfigPageContainer: React.SFC<RouteComponentProps<IRouteParams> & IContext> = ({ history, store }) => (
-	<Page heading="Battle config">
-		<BattleConfigUI
-			config={store.battleConfig}
-			characters={store.characters.data}
-			parties={store.parties.data}
-			onBack={gotoFn(history, 'ROOT')}
-			onStart={onStart(history, store)}
-		/>
-	</Page>
-);
+const BattleConfigPageContainer: React.SFC<IContext> = ({ store }) => {
+	const history = useHistory();
+	return (
+		<Page heading="Battle config">
+			<BattleConfigUI
+				config={store.battleConfig}
+				characters={store.characters.data}
+				parties={store.parties.data}
+				onBack={gotoFn(history, 'ROOT')}
+				onStart={onStart(history, store)}
+			/>
+		</Page>
+	);
+};
 
-export default withRouter(
-	withContext(BattleConfigPageContainer)
-);
+export default withContext(BattleConfigPageContainer);
