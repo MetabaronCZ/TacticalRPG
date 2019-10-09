@@ -39,12 +39,9 @@ const Router: React.SFC<{}> = () => (
 	<MemoryRouter>
 		<Switch>
 			{routes.map(route => (
-				<Route
-					exact={true}
-					path={getPath(route.id)}
-					component={route.component}
-					key={route.id}
-				/>
+				<Route exact={true} path={getPath(route.id)} key={route.id}>
+					<route.component />
+				</Route>
 			))}
 		</Switch>
 	</MemoryRouter>
