@@ -1,5 +1,14 @@
 TODO
 ---------------------------------------------------------------------------------------
+??	rework Armor efektu:
+	- HEAVY - +50 - +100 HP
+	- LIGHT - EVADE reaction skill
+	- MAGICAL - +50 - +100 MP; ENERGY_SHIELD reaction skill
+
+??	rework Skill.Element
+	- udealt objekt s Elementy a Physical, kde budou modifikatory
+	- pri pouziti se budou pocitat vsechny ne-nulove hodnoty jako slozky damage
+
 --	refaktorovat btDecide do BTTree v BTPhaseSelectoru
 
 --	udelat ikony pro vsechny StatusEffecty

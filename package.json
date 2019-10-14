@@ -12,7 +12,7 @@
     "test-cov": "jest --coverage"
   },
   "devDependencies": {
-    "@babel/core": "^7.6.3",
+    "@babel/core": "^7.6.4",
     "@babel/plugin-syntax-dynamic-import": "^7.2.0",
     "@babel/preset-env": "^7.6.3",
     "@babel/preset-react": "^7.6.3",
@@ -27,12 +27,12 @@
     "@types/uuid": "^3.4.5",
     "@typescript-eslint/eslint-plugin": "^2.3.3",
     "@typescript-eslint/parser": "^2.3.3",
-    "autoprefixer": "^9.6.4",
+    "autoprefixer": "^9.6.5",
     "awesome-typescript-loader": "^5.2.1",
     "cssnano": "^4.1.10",
     "del": "^5.1.0",
     "enzyme": "^3.10.0",
-    "enzyme-adapter-react-16": "^1.14.0",
+    "enzyme-adapter-react-16": "^1.15.1",
     "eslint": "^6.5.1",
     "eslint-loader": "^3.0.2",
     "eslint-plugin-react": "^7.16.0",
@@ -46,9 +46,9 @@
     "stylelint": "^10.1.0",
     "stylelint-config-sass-guidelines": "^6.1.0",
     "ts-jest": "^24.1.0",
-    "typescript": "^3.6.3",
+    "typescript": "^3.6.4",
     "uglifyjs-webpack-plugin": "^2.2.0",
-    "webpack": "^4.41.0"
+    "webpack": "^4.41.1"
   },
   "dependencies": {
     "mobx": "^5.14.0",
