@@ -11,6 +11,7 @@ import Character, { ICharacterSnapshot } from 'modules/character';
 import { SkillElement, ISkillData } from 'modules/skill/skill-data';
 import { ElementAffinityTable, Affinity } from 'modules/skill/affinity';
 import StatusEffect, { StatusEffectID } from 'modules/battle/status-effect';
+import { WeaponID } from 'modules/equipment/weapon-data';
 
 const precision = 10 ** 10; // angle precision modifier
 const backAttackAngle = PI / 6; // 30 degrees
@@ -46,7 +47,8 @@ export interface ICombatInfo {
 }
 
 export interface ICasterPreviewItem {
-	readonly skill: Skill;
+	readonly element: SkillElement;
+	readonly weapon: WeaponID;
 	readonly value: number;
 }
 
@@ -142,7 +144,8 @@ const getBlock = (character: Character, isPreview = false): number | null => {
 		}
 
 		if (skill) {
-			return (shield.block || 0) * (skill.block || 1);
+			const mod = skill.block ? skill.block.modifier : 1;
+			return (shield.block || 0) * mod;
 		}
 	}
 	return null;
@@ -201,27 +204,32 @@ const getShieldValue = (physical: number, magical: number, shield: number | null
 };
 
 const getPhysicalDamage = (character: Character, skill: Skill): number => {
-	if (0 === skill.physical) {
+	if (!skill.physical || 0 === skill.physical.modifier) {
 		return 0;
 	}
-	const weapon = Weapons.get(skill.weapon);
-	const weaponDamage = weapon.physical;
-	const { STR } = character.attributes;
+	const weapon = Weapons.get(skill.physical.weapon);
 	const isFixedDamage = ('GUN' === weapon.id);
+	const mod = skill.physical.modifier;
 
 	if (isFixedDamage) {
-		return skill.physical;
+		return mod;
 	}
-	return (STR + weaponDamage) * skill.physical;
+	const weaponDamage = weapon.physical;
+	const { STR } = character.attributes;
+
+	return (STR + weaponDamage) * mod;
 };
 
 const getMagicalDamage = (character: Character, skill: Skill): number => {
-	if (0 === skill.magical) {
+	if (!skill.magical || 0 === skill.magical.modifier) {
 		return 0;
 	}
+	const mod = skill.magical.modifier;
 	const { mainHand, offHand } = character;
 	const weaponDamage = mainHand.magical + offHand.magical;
-	return (character.attributes.MAG + weaponDamage) * skill.magical;
+	const { MAG } = character.attributes;
+
+	return (MAG + weaponDamage) * mod;
 };
 
 const getStatusModifier = (attacker: Character, defender?: Character | null): IStatusValue => {
@@ -317,22 +325,25 @@ export const getCombatPreview = (command: Command, caster: Character, target: Ch
 		if (skill.isSupport) {
 			// add healing data
 			preview.caster.healingSkills.push({
-				skill,
+				weapon: 'NONE',
+				element: 'NONE',
 				value: magical
 			});
 
 		} else {
 			// add damage data
-			if ('NONE' !== skill.weapon) {
+			if (skill.physical) {
 				preview.caster.physicalSkills.push({
-					skill,
+					weapon: skill.physical.weapon,
+					element: 'NONE',
 					value: physical
 				});
 			}
 
-			if ('NONE' !== skill.element) {
+			if (skill.magical) {
 				preview.caster.magicalSkills.push({
-					skill,
+					weapon: 'NONE',
+					element: skill.magical.element,
 					value: magical
 				});
 			}
@@ -402,7 +413,11 @@ export const getCombatInfo = (caster: Character, target: Character, skill: Skill
 	let magical = getMagicalDamage(caster, skill);
 
 	// elemental affnity
-	const affinity = getAffinity(skill.element, target.skillset.element);
+	let affinity: Affinity = 'ELEMENTAL_NEUTRAL';
+
+	if (skill.magical) {
+		affinity = getAffinity(skill.magical.element, target.skillset.element);
+	}
 	const affinityMod = getAffinityModifier(affinity);
 
 	// directional modifier

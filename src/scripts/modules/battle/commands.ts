@@ -133,7 +133,8 @@ export const getReactiveCommands = (character: Character, isBackAttack: boolean,
 			id = 'SHD_SMALL_BLOCK';
 		}
 		const skill = new Skill(id);
-		const block = (offHand.block || 0) * skill.block;
+		const mod = skill.block ? skill.block.modifier : 1;
+		const block = (offHand.block || 0) * mod;
 		const title = `${skill.title} ${block}`;
 
 		const cmd = new Command('REACTION', title, character, [skill]);

@@ -4,32 +4,38 @@ import { PsychokinesisSkillID } from 'modules/skill/magic';
 const psychokinesis: { [id in PsychokinesisSkillID]: ISkillData; } = {
 	PSY_MINDBLAST: {
 		title: 'Mindblast',
-		mpCost: 10,
 		type: 'ACTIVE',
 		grade: 1,
 		range: 4,
 		area: 'SINGLE',
 		target: 'ENEMY',
-		element: 'PSYCHIC',
-		physical: 0,
-		magical: 1,
+		cost: {
+			MP: 10
+		},
+		magical: {
+			modifier: 1,
+			element: 'PSYCHIC'
+		},
 		animation: {
 			duration: 1000
 		}
 	},
 	PSY_CONFUSION: {
 		title: 'Confusion',
-		mpCost: 10,
 		type: 'ACTIVE',
 		grade: 1,
 		range: 4,
 		area: 'SINGLE',
 		target: 'ENEMY',
-		element: 'PSYCHIC',
 		status: ['CONFUSION'],
-		physical: 0,
-		magical: 0,
 		cooldown: 1,
+		cost: {
+			MP: 10
+		},
+		magical: {
+			modifier: 0,
+			element: 'PSYCHIC'
+		},
 		animation: {
 			duration: 1000
 		}

@@ -63,9 +63,9 @@ const CommandInfo: React.SFC<IProps> = ({ preview, command }) => {
 	
 			{physicalSkills.length > 0 && (
 				<CombatInfo label="Physical attack" small={false}>
-					{physicalSkills.map(({ skill, value }, i) => (
+					{physicalSkills.map(({ weapon, value }, i) => (
 						<React.Fragment key={i}>
-							<WeaponIco weapon={skill.weapon} minimal />
+							<WeaponIco weapon={weapon} minimal />
 							{' '}
 							{value}{i < physicalSkills.length - 1 ? ' + ' : ''}
 						</React.Fragment>
@@ -75,9 +75,9 @@ const CommandInfo: React.SFC<IProps> = ({ preview, command }) => {
 
 			{magicalSkills.length > 0 && (
 				<CombatInfo label="Magical attack" small={false}>
-					{magicalSkills.map(({ skill, value }, i) => (
+					{magicalSkills.map(({ element, value }, i) => (
 						<React.Fragment key={i}>
-							<ElementIco element={skill.element} minimal />
+							<ElementIco element={element} minimal />
 							{' '}
 							{value}{i < magicalSkills.length - 1 ? ' + ' : ''}
 						</React.Fragment>

@@ -52,16 +52,17 @@ export const getActionCategories = (actions: IAction[]): IActionCategories => {
 	
 		// handle damaging actions
 		if (action.damage > 0) {
-			const weapons = skills.map(skill => Weapons.get(skill.weapon));
-			const weaponTypes = weapons.map(weapon => weapon.type);
-	
-			const elements = skills.map(skill => skill.element)
-				.filter(element => 'NONE' !== element);
-	
+			const weaponTypes = skills.map(skill => {
+				if (!skill.physical) {
+					return null;
+				}
+				const wpn = Weapons.get(skill.physical.weapon);
+				return wpn.type;
+			});
+
 			const hasRangedSkill = weaponTypes.includes('RANGED');
-			const hasMagicalSkill = weaponTypes.includes('NONE');
-			const hasElementalSkill = (elements.length > 0);
-			const hasMeleeSkill = !!weaponTypes.find(type => 'NONE' !== type && 'RANGED' !== type);
+			const hasMagicalSkill = !!skills.find(skill => !!skill.magical);
+			const hasMeleeSkill = !!weaponTypes.find(type => null !== type && 'NONE' !== type && 'RANGED' !== type);
 			let categorized = false;
 	
 			if (hasRangedSkill) {
@@ -69,7 +70,7 @@ export const getActionCategories = (actions: IAction[]): IActionCategories => {
 				categorized = true;
 			}
 	
-			if (hasMagicalSkill || hasElementalSkill) {
+			if (hasMagicalSkill) {
 				categories.magical.push(action);
 				categorized = true;
 			}

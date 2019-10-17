@@ -4,49 +4,58 @@ import { DarkMagicSkillID } from 'modules/skill/magic';
 const darkMagic: { [id in DarkMagicSkillID]: ISkillData; } = {
 	DRK_SHADOWBOLT: {
 		title: 'Shadowbolt',
-		mpCost: 10,
 		type: 'ACTIVE',
 		grade: 1,
 		range: 4,
 		area: 'SINGLE',
 		target: 'ENEMY',
-		element: 'DARK',
-		physical: 0,
-		magical: 1,
+		cost: {
+			MP: 10
+		},
+		magical: {
+			modifier: 1,
+			element: 'DARK'
+		},
 		animation: {
 			duration: 1000
 		}
 	},
 	DRK_BERSERK: {
 		title: 'Berserk',
-		mpCost: 10,
 		type: 'ACTIVE',
 		grade: 1,
 		range: 4,
 		area: 'SINGLE',
 		target: 'ANY',
-		element: 'DARK',
-		physical: 0,
-		magical: 0,
-		cooldown: 1,
 		status: ['BERSERK'],
+		cooldown: 1,
+		cost: {
+			MP: 10
+		},
+		magical: {
+			modifier: 0,
+			element: 'DARK'
+		},
 		animation: {
 			duration: 1000
 		}
 	},
 	DRK_SHADOWFLARE: {
 		title: 'Shadowflare',
-		mpCost: 20,
 		type: 'ACTIVE',
 		grade: 2,
 		range: 4,
 		area: 'AOE3x3',
 		target: 'ENEMY',
-		element: 'DARK',
-		physical: 0,
-		magical: 0.5,
 		status: [],
 		cooldown: 2,
+		cost: {
+			MP: 20
+		},
+		magical: {
+			modifier: 0.5,
+			element: 'DARK'
+		},
 		animation: {
 			duration: 1000
 		}

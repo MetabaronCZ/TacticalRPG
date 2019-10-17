@@ -36,18 +36,25 @@ const getData = (title: string, weapon: WeaponID, element: SkillElement): ISkill
 	if (!data) {
 		throw new Error(`Invalid weapon given for Dynamic skill definition: ${weapon}`);
 	}
-	const dynMpCost = dynamicSkill.mpCost || 0;
+	let magMod = 0;
 
+	if (dynamicSkill.magical) {
+		magMod = dynamicSkill.magical.modifier;
+	}
 	return {
 		...dynamicSkill,
 		title,
-		element,
-		weapon,
-		physical: data.physical,
-		apCost: data.apCost || 0,
-		mpCost: dynMpCost,
 		range: data.range,
 		area: data.area,
+		cost: {
+			AP: data.cost.AP || 0,
+			MP: dynamicSkill.cost.MP || 0
+		},
+		physical: data.physical,
+		magical: {
+			modifier: magMod,
+			element
+		},
 		animation: {
 			duration: data.animation.duration
 		}

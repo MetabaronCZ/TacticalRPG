@@ -4,89 +4,107 @@ import { Wield1HWeaponSkillID } from 'modules/skill/weapon';
 const wield1HSkills: { [id in Wield1HWeaponSkillID]: ISkillData; } = {
 	S1H_ATTACK: {
 		title: 'Attack',
-		apCost: 1,
 		type: 'ACTIVE',
 		range: 1,
 		area: 'SINGLE',
 		target: 'ENEMY',
-		weapon: 'SWORD_1H',
-		physical: 1,
-		magical: 0,
+		cost: {
+			AP: 1
+		},
+		physical: {
+			modifier: 1,
+			weapon: 'SWORD_1H'
+		},
 		animation: {
 			duration: 1000
 		}
 	},
 	S1H_BLEED: {
 		title: 'Bleed',
-		apCost: 2,
 		type: 'ACTIVE',
 		range: 1,
 		area: 'SINGLE',
 		target: 'ENEMY',
-		weapon: 'SWORD_1H',
-		physical: 0.5,
-		magical: 0,
 		cooldown: 1,
 		status: ['BLEED'],
+		cost: {
+			AP: 2
+		},
+		physical: {
+			modifier: 0.5,
+			weapon: 'SWORD_1H'
+		},
 		animation: {
 			duration: 1000
 		}
 	},
 	A1H_ATTACK: {
 		title: 'Attack',
-		apCost: 1,
 		type: 'ACTIVE',
 		range: 1,
 		area: 'SINGLE',
 		target: 'ENEMY',
-		weapon: 'AXE_1H',
-		physical: 1,
-		magical: 0,
+		cost: {
+			AP: 1
+		},
+		physical: {
+			modifier: 1,
+			weapon: 'AXE_1H'
+		},
 		animation: {
 			duration: 1000
 		}
 	},
 	A1H_SMASH: {
 		title: 'Smash',
-		apCost: 2,
 		type: 'ACTIVE',
 		range: 1,
 		area: 'SINGLE',
 		target: 'ENEMY',
-		weapon: 'AXE_1H',
-		physical: 1.5,
-		magical: 0,
 		cooldown: 1,
+		cost: {
+			AP: 2
+		},
+		physical: {
+			modifier: 1.5,
+			weapon: 'AXE_1H'
+		},
 		animation: {
 			duration: 1000
 		}
 	},
 	M1H_ATTACK: {
 		title: 'Attack',
-		apCost: 1,
 		type: 'ACTIVE',
 		range: 1,
 		area: 'SINGLE',
 		target: 'ENEMY',
-		weapon: 'MACE_1H',
-		physical: 1,
-		magical: 0,
+		cost: {
+			AP: 1
+		},
+		physical: {
+			modifier: 1,
+			weapon: 'MACE_1H'
+		},
 		animation: {
 			duration: 1000
 		}
 	},
 	M1H_STUN: {
 		title: 'Stun',
-		apCost: 2,
 		type: 'ACTIVE',
 		range: 1,
 		area: 'SINGLE',
 		target: 'ENEMY',
-		weapon: 'MACE_1H',
-		physical: 0.5,
-		magical: 0,
 		cooldown: 1,
 		status: ['STUN'],
+		cost: {
+			AP: 2
+		},
+		physical: {
+			modifier: 0.5,
+			weapon: 'MACE_1H'
+		},
 		animation: {
 			duration: 1000
 		}

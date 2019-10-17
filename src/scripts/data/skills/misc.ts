@@ -4,56 +4,55 @@ import { MiscSkillID } from 'modules/skill/misc';
 const miscSkills: { [id in MiscSkillID]: ISkillData; } = {
 	DOUBLE_ATTACK: {
 		title: 'Double Attack',
-		apCost: 0,
 		type: 'ACTIVE',
 		range: 'ULTIMATE',
 		area: 'SINGLE',
 		target: 'ENEMY',
-		physical: 0,
-		magical: 0,
 		cooldown: 1,
+		cost: {},
 		animation: {
 			duration: 0
 		}
 	},
 	DYNAMIC_SKILL: {
 		title: '',
-		apCost: 0,
-		mpCost: 5,
 		type: 'ACTIVE',
 		grade: 1,
 		range: 'ULTIMATE',
 		area: 'SINGLE',
 		target: 'ENEMY',
-		physical: 0,
-		magical: 0.5,
 		cooldown: 1,
+		cost: {
+			MP: 5
+		},
+		magical: {
+			modifier: 0.5,
+			element: 'NONE'
+		},
 		animation: {
 			duration: 0
 		}
 	},
 	EVADE: {
 		title: 'Evade',
-		apCost: 4,
 		type: 'REACTIVE',
 		range: 1,
 		area: 'SINGLE',
-		physical: 0,
-		magical: 0,
+		cost: {
+			AP: 4
+		},
 		animation: {
 			duration: 150
 		}
 	},
 	ENERGY_SHIELD: {
 		title: 'Energy Shield',
-		apCost: 0,
 		type: 'REACTIVE',
 		range: 0,
 		area: 'SINGLE',
 		target: 'SELF',
-		physical: 0,
-		magical: 0,
 		status: ['ENERGY_SHIELD'],
+		cost: {},
 		animation: {
 			duration: 150
 		}

@@ -4,48 +4,57 @@ import { WaterMagicSkillID } from 'modules/skill/magic';
 const waterMagic: { [id in WaterMagicSkillID]: ISkillData; } = {
 	WAT_SPLASH: {
 		title: 'Splash',
-		mpCost: 10,
 		type: 'ACTIVE',
 		grade: 1,
 		range: 4,
 		area: 'SINGLE',
 		target: 'ENEMY',
-		element: 'WATER',
-		physical: 0,
-		magical: 1,
+		cost: {
+			MP: 10
+		},
+		magical: {
+			modifier: 1,
+			element: 'WATER'
+		},
 		animation: {
 			duration: 1000
 		}
 	},
 	WAT_SILENCE: {
 		title: 'Silence',
-		mpCost: 10,
 		type: 'ACTIVE',
 		grade: 1,
 		range: 4,
 		area: 'SINGLE',
 		target: 'ENEMY',
-		element: 'WATER',
-		physical: 0,
-		magical: 0.5,
-		cooldown: 1,
 		status: ['SILENCE'],
+		cooldown: 1,
+		cost: {
+			MP: 10
+		},
+		magical: {
+			modifier: 0.5,
+			element: 'WATER'
+		},
 		animation: {
 			duration: 1000
 		}
 	},
 	WAT_FLOOD: {
 		title: 'Flood',
-		mpCost: 20,
 		type: 'ACTIVE',
 		grade: 2,
 		range: 4,
 		area: 'AOE3x3',
 		target: 'ENEMY',
-		element: 'WATER',
-		physical: 0,
-		magical: 0.5,
 		cooldown: 2,
+		cost: {
+			MP: 20
+		},
+		magical: {
+			modifier: 0.5,
+			element: 'WATER'
+		},
 		animation: {
 			duration: 1000
 		}

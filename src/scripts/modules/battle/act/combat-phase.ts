@@ -257,7 +257,7 @@ class CombatPhase extends ActPhase<ICombatPhaseSnapshot, ICombatPhaseRecord> {
 			info.push({
 				text: 'Blocked',
 				type: 'REACTION',
-				weapon: skill.weapon,
+				weapon: (skill.block ? skill.block.weapon : 'NONE'),
 				position
 			});
 		}
@@ -276,7 +276,7 @@ class CombatPhase extends ActPhase<ICombatPhaseSnapshot, ICombatPhaseRecord> {
 			info.push({
 				text: formatNumber(combat.physical),
 				type: 'DAMAGE',
-				weapon: skill.weapon,
+				weapon: skill.physical.weapon,
 				position
 			});
 		}
@@ -286,7 +286,7 @@ class CombatPhase extends ActPhase<ICombatPhaseSnapshot, ICombatPhaseRecord> {
 			info.push({
 				text: formatNumber(combat.magical),
 				type: 'DAMAGE',
-				element: skill.element,
+				element: skill.magical.element,
 				position
 			});
 		}
@@ -305,8 +305,8 @@ class CombatPhase extends ActPhase<ICombatPhaseSnapshot, ICombatPhaseRecord> {
 			info.push({
 				text: item.effect,
 				type: 'DEBUFF',
-				weapon: skill.weapon,
-				element: skill.element,
+				weapon: (skill.physical ? skill.physical.weapon : 'NONE'),
+				element: (skill.magical ? skill.magical.element : 'NONE'),
 				status: item.id,
 				position
 			});

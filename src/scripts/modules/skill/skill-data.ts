@@ -24,19 +24,38 @@ export interface ISkillAnimation {
 
 export interface ISkillData {
 	readonly title: string;
-	readonly apCost?: number;
-	readonly mpCost?: number;
 	readonly type: SkillType;
 	readonly grade?: SkillGrade;
+
 	readonly range: SkillRange;
 	readonly area: SkillArea;
 	readonly target?: SkillTarget;
-	readonly weapon?: WeaponID;
-	readonly element?: SkillElement;
-	readonly physical: number;
-	readonly magical: number;
-	readonly block?: number;
+
 	readonly status?: StatusEffectID[];
 	readonly cooldown?: SkillCooldown;
 	readonly animation: ISkillAnimation;
+
+	readonly cost: {
+		readonly AP?: number;
+		readonly MP?: number;
+	};
+
+	readonly physical?: {
+		readonly modifier: number;
+		readonly weapon: WeaponID;
+	};
+
+	readonly magical?: {
+		readonly modifier: number;
+		readonly element: SkillElement;
+	};
+
+	readonly healing?: {
+		readonly modifier: number;
+	};
+
+	readonly block?: {
+		readonly modifier: number;
+		readonly weapon: WeaponID;
+	};
 }

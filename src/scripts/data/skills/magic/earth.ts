@@ -4,49 +4,58 @@ import { EarthMagicSkillID } from 'modules/skill/magic';
 const earthMagic: { [id in EarthMagicSkillID]: ISkillData; } = {
 	ERT_BOULDER: {
 		title: 'Boulder',
-		mpCost: 10,
 		type: 'ACTIVE',
 		grade: 1,
 		range: 4,
 		area: 'SINGLE',
 		target: 'ENEMY',
-		element: 'EARTH',
-		physical: 0,
-		magical: 1,
+		cost: {
+			MP: 10
+		},
+		magical: {
+			modifier: 1,
+			element: 'EARTH'
+		},
 		animation: {
 			duration: 1000
 		}
 	},
 	ERT_EARTH_SPIKE: {
 		title: 'Earth Spike',
-		mpCost: 10,
 		type: 'ACTIVE',
 		grade: 1,
 		range: 4,
 		area: 'SINGLE',
 		target: 'ENEMY',
-		element: 'EARTH',
-		physical: 0,
-		magical: 0.5,
-		cooldown: 1,
 		status: ['STUN'],
+		cooldown: 1,
+		cost: {
+			MP: 10
+		},
+		magical: {
+			modifier: 0.5,
+			element: 'EARTH'
+		},
 		animation: {
 			duration: 1000
 		}
 	},
 	ERT_EARTHQUAKE: {
 		title: 'Earthquake',
-		mpCost: 20,
 		type: 'ACTIVE',
 		grade: 2,
 		range: 4,
 		area: 'AOE3x3',
 		target: 'ENEMY',
-		element: 'EARTH',
-		physical: 0,
-		magical: 0.5,
 		status: [],
 		cooldown: 2,
+		cost: {
+			MP: 20
+		},
+		magical: {
+			modifier: 0.5,
+			element: 'EARTH'
+		},
 		animation: {
 			duration: 1000
 		}

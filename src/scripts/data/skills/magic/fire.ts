@@ -4,48 +4,57 @@ import { FireMagicSkillID } from 'modules/skill/magic';
 const fireMagic: { [id in FireMagicSkillID]: ISkillData; } = {
 	FIR_FIREBALL: {
 		title: 'Fireball',
-		mpCost: 10,
 		type: 'ACTIVE',
 		grade: 1,
 		range: 4,
 		area: 'SINGLE',
 		target: 'ENEMY',
-		element: 'FIRE',
-		physical: 0,
-		magical: 1,
+		cost: {
+			MP: 10
+		},
+		magical: {
+			modifier: 1,
+			element: 'FIRE'
+		},
 		animation: {
 			duration: 1000
 		}
 	},
 	FIR_BURN: {
 		title: 'Burn',
-		mpCost: 10,
 		type: 'ACTIVE',
 		grade: 1,
 		range: 4,
 		area: 'SINGLE',
 		target: 'ENEMY',
-		element: 'FIRE',
-		physical: 0,
-		magical: 0.5,
-		cooldown: 1,
 		status: ['BURN'],
+		cooldown: 1,
+		cost: {
+			MP: 10
+		},
+		magical: {
+			modifier: 0.5,
+			element: 'FIRE'
+		},
 		animation: {
 			duration: 1000
 		}
 	},
 	FIR_FIRESTORM: {
 		title: 'Firestorm',
-		mpCost: 20,
 		type: 'ACTIVE',
 		grade: 2,
 		range: 4,
 		area: 'AOE3x3',
 		target: 'ENEMY',
-		element: 'FIRE',
-		physical: 0,
-		magical: 0.5,
 		cooldown: 2,
+		cost: {
+			MP: 20
+		},
+		magical: {
+			modifier: 0.5,
+			element: 'FIRE'
+		},
 		animation: {
 			duration: 1000
 		}

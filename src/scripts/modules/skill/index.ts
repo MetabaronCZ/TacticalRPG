@@ -11,7 +11,7 @@ import { WeaponID } from 'modules/equipment/weapon-data';
 import { StatusEffectID } from 'modules/battle/status-effect';
 import {
 	SkillID, SkillType, SkillElement, SkillGrade,
-	SkillRange, SkillArea, SkillTarget, ISkillData, SkillCooldown, ISkillAnimation
+	SkillRange, SkillArea, SkillTarget, SkillCooldown, ISkillAnimation
 } from 'modules/skill/skill-data';
 
 type ITargetTable = {
@@ -78,48 +78,80 @@ const getCircleArea = (center: Tile, radius: number): Tile[] => {
 
 const reactableSkillTargets: SkillTarget[] = ['ANY', 'ENEMY'];
 
-class Skill implements ISkillData {
+class Skill {
 	public readonly id: SkillID;
 	public readonly title: string;
-	public readonly apCost: number;
-	public readonly mpCost: number;
 	public readonly type: SkillType;
 	public readonly grade: SkillGrade;
+
 	public readonly range: SkillRange;
 	public readonly area: SkillArea;
 	public readonly target: SkillTarget; // character target type
-	public readonly weapon: WeaponID;
-	public readonly element: SkillElement;
-	public readonly physical: number; // damage modifier [%]
-	public readonly magical: number; // magical damage modifier [%]
-	public readonly block: number; // block modifier [%]
+
 	public readonly status: StatusEffectID[]; // status effects added to attack
 	public readonly cooldown: SkillCooldown;
+	public readonly animation: ISkillAnimation;
+
+	public readonly cost: {
+		readonly AP: number;
+		readonly MP: number;
+	};
+
+	readonly physical?: {
+		readonly modifier: number; // weapon damage modifier [%]
+		readonly weapon: WeaponID;
+	};
+
+	readonly magical?: {
+		readonly modifier: number; // magical damage modifier [%]
+		readonly element: SkillElement;
+	};
+
+	readonly healing?: {
+		readonly modifier: number; // healing modifier [%]
+	};
+
+	public readonly block?: {
+		readonly modifier: number; // block modifier [%]
+		readonly weapon: WeaponID;
+	};
+
 	public readonly isSupport: boolean;
 	public readonly isAttackSkill: boolean;
-	public readonly animation: ISkillAnimation;
+
+	private hitScan: boolean;
 
 	constructor(id: SkillID) {
 		const data = Skills.get(id);
 		this.id = id;
 		this.title = data.title;
-		this.apCost = data.apCost || 0;
-		this.mpCost = data.mpCost || 0;
 		this.type = data.type;
 		this.grade = data.grade || 0;
+
 		this.range = data.range;
 		this.area = data.area;
 		this.target = data.target || 'NONE';
-		this.weapon = data.weapon || 'NONE';
-		this.element = data.element || 'NONE';
-		this.physical = data.physical;
-		this.magical = data.magical;
-		this.block = data.block || 1;
+
 		this.status = data.status || [];
 		this.cooldown = data.cooldown || 0;
 		this.animation = data.animation;
+
+		this.cost = {
+			AP: data.cost.AP || 0,
+			MP: data.cost.MP || 0
+		};
+
+		this.physical = (data.physical ? { ...data.physical } : undefined);
+		this.magical = (data.magical ? { ...data.magical } : undefined);
+		this.healing = (data.healing ? { ...data.healing } : undefined);
+		this.block = (data.block ? { ...data.block } : undefined);
+
+		this.isSupport = !!this.healing;
 		this.isAttackSkill = (-1 !== attackSkills.indexOf(this.id));
-		this.isSupport = ('HOLY' === data.element && 'NONE' === this.weapon);
+
+		this.hitScan = (
+			this.range > 1 && !!this.physical && !['NONE', 'BOW'].includes(this.physical.weapon)
+		);
 	}
 
 	public static filterAttack(ids: SkillID[]): Skill[] {
@@ -163,10 +195,9 @@ class Skill implements ISkillData {
 		if ('LINE' === area) {
 			targetable = targetable.filter(tile => tile.isOnStraightLine(source));
 		}
-		const useHitScan = (range > 1 && !['NONE', 'BOW'].includes(this.weapon));
 
 		// apply hit-scan filter
-		if (useHitScan) {
+		if (this.hitScan) {
 			targetable = getVisible(targetable, source, hitScanObstacles);
 		}
 

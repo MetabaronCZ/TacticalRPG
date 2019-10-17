@@ -27,12 +27,12 @@ const CommandTitle: React.SFC<IProps> = ({ command }) => {
 		);
 	}
 	const elements = command.skills
-		.map(skill => skill.element)
-		.filter(elm => 'NONE' !== elm);
+		.map(skill => skill.magical ? skill.magical.element : null)
+		.filter((elm): elm is Exclude<typeof elm, null> => null !== elm);
 
 	const weapons = command.skills
-		.map(skill => skill.weapon)
-		.filter(wpn => 'NONE' !== wpn);
+		.map(skill => skill.physical ? skill.physical.weapon : null)
+		.filter((wpn): wpn is Exclude<typeof wpn, null> => null !== wpn);
 
 	const skills = command.skills
 		.map(skill => skill.id)

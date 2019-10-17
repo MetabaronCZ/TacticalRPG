@@ -44,8 +44,8 @@ export const formatCost = (cost: ICommandCost | null): string => {
 };
 
 const getCost = (skills: Skill[], status: Status): ICommandCost => {
-	const apCost = skills.map(s => s.apCost).reduce((a, b) => a + b);
-	const mpCost = skills.map(s => s.mpCost).reduce((a, b) => a + b);
+	const apCost = skills.map(s => s.cost.AP).reduce((a, b) => a + b);
+	const mpCost = skills.map(s => s.cost.MP).reduce((a, b) => a + b);
 	const costModifier = (status.has('CONFUSION') ? 2 : 1);
 
 	return {
@@ -124,8 +124,8 @@ class Command {
 				const isDisarmed = character.status.has('DISARM');
 				const isSilenced = character.status.has('SILENCE');
 
-				const usesWeapon = !!skills.find(skill => 'NONE' !== skill.weapon);
-				const usesMagic = !!skills.find(skill => 'NONE' !== skill.element);
+				const usesWeapon = !!skills.find(skill => skill.physical);
+				const usesMagic = !!skills.find(skill => skill.magical);
 
 				if (AP < cost.AP) {
 					return 'OUT_OF_AP';

@@ -7,11 +7,12 @@ TODO
 
 >>	rework Skillu
 	>>	refaktorovat type, isAttackSkill, isSupport 
+	--	refaktorovat SkillElement na Element (v affinity.ts); nepouzivat NONE nebo null elementy
 	OK	hitScan pocitat primo v logice, ktera ho pouziva a nedavat to jako atribut
 		- hitScan = true, pokud range > 1 a jde o weapon nebo dynamic skill (weapon !== 'NONE')
-	--	udelat objekt s Elementy a Physical, kde budou modifikatory
-	--	pri pouziti se budou pocitat vsechny ne-nulove hodnoty jako slozky damage
-	--	misto "block" by mohlo byt physical (modificator.shield), takze cim je postava silnejsi, tim je i block vetsi
+	OK	udelat objekt s Elementy a Physical, kde budou modifikatory
+	XX	pri pouziti se budou pocitat vsechny ne-nulove hodnoty jako slozky damage
+	??	misto "block" by mohlo byt physical (modificator.shield), takze cim je postava silnejsi, tim je i block vetsi
 		- small shield block: 0.5
 		- large shield block: 1.0
 
