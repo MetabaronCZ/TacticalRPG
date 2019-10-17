@@ -1,11 +1,5 @@
 TODO
 ---------------------------------------------------------------------------------------
---	odstranit NONE z WeaponID a SkillElementu
-	- bude problem se Skillsetem
-
---	minimalni damage bude 1
-	- zkontrolovat, ze se nepouzivaji checky na 0 damage
-
 ??	rework Armor efektu:
 	- HEAVY - +50 - +100 HP
 	- LIGHT - EVADE reaction skill
