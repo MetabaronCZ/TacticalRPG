@@ -90,7 +90,6 @@ class Skill implements ISkillData {
 	public readonly target: SkillTarget; // character target type
 	public readonly weapon: WeaponID;
 	public readonly element: SkillElement;
-	public readonly hitScan: boolean;
 	public readonly isFixedDamage: boolean;
 	public readonly physical: number; // damage modifier [%]
 	public readonly magical: number; // magical damage modifier [%]
@@ -114,7 +113,6 @@ class Skill implements ISkillData {
 		this.target = data.target || 'NONE';
 		this.weapon = data.weapon || 'NONE';
 		this.element = data.element || 'NONE';
-		this.hitScan = data.hitScan || false;
 		this.isFixedDamage = data.isFixedDamage || false;
 		this.physical = data.physical;
 		this.magical = data.magical;
@@ -152,7 +150,7 @@ class Skill implements ISkillData {
 	}
 
 	public getTargetable(source: Tile, hitScanObstacles: Tile[]): Tile[] {
-		const { target, range, area, hitScan } = this;
+		const { target, range, area } = this;
 
 		if ('NONE' === target) {
 			return [];
@@ -172,9 +170,10 @@ class Skill implements ISkillData {
 		if ('LINE' === area) {
 			targetable = targetable.filter(tile => tile.isOnStraightLine(source));
 		}
+		const useHitScan = (range > 1 && !['NONE', 'BOW'].includes(this.weapon));
 
 		// apply hit-scan filter
-		if (hitScan) {
+		if (useHitScan) {
 			targetable = getVisible(targetable, source, hitScanObstacles);
 		}
 

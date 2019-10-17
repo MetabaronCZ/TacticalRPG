@@ -10,7 +10,6 @@ const wield2HSkills: { [id in Wield2HWeaponSkillID]: ISkillData; } = {
 		area: 'LINE',
 		target: 'ENEMY',
 		weapon: 'SPEAR',
-		hitScan: true,
 		physical: 1,
 		magical: 0,
 		animation: {
@@ -25,7 +24,6 @@ const wield2HSkills: { [id in Wield2HWeaponSkillID]: ISkillData; } = {
 		area: 'LINE',
 		target: 'ENEMY',
 		weapon: 'SPEAR',
-		hitScan: true,
 		cooldown: 1,
 		physical: 1,
 		magical: 0,

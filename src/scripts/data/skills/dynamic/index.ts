@@ -48,7 +48,6 @@ const getData = (title: string, weapon: WeaponID, element: SkillElement): ISkill
 		mpCost: dynMpCost,
 		range: data.range,
 		area: data.area,
-		hitScan: data.hitScan,
 		isFixedDamage: data.isFixedDamage,
 		animation: {
 			duration: data.animation.duration
