@@ -1,1 +1,1 @@
-export type MiscSkillID = 'EVADE' | 'ENERGY_SHIELD' | 'DOUBLE_ATTACK' | 'DYNAMIC_SKILL';
+export type MiscSkillID = 'DOUBLE_ATTACK' | 'DYNAMIC_SKILL';

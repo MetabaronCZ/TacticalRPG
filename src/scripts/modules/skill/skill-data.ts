@@ -4,13 +4,14 @@ import { StatusEffectID } from 'modules/battle/status-effect';
 
 import { MiscSkillID } from 'modules/skill/misc';
 import { MagicSkillID } from 'modules/skill/magic';
+import { ArmorSkillID } from 'modules/skill/armor';
 import { WeaponSkillID } from 'modules/skill/weapon';
 import { DynamicSkillID } from 'modules/skill/dynamic';
 
 // fake infinity number
 export type Ultimate = 'ULTIMATE';
 
-export type SkillID = MiscSkillID | WeaponSkillID | MagicSkillID | DynamicSkillID;
+export type SkillID = WeaponSkillID | MagicSkillID | ArmorSkillID | DynamicSkillID | MiscSkillID;
 export type SkillType = 'ACTIVE' | 'REACTIVE';
 export type SkillArea = 'SINGLE' | 'LINE'  | 'NEIGHBOURS' | 'AOE3x3';
 export type SkillTarget = 'NONE' | 'ANY' | 'SELF' | 'ALLY' | 'ENEMY';

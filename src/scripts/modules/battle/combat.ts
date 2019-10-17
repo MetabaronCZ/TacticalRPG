@@ -74,8 +74,6 @@ export interface ICasterCombatPreview {
 export interface ITargetCombatPreview {
 	readonly character: ICharacterSnapshot;
 	readonly statusModifier: number;
-	physical: number;
-	magical: number;
 	elementalStrength: ElementID | null;
 	elementalWeakness: ElementID | null;
 	block: number | null;
@@ -365,7 +363,7 @@ export const getCombatPreview = (command: Command, caster: Character, target: Ch
 
 	// handle target stats
 	if (target) {
-		const { skillset, armor } = target;
+		const { skillset } = target;
 		const targetElm = skillset.element;
 
 		preview.target = {
@@ -373,8 +371,6 @@ export const getCombatPreview = (command: Command, caster: Character, target: Ch
 			statusModifier: statusMod.defense,
 			block: getBlock(target, true) || 0,
 			shield: getShield(target, true) || 0,
-			magical: 1 - armor.magical,
-			physical: 1 - armor.physical,
 			elementalStrength: null,
 			elementalWeakness: null
 		};
@@ -458,11 +454,11 @@ export const getCombatInfo = (caster: Character, target: Character, skill: Skill
 	const statusMod = statusModifier.attack * statusModifier.defense;
 
 	if (physical > 0) {
-		physical *= directionMod * statusMod * target.armor.physical;
+		physical *= directionMod * statusMod;
 	}
 
 	if (magical > 0) {
-		magical *= directionMod * statusMod * affinityMod * target.armor.magical;
+		magical *= directionMod * statusMod * affinityMod;
 	}
 
 	// clamp values

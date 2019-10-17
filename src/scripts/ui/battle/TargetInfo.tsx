@@ -11,9 +11,7 @@ interface IProps {
 
 const TargetInfo: React.SFC<IProps> = ({ preview }) => {
 	const {
-		statusModifier,
-		block, shield,
-		physical, magical,
+		statusModifier, block, shield,
 		elementalStrength, elementalWeakness
 	} = preview;
 
@@ -30,14 +28,6 @@ const TargetInfo: React.SFC<IProps> = ({ preview }) => {
 					<ElementIco element={elementalWeakness} />
 				</CombatInfo>
 			)}
-
-			<CombatInfo label="Physical damage reduction">
-				{physical * 100}%
-			</CombatInfo>
-
-			<CombatInfo label="Magical damage reduction">
-				{magical * 100}%
-			</CombatInfo>
 
 			{null !== block && (
 				<CombatInfo label="Shield block value">

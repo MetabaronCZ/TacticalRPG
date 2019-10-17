@@ -110,18 +110,9 @@ export const getReactiveCommands = (character: Character, isBackAttack: boolean,
 	const { offHand, armor } = character;
 	const { MP } = character.attributes;
 	const canMove = character.canMove();
+	const isSilenced = character.status.has('SILENCE');
+
 	const commands: Command[] = [];
-
-	// EVADE command
-	if ('LIGHT' === armor.id) {
-		const skill = new Skill('EVADE');
-		const cmd = new Command('REACTION', skill.title, character, [skill]);
-
-		if (cmd.isActive() && (isBackAttack || !canMove || !canEvade)) {
-			cmd.setActive('CANT_ACT');
-		}
-		commands.push(cmd);
-	}
 
 	// BLOCK command
 	if ('SHIELD' === offHand.type) {
@@ -145,23 +136,39 @@ export const getReactiveCommands = (character: Character, isBackAttack: boolean,
 		commands.push(cmd);
 	}
 
-	// ENERGY SHIELD command
-	if ('MAGICAL' === armor.id) {
-		const skill = new Skill('ENERGY_SHIELD');
-		const title = `${skill.title} ${MP}`;
+	// armor reaction skills
+	for (const skillID of armor.skills) {
+		const skill = new Skill(skillID);
+		let { title } = skill;
 
+		if ('ENERGY_SHIELD' === skillID) {
+			title += ' ' + MP;
+		}
 		const cmd = new Command('REACTION', title, character, [skill]);
-		const isSilenced = character.status.has('SILENCE');
 
 		if (isBackAttack) {
 			cmd.setActive('CANT_ACT');
 		}
-		if (cmd.isActive() && 0 === MP) {
-			cmd.setActive('OUT_OF_MP');
+		switch (skillID) {
+			case 'EVADE':
+				if (cmd.isActive() && (!canMove || !canEvade)) {
+					cmd.setActive('CANT_ACT');
+				}
+				break;
+
+			case 'ENERGY_SHIELD':
+				if (cmd.isActive() && 0 === MP) {
+					cmd.setActive('OUT_OF_MP');
+				}
+				if (cmd.isActive() && isSilenced) {
+					cmd.setActive('SILENCED');
+				}
+				break;
+
+			default:
+				// do nothing
 		}
-		if (cmd.isActive() && isSilenced) {
-			cmd.setActive('SILENCED');
-		}
+
 		commands.push(cmd);
 	}
 

@@ -183,7 +183,7 @@ const CharacterPreview: React.SFC<IProps> = ({ character }) => {
 							{' '}
 							{'NONE' !== armor.id && (
 								<span>
-									(PHY: {armor.physical * 100}%, MAG: {armor.magical * 100}%)
+									(HP +{armor.hpBonus || 0}, MP +{armor.mpBonus || 0})
 								</span>
 							)}
 						</td>

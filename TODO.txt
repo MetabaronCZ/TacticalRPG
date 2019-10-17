@@ -1,9 +1,9 @@
 TODO
 ---------------------------------------------------------------------------------------
-??	rework Armor efektu:
-	- HEAVY - +50 - +100 HP
-	- LIGHT - EVADE reaction skill
-	- MAGICAL - +50 - +100 MP; ENERGY_SHIELD reaction skill
+--	upravit effectArea kopi:
+	- u Attack by melo jit jen o cil
+	- u Thrust by mel jit skrz jako je ted
+	? pridat Skill.piercing
 
 --	refaktorovat btDecide do BTTree v BTPhaseSelectoru
 

@@ -97,13 +97,13 @@ class Character {
 		this.archetype = Archetypes.get(data.archetype);
 		this.skillset = new Skillset(data.skillset, data.archetype);
 
-		this.status = new Status();
-		this.attributes = new Attributes(this);
-		this.baseAttributes = new BaseAttributes(this);
-
 		this.mainHand = Weapons.get(data.main);
 		this.offHand = Weapons.get(data.off);
 		this.armor = Armors.get(data.armor);
+
+		this.status = new Status();
+		this.attributes = new Attributes(this);
+		this.baseAttributes = new BaseAttributes(this);
 
 		this.position = position;
 		this.direction = direction;

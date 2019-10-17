@@ -13,13 +13,15 @@ class BaseAttributes implements IAttributes {
 	};
 
 	constructor(character: Character) {
-		const archetype = character.archetype.id;
-		const { P, S, M } = Arch2AttTable[archetype];
+		const { archetype, armor} = character;
+		const { P, S, M } = Arch2AttTable[archetype.id];
 
 		for (const key in attributeFormulas) {
 			const attr = key as AttributeID;
 			this.values[attr] = attributeFormulas[attr](P, S, M);
 		}
+		this.values.HP += armor.hpBonus || 0;
+		this.values.MP += armor.mpBonus || 0;
 	}
 
 	public serialize(): IAttributes {
