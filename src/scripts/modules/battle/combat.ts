@@ -207,8 +207,9 @@ const getPhysicalDamage = (character: Character, skill: Skill): number => {
 	const weapon = Weapons.get(skill.weapon);
 	const weaponDamage = weapon.physical;
 	const { STR } = character.attributes;
+	const isFixedDamage = ('GUN' === weapon.id);
 
-	if (skill.isFixedDamage) {
+	if (isFixedDamage) {
 		return skill.physical;
 	}
 	return (STR + weaponDamage) * skill.physical;

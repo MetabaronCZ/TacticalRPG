@@ -39,7 +39,6 @@ const rangedSkills: { [id in RangedWeaponSkillID]: ISkillData; } = {
 		area: 'SINGLE',
 		target: 'ENEMY',
 		weapon: 'GUN',
-		isFixedDamage: true,
 		physical: 30,
 		magical: 0,
 		animation: {
@@ -54,7 +53,6 @@ const rangedSkills: { [id in RangedWeaponSkillID]: ISkillData; } = {
 		area: 'SINGLE',
 		target: 'ENEMY',
 		weapon: 'GUN',
-		isFixedDamage: true,
 		physical: 20,
 		magical: 0,
 		cooldown: 1,

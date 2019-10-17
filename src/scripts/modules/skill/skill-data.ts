@@ -33,7 +33,6 @@ export interface ISkillData {
 	readonly target?: SkillTarget;
 	readonly weapon?: WeaponID;
 	readonly element?: SkillElement;
-	readonly isFixedDamage?: boolean;
 	readonly physical: number;
 	readonly magical: number;
 	readonly block?: number;

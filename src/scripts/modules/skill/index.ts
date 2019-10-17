@@ -90,7 +90,6 @@ class Skill implements ISkillData {
 	public readonly target: SkillTarget; // character target type
 	public readonly weapon: WeaponID;
 	public readonly element: SkillElement;
-	public readonly isFixedDamage: boolean;
 	public readonly physical: number; // damage modifier [%]
 	public readonly magical: number; // magical damage modifier [%]
 	public readonly block: number; // block modifier [%]
@@ -113,7 +112,6 @@ class Skill implements ISkillData {
 		this.target = data.target || 'NONE';
 		this.weapon = data.weapon || 'NONE';
 		this.element = data.element || 'NONE';
-		this.isFixedDamage = data.isFixedDamage || false;
 		this.physical = data.physical;
 		this.magical = data.magical;
 		this.block = data.block || 1;
@@ -121,12 +119,7 @@ class Skill implements ISkillData {
 		this.cooldown = data.cooldown || 0;
 		this.animation = data.animation;
 		this.isAttackSkill = (-1 !== attackSkills.indexOf(this.id));
-
-		this.isSupport = (
-			'HOLY' === data.element && (
-				!data.weapon || 'NONE' === data.weapon
-			)
-		);
+		this.isSupport = ('HOLY' === data.element && 'NONE' === this.weapon);
 	}
 
 	public static filterAttack(ids: SkillID[]): Skill[] {

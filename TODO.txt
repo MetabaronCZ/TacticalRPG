@@ -6,7 +6,7 @@ TODO
 	- MAGICAL - +50 - +100 MP; ENERGY_SHIELD reaction skill
 
 >>	rework Skillu
-	--	refaktorovat type, isAttackSkill, isSupport 
+	>>	refaktorovat type, isAttackSkill, isSupport 
 	OK	hitScan pocitat primo v logice, ktera ho pouziva a nedavat to jako atribut
 		- hitScan = true, pokud range > 1 a jde o weapon nebo dynamic skill (weapon !== 'NONE')
 	--	udelat objekt s Elementy a Physical, kde budou modifikatory
