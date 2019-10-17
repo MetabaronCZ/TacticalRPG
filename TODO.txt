@@ -1,23 +1,17 @@
 TODO
 ---------------------------------------------------------------------------------------
+--	refaktorovat SkillElement na Element (v affinity.ts); nepouzivat NONE nebo null elementy
+
+--	odstranit NONE z WeaponID a SkillElementu
+	- bude problem se Skillsetem
+
+--	minimalni damage bude 1
+	- zkontrolovat, ze se nepouzivaji checky na 0 damage
+
 ??	rework Armor efektu:
 	- HEAVY - +50 - +100 HP
 	- LIGHT - EVADE reaction skill
 	- MAGICAL - +50 - +100 MP; ENERGY_SHIELD reaction skill
-
->>	rework Skillu
-	>>	refaktorovat type, isAttackSkill, isSupport 
-	--	refaktorovat SkillElement na Element (v affinity.ts); nepouzivat NONE nebo null elementy
-	OK	hitScan pocitat primo v logice, ktera ho pouziva a nedavat to jako atribut
-		- hitScan = true, pokud range > 1 a jde o weapon nebo dynamic skill (weapon !== 'NONE')
-	OK	udelat objekt s Elementy a Physical, kde budou modifikatory
-	XX	pri pouziti se budou pocitat vsechny ne-nulove hodnoty jako slozky damage
-	??	misto "block" by mohlo byt physical (modificator.shield), takze cim je postava silnejsi, tim je i block vetsi
-		- small shield block: 0.5
-		- large shield block: 1.0
-
---	minimalni damage bude 1
-	- zkontrolovat, ze se nepouzivaji checky na 0 damage
 
 --	refaktorovat btDecide do BTTree v BTPhaseSelectoru
 

@@ -116,9 +116,7 @@ class Skill {
 		readonly weapon: WeaponID;
 	};
 
-	public readonly isSupport: boolean;
-	public readonly isAttackSkill: boolean;
-
+	private isAttackSkill: boolean;
 	private hitScan: boolean;
 
 	constructor(id: SkillID) {
@@ -146,7 +144,6 @@ class Skill {
 		this.healing = (data.healing ? { ...data.healing } : undefined);
 		this.block = (data.block ? { ...data.block } : undefined);
 
-		this.isSupport = !!this.healing;
 		this.isAttackSkill = (-1 !== attackSkills.indexOf(this.id));
 
 		this.hitScan = (

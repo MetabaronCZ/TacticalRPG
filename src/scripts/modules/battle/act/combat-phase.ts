@@ -116,7 +116,7 @@ class CombatPhase extends ActPhase<ICombatPhaseSnapshot, ICombatPhaseRecord> {
 							});
 							return;
 						}
-						if (skill.isSupport) {
+						if (command.isSupport) {
 							this.handleSupport(combat, result, info);
 						} else {
 							this.handleDamage(combat, result, info);

@@ -220,16 +220,15 @@ const getPhysicalDamage = (character: Character, skill: Skill): number => {
 	return (STR + weaponDamage) * mod;
 };
 
-const getMagicalDamage = (character: Character, skill: Skill): number => {
-	if (!skill.magical || 0 === skill.magical.modifier) {
+const getMagicalDamage = (character: Character, modifier = 0): number => {
+	if (0 === modifier) {
 		return 0;
 	}
-	const mod = skill.magical.modifier;
 	const { mainHand, offHand } = character;
 	const weaponDamage = mainHand.magical + offHand.magical;
 	const { MAG } = character.attributes;
 
-	return (MAG + weaponDamage) * mod;
+	return (MAG + weaponDamage) * modifier;
 };
 
 const getStatusModifier = (attacker: Character, defender?: Character | null): IStatusValue => {
@@ -315,44 +314,42 @@ export const getCombatPreview = (command: Command, caster: Character, target: Ch
 
 	// get caster command skills info
 	for (const skill of skills) {
-		const physical = getPhysicalDamage(caster, skill);
-		const magical = getMagicalDamage(caster, skill);
+		if (skill.healing) {
+			// add healing data
+			preview.caster.healingSkills.push({
+				weapon: 'NONE',
+				element: 'NONE',
+				value: getMagicalDamage(caster, skill.healing.modifier)
+			});
+
+			continue;
+		}
+
+		// add damage data
+		if (skill.physical) {
+			preview.caster.physicalSkills.push({
+				weapon: skill.physical.weapon,
+				element: 'NONE',
+				value: getPhysicalDamage(caster, skill)
+			});
+		}
+
+		if (skill.magical) {
+			preview.caster.magicalSkills.push({
+				weapon: 'NONE',
+				element: skill.magical.element,
+				value: getMagicalDamage(caster, skill.magical.modifier)
+			});
+		}
 
 		for (const effect of skill.status) {
 			preview.caster.status.push(effect);
 		}
 
-		if (skill.isSupport) {
-			// add healing data
-			preview.caster.healingSkills.push({
-				weapon: 'NONE',
-				element: 'NONE',
-				value: magical
-			});
-
-		} else {
-			// add damage data
-			if (skill.physical) {
-				preview.caster.physicalSkills.push({
-					weapon: skill.physical.weapon,
-					element: 'NONE',
-					value: physical
-				});
-			}
-
-			if (skill.magical) {
-				preview.caster.magicalSkills.push({
-					weapon: 'NONE',
-					element: skill.magical.element,
-					value: magical
-				});
-			}
-
-			// add element affinity data
-			if (target) {
-				const affinity = getAffinity(caster.skillset.element, target.skillset.element);
-				preview.caster.affinity = getAffinityModifier(affinity);
-			}
+		// add element affinity data
+		if (target) {
+			const affinity = getAffinity(caster.skillset.element, target.skillset.element);
+			preview.caster.affinity = getAffinityModifier(affinity);
 		}
 	}
 
@@ -403,19 +400,19 @@ export const getCombatInfo = (caster: Character, target: Character, skill: Skill
 		status: getStatusEffects(caster, target, skill)
 	};
 
-	if (skill.isSupport) {
-		result.healing = getMagicalDamage(caster, skill);
+	if (skill.healing) {
+		result.healing = getMagicalDamage(caster, skill.healing.modifier);
 		return result;
 	}
 
 	// handle damaging skill
 	let physical = getPhysicalDamage(caster, skill);
-	let magical = getMagicalDamage(caster, skill);
+	let magical = 0;
 
-	// elemental affnity
 	let affinity: Affinity = 'ELEMENTAL_NEUTRAL';
 
 	if (skill.magical) {
+		magical = getMagicalDamage(caster, skill.magical.modifier);
 		affinity = getAffinity(skill.magical.element, target.skillset.element);
 	}
 	const affinityMod = getAffinityModifier(affinity);

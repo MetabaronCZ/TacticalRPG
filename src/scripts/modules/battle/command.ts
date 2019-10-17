@@ -87,7 +87,7 @@ class Command {
 		this.title = title;
 		this.skills = skills;
 		this.character = character || null;
-		this.isSupport = !!skills.find(skill => skill.isSupport);
+		this.isSupport = !!skills.find(skill => !!skill.healing);
 
 		if (character) {
 			this.cost = getCost(skills, character.status);
@@ -125,7 +125,7 @@ class Command {
 				const isSilenced = character.status.has('SILENCE');
 
 				const usesWeapon = !!skills.find(skill => skill.physical);
-				const usesMagic = !!skills.find(skill => skill.magical);
+				const usesMagic = !!skills.find(skill => skill.magical || skill.healing);
 
 				if (AP < cost.AP) {
 					return 'OUT_OF_AP';
