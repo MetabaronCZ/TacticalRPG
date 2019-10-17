@@ -1,15 +1,12 @@
-import { SkillElement } from 'modules/skill/skill-data';
+import { ElementID } from 'modules/skill/affinity';
 
 type ElementDataTable = {
-	[id in SkillElement]: {
-		title: string;
+	readonly [id in ElementID]: {
+		readonly title: string;
 	};
 };
 
 const elements: ElementDataTable = {
-	NONE: {
-		title: 'none'
-	},
 	FIRE: {
 		title: 'Fire element'
 	},

@@ -19,13 +19,13 @@ const TargetInfo: React.SFC<IProps> = ({ preview }) => {
 
 	return (
 		<React.Fragment>
-			{'NONE' !== elementalStrength && (
+			{!!elementalStrength && (
 				<CombatInfo label="Elemental strength">
 					<ElementIco element={elementalStrength} />
 				</CombatInfo>
 			)}
 
-			{'NONE' !== elementalWeakness && (
+			{!!elementalWeakness && (
 				<CombatInfo label="Elemental weakness">
 					<ElementIco element={elementalWeakness} />
 				</CombatInfo>

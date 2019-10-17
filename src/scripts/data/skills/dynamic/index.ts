@@ -1,9 +1,11 @@
 import miscSkills from 'data/skills/misc';
 import weaponSkills from 'data/skills/weapon';
 
+import { ElementID } from 'modules/skill/affinity';
+import { ISkillData } from 'modules/skill/skill-data';
 import { DynamicSkillID } from 'modules/skill/dynamic';
 import { WeaponID } from 'modules/equipment/weapon-data';
-import { ISkillData, SkillElement } from 'modules/skill/skill-data';
+
 
 const dynamicSkill = miscSkills.DYNAMIC_SKILL;
 
@@ -30,7 +32,7 @@ const weaponSkillData: WeaponSkillDataTable = {
 	SHIELD_LARGE: null
 };
 
-const getData = (title: string, weapon: WeaponID, element: SkillElement): ISkillData => {
+const getData = (title: string, weapon: WeaponID, element: ElementID): ISkillData => {
 	const data = weaponSkillData[weapon];
 
 	if (!data) {

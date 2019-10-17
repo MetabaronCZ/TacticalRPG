@@ -51,7 +51,9 @@ const CharacterPreview: React.SFC<IProps> = ({ character }) => {
 				{' '}
 				{archetype.title}
 				{' '}
-				<ElementIco element={skillset.element} minimal />
+				{!!skillset.element && (
+					<ElementIco element={skillset.element} />
+				)}
 			</p>
 
 			<h3 className="Heading Heading--small">

@@ -1,15 +1,17 @@
 import Skillsets from 'data/skillsets';
 
 import Skill from 'modules/skill';
+import { ElementID } from 'modules/skill/affinity';
+import { SkillGrade } from 'modules/skill/skill-data';
 import { ArchetypeID } from 'modules/character/archetype';
 import { SkillsetID } from 'modules/character/skillset-data';
-import { SkillElement, SkillGrade } from 'modules/skill/skill-data';
+
 
 class Skillset {
 	public readonly id: SkillsetID;
 	public readonly title: string;
 	public readonly description: string;
-	public readonly element: SkillElement;
+	public readonly element: ElementID | null;
 	public readonly grade: SkillGrade;
 	public readonly skills: Skill[];
 
@@ -19,7 +21,7 @@ class Skillset {
 		this.title = data.title;
 		this.description = data.description;
 		this.grade = this.getSkillGrade(archetype);
-		this.element = data.element;
+		this.element = data.element || null;
 
 		this.skills = data.skills
 			.map(skillId => new Skill(skillId))

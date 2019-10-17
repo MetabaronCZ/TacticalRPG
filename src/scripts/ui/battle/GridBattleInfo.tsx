@@ -2,10 +2,10 @@ import React from 'react';
 
 import { IBattleInfo, BattleInfoType } from 'modules/battle/battle-info';
 
+import Ico from 'ui/common/Ico';
 import WeaponIco from 'ui/common/WeaponIco';
 import StatusIco from 'ui/common/StatusIco';
 import ElementIco from 'ui/common/ElementIco';
-import Ico from 'ui/common/Ico';
 
 export interface IBattleInfoCoords {
 	info: IBattleInfo;

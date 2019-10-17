@@ -2,7 +2,10 @@ import React from 'react';
 
 import { StatusEffectID } from 'modules/battle/status-effect';
 import { formatCost, ICommandSnapshot } from 'modules/battle/command';
-import { ICasterCombatPreview, ICasterPreviewItem } from 'modules/battle/combat';
+import {
+	ICasterCombatPreview, ICasterPreviewPhysical,
+	ICasterPreviewMagical, ICasterPreviewHealing
+} from 'modules/battle/combat';
 
 import Ico from 'ui/common/Ico';
 import WeaponIco from 'ui/common/WeaponIco';
@@ -18,9 +21,9 @@ interface IProps {
 const CommandInfo: React.SFC<IProps> = ({ preview, command }) => {
 	const { cost } = command;
 
-	let physicalSkills: ICasterPreviewItem[] = [];
-	let magicalSkills: ICasterPreviewItem[] = [];
-	let healingSkills: ICasterPreviewItem[] = [];
+	let physicalSkills: ICasterPreviewPhysical[] = [];
+	let magicalSkills: ICasterPreviewMagical[] = [];
+	let healingSkills: ICasterPreviewHealing[] = [];
 	let status: StatusEffectID[] = [];
 	let directionMod = 1;
 	let affinityMod = 1;

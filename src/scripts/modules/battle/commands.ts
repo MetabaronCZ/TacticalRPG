@@ -58,7 +58,7 @@ export const getIdleCommands = (character: Character): Command[] => {
 	}
 
 	// DYNAMIC commands
-	if ('NONE' !== skillset.element) {
+	if (skillset.element) {
 		for (const wpn of [mainHand, offHand]) {
 			const skillID = getDynamicSkillID(wpn, skillset);
 

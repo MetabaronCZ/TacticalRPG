@@ -27,7 +27,7 @@ const miscSkills: { [id in MiscSkillID]: ISkillData; } = {
 		},
 		magical: {
 			modifier: 0.5,
-			element: 'NONE'
+			element: 'HOLY'
 		},
 		animation: {
 			duration: 0

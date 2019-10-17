@@ -40,7 +40,9 @@ const CharacterTooltip: React.SFC<IProps> = ({ x, y, size, orientation, characte
 					{' '}
 					<ArchetypeIco archetype={archetype} />
 					{' '}
-					<ElementIco element={skillset.element} minimal />
+					{!!skillset.element && (
+						<ElementIco element={skillset.element} />
+					)}
 				</div>
 
 				<table className="Table Table--plain">

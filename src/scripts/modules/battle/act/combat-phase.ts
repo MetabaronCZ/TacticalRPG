@@ -136,7 +136,7 @@ class CombatPhase extends ActPhase<ICombatPhaseSnapshot, ICombatPhaseRecord> {
 		
 						// log info to console
 						for (const i of info) {
-							const elm = ((i.element && 'NONE' !== i.element) ? `(${i.element})` : '');
+							const elm = (i.element ? `(${i.element})` : '');
 							Logger.info(`ActCombat: ${i.type} ${i.text} ${elm}`);
 						}
 					}
@@ -305,8 +305,8 @@ class CombatPhase extends ActPhase<ICombatPhaseSnapshot, ICombatPhaseRecord> {
 			info.push({
 				text: item.effect,
 				type: 'DEBUFF',
-				weapon: (skill.physical ? skill.physical.weapon : 'NONE'),
-				element: (skill.magical ? skill.magical.element : 'NONE'),
+				weapon: (skill.physical ? skill.physical.weapon : undefined),
+				element: (skill.magical ? skill.magical.element : undefined),
 				status: item.id,
 				position
 			});

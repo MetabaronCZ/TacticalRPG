@@ -7,10 +7,11 @@ import { getTile, getTiles } from 'modules/geometry/tiles';
 
 import Tile from 'modules/geometry/tile';
 import Character from 'modules/character';
+import { ElementID } from 'modules/skill/affinity';
 import { WeaponID } from 'modules/equipment/weapon-data';
 import { StatusEffectID } from 'modules/battle/status-effect';
 import {
-	SkillID, SkillType, SkillElement, SkillGrade,
+	SkillID, SkillType, SkillGrade,
 	SkillRange, SkillArea, SkillTarget, SkillCooldown, ISkillAnimation
 } from 'modules/skill/skill-data';
 
@@ -104,7 +105,7 @@ class Skill {
 
 	readonly magical?: {
 		readonly modifier: number; // magical damage modifier [%]
-		readonly element: SkillElement;
+		readonly element: ElementID;
 	};
 
 	readonly healing?: {

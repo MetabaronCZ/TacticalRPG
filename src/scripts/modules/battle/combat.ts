@@ -7,11 +7,11 @@ import * as DMG from 'data/combat';
 import Skill from 'modules/skill';
 import Vector from 'modules/geometry/vector';
 import Command from 'modules/battle/command';
-import Character, { ICharacterSnapshot } from 'modules/character';
-import { SkillElement, ISkillData } from 'modules/skill/skill-data';
-import { ElementAffinityTable, Affinity } from 'modules/skill/affinity';
-import StatusEffect, { StatusEffectID } from 'modules/battle/status-effect';
+import { ISkillData } from 'modules/skill/skill-data';
 import { WeaponID } from 'modules/equipment/weapon-data';
+import Character, { ICharacterSnapshot } from 'modules/character';
+import StatusEffect, { StatusEffectID } from 'modules/battle/status-effect';
+import { AffinityTable, Affinity, ElementID } from 'modules/skill/affinity';
 
 const precision = 10 ** 10; // angle precision modifier
 const backAttackAngle = PI / 6; // 30 degrees
@@ -46,9 +46,17 @@ export interface ICombatInfo {
 	status: StatusEffect[];
 }
 
-export interface ICasterPreviewItem {
-	readonly element: SkillElement;
+export interface ICasterPreviewPhysical {
 	readonly weapon: WeaponID;
+	readonly value: number;
+}
+
+export interface ICasterPreviewMagical {
+	readonly element: ElementID ;
+	readonly value: number;
+}
+
+export interface ICasterPreviewHealing {
 	readonly value: number;
 }
 
@@ -56,9 +64,9 @@ export interface ICasterCombatPreview {
 	readonly character: ICharacterSnapshot;
 	readonly status: StatusEffectID[];
 	readonly statusModifier: number;
-	readonly physicalSkills: ICasterPreviewItem[];
-	readonly magicalSkills: ICasterPreviewItem[];
-	readonly healingSkills: ICasterPreviewItem[];
+	readonly physicalSkills: ICasterPreviewPhysical[];
+	readonly magicalSkills: ICasterPreviewMagical[];
+	readonly healingSkills: ICasterPreviewHealing[];
 	directionModifier: number;
 	affinity: number;
 }
@@ -68,8 +76,8 @@ export interface ITargetCombatPreview {
 	readonly statusModifier: number;
 	physical: number;
 	magical: number;
-	elementalStrength: SkillElement;
-	elementalWeakness: SkillElement;
+	elementalStrength: ElementID | null;
+	elementalWeakness: ElementID | null;
 	block: number | null;
 	shield: number | null;
 }
@@ -94,11 +102,11 @@ export const isBackAttacked = (attacker: Character, defender: Character): boolea
 	return angle <= sideBackAttackAngle;
 };
 
-const getAffinity = (attacker: SkillElement, defender: SkillElement): Affinity => {
-	if (ElementAffinityTable[attacker] === defender) {
+const getAffinity = (attacker: ElementID, defender: ElementID): Affinity => {
+	if (AffinityTable[attacker] === defender) {
 		return 'ELEMENTAL_STRONG';
 	}
-	if ('NONE' !== attacker && defender === attacker) {
+	if (defender === attacker) {
 		return 'ELEMENTAL_WEAK';
 	}
 	return 'ELEMENTAL_NEUTRAL';
@@ -317,8 +325,6 @@ export const getCombatPreview = (command: Command, caster: Character, target: Ch
 		if (skill.healing) {
 			// add healing data
 			preview.caster.healingSkills.push({
-				weapon: 'NONE',
-				element: 'NONE',
 				value: getMagicalDamage(caster, skill.healing.modifier)
 			});
 
@@ -329,14 +335,12 @@ export const getCombatPreview = (command: Command, caster: Character, target: Ch
 		if (skill.physical) {
 			preview.caster.physicalSkills.push({
 				weapon: skill.physical.weapon,
-				element: 'NONE',
 				value: getPhysicalDamage(caster, skill)
 			});
 		}
 
 		if (skill.magical) {
 			preview.caster.magicalSkills.push({
-				weapon: 'NONE',
 				element: skill.magical.element,
 				value: getMagicalDamage(caster, skill.magical.modifier)
 			});
@@ -348,7 +352,13 @@ export const getCombatPreview = (command: Command, caster: Character, target: Ch
 
 		// add element affinity data
 		if (target) {
-			const affinity = getAffinity(caster.skillset.element, target.skillset.element);
+			const casterElm = caster.skillset.element;
+			const targetElm = target.skillset.element;
+			let affinity: Affinity = 'ELEMENTAL_NEUTRAL';
+
+			if (casterElm && targetElm) {
+				affinity = getAffinity(casterElm, targetElm);
+			}
 			preview.caster.affinity = getAffinityModifier(affinity);
 		}
 	}
@@ -365,20 +375,22 @@ export const getCombatPreview = (command: Command, caster: Character, target: Ch
 			shield: getShield(target, true) || 0,
 			magical: 1 - armor.magical,
 			physical: 1 - armor.physical,
-			elementalStrength: 'NONE',
-			elementalWeakness: 'NONE'
+			elementalStrength: null,
+			elementalWeakness: null
 		};
 
-		for (const id of Object.keys(ElementAffinityTable)) {
-			const elm = id as SkillElement;
-			const affinity = getAffinity(elm, targetElm);
+		if (targetElm) {
+			for (const id of Object.keys(AffinityTable)) {
+				const elm = id as ElementID;
+				const affinity = getAffinity(elm, targetElm);
 
-			if ('ELEMENTAL_STRONG' === affinity) {
-				preview.target.elementalWeakness = elm;
-			}
+				if ('ELEMENTAL_STRONG' === affinity) {
+					preview.target.elementalWeakness = elm;
+				}
 
-			if ('ELEMENTAL_WEAK' === affinity) {
-				preview.target.elementalStrength = elm;
+				if ('ELEMENTAL_WEAK' === affinity) {
+					preview.target.elementalStrength = elm;
+				}
 			}
 		}
 	}
@@ -413,7 +425,10 @@ export const getCombatInfo = (caster: Character, target: Character, skill: Skill
 
 	if (skill.magical) {
 		magical = getMagicalDamage(caster, skill.magical.modifier);
-		affinity = getAffinity(skill.magical.element, target.skillset.element);
+
+		if (target.skillset.element) {
+			affinity = getAffinity(skill.magical.element, target.skillset.element);
+		}
 	}
 	const affinityMod = getAffinityModifier(affinity);
 

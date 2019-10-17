@@ -1,4 +1,4 @@
-import { SkillElement } from 'modules/skill/skill-data';
+import { ElementID } from 'modules/skill/affinity';
 import { MagicSkillID } from 'modules/skill/magic';
 
 export type SkillsetID =
@@ -12,6 +12,6 @@ export interface ISkillsetData {
 	readonly id: SkillsetID;
 	readonly title: string;
 	readonly description: string;
-	readonly element: SkillElement;
+	readonly element?: ElementID;
 	readonly skills: MagicSkillID[];
 }

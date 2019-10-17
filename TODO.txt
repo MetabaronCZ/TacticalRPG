@@ -1,7 +1,5 @@
 TODO
 ---------------------------------------------------------------------------------------
---	refaktorovat SkillElement na Element (v affinity.ts); nepouzivat NONE nebo null elementy
-
 --	odstranit NONE z WeaponID a SkillElementu
 	- bude problem se Skillsetem
 

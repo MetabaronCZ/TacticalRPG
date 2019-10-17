@@ -1,23 +1,18 @@
 import React from 'react';
 
 import elements from 'data/elements';
-import { SkillElement } from 'modules/skill/skill-data';
+import { ElementID } from 'modules/skill/affinity';
 
 interface IProps {
-	element: SkillElement;
+	element: ElementID;
 	minimal?: boolean;
 }
 
-const ElementIco: React.SFC<IProps> = ({ element, minimal }) => {
-	if (minimal && 'NONE' === element) {
-		return <React.Fragment />;
-	}
-	return (
-		<span
-			className={`Ico Ico--${element} Ico--${minimal ? 'minimal' : 'default'}`}
-			title={elements[element].title}
-		/>
-	);
-};
+const ElementIco: React.SFC<IProps> = ({ element, minimal }) => (
+	<span
+		className={`Ico Ico--${element} Ico--${minimal ? 'minimal' : 'default'}`}
+		title={elements[element].title}
+	/>
+);
 
 export default ElementIco;

@@ -1,22 +1,21 @@
+import { ElementID } from 'modules/skill/affinity';
 import { DynamicSkillID } from 'modules/skill/dynamic';
-import { SkillElement } from 'modules/skill/skill-data';
 import { WeaponID } from 'modules/equipment/weapon-data';
 
 type DynamicSkillTable = {
 	readonly [wpn in WeaponID]: {
-		readonly [elm in SkillElement]: DynamicSkillID | null;
+		readonly [elm in ElementID]: DynamicSkillID | null;
 	};
 };
 
 const dynamicSkillTable: DynamicSkillTable = {
-	NONE:         { NONE: null, FIRE: null, ICE: null, WIND: null, EARTH: null, THUNDER: null, WATER: null, DARK: null, HOLY: null, PSYCHIC: null },
-	ROD:          { NONE: null, FIRE: null, ICE: null, WIND: null, EARTH: null, THUNDER: null, WATER: null, DARK: null, HOLY: null, PSYCHIC: null },
-	STAFF:        { NONE: null, FIRE: null, ICE: null, WIND: null, EARTH: null, THUNDER: null, WATER: null, DARK: null, HOLY: null, PSYCHIC: null },
-	SHIELD_SMALL: { NONE: null, FIRE: null, ICE: null, WIND: null, EARTH: null, THUNDER: null, WATER: null, DARK: null, HOLY: null, PSYCHIC: null },
-	SHIELD_LARGE: { NONE: null, FIRE: null, ICE: null, WIND: null, EARTH: null, THUNDER: null, WATER: null, DARK: null, HOLY: null, PSYCHIC: null },
+	NONE:         { FIRE: null, ICE: null, WIND: null, EARTH: null, THUNDER: null, WATER: null, DARK: null, HOLY: null, PSYCHIC: null },
+	ROD:          { FIRE: null, ICE: null, WIND: null, EARTH: null, THUNDER: null, WATER: null, DARK: null, HOLY: null, PSYCHIC: null },
+	STAFF:        { FIRE: null, ICE: null, WIND: null, EARTH: null, THUNDER: null, WATER: null, DARK: null, HOLY: null, PSYCHIC: null },
+	SHIELD_SMALL: { FIRE: null, ICE: null, WIND: null, EARTH: null, THUNDER: null, WATER: null, DARK: null, HOLY: null, PSYCHIC: null },
+	SHIELD_LARGE: { FIRE: null, ICE: null, WIND: null, EARTH: null, THUNDER: null, WATER: null, DARK: null, HOLY: null, PSYCHIC: null },
 
 	FISTS:     {
-		NONE: null,
 		FIRE: 'FST_FIR',
 		ICE: 'FST_ICE',
 		WIND: 'FST_WND',
@@ -28,7 +27,6 @@ const dynamicSkillTable: DynamicSkillTable = {
 		PSYCHIC: 'FST_PSY'
 	},
 	DAGGER: {
-		NONE: null,
 		FIRE: 'DGR_FIR',
 		ICE: 'DGR_ICE',
 		WIND: 'DGR_WND',
@@ -40,7 +38,6 @@ const dynamicSkillTable: DynamicSkillTable = {
 		PSYCHIC: 'DGR_PSY'
 	},
 	SWORD_1H: {
-		NONE: null,
 		FIRE: 'S1H_FIR',
 		ICE: 'S1H_ICE',
 		WIND: 'S1H_WND',
@@ -52,7 +49,6 @@ const dynamicSkillTable: DynamicSkillTable = {
 		PSYCHIC: 'S1H_PSY'
 	},
 	AXE_1H: {
-		NONE: null,
 		FIRE: 'A1H_FIR',
 		ICE: 'A1H_ICE',
 		WIND: 'A1H_WND',
@@ -64,7 +60,6 @@ const dynamicSkillTable: DynamicSkillTable = {
 		PSYCHIC: 'A1H_PSY'
 	},
 	MACE_1H: {
-		NONE: null,
 		FIRE: 'M1H_FIR',
 		ICE: 'M1H_ICE',
 		WIND: 'M1H_WND',
@@ -76,7 +71,6 @@ const dynamicSkillTable: DynamicSkillTable = {
 		PSYCHIC: 'M1H_PSY'
 	},
 	SPEAR: {
-		NONE: null,
 		FIRE: 'SPR_FIR',
 		ICE: 'SPR_ICE',
 		WIND: 'SPR_WND',
@@ -88,7 +82,6 @@ const dynamicSkillTable: DynamicSkillTable = {
 		PSYCHIC: 'SPR_PSY'
 	},
 	SWORD_2H: {
-		NONE: null,
 		FIRE: 'S2H_FIR',
 		ICE: 'S2H_ICE',
 		WIND: 'S2H_WND',
@@ -100,7 +93,6 @@ const dynamicSkillTable: DynamicSkillTable = {
 		PSYCHIC: 'S2H_PSY'
 	},
 	AXE_2H: {
-		NONE: null,
 		FIRE: 'A2H_FIR',
 		ICE: 'A2H_ICE',
 		WIND: 'A2H_WND',
@@ -112,7 +104,6 @@ const dynamicSkillTable: DynamicSkillTable = {
 		PSYCHIC: 'A2H_PSY'
 	},
 	MACE_2H: {
-		NONE: null,
 		FIRE: 'M2H_FIR',
 		ICE: 'M2H_ICE',
 		WIND: 'M2H_WND',
@@ -124,7 +115,6 @@ const dynamicSkillTable: DynamicSkillTable = {
 		PSYCHIC: 'M2H_PSY'
 	},
 	BOW: {
-		NONE: null,
 		FIRE: 'BOW_FIR',
 		ICE: 'BOW_ICE',
 		WIND: 'BOW_WND',
@@ -136,7 +126,6 @@ const dynamicSkillTable: DynamicSkillTable = {
 		PSYCHIC: 'BOW_PSY'
 	},
 	GUN: {
-		NONE: null,
 		FIRE: 'GUN_FIR',
 		ICE: 'GUN_ICE',
 		WIND: 'GUN_WND',

@@ -1,13 +1,11 @@
-import { SkillElement } from 'modules/skill/skill-data';
-
+export type ElementID = 'FIRE' | 'ICE' | 'WIND' | 'EARTH' | 'THUNDER' | 'WATER' | 'DARK' | 'HOLY' | 'PSYCHIC';
 export type Affinity = 'ELEMENTAL_WEAK' | 'ELEMENTAL_NEUTRAL' | 'ELEMENTAL_STRONG';
 
-type IElementAffinityTable = {
-	readonly [E in SkillElement]: SkillElement | null;
+type IAffinityTable = {
+	readonly [E in ElementID]: ElementID | null;
 };
 
-export const ElementAffinityTable: IElementAffinityTable = {
-	NONE: null,
+export const AffinityTable: IAffinityTable = {
 	FIRE: 'ICE',
 	ICE: 'WIND',
 	WIND: 'EARTH',

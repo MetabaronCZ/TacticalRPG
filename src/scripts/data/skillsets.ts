@@ -18,7 +18,6 @@ const Skillsets = new DataList<SkillsetID, ISkillsetData>({
 		id: 'NONE',
 		title: 'none',
 		description: '',
-		element: 'NONE',
 		skills: []
 	},
 	PSYCHOKINESIS: {

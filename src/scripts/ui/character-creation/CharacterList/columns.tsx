@@ -40,6 +40,10 @@ const renderArchetypeIco = (archetype: ArchetypeID): React.ReactNode => (
 
 const renderArchetype = (char: ICharacterData): React.ReactNode => {
 	const skillset = Skillsets.get(char.skillset);
+
+	if (!skillset.element) {
+		return;
+	}
 	return <ElementIco element={skillset.element} minimal />;
 };
 

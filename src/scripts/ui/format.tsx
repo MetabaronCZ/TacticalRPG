@@ -32,7 +32,9 @@ export const formatCharacter = (character: ICharacterData | null): React.ReactNo
 			{' '}
 			<ArchetypeIco archetype={archetype} />
 			{' '}
-			<ElementIco element={element} minimal />
+			{!!element && (
+				<ElementIco element={element} minimal />
+			)}
 			{' '}
 			<WeaponIco weapon={main} minimal />
 			{' '}
