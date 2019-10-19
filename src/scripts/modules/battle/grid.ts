@@ -105,7 +105,7 @@ export const getTileStyle = (tile: Tile, act: IActSnapshot): ColorStyle => {
 				if (tile === reactor.position) {
 					return tileStyles.yellow;
 				}
-				if (tile.isContained(reaction.evasible)) {
+				if ('EVASION' === reaction.phase && tile.isContained(reaction.evasible)) {
 					return tileStyles.green;
 				}
 				if (tile.isContained(reactors)) {
