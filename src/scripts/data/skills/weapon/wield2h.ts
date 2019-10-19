@@ -25,6 +25,7 @@ const wield2HSkills: { [id in Wield2HWeaponSkillID]: ISkillData; } = {
 		range: 2,
 		area: 'LINE',
 		target: 'ENEMY',
+		piercing: true,
 		cooldown: 1,
 		cost: {
 			AP: 4

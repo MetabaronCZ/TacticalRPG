@@ -32,6 +32,7 @@ export interface ISkillData {
 	readonly range: SkillRange;
 	readonly area: SkillArea;
 	readonly target?: SkillTarget;
+	readonly piercing?: boolean;
 
 	readonly status?: StatusEffectID[];
 	readonly cooldown?: SkillCooldown;

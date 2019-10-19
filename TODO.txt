@@ -1,10 +1,5 @@
 TODO
 ---------------------------------------------------------------------------------------
---	upravit effectArea kopi:
-	- u Attack by melo jit jen o cil
-	- u Thrust by mel jit skrz jako je ted
-	? pridat Skill.piercing
-
 --	refaktorovat btDecide do BTTree v BTPhaseSelectoru
 
 --	udelat ikony pro vsechny StatusEffecty

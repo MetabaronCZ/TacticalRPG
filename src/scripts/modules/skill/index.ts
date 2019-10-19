@@ -20,22 +20,22 @@ type ITargetTable = {
 };
 
 type IAreaTable = {
-	readonly [id in SkillArea]: (source: Tile, target: Tile, range: SkillRange) => Tile[];
+	readonly [id in SkillArea]: (source: Tile, target: Tile, range: SkillRange, piercing: boolean) => Tile[];
 };
 
 // SkillTarget based targetable logic
 const targetTable: ITargetTable = {
-	SELF:  (char: Character, actor: Character) => actor === char,
-	ALLY:  (char: Character, actor: Character) => actor.player === char.player,
-	ENEMY: (char: Character, actor: Character) => actor.player !== char.player,
-	NONE:  () => false,
-	ANY:   () => true
+	SELF: (char, actor) => actor === char,
+	ALLY: (char, actor) => actor.player === char.player,
+	ENEMY: (char, actor) => actor.player !== char.player,
+	NONE: () => false,
+	ANY: () => true
 };
 
 // SkillArea based area tile getters
 const areaTable: IAreaTable = {
-	SINGLE: (source: Tile, target: Tile) => [target],
-	LINE: (source: Tile, target: Tile, range: SkillRange) => {
+	SINGLE: (source, target) => [target],
+	LINE: (source, target, range, piercing) => {
 		const diffX = target.x - source.x;
 		const diffY = target.y - source.y;
 		const diffZ = target.z - source.z;
@@ -49,12 +49,16 @@ const areaTable: IAreaTable = {
 
 			if (tile) {
 				area.push(tile);
+
+				if (!piercing && tile === target) {
+					break;
+				}
 			}
 		}
 		return area;
 	},
-	NEIGHBOURS: (source: Tile) => source.getNeighbours(),
-	AOE3x3:     (source: Tile, target: Tile) => [target, ...target.getNeighbours()]
+	NEIGHBOURS: source => source.getNeighbours(),
+	AOE3x3: (source, target) => [target, ...target.getNeighbours()]
 };
 
 // targetable circle area
@@ -117,8 +121,9 @@ class Skill {
 		readonly weapon: WeaponID;
 	};
 
-	private isAttackSkill: boolean;
-	private hitScan: boolean;
+	private readonly isAttackSkill: boolean;
+	private readonly hitScan: boolean;
+	private readonly piercing: boolean;
 
 	constructor(id: SkillID) {
 		const data = Skills.get(id);
@@ -130,6 +135,7 @@ class Skill {
 		this.range = data.range;
 		this.area = data.area;
 		this.target = data.target || 'NONE';
+		this.piercing = data.piercing || false;
 
 		this.status = data.status || [];
 		this.cooldown = data.cooldown || 0;
@@ -219,7 +225,7 @@ class Skill {
 	}
 
 	public getEffectArea(source: Tile, target: Tile): Tile[] {
-		return areaTable[this.area](source, target, this.range);
+		return areaTable[this.area](source, target, this.range, this.piercing);
 	}
 }
 
