@@ -1,7 +1,7 @@
 import Logger from 'modules/logger';
 import { CharacterRoleID } from 'modules/ai/role';
 import { IAction } from 'modules/ai/actions/decide/actions';
-import { sortActions } from 'modules/ai/actions/decide/sort';
+import { sortActions, getCharacterHPRatio } from 'modules/ai/actions/decide/sort';
 import { IActionCategories } from 'modules/ai/actions/decide/categories';
 
 // get action according to actor role
@@ -52,12 +52,20 @@ export const getRoleAction = (categories: IActionCategories, roles: CharacterRol
 				}
 				let act: IAction[] = [...rangedActions];
 
-				act = sortActions(act, [
-					'HP_REMAINING', 'MOST_DAMAGE', 'SAFE_DISTANCE'
-				], true);
+				const killAttempts = act.filter(a => {
+					const hpRemaining = getCharacterHPRatio(a.target.character, a.damage);
+					return 0 === hpRemaining;
+				});
+
+				if (killAttempts.length) {
+					act = sortActions(killAttempts, ['SAFE_DISTANCE']);
+					Logger.info('AI DECIDE: RANGER kill attempt');
+				} else {
+					act = sortActions(act, ['SAFE_DISTANCE', 'MOST_DAMAGE'], true);
+					Logger.info('AI DECIDE: RANGER attack');
+				}
 
 				// optimal ranged damage action
-				Logger.info('AI DECIDE: RANGER attack');
 				return act[0];
 			}
 
@@ -68,12 +76,20 @@ export const getRoleAction = (categories: IActionCategories, roles: CharacterRol
 				}
 				let act: IAction[] = [...magicalActions];
 
-				act = sortActions(act, [
-					'HP_REMAINING', 'MOST_DAMAGE', 'SAFE_DISTANCE'
-				], true);
+				const killAttempts = act.filter(a => {
+					const hpRemaining = getCharacterHPRatio(a.target.character, a.damage);
+					return 0 === hpRemaining;
+				});
+
+				if (killAttempts.length) {
+					act = sortActions(killAttempts, ['SAFE_DISTANCE']);
+					Logger.info('AI DECIDE: MAGE kill attempt');
+				} else {
+					act = sortActions(act, ['SAFE_DISTANCE', 'MOST_DAMAGE'], true);
+					Logger.info('AI DECIDE: MAGE attack');
+				}
 
 				// optimal magical damage action
-				Logger.info('AI DECIDE: MAGE attack');
 				return act[0];
 			}
 
