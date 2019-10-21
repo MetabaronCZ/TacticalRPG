@@ -11,7 +11,7 @@ interface IProps {
 export const availableSkillIcos: SkillID[] = ['ENERGY_SHIELD', 'EVADE'];
 
 const SkillIco: React.SFC<IProps> = ({ skill, minimal }) => {
-	if (minimal && -1 !== availableSkillIcos.indexOf(skill)) {
+	if (minimal && !availableSkillIcos.includes(skill)) {
 		return <React.Fragment />;
 	}
 	return (

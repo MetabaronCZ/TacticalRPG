@@ -11,9 +11,9 @@ interface IProps {
 }
 
 const CharactertInfo: React.SFC<IProps> = ({ character: char }) => {
-	const { HP: baseHP, AP: baseAP, MP: baseMP } = char.baseAttributes;
 	const { HP, AP, MP } = char.attributes;
-	const st = char.status.filter(eff => -1 === reactiveEffects.indexOf(eff.id));
+	const { HP: baseHP, AP: baseAP, MP: baseMP } = char.baseAttributes;
+	const st = char.status.filter(eff => !reactiveEffects.includes(eff.id));
 
 	return (
 		<React.Fragment>

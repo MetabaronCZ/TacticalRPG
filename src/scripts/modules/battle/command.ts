@@ -160,7 +160,7 @@ class Command {
 
 			if ('ENEMY' === skill.target) {
 				// exclude ally character positions
-				return tiles.filter(tile => -1 === allyTiles.indexOf(tile));
+				return tiles.filter(tile => !allyTiles.includes(tile));
 			}
 			return tiles;
 		});

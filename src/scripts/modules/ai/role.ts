@@ -24,7 +24,7 @@ class CharacterRole {
 	}
 
 	public has(role: CharacterRoleID): boolean {
-		return -1 !== this.roles.indexOf(role);
+		return this.roles.includes(role);
 	}
 
 	public get(): CharacterRoleID[] {

@@ -50,7 +50,7 @@ export class PlayerData implements IPlayerData {
 	public isValidParty(partyID: string, parties: IPartyData[]): boolean {
 		return (
 			(randomPartyID === partyID) ||
-			(-1 !== parties.map(p => p.id).indexOf(partyID))
+			parties.map(p => p.id).includes(partyID)
 		);
 	}
 

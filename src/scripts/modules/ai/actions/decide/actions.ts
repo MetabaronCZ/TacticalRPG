@@ -82,7 +82,7 @@ export const getActions = (data: IAIData): IAction[] => {
 			const distance = path.length;
 			distances[ch.id] = distance;
 
-			if (-1 !== liveChars.indexOf(ch)) {
+			if (liveChars.includes(ch)) {
 				// mark closest ally / enemy
 				if (actor.player.id !== ch.player.id) {
 					if (distance < closestEnemy) {

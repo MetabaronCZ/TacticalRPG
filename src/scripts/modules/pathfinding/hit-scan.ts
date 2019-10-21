@@ -15,7 +15,7 @@ export const getVisible = (tiles: Tile[], source: Tile, obstacles: Tile[]): Tile
 			return [];
 		}
 
-		if (-1 === visible.indexOf(o)) {
+		if (!visible.includes(o)) {
 			continue;
 		}
 

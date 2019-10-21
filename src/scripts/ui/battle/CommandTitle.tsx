@@ -36,7 +36,7 @@ const CommandTitle: React.SFC<IProps> = ({ command }) => {
 
 	const skills = command.skills
 		.map(skill => skill.id)
-		.filter(skill => -1 !== availableSkillIcos.indexOf(skill));
+		.filter(skill => availableSkillIcos.includes(skill));
 
 	return (
 		<React.Fragment>

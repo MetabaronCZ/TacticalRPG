@@ -11,7 +11,7 @@ interface IProps {
 const availableStatusIcos: StatusEffectID[] = ['BURN', 'BLEED', 'DYING', 'REGEN'];
 
 const StatusIco: React.SFC<IProps> = ({ status, minimal }) => {
-	if (minimal && -1 === availableStatusIcos.indexOf(status)) {
+	if (minimal && !availableStatusIcos.includes(status)) {
 		return <React.Fragment />;
 	}
 	return (

@@ -21,8 +21,8 @@ class Tile {
 		this.terrain = terrain;
 	}
 
-	public isContained = (arr: Tile[] = []): boolean => {
-		return -1 !== arr.indexOf(this);
+	public isContained = (arr: Tile[]): boolean => {
+		return arr.includes(this);
 	}
 
 	public isOnStraightLine(pos: Tile): boolean {

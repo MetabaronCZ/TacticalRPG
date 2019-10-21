@@ -73,7 +73,7 @@ const getCircleArea = (center: Tile, radius: number): Tile[] => {
 		const unique = getUniqueItems(neighbours);
 
 		for (const tile of unique) {
-			if (-1 === circle.indexOf(tile)) {
+			if (!circle.includes(tile)) {
 				circle.push(tile);
 			}
 		}
@@ -151,7 +151,7 @@ class Skill {
 		this.healing = (data.healing ? { ...data.healing } : undefined);
 		this.block = (data.block ? { ...data.block } : undefined);
 
-		this.isAttackSkill = (-1 !== attackSkills.indexOf(this.id));
+		this.isAttackSkill = attackSkills.includes(this.id);
 
 		this.hitScan = (
 			this.range > 1 && !!this.physical && !['NONE', 'BOW'].includes(this.physical.weapon)
@@ -175,7 +175,7 @@ class Skill {
 	}
 
 	public isReactable(): boolean {
-		return -1 !== reactableSkillTargets.indexOf(this.target);
+		return reactableSkillTargets.includes(this.target);
 	}
 
 	public getTargetable(source: Tile, hitScanObstacles: Tile[]): Tile[] {

@@ -265,7 +265,7 @@ export class CharacterData extends IndexableData {
 					checkWeaponWield(weapon, 'OFF') &&
 					!isBothWielding(data) &&
 					!isDualWielding(data) &&
-					('MM' !== this.data.archetype.id || -1 !== safeOffHand.indexOf(weapon))
+					('MM' !== this.data.archetype.id || safeOffHand.includes(weapon))
 				);
 			}
 

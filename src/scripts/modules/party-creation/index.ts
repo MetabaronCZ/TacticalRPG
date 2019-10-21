@@ -65,7 +65,7 @@ class PartyCreation {
 
 		// filter unselected characters (keep character itself)
 		return characters.filter(({ id }) => {
-			return charID === id || -1 === selected.indexOf(id);
+			return charID === id || !selected.includes(id);
 		});
 	}
 }
