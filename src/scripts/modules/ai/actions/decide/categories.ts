@@ -1,6 +1,7 @@
 import Weapons from 'data/weapons';
 
 import { IAction } from 'modules/ai/actions/decide/actions';
+import { meleeWeapons } from 'modules/equipment/weapon-data';
 import { getCharacterHPRatio } from 'modules/ai/actions/decide/sort';
 
 // maximum percent of target life remaining for healer to care
@@ -62,7 +63,7 @@ export const getActionCategories = (actions: IAction[]): IActionCategories => {
 
 			const hasRangedSkill = weaponTypes.includes('RANGED');
 			const hasMagicalSkill = !!skills.find(skill => !!skill.magical);
-			const hasMeleeSkill = !!weaponTypes.find(type => null !== type && 'NONE' !== type && 'RANGED' !== type);
+			const hasMeleeSkill = !!weaponTypes.find(type => !!type && meleeWeapons.includes(type));
 			let categorized = false;
 	
 			if (hasRangedSkill) {

@@ -13,6 +13,8 @@ export type WeaponID =
 export type WeaponTypeID =
 	'NONE' | 'DUAL' | 'ONE_HANDED' | 'TWO_HANDED' | 'MAGICAL' | 'RANGED' | 'SHIELD';
 
+export const meleeWeapons: WeaponTypeID[] = ['DUAL', 'ONE_HANDED', 'TWO_HANDED'];
+
 export interface IWeaponData {
 	readonly id: WeaponID;
 	readonly title: string;

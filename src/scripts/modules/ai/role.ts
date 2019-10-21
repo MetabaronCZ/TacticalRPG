@@ -1,7 +1,5 @@
 import Character from 'modules/character';
-import { WeaponTypeID } from 'modules/equipment/weapon-data';
-
-const nonMeleeWpns: WeaponTypeID[] = ['NONE', 'MAGICAL', 'RANGED','SHIELD'];
+import { meleeWeapons } from 'modules/equipment/weapon-data';
 
 export type CharacterRoleID = 'MELEE' | 'RANGER' | 'MAGE' | 'HEALER';
 
@@ -27,13 +25,13 @@ class CharacterRole {
 	private getRoles = (char: Character): CharacterRoleID[] => {
 		const { archetype, mainHand: main, offHand: off } = char;
 
-		const hasHealing = ('HOLY' === char.skillset.element);
+		const hasHealing = !!char.skillset.skills.find(skill => !!skill.healing);
 		const hasRangedWpn = ('RANGED' === main.type || 'RANGED' === off.type);
 		const hasMagicalWpn = ('MAGICAL' === main.type || 'MAGICAL' === off.type);
 
 		const hasMeleeWpn = (
-			-1 === nonMeleeWpns.indexOf(main.type) ||
-			-1 === nonMeleeWpns.indexOf(off.type)
+			meleeWeapons.includes(main.type) ||
+			meleeWeapons.includes(off.type)
 		);
 		const roles: CharacterRoleID[] = [];
 
