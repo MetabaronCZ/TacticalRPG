@@ -59,6 +59,7 @@ class AIPlayer extends Player {
 		aiChar.update({
 			act,
 			characters,
+			ally: this.ally.map(char => char.serialize()),
 			enemy: characters.filter(char => char.player.id !== this.id)
 		});
 	}

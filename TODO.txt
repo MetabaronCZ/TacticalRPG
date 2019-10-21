@@ -7,9 +7,6 @@ TODO
 	- u debuffu posilat jen "status" a ne "weapon"
 	- pouzit v CharacterInfo UI misto soucasnych textu s dobou trvani
 
---	AI: pridat logiku rozhodovani podle CharacterCondition
-	- MELEE pri DANGER utocit ze safeArea pozice, apod.
-
 --	AI: pridat logiku pro vyhodnoceni pouziti CC Commandu
 	- viz "effectActions" v btDecide
 

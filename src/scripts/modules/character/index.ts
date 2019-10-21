@@ -29,7 +29,7 @@ import StatusEffect, { StatusEffectID, IOnStatus } from 'modules/battle/status-e
 // DOUBLE_ATTACK skill for cooledown data extraction
 const doubleAttack = new Skill('DOUBLE_ATTACK');
 
-type CharacterCondition = 'OK' | 'DANGER' | 'CRITICAL';
+export type CharacterCondition = 'OK' | 'DANGER' | 'CRITICAL';
 
 export type ISkillCooldowns = Partial<{
 	[id in SkillID]: SkillCooldown;

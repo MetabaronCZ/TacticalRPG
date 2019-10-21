@@ -1,17 +1,17 @@
 import Logger from 'modules/logger';
-import { CharacterRoleID } from 'modules/ai/role';
+import CharacterRole from 'modules/ai/role';
 import { IAction } from 'modules/ai/actions/decide/actions';
-import { sortActions, getCharacterHPRatio } from 'modules/ai/actions/decide/sort';
 import { IActionCategories } from 'modules/ai/actions/decide/categories';
+import { sortActions, getCharacterHPRatio } from 'modules/ai/actions/decide/sort';
 
 // get action according to actor role
-export const getRoleAction = (categories: IActionCategories, roles: CharacterRoleID[]): IAction | null => {
+export const getRoleAction = (categories: IActionCategories, role: CharacterRole): IAction | null => {
 	const healingActions = categories.healing;
 	const magicalActions = categories.magical;
 	const rangedActions = categories.ranged;
 	const meleeActions = categories.melee;
 
-	for (const r of roles) {
+	for (const r of role.get()) {
 		switch (r) {
 			case 'HEALER': {
 				if (!healingActions.length) {
@@ -25,7 +25,7 @@ export const getRoleAction = (categories: IActionCategories, roles: CharacterRol
 				]);
 
 				// optimal healing action
-				Logger.info('AI DECIDE: HEALER healing');
+				Logger.info('AI DECIDE: HEALER - healing');
 				return act[0];
 			}
 
@@ -36,12 +36,14 @@ export const getRoleAction = (categories: IActionCategories, roles: CharacterRol
 				}
 				let act: IAction[] = [...meleeActions];
 
-				act = sortActions(act, [
-					'HP_REMAINING', 'MOST_DAMAGE', 'SHORTEST_TRAVEL'
-				], true);
+				act = sortActions(
+					act,
+					['HP_REMAINING', 'MOST_DAMAGE', 'SHORTEST_TRAVEL'],
+					[true]
+				);
 
 				// optimal melee damage action
-				Logger.info('AI DECIDE: MELEE attack');
+				Logger.info('AI DECIDE: MELEE - attack');
 				return act[0];
 			}
 
@@ -59,10 +61,10 @@ export const getRoleAction = (categories: IActionCategories, roles: CharacterRol
 
 				if (killAttempts.length) {
 					act = sortActions(killAttempts, ['SAFE_DISTANCE']);
-					Logger.info('AI DECIDE: RANGER kill attempt');
+					Logger.info('AI DECIDE: RANGER - kill attempt');
 				} else {
-					act = sortActions(act, ['SAFE_DISTANCE', 'MOST_DAMAGE'], true);
-					Logger.info('AI DECIDE: RANGER attack');
+					act = sortActions(act, ['SAFE_DISTANCE', 'MOST_DAMAGE']);
+					Logger.info('AI DECIDE: RANGER - attack');
 				}
 
 				// optimal ranged damage action
@@ -83,10 +85,10 @@ export const getRoleAction = (categories: IActionCategories, roles: CharacterRol
 
 				if (killAttempts.length) {
 					act = sortActions(killAttempts, ['SAFE_DISTANCE']);
-					Logger.info('AI DECIDE: MAGE kill attempt');
+					Logger.info('AI DECIDE: MAGE - kill attempt');
 				} else {
-					act = sortActions(act, ['SAFE_DISTANCE', 'MOST_DAMAGE'], true);
-					Logger.info('AI DECIDE: MAGE attack');
+					act = sortActions(act, ['SAFE_DISTANCE', 'MOST_DAMAGE']);
+					Logger.info('AI DECIDE: MAGE - attack');
 				}
 
 				// optimal magical damage action
@@ -97,5 +99,7 @@ export const getRoleAction = (categories: IActionCategories, roles: CharacterRol
 				throw new Error('Invalid character role: ' + r);
 		}
 	}
+
+	Logger.info('AI DECIDE: ROLE - no specific action found');
 	return null;
 };

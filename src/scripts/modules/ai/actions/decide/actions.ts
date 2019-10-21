@@ -33,6 +33,7 @@ interface IActionBase<T> {
 	readonly damage: number;
 	readonly healing: number;
 	readonly status: StatusEffect[];
+	readonly distances: IDistances;
 	readonly closestAlly: number;
 	readonly closestEnemy: number;
 }
@@ -153,6 +154,7 @@ export const getActions = (data: IAIData): IAction[] => {
 					damage,
 					healing,
 					status,
+					distances,
 					closestAlly,
 					closestEnemy,
 					cost: newCost

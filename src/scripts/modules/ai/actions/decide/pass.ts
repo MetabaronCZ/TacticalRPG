@@ -35,7 +35,7 @@ export const getPassAction = (actor: ICharacterSnapshot, primaryRole: CharacterR
 			results = sortActions(results, ['SHORTEST_TRAVEL', 'SAFE_DISTANCE']);
 			result = results[0];
 
-			Logger.info('AI DECIDE - HEALER go to closest injured');
+			Logger.info('AI DECIDE: HEALER - go to closest injured');
 
 		} else {
 			// keep out of harm
@@ -49,7 +49,7 @@ export const getPassAction = (actor: ICharacterSnapshot, primaryRole: CharacterR
 				results = sortActions(results, ['SAFE_DISTANCE']);
 				result = results[0];
 
-				Logger.info('AI DECIDE - HEALER stay in emergency distance');
+				Logger.info('AI DECIDE: HEALER - stay in emergency distance');
 
 			} else {
 				// go closer to allies
@@ -58,7 +58,7 @@ export const getPassAction = (actor: ICharacterSnapshot, primaryRole: CharacterR
 				results = sortActions(results, ['ALLY_DISTANCE', 'SAFE_DISTANCE']);
 				result = results[0];
 
-				Logger.info('AI DECIDE - HEALER keep close to allies');
+				Logger.info('AI DECIDE: HEALER - keep close to allies');
 			}
 		}
 
@@ -69,7 +69,7 @@ export const getPassAction = (actor: ICharacterSnapshot, primaryRole: CharacterR
 		results = sortActions(results, ['SHORTEST_TRAVEL']);
 		result = results[0];
 
-		Logger.info('AI DECIDE - DAMAGE DEALER go to closest enemy');
+		Logger.info('AI DECIDE: DAMAGE DEALER - go to closest enemy');
 	}
 
 	return result || null;

@@ -3,6 +3,11 @@ import { meleeWeapons } from 'modules/equipment/weapon-data';
 
 export type CharacterRoleID = 'MELEE' | 'RANGER' | 'MAGE' | 'HEALER';
 
+export interface ICharacterRoleSnapshot {
+	readonly primary: CharacterRoleID;
+	readonly roles: CharacterRoleID[];
+}
+
 class CharacterRole {
 	private readonly roles: CharacterRoleID[];
 
@@ -14,12 +19,23 @@ class CharacterRole {
 		return this.roles.length;
 	}
 
+	public get primary(): CharacterRoleID {
+		return this.roles[0];
+	}
+
 	public has(role: CharacterRoleID): boolean {
 		return -1 !== this.roles.indexOf(role);
 	}
 
 	public get(): CharacterRoleID[] {
 		return [...this.roles];
+	}
+
+	public serialize(): ICharacterRoleSnapshot {
+		return {
+			primary: this.primary,
+			roles: [...this.roles]
+		};
 	}
 
 	private getRoles = (char: Character): CharacterRoleID[] => {

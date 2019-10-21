@@ -14,6 +14,7 @@ export interface IActionCategories {
 	readonly magical: IAction[];
 	readonly effect: IAction[];
 	readonly pass: IAction[];
+	readonly all: IAction[];
 }
 
 export const getActionCategories = (actions: IAction[]): IActionCategories => {
@@ -23,11 +24,14 @@ export const getActionCategories = (actions: IAction[]): IActionCategories => {
 		ranged: [],
 		magical: [],
 		effect: [],
-		pass: []
+		pass: [],
+		all: []
 	};
 	
 	for (const action of actions) {
 		const { skills } = action.command;
+
+		categories.all.push(action);
 	
 		// handle PASS actions
 		if ('PASS' === action.command.type) {

@@ -1,12 +1,14 @@
 import Logger from 'modules/logger';
 
-import CharacterRole from 'modules/ai/role';
 import BT from 'modules/ai/behavioral-tree';
+import CharacterRole from 'modules/ai/role';
 import { IAIData } from 'modules/ai/character';
 import BTAction from 'modules/ai/behavioral-tree/action';
-import { getActions } from 'modules/ai/actions/decide/actions';
+
 import { getRoleAction } from 'modules/ai/actions/decide/role';
 import { getPassAction } from 'modules/ai/actions/decide/pass';
+import { getCriticalAction } from 'modules/ai/actions/decide/critical';
+import { getActions, IAction } from 'modules/ai/actions/decide/actions';
 import { getActionCategories } from 'modules/ai/actions/decide/categories';
 
 const btDecide = (role: CharacterRole): BTAction<IAIData> => {
@@ -14,7 +16,8 @@ const btDecide = (role: CharacterRole): BTAction<IAIData> => {
 		if (data.memory.decision) {
 			return 'SUCCESS';
 		}
-		const { act, characters } = data;
+		const { act, ally, characters } = data;
+		const { actor } = act;
 
 		// gather all possible actions
 		const actions = getActions(data);
@@ -26,11 +29,18 @@ const btDecide = (role: CharacterRole): BTAction<IAIData> => {
 		if (!passActions.length) {
 			throw new Error('Invalid AI commands: no pass action found');
 		}
-		const roles = role.get();
-		let action = getRoleAction(categories, roles);
+		let action: IAction | null = null;
+
+		if ('CRITICAL' === actor.condition) {
+			action = getCriticalAction(actor, ally, characters, categories, role);
+		}
 
 		if (!action) {
-			action = getPassAction(act.actor, roles[0], passActions);
+			action = getRoleAction(categories, role);
+		}
+
+		if (!action) {
+			action = getPassAction(act.actor, role.primary, passActions);
 		}
 
 		if (!action) {

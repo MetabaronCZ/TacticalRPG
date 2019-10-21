@@ -5,13 +5,13 @@ import Engine from 'modules/battle/engine';
 import Command from 'modules/battle/command';
 import { IActSnapshot, ActPhaseID } from 'modules/battle/act';
 import Character, { ICharacterSnapshot } from 'modules/character';
+import CharacterRole, { ICharacterRoleSnapshot } from 'modules/ai/role';
 
 import { MovePhaseID } from 'modules/battle/act/move-phase';
 import { CommandPhaseID } from 'modules/battle/act/command-phase';
 import { DirectionPhaseID } from 'modules/battle/act/direct-phase';
 import { ReactionPhaseID, ActiveReactionPhaseID } from 'modules/battle/act/reaction-phase';
 
-import CharacterRole from 'modules/ai/role';
 import BTree from 'modules/ai/behavioral-tree/tree';
 import BT, { BTData } from 'modules/ai/behavioral-tree';
 import BTPhaseSelector from 'modules/ai/phase-selector';
@@ -39,6 +39,11 @@ export interface IAIDecision {
 	readonly move: Tile;
 }
 
+export interface IAICharacterSnapshot {
+	readonly id: string;
+	readonly role: ICharacterRoleSnapshot;
+}
+
 interface IAICharacterMemory {
 	decision: IAIDecision | null;
 	hasMoved: boolean;
@@ -49,6 +54,7 @@ interface IAICharacterMemory {
 
 interface IAICharacterUpdateData {
 	readonly act: IActSnapshot;
+	readonly ally: IAICharacterSnapshot[];
 	readonly enemy: ICharacterSnapshot[];
 	readonly characters: ICharacterSnapshot[];
 }
@@ -105,6 +111,13 @@ class AICharacter {
 
 		// update behavioral tree
 		this.bt.run(updateData);
+	}
+
+	public serialize(): IAICharacterSnapshot {
+		return {
+			id: this.character.id,
+			role: this.role.serialize()
+		};
 	}
 
 	private constructBT(role: CharacterRole): BTree<IAIData> {

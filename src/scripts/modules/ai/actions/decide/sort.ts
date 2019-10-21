@@ -7,11 +7,13 @@ export const getCharacterHPRatio = (char: ICharacterSnapshot, damage = 0): numbe
 	return (hp > damage ? hp - damage : 0) / hpMax;
 };
 
-type SortType = 'SHORTEST_TRAVEL' | 'SAFE_DISTANCE' | 'ALLY_DISTANCE' | 'MOST_HEALING' | 'MOST_DAMAGE' | 'HP_REMAINING';
+type SortType =
+	'SHORTEST_TRAVEL' | 'SAFE_DISTANCE' | 'ALLY_DISTANCE' | 'CLOSEST_TO' |
+	'MOST_HEALING' | 'MOST_DAMAGE' | 'HP_REMAINING';
 type SortResult = -1 | 0 | 1;
 
 type SortTable = {
-	[type in SortType]: (a: IAction, b: IAction, withDamage?: boolean) => SortResult;
+	[type in SortType]: (a: IAction, b: IAction, param: any) => SortResult;
 };
 
 const sortTable: SortTable = {
@@ -30,6 +32,14 @@ const sortTable: SortTable = {
 		if (a.closestAlly > b.closestAlly) return +1;
 		return 0;
 	},
+	CLOSEST_TO: (a, b, param) => {
+		const targetID = param + '';
+		const distA = a.distances[targetID] || 0;
+		const distB = b.distances[targetID] || 0;
+		if (distA < distB) return -1;
+		if (distA > distB) return +1;
+		return 0;
+	},
 	MOST_HEALING: (a, b) => {
 		if (b.healing < a.healing) return -1;
 		if (b.healing > a.healing) return +1;
@@ -40,7 +50,8 @@ const sortTable: SortTable = {
 		if (b.damage > a.damage) return +1;
 		return 0;
 	},
-	HP_REMAINING: (a, b, withDamage) => {
+	HP_REMAINING: (a, b, param) => {
+		const withDamage = !!param;
 		const charA = a.target.character;
 		const charB = b.target.character;
 		const remainingA = getCharacterHPRatio(charA, withDamage ? a.damage : 0);
@@ -51,13 +62,14 @@ const sortTable: SortTable = {
 	}
 };
 
-export const sortActions = (actions: IAction[], sort: SortType[], withDamage?: boolean): IAction[] => {
+export const sortActions = (actions: IAction[], sort: SortType[], params: any[] = []): IAction[] => {
 	if (!sort.length || !actions.length) {
 		return actions;
 	}
 	return actions.sort((a, b) => {
-		for (const s of sort) {
-			const sorted = sortTable[s](a, b, withDamage);
+		for (let s = 0, smax = sort.length; s < smax; s++) {
+			const sortType = sort[s];
+			const sorted = sortTable[sortType](a, b, params[s]);
 
 			if (0 !== sorted) {
 				return sorted;
