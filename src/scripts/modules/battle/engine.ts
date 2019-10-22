@@ -220,7 +220,7 @@ class Engine {
 
 		const pl = playerData.map((plData, p) => {
 			const player = plData.serialize();
-			const { name, party, control, aiSettings } = player;
+			const { name, party, control } = player;
 			const charData: ICharacterData[] = [];
 
 			// get character data
@@ -269,7 +269,7 @@ class Engine {
 			});
 
 			if ('AI' === control) {
-				return new AIPlayer(player, setup, aiSettings, this);
+				return new AIPlayer(player, setup, this);
 			} else {
 				return new Player(player, setup);
 			}

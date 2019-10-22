@@ -33,11 +33,7 @@ export class BattleConfig {
 			const conf: IPlayerConfig = {
 				name: `Player ${i + 1}`,
 				control: 'USER',
-				party: randomPartyID,
-				aiSettings: {
-					preset: 'RANK_1',
-					config: {}
-				}
+				party: randomPartyID
 			};
 			return new PlayerData(i, conf);
 		});

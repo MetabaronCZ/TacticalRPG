@@ -4,7 +4,6 @@ import { observer } from 'mobx-react';
 import PlayerControl from 'data/player-control';
 import { playerMaxNameLength, randomPartyID } from 'data/game-config';
 
-import { IAISettings } from 'modules/ai/settings';
 import { IPartyData } from 'modules/party-creation/party-data';
 import BattleConfiguration from 'modules/battle-configuration';
 import { BattleConfig } from 'modules/battle-configuration/battle-config';
@@ -19,7 +18,6 @@ import FormField from 'ui/common/FormField';
 import FormInput from 'ui/common/FormInput';
 import FormSelect from 'ui/common/FormSelect';
 import FormSelectItem from 'ui/common/FormSelectItem';
-import AISettingsUI from 'ui/battle-config/AISettings';
 import CharacterList from 'ui/character-creation/CharacterList';
 
 interface IBattleConfigUIProps {
@@ -84,10 +82,6 @@ class BattleConfigUI extends React.Component<IBattleConfigUIProps> {
 								</FormSelect>
 							</FormField>
 
-							{'AI' === player.control && (
-								<AISettingsUI settings={player.aiSettings} onChange={this.onAIChange(pid)} />
-							)}
-
 							<FormField fieldId={fieldParty} label="Party">
 								<FormSelect
 									id={fieldParty}
@@ -123,10 +117,6 @@ class BattleConfigUI extends React.Component<IBattleConfigUIProps> {
 
 	private onChange = (player: number, name: IPlayerDataEditable) => (e: SyntheticEvent<HTMLInputElement | HTMLSelectElement>) => {
 		this.form.onPlayerChange(name, player, e.currentTarget.value);
-	}
-
-	private onAIChange = (player: number) => (ai: IAISettings) => {
-		this.form.onPlayerAIChange(player, ai);
 	}
 
 	private onSubmit = (e: SyntheticEvent<HTMLFormElement>): void => {

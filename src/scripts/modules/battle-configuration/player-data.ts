@@ -3,7 +3,6 @@ import { observable, computed, action } from 'mobx';
 import { IValidation } from 'core/validation';
 import { playerMaxNameLength, randomPartyID, textInputRegex } from 'data/game-config';
 
-import { IAISettings } from 'modules/ai/settings';
 import { IPartyData } from 'modules/party-creation/party-data';
 
 export type PlayerControlID = 'USER' | 'AI';
@@ -16,7 +15,6 @@ export interface IPlayerConfig {
 	name: string;
 	party: string;
 	control: PlayerControlID;
-	aiSettings: IAISettings;
 }
 
 interface IPlayerIndexable {
@@ -31,11 +29,7 @@ export class PlayerData implements IPlayerData {
 	@observable private data: IPlayerConfig = {
 		name: 'Player',
 		control: 'USER',
-		party: randomPartyID,
-		aiSettings: {
-			preset: 'RANK_1',
-			config: {}
-		}
+		party: randomPartyID
 	};
 
 	constructor(id: number, data: Partial<IPlayerData>) {
@@ -44,7 +38,6 @@ export class PlayerData implements IPlayerData {
 		this.setName(conf.name);
 		this.setParty(conf.party);
 		this.setControl(conf.control);
-		this.setAISettings(conf.aiSettings);
 	}
 
 	public isValidParty(partyID: string, parties: IPartyData[]): boolean {
@@ -69,10 +62,6 @@ export class PlayerData implements IPlayerData {
 		return this.data.party;
 	}
 
-	@computed get aiSettings(): IAISettings {
-		return this.data.aiSettings;
-	}
-
 	@action
 	public setName(name: string): void {
 		this.data.name = name;
@@ -86,11 +75,6 @@ export class PlayerData implements IPlayerData {
 	@action
 	public setParty(partyID: string): void {
 		this.data.party = partyID;
-	}
-
-	@action
-	public setAISettings(settings: IAISettings): void {
-		this.data.aiSettings = settings;
 	}
 
 	public validate(): IValidation<IPlayerDataEditable> {
@@ -110,7 +94,7 @@ export class PlayerData implements IPlayerData {
 	}
 
 	public serialize(): IPlayerData {
-		const { id, name, party, control, aiSettings } = this;
-		return { id, name, party, control, aiSettings };
+		const { id, name, party, control } = this;
+		return { id, name, party, control };
 	}
 }

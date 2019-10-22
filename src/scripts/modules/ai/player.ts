@@ -1,5 +1,3 @@
-import AIPresets from 'data/ai-presets';
-
 import Logger from 'modules/logger';
 import Engine from 'modules/battle/engine';
 import Player, { IPlayerCharacterSetup } from 'modules/battle/player';
@@ -7,25 +5,15 @@ import { IPlayerData } from 'modules/battle-configuration/player-data';
 
 import CharacterRole from 'modules/ai/role';
 import AICharacter from 'modules/ai/character';
-import { IAIConfig, IAISettings } from 'modules/ai/settings';
 import { IActSnapshot } from 'modules/battle/act';
 
 class AIPlayer extends Player {
-	public readonly config: IAIConfig;
 	private readonly ally: AICharacter[];
 	private readonly engine: Engine;
 
-	constructor(player: IPlayerData, characters: IPlayerCharacterSetup[], ai: IAISettings, engine: Engine) {
+	constructor(player: IPlayerData, characters: IPlayerCharacterSetup[], engine: Engine) {
 		super(player, characters);
-
-		this.config = ai.config;
 		this.engine = engine;
-
-		const { preset } = ai;
-
-		if ('CUSTOM' !== preset) {
-			this.config = AIPresets.get(preset).config;
-		}
 
 		this.ally = this.characters.map(char => {
 			const role = new CharacterRole(char);
