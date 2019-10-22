@@ -2,38 +2,25 @@ TODO
 ---------------------------------------------------------------------------------------
 --	refaktorovat btDecide do BTTree v BTPhaseSelectoru
 
+--	AI: pridat logiku pro vyhodnoceni pouziti CC Commandu
+	- viz "effectActions" v btDecide
+
 --	udelat ikony pro vsechny StatusEffecty
 	- posilat je jako status v combat phase
 	- u debuffu posilat jen "status" a ne "weapon"
 	- pouzit v CharacterInfo UI misto soucasnych textu s dobou trvani
 
---	AI: pridat logiku pro vyhodnoceni pouziti CC Commandu
-	- viz "effectActions" v btDecide
-
---  AIPlayer: mel by rozhodovat, ktera postava bude na koho utocit (pripadne healovat)
-	- mel by davat obecny rozkaz - specifika si rozhodne postava sama podle soucasne logiky
-	- vysledkem rozkazu by melo byt prioritizovani MOVE, TARGET nebo COMMAND v IAIData
-	- mel by vyhodnocovat, jestli je rozkaz jeste aktualni
-	- postavy nemusi mit vzdy rozkaz
+--	implementovat Sudden death mode (aby nedoslo ke stavu, kdy zbyvaji jen S-typy, ktere evaduji vsechny utoky)
+	- nebo po case na mapu vyvolat OP NPC, ktere bude nahodne utocit na postavy obou hracu
+	- muze nastat: zustanou 2 healeri
 
 ??  Magical weapon type 
 	- damage physical + magical bonus (obe mensi nez maji standardni ATTACK skilly)
     - dynamic skilly by s nimi mely byt mnohem silnejsi
 
-??	implementovat Sudden death mode (aby nedoslo ke stavu, kdy zbyvaji jen S-typy, ktere evaduji vsechny utoky)
-	- nebo po case na mapu vyvolat OP NPC, ktere bude nahodne utocit na postavy obou hracu
-	- muze nastat: zustanou 2 healeri
-
 
 LONG TERM
 ----------------------------------------------------------------------------------------------------------
->>	AI
-	>>	Behavioral tree
-	--	urovne obtiznosti (nastaveni AI)
-	--	kooperace postav
-		- v pripade, ze jdou po sobe v Order
-		- rozhoduje AIPlayer pres rozkazy
-
 --	Chronox
 	OK	trackovat rozhodnuti
 	--	moznost vratit krok/y zpet
