@@ -8,8 +8,9 @@ type OnUpdate = () => void;
 
 class SkillAnimation {
 	public readonly type: CharacterAnimationType;
+	public readonly source: Character;
+	public readonly targets: Character[];
 
-	private readonly targets: Character[];
 	private readonly duration: number;
 	private readonly onEnd: OnEnd;
 	private readonly onUpdate: OnUpdate;
@@ -19,8 +20,9 @@ class SkillAnimation {
 	private startTime = 0;
 	private progress = 0;
 
-	constructor(type: CharacterAnimationType, targets: Character[], skill: Skill, onUpdate: OnUpdate, onEnd: OnEnd) {
+	constructor(type: CharacterAnimationType, source: Character, targets: Character[], skill: Skill, onUpdate: OnUpdate, onEnd: OnEnd) {
 		this.type = type;
+		this.source = source;
 		this.targets = targets;
 		this.duration = skill.animation.duration;
 
@@ -46,6 +48,8 @@ class SkillAnimation {
 		for (const target of this.targets) {
 			target.animation = this;
 		}
+		this.source.animation = this;
+
 		this.animate(this.startTime);
 	}
 
@@ -74,6 +78,9 @@ class SkillAnimation {
 				if (this === target.animation) {
 					target.animation = null;
 				}
+			}
+			if (this === this.source.animation) {
+				this.source.animation = null;
 			}
 			this.onEnd();
 		}

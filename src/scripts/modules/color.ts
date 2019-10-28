@@ -15,3 +15,16 @@ export const maxColorValue = 255;
 export const colorToRGB = (color: Color, alpha = 1): string => {
 	return `rgba(${color.join(', ')}, ${alpha})`;
 };
+
+// get color between given two colors
+export const getCrossColor = (colA: Color, colB: Color, ratio: number): Color => {
+	if (ratio < 0 || ratio > 1) {
+		throw new Error('Could not get cross color - invalid ratio: ' + ratio);
+	}
+	const color = [...colA] as Color;
+
+	for (let c = 0, cmax = colB.length; c < cmax; c++) {
+		color[c] = color[c] + Math.round(ratio * (colB[c] - color[c]));
+	}
+	return color;
+};

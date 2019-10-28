@@ -270,6 +270,7 @@ class ReactionPhase extends ActPhase<IReactionPhaseSnapshot, IReactionPhaseRecor
 		// reaction animation
 		const reactionAnim = new SkillAnimation(
 			'REACTION',
+			reactor,
 			[reactor],
 			skill,
 			() => this.onEvent('REACTION_ANIMATION'),

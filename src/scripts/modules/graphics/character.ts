@@ -1,6 +1,6 @@
 import { PI } from 'core/number';
 
-import { colorToRGB, Color } from 'modules/color';
+import { colorToRGB, Color, getCrossColor } from 'modules/color';
 import { dirToIndex } from 'modules/geometry/direction';
 
 import { ICharacterSnapshot } from 'modules/character';
@@ -25,7 +25,16 @@ export const renderCharacter = (char: ICharacterSnapshot, ctx: CanvasRenderingCo
 	// background
 	ctx.beginPath();
 	ctx.arc(x, y, size - 2, 0, 2 * PI);
-	ctx.fillStyle = colorToRGB(background);
+
+	let bgColor = background;
+
+	if (char.animation && char.animation.isRunning() && 'COMBAT' === char.animation.type && char.id === char.animation.source.id) {
+		// flash character doing skill animation
+		const progress = char.animation.getProgress();
+		const ratio = Math.sin(PI * progress);
+		bgColor = getCrossColor(background, [255, 255, 255], ratio);
+	}
+	ctx.fillStyle = colorToRGB(bgColor);
 	ctx.fill();
 
 	// glow

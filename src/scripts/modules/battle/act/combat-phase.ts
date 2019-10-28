@@ -139,6 +139,7 @@ class CombatPhase extends ActPhase<ICombatPhaseSnapshot, ICombatPhaseRecord> {
 			// animate skill
 			const anim = new SkillAnimation(
 				'COMBAT',
+				actor,
 				targets,
 				skill,
 				() => this.onEvent('COMBAT_ANIMATION'),

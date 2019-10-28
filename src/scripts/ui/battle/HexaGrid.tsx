@@ -149,7 +149,7 @@ class HexaGrid extends Canvas<IProps, IState> {
 			const effectMaxSize = 1.5 * hex.height;
 
 			// character animation effect
-			if (char.animation && char.animation.isRunning()) {
+			if (char.animation && char.animation.isRunning() && char.animation.targets.find(ch => ch.id === char.id)) {
 				renderEffect(char.animation, offCtx, x, y, effectMinSize, effectMaxSize, [255, 255, 255]);
 			}
 
