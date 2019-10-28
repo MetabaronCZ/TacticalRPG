@@ -12,4 +12,6 @@ export const minColorValue = 0;
 export const maxColorValue = 255;
 
 // convert Color to canvas context RGB string
-export const colorToRGB = (color: Color): string => `rgb(${color.join(', ')})`;
+export const colorToRGB = (color: Color, alpha = 1): string => {
+	return `rgba(${color.join(', ')}, ${alpha})`;
+};

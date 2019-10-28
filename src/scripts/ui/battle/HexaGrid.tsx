@@ -14,6 +14,7 @@ import { IActSnapshot } from 'modules/battle/act';
 import { ICharacterSnapshot } from 'modules/character';
 import { IBattleInfo } from 'modules/battle/battle-info';
 
+import { renderEffect } from 'modules/graphics/effect';
 import { renderCharacter } from 'modules/graphics/character';
 import { renderTile, renderTileBoundingBox } from 'modules/graphics/tile';
 
@@ -143,6 +144,16 @@ class HexaGrid extends Canvas<IProps, IState> {
 			const style = getCharacterStyle(char, char.id === actor.id);
 			const hex = getHexDimensions(itemSize);
 
+			// animation effect size
+			const effectMinSize = hex.height;
+			const effectMaxSize = 1.5 * hex.height;
+
+			// character animation effect
+			if (char.animation && char.animation.isRunning()) {
+				renderEffect(char.animation, offCtx, x, y, effectMinSize, effectMaxSize, [255, 255, 255]);
+			}
+
+			// character sprite
 			renderCharacter(char, offCtx, x, y, (hex.height / 2) - 2, style[0], style[1]);
 		}
 

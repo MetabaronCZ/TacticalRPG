@@ -94,10 +94,12 @@ class CombatPhase extends ActPhase<ICombatPhaseSnapshot, ICombatPhaseRecord> {
 
 			// animate skill
 			const anim = new SkillAnimation(
-				actor,
+				'COMBAT',
+				targets,
 				skill,
+				() => this.onEvent('COMBAT_ANIMATION'),
 				() => {
-					// on skill action phase
+					// handle combat logic for current skill
 					const info: IBattleInfo[] = [];
 	
 					targets.forEach((target, t) => {
@@ -140,11 +142,8 @@ class CombatPhase extends ActPhase<ICombatPhaseSnapshot, ICombatPhaseRecord> {
 							Logger.info(`ActCombat: ${i.type} ${i.text} ${elm}`);
 						}
 					}
-		
-					this.onEvent('COMBAT_ANIMATION');
-				},
-				() => {
-					// on skill end / run next skill animation
+
+					// run next skill
 					run();
 				}
 			);

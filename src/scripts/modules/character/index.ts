@@ -19,15 +19,13 @@ import { IOnBattleInfo } from 'modules/battle/battle-info';
 import { IWeaponData } from 'modules/equipment/weapon-data';
 import Command, { formatCost } from 'modules/battle/command';
 import BaseAttributes from 'modules/character/base-attributes';
+import SkillAnimation from 'modules/battle/act/skill-animation';
 import Player, { IPlayerSnapshot } from 'modules/battle/player';
 import { SkillID, SkillCooldown } from 'modules/skill/skill-data';
 import { IArchetypeData, ArchetypeID } from 'modules/character/archetype';
 import { ICharacterData } from 'modules/character-creation/character-data';
 import Attributes, { AttributeID, IAttributes } from 'modules/character/attributes';
 import StatusEffect, { StatusEffectID, IOnStatus } from 'modules/battle/status-effect';
-
-// DOUBLE_ATTACK skill for cooledown data extraction
-const doubleAttack = new Skill('DOUBLE_ATTACK');
 
 export type CharacterCondition = 'OK' | 'DANGER' | 'CRITICAL';
 
@@ -53,6 +51,7 @@ export interface ICharacterSnapshot {
 	readonly status: StatusEffect[];
 	readonly cooldowns: ISkillCooldowns;
 	readonly condition: CharacterCondition;
+	readonly animation: SkillAnimation | null;
 
 	readonly mainHand: IWeaponData;
 	readonly offHand: IWeaponData;
@@ -82,6 +81,7 @@ class Character {
 	public position: Tile;
 	public direction: DirectionID;
 	public cooldowns: ISkillCooldowns = {}; // skill cooldowns
+	public animation: SkillAnimation | null = null; // active Skill animation
 
 	private dead = false;
 
@@ -149,6 +149,7 @@ class Character {
 			status: this.status.get(),
 			condition: this.getCondition(),
 			cooldowns: { ...this.cooldowns },
+			animation: this.animation,
 			player: this.player.serialize(),
 			position: this.position,
 			direction: this.direction,
@@ -335,6 +336,7 @@ class Character {
 		const cdSkills = [...skills];
 
 		if ('DOUBLE_ATTACK' === command.type) {
+			const doubleAttack = new Skill('DOUBLE_ATTACK');
 			cdSkills.push(doubleAttack);
 		}
 

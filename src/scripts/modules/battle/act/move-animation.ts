@@ -27,8 +27,8 @@ class MoveAnimation {
 	}
 
 	public start(): void {
-		if (this.done) {
-			return;
+		if (this.done || this.running) {
+			throw new Error('Move animation already started!');
 		}
 		this.running = true;
 		this.startTime = performance.now();
@@ -37,7 +37,7 @@ class MoveAnimation {
 	}
 
 	private move = (t: number): void => {
-		if (!this.running) {
+		if (this.done || !this.running) {
 			return;
 		}
 		requestAnimationFrame(this.move);
