@@ -106,7 +106,7 @@ class Engine {
 		this.act.selectCommand(commandID);
 	}
 
-	public serialize(): IEngineSnapshot {
+	private serialize(): IEngineSnapshot {
 		return {
 			running: this.running,
 			tick: this.tick,
@@ -177,7 +177,11 @@ class Engine {
 		const actID = this.actNumber;
 
 		this.act = new Act(actID, actor, characters, {
-			onUpdate: () => events.onUpdate(this.serialize()),
+			onUpdate: cb => {
+				const state = this.serialize();
+				events.onUpdate(state);
+				cb(state);
+			},
 			onBattleInfo: info => this.onInfo(info),
 			onEnd: act => {
 				// store Act record
@@ -207,9 +211,11 @@ class Engine {
 		// start Act
 		Logger.info('--------------------------------');
 		Logger.info(`ACT ${actID} (Tick ${this.tick})`);
-		events.onUpdate(this.serialize());
 
-		this.act.start();
+		const state = this.serialize();
+		events.onUpdate(state);
+
+		this.act.start(state);
 	}
 
 	private createPlayers(conf: IEngineProps): PlayerList {

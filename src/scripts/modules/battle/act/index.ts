@@ -5,6 +5,7 @@ import {
 import Logger from 'modules/logger';
 import Tile from 'modules/geometry/tile';
 import AIPlayer from 'modules/ai/player';
+import { IEngineSnapshot } from 'modules/battle/engine';
 import { IBattleInfo } from 'modules/battle/battle-info';
 import { reactiveEffects } from 'modules/battle/status-effect';
 import Character, { ICharacterSnapshot } from 'modules/character';
@@ -29,8 +30,10 @@ interface IPhases {
 export type ActPhaseEvent = 'BATTLE_INFO' | MovePhaseEvents | CommandPhaseEvents | ReactionPhaseEvents | CombatPhaseEvents | DirectPhaseEvents;
 export type IOnActPhaseEvent = (event: ActPhaseEvent, data?: Character | Command | Tile | IBattleInfo | null) => void;
 
+type IUpdateCallback = (state: IEngineSnapshot) => void;
+
 export interface IActEvents {
-	readonly onUpdate: () => void;
+	readonly onUpdate: (fn: IUpdateCallback) => void;
 	readonly onBattleInfo: (info: IBattleInfo) => void;
 	readonly onEnd: (act: Act) => void;
 }
@@ -91,7 +94,7 @@ class Act {
 		};
 	}
 
-	public start(): void {
+	public start(state: IEngineSnapshot): void {
 		const { phase, actor } = this;
 
 		if (null !== phase) {
@@ -108,7 +111,7 @@ class Act {
 			if (actor.isAI()) {
 				// inform AI Act started
 				const player = actor.player as AIPlayer;
-				player.onActStart();
+				player.onActStart(state);
 			}
 
 			// initialize move phase
@@ -270,12 +273,13 @@ class Act {
 			throw new Error('Could not update Act data: invalid acting character');
 		}
 		this.commands = this.prepareCommands();
-		this.events.onUpdate();
 
-		if (char.isAI()) {
-			const player = char.player as AIPlayer;
-			player.onUpdate();
-		}
+		this.events.onUpdate(state => {
+			if (char.isAI()) {
+				const player = char.player as AIPlayer;
+				player.onUpdate(state);
+			}
+		});
 	}
 
 	private onPhaseEvent: IOnActPhaseEvent = (evt, data) => {

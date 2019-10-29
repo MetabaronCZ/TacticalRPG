@@ -5,16 +5,16 @@ import { } from 'react-router';
 import { gotoRoute } from 'core/navigation';
 import { withContext, IContext } from 'context';
 
-import BattleUI from 'ui/battle/BattleUI';
-
 import Tile from 'modules/geometry/tile';
 import Summary from 'modules/battle/summary';
 import Engine, { IEngineSnapshot } from 'modules/battle/engine';
 
+import BattleUI from 'ui/battle/BattleUI';
+
 type IProps = IContext;
 
 interface IState {
-	engine: IEngineSnapshot;
+	engine: IEngineSnapshot | null;
 }
 
 const onExit = (history: History): void => {
@@ -22,7 +22,9 @@ const onExit = (history: History): void => {
 };
 
 class BattlePageContainer extends React.Component<IProps, IState> {
-	public state: IState;
+	public state: IState = {
+		engine: null
+	};
 	private engine: Engine;
 
 	constructor(props: IProps) {
@@ -53,19 +55,20 @@ class BattlePageContainer extends React.Component<IProps, IState> {
 					}));
 				},
 				onBattleInfo: info => {
-					this.setState(state => ({
-						engine: {
-							...state.engine,
-							battleInfo: info
+					this.setState(state => {
+						if (!state.engine) {
+							return { engine: null };
 						}
-					}));
+						return {
+							engine: {
+								...state.engine,
+								battleInfo: info
+							}
+						};
+					});
 				}
 			}
 		});
-
-		this.state = {
-			engine: this.engine.serialize()
-		};
 	}
 
 	public componentDidMount(): void {
@@ -74,6 +77,10 @@ class BattlePageContainer extends React.Component<IProps, IState> {
 
 	public render(): React.ReactNode {
 		const { engine: engineState } = this.state;
+
+		if (!engineState) {
+			return;
+		}
 		return (
 			<BattleUI
 				engine={engineState}
@@ -85,7 +92,12 @@ class BattlePageContainer extends React.Component<IProps, IState> {
 	}
 
 	private onTileSelect = (tile: Tile): void => {
-		const { act } = this.state.engine;
+		const { engine } = this.state;
+
+		if (!engine) {
+			return;
+		}
+		const { act } = engine;
 		const actingChar = act ? act.actingCharacter : null;
 
 		if (actingChar && !actingChar.isAI) {
@@ -94,7 +106,12 @@ class BattlePageContainer extends React.Component<IProps, IState> {
 	}
 
 	private onCommandSelect = (commandID: string): void => {
-		const { act } = this.state.engine;
+		const { engine } = this.state;
+
+		if (!engine) {
+			return;
+		}
+		const { act } = engine;
 		const actingChar = act ? act.actingCharacter : null;
 
 		if (actingChar && !actingChar.isAI) {

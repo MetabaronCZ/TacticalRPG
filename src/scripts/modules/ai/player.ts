@@ -1,19 +1,17 @@
 import Logger from 'modules/logger';
-import Engine from 'modules/battle/engine';
+import { IActSnapshot } from 'modules/battle/act';
+import Engine, { IEngineSnapshot } from 'modules/battle/engine';
 import Player, { IPlayerCharacterSetup } from 'modules/battle/player';
 import { IPlayerData } from 'modules/battle-configuration/player-data';
 
 import CharacterRole from 'modules/ai/role';
 import AICharacter from 'modules/ai/character';
-import { IActSnapshot } from 'modules/battle/act';
 
 class AIPlayer extends Player {
 	private readonly ally: AICharacter[];
-	private readonly engine: Engine;
 
 	constructor(player: IPlayerData, characters: IPlayerCharacterSetup[], engine: Engine) {
 		super(player, characters);
-		this.engine = engine;
 
 		this.ally = this.characters.map(char => {
 			const role = new CharacterRole(char);
@@ -21,11 +19,11 @@ class AIPlayer extends Player {
 		});
 	}
 
-	public onActStart(): void {
-		const { act } = this.engine.serialize();
+	public onActStart(state: IEngineSnapshot): void {
+		const { act } = state;
 
 		if (!act) {
-			throw new Error('Invalid act');
+			throw new Error('Invalid engine state');
 		}
 		const char = this.getCharacter(act);
 
@@ -33,11 +31,11 @@ class AIPlayer extends Player {
 		Logger.info(`AI Player: ${name} [${role.get().join(', ')}]`);
 	}
 
-	public onUpdate(): void {
-		const { act, characters } = this.engine.serialize();
+	public onUpdate(state: IEngineSnapshot): void {
+		const { act, characters } = state;
 
 		if (!act) {
-			throw new Error('Invalid act');
+			throw new Error('Invalid engine state');
 		}
 		const aiChar = this.getCharacter(act);
 

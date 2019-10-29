@@ -1,7 +1,6 @@
 TODO
 ---------------------------------------------------------------------------------------
---	pridat tlacitko pro PAUSE / RESUME behem AI Actu
-	+ FORWARD preskocit animaci (mozna udelat jako toggle)
+--	implementovat Sudden death mode (aby nedoslo ke stavu, kdy zbyvaji jen S-typy, ktere evaduji vsechny utoky)
 
 --	AI: pridat logiku pro vyhodnoceni pouziti CC Commandu
 	- viz "effectActions" v btDecide
@@ -11,19 +10,9 @@ TODO
 	- u debuffu posilat jen "status" a ne "weapon"
 	- pouzit v CharacterInfo UI misto soucasnych textu s dobou trvani
 
---	implementovat Sudden death mode (aby nedoslo ke stavu, kdy zbyvaji jen S-typy, ktere evaduji vsechny utoky)
-
 ??  Magical weapon type 
 	- damage physical + magical bonus (obe mensi nez maji standardni ATTACK skilly)
     - dynamic skilly by s nimi mely byt mnohem silnejsi
-
-
-LONG TERM
-----------------------------------------------------------------------------------------------------------
---	Chronox
-	OK	trackovat rozhodnuti
-	--	moznost vratit krok/y zpet
-	--	pripravit replay (ulozeni na konci souboje + moznost krokovani, jako u sachu)
 
 --	vyrovnani atributu
 	- postavy, zbrane, brneni, skilly
