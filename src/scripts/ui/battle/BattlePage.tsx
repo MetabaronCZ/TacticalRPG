@@ -79,7 +79,7 @@ class BattlePageContainer extends React.Component<IProps, IState> {
 		const { engine: engineState } = this.state;
 
 		if (!engineState) {
-			return;
+			return <React.Fragment />;
 		}
 		return (
 			<BattleUI
