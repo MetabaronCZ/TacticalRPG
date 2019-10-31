@@ -1,1 +1,1 @@
-export type ArmorSkillID = 'EVADE' | 'ENERGY_SHIELD';
+export type ArmorSkillID = 'EVADE' | 'AETHERSHIELD';

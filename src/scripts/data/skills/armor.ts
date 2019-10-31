@@ -14,13 +14,13 @@ const armorSkills: { [id in ArmorSkillID]: ISkillData; } = {
 			duration: 150
 		}
 	},
-	ENERGY_SHIELD: {
-		title: 'Energy Shield',
+	AETHERSHIELD: {
+		title: 'Aethershield',
 		type: 'REACTIVE',
 		range: 0,
 		area: 'SINGLE',
 		target: 'SELF',
-		status: ['ENERGY_SHIELD'],
+		status: ['AETHERSHIELD'],
 		cost: {},
 		animation: {
 			duration: 150

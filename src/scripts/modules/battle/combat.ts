@@ -177,13 +177,13 @@ const getBlockValue = (physical: number, magical: number, block: number | null):
 };
 
 const getShield = (character: Character, isPreview = false): number | null => {
-	let hasEnergyShield = character.status.has('ENERGY_SHIELD');
+	let hasAethershield = character.status.has('AETHERSHIELD');
 
 	if (isPreview) {
-		hasEnergyShield = true;
+		hasAethershield = true;
 	}
 
-	if (!hasEnergyShield) {
+	if (!hasAethershield) {
 		return null;
 	}
 	return character.attributes.MP;
@@ -440,7 +440,7 @@ export const getCombatInfo = (caster: Character, target: Character, skill: Skill
 		magical -= blocked.magical;
 	}
 
-	// energy shield
+	// aethershield
 	const shield = getShield(target);
 	const shielded = getShieldValue(physical, magical, shield);
 

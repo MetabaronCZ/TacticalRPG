@@ -243,7 +243,7 @@ class ReactionPhase extends ActPhase<IReactionPhaseSnapshot, IReactionPhaseRecor
 		const skill = command.skills[0];
 
 		switch (skill.id) {
-			case 'ENERGY_SHIELD':
+			case 'AETHERSHIELD':
 			case 'SHD_SMALL_BLOCK':
 			case 'SHD_LARGE_BLOCK':
 				this.apply(reaction, command);

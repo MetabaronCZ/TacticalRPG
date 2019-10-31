@@ -9,7 +9,7 @@ const btShield = (): BTAction<IAIData> => {
 			return (
 				cmd.isActive &&
 				cmd.skills.length &&
-				'ENERGY_SHIELD' === cmd.skills[0].id
+				'AETHERSHIELD' === cmd.skills[0].id
 			);
 		});
 

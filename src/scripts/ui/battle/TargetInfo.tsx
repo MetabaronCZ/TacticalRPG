@@ -36,7 +36,7 @@ const TargetInfo: React.SFC<IProps> = ({ preview }) => {
 			)}
 
 			{null !== shield && (
-				<CombatInfo label="Energy shield value">
+				<CombatInfo label="Aethershield value">
 					{shield}
 				</CombatInfo>
 			)}

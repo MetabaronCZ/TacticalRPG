@@ -259,7 +259,7 @@ class CombatPhase extends ActPhase<ICombatPhaseSnapshot, ICombatPhaseRecord> {
 			});
 		}
 
-		// damage reduced by energy shield
+		// damage reduced by aethershield
 		if (shielded) {
 			info.push({
 				text: `Shielded (${shielded.cost} MP)`,

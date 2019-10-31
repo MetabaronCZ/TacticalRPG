@@ -159,8 +159,8 @@ const StatusEffects = new DataList<StatusEffectID, IStatusEffect>({
 		type: 'SUPPORT',
 		multi: 'IGNORE'
 	},
-	ENERGY_SHIELD: {
-		title: 'Energy Shield',
+	AETHERSHIELD: {
+		title: 'Aethershield',
 		effect: 'Shielded',
 		description: 'Mana based energy shield damage reduction',
 		type: 'SUPPORT',

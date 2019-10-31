@@ -8,7 +8,7 @@ interface IProps {
 	minimal?: boolean;
 }
 
-export const availableSkillIcos: SkillID[] = ['ENERGY_SHIELD', 'EVADE'];
+export const availableSkillIcos: SkillID[] = ['AETHERSHIELD', 'EVADE'];
 
 const SkillIco: React.SFC<IProps> = ({ skill, minimal }) => {
 	if (minimal && !availableSkillIcos.includes(skill)) {

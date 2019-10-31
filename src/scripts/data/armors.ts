@@ -13,7 +13,7 @@ const Armors = new DataList<ArmorID, IArmorData>({
 		title: 'Magical armor',
 		description: '',
 		mpBonus: 100,
-		skills: ['ENERGY_SHIELD']
+		skills: ['AETHERSHIELD']
 	},
 	LIGHT: {
 		id: 'LIGHT',

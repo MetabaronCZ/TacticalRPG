@@ -1,7 +1,5 @@
 TODO
 ---------------------------------------------------------------------------------------
-??	prejmenovat Energy Shield na Aethershield
-
 ??	v magical zbranich mit
 	- AETHERBLADE (pro M-typy)
 	- AETHERCANNON (pro SM)

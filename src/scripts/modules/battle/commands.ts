@@ -141,7 +141,7 @@ export const getReactiveCommands = (character: Character, isBackAttack: boolean,
 		const skill = new Skill(skillID);
 		let { title } = skill;
 
-		if ('ENERGY_SHIELD' === skillID) {
+		if ('AETHERSHIELD' === skillID) {
 			title += ' ' + MP;
 		}
 		const cmd = new Command('REACTION', title, character, [skill]);
@@ -156,7 +156,7 @@ export const getReactiveCommands = (character: Character, isBackAttack: boolean,
 				}
 				break;
 
-			case 'ENERGY_SHIELD':
+			case 'AETHERSHIELD':
 				if (cmd.isActive() && 0 === MP) {
 					cmd.setActive('OUT_OF_MP');
 				}
