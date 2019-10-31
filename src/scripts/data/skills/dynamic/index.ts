@@ -74,7 +74,7 @@ const dynamicSkills: { [id in DynamicSkillID]: ISkillData; } = {
 	FST_WAT: getData('Water Strike', 'FISTS', 'WATER'),
 	FST_HOL: getData('Holy Strike', 'FISTS', 'HOLY'),
 	FST_DRK: getData('Dark Strike', 'FISTS', 'DARK'),
-	FST_PSY: getData('Kinetic Strike', 'FISTS', 'PSYCHIC'),
+	FST_PSY: getData('Kinetic Strike', 'FISTS', 'KINETIC'),
 
 	DGR_FIR: getData('Flame Stab', 'DAGGER', 'FIRE'),
 	DGR_ICE: getData('Frost Stab', 'DAGGER', 'ICE'),
@@ -84,7 +84,7 @@ const dynamicSkills: { [id in DynamicSkillID]: ISkillData; } = {
 	DGR_WAT: getData('Water Stab', 'DAGGER', 'WATER'),
 	DGR_HOL: getData('Holy Stab', 'DAGGER', 'HOLY'),
 	DGR_DRK: getData('Dark Stab', 'DAGGER', 'DARK'),
-	DGR_PSY: getData('Kinetic Stab', 'DAGGER', 'PSYCHIC'),
+	DGR_PSY: getData('Kinetic Stab', 'DAGGER', 'KINETIC'),
 
 	S1H_FIR: getData('Flame Strike', 'SWORD_1H', 'FIRE'),
 	S1H_ICE: getData('Frost Strike', 'SWORD_1H', 'ICE'),
@@ -94,7 +94,7 @@ const dynamicSkills: { [id in DynamicSkillID]: ISkillData; } = {
 	S1H_WAT: getData('Water Strike', 'SWORD_1H', 'WATER'),
 	S1H_HOL: getData('Holy Strike', 'SWORD_1H', 'HOLY'),
 	S1H_DRK: getData('Dark Strike', 'SWORD_1H', 'DARK'),
-	S1H_PSY: getData('Kinetic Strike', 'SWORD_1H', 'PSYCHIC'),
+	S1H_PSY: getData('Kinetic Strike', 'SWORD_1H', 'KINETIC'),
 
 	A1H_FIR: getData('Flame Slash', 'AXE_1H', 'FIRE'),
 	A1H_ICE: getData('Frost Slash', 'AXE_1H', 'ICE'),
@@ -104,7 +104,7 @@ const dynamicSkills: { [id in DynamicSkillID]: ISkillData; } = {
 	A1H_WAT: getData('Water Slash', 'AXE_1H', 'WATER'),
 	A1H_HOL: getData('Holy Slash', 'AXE_1H', 'HOLY'),
 	A1H_DRK: getData('Dark Slash', 'AXE_1H', 'DARK'),
-	A1H_PSY: getData('Kinetic Slash', 'AXE_1H', 'PSYCHIC'),
+	A1H_PSY: getData('Kinetic Slash', 'AXE_1H', 'KINETIC'),
 
 	M1H_FIR: getData('Flame Smash', 'MACE_1H', 'FIRE'),
 	M1H_ICE: getData('Frost Smash', 'MACE_1H', 'ICE'),
@@ -114,7 +114,7 @@ const dynamicSkills: { [id in DynamicSkillID]: ISkillData; } = {
 	M1H_WAT: getData('Water Smash', 'MACE_1H', 'WATER'),
 	M1H_HOL: getData('Holy Smash', 'MACE_1H', 'HOLY'),
 	M1H_DRK: getData('Dark Smash', 'MACE_1H', 'DARK'),
-	M1H_PSY: getData('Kinetic Smash', 'MACE_1H', 'PSYCHIC'),
+	M1H_PSY: getData('Kinetic Smash', 'MACE_1H', 'KINETIC'),
 
 	SPR_FIR: getData('Flame Thrust', 'SPEAR', 'FIRE'),
 	SPR_ICE: getData('Frost Thrust', 'SPEAR', 'ICE'),
@@ -124,7 +124,7 @@ const dynamicSkills: { [id in DynamicSkillID]: ISkillData; } = {
 	SPR_WAT: getData('Water Thrust', 'SPEAR', 'WATER'),
 	SPR_HOL: getData('Holy Thrust', 'SPEAR', 'HOLY'),
 	SPR_DRK: getData('Dark Thrust', 'SPEAR', 'DARK'),
-	SPR_PSY: getData('Kinetic Thrust', 'SPEAR', 'PSYCHIC'),
+	SPR_PSY: getData('Kinetic Thrust', 'SPEAR', 'KINETIC'),
 
 	S2H_FIR: getData('Flame Strike', 'SWORD_2H', 'FIRE'),
 	S2H_ICE: getData('Frost Strike', 'SWORD_2H', 'ICE'),
@@ -134,7 +134,7 @@ const dynamicSkills: { [id in DynamicSkillID]: ISkillData; } = {
 	S2H_WAT: getData('Water Strike', 'SWORD_2H', 'WATER'),
 	S2H_HOL: getData('Holy Strike', 'SWORD_2H', 'HOLY'),
 	S2H_DRK: getData('Dark Strike', 'SWORD_2H', 'DARK'),
-	S2H_PSY: getData('Kinetic Strike', 'SWORD_2H', 'PSYCHIC'),
+	S2H_PSY: getData('Kinetic Strike', 'SWORD_2H', 'KINETIC'),
 
 	A2H_FIR: getData('Flame Slash', 'AXE_2H', 'FIRE'),
 	A2H_ICE: getData('Frost Slash', 'AXE_2H', 'ICE'),
@@ -144,7 +144,7 @@ const dynamicSkills: { [id in DynamicSkillID]: ISkillData; } = {
 	A2H_WAT: getData('Water Slash', 'AXE_2H', 'WATER'),
 	A2H_HOL: getData('Holy Slash', 'AXE_2H', 'HOLY'),
 	A2H_DRK: getData('Dark Slash', 'AXE_2H', 'DARK'),
-	A2H_PSY: getData('Kinetic Slash', 'AXE_2H', 'PSYCHIC'),
+	A2H_PSY: getData('Kinetic Slash', 'AXE_2H', 'KINETIC'),
 
 	M2H_FIR: getData('Flame Smash', 'MACE_2H', 'FIRE'),
 	M2H_ICE: getData('Frost Smash', 'MACE_2H', 'ICE'),
@@ -154,7 +154,7 @@ const dynamicSkills: { [id in DynamicSkillID]: ISkillData; } = {
 	M2H_WAT: getData('Water Smash', 'MACE_2H', 'WATER'),
 	M2H_HOL: getData('Holy Smash', 'MACE_2H', 'HOLY'),
 	M2H_DRK: getData('Dark Smash', 'MACE_2H', 'DARK'),
-	M2H_PSY: getData('Kinetic Smash', 'MACE_2H', 'PSYCHIC'),
+	M2H_PSY: getData('Kinetic Smash', 'MACE_2H', 'KINETIC'),
 
 	ATB_FIR: getData('Aether-Flame Slash', 'AETHERBLADE', 'FIRE'),
 	ATB_ICE: getData('Aether-Frost Slash', 'AETHERBLADE', 'ICE'),
@@ -164,7 +164,7 @@ const dynamicSkills: { [id in DynamicSkillID]: ISkillData; } = {
 	ATB_WAT: getData('Aether-Water Slash', 'AETHERBLADE', 'WATER'),
 	ATB_HOL: getData('Aether-Holy Slash', 'AETHERBLADE', 'HOLY'),
 	ATB_DRK: getData('Aether-Dark Slash', 'AETHERBLADE', 'DARK'),
-	ATB_PSY: getData('Aether-Kinetic Slash', 'AETHERBLADE', 'PSYCHIC'),
+	ATB_PSY: getData('Aether-Kinetic Slash', 'AETHERBLADE', 'KINETIC'),
 
 	BOW_FIR: getData('Flame Arrow', 'BOW', 'FIRE'),
 	BOW_ICE: getData('Frost Arrow', 'BOW', 'ICE'),
@@ -174,7 +174,7 @@ const dynamicSkills: { [id in DynamicSkillID]: ISkillData; } = {
 	BOW_WAT: getData('Water Arrow', 'BOW', 'WATER'),
 	BOW_HOL: getData('Holy Arrow', 'BOW', 'HOLY'),
 	BOW_DRK: getData('Dark Arrow', 'BOW', 'DARK'),
-	BOW_PSY: getData('Kinetic Arrow', 'BOW', 'PSYCHIC'),
+	BOW_PSY: getData('Kinetic Arrow', 'BOW', 'KINETIC'),
 
 	GUN_FIR: getData('Flame Shot', 'GUN', 'FIRE'),
 	GUN_ICE: getData('Frost Shot', 'GUN', 'ICE'),
@@ -184,7 +184,7 @@ const dynamicSkills: { [id in DynamicSkillID]: ISkillData; } = {
 	GUN_WAT: getData('Water Shot', 'GUN', 'WATER'),
 	GUN_HOL: getData('Holy Shot', 'GUN', 'HOLY'),
 	GUN_DRK: getData('Dark Shot', 'GUN', 'DARK'),
-	GUN_PSY: getData('Kinetic Shot', 'GUN', 'PSYCHIC')
+	GUN_PSY: getData('Kinetic Shot', 'GUN', 'KINETIC')
 };
 
 export default dynamicSkills;

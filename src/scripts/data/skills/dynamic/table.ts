@@ -9,11 +9,11 @@ type DynamicSkillTable = {
 };
 
 const dynamicSkillTable: DynamicSkillTable = {
-	NONE:         { FIRE: null, ICE: null, WIND: null, EARTH: null, THUNDER: null, WATER: null, DARK: null, HOLY: null, PSYCHIC: null },
-	ROD:          { FIRE: null, ICE: null, WIND: null, EARTH: null, THUNDER: null, WATER: null, DARK: null, HOLY: null, PSYCHIC: null },
-	STAFF:        { FIRE: null, ICE: null, WIND: null, EARTH: null, THUNDER: null, WATER: null, DARK: null, HOLY: null, PSYCHIC: null },
-	SHIELD_SMALL: { FIRE: null, ICE: null, WIND: null, EARTH: null, THUNDER: null, WATER: null, DARK: null, HOLY: null, PSYCHIC: null },
-	SHIELD_LARGE: { FIRE: null, ICE: null, WIND: null, EARTH: null, THUNDER: null, WATER: null, DARK: null, HOLY: null, PSYCHIC: null },
+	NONE:         { FIRE: null, ICE: null, WIND: null, EARTH: null, THUNDER: null, WATER: null, DARK: null, HOLY: null, KINETIC: null },
+	ROD:          { FIRE: null, ICE: null, WIND: null, EARTH: null, THUNDER: null, WATER: null, DARK: null, HOLY: null, KINETIC: null },
+	STAFF:        { FIRE: null, ICE: null, WIND: null, EARTH: null, THUNDER: null, WATER: null, DARK: null, HOLY: null, KINETIC: null },
+	SHIELD_SMALL: { FIRE: null, ICE: null, WIND: null, EARTH: null, THUNDER: null, WATER: null, DARK: null, HOLY: null, KINETIC: null },
+	SHIELD_LARGE: { FIRE: null, ICE: null, WIND: null, EARTH: null, THUNDER: null, WATER: null, DARK: null, HOLY: null, KINETIC: null },
 
 	FISTS: {
 		FIRE: 'FST_FIR',
@@ -24,7 +24,7 @@ const dynamicSkillTable: DynamicSkillTable = {
 		WATER: 'FST_WAT',
 		DARK: 'FST_DRK',
 		HOLY: 'FST_HOL',
-		PSYCHIC: 'FST_PSY'
+		KINETIC: 'FST_PSY'
 	},
 	DAGGER: {
 		FIRE: 'DGR_FIR',
@@ -35,7 +35,7 @@ const dynamicSkillTable: DynamicSkillTable = {
 		WATER: 'DGR_WAT',
 		DARK: 'DGR_DRK',
 		HOLY: 'DGR_HOL',
-		PSYCHIC: 'DGR_PSY'
+		KINETIC: 'DGR_PSY'
 	},
 	SWORD_1H: {
 		FIRE: 'S1H_FIR',
@@ -46,7 +46,7 @@ const dynamicSkillTable: DynamicSkillTable = {
 		WATER: 'S1H_WAT',
 		DARK: 'S1H_DRK',
 		HOLY: 'S1H_HOL',
-		PSYCHIC: 'S1H_PSY'
+		KINETIC: 'S1H_PSY'
 	},
 	AXE_1H: {
 		FIRE: 'A1H_FIR',
@@ -57,7 +57,7 @@ const dynamicSkillTable: DynamicSkillTable = {
 		WATER: 'A1H_WAT',
 		DARK: 'A1H_DRK',
 		HOLY: 'A1H_HOL',
-		PSYCHIC: 'A1H_PSY'
+		KINETIC: 'A1H_PSY'
 	},
 	MACE_1H: {
 		FIRE: 'M1H_FIR',
@@ -68,7 +68,7 @@ const dynamicSkillTable: DynamicSkillTable = {
 		WATER: 'M1H_WAT',
 		DARK: 'M1H_DRK',
 		HOLY: 'M1H_HOL',
-		PSYCHIC: 'M1H_PSY'
+		KINETIC: 'M1H_PSY'
 	},
 	SPEAR: {
 		FIRE: 'SPR_FIR',
@@ -79,7 +79,7 @@ const dynamicSkillTable: DynamicSkillTable = {
 		WATER: 'SPR_WAT',
 		DARK: 'SPR_DRK',
 		HOLY: 'SPR_HOL',
-		PSYCHIC: 'SPR_PSY'
+		KINETIC: 'SPR_PSY'
 	},
 	SWORD_2H: {
 		FIRE: 'S2H_FIR',
@@ -90,7 +90,7 @@ const dynamicSkillTable: DynamicSkillTable = {
 		WATER: 'S2H_WAT',
 		DARK: 'S2H_DRK',
 		HOLY: 'S2H_HOL',
-		PSYCHIC: 'S2H_PSY'
+		KINETIC: 'S2H_PSY'
 	},
 	AXE_2H: {
 		FIRE: 'A2H_FIR',
@@ -101,7 +101,7 @@ const dynamicSkillTable: DynamicSkillTable = {
 		WATER: 'A2H_WAT',
 		DARK: 'A2H_DRK',
 		HOLY: 'A2H_HOL',
-		PSYCHIC: 'A2H_PSY'
+		KINETIC: 'A2H_PSY'
 	},
 	MACE_2H: {
 		FIRE: 'M2H_FIR',
@@ -112,7 +112,7 @@ const dynamicSkillTable: DynamicSkillTable = {
 		WATER: 'M2H_WAT',
 		DARK: 'M2H_DRK',
 		HOLY: 'M2H_HOL',
-		PSYCHIC: 'M2H_PSY'
+		KINETIC: 'M2H_PSY'
 	},
 	AETHERBLADE: {
 		FIRE: 'ATB_FIR',
@@ -123,7 +123,7 @@ const dynamicSkillTable: DynamicSkillTable = {
 		WATER: 'ATB_WAT',
 		DARK: 'ATB_DRK',
 		HOLY: 'ATB_HOL',
-		PSYCHIC: 'ATB_PSY'
+		KINETIC: 'ATB_PSY'
 	},
 	BOW: {
 		FIRE: 'BOW_FIR',
@@ -134,7 +134,7 @@ const dynamicSkillTable: DynamicSkillTable = {
 		WATER: 'BOW_WAT',
 		DARK: 'BOW_DRK',
 		HOLY: 'BOW_HOL',
-		PSYCHIC: 'BOW_PSY'
+		KINETIC: 'BOW_PSY'
 	},
 	GUN: {
 		FIRE: 'GUN_FIR',
@@ -145,7 +145,7 @@ const dynamicSkillTable: DynamicSkillTable = {
 		WATER: 'GUN_WAT',
 		DARK: 'GUN_DRK',
 		HOLY: 'GUN_HOL',
-		PSYCHIC: 'GUN_PSY'
+		KINETIC: 'GUN_PSY'
 	}
 };
 

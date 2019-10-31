@@ -5,10 +5,6 @@ TODO
 	- AETHERCANNON (pro SM)
 	- AETHERHAMMER (pro PM)
 
---	refactorovat PSYCHIC na KINETIC
-	= non-elemental damage
-	- pouzit u Aetherblade
-
 --	implementovat Sudden death mode (aby nedoslo ke stavu, kdy zbyvaji jen S-typy, ktere evaduji vsechny utoky)
 
 --	AI: pridat logiku pro vyhodnoceni pouziti CC Commandu

@@ -18,7 +18,7 @@ const magicalSkills: { [id in MagicalWeaponSkillID]: ISkillData; } = {
 		},
 		magical: {
 			modifier: 1,
-			element: 'PSYCHIC'
+			element: 'KINETIC'
 		},
 		animation: {
 			duration: 1000

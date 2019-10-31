@@ -24,7 +24,7 @@ const Skillsets = new DataList<SkillsetID, ISkillsetData>({
 		id: 'PSYCHOKINESIS',
 		title: 'Psychokinesis',
 		description: '',
-		element: 'PSYCHIC',
+		element: 'KINETIC',
 		skills: Object.keys(psychokinesis) as MagicSkillID[]
 	},
 	HOLY_MAGIC: {

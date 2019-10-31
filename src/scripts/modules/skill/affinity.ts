@@ -1,4 +1,4 @@
-export type ElementID = 'FIRE' | 'ICE' | 'WIND' | 'EARTH' | 'THUNDER' | 'WATER' | 'DARK' | 'HOLY' | 'PSYCHIC';
+export type ElementID = 'FIRE' | 'ICE' | 'WIND' | 'EARTH' | 'THUNDER' | 'WATER' | 'DARK' | 'HOLY' | 'KINETIC';
 export type Affinity = 'ELEMENTAL_WEAK' | 'ELEMENTAL_NEUTRAL' | 'ELEMENTAL_STRONG';
 
 type IAffinityTable = {
@@ -14,5 +14,5 @@ export const AffinityTable: IAffinityTable = {
 	WATER: 'FIRE',
 	DARK: 'HOLY',
 	HOLY: 'DARK',
-	PSYCHIC: 'PSYCHIC'
+	KINETIC: 'KINETIC'
 };

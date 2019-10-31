@@ -31,7 +31,7 @@ const elements: ElementDataTable = {
 	DARK: {
 		title: 'Dark element'
 	},
-	PSYCHIC: {
+	KINETIC: {
 		title: 'Psychokinesis'
 	}
 };

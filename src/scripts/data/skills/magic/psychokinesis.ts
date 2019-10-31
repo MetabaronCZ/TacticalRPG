@@ -14,7 +14,7 @@ const psychokinesis: { [id in PsychokinesisSkillID]: ISkillData; } = {
 		},
 		magical: {
 			modifier: 1,
-			element: 'PSYCHIC'
+			element: 'KINETIC'
 		},
 		animation: {
 			duration: 1000
@@ -34,7 +34,7 @@ const psychokinesis: { [id in PsychokinesisSkillID]: ISkillData; } = {
 		},
 		magical: {
 			modifier: 0,
-			element: 'PSYCHIC'
+			element: 'KINETIC'
 		},
 		animation: {
 			duration: 1000
