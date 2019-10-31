@@ -12,6 +12,7 @@ export const attackSkills: SkillID[] = [
 	'FST_ATTACK', 'DGR_ATTACK',
 	'S1H_ATTACK', 'A1H_ATTACK', 'M1H_ATTACK',
 	'SPR_ATTACK', 'S2H_ATTACK', 'A2H_ATTACK', 'M2H_ATTACK',
+	'ATB_ATTACK',
 	'BOW_ATTACK', 'GUN_ATTACK', 'GUN_ATTACK'
 ];
 

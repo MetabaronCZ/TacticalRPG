@@ -6,7 +6,7 @@ export type WeaponID =
 	'SWORD_1H' | 'AXE_1H' | 'MACE_1H' |
 	'SPEAR' |
 	'SWORD_2H' | 'AXE_2H' | 'MACE_2H' |
-	'ROD' | 'STAFF' |
+	'ROD' | 'STAFF' | 'AETHERBLADE' |
 	'BOW' | 'GUN' |
 	'SHIELD_SMALL' | 'SHIELD_LARGE';
 

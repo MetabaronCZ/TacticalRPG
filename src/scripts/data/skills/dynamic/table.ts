@@ -15,7 +15,7 @@ const dynamicSkillTable: DynamicSkillTable = {
 	SHIELD_SMALL: { FIRE: null, ICE: null, WIND: null, EARTH: null, THUNDER: null, WATER: null, DARK: null, HOLY: null, PSYCHIC: null },
 	SHIELD_LARGE: { FIRE: null, ICE: null, WIND: null, EARTH: null, THUNDER: null, WATER: null, DARK: null, HOLY: null, PSYCHIC: null },
 
-	FISTS:     {
+	FISTS: {
 		FIRE: 'FST_FIR',
 		ICE: 'FST_ICE',
 		WIND: 'FST_WND',
@@ -113,6 +113,17 @@ const dynamicSkillTable: DynamicSkillTable = {
 		DARK: 'M2H_DRK',
 		HOLY: 'M2H_HOL',
 		PSYCHIC: 'M2H_PSY'
+	},
+	AETHERBLADE: {
+		FIRE: 'ATB_FIR',
+		ICE: 'ATB_ICE',
+		WIND: 'ATB_WND',
+		EARTH: 'ATB_ERT',
+		THUNDER: 'ATB_THU',
+		WATER: 'ATB_WAT',
+		DARK: 'ATB_DRK',
+		HOLY: 'ATB_HOL',
+		PSYCHIC: 'ATB_PSY'
 	},
 	BOW: {
 		FIRE: 'BOW_FIR',

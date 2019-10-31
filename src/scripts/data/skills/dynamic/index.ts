@@ -6,7 +6,6 @@ import { ISkillData } from 'modules/skill/skill-data';
 import { DynamicSkillID } from 'modules/skill/dynamic';
 import { WeaponID } from 'modules/equipment/weapon-data';
 
-
 const dynamicSkill = miscSkills.DYNAMIC_SKILL;
 
 type WeaponSkillDataTable = {
@@ -26,6 +25,7 @@ const weaponSkillData: WeaponSkillDataTable = {
 	MACE_2H: weaponSkills.M2H_ATTACK,
 	ROD: null,
 	STAFF: null,
+	AETHERBLADE: weaponSkills.ATB_ATTACK,
 	BOW: weaponSkills.BOW_ATTACK,
 	GUN: weaponSkills.GUN_ATTACK,
 	SHIELD_SMALL: null,
@@ -40,7 +40,9 @@ const getData = (title: string, weapon: WeaponID, element: ElementID): ISkillDat
 	}
 	let magMod = 0;
 
-	if (dynamicSkill.magical) {
+	if (data.magical) {
+		magMod = data.magical.modifier;
+	} else if (dynamicSkill.magical) {
 		magMod = dynamicSkill.magical.modifier;
 	}
 	return {
@@ -153,6 +155,16 @@ const dynamicSkills: { [id in DynamicSkillID]: ISkillData; } = {
 	M2H_HOL: getData('Holy Smash', 'MACE_2H', 'HOLY'),
 	M2H_DRK: getData('Dark Smash', 'MACE_2H', 'DARK'),
 	M2H_PSY: getData('Kinetic Smash', 'MACE_2H', 'PSYCHIC'),
+
+	ATB_FIR: getData('Aether-Flame Slash', 'AETHERBLADE', 'FIRE'),
+	ATB_ICE: getData('Aether-Frost Slash', 'AETHERBLADE', 'ICE'),
+	ATB_WND: getData('Aether-Wind Slash', 'AETHERBLADE', 'WIND'),
+	ATB_ERT: getData('Aether-Stone Slash', 'AETHERBLADE', 'EARTH'),
+	ATB_THU: getData('Aether-Thunder Slash', 'AETHERBLADE', 'THUNDER'),
+	ATB_WAT: getData('Aether-Water Slash', 'AETHERBLADE', 'WATER'),
+	ATB_HOL: getData('Aether-Holy Slash', 'AETHERBLADE', 'HOLY'),
+	ATB_DRK: getData('Aether-Dark Slash', 'AETHERBLADE', 'DARK'),
+	ATB_PSY: getData('Aether-Kinetic Slash', 'AETHERBLADE', 'PSYCHIC'),
 
 	BOW_FIR: getData('Flame Arrow', 'BOW', 'FIRE'),
 	BOW_ICE: getData('Frost Arrow', 'BOW', 'ICE'),

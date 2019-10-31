@@ -13,6 +13,7 @@ export type DynamicSkillID =
 	'S2H_FIR' | 'S2H_ICE' | 'S2H_WND' | 'S2H_ERT' | 'S2H_THU' | 'S2H_WAT' | 'S2H_DRK' | 'S2H_HOL' | 'S2H_PSY' |
 	'A2H_FIR' | 'A2H_ICE' | 'A2H_WND' | 'A2H_ERT' | 'A2H_THU' | 'A2H_WAT' | 'A2H_DRK' | 'A2H_HOL' | 'A2H_PSY' |
 	'M2H_FIR' | 'M2H_ICE' | 'M2H_WND' | 'M2H_ERT' | 'M2H_THU' | 'M2H_WAT' | 'M2H_DRK' | 'M2H_HOL' | 'M2H_PSY' |
+	'ATB_FIR' | 'ATB_ICE' | 'ATB_WND' | 'ATB_ERT' | 'ATB_THU' | 'ATB_WAT' | 'ATB_DRK' | 'ATB_HOL' | 'ATB_PSY' |
 	'BOW_FIR' | 'BOW_ICE' | 'BOW_WND' | 'BOW_ERT' | 'BOW_THU' | 'BOW_WAT' | 'BOW_DRK' | 'BOW_HOL' | 'BOW_PSY' |
 	'GUN_FIR' | 'GUN_ICE' | 'GUN_WND' | 'GUN_ERT' | 'GUN_THU' | 'GUN_WAT' | 'GUN_DRK' | 'GUN_HOL' | 'GUN_PSY';
 

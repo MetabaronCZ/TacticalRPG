@@ -110,6 +110,15 @@ const Weapons = new DataList<WeaponID, IWeaponData>({
 		physical: 0,
 		magical: 30
 	},
+	AETHERBLADE: {
+		id: 'AETHERBLADE',
+		title: 'Aetherblade',
+		description: '',
+		type: 'MAGICAL',
+		skills: ['ATB_ATTACK'],
+		physical: 10,
+		magical: 10
+	},
 	BOW: {
 		id: 'BOW',
 		title: 'Bow',

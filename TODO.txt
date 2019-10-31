@@ -1,5 +1,16 @@
 TODO
 ---------------------------------------------------------------------------------------
+??	prejmenovat Energy Shield na Aethershield
+
+??	v magical zbranich mit
+	- AETHERBLADE (pro M-typy)
+	- AETHERCANNON (pro SM)
+	- AETHERHAMMER (pro PM)
+
+--	refactorovat PSYCHIC na KINETIC
+	= non-elemental damage
+	- pouzit u Aetherblade
+
 --	implementovat Sudden death mode (aby nedoslo ke stavu, kdy zbyvaji jen S-typy, ktere evaduji vsechny utoky)
 
 --	AI: pridat logiku pro vyhodnoceni pouziti CC Commandu
@@ -9,10 +20,6 @@ TODO
 	- posilat je jako status v combat phase
 	- u debuffu posilat jen "status" a ne "weapon"
 	- pouzit v CharacterInfo UI misto soucasnych textu s dobou trvani
-
-??  Magical weapon type 
-	- damage physical + magical bonus (obe mensi nez maji standardni ATTACK skilly)
-    - dynamic skilly by s nimi mely byt mnohem silnejsi
 
 --	vyrovnani atributu
 	- postavy, zbrane, brneni, skilly

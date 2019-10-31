@@ -6,6 +6,9 @@ export type RangedWeaponSkillID =
 	'BOW_ATTACK' | 'BOW_CHARGE' |
 	'GUN_ATTACK' | 'GUN_CRIPPLE';
 
+export type MagicalWeaponSkillID =
+	'ATB_ATTACK';
+
 export type ShieldWeaponSkillID =
 	'SHD_SMALL_BLOCK' | 'SHD_LARGE_BLOCK';
 
@@ -24,5 +27,6 @@ export type WeaponSkillID =
 	SmallWeaponSkillID |
 	Wield1HWeaponSkillID |
 	Wield2HWeaponSkillID |
+	MagicalWeaponSkillID |
 	RangedWeaponSkillID |
 	ShieldWeaponSkillID;
