@@ -96,20 +96,25 @@ const BattleSummaryPage: React.SFC = () => {
 	const { chronox, winner } = record;
 	const winPlayer = chronox.players.find(pl => winner === pl.id);
 
-	if (!winPlayer) {
-		throw new Error('Invalid winner ID: ' + winner);
-	}
 	const playerData = getPlayerData(chronox);
 	const scoreAnalysis = analyzeScore(chronox.timeline, chronox.characters);
 	const timeline = chronox.timeline.filter(t => !t.skipped);
 
 	return (
 		<Page heading="Summary">
-			<h2 className="Heading">
-				<PlayerIco id={winner} />
-				Player "{winPlayer.name}" won!
-			</h2>
-
+			{winPlayer
+				? (
+					<h2 className="Heading">
+						<PlayerIco id={winPlayer.id} />
+						Player "{winPlayer.name}" won!
+					</h2>
+				)
+				: (
+					<h2 className="Heading">
+						No player won!
+					</h2>
+				)
+			}
 			<SummaryPlayers players={playerData} />
 
 			<h2 className="Heading">

@@ -21,7 +21,7 @@ interface IBattleUIProps {
 }
 
 const BattleUI: React.SFC<IBattleUIProps> = ({ engine: engineState, onTileSelect, onCommandSelect, onExit }) => {
-	const { characters, order, act, tick, running, battleInfo } = engineState;
+	const { characters, order, act, tick, running, battleInfo, suddenDeath } = engineState;
 	const history = useHistory();
 
 	if (!act) {
@@ -70,6 +70,7 @@ const BattleUI: React.SFC<IBattleUIProps> = ({ engine: engineState, onTileSelect
 						act={act}
 						characters={characters}
 						battleInfo={battleInfo}
+						suddenDeath={suddenDeath}
 						onTileSelect={onTileSelect}
 					/>
 				</div>

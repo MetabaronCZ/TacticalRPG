@@ -1,6 +1,11 @@
 TODO
 ---------------------------------------------------------------------------------------
---	implementovat Sudden death mode (aby nedoslo ke stavu, kdy zbyvaji jen S-typy, ktere evaduji vsechny utoky)
+>>	implementovat Sudden death mode
+
+--	do Chronoxu posilat i udalosti z DoT a ze SuddenDeath
+
+--	refaktoring MoveAnimation, SkillAnimation a TileAnimation do jednotne formy
+	- prirazovat animace postavam / Tile / apod.
 
 --	AI: pridat logiku pro vyhodnoceni pouziti CC Commandu
 	- viz "effectActions" v btDecide

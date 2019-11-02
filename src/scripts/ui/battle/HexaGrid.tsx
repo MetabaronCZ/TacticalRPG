@@ -9,10 +9,12 @@ import {
 	ITileCoords
 } from 'modules/battle/grid';
 
+import { Color } from 'modules/color';
 import Tile from 'modules/geometry/tile';
 import { IActSnapshot } from 'modules/battle/act';
 import { ICharacterSnapshot } from 'modules/character';
 import { IBattleInfo } from 'modules/battle/battle-info';
+import { ISuddenDeathSnapshot } from 'modules/battle/sudden-death';
 
 import { renderEffect } from 'modules/graphics/effect';
 import { renderCharacter } from 'modules/graphics/character';
@@ -21,6 +23,7 @@ import { renderTile, renderTileBoundingBox } from 'modules/graphics/tile';
 import Canvas from 'ui/common/Canvas';
 import GridBattleInfo from 'ui/battle/GridBattleInfo';
 import CharacterTooltip from 'ui/battle/CharacterTooltip';
+import { getCrossColor } from 'modules/color';
 
 const gridMargin = 20; // safe area around canvas content
 const tiles = getTiles();
@@ -34,6 +37,7 @@ interface IHovered {
 interface IProps {
 	readonly act: IActSnapshot;
 	readonly characters: ICharacterSnapshot[];
+	readonly suddenDeath: ISuddenDeathSnapshot;
 	readonly battleInfo: IBattleInfo[];
 	readonly onTileSelect: (tile: Tile) => void;
 }
@@ -111,7 +115,7 @@ class HexaGrid extends Canvas<IProps, IState> {
 
 	public draw(): void {
 		const canvas = this.canvas.current;
-		const { act, characters } = this.props;
+		const { act, characters, suddenDeath } = this.props;
 		const { ctx, itemSize, gridSize } = this;
 
 		if (!ctx || !canvas) {
@@ -131,8 +135,38 @@ class HexaGrid extends Canvas<IProps, IState> {
 			renderTileBoundingBox(tile, hitCtx, x, y, itemSize);
 
 			// hex
-			const style = getTileStyle(tile, act);
-			renderTile(tile, offCtx, x, y, itemSize, style[0], style[1]);
+			const isHighlighted = tile.isContained(suddenDeath.highlightedTiles);
+			const isDestroyed = tile.isContained(suddenDeath.destroyedTiles);
+			let [background, border] = getTileStyle(tile, act);
+
+			if (isHighlighted) {
+				const hBorder: Color = [250, 50, 50];
+				const hBackground: Color = [20, 20, 20];
+
+				if (suddenDeath.animation && suddenDeath.animation.isRunning() && 'HIGHLIGHT' === suddenDeath.animation.type) {
+					const progress = suddenDeath.animation.getProgress();
+					background = getCrossColor(background, hBackground, progress);
+					border = getCrossColor(border, hBorder, progress);
+				} else {
+					background = hBackground;
+					border = hBorder;
+				}
+
+			} else if (isDestroyed) {
+				const hBorder: Color = [40, 40, 40];
+				const hBackground: Color = [50, 50, 50];
+
+				if (suddenDeath.animation && suddenDeath.animation.isRunning() && 'DESTROY' === suddenDeath.animation.type) {
+					const progress = suddenDeath.animation.getProgress();
+					background = getCrossColor(background, hBackground, progress);
+					border = getCrossColor(border, hBorder, progress);
+				} else {
+					background = hBackground;
+					border = hBorder;
+				}
+			}
+
+			renderTile(tile, offCtx, x, y, itemSize, background, border, !isDestroyed);
 		}
 
 		// draw characters

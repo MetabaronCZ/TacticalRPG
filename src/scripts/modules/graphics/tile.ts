@@ -38,10 +38,13 @@ const renderHexCoords = (tile: Tile, ctx: CanvasRenderingContext2D, x: number, y
 	ctx.restore();
 };
 
-export const renderTile = (tile: Tile, ctx: CanvasRenderingContext2D, x: number, y: number, size: number, background: Color, border: Color): void => {
+export const renderTile = (tile: Tile, ctx: CanvasRenderingContext2D, x: number, y: number, size: number, background: Color, border: Color, showCoords = true): void => {
 	renderHex(ctx, x, y, size - 1, border); // border
 	renderHex(ctx, x, y, size - 3, background); // background
-	renderHexCoords(tile, ctx, x, y, size); // coords
+
+	if (showCoords) {
+		renderHexCoords(tile, ctx, x, y, size); // coords
+	}
 };
 
 export const renderTileBoundingBox = (tile: Tile, ctx: CanvasRenderingContext2D, x: number, y: number, size: number): void => {

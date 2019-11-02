@@ -18,25 +18,27 @@ import Character, { ICharacterSnapshot } from 'modules/character';
 import Player, { IPlayerCharacterSetup } from 'modules/battle/player';
 import { ICharacterData } from 'modules/character-creation/character-data';
 import { PlayerConfigList } from 'modules/battle-configuration/battle-config';
+import SuddenDeath, { ISuddenDeathSnapshot } from 'modules/battle/sudden-death';
 
 const charPositions = getCharacterPositions();
 
 export type PlayerList = [Player, Player];
 
 export interface IEngineSnapshot {
-	running: boolean;
-	tick: number;
-	order: IOrderSnapshot;
-	act: IActSnapshot | null;
-	battleInfo: IBattleInfo[];
+	readonly running: boolean;
+	readonly tick: number;
+	readonly order: IOrderSnapshot;
+	readonly act: IActSnapshot | null;
+	readonly battleInfo: IBattleInfo[];
 	readonly characters: ICharacterSnapshot[];
+	readonly suddenDeath: ISuddenDeathSnapshot;
 	readonly chronox: IChronoxRecord;
 }
 
 interface IEngineEvents {
 	readonly onBattleInfo: (info: IBattleInfo[]) => void;
 	readonly onUpdate: (engine: IEngineSnapshot) => void;
-	readonly onGameOver: (engine: IEngineSnapshot, winner: Player) => void;
+	readonly onGameOver: (engine: IEngineSnapshot, winner: Player | null) => void;
 }
 
 interface IEngineProps {
@@ -57,10 +59,13 @@ class Engine {
 	private actNumber = 0; // act ID
 	private actors: Character[] = [];
 	private act: Act | null = null;
-	private order: Order;
-	private chronox: Chronox;
+
+	private readonly order: Order;
+	private readonly chronox: Chronox;
+	private readonly suddenDeath: SuddenDeath;
 
 	constructor(conf: IEngineProps) {
+		this.events = conf.events;
 		this.players = this.createPlayers(conf);
 
 		this.characters = this.players
@@ -72,7 +77,9 @@ class Engine {
 		const chronoxConf = Chronox.getConfig(this.players, conf.parties);
 		this.chronox = new Chronox(chronoxConf);
 
-		this.events = conf.events;
+		this.suddenDeath = new SuddenDeath(() => {
+			this.events.onUpdate(this.serialize());
+		});
 	}
 
 	public start(): void {
@@ -114,6 +121,7 @@ class Engine {
 			characters: this.characters.map(char => char.serialize()),
 			order: this.order.serialize(),
 			chronox: this.chronox.serialize(),
+			suddenDeath: this.suddenDeath.serialize(),
 			battleInfo: this.battleInfo
 		};
 	}
@@ -127,30 +135,40 @@ class Engine {
 		// update game tick counter
 		this.tick++;
 
-		// update characters
-		characters.forEach(char => {
-			if (!char.isDead()) {
-				char.update(this.onInfo.bind(this));
+		// update sudden death mode state
+		this.suddenDeath.update(this.tick, timeup => {
+			if (timeup) {
+				// sudden death mode ends - check resulting characters
+				const winner = this.getWinner();
+				this.gameOver(winner);
+
+			} else {
+				// update characters
+				characters.forEach(char => {
+					if (!char.isDead()) {
+						char.update(this.onInfo.bind(this));
+					}
+				});
+
+				// update order
+				order.update();
+
+				// get actors
+				const actors = characters.filter(char => !char.isDead() && char.attributes.CT >= config.characterCTLimit);
+
+				// if no actor present, continue updating
+				if (!actors.length) {
+					this.update();
+					return;
+				}
+
+				// order actors
+				const orderChars = order.get();
+				this.actors = actors.sort((a, b) => orderChars.indexOf(a) - orderChars.indexOf(b));
+
+				this.startAct();
 			}
 		});
-
-		// update order
-		order.update();
-
-		// get actors
-		const actors = characters.filter(char => !char.isDead() && char.attributes.CT >= config.characterCTLimit);
-
-		// if no actor present, continue updating
-		if (!actors.length) {
-			this.update();
-			return;
-		}
-
-		// order actors
-		const orderChars = order.get();
-		this.actors = actors.sort((a, b) => orderChars.indexOf(a) - orderChars.indexOf(b));
-
-		this.startAct();
 	}
 
 	private startAct(): void {
@@ -192,13 +210,7 @@ class Engine {
 
 				if (winner) {
 					// finish game
-					this.running = false;
-
-					Logger.info('Engine onGameOver');
-					Logger.info('--------------------------------');
-					Logger.info(`Player "${winner.name}" won!`);
-
-					events.onGameOver(this.serialize(), winner);
+					this.gameOver(winner);
 
 				} else {
 					// run next act
@@ -300,6 +312,20 @@ class Engine {
 			return liveChars[0].player;
 		}
 		return null;
+	}
+
+	private gameOver(winner: Player | null): void {
+		this.running = false;
+
+		Logger.info('Engine onGameOver');
+		Logger.info('--------------------------------');
+
+		if (winner) {
+			Logger.info(`Player "${winner.name}" won!`);
+		} else {
+			Logger.info('Game has no winner!');
+		}
+		this.events.onGameOver(this.serialize(), winner);
 	}
 
 	private onInfo(info: IBattleInfo, duration = 3000): void {
