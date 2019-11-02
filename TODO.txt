@@ -1,10 +1,5 @@
 TODO
 ---------------------------------------------------------------------------------------
-??	v magical zbranich mit
-	- AETHERBLADE (pro M-typy)
-	- AETHERCANNON (pro SM)
-	- AETHERHAMMER (pro PM)
-
 --	implementovat Sudden death mode (aby nedoslo ke stavu, kdy zbyvaji jen S-typy, ktere evaduji vsechny utoky)
 
 --	AI: pridat logiku pro vyhodnoceni pouziti CC Commandu
