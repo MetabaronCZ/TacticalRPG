@@ -17,5 +17,5 @@ TODO
 	- postavy, zbrane, brneni, skilly
 
 --	po doladeni SuddenDeath nastavit:
-		??	suddenDeathStart = 100;
-		--	suddenDeathInterval = 20;
+	??	suddenDeathStart = 100;
+	--	suddenDeathInterval = 20;

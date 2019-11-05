@@ -85,7 +85,10 @@ class HexaGrid extends Canvas<IProps, IState> {
 	public render(): React.ReactNode {
 		const { x, y, tile } = this.state.hovered;
 		const { characters, battleInfo } = this.props;
-		const char = characters.find(ch => tile === ch.position);
+
+		const char = characters
+			.filter(ch => !ch.dead)
+			.find(ch => tile === ch.position);
 
 		const info = battleInfo.map(i => ({
 			info: i,
