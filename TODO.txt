@@ -1,6 +1,9 @@
 TODO
 ---------------------------------------------------------------------------------------
 >>	implementovat Sudden death mode
+	- presunout barvy jako promenne do color.ts
+	- primarne vyjmout ty akce, kde by postava zustala na highlighted poli
+	- pri Evasion prioritizovat pole, ktere nejsou highlighted
 
 --	do Chronoxu posilat i udalosti z DoT a ze SuddenDeath
 

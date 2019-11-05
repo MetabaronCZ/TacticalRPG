@@ -77,9 +77,11 @@ class Engine {
 		const chronoxConf = Chronox.getConfig(this.players, conf.parties);
 		this.chronox = new Chronox(chronoxConf);
 
-		this.suddenDeath = new SuddenDeath(() => {
-			this.events.onUpdate(this.serialize());
-		});
+		this.suddenDeath = new SuddenDeath(
+			this.characters,
+			() => this.events.onUpdate(this.serialize()),
+			info => this.onInfo(info)
+		);
 	}
 
 	public start(): void {

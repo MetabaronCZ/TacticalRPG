@@ -3,7 +3,7 @@ import React from 'react';
 import { sqrt3 } from 'core/number';
 import { gridSize } from 'data/game-config';
 
-import { getTiles } from 'modules/geometry/tiles';
+import { getTiles, isTileDestroyed } from 'modules/geometry/tiles';
 import {
 	getTileStyle, getCharacterStyle, getHexDimensions, getTileCoords,
 	ITileCoords
@@ -26,7 +26,15 @@ import CharacterTooltip from 'ui/battle/CharacterTooltip';
 import { getCrossColor } from 'modules/color';
 
 const gridMargin = 20; // safe area around canvas content
-const tiles = getTiles();
+const tiles = getTiles(true);
+
+// highlighted tile styles
+const hBorder: Color = [250, 50, 50];
+const hBackground: Color = [20, 20, 20];
+
+// destroyed tile styles
+const dBorder: Color = [40, 40, 40];
+const dBackground: Color = [50, 50, 50];
 
 interface IHovered {
 	x: number;
@@ -136,34 +144,39 @@ class HexaGrid extends Canvas<IProps, IState> {
 
 			// hex
 			const isHighlighted = tile.isContained(suddenDeath.highlightedTiles);
-			const isDestroyed = tile.isContained(suddenDeath.destroyedTiles);
+			const isDestroyed = isTileDestroyed(tile);
+
 			let [background, border] = getTileStyle(tile, act);
 
-			if (isHighlighted) {
-				const hBorder: Color = [250, 50, 50];
-				const hBackground: Color = [20, 20, 20];
+			if (isHighlighted && suddenDeath.animation && suddenDeath.animation.isRunning()) {
+				// animation progress based tile styles
+				const progress = suddenDeath.animation.getProgress();
+				const animType = suddenDeath.animation.type;
 
-				if (suddenDeath.animation && suddenDeath.animation.isRunning() && 'HIGHLIGHT' === suddenDeath.animation.type) {
-					const progress = suddenDeath.animation.getProgress();
-					background = getCrossColor(background, hBackground, progress);
-					border = getCrossColor(border, hBorder, progress);
-				} else {
-					background = hBackground;
-					border = hBorder;
+				switch (animType) {
+					case 'HIGHLIGHT':
+						background = getCrossColor(background, hBackground, progress);
+						border = getCrossColor(border, hBorder, progress);
+						break;
+
+					case 'DESTROY':
+						background = getCrossColor(background, dBackground, progress);
+						border = getCrossColor(border, dBorder, progress);
+						break;
+
+					default:
+						throw new Error('Invalid SuddenDeath animation type: ' + animType);
 				}
+
+			} else if (isHighlighted) {
+				// highlighted tile
+				border = hBorder;
+				background = hBackground;
 
 			} else if (isDestroyed) {
-				const hBorder: Color = [40, 40, 40];
-				const hBackground: Color = [50, 50, 50];
-
-				if (suddenDeath.animation && suddenDeath.animation.isRunning() && 'DESTROY' === suddenDeath.animation.type) {
-					const progress = suddenDeath.animation.getProgress();
-					background = getCrossColor(background, hBackground, progress);
-					border = getCrossColor(border, hBorder, progress);
-				} else {
-					background = hBackground;
-					border = hBorder;
-				}
+				// destroyed tile
+				border = dBorder;
+				background = dBackground;
 			}
 
 			renderTile(tile, offCtx, x, y, itemSize, background, border, !isDestroyed);
