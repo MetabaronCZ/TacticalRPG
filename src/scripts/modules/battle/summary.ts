@@ -4,7 +4,7 @@ const KEY = 'chronox';
 
 export interface ISummary {
 	readonly chronox: IChronoxRecord;
-	readonly winner: number;
+	readonly winner: number | null;
 }
 
 class Summary {
@@ -21,7 +21,7 @@ class Summary {
 		}
 	}
 
-	public static save(chronox: IChronoxRecord, winner: number): void {
+	public static save(chronox: IChronoxRecord, winner: number | null): void {
 		const record: ISummary = { chronox, winner };
 		sessionStorage.setItem(KEY, JSON.stringify(record));
 	}

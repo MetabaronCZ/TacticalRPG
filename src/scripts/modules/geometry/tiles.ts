@@ -5,7 +5,10 @@ import Tile from 'modules/geometry/tile';
 import { Color, maxColorValue } from 'modules/color';
 
 interface ITiles {
-	[id: string]: Tile;
+	[id: string]: {
+		readonly tile: Tile;
+		destroyed: boolean;
+	};
 }
 
 const min = -(gridSize - 1);
@@ -19,7 +22,12 @@ const getTileID = (x: number, y: number, z: number): string => {
 };
 
 export const getTileByID = (id: string): Tile | null => {
-	return tiles[id] || null;
+	const data = tiles[id];
+
+	if (!data || data.destroyed) {
+		return null;
+	}
+	return data.tile;
 };
 
 export const getTile = (x: number, y: number, z: number): Tile | null => {
@@ -36,8 +44,33 @@ export const getSafeTile = (x: number, y: number, z: number): Tile => {
 	return tile;
 };
 
-export const getTiles = (): Tile[] => {
-	return Object.keys(tiles).map(id => tiles[id]);
+export const getTiles = (includeDestroyed = false): Tile[] => {
+	return Object.keys(tiles)
+		.filter(id => includeDestroyed ? true : !tiles[id].destroyed)
+		.map(id => tiles[id].tile);
+};
+
+export const isTileDestroyed = (tile: Tile): boolean => {
+	const data = tiles[tile.id];
+
+	if (!data) {
+		throw new Error(`Invalid tile: ${tile.id}`);
+	}
+	return data.destroyed;
+};
+
+// remove tile from grid
+export const destroyTile = (tile: Tile): void => {
+	if (tiles[tile.id].destroyed) {
+		return;
+	}
+	tiles[tile.id].destroyed = true;
+
+	for (const id in tiles) {
+		const t = tiles[id].tile;
+		const neighbours = t.getNeighbours([tile]);
+		t.setNeighbours(neighbours);
+	}
 };
 
 // initialize game tile pool
@@ -48,7 +81,11 @@ const init = (): void => {
 			for (let z = min; z <= max; z++) {
 				if (0 === x + y + z) {
 					const id = getTileID(x, y, z);
-					tiles[id] = new Tile(id, x, y, z, 1, 'DEFAULT');
+
+					tiles[id] = {
+						tile: new Tile(id, x, y, z, 1, 'DEFAULT'),
+						destroyed: false
+					};
 				}
 			}
 		}

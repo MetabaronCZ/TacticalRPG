@@ -4,9 +4,10 @@ export type ColorID =
 	'green' | 'greenLight' |
 	'blue' | 'blueLight' |
 	'yellow' | 'yellowLight' |
-	'greyDarker' | 'greyDark' | 'grey' | 'greyLight' |
+	'greyDarkest' | 'greyDarker' | 'greyDark' | 'grey' | 'greyLight' |
 	'violet' | 'violetDark' |
-	'orange' | 'orangeDark';
+	'orange' | 'orangeDark' |
+	'red';
 
 export const minColorValue = 0;
 export const maxColorValue = 255;

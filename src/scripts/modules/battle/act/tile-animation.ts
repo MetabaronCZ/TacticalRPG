@@ -1,17 +1,17 @@
-import Skill from 'modules/skill';
-import Character from 'modules/character';
+import { tileAnimationDuration } from 'data/game-config';
+import Tile from 'modules/geometry/tile';
 
-type CharacterAnimationType = 'COMBAT' | 'REACTION';
+type TileAnimationType = 'HIGHLIGHT' | 'DESTROY';
 
-type OnEnd = () => void;
 type OnUpdate = () => void;
+type OnEnd = () => void;
 
-class SkillAnimation {
-	public readonly type: CharacterAnimationType;
-	public readonly source: Character;
-	public readonly targets: Character[];
+class TileAnimation {
+	public readonly type: TileAnimationType;
+	public readonly tiles: Tile[];
 
 	private readonly duration: number;
+
 	private readonly onEnd: OnEnd;
 	private readonly onUpdate: OnUpdate;
 
@@ -20,11 +20,10 @@ class SkillAnimation {
 	private startTime = 0;
 	private progress = 0;
 
-	constructor(type: CharacterAnimationType, source: Character, targets: Character[], skill: Skill, onUpdate: OnUpdate, onEnd: OnEnd) {
+	constructor(type: TileAnimationType, tiles: Tile[], onUpdate: OnUpdate, onEnd: OnEnd) {
 		this.type = type;
-		this.source = source;
-		this.targets = targets;
-		this.duration = skill.animation.duration;
+		this.tiles = tiles;
+		this.duration = tileAnimationDuration;
 
 		this.onEnd = onEnd;
 		this.onUpdate = onUpdate;
@@ -40,17 +39,17 @@ class SkillAnimation {
 
 	public start(): void {
 		if (this.done || this.running) {
-			throw new Error('Skill animation already started!');
+			throw new Error('Tile animation already started!');
 		}
 		this.running = true;
 		this.startTime = performance.now();
 
-		for (const target of this.targets) {
-			target.animation = this;
-		}
-		this.source.animation = this;
-
 		this.animate(this.startTime);
+	}
+
+	public stop(): void {
+		this.running = false;
+		this.done = true;
 	}
 
 	private animate = (t: number): void => {
@@ -67,20 +66,10 @@ class SkillAnimation {
 		this.onUpdate();
 
 		if (isLast) {
-			this.running = false;
-			this.done = true;
-
-			for (const target of this.targets) {
-				if (this === target.animation) {
-					target.animation = null;
-				}
-			}
-			if (this === this.source.animation) {
-				this.source.animation = null;
-			}
+			this.stop();
 			this.onEnd();
 		}
 	}
 }
 
-export default SkillAnimation;
+export default TileAnimation;

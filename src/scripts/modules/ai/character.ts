@@ -54,6 +54,7 @@ interface IAICharacterMemory {
 
 interface IAICharacterUpdateData {
 	readonly act: IActSnapshot;
+	readonly dangerousTiles: Tile[];
 	readonly ally: IAICharacterSnapshot[];
 	readonly enemy: ICharacterSnapshot[];
 	readonly characters: ICharacterSnapshot[];

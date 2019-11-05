@@ -4,9 +4,14 @@ export const isLoggingEnabled = true;
 // grid
 export const gridSize = 8;
 export const blockSize = 64;
+export const tileAnimationDuration = 1000; // in milliseconds
 
 // engine
-export const tickDelay = 0;
+export const tickDelay = 0; // in milliseconds
+
+// sudden death
+export const suddenDeathStart = 30; // time after which sudden death mode starts [in game ticks]
+export const suddenDeathInterval = 10; // interval of sudden death mode grid tile destruction [in game ticks]
 
 // animation
 export const moveAnimDuration = 150;

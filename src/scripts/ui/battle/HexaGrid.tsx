@@ -1,18 +1,21 @@
 import React from 'react';
 
 import { sqrt3 } from 'core/number';
+
+import { tileStyles } from 'data/styles';
 import { gridSize } from 'data/game-config';
 
-import { getTiles } from 'modules/geometry/tiles';
+import { getTiles, isTileDestroyed } from 'modules/geometry/tiles';
 import {
-	getTileStyle, getCharacterStyle, getHexDimensions, getTileCoords,
-	ITileCoords
+	getTileStyle, getCharacterStyle, getHexDimensions, getTileCoords, ITileCoords
 } from 'modules/battle/grid';
 
 import Tile from 'modules/geometry/tile';
+import { getCrossColor } from 'modules/color';
 import { IActSnapshot } from 'modules/battle/act';
 import { ICharacterSnapshot } from 'modules/character';
 import { IBattleInfo } from 'modules/battle/battle-info';
+import { ISuddenDeathSnapshot } from 'modules/battle/sudden-death';
 
 import { renderEffect } from 'modules/graphics/effect';
 import { renderCharacter } from 'modules/graphics/character';
@@ -23,7 +26,10 @@ import GridBattleInfo from 'ui/battle/GridBattleInfo';
 import CharacterTooltip from 'ui/battle/CharacterTooltip';
 
 const gridMargin = 20; // safe area around canvas content
-const tiles = getTiles();
+const tiles = getTiles(true);
+
+const [hBackground, hBorder] = tileStyles.highlighted;
+const [dBackground, dBorder] = tileStyles.destroyed;
 
 interface IHovered {
 	x: number;
@@ -34,6 +40,7 @@ interface IHovered {
 interface IProps {
 	readonly act: IActSnapshot;
 	readonly characters: ICharacterSnapshot[];
+	readonly suddenDeath: ISuddenDeathSnapshot;
 	readonly battleInfo: IBattleInfo[];
 	readonly onTileSelect: (tile: Tile) => void;
 }
@@ -78,7 +85,10 @@ class HexaGrid extends Canvas<IProps, IState> {
 	public render(): React.ReactNode {
 		const { x, y, tile } = this.state.hovered;
 		const { characters, battleInfo } = this.props;
-		const char = characters.find(ch => tile === ch.position);
+
+		const char = characters
+			.filter(ch => !ch.dead)
+			.find(ch => tile === ch.position);
 
 		const info = battleInfo.map(i => ({
 			info: i,
@@ -111,7 +121,7 @@ class HexaGrid extends Canvas<IProps, IState> {
 
 	public draw(): void {
 		const canvas = this.canvas.current;
-		const { act, characters } = this.props;
+		const { act, characters, suddenDeath } = this.props;
 		const { ctx, itemSize, gridSize } = this;
 
 		if (!ctx || !canvas) {
@@ -131,8 +141,43 @@ class HexaGrid extends Canvas<IProps, IState> {
 			renderTileBoundingBox(tile, hitCtx, x, y, itemSize);
 
 			// hex
-			const style = getTileStyle(tile, act);
-			renderTile(tile, offCtx, x, y, itemSize, style[0], style[1]);
+			const isHighlighted = tile.isContained(suddenDeath.highlightedTiles);
+			const isDestroyed = isTileDestroyed(tile);
+
+			let [background, border] = getTileStyle(tile, act);
+
+			if (isHighlighted && suddenDeath.animation && suddenDeath.animation.isRunning()) {
+				// animation progress based tile styles
+				const progress = suddenDeath.animation.getProgress();
+				const animType = suddenDeath.animation.type;
+
+				switch (animType) {
+					case 'HIGHLIGHT':
+						background = getCrossColor(background, hBackground, progress);
+						border = getCrossColor(border, hBorder, progress);
+						break;
+
+					case 'DESTROY':
+						background = getCrossColor(background, dBackground, progress);
+						border = getCrossColor(border, dBorder, progress);
+						break;
+
+					default:
+						throw new Error('Invalid SuddenDeath animation type: ' + animType);
+				}
+
+			} else if (isHighlighted) {
+				// highlighted tile
+				border = hBorder;
+				background = hBackground;
+
+			} else if (isDestroyed) {
+				// destroyed tile
+				border = dBorder;
+				background = dBackground;
+			}
+
+			renderTile(tile, offCtx, x, y, itemSize, background, border, !isDestroyed);
 		}
 
 		// draw characters

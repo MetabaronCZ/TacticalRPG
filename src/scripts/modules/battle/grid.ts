@@ -1,7 +1,7 @@
 import { sqrt3 } from 'core/number';
 
-import colors from 'data/colors';
 import { characterPositions } from 'data/grid';
+import { tileStyles, characterStyles } from 'data/styles';
 
 import { Color } from 'modules/color';
 import Tile from 'modules/geometry/tile';
@@ -9,43 +9,21 @@ import { IActSnapshot } from 'modules/battle/act';
 import { getSafeTile } from 'modules/geometry/tiles';
 import { ICharacterSnapshot } from 'modules/character';
 
-type TileColors = 'default' | 'green' | 'blue' | 'yellow';
-type CharacterColors = 'grey' | 'violet' | 'orange';
+export type TileColors = 'default' | 'green' | 'blue' | 'yellow' | 'highlighted' | 'destroyed';
+export type CharacterColors = 'grey' | 'violet' | 'orange' | 'highlighted';
 
 export interface ITileCoords {
 	x: number;
 	y: number;
 }
 
-type ColorStyle = [Color, Color];
-
-type TileStyles = {
-	[id in TileColors]: ColorStyle;
-};
-
-type CharacterStyles = {
-	[id in CharacterColors]: ColorStyle;
-};
+// [background, border]
+export type ColorStyle = [Color, Color];
 
 interface IHexDimensions {
 	width: number;
 	height: number;
 }
-
-// tile colors
-export const tileStyles: TileStyles = {
-	default: [colors.greyDark, colors.greyDarker],
-	green: [colors.green, colors.greenLight],
-	blue: [colors.blue, colors.blueLight],
-	yellow: [colors.yellow, colors.yellowLight]
-};
-
-// character colors
-export const characterStyles: CharacterStyles = {
-	grey: [colors.grey, colors.greyDark],
-	violet: [colors.violet, colors.violetDark],
-	orange: [colors.orange, colors.orangeDark]
-};
 
 export const getTileStyle = (tile: Tile, act: IActSnapshot): ColorStyle => {
 	const { MOVEMENT, COMMAND, REACTION, DIRECTION } = act.phases;
@@ -143,7 +121,7 @@ export const getCharacterStyle = (character: ICharacterSnapshot, isActor: boolea
 		style = characterStyles.orange;
 	}
 	if (isActor) {
-		return [style[0], colors.yellowLight];
+		return [style[0], characterStyles.highlighted[1]];
 	}
 	return style;
 };

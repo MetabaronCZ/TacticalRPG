@@ -32,7 +32,7 @@ class AIPlayer extends Player {
 	}
 
 	public onUpdate(state: IEngineSnapshot): void {
-		const { act, characters } = state;
+		const { act, suddenDeath, characters } = state;
 
 		if (!act) {
 			throw new Error('Invalid engine state');
@@ -45,6 +45,7 @@ class AIPlayer extends Player {
 		aiChar.update({
 			act,
 			characters,
+			dangerousTiles: suddenDeath.highlightedTiles,
 			ally: this.ally.map(char => char.serialize()),
 			enemy: characters.filter(char => char.player.id !== this.id)
 		});

@@ -6,16 +6,24 @@ import { getRandomItem } from 'core/array';
 
 const btEvadeTo = (): BTAction<IAIData> => {
 	return BT.Action(data => {
-		const { reaction } = data.act.phases.REACTION;
-		const { effectArea } = data.act.phases.COMMAND;
+		const { act, dangerousTiles } = data;
+		const { reaction } = act.phases.REACTION;
+		const { effectArea } = act.phases.COMMAND;
 
 		if (!reaction) {
 			throw new Error('AI character could not react: invalid reaction');
 		}
-		const evasible = reaction.evasible.filter(tile => {
+		let evasible = reaction.evasible.filter(tile => {
 			return !tile.isContained(effectArea);
 		});
 
+		const safeTiles = evasible.filter(tile => {
+			return !tile.isContained(dangerousTiles);
+		});
+
+		if (safeTiles.length) {
+			evasible = safeTiles;
+		}
 		const evasionTarget = getRandomItem(evasible);
 
 		if (!evasionTarget) {
