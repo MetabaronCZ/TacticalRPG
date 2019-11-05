@@ -1,4 +1,4 @@
-import Animation from 'core/animation';
+import Sequence from 'core/sequence';
 
 import { getTiles } from 'modules/geometry/tiles';
 import { resolveDirection } from 'modules/geometry/direction';
@@ -157,7 +157,7 @@ class MovePhase extends ActPhase<IMovePhaseSnapshot, IMovePhaseRecord> {
 
 		const timing = Array(movePath.length).fill(0);
 
-		const anim = new Animation(
+		const moveSequence = new Sequence(
 			timing,
 			true,
 			(step, next) => {
@@ -183,12 +183,12 @@ class MovePhase extends ActPhase<IMovePhaseSnapshot, IMovePhaseRecord> {
 				moveAnim.start();
 			},
 			() => {
-				// on animation end
+				// on sequence end
 				this.finalize();
 			}
 		);
 
-		anim.start();
+		moveSequence.start();
 	}
 
 	private finalize(): void {

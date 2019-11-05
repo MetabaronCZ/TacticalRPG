@@ -1,4 +1,4 @@
-import Animation from 'core/animation';
+import Sequence from 'core/sequence';
 import { getRandomItem } from 'core/array';
 import { formatNumber, randomNumberBetween } from 'core/number';
 
@@ -121,13 +121,13 @@ class CombatPhase extends ActPhase<ICombatPhaseSnapshot, ICombatPhaseRecord> {
 			if (info.length) {
 				const infoTiming = info.map(() => randomNumberBetween(250, 350));
 
-				const infoAnim = new Animation(infoTiming, false, infoStep => {
+				const infoSequence = new Sequence(infoTiming, false, infoStep => {
 					const i = info[infoStep.number];
 					this.onEvent('BATTLE_INFO', i);
 				});
 
-				// start battle info animation
-				infoAnim.start();
+				// show battle info
+				infoSequence.start();
 
 				// log info to console
 				for (const i of info) {

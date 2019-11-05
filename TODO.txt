@@ -1,7 +1,5 @@
 TODO
 ---------------------------------------------------------------------------------------
---	do Chronoxu posilat i udalosti z DoT a ze SuddenDeath
-
 --	refaktoring MoveAnimation, SkillAnimation a TileAnimation do jednotne formy
 	- prirazovat animace postavam / Tile / apod.
 

@@ -1,4 +1,4 @@
-export interface IAnimationStep {
+export interface ISequenceStep {
 	readonly number: number;
 	readonly max: number;
 	readonly duration: number;
@@ -6,21 +6,21 @@ export interface IAnimationStep {
 	readonly isFirst: boolean;
 }
 
-export type AnimationTiming = number[]; // step time intervals (in ms)
-export type OnAnimationStep = (step: IAnimationStep, next: () => void) => void;
-export type OnAnimationEnd = () => void;
+type SequenceTiming = number[]; // step time intervals (in ms)
+type OnSequenceStep = (step: ISequenceStep, next: () => void) => void;
+type OnSequenceEnd = () => void;
 
-class Animation {
+class Sequence {
 	private readonly async: boolean;
-	private readonly timing: AnimationTiming;
-	private readonly onStep: OnAnimationStep;
-	private readonly onEnd?: OnAnimationEnd;
+	private readonly timing: SequenceTiming;
+	private readonly onStep: OnSequenceStep;
+	private readonly onEnd?: OnSequenceEnd;
 	private readonly stepsCount: number;
 	private currentStep = 0;
 
-	constructor(timing: AnimationTiming, async: boolean, onStep: OnAnimationStep, onEnd?: OnAnimationEnd) {
+	constructor(timing: SequenceTiming, async: boolean, onStep: OnSequenceStep, onEnd?: OnSequenceEnd) {
 		if (!timing.length) {
-			throw new Error('Animation initialized with invalid timing');
+			throw new Error('Sequence initialized with invalid timing');
 		}
 		this.async = async;
 		this.timing = timing;
@@ -47,7 +47,7 @@ class Animation {
 				this.step();
 
 			} else if (this.onEnd) {
-				// animation end
+				// sequence end
 				this.onEnd();
 			}
 		};
@@ -73,4 +73,4 @@ class Animation {
 	}
 }
 
-export default Animation;
+export default Sequence;

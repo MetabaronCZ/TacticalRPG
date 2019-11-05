@@ -1,28 +1,28 @@
-import Animation, { IAnimationStep, OnAnimationStep } from 'core/animation';
+import Sequence, { ISequenceStep } from 'core/sequence';
 
 jest.useFakeTimers();
 
-describe('core.Animation', () => {
+describe('core.Sequence', () => {
 	test('it throws if invalid timing given', () => {
-		const fn = (): Animation => {
-			return new Animation([], false, () => void(0));
+		const fn = (): Sequence => {
+			return new Sequence([], false, () => void(0));
 		};
 		expect(fn).toThrow();
 	});
 
-	test('it calls animation step handler only after start method call', () => {
+	test('it calls sequence step handler only after start method call', () => {
 		const fn = jest.fn();
-		const anim = new Animation([0], false, fn);
+		const seq = new Sequence([0], false, fn);
 
 		jest.runAllTimers();
 		expect(fn).not.toBeCalled();
 
-		anim.start();
+		seq.start();
 		jest.runAllTimers();
 		expect(fn).toBeCalledTimes(1);
 	});
 
-	test('it calls animation step handler according to input', () => {
+	test('it calls sequence step handler according to input', () => {
 		const data = [
 			[0],
 			[0, 0, 10, 0],
@@ -31,10 +31,10 @@ describe('core.Animation', () => {
 
 		for (const d of data) {
 			const fn = jest.fn();
-			const anim = new Animation(d, false, fn);
+			const seq = new Sequence(d, false, fn);
 			expect(fn).not.toBeCalled();
 
-			anim.start();
+			seq.start();
 			jest.runAllTimers();
 			expect(fn).toBeCalledTimes(d.length);
 		}
@@ -42,13 +42,13 @@ describe('core.Animation', () => {
 
 	test('it provides correct step data in handler', () => {
 		const data = [50, 0, 10, 35, 100];
-		const steps: IAnimationStep[] = [];
+		const steps: ISequenceStep[] = [];
 
-		const anim = new Animation(data, false, step => {
+		const seq = new Sequence(data, false, step => {
 			steps.push(step);
 		});
 
-		anim.start();
+		seq.start();
 		jest.runAllTimers();
 
 		expect(steps.length).toEqual(data.length);
@@ -62,7 +62,7 @@ describe('core.Animation', () => {
 		});
 	});
 
-	test('it calls animation onEnd handler when animation done', () => {
+	test('it calls sequence onEnd handler when sequence done', () => {
 		const data = [
 			[0],
 			[0, 0, 10, 0],
@@ -72,18 +72,19 @@ describe('core.Animation', () => {
 		for (const d of data) {
 			const result: Array<number | string> = [];
 
-			const onStep: OnAnimationStep = step => {
-				result.push(d[step.number]);
-			};
-
 			const onEnd = jest.fn(() => {
 				result.push('END');
 			});
 
-			const anim = new Animation(d, false, onStep, onEnd);
+			const seq = new Sequence(
+				d,
+				false,
+				step => result.push(d[step.number]),
+				onEnd
+			);
 			expect(onEnd).not.toBeCalled();
 
-			anim.start();
+			seq.start();
 			jest.runAllTimers();
 
 			expect(onEnd).toBeCalledTimes(1);
@@ -93,26 +94,26 @@ describe('core.Animation', () => {
 
 	test('it can run asynchronously', () => {
 		const data = [50, 0, 10, 35, 100];
-		const steps: IAnimationStep[] = [];
+		const steps: ISequenceStep[] = [];
 
-		const anim = new Animation(data, true, (step, next) => {
+		const seq = new Sequence(data, true, (step, next) => {
 			steps.push(step);
 			next();
 		});
 
-		anim.start();
+		seq.start();
 		expect(steps.length).toEqual(data.length);
 	});
 
 	test('it does not run correctly if no callback called when async', () => {
 		const data = [50, 0, 10, 35, 100];
-		const steps: IAnimationStep[] = [];
+		const steps: ISequenceStep[] = [];
 
-		const anim = new Animation(data, true, step => {
+		const seq = new Sequence(data, true, step => {
 			steps.push(step);
 		});
 
-		anim.start();
+		seq.start();
 		expect(steps.length).toEqual(1); // only first step called
 	});
 });
