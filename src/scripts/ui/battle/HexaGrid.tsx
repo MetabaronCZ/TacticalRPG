@@ -1,16 +1,17 @@
 import React from 'react';
 
 import { sqrt3 } from 'core/number';
+
+import { tileStyles } from 'data/styles';
 import { gridSize } from 'data/game-config';
 
 import { getTiles, isTileDestroyed } from 'modules/geometry/tiles';
 import {
-	getTileStyle, getCharacterStyle, getHexDimensions, getTileCoords,
-	ITileCoords
+	getTileStyle, getCharacterStyle, getHexDimensions, getTileCoords, ITileCoords
 } from 'modules/battle/grid';
 
-import { Color } from 'modules/color';
 import Tile from 'modules/geometry/tile';
+import { getCrossColor } from 'modules/color';
 import { IActSnapshot } from 'modules/battle/act';
 import { ICharacterSnapshot } from 'modules/character';
 import { IBattleInfo } from 'modules/battle/battle-info';
@@ -23,18 +24,12 @@ import { renderTile, renderTileBoundingBox } from 'modules/graphics/tile';
 import Canvas from 'ui/common/Canvas';
 import GridBattleInfo from 'ui/battle/GridBattleInfo';
 import CharacterTooltip from 'ui/battle/CharacterTooltip';
-import { getCrossColor } from 'modules/color';
 
 const gridMargin = 20; // safe area around canvas content
 const tiles = getTiles(true);
 
-// highlighted tile styles
-const hBorder: Color = [250, 50, 50];
-const hBackground: Color = [20, 20, 20];
-
-// destroyed tile styles
-const dBorder: Color = [40, 40, 40];
-const dBackground: Color = [50, 50, 50];
+const [hBackground, hBorder] = tileStyles.highlighted;
+const [dBackground, dBorder] = tileStyles.destroyed;
 
 interface IHovered {
 	x: number;

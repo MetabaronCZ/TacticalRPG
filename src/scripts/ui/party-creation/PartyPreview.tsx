@@ -2,15 +2,16 @@ import React from 'react';
 import { observer } from 'mobx-react';
 
 import { sqrt3 } from 'core/number';
+
 import { gridSize } from 'data/game-config';
+import { characterStyles, tileStyles } from 'data/styles';
 
 import Character from 'modules/character';
 import Player from 'modules/battle/player';
 import { PlayerData } from 'modules/battle-configuration/player-data';
 import { ICharacterData } from 'modules/character-creation/character-data';
 import {
-	getCharacterPositions, getHexDimensions,
-	getTileCoords, tileStyles, characterStyles, ITileCoords
+	getCharacterPositions, getHexDimensions, getTileCoords, ITileCoords
 } from 'modules/battle/grid';
 
 import { renderTile } from 'modules/graphics/tile';
