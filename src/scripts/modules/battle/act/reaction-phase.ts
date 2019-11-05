@@ -3,7 +3,7 @@ import { resolveDirection } from 'modules/geometry/direction';
 
 import Tile from 'modules/geometry/tile';
 import ActPhase from 'modules/battle/act/phase';
-import { IOnActPhaseEvent } from 'modules/battle/act';
+import { OnActPhaseEvent } from 'modules/battle/act';
 import MoveAnimation from 'modules/battle/act/move-animation';
 import SkillAnimation from 'modules/battle/act/skill-animation';
 import Character, { ICharacterSnapshot } from 'modules/character';
@@ -66,9 +66,9 @@ class ReactionPhase extends ActPhase<IReactionPhaseSnapshot, IReactionPhaseRecor
 
 	private actActor: Character;
 	private readonly characters: Character[];
-	private readonly onEvent: IOnActPhaseEvent;
+	private readonly onEvent: OnActPhaseEvent;
 
-	constructor(actor: Character, characters: Character[], onEvent: IOnActPhaseEvent) {
+	constructor(actor: Character, characters: Character[], onEvent: OnActPhaseEvent) {
 		super();
 		this.actActor = actor;
 		this.onEvent = onEvent;

@@ -8,7 +8,7 @@ import Tile from 'modules/geometry/tile';
 import Character from 'modules/character';
 import Command from 'modules/battle/command';
 import ActPhase from 'modules/battle/act/phase';
-import { IOnActPhaseEvent } from 'modules/battle/act';
+import { OnActPhaseEvent } from 'modules/battle/act';
 import MoveAnimation from 'modules/battle/act/move-animation';
 
 const txtIdle = 'Move on grid or select a command:';
@@ -42,7 +42,7 @@ class MovePhase extends ActPhase<IMovePhaseSnapshot, IMovePhaseRecord> {
 
 	private readonly costMap: ICostMap = {}; // movable area cost map
 	private readonly obstacles: Tile[] = [];
-	private readonly onEvent: IOnActPhaseEvent;
+	private readonly onEvent: OnActPhaseEvent;
 
 	private phase: MovePhaseID = 'SUSPENDED';
 	private initialAP: number;
@@ -51,7 +51,7 @@ class MovePhase extends ActPhase<IMovePhaseSnapshot, IMovePhaseRecord> {
 	private moveTarget: Tile;
 	private movePath: Tile[] = [];
 
-	constructor(actor: Character, characters: Character[], onEvent: IOnActPhaseEvent) {
+	constructor(actor: Character, characters: Character[], onEvent: OnActPhaseEvent) {
 		super();
 
 		const obstacles = characters

@@ -28,7 +28,7 @@ interface IPhases {
 }
 
 export type ActPhaseEvent = 'BATTLE_INFO' | MovePhaseEvents | CommandPhaseEvents | ReactionPhaseEvents | CombatPhaseEvents | DirectPhaseEvents;
-export type IOnActPhaseEvent = (event: ActPhaseEvent, data?: Character | Command | Tile | IBattleInfo | null) => void;
+export type OnActPhaseEvent = (event: ActPhaseEvent, data?: Character | Command | Tile | IBattleInfo | null) => void;
 
 type IUpdateCallback = (state: IEngineSnapshot) => void;
 
@@ -282,7 +282,7 @@ class Act {
 		});
 	}
 
-	private onPhaseEvent: IOnActPhaseEvent = (evt, data) => {
+	private onPhaseEvent: OnActPhaseEvent = (evt, data) => {
 		const { phase, phases } = this;
 
 		if ('BATTLE_INFO' === evt) {

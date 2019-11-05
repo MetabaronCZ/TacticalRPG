@@ -4,15 +4,15 @@ import { observer } from 'mobx-react';
 import { IPartyData } from 'modules/party-creation/party-data';
 import getColumns from 'ui/party-creation/PartyList/columns';
 
-export type IOnMoveDown = (id: string) => () => void;
-export type IOnMoveUp = (id: string) => () => void;
-export type IOnDelete = (id: string) => () => void;
+export type OnMoveDown = (id: string) => () => void;
+export type OnMoveUp = (id: string) => () => void;
+export type OnDelete = (id: string) => () => void;
 
 interface IPartyListProps {
 	readonly parties: IPartyData[];
-	readonly onMoveDown: IOnMoveDown;
-	readonly onMoveUp: IOnMoveUp;
-	readonly onDelete: IOnDelete;
+	readonly onMoveDown: OnMoveDown;
+	readonly onMoveUp: OnMoveUp;
+	readonly onDelete: OnDelete;
 }
 
 const PartyList: React.SFC<IPartyListProps> = props => {

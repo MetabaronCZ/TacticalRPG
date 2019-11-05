@@ -4,16 +4,16 @@ import { observer } from 'mobx-react';
 import { ICharacterData } from 'modules/character-creation/character-data';
 import getColumns from 'ui/character-creation/CharacterList/columns';
 
-export type IOnMoveDown = (id: string) => () => void;
-export type IOnMoveUp = (id: string) => () => void;
-export type IOnDelete = (id: string) => () => void;
+export type OnMoveDown = (id: string) => () => void;
+export type OnMoveUp = (id: string) => () => void;
+export type OnDelete = (id: string) => () => void;
 
 interface ICharacterListProps {
 	readonly editable?: boolean;
 	readonly characters: ICharacterData[];
-	readonly onMoveDown?: IOnMoveDown;
-	readonly onMoveUp?: IOnMoveUp;
-	readonly onDelete?: IOnDelete;
+	readonly onMoveDown?: OnMoveDown;
+	readonly onMoveUp?: OnMoveUp;
+	readonly onDelete?: OnDelete;
 }
 
 const CharacterList: React.SFC<ICharacterListProps> = props => {

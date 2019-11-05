@@ -4,7 +4,7 @@ import { WeaponID } from 'modules/equipment/weapon-data';
 import { StatusEffectID } from 'modules/battle/status-effect';
 
 export type BattleInfoType = 'ACTION' | 'REACTION' | 'DAMAGE' | 'HEALING' | 'DEBUFF' | 'BUFF';
-export type IOnBattleInfo = (info: IBattleInfo) => void;
+export type OnBattleInfo = (info: IBattleInfo) => void;
 
 export interface IBattleInfo {
 	readonly text: string;

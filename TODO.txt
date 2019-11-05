@@ -2,8 +2,6 @@ TODO
 ---------------------------------------------------------------------------------------
 ??	pridat testy k Animation
 
---	prejmenovat IOnX... eventy / typy na OnX...
-
 --	AI: pridat logiku pro vyhodnoceni pouziti CC Commandu
 	- viz "effectActions" v btDecide
 

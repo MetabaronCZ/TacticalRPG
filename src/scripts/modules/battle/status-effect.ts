@@ -1,16 +1,16 @@
 import StatusEffects from 'data/status-effects';
 
 import Character from 'modules/character';
-import { IOnBattleInfo } from 'modules/battle/battle-info';
+import { OnBattleInfo } from 'modules/battle/battle-info';
 
 type StatusEffectApplyFun = (
 	tgt: Character,
 	power: number,
-	onStatus: IOnStatus,
-	onInfo: IOnBattleInfo
+	onStatus: OnStatus,
+	onInfo: OnBattleInfo
 ) => void;
 
-export type IOnStatus = (value: number, condition?: boolean) => void;
+export type OnStatus = (value: number, condition?: boolean) => void;
 
 export type StatusEffectID =
 	'CRIPPLE' | 'DISARM' | 'BLEED' | 'STUN' | 'DYING' |
@@ -54,10 +54,10 @@ class StatusEffect {
 	};
 
 	private readonly power: number;
-	private readonly onStatus: IOnStatus;
+	private readonly onStatus: OnStatus;
 	private readonly applyFun?: StatusEffectApplyFun;
 
-	constructor(id: StatusEffectID, power = 0, onStatus?: IOnStatus) {
+	constructor(id: StatusEffectID, power = 0, onStatus?: OnStatus) {
 		const data = StatusEffects.get(id);
 		this.id = id;
 		this.type = data.type;
@@ -78,7 +78,7 @@ class StatusEffect {
 		this.applyFun = data.apply;
 	}
 
-	public apply(target: Character, onInfo: IOnBattleInfo): void {
+	public apply(target: Character, onInfo: OnBattleInfo): void {
 		const { power, applyFun, onStatus } = this;
 
 		if (applyFun) {

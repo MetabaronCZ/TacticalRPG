@@ -3,7 +3,7 @@ import { findTileFrom, resolveDirection } from 'modules/geometry/direction';
 import Tile from 'modules/geometry/tile';
 import Character from 'modules/character';
 import ActPhase from 'modules/battle/act/phase';
-import { IOnActPhaseEvent } from 'modules/battle/act';
+import { OnActPhaseEvent } from 'modules/battle/act';
 
 const txtIdle = 'Select new direction on grid.';
 
@@ -30,9 +30,9 @@ class DirectPhase extends ActPhase<IDirectPhaseSnapshot, IDirectPhaseRecord> {
 	private directable: Tile[] = [];
 	private directTarget: Tile | null = null;
 
-	private readonly onEvent: IOnActPhaseEvent;
+	private readonly onEvent: OnActPhaseEvent;
 
-	constructor(actor: Character, characters: Character[], onEvent: IOnActPhaseEvent) {
+	constructor(actor: Character, characters: Character[], onEvent: OnActPhaseEvent) {
 		super();
 		this.actor = actor;
 		this.onEvent = onEvent;

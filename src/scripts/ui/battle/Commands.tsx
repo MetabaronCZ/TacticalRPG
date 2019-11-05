@@ -3,11 +3,11 @@ import React, { SyntheticEvent } from 'react';
 import CommandTitle from 'ui/battle/CommandTitle';
 import { formatCost, ICommandSnapshot } from 'modules/battle/command';
 
-type IOnSelect = (commandID: string) => void;
+type OnSelect = (commandID: string) => void;
 
 interface IProps {
 	readonly commands: ICommandSnapshot[];
-	readonly onSelect: IOnSelect;
+	readonly onSelect: OnSelect;
 }
 
 interface IButtons {

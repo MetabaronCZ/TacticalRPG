@@ -15,7 +15,7 @@ import Skillset from 'modules/character/skillset';
 import { ISexData, SexID } from 'modules/character/sex';
 import { DirectionID } from 'modules/geometry/direction';
 import { IArmorData } from 'modules/equipment/armor-data';
-import { IOnBattleInfo } from 'modules/battle/battle-info';
+import { OnBattleInfo } from 'modules/battle/battle-info';
 import { IWeaponData } from 'modules/equipment/weapon-data';
 import Command, { formatCost } from 'modules/battle/command';
 import BaseAttributes from 'modules/character/base-attributes';
@@ -25,7 +25,7 @@ import { SkillID, SkillCooldown } from 'modules/skill/skill-data';
 import { IArchetypeData, ArchetypeID } from 'modules/character/archetype';
 import { ICharacterData } from 'modules/character-creation/character-data';
 import Attributes, { AttributeID, IAttributes } from 'modules/character/attributes';
-import StatusEffect, { StatusEffectID, IOnStatus } from 'modules/battle/status-effect';
+import StatusEffect, { StatusEffectID, OnStatus } from 'modules/battle/status-effect';
 
 export type CharacterCondition = 'OK' | 'DANGER' | 'CRITICAL';
 
@@ -195,7 +195,7 @@ class Character {
 	}
 
 	// updates on every game tick
-	public update(onInfo: IOnBattleInfo): void {
+	public update(onInfo: OnBattleInfo): void {
 		if (this.dead) {
 			throw new Error('Cannot update dead character');
 		}
@@ -251,7 +251,7 @@ class Character {
 		this.attributes.set('CT', CT % characterCTLimit);
 	}
 
-	public onDamage(damage: number, mana: number, effects: StatusEffectID[], onStatus: IOnStatus): void {
+	public onDamage(damage: number, mana: number, effects: StatusEffectID[], onStatus: OnStatus): void {
 		const { attributes, status } = this;
 
 		if (this.dead || status.has('DYING')) {
@@ -281,7 +281,7 @@ class Character {
 		}
 	}
 
-	public onHealing(healing: number, effects: StatusEffectID[] = [], onStatus: IOnStatus): void {
+	public onHealing(healing: number, effects: StatusEffectID[] = [], onStatus: OnStatus): void {
 		if (this.dead || this.status.has('DYING')) {
 			throw new Error('Cannot apply healing: dead or dying');
 		}
@@ -301,7 +301,7 @@ class Character {
 		}
 	}
 
-	public onRevive(onStatus: IOnStatus): void {
+	public onRevive(onStatus: OnStatus): void {
 		if (!this.status.has('DYING')) {
 			throw new Error('Illegal character revive attempt');
 		}

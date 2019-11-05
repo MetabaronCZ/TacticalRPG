@@ -1,6 +1,6 @@
 import Character from 'modules/character';
-import { IOnBattleInfo, BattleInfoType } from 'modules/battle/battle-info';
-import StatusEffect, { StatusEffectID, IOnStatus } from 'modules/battle/status-effect';
+import { OnBattleInfo, BattleInfoType } from 'modules/battle/battle-info';
+import StatusEffect, { StatusEffectID, OnStatus } from 'modules/battle/status-effect';
 
 class Status {
 	private items: StatusEffect[] = [];
@@ -13,7 +13,7 @@ class Status {
 		return [...this.items];
 	}
 
-	public apply(effectId: StatusEffectID, ammount = 0, onStatus?: IOnStatus): void {
+	public apply(effectId: StatusEffectID, ammount = 0, onStatus?: OnStatus): void {
 		const effect = new StatusEffect(effectId, ammount, onStatus);
 		const existing = this.items.find(item => effectId === item.id);
 
@@ -55,7 +55,7 @@ class Status {
 		this.items = [];
 	}
 
-	public update(char: Character, cb: IOnBattleInfo): void {
+	public update(char: Character, cb: OnBattleInfo): void {
 		for (const item of this.items) {
 			if (char.isDead()) {
 				return;

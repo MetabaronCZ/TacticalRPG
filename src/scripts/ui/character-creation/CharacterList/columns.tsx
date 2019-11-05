@@ -21,7 +21,7 @@ import LinkButton from 'ui/common/LinkButton';
 import ElementIco from 'ui/common/ElementIco';
 import ArchetypeIco from 'ui/common/ArchetypeIco';
 import { ArchetypeID } from 'modules/character/archetype';
-import { IOnMoveDown, IOnMoveUp, IOnDelete } from 'ui/character-creation/CharacterList';
+import { OnMoveDown, OnMoveUp, OnDelete } from 'ui/character-creation/CharacterList';
 
 interface IColumn {
 	readonly title?: string;
@@ -47,11 +47,11 @@ const renderArchetype = (char: ICharacterData): React.ReactNode => {
 	return <ElementIco element={skillset.element} minimal />;
 };
 
-const renderMoveDown = (char: ICharacterData, onMoveDown?: IOnMoveDown): React.ReactNode => (
+const renderMoveDown = (char: ICharacterData, onMoveDown?: OnMoveDown): React.ReactNode => (
 	<LinkIco ico="down" title="Move down" onClick={onMoveDown && onMoveDown(char.id)} />
 );
 
-const renderMoveUp = (char: ICharacterData, onMoveUp?: IOnMoveUp): React.ReactNode => (
+const renderMoveUp = (char: ICharacterData, onMoveUp?: OnMoveUp): React.ReactNode => (
 	<LinkIco ico="up" title="Move up" onClick={onMoveUp && onMoveUp(char.id)} />
 );
 
@@ -59,7 +59,7 @@ const renderEdit = (char: ICharacterData): React.ReactNode => (
 	<Link href={getPath('CHARACTER_EDIT', char.id)}>Edit</Link>
 );
 
-const renderDelete = (char: ICharacterData, onDelete?: IOnDelete): React.ReactNode => (
+const renderDelete = (char: ICharacterData, onDelete?: OnDelete): React.ReactNode => (
 	<LinkButton onClick={onDelete ? onDelete(char.id) : undefined}>Delete</LinkButton>
 );
 
@@ -83,7 +83,7 @@ const renderOffHandBothWield = (weapon: IWeaponData): React.ReactNode => (
 	</span>
 );
 
-const getColumns = (editable = false, onMoveDown?: IOnMoveDown, onMoveUp?: IOnMoveUp, onDelete?: IOnDelete): IColumn[] => {
+const getColumns = (editable = false, onMoveDown?: OnMoveDown, onMoveUp?: OnMoveUp, onDelete?: OnDelete): IColumn[] => {
 	let columns: IColumn[] = [
 		{
 			name: 'order',

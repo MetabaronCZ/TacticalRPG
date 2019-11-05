@@ -7,7 +7,7 @@ import Tile from 'modules/geometry/tile';
 import Character from 'modules/character';
 import Command from 'modules/battle/command';
 import ActPhase from 'modules/battle/act/phase';
-import { IOnActPhaseEvent } from 'modules/battle/act';
+import { OnActPhaseEvent } from 'modules/battle/act';
 import { IBattleInfo } from 'modules/battle/battle-info';
 import SkillAnimation from 'modules/battle/act/skill-animation';
 import { getCombatInfo, ICombatInfo } from 'modules/battle/combat';
@@ -43,12 +43,12 @@ export type CombatPhaseEvents =
 class CombatPhase extends ActPhase<ICombatPhaseSnapshot, ICombatPhaseRecord> {
 	public readonly actor: Character;
 
-	private readonly onEvent: IOnActPhaseEvent;
+	private readonly onEvent: OnActPhaseEvent;
 	private readonly combatResults: ICombatResult[] = [];
 
 	private phase: Phase = 'SUSPENDED';
 
-	constructor(actor: Character, characters: Character[], onEvent: IOnActPhaseEvent) {
+	constructor(actor: Character, characters: Character[], onEvent: OnActPhaseEvent) {
 		super();
 		this.actor = actor;
 		this.onEvent = onEvent;
