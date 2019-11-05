@@ -268,13 +268,10 @@ class ReactionPhase extends ActPhase<IReactionPhaseSnapshot, IReactionPhaseRecor
 		reaction.phase = 'ANIMATION';
 
 		// reaction animation
-		const reactionAnim = new SkillAnimation(
-			'REACTION',
-			reactor,
-			[reactor],
-			skill,
-			() => this.onEvent('REACTION_ANIMATION'),
-			() => {
+		const reactionAnim = new SkillAnimation('REACTION', reactor, [reactor], skill, isLast => {
+			this.onEvent('REACTION_ANIMATION');
+
+			if (isLast) {
 				// apply skill effects
 				for (const effect of skill.status) {
 					reactor.status.apply(effect);
@@ -283,7 +280,7 @@ class ReactionPhase extends ActPhase<IReactionPhaseSnapshot, IReactionPhaseRecor
 
 				this.finish(reaction);
 			}
-		);
+		});
 
 		reactionAnim.start();
 	}
@@ -345,10 +342,13 @@ class ReactionPhase extends ActPhase<IReactionPhaseSnapshot, IReactionPhaseRecor
 		const moveAnim = new MoveAnimation(
 			reactor,
 			tile,
-			() => this.onEvent('REACTION_ANIMATION'),
-			() => {
-				reactor.act(command);
-				this.finish(reaction);
+			isLast => {
+				this.onEvent('REACTION_ANIMATION');
+
+				if (isLast) {
+					reactor.act(command);
+					this.finish(reaction);
+				}
 			}
 		);
 

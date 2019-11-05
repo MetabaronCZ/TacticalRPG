@@ -1,7 +1,8 @@
 TODO
 ---------------------------------------------------------------------------------------
---	refaktoring MoveAnimation, SkillAnimation a TileAnimation do jednotne formy
-	- prirazovat animace postavam / Tile / apod.
+??	pridat testy k Animation
+
+--	prejmenovat IOnX... eventy / typy na OnX...
 
 --	AI: pridat logiku pro vyhodnoceni pouziti CC Commandu
 	- viz "effectActions" v btDecide

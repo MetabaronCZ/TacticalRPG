@@ -1,70 +1,38 @@
+import Animation from 'core/animation';
 import { moveAnimDuration } from 'data/game-config';
 
 import Tile from 'modules/geometry/tile';
 import Character from 'modules/character';
 
-type OnEnd = () => void;
-type OnUpdate = () => void;
+type OnUpdate = (isLast: boolean) => void;
 
-class MoveAnimation {
+class MoveAnimation extends Animation<null> {
 	private readonly actor: Character;
 	private readonly target: Tile;
-	private readonly onEnd: OnEnd;
-	private readonly onUpdate: OnUpdate;
+	private readonly startPosition: Tile;
 
-	private done = false;
-	private running = false;
-	private startTime = 0;
-	private startPosition: Tile;
+	constructor(actor: Character, target: Tile, onUpdate: OnUpdate) {
+		super(null, moveAnimDuration, isLast => this.update(isLast, onUpdate));
 
-	constructor(actor: Character, target: Tile, onUpdate: OnUpdate, onEnd: OnEnd) {
 		this.actor = actor;
 		this.target = target;
 		this.startPosition = actor.position;
-
-		this.onEnd = onEnd;
-		this.onUpdate = onUpdate;
 	}
 
-	public start(): void {
-		if (this.done || this.running) {
-			throw new Error('Move animation already started!');
-		}
-		this.running = true;
-		this.startTime = performance.now();
-
-		this.move(this.startTime);
-	}
-
-	private move = (t: number): void => {
-		if (this.done || !this.running) {
-			return;
-		}
-		requestAnimationFrame(this.move);
-
-		const { actor, target, startPosition } = this;
+	private update(isLast: boolean, onUpdate: OnUpdate): void {
+		const { actor, target, startPosition, progress } = this;
 		const { x, y, z, h, terrain } = startPosition;
 
-		const diff = t - this.startTime;
-		const scale = Math.min(diff / moveAnimDuration, 1);
-		const isLast = (1 === scale);
-
-		const diffX = x + scale * (target.x - x);
-		const diffY = y + scale * (target.y - y);
-		const diffZ = z + scale * (target.z - z);
+		const diffX = x + progress * (target.x - x);
+		const diffY = y + progress * (target.y - y);
+		const diffZ = z + progress * (target.z - z);
 
 		if (!isLast) {
 			actor.position = new Tile('-', diffX, diffY, diffZ, h, terrain);
 		} else {
 			actor.position = target;
 		}
-		this.onUpdate();
-
-		if (isLast) {
-			this.running = false;
-			this.done = true;
-			this.onEnd();
-		}
+		onUpdate(isLast);
 	}
 }
 

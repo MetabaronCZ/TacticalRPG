@@ -114,15 +114,14 @@ class SuddenDeath {
 		if (this.animation) {
 			this.animation.stop();
 		}
-		this.animation = new TileAnimation(
-			'DESTROY',
-			this.highlighted,
-			() => this.onUpdate(),
-			() => {
+		this.animation = new TileAnimation('DESTROY', this.highlighted, isLast => {
+			this.onUpdate();
+
+			if (isLast) {
 				this.animation = null;
 				cb();
 			}
-		);
+		});
 
 		this.animation.start();
 	}
@@ -160,15 +159,14 @@ class SuddenDeath {
 		if (this.animation) {
 			this.animation.stop();
 		}
-		this.animation = new TileAnimation(
-			'HIGHLIGHT',
-			this.highlighted,
-			() => this.onUpdate(),
-			() => {
+		this.animation = new TileAnimation('HIGHLIGHT', this.highlighted, isLast => {
+			this.onUpdate();
+
+			if (isLast) {
 				this.animation = null;
 				cb(false);
 			}
-		);
+		});
 
 		this.animation.start();
 	}

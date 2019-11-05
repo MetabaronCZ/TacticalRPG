@@ -173,10 +173,13 @@ class MovePhase extends ActPhase<IMovePhaseSnapshot, IMovePhaseRecord> {
 				const moveAnim = new MoveAnimation(
 					actor,
 					newPos,
-					() => this.onEvent('MOVE_ANIMATION'),
-					() => {
-						actor.attributes.set('AP', this.initialAP - cost);
-						next();
+					isLast => {
+						this.onEvent('MOVE_ANIMATION');
+
+						if (isLast) {
+							actor.attributes.set('AP', this.initialAP - cost);
+							next();
+						}
 					}
 				);
 
