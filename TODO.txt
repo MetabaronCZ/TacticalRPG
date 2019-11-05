@@ -2,7 +2,6 @@ TODO
 ---------------------------------------------------------------------------------------
 >>	implementovat Sudden death mode
 	- primarne vyjmout ty akce, kde by postava zustala na highlighted poli
-	- pri Evasion prioritizovat pole, ktere nejsou highlighted
 
 --	do Chronoxu posilat i udalosti z DoT a ze SuddenDeath
 
