@@ -42,7 +42,7 @@ type IAnonymousAction = IActionBase<string>;
 export type IAction = IActionBase<ICharacterSnapshot>;
 
 export const getActions = (data: IAIData): IAction[] => {
-	const { act, enemy, characters } = data;
+	const { act, dangerousTiles, enemy, characters } = data;
 	const { actor, phases } = act;
 	const { movable, costMap } = phases.MOVEMENT;
 
@@ -58,11 +58,17 @@ export const getActions = (data: IAIData): IAction[] => {
 
 	const liveChars = charShadows.filter(char => !char.isDead() && !char.status.has('DYING'));
 
+	// get safe position to move (not highlighted by sudden death)
+	let positions = movable.filter(tile => !tile.isContained(dangerousTiles));
+
+	if (!positions.length) {
+		positions = [...movable];
+	}
 	const { AP } = actor.attributes;
 	const actions: IAnonymousAction[] = [];
 
 	// gather possible actions
-	for (const tile of movable) {
+	for (const tile of positions) {
 		const moveCost = costMap[tile.id];
 		const ap = Math.max(0, AP - moveCost);
 
