@@ -1,7 +1,5 @@
 TODO
 ---------------------------------------------------------------------------------------
-??	pridat testy k Animation
-
 --	AI: pridat logiku pro vyhodnoceni pouziti CC Commandu
 	- viz "effectActions" v btDecide
 
@@ -12,7 +10,3 @@ TODO
 
 --	vyrovnani atributu
 	- postavy, zbrane, brneni, skilly
-
---	po doladeni SuddenDeath nastavit:
-	??	suddenDeathStart = 100;
-	--	suddenDeathInterval = 20;
