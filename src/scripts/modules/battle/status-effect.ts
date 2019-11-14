@@ -15,7 +15,7 @@ export type OnStatus = (value: number, condition?: boolean) => void;
 export type StatusEffectID =
 	'CRIPPLE' | 'DISARM' | 'BLEED' | 'STUN' | 'DYING' |
 	'BURN' | 'SHOCK' | 'FREEZE' | 'CONFUSION' | 'SILENCE' |
-	'REGEN' | 'IRON_SKIN' | 'BERSERK' | 'BLOCK_SMALL' | 'BLOCK_LARGE' | 'AETHERSHIELD';
+	'REGEN' | 'BERSERK' | 'BLOCK_SMALL' | 'BLOCK_LARGE' | 'AETHERSHIELD';
 
 export type StatusEffectType = 'PHYSICAL' | 'MAGICAL' | 'SUPPORT';
 export type StatusEffectMulti = 'RENEW' | 'STACK' | 'IGNORE';
@@ -32,6 +32,7 @@ export interface IStatusEffect {
 	readonly effect: string;
 	readonly multi: 'RENEW' | 'STACK' | 'IGNORE';
 	readonly description: string;
+	readonly buff: boolean;
 	readonly duration?: StatusEffectDuration;
 	readonly repeat?: StatusEffectRepeat;
 	apply?: StatusEffectApplyFun;
@@ -44,6 +45,7 @@ class StatusEffect {
 	public readonly effect: string;
 	public readonly multi: StatusEffectMulti;
 	public readonly description: string;
+	public readonly buff: boolean;
 	public readonly duration: {
 		value: number;
 		readonly max: StatusEffectDuration;
@@ -52,7 +54,6 @@ class StatusEffect {
 		value: number;
 		readonly max: StatusEffectRepeat;
 	};
-
 	private readonly power: number;
 	private readonly onStatus: OnStatus;
 	private readonly applyFun?: StatusEffectApplyFun;
@@ -65,6 +66,7 @@ class StatusEffect {
 		this.effect = data.effect;
 		this.multi = data.multi;
 		this.description = data.description;
+		this.buff = data.buff;
 		this.duration = {
 			value: data.duration || 0,
 			max: data.duration || 0

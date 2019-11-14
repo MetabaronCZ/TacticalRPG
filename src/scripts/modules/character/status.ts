@@ -1,6 +1,8 @@
 import Character from 'modules/character';
-import { OnBattleInfo, BattleInfoType } from 'modules/battle/battle-info';
+import { OnBattleInfo } from 'modules/battle/battle-info';
 import StatusEffect, { StatusEffectID, OnStatus } from 'modules/battle/status-effect';
+
+const statusEndMsgDelay = 200;
 
 class Status {
 	private items: StatusEffect[] = [];
@@ -73,21 +75,19 @@ class Status {
 				if (item.repeat.value <= 0) {
 					this.remove(item);
 
-					let text = `${item.title} ended`;
-					let type: BattleInfoType = 'ACTION';
-					let status: StatusEffectID | undefined;
+					setTimeout(() => {
+						let text = 'Status ended';
 
-					if ('DYING' === item.id) {
-						text = 'Dead';
-						type = 'DEBUFF';
-						status = 'DYING';
-					}
-					cb({
-						text,
-						type,
-						status,
-						position: char.position
-					});
+						if ('DYING' === item.id) {
+							text = 'Dead';
+						}
+						cb({
+							text,
+							type: (item.buff ? 'BUFF' : 'DEBUFF'),
+							status: item.id,
+							position: char.position
+						});
+					}, statusEndMsgDelay);
 				}
 			}
 		}

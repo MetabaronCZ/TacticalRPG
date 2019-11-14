@@ -10,6 +10,7 @@ const StatusEffects = new DataList<StatusEffectID, IStatusEffect>({
 		description: 'Cannot move',
 		type: 'PHYSICAL',
 		multi: 'RENEW',
+		buff: false,
 		duration: 100
 	},
 	DISARM: {
@@ -18,6 +19,7 @@ const StatusEffects = new DataList<StatusEffectID, IStatusEffect>({
 		description: 'Cannot use weapon attacks and skills',
 		type: 'PHYSICAL',
 		multi: 'RENEW',
+		buff: false,
 		duration: 100
 	},
 	BLEED: {
@@ -26,6 +28,7 @@ const StatusEffects = new DataList<StatusEffectID, IStatusEffect>({
 		description: 'Physical damage over time',
 		type: 'PHYSICAL',
 		multi: 'STACK',
+		buff: false,
 		duration: 33,
 		repeat: 3,
 		apply: (tgt, ammount, onStatus, onInfo) => {
@@ -46,6 +49,7 @@ const StatusEffects = new DataList<StatusEffectID, IStatusEffect>({
 		description: 'Cannot act',
 		type: 'PHYSICAL',
 		multi: 'RENEW',
+		buff: false,
 		duration: 100
 	},
 	BURN: {
@@ -54,6 +58,7 @@ const StatusEffects = new DataList<StatusEffectID, IStatusEffect>({
 		description: 'Fire elemental damage over time',
 		type: 'MAGICAL',
 		multi: 'STACK',
+		buff: false,
 		duration: 33,
 		repeat: 3,
 		apply: (tgt, ammount, onStatus, onInfo) => {
@@ -74,6 +79,7 @@ const StatusEffects = new DataList<StatusEffectID, IStatusEffect>({
 		description: 'Damage given and damage taken doubled',
 		type: 'MAGICAL',
 		multi: 'RENEW',
+		buff: false,
 		duration: 100
 	},
 	SHOCK: {
@@ -82,6 +88,7 @@ const StatusEffects = new DataList<StatusEffectID, IStatusEffect>({
 		description: 'Halves damage reduction ability',
 		type: 'MAGICAL',
 		multi: 'RENEW',
+		buff: false,
 		duration: 100
 	},
 	FREEZE: {
@@ -90,6 +97,7 @@ const StatusEffects = new DataList<StatusEffectID, IStatusEffect>({
 		description: 'Cannot act',
 		type: 'MAGICAL',
 		multi: 'RENEW',
+		buff: false,
 		duration: 100
 	},
 	CONFUSION: {
@@ -98,6 +106,7 @@ const StatusEffects = new DataList<StatusEffectID, IStatusEffect>({
 		description: 'Weapon and magical skill cost doubled',
 		type: 'MAGICAL',
 		multi: 'RENEW',
+		buff: false,
 		duration: 100
 	},
 	SILENCE: {
@@ -106,6 +115,7 @@ const StatusEffects = new DataList<StatusEffectID, IStatusEffect>({
 		description: 'Cannot use magical skills',
 		type: 'MAGICAL',
 		multi: 'RENEW',
+		buff: false,
 		duration: 100
 	},
 	DYING: {
@@ -114,6 +124,7 @@ const StatusEffects = new DataList<StatusEffectID, IStatusEffect>({
 		description: 'Incapacitated',
 		type: 'PHYSICAL',
 		multi: 'IGNORE',
+		buff: false,
 		duration: 100,
 		apply: tgt => tgt.die()
 	},
@@ -123,6 +134,7 @@ const StatusEffects = new DataList<StatusEffectID, IStatusEffect>({
 		description: 'Healing over time',
 		type: 'SUPPORT',
 		multi: 'STACK',
+		buff: true,
 		duration: 33,
 		repeat: 3,
 		apply: (tgt, ammount, onStatus, onInfo) => {
@@ -137,34 +149,29 @@ const StatusEffects = new DataList<StatusEffectID, IStatusEffect>({
 			});
 		}
 	},
-	IRON_SKIN: {
-		title: 'Iron skin',
-		effect: 'Hardened',
-		description: 'Doubles damage reduction ability',
-		type: 'SUPPORT',
-		multi: 'RENEW',
-		duration: 100
-	},
 	BLOCK_SMALL: {
 		title: 'Block',
 		effect: 'Blocked',
 		description: 'Shield based damage reduction',
 		type: 'SUPPORT',
-		multi: 'IGNORE'
+		multi: 'IGNORE',
+		buff: true
 	},
 	BLOCK_LARGE: {
 		title: 'Block',
 		effect: 'Blocked',
 		description: 'Shield based damage reduction',
 		type: 'SUPPORT',
-		multi: 'IGNORE'
+		multi: 'IGNORE',
+		buff: true
 	},
 	AETHERSHIELD: {
 		title: 'Aethershield',
 		effect: 'Shielded',
 		description: 'Mana based energy shield damage reduction',
 		type: 'SUPPORT',
-		multi: 'IGNORE'
+		multi: 'IGNORE',
+		buff: true
 	}
 });
 

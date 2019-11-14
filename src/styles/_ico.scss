@@ -60,10 +60,18 @@
 	&.Ico--AETHERSHIELD { background-image: url("#{$path-ico-skill}/aethershield.svg"); }
 
 	// statuses
+	&.Ico--BERSERK { background-image: url("#{$path-ico-status}/berserk.svg"); }
 	&.Ico--BLEED { background-image: url("#{$path-ico-status}/bleed.svg"); }
 	&.Ico--BURN { background-image: url("#{$path-ico-status}/burn.svg"); }
+	&.Ico--CONFUSION { background-image: url("#{$path-ico-status}/confusion.svg"); }
+	&.Ico--CRIPPLE { background-image: url("#{$path-ico-status}/cripple.svg"); }
+	&.Ico--DISARM { background-image: url("#{$path-ico-status}/disarm.svg"); }
 	&.Ico--DYING { background-image: url("#{$path-ico-status}/dying.svg"); }
+	&.Ico--FREEZE { background-image: url("#{$path-ico-status}/freeze.svg"); }
 	&.Ico--REGEN { background-image: url("#{$path-ico-status}/regen.svg"); }
+	&.Ico--SHOCK { background-image: url("#{$path-ico-status}/shock.svg"); }
+	&.Ico--SILENCE { background-image: url("#{$path-ico-status}/silence.svg"); }
+	&.Ico--STUN { background-image: url("#{$path-ico-status}/stun.svg"); }
 
 	// misc
 	&.Ico--info { background-image: url("#{$path-ico}/info.svg"); }

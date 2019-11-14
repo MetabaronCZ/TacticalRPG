@@ -3,10 +3,5 @@ TODO
 --	AI: pridat logiku pro vyhodnoceni pouziti CC Commandu
 	- viz "effectActions" v btDecide
 
---	udelat ikony pro vsechny StatusEffecty
-	- posilat je jako status v combat phase
-	- u debuffu posilat jen "status" a ne "weapon"
-	- pouzit v CharacterInfo UI misto soucasnych textu s dobou trvani
-
 --	vyrovnani atributu
 	- postavy, zbrane, brneni, skilly

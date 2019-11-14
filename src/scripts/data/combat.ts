@@ -4,7 +4,6 @@ export const backAttackModifier = 1.5;
 export const sideBackAttackModifier = 1.25;
 
 export const shockModifier = 1.5;
-export const ironSkinModifier = 0.5;
 export const berserkAttackModifier = 1.5;
 export const berserkDefenseModifier = 1.5;
 

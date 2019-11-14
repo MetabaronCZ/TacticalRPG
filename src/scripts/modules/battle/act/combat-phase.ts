@@ -207,7 +207,7 @@ class CombatPhase extends ActPhase<ICombatPhaseSnapshot, ICombatPhaseRecord> {
 
 					info.push({
 						text: 'Revived',
-						type: 'BUFF',
+						type: 'HEALING',
 						position
 					});
 				}
@@ -231,6 +231,7 @@ class CombatPhase extends ActPhase<ICombatPhaseSnapshot, ICombatPhaseRecord> {
 							info.push({
 								text: item.effect,
 								type: 'BUFF',
+								status: item.id,
 								position
 							});
 						}
@@ -301,8 +302,6 @@ class CombatPhase extends ActPhase<ICombatPhaseSnapshot, ICombatPhaseRecord> {
 			info.push({
 				text: item.effect,
 				type: 'DEBUFF',
-				weapon: (skill.physical ? skill.physical.weapon : undefined),
-				element: (skill.magical ? skill.magical.element : undefined),
 				status: item.id,
 				position
 			});

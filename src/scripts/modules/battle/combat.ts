@@ -249,9 +249,6 @@ const getStatusModifier = (attacker: Character, defender?: Character | null): IS
 		if (defender.status.has('SHOCK')) {
 			defense *= DMG.shockModifier;
 		}
-		if (defender.status.has('IRON_SKIN')) {
-			defense *= DMG.ironSkinModifier;
-		}
 		if (defender.status.has('BERSERK')) {
 			defense *= DMG.berserkDefenseModifier;
 		}

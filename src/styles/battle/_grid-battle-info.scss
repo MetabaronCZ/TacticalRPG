@@ -33,14 +33,10 @@
 		animation-fill-mode: forwards;
 		animation-duration: $anim-duration;
 		animation-timing-function: linear;
+		color: $color-white;
 
-		&.GridBattleInfo-item--default {
-			color: $color-yellow;
-		}
-
-		&.GridBattleInfo-item--healing,
-		&.GridBattleInfo-item--damage {
-			color: $color-white;
+		&::selection {
+			background-color: transparent;
 		}
 	}
 }
