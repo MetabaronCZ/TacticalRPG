@@ -27,7 +27,6 @@ import btDecide from 'modules/ai/actions/decide';
 import btCommand from 'modules/ai/actions/command';
 import btDontReact from 'modules/ai/actions/dont-react';
 import btEvadeTo from 'modules/ai/actions/evasion-select';
-import btResetMemory from 'modules/ai/actions/reset-memory';
 
 const delayAction = (fn: () => void): void => {
 	setTimeout(() => fn(), aiActionDelay);
@@ -114,6 +113,15 @@ class AICharacter {
 		this.bt.run(updateData);
 	}
 
+	public onActEnd(): void {
+		// reset memory
+		this.memory.decision = null;
+		this.memory.hasMoved = false;
+		this.memory.commandTargeted = false;
+		this.memory.commandSelected = false;
+		this.memory.commandConfirmed = false;
+	}
+
 	public serialize(): IAICharacterSnapshot {
 		return {
 			id: this.character.id,
@@ -156,7 +164,7 @@ class AICharacter {
 				}),
 				DIRECTION: new BTPhaseSelector<DirectionPhaseID>(data => data.act.phases.DIRECTION.phase, {
 					SUSPENDED: null,
-					IDLE: BT.Sequence([btDirect(), btResetMemory()])
+					IDLE: btDirect()
 				})
 			})
 		);

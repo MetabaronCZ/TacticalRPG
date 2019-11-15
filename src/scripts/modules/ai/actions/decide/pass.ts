@@ -7,6 +7,7 @@ import { sortActions } from 'modules/ai/actions/decide/sort';
 // find best available move-and-pass action
 export const getPassAction = (actor: ICharacterSnapshot, primaryRole: CharacterRoleID, actions: IAction[]): IAction | null => {
 	if (!actions.length) {
+		Logger.info('AI DECIDE: no pass actions found');
 		return null;
 	}
 	const allyActions = actions.filter(action => {

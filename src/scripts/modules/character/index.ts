@@ -48,6 +48,8 @@ export interface ICharacterSnapshot {
 	readonly isAI: boolean;
 	readonly dead: boolean;
 	readonly dying: boolean;
+	readonly canAct: boolean;
+	readonly canMove: boolean;
 	readonly status: StatusEffect[];
 	readonly cooldowns: ISkillCooldowns;
 	readonly condition: CharacterCondition;
@@ -146,6 +148,8 @@ class Character {
 			isAI: this.isAI(),
 			dead: this.dead,
 			dying: this.status.has('DYING'),
+			canAct: this.canAct(),
+			canMove: this.canMove(),
 			status: this.status.get(),
 			condition: this.getCondition(),
 			cooldowns: { ...this.cooldowns },

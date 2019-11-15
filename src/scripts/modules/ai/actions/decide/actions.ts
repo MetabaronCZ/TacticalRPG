@@ -4,11 +4,12 @@ import { getCombatInfo } from 'modules/battle/combat';
 import { getIdleCommands } from 'modules/battle/commands';
 import { getShortestPath } from 'modules/pathfinding/shortest-path-breadth-first';
 
+import Logger from 'modules/logger';
 import Tile from 'modules/geometry/tile';
 import Player from 'modules/battle/player';
 import Command from 'modules/battle/command';
 import { IAIData } from 'modules/ai/character';
-import StatusEffect from 'modules/battle/status-effect';
+import { StatusEffectID } from 'modules/battle/status-effect';
 import Character, { ICharacterSnapshot } from 'modules/character';
 
 interface IDistances {
@@ -32,7 +33,7 @@ interface IActionBase<T> {
 	};
 	readonly damage: number;
 	readonly healing: number;
-	readonly status: StatusEffect[];
+	readonly status: StatusEffectID[];
 	readonly distances: IDistances;
 	readonly closestAlly: number;
 	readonly closestEnemy: number;
@@ -57,12 +58,19 @@ export const getActions = (data: IAIData): IAction[] => {
 	});
 
 	const liveChars = charShadows.filter(char => !char.isDead() && !char.status.has('DYING'));
+	let positions: Tile[] = [];
 
-	// get safe position to move (not highlighted by sudden death)
-	let positions = movable.filter(tile => !tile.isContained(dangerousTiles));
+	if (actor.canMove) {
+		// get safe position to move (not highlighted by sudden death)
+		positions = movable.filter(tile => !tile.isContained(dangerousTiles));
 
-	if (!positions.length) {
-		positions = [...movable];
+		if (!positions.length) {
+			positions = [...movable];
+		}
+
+	} else {
+		Logger.info('AI decide - character can\'t move');
+		positions = [actor.position];
 	}
 	const { AP } = actor.attributes;
 	const actions: IAnonymousAction[] = [];
@@ -105,6 +113,37 @@ export const getActions = (data: IAIData): IAction[] => {
 		// get actual commands on given tile
 		const commands = getIdleCommands(char);
 
+		if (!char.canAct()) {
+			Logger.info('AI decide - character can\'t act');
+			const passCommand = commands.find(cmd => 'PASS' === cmd.type);
+
+			if (!passCommand) {
+				throw new Error('Invalid AI commands: no pass action found');
+			}
+			actions.push({
+				target: {
+					character: char.id,
+					player: char.player.id,
+					position: tile,
+					distance: 0
+				},
+				move: tile,
+				command: passCommand,
+				damage: 0,
+				healing: 0,
+				status: [],
+				distances,
+				closestAlly,
+				closestEnemy,
+				cost: {
+					AP: 0,
+					MP: 0
+				}
+			});
+
+			continue;
+		}
+
 		// gather actions character can do
 		for (const command of commands) {
 			const { cost, skills } = command;
@@ -134,7 +173,7 @@ export const getActions = (data: IAIData): IAction[] => {
 				}
 				let damage = 0;
 				let healing = 0;
-				let status: StatusEffect[] = [];
+				let status: StatusEffectID[] = [];
 
 				for (const skill of skills) {
 					const effectArea = skill.getEffectArea(tile, tgtPosition);
@@ -144,7 +183,7 @@ export const getActions = (data: IAIData): IAction[] => {
 						const combatInfo = getCombatInfo(char, eff, skill);
 						damage += combatInfo.damage;
 						healing += combatInfo.healing;
-						status = [...status, ...combatInfo.status];
+						status = [...status, ...combatInfo.status.map(st => st.id)];
 					});
 				}
 

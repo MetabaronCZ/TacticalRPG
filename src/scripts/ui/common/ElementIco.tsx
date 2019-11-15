@@ -4,8 +4,8 @@ import elements from 'data/elements';
 import { ElementID } from 'modules/skill/affinity';
 
 interface IProps {
-	element: ElementID;
-	minimal?: boolean;
+	readonly element: ElementID;
+	readonly minimal?: boolean;
 }
 
 const ElementIco: React.SFC<IProps> = ({ element, minimal }) => (

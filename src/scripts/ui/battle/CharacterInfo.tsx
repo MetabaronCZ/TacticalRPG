@@ -5,6 +5,7 @@ import { reactiveEffects } from 'modules/battle/status-effect';
 
 import { formatCharacter } from 'ui/format';
 import AttributeInfo from 'ui/battle/AttributeInfo';
+import StatusIco from 'ui/common/StatusIco';
 
 interface IProps {
 	readonly character: ICharacterSnapshot;
@@ -37,7 +38,14 @@ const CharactertInfo: React.SFC<IProps> = ({ character: char }) => {
 
 			{st.length > 0 && (
 				<p className="Paragraph">
-					<strong>Status:</strong> {st.map(s => `${s.effect} (${s.duration.value})`).join(', ')}
+					<strong>Status:</strong> {st.map((s, i) => (
+						<React.Fragment key={i}>
+							<StatusIco
+								status={s.id}
+								title={`${s.effect} (${s.duration.value})`}
+							/>
+						</React.Fragment>
+					))}
 				</p>
 			)}
 		</React.Fragment>

@@ -4,8 +4,8 @@ import Weapons from 'data/weapons';
 import { WeaponID } from 'modules/equipment/weapon-data';
 
 interface IProps {
-	weapon: WeaponID;
-	minimal?: boolean;
+	readonly weapon: WeaponID;
+	readonly minimal?: boolean;
 }
 
 const WeaponIco: React.SFC<IProps> = ({ weapon, minimal }) => {

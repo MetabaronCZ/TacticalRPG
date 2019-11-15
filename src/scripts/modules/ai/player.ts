@@ -9,6 +9,7 @@ import AICharacter from 'modules/ai/character';
 
 class AIPlayer extends Player {
 	private readonly ally: AICharacter[];
+	private activeCharacter: AICharacter | null = null;
 
 	constructor(player: IPlayerData, characters: IPlayerCharacterSetup[], engine: Engine) {
 		super(player, characters);
@@ -31,6 +32,11 @@ class AIPlayer extends Player {
 		Logger.info(`AI Player: ${name} [${role.get().join(', ')}]`);
 	}
 
+	public onActEnd(): void {
+		const char = this.getCharacter();
+		char.onActEnd();
+	}
+
 	public onUpdate(state: IEngineSnapshot): void {
 		const { act, suddenDeath, characters } = state;
 
@@ -51,21 +57,21 @@ class AIPlayer extends Player {
 		});
 	}
 
-	private getCharacter(act: IActSnapshot): AICharacter {
-		if (!act) {
-			throw new Error('Invalid act');
-		}
-		const actingChar = act.actingCharacter;
+	private getCharacter(act?: IActSnapshot): AICharacter {
+		if (act) {
+			const actingChar = act.actingCharacter;
 
-		if (!actingChar) {
-			throw new Error('Invalid acting character');
+			if (!actingChar) {
+				throw new Error('Invalid acting character');
+			}
+			const aiChar = this.ally.find(ch => ch.character.id === actingChar.id);
+			this.activeCharacter = aiChar || null;
 		}
-		const aiChar = this.ally.find(ch => ch.character.id === actingChar.id);
 
-		if (!aiChar) {
+		if (!this.activeCharacter) {
 			throw new Error('Invalid actor');
 		}
-		return aiChar;
+		return this.activeCharacter;
 	}
 }
 

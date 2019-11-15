@@ -52,7 +52,6 @@ export const getActionCategories = (actions: IAction[]): IActionCategories => {
 				// action has meaningful healing
 				categories.healing.push(action);
 			}
-			continue;
 		}
 	
 		// handle damaging actions
@@ -88,16 +87,12 @@ export const getActionCategories = (actions: IAction[]): IActionCategories => {
 			if (!categorized) {
 				throw new Error('Invalid AI action categorization: ' + action.command.title);
 			}
-			continue;
 		}
 	
 		// handle buff / debuff effect actions
 		if (action.status.length > 0) {
 			categories.effect.push(action);
-			continue;
 		}
-	
-		// action has no effect
 	}
 
 	return categories;

@@ -4,8 +4,8 @@ import Armors from 'data/armors';
 import { ArmorID } from 'modules/equipment/armor-data';
 
 interface IProps {
-	armor: ArmorID;
-	minimal?: boolean;
+	readonly armor: ArmorID;
+	readonly minimal?: boolean;
 }
 
 const ArmorIco: React.SFC<IProps> = ({ armor, minimal }) => {

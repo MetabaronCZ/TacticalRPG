@@ -14,7 +14,7 @@ const getState = (actorID: string, char: IOrderCharacter): string => {
 const Order: React.SFC<IOrderProps> = ({ actor, order }) => (
 	<ul className="Order">
 		{order.characters.map(char => {
-			if (char.dead) {
+			if (char.dead || char.dying) {
 				return;
 			}
 			const charState = getState(actor, char);

@@ -1,7 +1,4 @@
 TODO
 ---------------------------------------------------------------------------------------
---	AI: pridat logiku pro vyhodnoceni pouziti CC Commandu
-	- viz "effectActions" v btDecide
-
 --	vyrovnani atributu
 	- postavy, zbrane, brneni, skilly

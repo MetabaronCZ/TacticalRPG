@@ -4,8 +4,8 @@ import Skills from 'data/skills';
 import { SkillID } from 'modules/skill/skill-data';
 
 interface IProps {
-	skill: SkillID;
-	minimal?: boolean;
+	readonly skill: SkillID;
+	readonly minimal?: boolean;
 }
 
 export const availableSkillIcos: SkillID[] = ['AETHERSHIELD', 'EVADE'];

@@ -184,7 +184,9 @@ class Act {
 	}
 
 	private end(): void {
-		if (!this.actor.isDead()) {
+		const { actor } = this;
+
+		if (!actor.isDead()) {
 			this.actor.endAct();
 		}
 		this.phase = null;
@@ -195,7 +197,14 @@ class Act {
 				char.status.removeByID(effect);
 			}
 		}
+
+		if (actor.isAI()) {
+			// inform AI Act ended
+			const player = actor.player as AIPlayer;
+			player.onActEnd();
+		}
 		this.log('Act ended');
+
 		this.events.onEnd(this);
 	}
 
@@ -444,8 +453,8 @@ class Act {
 
 	private log(msg: string): void {
 		const char = this.getActingCharacter();
+
 		if (!char) {
-			console.log(this);
 			throw new Error('Invalid acting character');
 		}
 		Logger.info(`${char ? char.name : '???'} - ${msg}`);

@@ -10,8 +10,8 @@ export const tileAnimationDuration = 1000; // in milliseconds
 export const tickDelay = 0; // in milliseconds
 
 // sudden death
-export const suddenDeathStart = 100; // time after which sudden death mode starts [in game ticks]
-export const suddenDeathInterval = 20; // interval of sudden death mode grid tile destruction [in game ticks]
+export const suddenDeathStart = 200; // time after which sudden death mode starts [in game ticks]
+export const suddenDeathInterval = 50; // interval of sudden death mode grid tile destruction [in game ticks]
 
 // animation
 export const moveAnimDuration = 150;

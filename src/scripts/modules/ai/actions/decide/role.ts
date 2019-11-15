@@ -10,23 +10,41 @@ export const getRoleAction = (categories: IActionCategories, role: CharacterRole
 	const magicalActions = categories.magical;
 	const rangedActions = categories.ranged;
 	const meleeActions = categories.melee;
+	const allActions = categories.all;
 
 	for (const r of role.get()) {
 		switch (r) {
 			case 'HEALER': {
-				if (!healingActions.length) {
-					// cant do any meaningful healing
-					continue;
+				if (healingActions.length) {
+					let act: IAction[] = [...healingActions];
+
+					act = sortActions(act, [
+						'HP_REMAINING', 'MOST_HEALING', 'SAFE_DISTANCE', 'SHORTEST_TRAVEL'
+					]);
+	
+					// optimal healing action
+					Logger.info('AI DECIDE: HEALER - healing');
+					return act[0];
 				}
-				let act: IAction[] = [...healingActions];
 
-				act = sortActions(act, [
-					'HP_REMAINING', 'MOST_HEALING', 'SAFE_DISTANCE'
-				]);
+				// get revive actions
+				const reviveActions = allActions.filter(act => {
+					const skills = act.command.skills.map(skill => skill.id);
+					return skills.includes('HOL_REVIVE');
+				});
 
-				// optimal healing action
-				Logger.info('AI DECIDE: HEALER - healing');
-				return act[0];
+				if (reviveActions.length) {
+					const act = sortActions(reviveActions, [
+						'SAFE_DISTANCE', 'SHORTEST_TRAVEL'
+					]);
+
+					// revive character
+					Logger.info('AI DECIDE: HEALER - revive ally');
+					return act[0];
+				}
+
+				// cant do any meaningful HEALER action
+				break;
 			}
 
 			case 'MELEE': {
@@ -60,10 +78,15 @@ export const getRoleAction = (categories: IActionCategories, role: CharacterRole
 				});
 
 				if (killAttempts.length) {
-					act = sortActions(killAttempts, ['SAFE_DISTANCE']);
+					act = sortActions(killAttempts, [
+						'SAFE_DISTANCE', 'SHORTEST_TRAVEL'
+					]);
 					Logger.info('AI DECIDE: RANGER - kill attempt');
+
 				} else {
-					act = sortActions(act, ['SAFE_DISTANCE', 'MOST_DAMAGE']);
+					act = sortActions(act, [
+						'SAFE_DISTANCE', 'MOST_DAMAGE', 'SHORTEST_TRAVEL'
+					]);
 					Logger.info('AI DECIDE: RANGER - attack');
 				}
 
@@ -84,10 +107,15 @@ export const getRoleAction = (categories: IActionCategories, role: CharacterRole
 				});
 
 				if (killAttempts.length) {
-					act = sortActions(killAttempts, ['SAFE_DISTANCE']);
+					act = sortActions(killAttempts, [
+						'SAFE_DISTANCE', 'SHORTEST_TRAVEL'
+					]);
 					Logger.info('AI DECIDE: MAGE - kill attempt');
+
 				} else {
-					act = sortActions(act, ['SAFE_DISTANCE', 'MOST_DAMAGE']);
+					act = sortActions(act, [
+						'SAFE_DISTANCE', 'MOST_DAMAGE', 'SHORTEST_TRAVEL'
+					]);
 					Logger.info('AI DECIDE: MAGE - attack');
 				}
 

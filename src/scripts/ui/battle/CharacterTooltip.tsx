@@ -6,6 +6,7 @@ import Ico from 'ui/common/Ico';
 import BarValue from 'ui/battle/BarValue';
 import ArmorIco from 'ui/common/ArmorIco';
 import WeaponIco from 'ui/common/WeaponIco';
+import StatusIco from 'ui/common/StatusIco';
 import ElementIco from 'ui/common/ElementIco';
 import ArchetypeIco from 'ui/common/ArchetypeIco';
 
@@ -97,7 +98,14 @@ const CharacterTooltip: React.SFC<IProps> = ({ x, y, size, orientation, characte
 
 				{status.length > 0 && (
 					<div>
-						Status: {status.map(st => `${st.effect} (${st.duration.value})`).join(', ')}
+						<strong>Status:</strong> {status.map((s, i) => (
+							<React.Fragment key={i}>
+								<StatusIco
+									status={s.id}
+									title={`${s.effect} (${s.duration.value})`}
+								/>
+							</React.Fragment>
+						))}
 					</div>
 				)}
 			</div>

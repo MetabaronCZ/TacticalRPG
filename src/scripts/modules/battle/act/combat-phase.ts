@@ -183,8 +183,8 @@ class CombatPhase extends ActPhase<ICombatPhaseSnapshot, ICombatPhaseRecord> {
 			case 'HOL_REMEDY':
 				if (!isDead && !isDying) {
 					// remove one bad status
-					const harmfulStatuses = target.status.get().filter(s => 'SUPPORT' !== s.type);
-					const effect = getRandomItem(harmfulStatuses);
+					const debuffs = target.status.get().filter(s => !s.buff);
+					const effect = getRandomItem(debuffs);
 
 					if (effect) {
 						target.status.remove(effect);

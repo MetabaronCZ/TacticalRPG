@@ -7,9 +7,12 @@ import BTAction from 'modules/ai/behavioral-tree/action';
 
 import { getRoleAction } from 'modules/ai/actions/decide/role';
 import { getPassAction } from 'modules/ai/actions/decide/pass';
+import { getEffectAction } from 'modules/ai/actions/decide/effect';
 import { getCriticalAction } from 'modules/ai/actions/decide/critical';
 import { getActions, IAction } from 'modules/ai/actions/decide/actions';
 import { getActionCategories } from 'modules/ai/actions/decide/categories';
+
+const effectActionRatio = 0.35;
 
 const btDecide = (role: CharacterRole): BTAction<IAIData> => {
 	return BT.Action(data => {
@@ -31,16 +34,35 @@ const btDecide = (role: CharacterRole): BTAction<IAIData> => {
 		}
 		let action: IAction | null = null;
 
-		if ('CRITICAL' === actor.condition) {
-			action = getCriticalAction(actor, ally, characters, categories, role);
-		}
+		if (actor.canAct) {
+			if ('CRITICAL' === actor.condition) {
+				action = getCriticalAction(actor, ally, characters, categories, role);
+			}
+	
+			if (!action) {
+				// get role or effect action
+				const roleAct = (): IAction | null => getRoleAction(categories, role);
+				const effAct = (): IAction | null => getEffectAction(actor, categories, role);
+	
+				const roleAsPrimary = Math.random() > effectActionRatio;
+				const fn1 = roleAsPrimary ? roleAct : effAct;
+				const fn2 = roleAsPrimary ? effAct : roleAct;
+	
+				action = fn1();
+	
+				if (!action) {
+					action = fn2();
+				}
+			}
 
-		if (!action) {
-			action = getRoleAction(categories, role);
-		}
+			if (!action) {
+				// find PASS type action
+				action = getPassAction(act.actor, role.primary, passActions);
+			}
 
-		if (!action) {
-			action = getPassAction(act.actor, role.primary, passActions);
+		} else {
+			// cannot act - get any PASS action
+			action = passActions[0];
 		}
 
 		if (!action) {
