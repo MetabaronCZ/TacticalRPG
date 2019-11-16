@@ -12,6 +12,7 @@ import WeaponIco from 'ui/common/WeaponIco';
 import ElementIco from 'ui/common/ElementIco';
 import CombatInfo from 'ui/battle/CombatInfo';
 import CommandTitle from 'ui/battle/CommandTitle';
+import StatusIco from 'ui/common/StatusIco';
 
 interface IProps {
 	readonly preview: ICasterCombatPreview | null;
@@ -108,7 +109,12 @@ const CommandInfo: React.SFC<IProps> = ({ preview, command }) => {
 
 			{status.length > 0 && (
 				<CombatInfo label="Added effect">
-					{status.join(', ')}
+					{status.map((s, i) => (
+						<React.Fragment key={i}>
+							{' '}
+							<StatusIco status={s} minimal />
+						</React.Fragment>
+					))}
 				</CombatInfo>
 			)}
 		</React.Fragment>

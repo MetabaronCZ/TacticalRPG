@@ -44,6 +44,7 @@ const smallSkills: { [id in SmallWeaponSkillID]: ISkillData; } = {
 		range: 1,
 		area: 'SINGLE',
 		target: 'ENEMY',
+		status: ['BLEED'],
 		cost: {
 			AP: 1
 		},
@@ -61,12 +62,13 @@ const smallSkills: { [id in SmallWeaponSkillID]: ISkillData; } = {
 		range: 1,
 		area: 'SINGLE',
 		target: 'ENEMY',
+		status: ['BLEED'],
 		cooldown: 1,
 		cost: {
 			AP: 2
 		},
 		physical: {
-			modifier: 2,
+			modifier: 3,
 			weapon: 'DAGGER'
 		},
 		animation: {

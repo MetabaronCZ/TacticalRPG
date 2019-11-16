@@ -17,7 +17,7 @@ const Weapons = new DataList<WeaponID, IWeaponData>({
 		description: '',
 		type: 'DUAL',
 		skills: ['FST_ATTACK', 'FST_DISARM'],
-		physical: 20,
+		physical: 30,
 		magical: 0
 	},
 	DAGGER: {

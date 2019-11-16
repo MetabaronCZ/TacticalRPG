@@ -1,4 +1,4 @@
 TODO
 ---------------------------------------------------------------------------------------
---	vyrovnani atributu
+>>	vyrovnani atributu
 	- postavy, zbrane, brneni, skilly
