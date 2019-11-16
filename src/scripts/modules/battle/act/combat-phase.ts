@@ -67,7 +67,7 @@ class CombatPhase extends ActPhase<ICombatPhaseSnapshot, ICombatPhaseRecord> {
 		for (const tgt of targets) {
 			this.combatResults.push({
 				isSupport: command.isSupport,
-				character: tgt.id,
+				character: tgt.battleId,
 				damaged: 0,
 				healed: 0,
 				killed: false,

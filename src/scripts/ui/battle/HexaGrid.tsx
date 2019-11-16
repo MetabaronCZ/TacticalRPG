@@ -186,7 +186,7 @@ class HexaGrid extends Canvas<IProps, IState> {
 				continue;
 			}
 			const { x, y } = getTileCoords(char.position, itemSize, gridSize, gridMargin);
-			const style = getCharacterStyle(char, char.id === actor.id);
+			const style = getCharacterStyle(char, char.battleId === actor.battleId);
 			const hex = getHexDimensions(itemSize);
 
 			// animation effect size
@@ -194,7 +194,7 @@ class HexaGrid extends Canvas<IProps, IState> {
 			const effectMaxSize = 1.5 * hex.height;
 
 			// character animation effect
-			if (char.animation && char.animation.isRunning() && char.animation.targets.find(ch => ch.id === char.id)) {
+			if (char.animation && char.animation.isRunning() && char.animation.targets.find(ch => ch.battleId === char.battleId)) {
 				renderEffect(char.animation, offCtx, x, y, effectMinSize, effectMaxSize, [255, 255, 255]);
 			}
 

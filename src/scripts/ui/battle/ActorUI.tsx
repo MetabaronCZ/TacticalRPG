@@ -53,13 +53,13 @@ const ActorUI: React.SFC<IProps> = ({ act, preview, onCommandSelect }) => {
 							if (reactionCommand) {
 								txt = reactionCommand.title;
 							}
-							const result = results.find(r => reactor.id === r.character);
+							const result = results.find(r => reactor.battleId === r.character);
 
 							if (result) {
 								txt = formatCombatResult(result);
 							}
 							return (
-								<div key={reactor.id}>
+								<div key={reactor.battleId}>
 									{reactor.name} → {txt}
 								</div>
 							);

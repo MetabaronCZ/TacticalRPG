@@ -36,7 +36,7 @@ class Order {
 			characters: this.order.map((char, i) => {
 				const state: IOrderCharacter = {
 					order: i,
-					id: char.id,
+					id: char.battleId,
 					name: char.name,
 					dead: char.isDead(),
 					dying: char.status.has('DYING'),

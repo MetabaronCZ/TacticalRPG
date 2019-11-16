@@ -94,7 +94,7 @@ export const getActions = (data: IAIData): IAction[] => {
 			const path = getShortestPath(tile, ch.position, []);
 
 			const distance = path.length;
-			distances[ch.id] = distance;
+			distances[ch.battleId] = distance;
 
 			if (liveChars.includes(ch)) {
 				// mark closest ally / enemy
@@ -103,7 +103,7 @@ export const getActions = (data: IAIData): IAction[] => {
 						closestEnemy = distance;
 					}
 				} else {
-					if (distance < closestAlly && actor.id !== ch.id) {
+					if (distance < closestAlly && actor.battleId !== ch.battleId) {
 						closestAlly = distance;
 					}
 				}
@@ -122,7 +122,7 @@ export const getActions = (data: IAIData): IAction[] => {
 			}
 			actions.push({
 				target: {
-					character: char.id,
+					character: char.battleId,
 					player: char.player.id,
 					position: tile,
 					distance: 0
@@ -163,11 +163,11 @@ export const getActions = (data: IAIData): IAction[] => {
 			}
 
 			for (const tgt of targetable) {
-				const { id } = tgt;
-				const distance = distances[id];
+				const { battleId } = tgt;
+				const distance = distances[battleId];
 				let tgtPosition = tgt.position;
 
-				if (id === actor.id) {
+				if (battleId === actor.battleId) {
 					// target its future position
 					tgtPosition = tile;
 				}
@@ -189,7 +189,7 @@ export const getActions = (data: IAIData): IAction[] => {
 
 				actions.push({
 					target: {
-						character: id,
+						character: battleId,
 						player: tgt.player.id,
 						position: tgtPosition,
 						distance
@@ -210,7 +210,7 @@ export const getActions = (data: IAIData): IAction[] => {
 
 	const possibleActions: IAction[] = actions.map(action => {
 		const charID = action.target.character;
-		const character = characters.find(char => charID === char.id);
+		const character = characters.find(char => charID === char.battleId);
 
 		if (!character) {
 			throw new Error('Could not convert action item: Invalid character ID');

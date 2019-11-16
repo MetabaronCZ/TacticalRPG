@@ -28,7 +28,7 @@ export const renderCharacter = (char: ICharacterSnapshot, ctx: CanvasRenderingCo
 
 	let bgColor = background;
 
-	if (char.animation && char.animation.isRunning() && 'COMBAT' === char.animation.type && char.id === char.animation.source.id) {
+	if (char.animation && char.animation.isRunning() && 'COMBAT' === char.animation.type && char.battleId === char.animation.source.battleId) {
 		// flash character doing skill animation
 		const progress = char.animation.getProgress();
 		const ratio = Math.sin(PI * progress);

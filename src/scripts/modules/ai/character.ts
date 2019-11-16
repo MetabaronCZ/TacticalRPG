@@ -39,7 +39,7 @@ export interface IAIDecision {
 }
 
 export interface IAICharacterSnapshot {
-	readonly id: string;
+	readonly battleId: string;
 	readonly role: ICharacterRoleSnapshot;
 }
 
@@ -124,7 +124,7 @@ class AICharacter {
 
 	public serialize(): IAICharacterSnapshot {
 		return {
-			id: this.character.id,
+			battleId: this.character.battleId,
 			role: this.role.serialize()
 		};
 	}

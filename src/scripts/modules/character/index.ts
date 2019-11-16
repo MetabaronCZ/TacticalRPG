@@ -37,7 +37,7 @@ export interface ICharacterSnapshot {
 	readonly data: ICharacterData;
 	readonly player: IPlayerSnapshot;
 
-	readonly id: string;
+	readonly battleId: string;
 	readonly name: string;
 	readonly sex: SexID;
 	readonly skillset: Skillset;
@@ -64,7 +64,7 @@ export interface ICharacterSnapshot {
 }
 
 class Character {
-	public readonly id: string;
+	public readonly battleId: string;
 	public readonly data: ICharacterData;
 	public readonly name: string;
 	public readonly sex: ISexData;
@@ -90,7 +90,7 @@ class Character {
 	constructor(character: ICharacterData, position: Tile, direction: DirectionID, player: Player) {
 		const data = { ...character };
 
-		this.id = `${data.id}-${player.id}`;
+		this.battleId = `${data.id}-${player.id}`;
 		this.data = data;
 		this.name = data.name;
 		this.player = player;
@@ -137,7 +137,7 @@ class Character {
 
 	public serialize(): ICharacterSnapshot {
 		return {
-			id: this.id,
+			battleId: this.battleId,
 			data: { ...this.data },
 			name: this.data.name,
 			sex: this.data.sex,

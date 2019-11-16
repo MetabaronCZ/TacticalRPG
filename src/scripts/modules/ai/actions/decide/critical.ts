@@ -17,7 +17,7 @@ export const getCriticalAction = (actor: ICharacterSnapshot, ally: IAICharacterS
 
 	// try to self-heal
 	if (healingActions.length) {
-		let act = healingActions.filter(action => actor.id === action.target.character.id);
+		let act = healingActions.filter(action => actor.battleId === action.target.character.battleId);
 			
 		if (act.length) {
 			if ('MELEE' === role.primary) {
@@ -39,10 +39,10 @@ export const getCriticalAction = (actor: ICharacterSnapshot, ally: IAICharacterS
 			return false;
 		}
 
-		if (actor.id === char.id || char.player.id !== actor.player.id) {
+		if (actor.battleId === char.battleId || char.player.id !== actor.player.id) {
 			return false;
 		}
-		const data = ally.find(a => char.id === a.id);
+		const data = ally.find(a => char.battleId === a.battleId);
 
 		if (!data) {
 			throw new Error('Invalid AI data for character: ' + char.name);
@@ -56,7 +56,7 @@ export const getCriticalAction = (actor: ICharacterSnapshot, ally: IAICharacterS
 
 		// get healer actions
 		for (const char of alliedHealers) {
-			const healerID = char.id;
+			const healerID = char.battleId;
 
 			// sort by distance to healer
 			let act = [...categories.all];

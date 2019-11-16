@@ -53,7 +53,7 @@ class Player {
 			data: { ...this.data },
 			id: this.id,
 			name: this.name,
-			characters: this.characters.map(char => char.id)
+			characters: this.characters.map(char => char.battleId)
 		};
 	}
 

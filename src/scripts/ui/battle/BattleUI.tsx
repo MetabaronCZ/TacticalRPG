@@ -46,7 +46,7 @@ const BattleUI: React.SFC<IBattleUIProps> = ({ engine: engineState, onTileSelect
 		<div className="BattleUI">
 			<div className="BattleUI-layout">
 				<div className="BattleUI-layout-column BattleUI-layout-column--order">
-					<Order actor={act.actor.id} order={order} />
+					<Order actor={act.actor.battleId} order={order} />
 				</div>
 
 				<div className="BattleUI-layout-column BattleUI-layout-column--character">

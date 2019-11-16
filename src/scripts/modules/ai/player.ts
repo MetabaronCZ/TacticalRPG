@@ -64,7 +64,7 @@ class AIPlayer extends Player {
 			if (!actingChar) {
 				throw new Error('Invalid acting character');
 			}
-			const aiChar = this.ally.find(ch => ch.character.id === actingChar.id);
+			const aiChar = this.ally.find(ch => ch.character.battleId === actingChar.battleId);
 			this.activeCharacter = aiChar || null;
 		}
 
