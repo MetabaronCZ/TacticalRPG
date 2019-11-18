@@ -4,7 +4,7 @@ import Sexes from 'data/sexes';
 type GeneralIco = 'info' | 'healing' | 'MALE' | 'FEMALE';
 
 type IcoLabels= {
-	[id in GeneralIco]: string;
+	readonly [id in GeneralIco]: string;
 }
 
 const labels: IcoLabels = {

@@ -8,7 +8,7 @@ import ElementIco from 'ui/common/ElementIco';
 import SkillIco, { availableSkillIcos } from 'ui/common/SkillIco';
 
 interface IProps {
-	command: ICommandSnapshot;
+	readonly command: ICommandSnapshot;
 }
 
 const CommandTitle: React.SFC<IProps> = ({ command }) => {

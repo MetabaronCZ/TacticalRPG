@@ -8,16 +8,15 @@ import { ICharacterData } from 'modules/character-creation/character-data';
 
 export interface IPlayerSnapshot {
 	readonly data: IPlayerData;
-
 	readonly id: number;
 	readonly name: string;
 	readonly characters: string[];
 }
 
 export interface IPlayerCharacterSetup {
-	data: ICharacterData;
-	position: Tile;
-	direction: DirectionID;
+	readonly data: ICharacterData;
+	readonly position: Tile;
+	readonly direction: DirectionID;
 }
 
 class Player {
@@ -44,8 +43,7 @@ class Player {
 	}
 
 	public static from(pl: IPlayerSnapshot): Player {
-		const player = new Player(pl.data, []);
-		return player;
+		return new Player(pl.data, []);
 	}
 
 	public serialize(): IPlayerSnapshot {

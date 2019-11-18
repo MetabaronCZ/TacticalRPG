@@ -101,5 +101,6 @@ export const getSummaryItem = (characters: ICharacterData[], record: IActRecord)
 		const txt = formatCombatResult(item);
 		result.results.push(txt);
 	}
+
 	return result;
 };

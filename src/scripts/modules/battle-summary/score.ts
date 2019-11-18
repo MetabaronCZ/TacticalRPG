@@ -1,8 +1,7 @@
+import { topListSize } from 'data/game-config';
+
 import { IActRecord } from 'modules/battle/act';
 import { ICharacterData } from 'modules/character-creation/character-data';
-
-// maximum items of diplayed top kills, damage, ...
-export const topListSize = 5;
 
 export interface IScoreItem {
 	readonly name: string;

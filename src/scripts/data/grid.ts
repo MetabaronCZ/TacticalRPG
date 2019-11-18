@@ -4,6 +4,7 @@ type IPosition = [number, number, number];
 
 const max = gridSize - 1;
 
+// hexa-grid character positions for all players
 export const characterPositions: IPosition[][] = [
 	// Player 0
 	[

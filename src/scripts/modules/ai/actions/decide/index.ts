@@ -1,3 +1,5 @@
+import { effectActionRatio } from 'data/game-config';
+
 import Logger from 'modules/logger';
 
 import BT from 'modules/ai/behavioral-tree';
@@ -11,8 +13,6 @@ import { getEffectAction } from 'modules/ai/actions/decide/effect';
 import { getCriticalAction } from 'modules/ai/actions/decide/critical';
 import { getActions, IAction } from 'modules/ai/actions/decide/actions';
 import { getActionCategories } from 'modules/ai/actions/decide/categories';
-
-const effectActionRatio = 0.35;
 
 const btDecide = (role: CharacterRole): BTAction<IAIData> => {
 	return BT.Action(data => {
@@ -42,7 +42,7 @@ const btDecide = (role: CharacterRole): BTAction<IAIData> => {
 			if (!action) {
 				// get role or effect action
 				const roleAct = (): IAction | null => getRoleAction(categories, role);
-				const effAct = (): IAction | null => getEffectAction(actor, categories, role);
+				const effAct = (): IAction | null => getEffectAction(categories, role);
 	
 				const roleAsPrimary = Math.random() > effectActionRatio;
 				const fn1 = roleAsPrimary ? roleAct : effAct;

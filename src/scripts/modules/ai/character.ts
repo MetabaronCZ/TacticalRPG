@@ -32,15 +32,10 @@ const delayAction = (fn: () => void): void => {
 	setTimeout(() => fn(), aiActionDelay);
 };
 
-export interface IAIDecision {
+interface IAIDecision {
 	readonly command: Command;
 	readonly target: Tile;
 	readonly move: Tile;
-}
-
-export interface IAICharacterSnapshot {
-	readonly battleId: string;
-	readonly role: ICharacterRoleSnapshot;
 }
 
 interface IAICharacterMemory {
@@ -57,6 +52,11 @@ interface IAICharacterUpdateData {
 	readonly ally: IAICharacterSnapshot[];
 	readonly enemy: ICharacterSnapshot[];
 	readonly characters: ICharacterSnapshot[];
+}
+
+export interface IAICharacterSnapshot {
+	readonly battleId: string;
+	readonly role: ICharacterRoleSnapshot;
 }
 
 export interface IAIData extends BTData, IAICharacterUpdateData {

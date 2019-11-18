@@ -30,7 +30,7 @@ interface IBattleConfigUIProps {
 
 @observer
 class BattleConfigUI extends React.Component<IBattleConfigUIProps> {
-	private form: BattleConfiguration;
+	private readonly form: BattleConfiguration;
 
 	constructor(props: IBattleConfigUIProps) {
 		super(props);

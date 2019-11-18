@@ -1,6 +1,4 @@
 import Logger from 'modules/logger';
-import { ICharacterSnapshot } from 'modules/character';
-
 import CharacterRole from 'modules/ai/role';
 import { IAction } from 'modules/ai/actions/decide/actions';
 import { sortActions } from 'modules/ai/actions/decide/sort';
@@ -9,11 +7,11 @@ import { IActionCategories } from 'modules/ai/actions/decide/categories';
 type ActionTableType = 'STUN' | 'DISABLE' | 'DOT' | 'OTHER';
 
 type IActionTable = {
-	[type in ActionTableType]: IAction[];
+	readonly [type in ActionTableType]: IAction[];
 }
 
 // get action according to actor role
-export const getEffectAction = (actor: ICharacterSnapshot, categories: IActionCategories, role: CharacterRole): IAction | null => {
+export const getEffectAction = (categories: IActionCategories, role: CharacterRole): IAction | null => {
 	const effectActions = categories.effect;
 	const allActions = categories.all;
 

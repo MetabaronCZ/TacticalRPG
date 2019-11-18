@@ -87,7 +87,6 @@ class CombatPhase extends ActPhase<ICombatPhaseSnapshot, ICombatPhaseRecord> {
 				this.info = '';
 
 				actor.act(command);
-
 				this.onEvent('COMBAT_DONE');
 				return;
 			}
@@ -109,8 +108,10 @@ class CombatPhase extends ActPhase<ICombatPhaseSnapshot, ICombatPhaseRecord> {
 						type: 'ACTION',
 						position
 					});
+
 					return;
 				}
+
 				if (command.isSupport) {
 					this.handleSupport(combat, result, info);
 				} else {

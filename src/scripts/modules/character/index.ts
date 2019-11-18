@@ -173,7 +173,10 @@ class Character {
 
 	public canAct(): boolean {
 		const status = this.status;
-		return !this.dead && !status.has('DYING') && !status.has('STUN') && !status.has('FREEZE');
+		return (
+			!this.dead && !status.has('DYING') &&
+			!status.has('STUN') && !status.has('FREEZE')
+		);
 	}
 
 	public canMove(): boolean {

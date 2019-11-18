@@ -77,8 +77,7 @@ class DirectPhase extends ActPhase<IDirectPhaseSnapshot, IDirectPhaseRecord> {
 			this.directTarget = tile;
 
 			// update character
-			const pos = actor.position;
-			const newDir = resolveDirection(pos, tile);
+			const newDir = resolveDirection(actor.position, tile);
 			actor.direction = newDir;
 		}
 		this.info = '';

@@ -1,5 +1,3 @@
-import { PI } from 'core/number';
-
 import Skills from 'data/skills';
 import Weapons from 'data/weapons';
 import * as DMG from 'data/combat';
@@ -12,10 +10,6 @@ import { WeaponID } from 'modules/equipment/weapon-data';
 import Character, { ICharacterSnapshot } from 'modules/character';
 import StatusEffect, { StatusEffectID } from 'modules/battle/status-effect';
 import { AffinityTable, Affinity, ElementID } from 'modules/skill/affinity';
-
-const precision = 10 ** 10; // angle precision modifier
-const backAttackAngle = PI / 6; // 30 degrees
-const sideBackAttackAngle = PI / 3; // 60 degrees
 
 interface IBlockValue {
 	readonly physical: number;
@@ -91,13 +85,13 @@ const getCharacterAngle = (attacker: Character, defender: Character): number => 
 	const angle = attVector.getAngle(defVector);
 
 	// get approximate value (resulting angle is bigger, even if it should be equal PI / 3)
-	const approxAngle = Math.floor(precision * angle) / precision;
+	const approxAngle = Math.floor(DMG.anglePrecision * angle) / DMG.anglePrecision;
 	return approxAngle;
 };
 
 export const isBackAttacked = (attacker: Character, defender: Character): boolean => {
 	const angle = getCharacterAngle(attacker, defender);
-	return angle <= sideBackAttackAngle;
+	return angle <= DMG.sideBackAttackAngle;
 };
 
 const getAffinity = (attacker: ElementID, defender: ElementID): Affinity => {
@@ -117,10 +111,10 @@ const getAffinityModifier = (affinity: Affinity): number => {
 const getDirectionalModifier = (attacker: Character, defender: Character): number => {
 	const angle = getCharacterAngle(attacker, defender);
 
-	if (angle <= backAttackAngle) {
+	if (angle <= DMG.backAttackAngle) {
 		return DMG.backAttackModifier;
 	}
-	if (angle <= sideBackAttackAngle) {
+	if (angle <= DMG.sideBackAttackAngle) {
 		return DMG.sideBackAttackModifier;
 	}
 	return 1;

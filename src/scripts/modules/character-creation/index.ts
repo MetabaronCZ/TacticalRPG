@@ -16,7 +16,7 @@ import { SkillsetID } from 'modules/character/skillset-data';
 import { CharacterData, ICharacterDataEditable, ICharacterData } from 'modules/character-creation/character-data';
 
 interface ICharacterCreation {
-	character: CharacterData;
+	readonly character: CharacterData;
 	validation: IValidation<ICharacterDataEditable>;
 }
 

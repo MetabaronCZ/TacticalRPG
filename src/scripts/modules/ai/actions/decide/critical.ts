@@ -2,9 +2,9 @@ import Logger from 'modules/logger';
 import CharacterRole from 'modules/ai/role';
 import { ICharacterSnapshot } from 'modules/character';
 import { IAction } from 'modules/ai/actions/decide/actions';
+import { IAICharacterSnapshot } from 'modules/ai/character';
 import { sortActions } from 'modules/ai/actions/decide/sort';
 import { IActionCategories } from 'modules/ai/actions/decide/categories';
-import { IAICharacterSnapshot } from 'modules/ai/character';
 
 interface IHealerInfo {
 	readonly actions: IAction[];

@@ -19,12 +19,14 @@ export interface ICommandPhaseSnapshot {
 	readonly combatPreview: ICombatPreview | null;
 }
 
+interface ICommandPhaseTargetRecord {
+	readonly id: string;
+	readonly player: number;
+}
+
 export interface ICommandPhaseRecord {
 	readonly command: ICommandRecord | null;
-	readonly target: {
-		readonly id: string;
-		readonly player: number;
-	} | null;
+	readonly target: ICommandPhaseTargetRecord | null;
 }
 
 interface IState {
@@ -59,7 +61,6 @@ class CommandPhase extends ActPhase<ICommandPhaseSnapshot, ICommandPhaseRecord> 
 
 	constructor(actor: Character, characters: Character[], onEvent: OnActPhaseEvent) {
 		super();
-
 		this.actor = actor;
 		this.characters = characters.filter(char => !char.isDead());
 		this.onEvent = onEvent;

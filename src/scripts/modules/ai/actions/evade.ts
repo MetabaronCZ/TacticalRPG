@@ -28,6 +28,7 @@ const btEvade = (): BTAction<IAIData> => {
 			return 'FAILURE';
 		}
 		data.selectCommand(evadeCommand.id);
+
 		return 'SUCCESS';
 	});
 };

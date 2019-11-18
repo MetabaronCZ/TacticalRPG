@@ -1,5 +1,9 @@
 import { Affinity } from 'modules/skill/affinity';
 
+export const anglePrecision = 10 ** 10; // angle precision modifier
+export const backAttackAngle = Math.PI / 6; // 30 degrees
+export const sideBackAttackAngle = Math.PI / 3; // 60 degrees
+
 export const backAttackModifier = 1.5;
 export const sideBackAttackModifier = 1.25;
 

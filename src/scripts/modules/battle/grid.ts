@@ -13,16 +13,16 @@ export type TileColors = 'default' | 'green' | 'blue' | 'yellow' | 'highlighted'
 export type CharacterColors = 'grey' | 'violet' | 'orange' | 'highlighted';
 
 export interface ITileCoords {
-	x: number;
-	y: number;
+	readonly x: number;
+	readonly y: number;
 }
 
 // [background, border]
 export type ColorStyle = [Color, Color];
 
 interface IHexDimensions {
-	width: number;
-	height: number;
+	readonly width: number;
+	readonly height: number;
 }
 
 export const getTileStyle = (tile: Tile, act: IActSnapshot): ColorStyle => {

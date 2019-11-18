@@ -6,9 +6,9 @@ import { IPartyData } from 'modules/party-creation/party-data';
 import { IPlayerData } from 'modules/battle-configuration/player-data';
 import { ICharacterData } from 'modules/character-creation/character-data';
 
-export type ChronoxPlayerList =  [IPlayerData, IPlayerData];
+type ChronoxPlayerList =  [IPlayerData, IPlayerData];
 
-export interface IChronoxConfig {
+interface IChronoxConfig {
 	readonly characters: ICharacterData[];
 	readonly players: ChronoxPlayerList;
 	readonly parties: IPartyData[];

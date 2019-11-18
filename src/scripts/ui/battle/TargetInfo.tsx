@@ -6,7 +6,7 @@ import ElementIco from 'ui/common/ElementIco';
 import CombatInfo from 'ui/battle/CombatInfo';
 
 interface IProps {
-	preview: ITargetCombatPreview;
+	readonly preview: ITargetCombatPreview;
 }
 
 const TargetInfo: React.SFC<IProps> = ({ preview }) => {

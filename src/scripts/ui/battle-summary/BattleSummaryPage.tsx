@@ -3,9 +3,10 @@ import { useHistory } from 'react-router';
 import { History } from 'history';
 
 import { gotoRoute } from 'core/navigation';
+import { topListSize } from 'data/game-config';
 
 import Summary, { ISummary } from 'modules/battle/summary';
-import { analyzeScore, topListSize } from 'modules/battle-summary/score';
+import { analyzeScore } from 'modules/battle-summary/score';
 import { getSummaryItem, ISummaryItem } from 'modules/battle-summary/summary';
 import { getPlayerData, ISummaryPlayerData } from 'modules/battle-summary/player';
 

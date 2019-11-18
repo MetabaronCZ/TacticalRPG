@@ -8,11 +8,11 @@ import {
 } from 'modules/battle/combat';
 
 import Ico from 'ui/common/Ico';
+import StatusIco from 'ui/common/StatusIco';
 import WeaponIco from 'ui/common/WeaponIco';
 import ElementIco from 'ui/common/ElementIco';
 import CombatInfo from 'ui/battle/CombatInfo';
 import CommandTitle from 'ui/battle/CommandTitle';
-import StatusIco from 'ui/common/StatusIco';
 
 interface IProps {
 	readonly preview: ICasterCombatPreview | null;

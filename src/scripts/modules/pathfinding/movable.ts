@@ -13,12 +13,13 @@ interface IMovable {
 
 // Dijkstra algorithm (movement cost based search)
 export const getMovableTiles = (start: Tile, obstacles: Tile[], max: number): IMovable => {
-	const movable: Tile[] = [];
 	const frontier = new PriorityQueue<Tile>();
 	frontier.push(start, 0);
 
 	const costMap: ICostMap = {};
 	costMap[start.id] = 0;
+
+	const movable: Tile[] = [];
 
 	while (frontier.size()) {
 		const curr = frontier.get();

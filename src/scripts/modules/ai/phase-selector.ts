@@ -2,7 +2,7 @@ import { IAIData } from 'modules/ai/character';
 import BTNode, { BTNodeStatus } from 'modules/ai/behavioral-tree/node';
 
 type BTPhaseNodes<T extends string> = {
-	[phase in T]: BTNode<IAIData> | null;
+	readonly [phase in T]: BTNode<IAIData> | null;
 };
 
 type BTPhaseGetter<T> = (data: IAIData) => T;

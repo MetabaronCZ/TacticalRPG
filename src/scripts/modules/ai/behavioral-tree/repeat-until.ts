@@ -3,7 +3,7 @@ import BTDecorator from 'modules/ai/behavioral-tree/decorator';
 import BTNode, { BTNodeStatus } from 'modules/ai/behavioral-tree/node';
 
 class BTRepeatUntil<T extends BTData> extends BTDecorator<T> {
-	private status: BTNodeStatus;
+	private readonly status: BTNodeStatus;
 
 	constructor(node: BTNode<T>, status: BTNodeStatus) {
 		super(node);

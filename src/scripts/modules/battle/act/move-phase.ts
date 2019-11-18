@@ -44,10 +44,11 @@ class MovePhase extends ActPhase<IMovePhaseSnapshot, IMovePhaseRecord> {
 	private readonly obstacles: Tile[] = [];
 	private readonly onEvent: OnActPhaseEvent;
 
+	private readonly initialAP: number;
+	private readonly initialPosition: Tile;
+	private readonly movable: Tile[] = [];
+
 	private phase: MovePhaseID = 'SUSPENDED';
-	private initialAP: number;
-	private initialPosition: Tile;
-	private movable: Tile[] = [];
 	private moveTarget: Tile;
 	private movePath: Tile[] = [];
 

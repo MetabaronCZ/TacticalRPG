@@ -8,8 +8,7 @@ const btBlock = (): BTAction<IAIData> => {
 		const blockCommand = data.act.commands.find(cmd => {
 			return (
 				cmd.isActive &&
-				cmd.skills.length &&
-				(
+				cmd.skills.length && (
 					'SHD_SMALL_BLOCK' === cmd.skills[0].id ||
 					'SHD_LARGE_BLOCK' === cmd.skills[0].id
 				)
@@ -20,6 +19,7 @@ const btBlock = (): BTAction<IAIData> => {
 			return 'FAILURE';
 		}
 		data.selectCommand(blockCommand.id);
+
 		return 'RUNNING';
 	});
 };

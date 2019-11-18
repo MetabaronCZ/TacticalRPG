@@ -32,9 +32,9 @@ const [hBackground, hBorder] = tileStyles.highlighted;
 const [dBackground, dBorder] = tileStyles.destroyed;
 
 interface IHovered {
-	x: number;
-	y: number;
-	tile: Tile | null;
+	readonly x: number;
+	readonly y: number;
+	readonly tile: Tile | null;
 }
 
 interface IProps {

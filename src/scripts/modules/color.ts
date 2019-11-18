@@ -1,6 +1,7 @@
 export type Color = [number, number, number];
 
 export type ColorID =
+	'black' | 'white' | 
 	'green' | 'greenLight' |
 	'blue' | 'blueLight' |
 	'yellow' | 'yellowLight' |
@@ -25,7 +26,7 @@ export const getCrossColor = (colA: Color, colB: Color, ratio: number): Color =>
 	const color = [...colA] as Color;
 
 	for (let c = 0, cmax = colB.length; c < cmax; c++) {
-		color[c] = color[c] + Math.round(ratio * (colB[c] - color[c]));
+		color[c] += + Math.round(ratio * (colB[c] - color[c]));
 	}
 	return color;
 };

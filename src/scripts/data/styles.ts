@@ -2,18 +2,20 @@ import { ColorID, Color } from 'modules/color';
 import { CharacterColors, ColorStyle, TileColors } from 'modules/battle/grid';
 
 type ColorList = {
-	[id in ColorID]: Color;
+	readonly [id in ColorID]: Color;
 };
 
 type TileStyles = {
-	[id in TileColors]: ColorStyle;
+	readonly [id in TileColors]: ColorStyle;
 };
 
 type CharacterStyles = {
-	[id in CharacterColors]: ColorStyle;
+	readonly [id in CharacterColors]: ColorStyle;
 };
 
-const colors: ColorList = {
+export const colors: ColorList = {
+	black: [0, 0, 0],
+	white: [255, 255, 255],
 	green: [0, 136, 68],
 	greenLight: [0, 168, 81],
 	blue: [0, 75, 221],

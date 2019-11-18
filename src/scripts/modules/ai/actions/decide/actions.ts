@@ -28,8 +28,8 @@ interface IActionBase<T> {
 	readonly command: Command;
 	readonly move: Tile;
 	readonly cost: {
-		AP: number;
-		MP: number;
+		readonly AP: number;
+		readonly MP: number;
 	};
 	readonly damage: number;
 	readonly healing: number;

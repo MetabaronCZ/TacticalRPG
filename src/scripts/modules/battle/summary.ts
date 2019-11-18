@@ -1,6 +1,5 @@
+import { chronoxStorageKey } from 'data/game-config';
 import { IChronoxRecord } from 'modules/battle/chronox';
-
-const KEY = 'chronox';
 
 export interface ISummary {
 	readonly chronox: IChronoxRecord;
@@ -9,7 +8,7 @@ export interface ISummary {
 
 class Summary {
 	public static load(): ISummary {
-		const data = sessionStorage.getItem(KEY);
+		const data = sessionStorage.getItem(chronoxStorageKey);
 
 		if (!data) {
 			throw new Error('Could not load Summary data!');
@@ -23,7 +22,7 @@ class Summary {
 
 	public static save(chronox: IChronoxRecord, winner: number | null): void {
 		const record: ISummary = { chronox, winner };
-		sessionStorage.setItem(KEY, JSON.stringify(record));
+		sessionStorage.setItem(chronoxStorageKey, JSON.stringify(record));
 	}
 }
 

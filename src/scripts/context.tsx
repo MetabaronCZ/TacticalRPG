@@ -4,7 +4,7 @@ import { observer } from 'mobx-react';
 import { Store } from 'modules/store';
 
 export interface IContext {
-	store: Store;
+	readonly store: Store;
 }
 
 export const context: IContext = {

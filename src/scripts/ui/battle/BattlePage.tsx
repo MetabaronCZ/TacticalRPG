@@ -1,6 +1,5 @@
 import React from 'react';
 import { History } from 'history';
-import { } from 'react-router';
 
 import { gotoRoute } from 'core/navigation';
 import { withContext, IContext } from 'context';
@@ -25,7 +24,7 @@ class BattlePageContainer extends React.Component<IProps, IState> {
 	public state: IState = {
 		engine: null
 	};
-	private engine: Engine;
+	private readonly engine: Engine;
 
 	constructor(props: IProps) {
 		super(props);

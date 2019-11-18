@@ -21,6 +21,7 @@ const BarValue: React.SFC<IProps> = ({ value, max }) => {
 	const maxZeroCnt = cipherCnt - maxCipherCnt;
 	const valZeros = valZeroCnt > 0 ? Array(valZeroCnt).fill(0) : [];
 	const maxZeros = maxZeroCnt > 0 ? Array(maxZeroCnt).fill(0) : [];
+
 	return (
 		<span>
 			{valZeros.map((zero, z) => (

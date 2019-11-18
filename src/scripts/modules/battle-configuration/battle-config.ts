@@ -22,7 +22,7 @@ export interface IBattleConfigValidation {
 	};
 }
 
-const playerPool = [0, 1];
+const playerPool = [0, 1]; // Player ID list
 
 export class BattleConfig {
 	@observable.shallow public players: PlayerConfigList;

@@ -17,8 +17,8 @@ export interface IOrderSnapshot {
 }
 
 class Order {
-	private players: Player[] = [];
-	private characters: Character[] = [];
+	private readonly players: Player[] = [];
+	private readonly characters: Character[] = [];
 	private order: Character[] = [];
 
 	constructor(characters: Character[], players: Player[]) {

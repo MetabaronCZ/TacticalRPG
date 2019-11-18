@@ -10,10 +10,11 @@ export const getCharacterHPRatio = (char: ICharacterSnapshot, damage = 0): numbe
 type SortType =
 	'SHORTEST_TRAVEL' | 'SAFE_DISTANCE' | 'ALLY_DISTANCE' | 'CLOSEST_TO' |
 	'MOST_HEALING' | 'MOST_DAMAGE' | 'HP_REMAINING';
+
 type SortResult = -1 | 0 | 1;
 
 type SortTable = {
-	[type in SortType]: (a: IAction, b: IAction, param: any) => SortResult;
+	readonly [type in SortType]: (a: IAction, b: IAction, param: any) => SortResult;
 };
 
 const sortTable: SortTable = {

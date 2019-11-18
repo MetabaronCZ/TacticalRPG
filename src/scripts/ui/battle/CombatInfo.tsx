@@ -1,8 +1,8 @@
 import React from 'react';
 
 interface IProps {
-	label: string;
-	small?: boolean;
+	readonly label: string;
+	readonly small?: boolean;
 }
 
 const CombatInfo: React.SFC<IProps> = ({ label, small = true, children }) => (

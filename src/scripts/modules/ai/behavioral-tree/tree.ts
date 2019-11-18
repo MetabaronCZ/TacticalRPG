@@ -2,7 +2,7 @@ import { BTData } from 'modules/ai/behavioral-tree';
 import BTNode, { BTNodeStatus } from 'modules/ai/behavioral-tree/node';
 
 class BTree<T extends BTData> extends BTNode<T> {
-	private node: BTNode<T> | null;
+	private readonly node: BTNode<T> | null;
 
 	constructor(node?: BTNode<T>) {
 		super();

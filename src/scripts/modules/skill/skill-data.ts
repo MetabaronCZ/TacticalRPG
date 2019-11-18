@@ -21,7 +21,7 @@ export type SkillCooldown = 0 | 1 | 2 | Ultimate;
 export type ISkillAnimationDuration = 0 | 150 | 1000;
 
 export interface ISkillAnimation {
-	duration: ISkillAnimationDuration;
+	readonly duration: ISkillAnimationDuration;
 }
 
 export interface ISkillData {

@@ -10,8 +10,8 @@ import { resolveDirection, findTileFrom } from 'modules/geometry/direction';
 import { getShortestPath } from 'modules/pathfinding/shortest-path-breadth-first';
 
 interface IClosestEnemy {
-	character: ICharacterSnapshot;
-	distance: number;
+	readonly character: ICharacterSnapshot;
+	readonly distance: number;
 }
 
 const btDirect = (): BTAction<IAIData> => {

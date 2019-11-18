@@ -3,9 +3,9 @@ import React from 'react';
 import { ICharacterSnapshot } from 'modules/character';
 import { reactiveEffects } from 'modules/battle/status-effect';
 
+import StatusIco from 'ui/common/StatusIco';
 import { formatCharacter } from 'ui/format';
 import AttributeInfo from 'ui/battle/AttributeInfo';
-import StatusIco from 'ui/common/StatusIco';
 
 interface IProps {
 	readonly character: ICharacterSnapshot;

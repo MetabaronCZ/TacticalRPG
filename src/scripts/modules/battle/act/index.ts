@@ -52,6 +52,7 @@ export interface IActSnapshot {
 		readonly COMBAT: ICombatPhaseSnapshot;
 	};
 }
+
 export interface IActRecord {
 	readonly id: number;
 	readonly actor: string;

@@ -1,11 +1,9 @@
 import Weapons from 'data/weapons';
+import { healingTreshold } from 'data/game-config';
 
 import { IAction } from 'modules/ai/actions/decide/actions';
 import { meleeWeapons } from 'modules/equipment/weapon-data';
 import { getCharacterHPRatio } from 'modules/ai/actions/decide/sort';
-
-// maximum percent of target life remaining for healer to care
-const healingTreshold = 0.8;
 
 export interface IActionCategories {
 	readonly healing: IAction[];

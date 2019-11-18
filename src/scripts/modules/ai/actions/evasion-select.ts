@@ -1,8 +1,9 @@
+import { getRandomItem } from 'core/array';
+
 import { IAIData } from 'modules/ai/character';
 
 import BT from 'modules/ai/behavioral-tree';
 import BTAction from 'modules/ai/behavioral-tree/action';
-import { getRandomItem } from 'core/array';
 
 const btEvadeTo = (): BTAction<IAIData> => {
 	return BT.Action(data => {

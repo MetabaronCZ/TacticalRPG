@@ -8,7 +8,7 @@ import { BattleConfig, IBattleConfigValidation } from 'modules/battle-configurat
 import { IPlayerDataEditable, PlayerData, PlayerControlID } from 'modules/battle-configuration/player-data';
 
 interface IBattleConfiguration {
-	config: BattleConfig;
+	readonly config: BattleConfig;
 	validation: IBattleConfigValidation;
 }
 

@@ -1,2 +1,2 @@
 # TacticalRPG
-[Work in Progress] Turn-based tactical RPG made in Typescript + React.js
+Turn-based tactical RPG battle system made in Typescript + React.js

@@ -1,14 +1,14 @@
 import DataList from 'core/data-list';
 
-import psychokinesis from 'data/skills/magic/psychokinesis';
+import iceMagic from 'data/skills/magic/ice';
 import holyMagic from 'data/skills/magic/holy';
 import darkMagic from 'data/skills/magic/dark';
 import fireMagic from 'data/skills/magic/fire';
-import waterMagic from 'data/skills/magic/water';
 import windMagic from 'data/skills/magic/wind';
 import earthMagic from 'data/skills/magic/earth';
-import iceMagic from 'data/skills/magic/ice';
+import waterMagic from 'data/skills/magic/water';
 import thunderMagic from 'data/skills/magic/thunder';
+import psychokinesis from 'data/skills/magic/psychokinesis';
 
 import { MagicSkillID } from 'modules/skill/magic';
 import { SkillsetID, ISkillsetData } from 'modules/character/skillset-data';

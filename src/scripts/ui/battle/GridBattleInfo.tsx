@@ -8,9 +8,9 @@ import StatusIco from 'ui/common/StatusIco';
 import ElementIco from 'ui/common/ElementIco';
 
 export interface IBattleInfoCoords {
-	info: IBattleInfo;
-	x: number;
-	y: number;
+	readonly info: IBattleInfo;
+	readonly x: number;
+	readonly y: number;
 }
 
 interface IProps {

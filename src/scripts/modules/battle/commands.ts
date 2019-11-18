@@ -5,17 +5,17 @@ import { SkillID } from 'modules/skill/skill-data';
 import { WeaponSkillID } from 'modules/skill/weapon';
 import { getDynamicSkillID } from 'modules/skill/dynamic';
 
-export const getDontReactCommand = (): Command => new Command('DONT_REACT', 'Don\'t react');
-export const getConfirmCommand = (): Command => new Command('CONFIRM', 'Confirm command');
-export const getCancelCommand = (): Command => new Command('BACK', 'Cancel command');
-export const getPassCommand = (): Command => new Command('PASS', 'End turn');
+const getDontReactCommand = (): Command => new Command('DONT_REACT', 'Don\'t react');
+const getConfirmCommand = (): Command => new Command('CONFIRM', 'Confirm command');
+const getCancelCommand = (): Command => new Command('BACK', 'Cancel command');
+const getPassCommand = (): Command => new Command('PASS', 'End turn');
 export const getContinueCommand = (): Command => new Command('DONT_REACT', 'Continue');
 
 export const getIdleCommands = (character: Character): Command[] => {
 	const { mainHand, offHand, skillset } = character;
-	const commands: Command[] = [];
 	const attackSkillList: Skill[] = [];
 	const skillIds: SkillID[] = [];
+	const commands: Command[] = [];
 
 	// ATTACK command
 	for (const wpn of [mainHand, offHand]) {

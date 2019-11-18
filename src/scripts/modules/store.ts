@@ -1,12 +1,10 @@
-import { randomPartyID } from 'data/game-config';
+import { randomPartyID, gameStorageKey } from 'data/game-config';
 
 import Logger from 'modules/logger';
 import IndexableList from 'modules/indexable-list';
 import { IPartyData, PartyData } from 'modules/party-creation/party-data';
 import { IBattleConfig, BattleConfig } from 'modules/battle-configuration/battle-config';
 import { ICharacterData, CharacterData } from 'modules/character-creation/character-data';
-
-const KEY = 'game'; // storage key
 
 interface ISaveState {
 	readonly battleConfig: IBattleConfig;
@@ -20,19 +18,7 @@ export class Store {
 	public battleConfig = new BattleConfig(null);
 
 	constructor() {
-		this.initialize();
-	}
-
-	public save(): void {
-		localStorage.setItem(KEY, JSON.stringify({
-			battleConfig: this.battleConfig.serialize(),
-			characters: this.characters.serialize(),
-			parties: this.parties.serialize()
-		}));
-	}
-
-	private initialize(): void {
-		const saved = localStorage.getItem(KEY) || '';
+		const saved = localStorage.getItem(gameStorageKey) || '';
 
 		if (!saved) {
 			return;
@@ -47,6 +33,14 @@ export class Store {
 		} catch (err) {
 			Logger.error(`Invalid store data: "${err}"`);
 		}
+	}
+
+	public save(): void {
+		localStorage.setItem(gameStorageKey, JSON.stringify({
+			battleConfig: this.battleConfig.serialize(),
+			characters: this.characters.serialize(),
+			parties: this.parties.serialize()
+		}));
 	}
 
 	private prepareBattleConfig(data?: IBattleConfig, parties: IPartyData[] = []): BattleConfig {

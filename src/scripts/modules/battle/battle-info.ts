@@ -3,7 +3,7 @@ import { ElementID } from 'modules/skill/affinity';
 import { WeaponID } from 'modules/equipment/weapon-data';
 import { StatusEffectID } from 'modules/battle/status-effect';
 
-export type BattleInfoType = 'ACTION' | 'REACTION' | 'DAMAGE' | 'HEALING' | 'DEBUFF' | 'BUFF';
+type BattleInfoType = 'ACTION' | 'REACTION' | 'DAMAGE' | 'HEALING' | 'DEBUFF' | 'BUFF';
 export type OnBattleInfo = (info: IBattleInfo) => void;
 
 export interface IBattleInfo {

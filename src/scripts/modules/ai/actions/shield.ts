@@ -17,6 +17,7 @@ const btShield = (): BTAction<IAIData> => {
 			return 'FAILURE';
 		}
 		data.selectCommand(shieldCommand.id);
+
 		return 'RUNNING';
 	});
 };

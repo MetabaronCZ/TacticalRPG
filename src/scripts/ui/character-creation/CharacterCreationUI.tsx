@@ -10,7 +10,10 @@ import Archetypes from 'data/archetypes';
 import { maxCharacterNameLength } from 'data/game-config';
 
 import CharacterCreation from 'modules/character-creation';
-import { ICharacterData, ICharacterDataEditable, isBothWielding, isDualWielding } from 'modules/character-creation/character-data';
+import {
+	ICharacterData, ICharacterDataEditable,
+	isBothWielding, isDualWielding
+} from 'modules/character-creation/character-data';
 
 import Form from 'ui/common/Form';
 import Button from 'ui/common/Button';

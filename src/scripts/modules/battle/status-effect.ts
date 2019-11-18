@@ -35,7 +35,7 @@ export interface IStatusEffect {
 	readonly buff: boolean;
 	readonly duration?: StatusEffectDuration;
 	readonly repeat?: StatusEffectRepeat;
-	apply?: StatusEffectApplyFun;
+	readonly apply?: StatusEffectApplyFun;
 }
 
 class StatusEffect {

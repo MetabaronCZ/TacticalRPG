@@ -19,14 +19,14 @@ import { renderCharacter } from 'modules/graphics/character';
 
 import Canvas from 'ui/common/Canvas';
 
-const positions = getCharacterPositions()[0];
+const positions = getCharacterPositions()[0]; // grid positions for Player 1 characters
 const gridMargin = 20; // safe area around canvas content
 
 const dummyPlayerConfig = new PlayerData(-1, {});
 const dummyPlayer = new Player(dummyPlayerConfig, []);
 
 interface IProps {
-	slots: Array<ICharacterData | null>;
+	readonly slots: Array<ICharacterData | null>;
 }
 
 class PartyPreview extends Canvas<IProps> {

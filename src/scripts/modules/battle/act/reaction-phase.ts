@@ -1,3 +1,4 @@
+import { isBackAttacked } from 'modules/battle/combat';
 import { getContinueCommand } from 'modules/battle/commands';
 import { resolveDirection } from 'modules/geometry/direction';
 
@@ -8,7 +9,6 @@ import MoveAnimation from 'modules/battle/act/move-animation';
 import SkillAnimation from 'modules/battle/act/skill-animation';
 import Character, { ICharacterSnapshot } from 'modules/character';
 import Command, { ICommandRecord, ICommandSnapshot } from 'modules/battle/command';
-import { isBackAttacked } from 'modules/battle/combat';
 
 const txtIdle = 'Select reaction:';
 const txtEvasion = 'Select evasion target on grid.';
@@ -306,6 +306,7 @@ class ReactionPhase extends ActPhase<IReactionPhaseSnapshot, IReactionPhaseRecor
 			throw new Error('Could not pass reaction: invalid phase ' + phase);
 		}
 		reaction.command = command;
+
 		this.finish(reaction);
 	}
 

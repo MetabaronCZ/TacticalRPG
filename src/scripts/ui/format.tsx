@@ -2,7 +2,6 @@ import React from 'react';
 
 import Skillsets from 'data/skillsets';
 
-import { WeaponID } from 'modules/equipment/weapon-data';
 import { ICombatResult } from 'modules/battle/act/combat-phase';
 import { ICharacterData, isDualWielding } from 'modules/character-creation/character-data';
 
@@ -17,15 +16,9 @@ export const formatCharacter = (character: ICharacterData | null): React.ReactNo
 		return '';
 	}
 	const { sex, archetype, skillset, main, off, armor } = character;
+	const offA = (isDualWielding(character) ? main : off);
 	const element = Skillsets.get(skillset).element;
 
-	let offA: WeaponID;
-
-	if (isDualWielding(character)) {
-		offA = main;
-	} else {
-		offA = off;
-	}
 	return (
 		<React.Fragment>
 			<Ico name={sex} minimal />
@@ -55,18 +48,23 @@ export const formatCombatResult = (result: ICombatResult): string => {
 	if (result.evaded) {
 		txt = 'Evaded';
 	}
+
 	if (result.damaged > 0) {
 		txt = result.damaged + ' damage';
 	}
+
 	if (result.healed > 0) {
 		txt = result.healed + ' healing';
 	}
+
 	if (result.revived) {
 		txt = 'Revived';
 	}
+
 	if (result.killed) {
 		txt = `Killed (${result.damaged} damage)`;
 	}
+
 	return txt;
 };
 

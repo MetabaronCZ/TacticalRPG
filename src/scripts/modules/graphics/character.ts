@@ -1,11 +1,23 @@
 import { PI } from 'core/number';
+import { colors } from 'data/styles';
 
-import { colorToRGB, Color, getCrossColor } from 'modules/color';
 import { dirToIndex } from 'modules/geometry/direction';
+import { colorToRGB, Color, getCrossColor } from 'modules/color';
 
 import { ICharacterSnapshot } from 'modules/character';
 
 const dirSize = 4; // size of character direction circle visual
+
+const blackColor = colorToRGB(colors.black);
+const whiteColor = colorToRGB(colors.white);
+const shadowColor = colorToRGB(colors.black, 0.35);
+
+const glowColor1 = colorToRGB([255, 250, 100], 0.5);
+const glowColor2 = colorToRGB([255, 250, 100], 0.0);
+
+const greyColor1 = colorToRGB(colors.white, 0.0);
+const greyColor2 = colorToRGB(colors.white, 0.5);
+const greyColor3 = colorToRGB(colors.white, 0.35);
 
 export const renderCharacter = (char: ICharacterSnapshot, ctx: CanvasRenderingContext2D, x: number, y: number, size: number, background: Color, border: Color): void => {
 	const isDying = char.dying;
@@ -13,7 +25,7 @@ export const renderCharacter = (char: ICharacterSnapshot, ctx: CanvasRenderingCo
 	// shadow
 	ctx.beginPath();
 	ctx.arc(x - size * (1 / 4), y + size * (1 / 4), size, 0, 2 * PI);
-	ctx.fillStyle = 'rgba(0, 0, 0, 0.35)';
+	ctx.fillStyle = shadowColor;
 	ctx.fill();
 
 	// border
@@ -41,8 +53,8 @@ export const renderCharacter = (char: ICharacterSnapshot, ctx: CanvasRenderingCo
 	const gwX = x - size * (1 / 2);
 	const gwY = y + size * (1 / 2);
 	const glowGrad = ctx.createRadialGradient(gwX, gwY, 0, gwX, gwY, size);
-	glowGrad.addColorStop(0, 'rgba(255, 250, 100, 0.5)');
-	glowGrad.addColorStop(1, 'rgba(255, 250, 100, 0)');
+	glowGrad.addColorStop(0, glowColor1);
+	glowGrad.addColorStop(1, glowColor2);
 
 	ctx.save();
 	ctx.clip();
@@ -64,13 +76,13 @@ export const renderCharacter = (char: ICharacterSnapshot, ctx: CanvasRenderingCo
 		// direction shadow
 		ctx.beginPath();
 		ctx.arc(dirX - 1, dirY + 1, dirSize + 1, 0, 2 * PI);
-		ctx.fillStyle = 'rgba(0, 0, 0, 0.35)';
+		ctx.fillStyle = shadowColor;
 		ctx.fill();
 
 		// direction circle
 		ctx.beginPath();
 		ctx.arc(dirX, dirY, dirSize, 0, 2 * PI);
-		ctx.fillStyle = 'rgb(255, 255, 255)';
+		ctx.fillStyle = whiteColor;
 		ctx.fill();
 	}
 
@@ -80,8 +92,8 @@ export const renderCharacter = (char: ICharacterSnapshot, ctx: CanvasRenderingCo
 	const gY = y - size * (1 / 4);
 
 	const glossyGrad = ctx.createLinearGradient(gX , gY, gX - glossyGradSize, gY + glossyGradSize);
-	glossyGrad.addColorStop(0, 'rgba(255, 255, 255, 0.5)');
-	glossyGrad.addColorStop(0.8, 'rgba(255, 255, 255, 0)');
+	glossyGrad.addColorStop(0, greyColor2);
+	glossyGrad.addColorStop(0.8, greyColor1);
 
 	ctx.beginPath();
 	ctx.arc(gX, gY, glossyGradSize, 0, 2 * PI);
@@ -96,18 +108,18 @@ export const renderCharacter = (char: ICharacterSnapshot, ctx: CanvasRenderingCo
 
 	// text shadow
 	if (isDying) {
-		ctx.fillStyle = 'rgba(0, 0, 0, 0.35)';
+		ctx.fillStyle = shadowColor;
 		ctx.fillText(name, x + 1, y + 2);
 	} else {
-		ctx.fillStyle = 'rgba(255, 255, 255, 0.35)';
+		ctx.fillStyle = greyColor3;
 		ctx.fillText(name, x - 1, y + 4);
 	}
 
 	// text
 	if (isDying) {
-		ctx.fillStyle = 'rgb(255, 255, 255)';
+		ctx.fillStyle = whiteColor;
 	} else {
-		ctx.fillStyle = 'rgb(0, 0, 0)';
+		ctx.fillStyle = blackColor;
 	}
 	ctx.fillText(name, x, y + 3);
 };

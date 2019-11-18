@@ -1,8 +1,11 @@
 import { PI } from 'core/number';
+import { colors } from 'data/styles';
 
 import Tile from 'modules/geometry/tile';
 import { colorToRGB, Color } from 'modules/color';
 import { getHexDimensions } from 'modules/battle/grid';
+
+const coordsColor = colorToRGB(colors.white, 0.25);
 
 const renderHex = (ctx: CanvasRenderingContext2D, x: number, y: number, size: number, color: Color): void => {
 	ctx.beginPath();
@@ -24,7 +27,7 @@ const renderHexCoords = (tile: Tile, ctx: CanvasRenderingContext2D, x: number, y
 	ctx.save();
 
 	ctx.font = '8px sans-serif';
-	ctx.fillStyle = 'rgba(255, 255, 255, 0.25)';
+	ctx.fillStyle = coordsColor;
 
 	ctx.textAlign = 'left';
 	ctx.fillText(tile.x + '', x - (1 / 4) * width, y - (1 / 8) *  height);
