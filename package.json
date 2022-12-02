@@ -39,7 +39,7 @@
     "gulp": "^4.0.2",
     "gulp-changed": "^4.0.2",
     "gulp-postcss": "^8.0.0",
-    "gulp-sass": "^4.0.2",
+    "gulp-sass": "^5.1.0",
     "gulp-stylelint": "^10.0.0",
     "gulp-svgmin": "^2.2.0",
     "jest": "^24.9.0",
